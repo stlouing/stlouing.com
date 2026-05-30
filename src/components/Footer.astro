@@ -1,0 +1,57 @@
+---
+import { href } from '../lib/url'
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>Made in and around STL.</span>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href={href('/')}>Home</a>
+      <a href="https://github.com/stlouing/stlouing.com">Source</a>
+      <a href={href('/changelog')}>Changelog</a>
+      <a href={href('/about')}>About</a>
+    </nav>
+  </div>
+
+  <style>
+    .site-footer {
+      border-top: 1px solid var(--color-line);
+      padding-block: var(--spacing-md);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--spacing-md);
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+
+      & a {
+        color: var(--color-text-muted);
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-underline-offset: 3px;
+
+        &:hover {
+          color: var(--color-accent);
+          text-decoration-style: solid;
+          text-decoration-thickness: 2px;
+          text-underline-offset: 2px;
+        }
+
+        &:hover {
+          color: var(--color-accent);
+        }
+      }
+    }
+  </style>
+</footer>

@@ -1,0 +1,26 @@
+---
+// Clickable St. Louis neighborhood-boundary map. Rendered by MarkdownPage when
+// a page sets `map: neighborhoods` in its frontmatter.
+---
+
+<div
+  class="neighborhood-map"
+  data-neighborhood-map
+  role="application"
+  aria-label="Map of St. Louis neighborhoods — click a neighborhood to jump to it">
+</div>
+
+<script>
+  import { initNeighborhoodMap } from '../scripts/neighborhood-map'
+  initNeighborhoodMap()
+</script>
+
+<style>
+  .neighborhood-map {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-block: var(--spacing-md) var(--spacing-lg);
+    height: 70vh;
+    border-block: 1px solid var(--color-line);
+  }
+</style>
