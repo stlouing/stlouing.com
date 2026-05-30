@@ -1,0 +1,317 @@
+:root {
+  /* Colors */
+  --color-background: #fcfbf6;
+  --color-surface: #ffffff;
+  --color-text: #1b1a17;
+  --color-text-muted: #6f6b61;
+  --color-line: #dcd8cb;
+  --color-accent: #9c3b2e;
+  --color-map-accent: #5a3a93;
+  --color-link: #225aa9;
+  --color-link-hover: #4788e3;
+
+  /* Fonts */
+  --font-body: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --font-size-xs: 0.8rem;
+  --font-size-sm: 0.9rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.1rem;
+
+  /* Type scale + rhythm */
+  --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
+
+  /* Space + measure */
+  --measure: 800px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --radius: 6px;
+}
+
+/* --- Reset -------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text);
+  line-height: 1.45;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  padding-block: 1rem;
+  overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--spacing-md);
+}
+
+.view-toggle {
+  display: inline-flex;
+  margin-block-end: var(--spacing-md);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+
+  & button {
+    border: 0;
+    padding: 0.35rem 0.9rem;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+
+    &[aria-pressed='true'] {
+      background: var(--color-accent);
+      color: var(--color-background);
+    }
+  }
+}
+
+[data-map] {
+  height: 70vh;
+  border-block: 1px solid var(--color-line);
+}
+
+/* List view (default, and with JS off): show the list, hide the map. */
+[data-filter-root]:not([data-view='map']) [data-map] {
+  display: none;
+}
+
+/* Map view: Google-Maps-style split — list on the left, map on the right,
+   together spanning the full viewport width. */
+[data-view='map'] .results {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  display: grid;
+  grid-template-columns: minmax(300px, 38%) 1fr;
+  height: 80vh;
+  border-block: 1px solid var(--color-line);
+}
+
+[data-view='map'] .spot-list {
+  height: 100%;
+  margin: 0;
+  padding-inline: var(--spacing-md);
+  overflow-y: auto;
+}
+
+[data-view='map'] [data-map] {
+  height: 100%;
+  border: 0;
+  border-inline-start: 1px solid var(--color-line);
+}
+
+[data-view='map'] [data-filter-empty] {
+  padding-inline: var(--spacing-md);
+}
+
+/* Narrow screens: map view shows just the map (the toggle still flips it). */
+@media (max-width: 700px) {
+  [data-view='map'] .results {
+    grid-template-columns: 1fr;
+    height: auto;
+    border-block: 0;
+  }
+
+  [data-view='map'] .spot-list {
+    display: none;
+  }
+
+  [data-view='map'] [data-map] {
+    height: 70vh;
+    border-inline: 0;
+    border-block: 1px solid var(--color-line);
+  }
+}
+
+/* Emoji map markers (Leaflet divIcon). */
+.emoji-marker {
+  font-size: 36px;
+}
+
+.leaflet-div-icon.emoji-marker {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  font-size: 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+  line-height: 1;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 4px;
+
+  &:hover {
+    text-decoration-style: solid;
+    text-decoration-color: var(--color-link-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+.wikilink-broken {
+  color: var(--color-text-muted);
+  border-block-end: 1px dotted var(--color-text-muted);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 1.9rem);
+}
+
+h2 {
+  font-size: clamp(1.2rem, 1.1rem + 0.6vw, 1.45rem);
+}
+
+h3 {
+  font-size: 1.05rem;
+}
+
+p,
+ul,
+ol,
+blockquote,
+pre,
+table,
+figure {
+  margin-block: 0 1em;
+}
+
+ul,
+ol {
+  padding-inline-start: 1.4em;
+}
+
+li + li {
+  margin-block-start: 0.3em;
+}
+
+blockquote {
+  border-inline-start: 3px solid var(--color-accent);
+  padding-inline-start: 1em;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin-block: var(--spacing-lg);
+}
+
+.stlouis-flag {
+  height: 30px;
+  width: 48px;
+  border-radius: 4px;
+}
+
+.icon {
+  color: var(--color-text-muted);
+}
+
+h1.page-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  margin-bottom: 0;
+
+  span {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: 400;
+    font-family: var(--font-mono);
+  }
+}
+
+/* Screen readers */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-text);
+  color: var(--color-background);
+  padding: 0.5em 1em;
+  z-index: 10;
+
+  &:focus {
+    left: 0;
+  }
+}
+
+:target {
+  scroll-margin-top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
