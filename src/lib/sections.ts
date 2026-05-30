@@ -42,14 +42,14 @@ export const sections: Section[] = [
   { label: 'Notes', path: '/notes', group: 'notes', primary: true },
 
   {
-    label: 'Overview',
+    label: 'St. Louis Overview',
     path: '/overview',
     group: 'pages',
     description: 'An assortment of St. Louis facts and observations',
   },
   {
     label: 'Chicago and St. Louis',
-    path: '/chicago-vs-st-louis',
+    path: '/chicago-and-st-louis',
     group: 'pages',
     description: 'The Windy City and the Gateway to the West',
   },

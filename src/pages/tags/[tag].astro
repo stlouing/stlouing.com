@@ -16,50 +16,18 @@ const { tag, items } = Astro.props
 ---
 
 <BaseLayout crumb={`#${tag}`}>
-  <ul class="tagged">
+  <h1>{`#${tag}`}</h1>
+
+  <ul class="list">
     {
       items.map((item) => (
         <li>
-          <a href={href(item.url)}>{item.title}</a>
-          <span class="coll">{item.collection}</span>
+          <a class="list-title" href={href(item.url)}>
+            {item.title}
+          </a>
+          <span class="collection">{item.collection}</span>
         </li>
       ))
     }
   </ul>
-
-  <style>
-    .tagged {
-      list-style: none;
-      margin: var(--spacing-lg) 0 0;
-      padding: 0;
-
-      & li {
-        margin: 0;
-        padding-block: 0.6rem;
-        border-block-end: 1px solid var(--color-line);
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: var(--spacing-sm);
-      }
-
-      & a {
-        font-family: var(--font-mono);
-
-        &::before {
-          content: '› ';
-          color: var(--color-accent);
-          text-decoration: none;
-        }
-      }
-
-      & .coll {
-        color: var(--color-text-muted);
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-    }
-  </style>
 </BaseLayout>

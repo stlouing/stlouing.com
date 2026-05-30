@@ -14,63 +14,19 @@ const formatDate = (date: Date) =>
 
 <BaseLayout>
   <h1>Notes</h1>
-  <ul class="notes">
+  <ul class="list">
     {
       notes.map((note) => (
         <li>
-          <a class="title" href={href(`/notes/${note.id}`)}>
+          <a class="list-title" href={href(`/notes/${note.id}`)}>
             {note.data.title}
           </a>
-          <p class="meta">
-            <time datetime={note.data.date.toISOString()}>{formatDate(note.data.date)}</time>
-          </p>
-          {note.data.description && <p class="desc">{note.data.description}</p>}
+          <time class="list-meta" datetime={note.data.date.toISOString()}>
+            {formatDate(note.data.date)}
+          </time>
+          {note.data.description && <p class="list-description">{note.data.description}</p>}
         </li>
       ))
     }
   </ul>
-
-  <style>
-    .notes {
-      list-style: none;
-      margin: var(--spacing-lg) 0 0;
-      padding: 0;
-
-      & li {
-        margin: 0;
-        padding-block: 0.9rem;
-        border-block-end: 1px solid var(--color-line);
-      }
-
-      & .title {
-        font-family: var(--font-mono);
-        font-size: 1.05rem;
-        color: var(--color-text);
-        text-decoration: none;
-
-        &::before {
-          content: '› ';
-          color: var(--color-accent);
-        }
-
-        &:hover {
-          color: var(--color-accent);
-          text-decoration: underline;
-          text-underline-offset: 0.15em;
-        }
-      }
-
-      & .meta {
-        margin: 0.2rem 0 0;
-        font-family: var(--font-mono);
-        font-size: var(--font-size-xs);
-        color: var(--color-text-muted);
-      }
-
-      & .desc {
-        margin: 0.3rem 0 0;
-        color: var(--color-text-muted);
-      }
-    }
-  </style>
 </BaseLayout>

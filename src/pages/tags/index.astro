@@ -7,45 +7,36 @@ const tags = await allTags()
 ---
 
 <BaseLayout>
-  {
-    tags.length === 0 ? (
-      <p class="empty">No tags yet.</p>
-    ) : (
-      <ul class="tag-cloud">
-        {tags.map(({ tag, count }) => (
-          <li>
-            <a href={href(`/tags/${tag}`)}>#{tag}</a>
-            <span class="count">{count}</span>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-
-  <style>
-    .tag-cloud {
-      list-style: none;
-      margin: var(--spacing-lg) 0 0;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1rem;
-      font-family: var(--font-mono);
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+    {
+      tags.map(({ tag, count }) => (
+        <li>
+          <a href={href(`/tags/${tag}`)}>#{tag}</a>
+          <span class="tag-count">{count}</span>
+        </li>
+      ))
     }
+  </ul>
+</BaseLayout>
 
-    .tag-cloud li {
+<style>
+  .tag-cloud {
+    list-style: none;
+    margin: var(--spacing-lg) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md) var(--spacing-lg);
+    font-family: var(--font-mono);
+
+    li {
       margin: 0;
     }
 
-    .tag-cloud .count {
+    .tag-count {
       color: var(--color-text-muted);
       font-size: var(--font-size-xs);
     }
-
-    .empty {
-      margin-block-start: var(--spacing-lg);
-      color: var(--color-text-muted);
-      font-style: italic;
-    }
-  </style>
-</BaseLayout>
+  }
+</style>

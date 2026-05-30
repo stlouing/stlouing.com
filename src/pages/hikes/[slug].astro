@@ -2,7 +2,6 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import EditThisPage from '../../components/EditThisPage.astro'
-import BackLink from '../../components/BackLink.astro'
 import TagList from '../../components/TagList.astro'
 import Backlinks from '../../components/Backlinks.astro'
 import { published, hasBody } from '../../lib/content'
@@ -20,18 +19,14 @@ const backlinks = await getBacklinks(entry.id)
 ---
 
 <BaseLayout crumb={data.title} description={data.description}>
-  <BackLink to="/hikes" label="Hikes" />
-
-  <article class="entry">
+  <article>
     <h1>{data.title}</h1>
 
     <p class="meta">
-      {data.area && <span class="where">{data.area}</span>}
-      {data.distanceMiles != null && <span class="chip">{data.distanceMiles} mi</span>}
+      {data.area && <span>{data.area}</span>}
+      {data.distanceMiles && <span class="chip">{data.distanceMiles} mi</span>}
       {data.difficulty && <span class="chip">{data.difficulty}</span>}
     </p>
-
-    {data.description && <p class="lead">{data.description}</p>}
 
     {
       data.url && (

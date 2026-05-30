@@ -11,8 +11,6 @@ const BASE = '/'
 
 const contentRoot = fileURLToPath(new URL('./src/content', import.meta.url))
 
-// Mirror lib/content.ts hasBody(): real content remains after stripping
-// frontmatter and HTML comments.
 function hasRealBody(file) {
   const body = fs
     .readFileSync(file, 'utf8')

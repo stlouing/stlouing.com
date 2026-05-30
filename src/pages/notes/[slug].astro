@@ -2,7 +2,6 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import EditThisPage from '../../components/EditThisPage.astro'
-import BackLink from '../../components/BackLink.astro'
 import TagList from '../../components/TagList.astro'
 import Backlinks from '../../components/Backlinks.astro'
 import { published } from '../../lib/content'
@@ -23,20 +22,13 @@ const formatDate = (date: Date) =>
 ---
 
 <BaseLayout crumb={data.title} description={data.description}>
-  <BackLink to="/notes" label="Notes" />
-
-  <article class="entry">
+  <article>
     <h1>{data.title}</h1>
     <p class="meta">
       <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
     </p>
 
-    {data.description && <p class="lead">{data.description}</p>}
-
-    <div class="body">
-      <Content />
-    </div>
-
+    <Content />
     <TagList tags={data.tags} />
     <Backlinks links={backlinks} />
     <EditThisPage path={entry.filePath} />
