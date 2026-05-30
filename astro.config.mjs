@@ -37,14 +37,10 @@ function buildWikiMap() {
       return `/notes/${id}`
     }
 
-    if (coll === 'changelog') {
-      return `/changelog#${id}`
-    }
-
     return null
   }
 
-  for (const coll of ['food', 'hikes', 'notes', 'changelog']) {
+  for (const coll of ['food', 'hikes', 'notes']) {
     const dir = path.join(contentRoot, coll)
     if (!fs.existsSync(dir)) {
       continue
@@ -70,6 +66,7 @@ const wikiMap = buildWikiMap()
 // Resolve a wikilink target id to a base-prefixed URL, or null if unknown.
 function resolve(target) {
   const url = wikiMap.get(target)
+
   if (!url) {
     return null
   }

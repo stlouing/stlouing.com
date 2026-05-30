@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import EditThisPage from '../../components/EditThisPage.astro'
+import BackLink from '../../components/BackLink.astro'
+import TagList from '../../components/TagList.astro'
+import Backlinks from '../../components/Backlinks.astro'
+import { published, hasBody } from '../../lib/content'
+import { getBacklinks } from '../../lib/backlinks'
+
+export async function getStaticPaths() {
+  const hikes = published(await getCollection('hikes')).filter(hasBody)
+  return hikes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+}
+
+const { entry } = Astro.props
+const { data } = entry
+const { Content } = await render(entry)
+const backlinks = await getBacklinks(entry.id)
+---
+
+<BaseLayout crumb={data.title} description={data.description}>
+  <BackLink to="/hikes" label="Hikes" />
+
+  <article class="entry">
+    <h1>{data.title}</h1>
+
+    <p class="meta">
+      {data.area && <span class="where">{data.area}</span>}
+      {data.distanceMiles != null && <span class="chip">{data.distanceMiles} mi</span>}
+      {data.difficulty && <span class="chip">{data.difficulty}</span>}
+    </p>
+
+    {data.description && <p class="lead">{data.description}</p>}
+
+    {
+      data.url && (
+        <p class="link">
+          <a href={data.url} rel="noopener">
+            Trail info ↗
+          </a>
+        </p>
+      )
+    }
+
+    <div class="body">
+      <Content />
+    </div>
+
+    <TagList tags={data.tags} />
+    <Backlinks links={backlinks} />
+    <EditThisPage path={entry.filePath} />
+  </article>
+</BaseLayout>

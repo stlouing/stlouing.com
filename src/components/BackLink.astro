@@ -1,0 +1,12 @@
+---
+import { href } from '../lib/url'
+
+interface Props {
+  to: string
+  label: string
+}
+
+const { to, label } = Astro.props
+---
+
+<p class="back"><a href={href(to)}>← {label}</a></p>

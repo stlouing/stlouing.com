@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { href } from '../../lib/url'
+import { allTags } from '../../lib/tags'
+
+const tags = await allTags()
+---
+
+<BaseLayout>
+  {
+    tags.length === 0 ? (
+      <p class="empty">No tags yet.</p>
+    ) : (
+      <ul class="tag-cloud">
+        {tags.map(({ tag, count }) => (
+          <li>
+            <a href={href(`/tags/${tag}`)}>#{tag}</a>
+            <span class="count">{count}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <style>
+    .tag-cloud {
+      list-style: none;
+      margin: var(--spacing-lg) 0 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      font-family: var(--font-mono);
+    }
+
+    .tag-cloud li {
+      margin: 0;
+    }
+
+    .tag-cloud .count {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+    }
+
+    .empty {
+      margin-block-start: var(--spacing-lg);
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+  </style>
+</BaseLayout>

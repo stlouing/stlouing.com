@@ -1,0 +1,157 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { sections, groups } from '../lib/sections'
+import { href } from '../lib/url'
+import { published } from '../lib/content'
+import IconSquareArrowRightEnter from '../assets/IconSquareArrowRightEnter.astro'
+
+const tagline = "A transplant's guide to St. Louis"
+
+const intro =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+
+// Latest few notes for the homepage Notes column.
+const latestNotes = published(await getCollection('notes'))
+  .sort((left, right) => right.data.date.valueOf() - left.data.date.valueOf())
+  .slice(0, 3)
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+---
+
+<BaseLayout>
+  <h1 class="page-title">St. Louing <span>since 2023</span></h1>
+  <p class="tagline">{tagline}</p>
+  <p class="introduction">{intro}</p>
+
+  <div class="directory">
+    {
+      groups.map((group) => {
+        if (group.id === 'notes') {
+          return (
+            <section class="group">
+              <h2 class="group-label">{group.label}</h2>
+              <ul>
+                {latestNotes.map((note) => (
+                  <li>
+                    <a href={href(`/notes/${note.id}`)}>{note.data.title}</a>
+                    <p class="section-description">{formatDate(note.data.date)}</p>
+                  </li>
+                ))}
+                <li>
+                  <a class="more" href={href('/notes')}>
+                    All notes
+                    <IconSquareArrowRightEnter />
+                  </a>
+                </li>
+              </ul>
+            </section>
+          )
+        }
+
+        const items = sections.filter((section) => section.group === group.id)
+        if (items.length === 0) {
+          return null
+        }
+
+        return (
+          <section class="group">
+            {group.label && <h2 class="group-label">{group.label}</h2>}
+            <ul>
+              {items.map((section) => (
+                <li>
+                  <a href={href(section.path)}>{section.label}</a>
+                  {section.description && <p class="section-description">{section.description}</p>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      })
+    }
+  </div>
+
+  <style>
+    .tagline {
+      margin-block: var(--spacing-xs) 0;
+      font-size: var(--font-size-lg);
+      font-style: italic;
+      color: var(--color-accent);
+    }
+
+    .introduction {
+      max-width: 62ch;
+      margin-block: var(--spacing-sm) var(--spacing-lg);
+      color: var(--color-text-muted);
+    }
+
+    .directory {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 34rem) {
+      .directory {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .group-label {
+      margin-block-end: var(--spacing-xs);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04rem;
+      color: var(--color-accent);
+    }
+
+    .group ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .group li {
+      margin: 0;
+      padding-block: var(--spacing-xs);
+      border-block-end: 1px solid var(--color-line);
+
+      &:last-child {
+        border: none;
+      }
+    }
+
+    .group a {
+      display: block;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--color-text);
+      text-decoration: none;
+
+      &.more {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+    }
+
+    .group a:hover {
+      color: var(--color-accent);
+    }
+
+    .placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .section-description {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-md);
+      font-weight: 400;
+    }
+  </style>
+</BaseLayout>

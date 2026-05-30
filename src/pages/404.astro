@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { sections } from '../lib/sections'
+import { href } from '../lib/url'
+---
+
+<BaseLayout crumb="Not found">
+  <h1>Page not found</h1>
+  <p>That page doesn't exist (or it moved). Try one of these:</p>
+
+  <ul class="links">
+    <li><a href={href('/')}>Home</a></li>
+    {
+      sections.map((section) => (
+        <li>
+          <a href={href(section.path)}>{section.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <style>
+    .links {
+      list-style: none;
+      margin: var(--spacing-lg) 0 0;
+      padding: 0;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .links li {
+      margin: 0;
+      padding-block: var(--spacing-xs);
+      border-block-end: 1px solid var(--color-line);
+    }
+
+    .links a {
+      color: var(--color-text);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+  </style>
+</BaseLayout>

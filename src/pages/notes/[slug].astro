@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import EditThisPage from '../../components/EditThisPage.astro'
+import BackLink from '../../components/BackLink.astro'
+import TagList from '../../components/TagList.astro'
+import Backlinks from '../../components/Backlinks.astro'
+import { published } from '../../lib/content'
+import { getBacklinks } from '../../lib/backlinks'
+
+export async function getStaticPaths() {
+  const notes = published(await getCollection('notes'))
+  return notes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+}
+
+const { entry } = Astro.props
+const { data } = entry
+const { Content } = await render(entry)
+const backlinks = await getBacklinks(entry.id)
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+---
+
+<BaseLayout crumb={data.title} description={data.description}>
+  <BackLink to="/notes" label="Notes" />
+
+  <article class="entry">
+    <h1>{data.title}</h1>
+    <p class="meta">
+      <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+    </p>
+
+    {data.description && <p class="lead">{data.description}</p>}
+
+    <div class="body">
+      <Content />
+    </div>
+
+    <TagList tags={data.tags} />
+    <Backlinks links={backlinks} />
+    <EditThisPage path={entry.filePath} />
+  </article>
+</BaseLayout>

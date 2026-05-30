@@ -1,0 +1,31 @@
+---
+import BaseLayout from './BaseLayout.astro'
+import EditThisPage from '../components/EditThisPage.astro'
+import NeighborhoodMap from '../components/NeighborhoodMap.astro'
+
+interface Props {
+  frontmatter: { title?: string; description?: string; map?: string }
+  file?: string
+}
+
+const { frontmatter, file } = Astro.props
+// Derive the repo-relative source path for the "Edit this page" link.
+const editPath = file ? `src/${file.split('/src/').slice(1).join('/src/')}` : undefined
+---
+
+<BaseLayout crumb={frontmatter.title} description={frontmatter.description}>
+  <article class="page">
+    {frontmatter.title && <h1>{frontmatter.title}</h1>}
+    {frontmatter.map === 'neighborhoods' && <NeighborhoodMap />}
+    <slot />
+    <EditThisPage path={editPath} />
+  </article>
+
+  <style>
+    /* Markdown content is slotted, so target it with :global. */
+    .page :global(h2) {
+      margin-block-start: var(--spacing-lg);
+      padding-block-start: var(--spacing-md);
+    }
+  </style>
+</BaseLayout>

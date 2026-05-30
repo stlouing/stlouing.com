@@ -1,0 +1,182 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import FilterBar from '../../components/FilterBar.astro'
+import ViewToggle from '../../components/ViewToggle.astro'
+import { href } from '../../lib/url'
+import { published } from '../../lib/content'
+import { cuisineEmoji } from '../../lib/emoji'
+
+const places = published(await getCollection('food')).sort((left, right) =>
+  left.data.title.localeCompare(right.data.title),
+)
+
+// Render each entry's Markdown body so it can be shown inline in the list.
+const rendered = await Promise.all(
+  places.map(async (place) => ({ place, Content: (await render(place)).Content })),
+)
+
+const cuisines = [...new Set(places.flatMap((place) => place.data.cuisine))].sort()
+const neighborhoods = [
+  ...new Set(places.map((place) => place.data.neighborhood).filter(Boolean)),
+].sort() as string[]
+const hasCoords = places.some((place) => place.data.coords)
+---
+
+<BaseLayout>
+  <div class="food" data-filter-root data-view="list">
+    <FilterBar
+      label="places"
+      count={places.length}
+      searchPlaceholder="name, neighborhood…"
+      facets={[
+        { label: 'Cuisine', facet: 'cuisine', options: cuisines },
+        { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
+      ]}
+    />
+
+    {hasCoords && <ViewToggle />}
+
+    <h1>Food</h1>
+
+    <div class="results">
+      <ul class="place-list">
+        {
+          rendered.map(({ place, Content }) => (
+            <li
+              class="place"
+              id={place.id}
+              data-filter-item
+              data-cuisine={place.data.cuisine.join('|')}
+              data-neighborhood={place.data.neighborhood ?? ''}
+              data-coords={place.data.coords?.join(',') ?? ''}
+              data-title={place.data.title}
+              data-marker={cuisineEmoji(place.data.cuisine)}
+              data-search={[
+                place.data.title,
+                place.data.neighborhood,
+                ...place.data.cuisine,
+                ...place.data.tags,
+                place.body,
+              ]
+                .filter(Boolean)
+                .join(' ')}>
+              <details open>
+                <summary>
+                  <span class="name">{place.data.title}</span>
+                  {place.data.rating != null && (
+                    <span class="rating">★ {place.data.rating}/10</span>
+                  )}
+                  {place.data.neighborhood && <span class="where">{place.data.neighborhood}</span>}
+                  {place.data.cuisine.map((cuisine) => (
+                    <a class="chip" href={href(`/tags/${cuisine}`)}>
+                      {cuisine}
+                    </a>
+                  ))}
+                </summary>
+                <div class="prose">
+                  <Content />
+                </div>
+              </details>
+            </li>
+          ))
+        }
+      </ul>
+      {hasCoords && <div class="map" data-map aria-label="Map of food spots" />}
+      <p class="empty" data-filter-empty hidden>No places match those filters.</p>
+    </div>
+  </div>
+
+  <script>
+    import { initFilterableMapPage } from '../../scripts/views'
+    initFilterableMapPage()
+  </script>
+
+  <style>
+    .place-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .place {
+      margin: 0;
+      border-block-end: 1px solid var(--color-line);
+
+      & summary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.25rem 0.6rem;
+        padding-block: var(--spacing-sm);
+        cursor: pointer;
+        list-style: none;
+
+        &::-webkit-details-marker {
+          display: none;
+        }
+
+        &::before {
+          content: '▸';
+          align-self: center;
+          font-size: 0.7em;
+          color: var(--color-accent);
+        }
+      }
+
+      & details[open] > summary::before {
+        content: '▾';
+      }
+
+      & summary:hover .name {
+        color: var(--color-accent);
+      }
+
+      & .name {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        color: var(--color-text);
+      }
+
+      & .rating {
+        font-family: var(--font-mono);
+        font-size: var(--font-size-xs);
+        color: var(--color-accent);
+        font-weight: 700;
+      }
+
+      & .where {
+        font-size: var(--font-size-xs);
+        font-style: italic;
+        color: var(--color-text-muted);
+      }
+
+      & .chip {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        border: 1px solid var(--color-line);
+        border-radius: 999px;
+        padding: 0.02rem 0.45rem;
+        text-decoration: none;
+
+        &:hover {
+          color: var(--color-accent);
+          border-color: var(--color-accent);
+        }
+      }
+
+      & .prose {
+        padding: 0 0 0.65rem 1.05rem;
+      }
+
+      & .prose :global(> :first-child) {
+        margin-block-start: 0.1rem;
+      }
+
+      & .prose :global(> :last-child) {
+        margin-block-end: 0;
+      }
+    }
+  </style>
+</BaseLayout>
