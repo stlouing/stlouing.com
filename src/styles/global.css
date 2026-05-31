@@ -289,8 +289,19 @@ body:has(.map-split) main > .wrap,
   overflow-y: auto;
   padding-inline: var(--spacing-md);
 
+  /* Sticky title matching the neighborhoods .pane-header; the negative inline
+     margin bleeds it past this pane's padding so the bar spans full width. */
   h1 {
-    margin-block: var(--spacing-md);
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    margin: 0 calc(-1 * var(--spacing-md));
+    padding: var(--spacing-md);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
   }
 
   /* In the cramped split view, descriptions are collapsed until their item is
