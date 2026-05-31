@@ -18,30 +18,18 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
 
   let activeItem: HTMLElement | null = null
 
-  function detailsOf(item: HTMLElement): HTMLDetailsElement | null {
-    return item.querySelector<HTMLDetailsElement>('details')
-  }
-
-  // One shared "active" item drives both the list (expanded <details> + accent
-  // highlight) and the map (open tooltip + selected marker). Selecting the
-  // active item again clears it; nothing is ever hidden.
+  // One shared "active" item drives both the list (the `is-active` class shows
+  // the description + accent highlight in map view) and the map (open tooltip +
+  // panned marker). Selecting the active item again clears it.
   function setActive(item: HTMLElement | null, options: { pan?: boolean } = {}): void {
     if (activeItem && activeItem !== item) {
       activeItem.classList.remove('is-active')
-      const previous = detailsOf(activeItem)
-      if (previous) {
-        previous.open = false
-      }
       markers.get(activeItem)?.closeTooltip()
     }
 
     if (item && item === activeItem) {
       // Toggle off.
       item.classList.remove('is-active')
-      const details = detailsOf(item)
-      if (details) {
-        details.open = false
-      }
       markers.get(item)?.closeTooltip()
       activeItem = null
 
@@ -54,10 +42,6 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
     }
 
     item.classList.add('is-active')
-    const details = detailsOf(item)
-    if (details) {
-      details.open = true
-    }
     item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
     const marker = markers.get(item)
@@ -113,16 +97,20 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
     }
   }
 
-  // Clicking a list title selects its item (and pans the map to its marker).
-  // The title lives in a <summary>, so suppress the native toggle and let
-  // setActive own the open/close state.
+  const root = scope instanceof Element ? scope : null
+
+  // In map view, clicking a list title selects its item (expand + pan) instead
+  // of following its link. In list view the title is a normal link to the
+  // detail page, so we leave the click alone.
   for (const item of items) {
     const title = item.querySelector<HTMLElement>('.list-title')
     if (!title) {
       continue
     }
-    title.classList.add('is-clickable')
     title.addEventListener('click', (event) => {
+      if (root?.getAttribute('data-view') !== 'map') {
+        return
+      }
       event.preventDefault()
       setActive(item, { pan: true })
     })

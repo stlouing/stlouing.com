@@ -292,6 +292,20 @@ body:has(.map-split) main > .wrap,
   h1 {
     margin-block: var(--spacing-md);
   }
+
+  /* In the cramped split view, descriptions are collapsed until their item is
+     active (selected from the list or the map). The title acts as the toggle. */
+  .list-title {
+    cursor: pointer;
+  }
+
+  li:not(.is-active) .list-description {
+    display: none;
+  }
+
+  li.is-active .list-title {
+    color: var(--color-accent);
+  }
 }
 
 [data-view='map'] [data-map] {

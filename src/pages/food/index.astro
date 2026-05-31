@@ -6,7 +6,7 @@ import FilterBar from '../../components/FilterBar.astro'
 import ViewToggle from '../../components/ViewToggle.astro'
 import List from '../../components/List.astro'
 import { href } from '../../lib/url'
-import { published } from '../../lib/content'
+import { published, hasBody } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
 import IconCaretDown from '../../assets/IconCaretDown.astro'
 import IconCaretRight from '../../assets/IconCaretRight.astro'
@@ -71,7 +71,13 @@ const hasCoords = places.some((place) => place.data.coords)
                 .filter(Boolean)
                 .join(' ')}>
               <div class="list-details">
-                <span class="list-title">{place.data.title}</span>
+                {hasBody(place) ? (
+                  <a class="list-title" href={href(`/food/${place.id}`)}>
+                    {place.data.title}
+                  </a>
+                ) : (
+                  <span class="list-title">{place.data.title}</span>
+                )}
                 {place.data.rating && (
                   <span class="rating">
                     <IconStar /> {place.data.rating}
