@@ -1,4 +1,39 @@
-<div class="view-toggle" data-view-toggle hidden>
-  <button type="button" data-view-set="list" aria-pressed="true">List</button>
-  <button type="button" data-view-set="map" aria-pressed="false">Map</button>
+<div class="field">
+  <label for="view-toggle">View</label>
+  <div id="view-toggle" class="view-toggle" data-view-toggle hidden>
+    <button type="button" data-view-set="list" aria-pressed="true">List</button>
+    <button type="button" data-view-set="map" aria-pressed="false">Map</button>
+  </div>
 </div>
+
+<style>
+  .view-toggle {
+    display: inline-flex;
+    border: 1px solid var(--color-line-input);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+
+    label {
+      display: block;
+    }
+
+    button {
+      border: 0;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      cursor: pointer;
+
+      &[aria-pressed='true'] {
+        font-weight: 600;
+        background: var(--color-accent);
+        color: var(--color-background);
+        outline: none;
+        border: 1px solid var(--color-accent);
+        box-shadow: 0px 0px 0px 1px var(--color-accent);
+      }
+    }
+  }
+</style>

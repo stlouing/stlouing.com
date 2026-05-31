@@ -23,6 +23,40 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const count = root.querySelector<HTMLElement>('[data-filter-count]')
   const empty = root.querySelector<HTMLElement>('[data-filter-empty]')
+  const sort = root.querySelector<HTMLSelectElement>('[data-filter-sort]')
+  const list = items[0]?.parentElement ?? null
+
+  // Reorder the rows by the selected `field:direction` (e.g. "rating:desc"). The
+  // sort key reads `data-sort-<field>`; missing values always sort last, numeric
+  // values compare as numbers, everything else compares as text.
+  function applySort(): void {
+    if (!sort || !list) return
+    const [field, direction] = (sort.value || '').split(':')
+    if (!field) return
+
+    const key = `sort${field.charAt(0).toUpperCase()}${field.slice(1)}`
+    const factor = direction === 'desc' ? -1 : 1
+
+    const ordered = [...items].sort((left, right) => {
+      const leftValue = left.dataset[key] ?? ''
+      const rightValue = right.dataset[key] ?? ''
+      if (leftValue === '' && rightValue === '') return 0
+      if (leftValue === '') return 1
+      if (rightValue === '') return -1
+
+      const leftNumber = Number(leftValue)
+      const rightNumber = Number(rightValue)
+      if (!Number.isNaN(leftNumber) && !Number.isNaN(rightNumber)) {
+        return (leftNumber - rightNumber) * factor
+      }
+
+      return leftValue.localeCompare(rightValue) * factor
+    })
+
+    for (const item of ordered) {
+      list.appendChild(item)
+    }
+  }
 
   function apply(): void {
     const q = (search?.value ?? '').trim().toLowerCase()
@@ -58,5 +92,11 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   form?.addEventListener('submit', (event) => event.preventDefault())
   search?.addEventListener('input', apply)
   facets.forEach((facet) => facet.addEventListener('change', apply))
+  sort?.addEventListener('change', () => {
+    applySort()
+    root.dispatchEvent(new CustomEvent('filter:changed'))
+  })
+
+  applySort()
   apply()
 }

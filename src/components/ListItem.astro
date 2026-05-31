@@ -1,0 +1,30 @@
+---
+// One row of the shared `.list`. Renders the common title / meta / description
+// shape; pass `meta` for a plain string, or use the named `meta` slot for
+// semantic markup (e.g. <time>). Extra content (chips, collection labels) goes
+// through the default slot.
+interface Props {
+  title: string
+  href?: string
+  meta?: string
+  description?: string
+}
+
+const { title, href: linkHref, meta, description } = Astro.props
+---
+
+<li>
+  {
+    linkHref ? (
+      <a class="list-title" href={linkHref}>
+        {title}
+      </a>
+    ) : (
+      <span class="list-title">{title}</span>
+    )
+  }
+  {meta && <span class="list-meta">{meta}</span>}
+  <slot name="meta" />
+  {description && <p class="list-description">{description}</p>}
+  <slot />
+</li>

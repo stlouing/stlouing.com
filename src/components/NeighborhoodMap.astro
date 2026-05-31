@@ -1,6 +1,7 @@
 ---
-// Clickable St. Louis neighborhood-boundary map. Rendered by MarkdownPage when
-// a page sets `map: neighborhoods` in its frontmatter.
+// Clickable St. Louis neighborhood map (rendered by the Neighborhoods page).
+// Each boundary is numbered; clicking one reveals its writeup in the left pane.
+// The floating toggle is shown only on mobile, where it flips map <-> writeups.
 ---
 
 <div
@@ -10,17 +11,70 @@
   aria-label="Map of St. Louis neighborhoods — click a neighborhood to jump to it">
 </div>
 
+<button type="button" class="map-split-toggle" data-map-split-toggle>Read</button>
+
 <script>
   import { initNeighborhoodMap } from '../scripts/neighborhood-map'
   initNeighborhoodMap()
+
+  const split = document.querySelector('[data-map-split]')
+  const toggle = document.querySelector('[data-map-split-toggle]')
+
+  // The label names the view the button switches TO.
+  function updateToggleLabel(): void {
+    const showingMap = split?.getAttribute('data-view') === 'map'
+    if (toggle) {
+      toggle.textContent = showingMap ? 'Read' : 'Map'
+    }
+  }
+
+  toggle?.addEventListener('click', () => {
+    const nextView = split?.getAttribute('data-view') === 'map' ? 'content' : 'map'
+    split?.setAttribute('data-view', nextView)
+    updateToggleLabel()
+  })
+
+  // A polygon click can flip the view (see neighborhood-map.ts); keep the label synced.
+  split?.addEventListener('mapsplit:viewchange', updateToggleLabel)
+
+  updateToggleLabel()
 </script>
 
 <style>
+  /* Fills its grid cell (the right pane of the .map-split layout). */
   .neighborhood-map {
-    width: 100vw;
-    margin-inline: calc(50% - 50vw);
-    margin-block: var(--spacing-md) var(--spacing-lg);
-    height: 70vh;
-    border-block: 1px solid var(--color-line);
+    height: 100%;
+    min-height: 0;
+    border-inline-start: 1px solid var(--color-line);
+  }
+
+  /* Floating view switch: mobile only (desktop shows both panes). */
+  .map-split-toggle {
+    display: none;
+  }
+
+  @media (max-width: 700px) {
+    .neighborhood-map {
+      border-inline: 0;
+    }
+
+    .map-split-toggle {
+      display: block;
+      position: fixed;
+      bottom: var(--spacing-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: 1px solid var(--color-accent);
+      border-radius: 999px;
+      background: var(--color-accent);
+      color: var(--color-background);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--box-shadow);
+    }
   }
 </style>

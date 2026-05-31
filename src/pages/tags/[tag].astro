@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import List from '../../components/List.astro'
+import ListItem from '../../components/ListItem.astro'
 import { href } from '../../lib/url'
 import { allTags, collectTagged } from '../../lib/tags'
 
@@ -16,18 +18,13 @@ const { tag, items } = Astro.props
 ---
 
 <BaseLayout crumb={`#${tag}`}>
-  <h1>{`#${tag}`}</h1>
-
-  <ul class="list">
+  <List title={`#${tag}`}>
     {
       items.map((item) => (
-        <li>
-          <a class="list-title" href={href(item.url)}>
-            {item.title}
-          </a>
+        <ListItem title={item.title} href={href(item.url)}>
           <span class="collection">{item.collection}</span>
-        </li>
+        </ListItem>
       ))
     }
-  </ul>
+  </List>
 </BaseLayout>

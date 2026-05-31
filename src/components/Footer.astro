@@ -7,8 +7,11 @@ import { href } from '../lib/url'
   <div class="wrap footer-inner">
     <span>Made in and around STL.</span>
     <nav class="footer-nav" aria-label="Footer">
-      <a href="https://github.com/stlouing/stlouing.com">Source <IconExternalLink /></a>
+      <a href="https://github.com/stlouing/stlouing.com" target="_blank"
+        >Source <IconExternalLink /></a
+      >
       <a href={href('/changelog')}>Changelog</a>
+      <a href={href('/rss.xml')}>RSS</a>
     </nav>
   </div>
 </footer>

@@ -1,10 +1,13 @@
 :root {
+  color-scheme: light;
+
   /* Colors */
   --color-background: #fcfbf6;
   --color-surface: #ffffff;
   --color-text: #1b1a17;
   --color-text-muted: #6f6b61;
   --color-line: #dcd8cb;
+  --color-line-input: #c7c3b4;
   --color-accent: #9c3b2e;
   --color-map-accent: #5a3a93;
   --color-link: #225aa9;
@@ -23,12 +26,38 @@
   --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
 
   /* Space + measure */
-  --measure: 800px;
+  --measure: 850px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --radius: 6px;
+
+  --box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+/* Dark theme: only the color tokens change (sizes, fonts, spacing are shared).
+   Set on <html> pre-paint by the inline script in BaseLayout. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-background: #17171b;
+  --color-surface: #201f25;
+  --color-text: #e9e8ec;
+  --color-text-muted: #9b9aa3;
+  --color-line: #343339;
+  --color-line-input: #45444b;
+  --color-accent: #e18484;
+  --color-map-accent: #b59ae0;
+  --color-link: #7ba8e3;
+  --color-link-hover: #a8c8f2;
+
+  .leaflet-layer,
+  .leaflet-control-zoom-in,
+  .leaflet-control-zoom-out,
+  .leaflet-control-attribution {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  }
 }
 
 /* --- Reset -------------------------------------------------- */
@@ -81,8 +110,38 @@ body {
 main {
   flex: 1 0 auto;
   width: 100%;
-  padding-block: 1rem;
   overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
+}
+
+label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04rem;
+  font-family: var(--font-mono);
+}
+
+input,
+select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-line-input);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+
+  &:focus {
+    outline: none;
+    border: 1px solid var(--color-accent);
+    box-shadow: 0px 0px 0px 1px var(--color-accent);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin: 0;
 }
 
 .wrap {
@@ -90,28 +149,6 @@ main {
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--spacing-md);
-}
-
-.view-toggle {
-  display: inline-flex;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-
-  button {
-    border: 0;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    cursor: pointer;
-
-    &[aria-pressed='true'] {
-      background: var(--color-accent);
-      color: var(--color-background);
-    }
-  }
 }
 
 [data-map] {
@@ -124,22 +161,137 @@ main {
   display: none;
 }
 
-/* Map view: Google-Maps-style split — list on the left, map on the right,
-   together spanning the full viewport width. */
-[data-view='map'] .results {
+/* Map view becomes a fixed-height app shell: the page itself never scrolls.
+   The site header, sticky filter toolbar and footer frame a results region
+   that fills the leftover height, and only the list pane scrolls. */
+body:has([data-view='map']),
+body:has(.map-split) {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body:has([data-view='map']) main,
+body:has(.map-split) main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+body:has([data-view='map']) main > .wrap,
+body:has(.map-split) main > .wrap,
+[data-view='map'],
+.map-split {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Google-Maps-style split — list on the left, map on the right, spanning the
+   full viewport width and filling the height below the toolbar. */
+[data-view='map'] .results,
+.map-split .results {
+  flex: 1;
+  min-height: 0;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
   display: grid;
-  grid-template-columns: minmax(300px, 38%) 1fr;
-  height: 80vh;
-  border-block: 1px solid var(--color-line);
+  grid-template-columns: minmax(30%, 500px) 1fr;
+  grid-template-rows: 1fr;
 }
 
-[data-view='map'] .spot-list {
-  height: 100%;
-  margin: 0;
-  padding-inline: var(--spacing-md);
+/* Neighborhoods left pane: the writeups scroll while the map stays put. */
+.map-split .content-pane {
+  min-height: 0;
   overflow-y: auto;
+}
+
+/* Drop Leaflet's default square focus outline on clicked boundaries; the active
+   region is shown by recoloring the polygon itself (see neighborhood-map.ts). */
+.neighborhood-map .leaflet-interactive:focus {
+  outline: none;
+}
+
+/* Numbered badge centered on each neighborhood boundary. */
+.neighborhood-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.4);
+}
+
+.content-pane {
+  /* Sticky header: title plus the "Back to all" link shown while a single
+     neighborhood is isolated. */
+  .pane-header {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .pane-header h1 {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-md);
+    color: var(--color-muted);
+  }
+
+  .back-to-all {
+    flex-shrink: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-link-hover);
+      text-decoration: underline;
+    }
+  }
+
+  ul.list li {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
+  .unwritten {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .is-clickable {
+    cursor: pointer;
+  }
+
+  [data-section].is-active .list-title {
+    color: var(--color-accent);
+  }
+}
+
+[data-view='map'] .list-with-map {
+  min-height: 0;
+  overflow-y: auto;
+  padding-inline: var(--spacing-md);
+
+  h1 {
+    margin-block: var(--spacing-md);
+  }
 }
 
 [data-view='map'] [data-map] {
@@ -152,41 +304,55 @@ main {
   padding-inline: var(--spacing-md);
 }
 
-/* Narrow screens: map view shows just the map (the toggle still flips it). */
+/* Narrow screens: filter pages show just the map so the user sees it in full. */
 @media (max-width: 700px) {
   [data-view='map'] .results {
     grid-template-columns: 1fr;
-    height: auto;
-    border-block: 0;
   }
 
-  [data-view='map'] .spot-list {
+  [data-view='map'] .list-with-map {
     display: none;
   }
 
   [data-view='map'] [data-map] {
-    height: 70vh;
     border-inline: 0;
-    border-block: 1px solid var(--color-line);
+  }
+
+  /* Neighborhoods: one pane at a time, switched by the floating toggle. */
+  .map-split .results {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .map-split[data-view='map'] .content-pane {
+    display: none;
+  }
+
+  .map-split[data-view='content'] .neighborhood-map {
+    display: none;
   }
 }
 
-/* Emoji map markers (Leaflet divIcon). */
-.emoji-marker {
-  font-size: 36px;
-}
-
-.leaflet-div-icon.emoji-marker {
+.leaflet-marker-icon.emoji-marker {
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
-  font-size: 36px;
-  background: var(--color-surface);
+  font-size: 22px;
   border: 1px solid var(--color-line);
   border-radius: 999px;
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
   line-height: 1;
+  background: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  border-radius: 50%;
+  font-size: 22px;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 a {
@@ -195,7 +361,7 @@ a {
   text-decoration-thickness: 2px;
   text-decoration-style: dotted;
   text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
+  text-underline-offset: 5px;
 
   &:hover {
     text-decoration-style: solid;
@@ -363,30 +529,6 @@ h1.page-title {
   gap: var(--spacing-sm) var(--spacing-md);
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    margin: 0;
-  }
-
-  label {
-    color: var(--color-text-muted);
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.04rem;
-  }
-
-  input,
-  select {
-    padding: 0.35rem 0.5rem;
-    background: var(--color-surface);
-    color: var(--color-text);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    font-family: var(--font-mono);
-  }
 }
 
 .empty {
@@ -396,6 +538,8 @@ h1.page-title {
 }
 
 .page {
+  margin-block-end: var(--spacing-lg);
+
   h2 {
     margin-block-start: var(--spacing-lg);
     padding-block-start: var(--spacing-md);
@@ -408,12 +552,14 @@ h1.page-title {
 }
 
 .chip {
+  display: flex;
+  align-items: center;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-line-input);
   border-radius: 20px;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 3px var(--spacing-sm);
   text-decoration: none;
   line-height: 1;
 
@@ -429,43 +575,6 @@ h1.page-title {
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.04rem;
-}
-
-summary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-sm);
-  cursor: pointer;
-  list-style: none;
-
-  &::-webkit-details-marker {
-    display: none;
-  }
-
-  .detail-indicator {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-  }
-
-  summary:hover .name {
-    color: var(--color-accent);
-  }
-}
-
-details .icon-caret-down {
-  display: none;
-}
-
-details[open] {
-  .icon-caret-down {
-    display: block;
-  }
-
-  .icon-caret-right {
-    display: none;
-  }
 }
 
 .group-label {
@@ -525,6 +634,17 @@ ul.list {
     }
   }
 
+  .list-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  p {
+    margin-block: 0;
+  }
+
   .more {
     display: flex;
     align-items: center;
@@ -533,8 +653,72 @@ ul.list {
 }
 
 .secondary-header {
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  background: var(--color-surface);
+  border-block-end: 1px solid var(--color-line);
+
+  .wrap {
+    padding-block: var(--spacing-md);
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none; /* WebKit */
+    }
+  }
+
+  /* Keep each control at its natural width so the row scrolls, not wraps. */
+  .wrap > *,
+  .field {
+    flex-shrink: 0;
+  }
+
+  .filters {
+    flex-wrap: nowrap;
+  }
+}
+
+/* On directory pages the filter toolbar is the sticky bar; let the site header
+   scroll away (list view) / sit statically (map shell) so they don't stack. */
+body:has([data-filter-root]) .site-header {
+  position: static;
+}
+
+.leaflet-tooltip.map-tooltip {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-md);
+  font-family: var(--font-mono);
+  box-shadow: var(--box-shadow);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.leaflet-tooltip-top.map-tooltip::before {
+  border-top-color: var(--color-background);
+}
+
+.leaflet-tooltip-bottom.map-tooltip::before {
+  border-bottom-color: var(--color-background);
+}
+
+.leaflet-tooltip-left.map-tooltip::before {
+  border-left-color: var(--color-background);
+}
+
+.leaflet-tooltip-right.map-tooltip::before {
+  border-right-color: var(--color-background);
 }

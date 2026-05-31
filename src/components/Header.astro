@@ -2,41 +2,25 @@
 import IconFlag from '../assets/IconFlag.astro'
 
 import Nav from './Nav.astro'
+import ThemeToggle from './ThemeToggle.astro'
 import { href } from '../lib/url'
 
 interface Props {
   trail: Array<any>
 }
-
-const { trail } = Astro.props
 ---
 
 <header class="site-header">
   <div class="wrap header-inner">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <IconFlag alt="St. Louis flag" />
-      {
-        trail.map((item, index) => (
-          <Fragment>
-            {index > 0 && (
-              <span class="separator" aria-hidden="true">
-                /
-              </span>
-            )}
-            {item.href ? (
-              <a class="crumb" href={href(item.href)}>
-                {item.label}
-              </a>
-            ) : (
-              <span class="crumb" aria-current="page">
-                {item.label}
-              </span>
-            )}
-          </Fragment>
-        ))
-      }
+      <a href={href('/')}>
+        <IconFlag alt="St. Louis flag" /> St. Louing
+      </a>
     </nav>
-    <Nav />
+    <div class="header-actions">
+      <Nav />
+      <ThemeToggle />
+    </div>
   </div>
 </header>
 
@@ -60,21 +44,31 @@ const { trail } = Astro.props
     gap: var(--spacing-md);
   }
 
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
   .breadcrumbs {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
 
     a {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
       color: var(--color-text-muted);
       text-decoration: none;
       font-weight: 500;
 
       &:first-of-type {
-        color: var(--color-accent);
+        font-size: var(--font-size-md);
+        color: var(--color-text);
         font-weight: 700;
       }
 

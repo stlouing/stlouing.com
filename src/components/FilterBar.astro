@@ -5,14 +5,21 @@ interface Facet {
   options: string[]
 }
 
+interface SortOption {
+  label: string
+  // "field:direction", e.g. "title:asc" or "rating:desc"; matches data-sort-<field>.
+  value: string
+}
+
 interface Props {
   label: string
   count: number
   facets: Facet[]
   searchPlaceholder?: string
+  sorts?: SortOption[]
 }
 
-const { label, count, facets, searchPlaceholder = 'name…' } = Astro.props
+const { label, count, facets, searchPlaceholder = 'name…', sorts = [] } = Astro.props
 ---
 
 <form class="filters" role="search" aria-label={`Filter ${label}`}>
@@ -39,5 +46,16 @@ const { label, count, facets, searchPlaceholder = 'name…' } = Astro.props
       </p>
     ))
   }
-  <!-- <p class="count"><span data-filter-count>{count}</span> {label}</p> -->
+  {
+    sorts.length > 0 && (
+      <p class="field">
+        <label for="sort">Sort</label>
+        <select id="sort" data-filter-sort>
+          {sorts.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </p>
+    )
+  }
 </form>

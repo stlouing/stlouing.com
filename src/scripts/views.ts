@@ -7,7 +7,7 @@ import { initMap } from './map'
  * Leaflet measures a visible container) and re-synced on later switches.
  *
  * Markup (within `[data-filter-root]`): a `[data-view-toggle]` containing
- * `<button data-view-set="list|map">`, the list as `.spot-list`, and the map as
+ * `<button data-view-set="list|map">`, the list as `.list-with-map`, and the map as
  * `[data-map]`. With JS off, the toggle stays hidden and the list is shown.
  */
 export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void {
@@ -21,6 +21,7 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
 
   const toggle = root.querySelector<HTMLElement>('[data-view-toggle]')
   const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-view-set]')]
+
   if (!toggle || buttons.length === 0) {
     return
   }

@@ -35,19 +35,22 @@ const isActive = (path: string) => {
       color: var(--color-text-muted);
       text-decoration: underline;
       text-decoration-style: dotted;
-      text-underline-offset: 3px;
+      text-underline-offset: 4px;
       font-weight: 500;
 
       &:hover {
         color: var(--color-accent);
         text-decoration-style: solid;
         text-decoration-thickness: 2px;
-        text-underline-offset: 2px;
+        text-underline-offset: 4px;
       }
 
-      [aria-current='page'] {
+      &[aria-current='page'] {
         color: var(--color-accent);
         font-weight: 700;
+        text-decoration-style: solid;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
       }
     }
   }

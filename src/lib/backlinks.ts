@@ -19,7 +19,7 @@ function hasContent(body?: string): boolean {
 
 // Canonical URL for a source entry (mirrors astro.config wiki map + lib/tags).
 function entryUrl(collection: string, id: string, withBody: boolean): string {
-  if (collection === 'food' || collection === 'hikes') {
+  if (collection === 'food' || collection === 'hikes' || collection === 'neighborhoods') {
     return withBody ? `/${collection}/${id}` : `/${collection}#${id}`
   }
 
@@ -63,6 +63,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
   add('food', await getCollection('food'))
   add('hikes', await getCollection('hikes'))
   add('notes', await getCollection('notes'))
+  add('neighborhoods', await getCollection('neighborhoods'))
 
   const map = new Map<string, Backlink[]>()
   for (const source of sources) {

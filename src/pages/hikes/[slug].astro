@@ -9,6 +9,7 @@ import { getBacklinks } from '../../lib/backlinks'
 
 export async function getStaticPaths() {
   const hikes = published(await getCollection('hikes')).filter(hasBody)
+
   return hikes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
 }
 
@@ -18,7 +19,7 @@ const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 ---
 
-<BaseLayout crumb={data.title} description={data.description}>
+<BaseLayout crumb={data.title}>
   <article>
     <h1>{data.title}</h1>
 
@@ -28,20 +29,9 @@ const backlinks = await getBacklinks(entry.id)
       {data.difficulty && <span class="chip">{data.difficulty}</span>}
     </p>
 
-    {
-      data.url && (
-        <p class="link">
-          <a href={data.url} rel="noopener">
-            Trail info ↗
-          </a>
-        </p>
-      )
-    }
-
     <div class="body">
       <Content />
     </div>
-
     <TagList tags={data.tags} />
     <Backlinks links={backlinks} />
     <EditThisPage path={entry.filePath} />

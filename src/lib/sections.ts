@@ -18,13 +18,6 @@ export const groups: { id: Group; label?: string }[] = [
 
 export const sections: Section[] = [
   {
-    label: 'Food',
-    path: '/food',
-    group: 'guides',
-    primary: true,
-    description: 'Keeping track of my favorite spots',
-  },
-  {
     label: 'Neighborhoods',
     path: '/neighborhoods',
     group: 'guides',
@@ -32,11 +25,18 @@ export const sections: Section[] = [
     description: 'A map of St. Louis neighborhoods',
   },
   {
+    label: 'Food',
+    path: '/food',
+    group: 'guides',
+    primary: true,
+    description: 'Keeping track of my favorite spots',
+  },
+  {
     label: 'Hikes',
     path: '/hikes',
     group: 'guides',
     primary: true,
-    description: "Taking advantage of Missouri's beautiful nature",
+    description: 'Exploring the nature of Missouri',
   },
 
   { label: 'Notes', path: '/notes', group: 'notes', primary: true },

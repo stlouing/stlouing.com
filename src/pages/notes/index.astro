@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import List from '../../components/List.astro'
+import ListItem from '../../components/ListItem.astro'
 import { href } from '../../lib/url'
 import { published } from '../../lib/content'
 
@@ -13,20 +15,18 @@ const formatDate = (date: Date) =>
 ---
 
 <BaseLayout>
-  <h1>Notes</h1>
-  <ul class="list">
+  <List title="Notes">
     {
       notes.map((note) => (
-        <li>
-          <a class="list-title" href={href(`/notes/${note.id}`)}>
-            {note.data.title}
-          </a>
-          <time class="list-meta" datetime={note.data.date.toISOString()}>
+        <ListItem
+          title={note.data.title}
+          href={href(`/notes/${note.id}`)}
+          description={note.data.description}>
+          <time slot="meta" class="list-meta" datetime={note.data.date.toISOString()}>
             {formatDate(note.data.date)}
           </time>
-          {note.data.description && <p class="list-description">{note.data.description}</p>}
-        </li>
+        </ListItem>
       ))
     }
-  </ul>
+  </List>
 </BaseLayout>

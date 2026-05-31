@@ -11,6 +11,7 @@ import IconStar from '../../assets/IconStar.astro'
 
 export async function getStaticPaths() {
   const places = published(await getCollection('food')).filter(hasBody)
+
   return places.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
 }
 
@@ -20,7 +21,7 @@ const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 ---
 
-<BaseLayout crumb={data.title} description={data.description}>
+<BaseLayout crumb={data.title}>
   <article>
     <h1>{data.title}</h1>
 
@@ -44,7 +45,10 @@ const backlinks = await getBacklinks(entry.id)
 
     {data.address && <p class="address">{data.address}</p>}
 
-    <Content />
+    <div class="body">
+      <Content />
+    </div>
+
     <TagList tags={data.tags} />
     <Backlinks links={backlinks} />
     <EditThisPage path={entry.filePath} />

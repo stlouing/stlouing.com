@@ -3,9 +3,9 @@ layout: ../layouts/MarkdownPage.astro
 title: About
 ---
 
-A transplant's guide to St. Louis.
+Maps, guides, and observations from around St. Louis.
 
-### Syndication
+## Syndication
 
 _TODO:_ [POSSE](https://indieweb.org/POSSE) (Publish (on your) Own Site, Syndicate Elsewhere. Here's the elsewhere to be:
 

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterBar from '../../components/FilterBar.astro'
 import ViewToggle from '../../components/ViewToggle.astro'
+import List from '../../components/List.astro'
 import { href } from '../../lib/url'
 import { published, hasBody } from '../../lib/content'
 
@@ -19,59 +20,59 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
 <BaseLayout>
   <div class="hikes" data-filter-root data-view="list">
     <header class="secondary-header">
-      <FilterBar
-        label="hikes"
-        count={hikes.length}
-        searchPlaceholder="name, area..."
-        facets={[
-          { label: 'Difficulty', facet: 'difficulty', options: difficulties },
-          { label: 'Area', facet: 'area', options: areas },
-        ]}
-      />
-      {hasCoords && <ViewToggle />}
+      <div class="wrap">
+        {hasCoords && <ViewToggle />}
+        <FilterBar
+          label="hikes"
+          count={hikes.length}
+          searchPlaceholder="name, area..."
+          facets={[
+            { label: 'Difficulty', facet: 'difficulty', options: difficulties },
+            { label: 'Area', facet: 'area', options: areas },
+          ]}
+        />
+      </div>
     </header>
 
-    <h1>Hikes</h1>
-
-    <ul class="list">
-      {
-        hikes.map((hike) => (
-          <li
-            id={hike.id}
-            data-filter-item
-            data-difficulty={hike.data.difficulty ?? ''}
-            data-area={hike.data.area ?? ''}
-            data-coords={hike.data.coords?.join(',') ?? ''}
-            data-title={hike.data.title}
-            data-marker="🥾"
-            data-search={[
-              hike.data.title,
-              hike.data.description,
-              hike.data.area,
-              hike.data.difficulty,
-              ...hike.data.tags,
-            ]
-              .filter(Boolean)
-              .join(' ')}>
-            {hasBody(hike) ? (
-              <a class="list-title" href={href(`/hikes/${hike.id}`)}>
-                {hike.data.title}
-              </a>
-            ) : (
-              <span class="list-title">{hike.data.title}</span>
-            )}
-            <p class="meta">
-              {hike.data.area && <span>{hike.data.area}</span>}
-              {hike.data.distanceMiles && <span class="chip">{hike.data.distanceMiles} mi</span>}
-              {hike.data.difficulty && <span class="chip">{hike.data.difficulty}</span>}
-            </p>
-            {hike.data.description && <p class="list-description">{hike.data.description}</p>}
-          </li>
-        ))
-      }
-    </ul>
-    {hasCoords && <div class="map" data-map aria-label="Map of hikes" />}
-    <p class="empty" data-filter-empty hidden>No hikes match those filters.</p>
+    <div class="results">
+      <List title="Hikes" class="list-with-map">
+        {
+          hikes.map((hike) => (
+            <li
+              id={hike.id}
+              data-filter-item
+              data-difficulty={hike.data.difficulty ?? ''}
+              data-area={hike.data.area ?? ''}
+              data-coords={hike.data.coords?.join(',') ?? ''}
+              data-title={hike.data.title}
+              data-marker="🥾"
+              data-search={[
+                hike.data.title,
+                hike.data.area,
+                hike.data.difficulty,
+                ...hike.data.tags,
+              ]
+                .filter(Boolean)
+                .join(' ')}>
+              {hasBody(hike) ? (
+                <a class="list-title" href={href(`/hikes/${hike.id}`)}>
+                  {hike.data.title}
+                </a>
+              ) : (
+                <span class="list-title">{hike.data.title}</span>
+              )}
+              <p class="meta">
+                {hike.data.area && <span>{hike.data.area}</span>}
+                {hike.data.distanceMiles && <span class="chip">{hike.data.distanceMiles} mi</span>}
+                {hike.data.difficulty && <span class="chip">{hike.data.difficulty}</span>}
+              </p>
+            </li>
+          ))
+        }
+      </List>
+      {hasCoords && <div class="map" data-map aria-label="Map of hikes" />}
+      <p class="empty" data-filter-empty hidden>No hikes match those filters.</p>
+    </div>
   </div>
 
   <script>

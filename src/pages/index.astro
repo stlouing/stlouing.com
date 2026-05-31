@@ -1,12 +1,14 @@
 ---
 import { getCollection } from 'astro:content'
+
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
-import IconSquareArrowRightEnter from '../assets/IconSquareArrowRightEnter.astro'
+import List from '../components/List.astro'
+import ListItem from '../components/ListItem.astro'
 
-const tagline = "A transplant's guide to St. Louis"
+const tagline = 'Maps, guides, and observations from around St. Louis'
 
 const intro =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
@@ -24,6 +26,7 @@ const formatDate = (date: Date) =>
   <h1 class="page-title">St. Louing <span>since 2023</span></h1>
   <p class="tagline">{tagline}</p>
   <p class="introduction">{intro}</p>
+  <p class="last-updated"><strong>Last Updated:</strong> <span>May 31, 2026</span></p>
 
   <div class="directory">
     {
@@ -32,21 +35,20 @@ const formatDate = (date: Date) =>
           return (
             <section class="group">
               <h2 class="group-label">{group.label}</h2>
-              <ul class="list">
+              <List>
                 {latestNotes.map((note) => (
-                  <li>
-                    <a class="list-title" href={href(`/notes/${note.id}`)}>
-                      {note.data.title}
-                    </a>
-                    <p class="list-description">{formatDate(note.data.date)}</p>
-                  </li>
+                  <ListItem
+                    title={note.data.title}
+                    href={href(`/notes/${note.id}`)}
+                    description={formatDate(note.data.date)}
+                  />
                 ))}
                 <li>
                   <a class="more" href={href('/notes')}>
                     All notes
                   </a>
                 </li>
-              </ul>
+              </List>
             </section>
           )
         }
@@ -61,16 +63,15 @@ const formatDate = (date: Date) =>
           <section class="group">
             {group.label && <h2 class="group-label">{group.label}</h2>}
 
-            <ul class="list">
+            <List>
               {items.map((section) => (
-                <li>
-                  <a class="list-title" href={href(section.path)}>
-                    {section.label}
-                  </a>
-                  {section.description && <p class="list-description">{section.description}</p>}
-                </li>
+                <ListItem
+                  title={section.label}
+                  href={href(section.path)}
+                  description={section.description}
+                />
               ))}
-            </ul>
+            </List>
           </section>
         )
       })
@@ -88,8 +89,27 @@ const formatDate = (date: Date) =>
 
   .introduction {
     max-width: 62ch;
-    margin-block: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-lg);
+    margin-block: var(--spacing-sm);
     color: var(--color-text-muted);
+  }
+
+  .last-updated {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    font-family: var(--font-mono);
+    font-style: italic;
+    margin-bottom: var(--spacing-lg);
+
+    strong {
+      font-weight: 500;
+    }
+
+    span {
+      color: var(--color-text-muted);
+    }
   }
 
   .directory {

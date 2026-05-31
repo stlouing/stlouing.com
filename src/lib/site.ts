@@ -3,7 +3,7 @@ export const REPO = 'stlouing/stlouing.com'
 export const DEFAULT_BRANCH = 'main'
 
 export const SITE_TITLE = 'St. Louing'
-export const SITE_DESCRIPTION = "A transplant's guide to St. Louis"
+export const SITE_DESCRIPTION = 'Maps, guides, and observations from around St. Louis'
 
 // GitHub "edit this file" deep link for a repo-relative source path.
 export function editUrl(repoRelativePath: string): string {

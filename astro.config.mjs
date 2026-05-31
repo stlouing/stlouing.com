@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
+import sitemap from '@astrojs/sitemap'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -77,5 +78,6 @@ function resolve(target) {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://stlouing.com',
+  integrations: [sitemap()],
   markdown: { remarkPlugins: [[remarkWikiLink, { resolve }]] },
 })

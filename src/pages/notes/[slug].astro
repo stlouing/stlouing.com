@@ -24,11 +24,15 @@ const formatDate = (date: Date) =>
 <BaseLayout crumb={data.title} description={data.description}>
   <article>
     <h1>{data.title}</h1>
+
     <p class="meta">
       <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
     </p>
 
-    <Content />
+    <div class="body">
+      <Content />
+    </div>
+
     <TagList tags={data.tags} />
     <Backlinks links={backlinks} />
     <EditThisPage path={entry.filePath} />

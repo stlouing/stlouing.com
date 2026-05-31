@@ -1,0 +1,58 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import List from '../components/List.astro'
+import ListItem from '../components/ListItem.astro'
+import NeighborhoodMap from '../components/NeighborhoodMap.astro'
+import neighborhoods from '../data/neighborhoods.json'
+
+// Pre-render the body of any neighborhood that has a written Markdown entry; the
+// rest fall back to a placeholder so all 88 sections exist on the page.
+const entries = await getCollection('neighborhoods')
+type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
+const rendered = new Map<string, RenderedContent>()
+
+for (const entry of entries) {
+  const { Content } = await render(entry)
+  rendered.set(entry.id, Content)
+}
+---
+
+<BaseLayout crumb="Neighborhoods">
+  <div class="map-split" data-map-split data-view="map">
+    <div class="results">
+      <article class="page content-pane">
+        <header class="pane-header">
+          <h1>Neighborhoods</h1>
+          <button type="button" class="back-to-all" data-back-to-all hidden>← Back to all</button>
+        </header>
+        <List>
+          {
+            neighborhoods.map((neighborhood) => {
+              const Content = rendered.get(neighborhood.slug)
+
+              return (
+                <li data-section={neighborhood.slug}>
+                  <div class="list-description">
+                    <span class="list-title">
+                      <span class="number">{neighborhood.number}.</span>
+                      {neighborhood.name}
+                    </span>
+                    {Content && <Content />}
+                  </div>
+                </li>
+              )
+            })
+          }
+        </List>
+      </article>
+      <NeighborhoodMap />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .number {
+    color: var(--color-accent);
+  }
+</style>

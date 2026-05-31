@@ -1,10 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro'
 import EditThisPage from '../components/EditThisPage.astro'
-import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 
 interface Props {
-  frontmatter: { title?: string; description?: string; map?: string }
+  frontmatter: { title?: string; description?: string }
   file?: string
 }
 
@@ -17,8 +16,9 @@ const editPath = file ? `src/${file.split('/src/').slice(1).join('/src/')}` : un
 <BaseLayout crumb={frontmatter.title} description={frontmatter.description}>
   <article class="page">
     {frontmatter.title && <h1>{frontmatter.title}</h1>}
-    {frontmatter.map === 'neighborhoods' && <NeighborhoodMap />}
-    <slot />
+    <div class="body">
+      <slot />
+    </div>
     <EditThisPage path={editPath} />
   </article>
 </BaseLayout>
