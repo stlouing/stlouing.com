@@ -22,35 +22,39 @@ const backlinks = await getBacklinks(entry.id)
 ---
 
 <BaseLayout crumb={data.title}>
-  <article>
-    <h1>{data.title}</h1>
-
-    <p class="meta">
-      {
-        data.rating && (
-          <span class="rating">
-            <IconStar /> {data.rating}
-          </span>
-        )
-      }
-      {data.neighborhood && <span>{data.neighborhood}</span>}
-      {
-        data.cuisine.map((cuisine) => (
-          <a class="chip" href={href(`/tags/${cuisine}`)}>
-            {cuisine}
-          </a>
-        ))
-      }
-    </p>
-
-    {data.address && <p class="address">{data.address}</p>}
+  <article class="entry">
+    <header class="entry-header">
+      <h1>{data.title}</h1>
+      <div class="entry-bar">
+        <p class="meta">
+          {
+            data.rating && (
+              <span class="rating">
+                <IconStar /> {data.rating}
+              </span>
+            )
+          }
+          {data.neighborhood && <span>{data.neighborhood}</span>}
+          {
+            data.cuisine.map((cuisine) => (
+              <a class="chip" href={href(`/tags/${cuisine}`)}>
+                {cuisine}
+              </a>
+            ))
+          }
+        </p>
+        <EditThisPage path={entry.filePath} inline />
+      </div>
+      {data.address && <p class="address">{data.address}</p>}
+      <TagList tags={data.tags} />
+    </header>
 
     <div class="body">
       <Content />
     </div>
 
-    <TagList tags={data.tags} />
-    <Backlinks links={backlinks} />
-    <EditThisPage path={entry.filePath} />
+    <footer class="entry-footer">
+      <Backlinks links={backlinks} />
+    </footer>
   </article>
 </BaseLayout>

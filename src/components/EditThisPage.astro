@@ -4,14 +4,16 @@ import { editUrl } from '../lib/site'
 
 interface Props {
   path?: string
+  // Drop the standalone top margin when placed in a header/meta row.
+  inline?: boolean
 }
 
-const { path } = Astro.props
+const { path, inline = false } = Astro.props
 ---
 
 {
   path && (
-    <p class="edit-page">
+    <p class:list={['edit-page', { inline }]}>
       <a href={editUrl(path)} rel="noopener">
         <IconPencil />
         Found a mistake? Edit this page
@@ -25,6 +27,10 @@ const { path } = Astro.props
     margin-block-start: var(--spacing-lg);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
+
+    &.inline {
+      margin: 0;
+    }
 
     a {
       display: flex;
