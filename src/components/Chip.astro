@@ -1,0 +1,42 @@
+---
+// A small pill of metadata (cuisine, distance, difficulty, etc.). Renders as a
+// link when `href` is given, otherwise a plain label. Shared by the Food and
+// Hikes pages.
+interface Props {
+  href?: string
+}
+
+const { href: chipHref, ...rest } = Astro.props
+---
+
+{
+  chipHref ? (
+    <a class="chip" href={chipHref} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <span class="chip" {...rest}>
+      <slot />
+    </span>
+  )
+}
+
+<style>
+  .chip {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-line-input);
+    border-radius: 20px;
+    padding: 3px var(--spacing-sm);
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .chip:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+</style>

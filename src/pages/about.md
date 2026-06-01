@@ -9,13 +9,13 @@ Maps, guides, and observations from around St. Louis.
 
 _TODO:_ [POSSE](https://indieweb.org/POSSE) (Publish (on your) Own Site, Syndicate Elsewhere. Here's the elsewhere to be:
 
-- GitHub - [@stlouing](https://github.com/stlouing)
-- Instagram [@stlouing](https://instagram.com/stlouing)
-- YouTube [@stlouing](https://www.youtube.com/@stlouing)
-- Bluesky [@stlouing](https://bsky.app/profile/stlouing.com)
-- Substack - [@stlouing](https://stlouing.substack.com)
-- Twitter [@stlouing](https://x.com/stlouing)
-- Neocities [@stlouing](https://stlouing.neocities.org)
+- [@stlouing](https://github.com/stlouing) - GitHub
+- [@stlouing](https://instagram.com/stlouing) - Instagram
+- [@stlouing](https://www.youtube.com/@stlouing) - YouTube
+- [@stlouing](https://bsky.app/profile/stlouing.com) - Bluesky
+- [@stlouing](https://stlouing.substack.com) - Substack
+- [@stlouing](https://x.com/stlouing) - Twitter
+- [@stlouing](https://stlouing.neocities.org) - Neocities
 
 ## Uses
 

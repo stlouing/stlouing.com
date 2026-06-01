@@ -1,43 +1,15 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
+import { addThemedTiles } from './tiles'
 import neighborhoods from '../data/neighborhoods.json'
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
 // the map and the generated sections always share one slug — no re-slugifying.
 const byNumber = new Map(neighborhoods.map((neighborhood) => [neighborhood.number, neighborhood]))
 
-interface SectionController {
-  // Isolate one neighborhood's writeup, or pass null to show them all again.
-  show: (slug: string | null) => void
-  // The list rows, so the map can wire up list-to-map selection.
-  rows: HTMLElement[]
-}
-
-/** Controls which neighborhood writeup(s) the left pane shows; null if absent. */
-function createSectionController(): SectionController | null {
-  const rows = [...document.querySelectorAll<HTMLElement>('[data-section]')]
-  if (rows.length === 0) {
-    return null
-  }
-
-  const pane = document.querySelector<HTMLElement>('.content-pane')
-
-  function show(slug: string | null): void {
-    for (const row of rows) {
-      row.hidden = slug !== null && row.dataset.section !== slug
-    }
-
-    if (pane) {
-      pane.scrollTop = 0
-    }
-  }
-
-  return { show, rows }
-}
-
 /**
  * Clickable St. Louis neighborhood map. Draws each official boundary with its
- * number and, on click, reveals that neighborhood's writeup in the left pane.
+ * number and, on click, expands that neighborhood's writeup in the left pane.
  */
 export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'): Promise<void> {
   const element = document.querySelector<HTMLElement>(selector)
@@ -60,7 +32,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   const map = L.map(element, { scrollWheelZoom: true, touchZoom: true })
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map)
+  addThemedTiles(map)
 
   const baseStyle: L.PathOptions = {
     color: mapAccent,
@@ -76,12 +48,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     fillOpacity: 0.4,
   }
 
-  const sections = createSectionController()
-  const split = document.querySelector('[data-map-split]')
-  const backLink = document.querySelector<HTMLElement>('[data-back-to-all]')
+  const rows = [...document.querySelectorAll<HTMLElement>('[data-section]')]
   const pathBySlug = new Map<string, L.Path>()
-
-  backLink?.addEventListener('click', () => clearSelection())
 
   let selectedSlug: string | null = null
 
@@ -90,8 +58,12 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   // Single source of truth for selection, driven by both map and list clicks.
-  // Clicking the already-selected neighborhood clears it (shows all again).
-  function selectNeighborhood(slug: string, options: { flip?: boolean } = {}): void {
+  // Selecting a neighborhood expands its writeup inline (and highlights its
+  // boundary); selecting the already-selected one collapses it again. Other
+  // rows stay in place — only the chosen one expands. On mobile this never
+  // switches panes: a map click keeps you on the map (the floating toggle is
+  // the only way to flip to the writeups).
+  function selectNeighborhood(slug: string): void {
     if (selectedSlug === slug) {
       clearSelection()
 
@@ -100,42 +72,38 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
     if (selectedSlug) {
       paintPath(selectedSlug, baseStyle)
-      rowFor(selectedSlug)?.classList.remove('is-active')
+      setRowExpanded(selectedSlug, false)
     }
 
     selectedSlug = slug
     paintPath(slug, selectedStyle)
-    rowFor(slug)?.classList.add('is-active')
-    sections?.show(slug)
+    setRowExpanded(slug, true)
+    rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     history.replaceState(null, '', `#${slug}`)
-
-    if (backLink) {
-      backLink.hidden = false
-    }
-
-    // On mobile only one pane shows; reveal the writeups when asked.
-    if (options.flip && split) {
-      split.setAttribute('data-view', 'content')
-      split.dispatchEvent(new CustomEvent('mapsplit:viewchange'))
-    }
   }
 
   function clearSelection(): void {
     if (selectedSlug) {
       paintPath(selectedSlug, baseStyle)
-      rowFor(selectedSlug)?.classList.remove('is-active')
+      setRowExpanded(selectedSlug, false)
     }
     selectedSlug = null
-    sections?.show(null)
     history.replaceState(null, '', location.pathname + location.search)
+  }
 
-    if (backLink) {
-      backLink.hidden = true
+  // Expand/collapse a row's writeup: `is-active` toggles the body and caret via
+  // CSS, and `aria-expanded` keeps the disclosure button accessible.
+  function setRowExpanded(slug: string, expanded: boolean): void {
+    const row = rowFor(slug)
+    if (!row) {
+      return
     }
+    row.classList.toggle('is-active', expanded)
+    row.querySelector('.neighborhood-toggle')?.setAttribute('aria-expanded', String(expanded))
   }
 
   function rowFor(slug: string): HTMLElement | undefined {
-    return sections?.rows.find((row) => row.dataset.section === slug)
+    return rows.find((row) => row.dataset.section === slug)
   }
 
   const bounds = L.latLngBounds([])
@@ -169,7 +137,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       featureLayer.on('mouseout', () => {
         path.setStyle(slug === selectedSlug ? selectedStyle : baseStyle)
       })
-      featureLayer.on('click', () => selectNeighborhood(slug, { flip: true }))
+      featureLayer.on('click', () => selectNeighborhood(slug))
 
       // Numbered badge centered on the boundary (non-interactive so clicks fall
       // through to the polygon underneath).
@@ -187,8 +155,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     },
   }).addTo(map)
 
-  // Clicking a list row selects its neighborhood on the map (and toggles off).
-  for (const row of sections?.rows ?? []) {
+  // Clicking a list row expands its neighborhood (and toggles off), mirroring
+  // the map click.
+  for (const row of rows) {
     const slug = row.dataset.section
     if (!slug) {
       continue

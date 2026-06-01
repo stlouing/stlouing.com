@@ -21,14 +21,14 @@ const formatDate = (date: Date) =>
   date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 ---
 
-<BaseLayout crumb={data.title} description={data.description}>
+<BaseLayout crumb={data.title}>
   <article class="entry">
     <header class="entry-header">
       <h1>{data.title}</h1>
       <div class="entry-bar">
-        <p class="meta">
+        <div class="meta">
           <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
-        </p>
+        </div>
         <EditThisPage path={entry.filePath} inline />
       </div>
       <TagList tags={data.tags} />

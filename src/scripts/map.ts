@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
+import { addThemedTiles } from './tiles'
 
 export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
   const el = document.querySelector<HTMLElement>(mapSelector)
@@ -10,27 +11,39 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
 
   const scope: Element | Document = el.closest('[data-filter-root]') ?? document
 
-  const map = L.map(el, { scrollWheelZoom: true, touchZoom: true })
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map)
+  // Keep the selection sticky: clicking empty map space should not close the
+  // open popup (which would visually de-select a place while its list row stays
+  // active). Selection only changes when another marker is clicked.
+  const map = L.map(el, { scrollWheelZoom: true, touchZoom: true, closePopupOnClick: false })
+  addThemedTiles(map)
 
   const items = [...scope.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const markers = new Map<HTMLElement, L.Marker>()
 
   let activeItem: HTMLElement | null = null
+  // Set while we close a popup ourselves (switching/toggling), so the marker's
+  // `popupclose` handler can tell our closes apart from the user pressing the X.
+  let closingActivePopup = false
+
+  function closePopupFor(item: HTMLElement): void {
+    closingActivePopup = true
+    markers.get(item)?.closePopup()
+    closingActivePopup = false
+  }
 
   // One shared "active" item drives both the list (the `is-active` class shows
-  // the description + accent highlight in map view) and the map (open tooltip +
+  // the description + accent highlight in map view) and the map (open popup +
   // panned marker). Selecting the active item again clears it.
   function setActive(item: HTMLElement | null, options: { pan?: boolean } = {}): void {
     if (activeItem && activeItem !== item) {
       activeItem.classList.remove('is-active')
-      markers.get(activeItem)?.closeTooltip()
+      closePopupFor(activeItem)
     }
 
     if (item && item === activeItem) {
       // Toggle off.
       item.classList.remove('is-active')
-      markers.get(item)?.closeTooltip()
+      closePopupFor(item)
       activeItem = null
 
       return
@@ -46,7 +59,8 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
 
     const marker = markers.get(item)
     if (marker) {
-      marker.openTooltip()
+      marker.closeTooltip()
+      marker.openPopup()
       if (options.pan) {
         map.panTo(marker.getLatLng())
       }
@@ -68,16 +82,36 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
           iconSize: [36, 36],
           iconAnchor: [22, 22],
           popupAnchor: [0, -26],
+          tooltipAnchor: [0, -24],
         })
-        // Match the neighborhoods map: a styled hover tooltip (.map-tooltip)
-        // rather than a click popup.
-        marker = L.marker([lat, lng], { icon }).bindTooltip(item.dataset.title ?? '', {
-          className: 'map-tooltip',
-          direction: 'top',
-          opacity: 1,
-          offset: [0, -26],
+        // Hover shows a tooltip; clicking opens the richer popup. While a place
+        // is active (its popup is open) we suppress that place's tooltip so the
+        // two never stack — the popup is simply left in place. Address lines
+        // render under the title when present.
+        const title = item.dataset.title ?? ''
+        const addressLines = (item.dataset.address ?? '').split('\n').filter(Boolean)
+        const infoHtml = addressLines.length
+          ? `<strong>${title}</strong><br><span class="tip-address">${addressLines.join('<br>')}</span>`
+          : `<strong>${title}</strong>`
+
+        const placeMarker = L.marker([lat, lng], { icon })
+          .bindPopup(infoHtml, { className: 'food-popup', offset: [0, 0] })
+          .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
+        placeMarker.on('click', () => setActive(item, { pan: true }))
+        // Keep the hover tooltip off the active place — its popup stands alone.
+        placeMarker.on('tooltipopen', () => {
+          if (item === activeItem) {
+            placeMarker.closeTooltip()
+          }
         })
-        marker.on('click', () => setActive(item, { pan: true }))
+        // Closing the popup with its X de-selects the list row too; our own
+        // programmatic closes are flagged so they don't trigger this.
+        placeMarker.on('popupclose', () => {
+          if (!closingActivePopup && item === activeItem) {
+            setActive(null)
+          }
+        })
+        marker = placeMarker
         markers.set(item, marker)
       }
 

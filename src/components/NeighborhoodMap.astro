@@ -34,9 +34,6 @@
     updateToggleLabel()
   })
 
-  // A polygon click can flip the view (see neighborhood-map.ts); keep the label synced.
-  split?.addEventListener('mapsplit:viewchange', updateToggleLabel)
-
   updateToggleLabel()
 </script>
 
@@ -61,7 +58,7 @@
     .map-split-toggle {
       display: block;
       position: fixed;
-      bottom: var(--spacing-lg);
+      bottom: 50px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 999;

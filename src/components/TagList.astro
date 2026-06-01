@@ -19,3 +19,22 @@ const { tags } = Astro.props
     </p>
   )
 }
+
+<style>
+  .tags {
+    margin-block-start: var(--spacing-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  .tags .tag {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+</style>

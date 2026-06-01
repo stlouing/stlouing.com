@@ -1,0 +1,37 @@
+---
+// A star rating, shared by the Food list and detail pages.
+import IconStar from '../assets/IconStar.astro'
+
+interface Props {
+  value: number
+}
+
+const { value } = Astro.props
+---
+
+<div class="rating">
+  <IconStar />
+  <span>{value}</span>
+</div>
+
+<style>
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--color-accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    span {
+      line-height: 1;
+    }
+  }
+
+  /* Make the star a solid accent mark: fill it and override the shared muted
+     `.icon` color so it reads as one unit with the number, not a gray outline. */
+  .rating :global(svg) {
+    color: var(--color-accent);
+    fill: currentColor;
+  }
+</style>

@@ -27,7 +27,7 @@ const isActive = (path: string) => {
     display: flex;
     flex-wrap: wrap;
     column-gap: var(--spacing-lg);
-    row-gap: var(--spacing-sm);
+    row-gap: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
 
@@ -39,9 +39,10 @@ const isActive = (path: string) => {
       font-weight: 500;
 
       &:hover {
-        color: var(--color-accent);
+        color: var(--color-text);
         text-decoration-style: solid;
         text-decoration-thickness: 2px;
+        text-decoration-color: var(--color-accent);
         text-underline-offset: 4px;
       }
 
@@ -51,6 +52,7 @@ const isActive = (path: string) => {
         text-decoration-style: solid;
         text-decoration-thickness: 2px;
         text-underline-offset: 4px;
+        text-decoration-color: var(--color-accent);
       }
     }
   }

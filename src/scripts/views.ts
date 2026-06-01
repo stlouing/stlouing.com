@@ -10,6 +10,9 @@ import { initMap } from './map'
  * `<button data-view-set="list|map">`, the list as `.list-with-map`, and the map as
  * `[data-map]`. With JS off, the toggle stays hidden and the list is shown.
  */
+// Shared across the Food and Hikes pages so the chosen view follows the user.
+const VIEW_STORAGE_KEY = 'list-map-view'
+
 export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void {
   const root = document.querySelector<HTMLElement>(rootSelector)
 
@@ -30,6 +33,7 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
 
   function setView(view: string): void {
     root.dataset.view = view
+    localStorage.setItem(VIEW_STORAGE_KEY, view)
 
     for (const button of buttons) {
       button.setAttribute('aria-pressed', String(button.dataset.viewSet === view))
@@ -49,4 +53,9 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
   }
 
   toggle.hidden = false // reveal only when JS is available
+
+  // Default to the map view; the last-used choice (shared by Food and Hikes)
+  // wins when set. The markup ships as `list` so the no-JS fallback works.
+  const savedView = localStorage.getItem(VIEW_STORAGE_KEY)
+  setView(savedView === 'list' || savedView === 'map' ? savedView : 'map')
 }

@@ -13,3 +13,70 @@ const { title, class: className, ...rest } = Astro.props
     <slot />
   </ul>
 </div>
+
+<style>
+  ul.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    .list-description {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-md);
+      font-weight: 400;
+    }
+
+    .list-meta {
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    li {
+      margin: 0;
+      padding-block: var(--spacing-xs);
+      border-block-end: 1px solid var(--color-line);
+
+      &:last-child {
+        border: none;
+      }
+    }
+
+    a.list-title,
+    .list-title {
+      display: block;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--color-text);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--color-accent);
+        text-decoration: underline;
+        text-decoration-style: solid;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 2px;
+      }
+    }
+
+    .list-details {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-sm);
+      row-gap: var(--spacing-xs);
+    }
+
+    p {
+      margin-block: 0;
+    }
+
+    .more {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+  }
+</style>

@@ -2,9 +2,12 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import List from '../components/List.astro'
-import ListItem from '../components/ListItem.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
+import { href } from '../lib/url'
+import { published, hasBody } from '../lib/content'
+import IconCaretRight from '../assets/IconCaretRight.astro'
+import IconCaretDown from '../assets/IconCaretDown.astro'
 
 // Pre-render the body of any neighborhood that has a written Markdown entry; the
 // rest fall back to a placeholder so all 88 sections exist on the page.
@@ -16,6 +19,23 @@ for (const entry of entries) {
   const { Content } = await render(entry)
   rendered.set(entry.id, Content)
 }
+
+// Group food places by neighborhood so each section can list its restaurants.
+// Normalize names (lowercase, alphanumerics only) so e.g. "North Hampton" and
+// "Northampton" still join.
+const normalizeName = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '')
+const foodPlaces = published(await getCollection('food'))
+const foodByNeighborhood = new Map<string, typeof foodPlaces>()
+
+for (const place of foodPlaces) {
+  if (!place.data.neighborhood) {
+    continue
+  }
+  const key = normalizeName(place.data.neighborhood)
+  const existing = foodByNeighborhood.get(key) ?? []
+  existing.push(place)
+  foodByNeighborhood.set(key, existing)
+}
 ---
 
 <BaseLayout crumb="Neighborhoods">
@@ -24,22 +44,55 @@ for (const entry of entries) {
       <article class="page content-pane">
         <header class="pane-header">
           <h1>Neighborhoods</h1>
-          <button type="button" class="back-to-all" data-back-to-all hidden>← Back to all</button>
         </header>
         <List>
           {
             neighborhoods.map((neighborhood) => {
               const Content = rendered.get(neighborhood.slug)
+              const places = foodByNeighborhood.get(normalizeName(neighborhood.name)) ?? []
+              const isExpandable = Boolean(Content) || places.length > 0
 
               return (
                 <li data-section={neighborhood.slug}>
-                  <div class="list-description">
+                  {isExpandable ? (
+                    <button
+                      type="button"
+                      class="list-title neighborhood-toggle"
+                      aria-expanded="false">
+                      <span class="number">{neighborhood.number}.</span>
+                      {neighborhood.name}
+
+                      <IconCaretRight />
+                      <IconCaretDown />
+                    </button>
+                  ) : (
                     <span class="list-title">
                       <span class="number">{neighborhood.number}.</span>
                       {neighborhood.name}
                     </span>
-                    {Content && <Content />}
-                  </div>
+                  )}
+                  {isExpandable && (
+                    <div class="neighborhood-body list-description">
+                      {Content && <Content />}
+                      {places.length > 0 && (
+                        <div class="neighborhood-food">
+                          <h3>Food</h3>
+                          <ul>
+                            {places.map((place) => (
+                              <li>
+                                <a
+                                  href={href(
+                                    hasBody(place) ? `/food/${place.id}` : `/food#${place.id}`,
+                                  )}>
+                                  {place.data.title}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </li>
               )
             })

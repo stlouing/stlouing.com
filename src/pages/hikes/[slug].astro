@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import EditThisPage from '../../components/EditThisPage.astro'
 import TagList from '../../components/TagList.astro'
 import Backlinks from '../../components/Backlinks.astro'
+import Chip from '../../components/Chip.astro'
 import { published, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 
@@ -24,11 +25,11 @@ const backlinks = await getBacklinks(entry.id)
     <header class="entry-header">
       <h1>{data.title}</h1>
       <div class="entry-bar">
-        <p class="meta">
+        <div class="meta">
           {data.area && <span>{data.area}</span>}
-          {data.distanceMiles && <span class="chip">{data.distanceMiles} mi</span>}
-          {data.difficulty && <span class="chip">{data.difficulty}</span>}
-        </p>
+          {data.distanceMiles && <Chip>{data.distanceMiles} mi</Chip>}
+          {data.difficulty && <Chip>{data.difficulty}</Chip>}
+        </div>
         <EditThisPage path={entry.filePath} inline />
       </div>
       <TagList tags={data.tags} />

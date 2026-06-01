@@ -12,11 +12,9 @@ interface Props {
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href={href('/')}>
-        <IconFlag alt="St. Louis flag" /> St. Louing
-      </a>
-    </nav>
+    <a class="site-name" href={href('/')}>
+      <IconFlag alt="St. Louis flag" /> St. Louing
+    </a>
     <div class="header-actions">
       <Nav />
       <ThemeToggle />
@@ -42,6 +40,7 @@ interface Props {
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-md);
+    row-gap: var(--spacing-xs);
   }
 
   .header-actions {
@@ -50,43 +49,22 @@ interface Props {
     gap: var(--spacing-md);
   }
 
-  .breadcrumbs {
+  a.site-name {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-md);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: var(--font-size-md);
+    color: var(--color-text);
     font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
+    font-weight: 700;
 
-    a {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      color: var(--color-text-muted);
-      text-decoration: none;
-      font-weight: 500;
-
-      &:first-of-type {
-        font-size: var(--font-size-md);
-        color: var(--color-text);
-        font-weight: 700;
-      }
-
-      &:hover {
-        color: var(--color-accent);
-        text-decoration: underline;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
-      }
-    }
-
-    [aria-current='page'] {
-      font-weight: 500;
-      color: var(--color-text);
-    }
-
-    .separator {
-      color: var(--color-line);
+    &:hover {
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
     }
   }
 </style>

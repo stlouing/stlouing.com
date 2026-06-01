@@ -5,12 +5,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterBar from '../../components/FilterBar.astro'
 import ViewToggle from '../../components/ViewToggle.astro'
 import List from '../../components/List.astro'
+import Chip from '../../components/Chip.astro'
+import Rating from '../../components/Rating.astro'
 import { href } from '../../lib/url'
 import { published, hasBody } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
-import IconCaretDown from '../../assets/IconCaretDown.astro'
-import IconCaretRight from '../../assets/IconCaretRight.astro'
-import IconStar from '../../assets/IconStar.astro'
+import IconMapPin from '../../assets/IconMapPin.astro'
 
 const places = published(await getCollection('food')).sort((left, right) =>
   left.data.title.localeCompare(right.data.title),
@@ -58,12 +58,14 @@ const hasCoords = places.some((place) => place.data.coords)
               data-neighborhood={place.data.neighborhood ?? ''}
               data-coords={place.data.coords?.join(',') ?? ''}
               data-title={place.data.title}
+              data-address={(place.data.address ?? []).join('\n')}
               data-marker={cuisineEmoji(place.data.cuisine)}
               data-sort-title={place.data.title}
               data-sort-rating={place.data.rating ?? ''}
               data-search={[
                 place.data.title,
                 place.data.neighborhood,
+                ...(place.data.address ?? []),
                 ...place.data.cuisine,
                 ...place.data.tags,
                 place.body,
@@ -78,11 +80,7 @@ const hasCoords = places.some((place) => place.data.coords)
                 ) : (
                   <span class="list-title">{place.data.title}</span>
                 )}
-                {place.data.rating && (
-                  <span class="rating">
-                    <IconStar /> {place.data.rating}
-                  </span>
-                )}
+                {place.data.rating && <Rating value={place.data.rating} />}
 
                 {place.data.neighborhood && (
                   <span class="list-meta">{place.data.neighborhood}</span>
@@ -90,16 +88,17 @@ const hasCoords = places.some((place) => place.data.coords)
                 {place.data.cuisine && (
                   <div class="chips">
                     {place.data.cuisine.map((cuisine) => (
-                      <a class="chip" href={href(`/tags/${cuisine}`)}>
-                        {cuisine}
-                      </a>
+                      <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>
                     ))}
                   </div>
                 )}
               </div>
-              <div class="list-description">
-                <Content />
-              </div>
+              {place.data.address && place.data.address.length > 0 && (
+                <p class="list-address">
+                  <IconMapPin /> {place.data.address.join(', ')}
+                </p>
+              )}
+              <Content />
             </li>
           ))
         }

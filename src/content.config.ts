@@ -15,7 +15,12 @@ const food = defineCollection({
     rating: z.number().min(0).max(10).optional(),
     cuisine: z.array(z.string()).default([]),
     neighborhood: z.string().optional(),
-    address: z.string().optional(),
+    // A single line, or an array of lines (e.g. street, then city/state/zip).
+    // Normalized to string[] so consumers always render line-by-line.
+    address: z
+      .union([z.string(), z.array(z.string())])
+      .transform((value) => (Array.isArray(value) ? value : [value]))
+      .optional(),
     instagram: z.string().url().optional(),
     ...coords,
     ...taggable,

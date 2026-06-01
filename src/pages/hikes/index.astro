@@ -1,14 +1,18 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterBar from '../../components/FilterBar.astro'
 import ViewToggle from '../../components/ViewToggle.astro'
 import List from '../../components/List.astro'
+import Chip from '../../components/Chip.astro'
 import { href } from '../../lib/url'
 import { published, hasBody } from '../../lib/content'
 
 const hikes = published(await getCollection('hikes')).sort((left, right) =>
   left.data.title.localeCompare(right.data.title),
+)
+const rendered = await Promise.all(
+  hikes.map(async (hike) => ({ hike, Content: (await render(hike)).Content })),
 )
 const difficulties = [
   ...new Set(hikes.map((hike) => hike.data.difficulty).filter(Boolean)),
@@ -30,6 +34,11 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
             { label: 'Difficulty', facet: 'difficulty', options: difficulties },
             { label: 'Area', facet: 'area', options: areas },
           ]}
+          sorts={[
+            { label: 'Name (A-Z)', value: 'title:asc' },
+            { label: 'Distance (short→long)', value: 'distance:asc' },
+            { label: 'Distance (long→short)', value: 'distance:desc' },
+          ]}
         />
       </div>
     </header>
@@ -37,7 +46,7 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
     <div class="results">
       <List title="Hikes" class="list-with-map">
         {
-          hikes.map((hike) => (
+          rendered.map(({ hike, Content }) => (
             <li
               id={hike.id}
               data-filter-item
@@ -46,26 +55,24 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
               data-coords={hike.data.coords?.join(',') ?? ''}
               data-title={hike.data.title}
               data-marker="🥾"
-              data-search={[
-                hike.data.title,
-                hike.data.area,
-                hike.data.difficulty,
-                ...hike.data.tags,
-              ]
+              data-sort-title={hike.data.title}
+              data-sort-distance={hike.data.distanceMiles ?? ''}
+              data-search={[hike.data.title, hike.data.area, hike.data.difficulty, ...hike.data.tags]
                 .filter(Boolean)
                 .join(' ')}>
-              {hasBody(hike) ? (
-                <a class="list-title" href={href(`/hikes/${hike.id}`)}>
-                  {hike.data.title}
-                </a>
-              ) : (
-                <span class="list-title">{hike.data.title}</span>
-              )}
-              <p class="meta">
-                {hike.data.area && <span>{hike.data.area}</span>}
-                {hike.data.distanceMiles && <span class="chip">{hike.data.distanceMiles} mi</span>}
-                {hike.data.difficulty && <span class="chip">{hike.data.difficulty}</span>}
-              </p>
+              <div class="list-details">
+                {hasBody(hike) ? (
+                  <a class="list-title" href={href(`/hikes/${hike.id}`)}>
+                    {hike.data.title}
+                  </a>
+                ) : (
+                  <span class="list-title">{hike.data.title}</span>
+                )}
+                {hike.data.area && <span class="list-meta">{hike.data.area}</span>}
+                {hike.data.distanceMiles && <Chip>{hike.data.distanceMiles} mi</Chip>}
+                {hike.data.difficulty && <Chip>{hike.data.difficulty}</Chip>}
+              </div>
+              <Content />
             </li>
           ))
         }
