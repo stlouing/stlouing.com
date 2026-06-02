@@ -4,14 +4,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import List from '../../components/List.astro'
 import ListItem from '../../components/ListItem.astro'
 import { href } from '../../lib/url'
-import { published } from '../../lib/content'
+import { published, excerpt } from '../../lib/content'
+import { formatDateShort } from '../../lib/dates'
 
 const notes = published(await getCollection('notes')).sort(
   (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
 )
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 ---
 
 <BaseLayout>
@@ -21,9 +19,9 @@ const formatDate = (date: Date) =>
         <ListItem
           title={note.data.title}
           href={href(`/notes/${note.id}`)}
-          description={note.data.description}>
+          description={note.data.description ?? excerpt(note.body)}>
           <time slot="meta" class="list-meta" datetime={note.data.date.toISOString()}>
-            {formatDate(note.data.date)}
+            {formatDateShort(note.data.date)}
           </time>
         </ListItem>
       ))

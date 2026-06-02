@@ -1,9 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import EditThisPage from '../../components/EditThisPage.astro'
-import TagList from '../../components/TagList.astro'
-import Backlinks from '../../components/Backlinks.astro'
+import Entry from '../../components/Entry.astro'
 import Chip from '../../components/Chip.astro'
 import { published, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
@@ -21,26 +19,12 @@ const backlinks = await getBacklinks(entry.id)
 ---
 
 <BaseLayout crumb={data.title}>
-  <article class="entry">
-    <header class="entry-header">
-      <h1>{data.title}</h1>
-      <div class="entry-bar">
-        <div class="meta">
-          {data.area && <span>{data.area}</span>}
-          {data.distanceMiles && <Chip>{data.distanceMiles} mi</Chip>}
-          {data.difficulty && <Chip>{data.difficulty}</Chip>}
-        </div>
-        <EditThisPage path={entry.filePath} inline />
-      </div>
-      <TagList tags={data.tags} />
-    </header>
-
-    <div class="body">
-      <Content />
-    </div>
-
-    <footer class="entry-footer">
-      <Backlinks links={backlinks} />
-    </footer>
-  </article>
+  <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
+    <Fragment slot="meta">
+      {data.area && <span>{data.area}</span>}
+      {data.distanceMiles && <Chip>{data.distanceMiles} mi</Chip>}
+      {data.difficulty && <Chip>{data.difficulty}</Chip>}
+    </Fragment>
+    <Content />
+  </Entry>
 </BaseLayout>

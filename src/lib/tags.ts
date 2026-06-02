@@ -48,6 +48,15 @@ export async function collectTagged(): Promise<TaggedItem[]> {
     })
   }
 
+  for (const entry of published(await getCollection('topics'))) {
+    items.push({
+      title: entry.data.title,
+      tags: entry.data.tags,
+      collection: 'topics',
+      url: `/${entry.id}`,
+    })
+  }
+
   return items
 }
 

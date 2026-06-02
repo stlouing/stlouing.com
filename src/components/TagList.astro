@@ -12,7 +12,7 @@ const { tags } = Astro.props
   tags.length > 0 && (
     <p class="tags">
       {tags.map((tag) => (
-        <a class="tag" href={href(`/tags/${tag}`)}>
+        <a class="tag p-category" href={href(`/tags/${tag}`)}>
           #{tag}
         </a>
       ))}
@@ -22,7 +22,8 @@ const { tags } = Astro.props
 
 <style>
   .tags {
-    margin-block-start: var(--spacing-lg);
+    margin-block-start: var(--spacing-sm);
+    margin-block-end: 0;
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-sm);

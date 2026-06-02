@@ -41,7 +41,12 @@ const hikes = defineCollection({
 
 const notes = defineCollection({
   loader: md('notes'),
-  schema: z.object({ title: z.string(), date: z.coerce.date(), ...taggable }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    description: z.string().optional(),
+    ...taggable,
+  }),
 })
 
 const neighborhoods = defineCollection({
@@ -49,4 +54,17 @@ const neighborhoods = defineCollection({
   schema: z.object({ title: z.string(), ...taggable }),
 })
 
-export const collections = { food, hikes, notes, neighborhoods }
+// Evergreen, non-chronological pages (a "digital garden" section). Same
+// first-class machinery as notes, but ordered by when each was last tended.
+const topics = defineCollection({
+  loader: md('topics'),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    updated: z.coerce.date(),
+    created: z.coerce.date().optional(),
+    ...taggable,
+  }),
+})
+
+export const collections = { food, hikes, notes, neighborhoods, topics }

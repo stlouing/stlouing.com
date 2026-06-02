@@ -5,28 +5,50 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
+import { formatDateShort } from '../lib/dates'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
+import IconArrowRight from '../assets/IconArrowRight.astro'
 
 const tagline = 'Maps, guides, and observations from around St. Louis'
 
 const intro =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 
-// Latest few notes for the homepage Notes column.
-const latestNotes = published(await getCollection('notes'))
-  .sort((left, right) => right.data.date.valueOf() - left.data.date.valueOf())
-  .slice(0, 3)
+const allNotes = published(await getCollection('notes')).sort(
+  (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
+)
+const allTopics = published(await getCollection('topics')).sort(
+  (left, right) => right.data.updated.valueOf() - left.data.updated.valueOf(),
+)
 
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+// Latest few of each for the homepage columns.
+const latestNotes = allNotes.slice(0, 3)
+const latestTopics = allTopics.slice(0, 3)
+
+// Most recent change anywhere in the garden, for the "Last Updated" line.
+const lastUpdated = new Date(
+  Math.max(
+    ...allNotes.map((note) => note.data.date.valueOf()),
+    ...allTopics.map((topic) => topic.data.updated.valueOf()),
+  ),
+)
 ---
 
 <BaseLayout>
-  <h1 class="page-title">St. Louing <span>since 2023</span></h1>
-  <p class="tagline">{tagline}</p>
-  <p class="introduction">{intro}</p>
-  <p class="last-updated"><strong>Last Updated:</strong> <span>May 31, 2026</span></p>
+  <header class="h-card">
+    <h1 class="page-title">St. Louing <span>since 2023</span></h1>
+    <p class="tagline p-note">{tagline}</p>
+    <p class="introduction">{intro}</p>
+    <p class="last-updated">
+      <strong>Last Updated:</strong>
+      <span>{formatDateShort(lastUpdated)}</span>
+    </p>
+    {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
+    <span class="p-name" hidden>St. Louing</span>
+    <a class="u-url" href={href('/')} hidden>stlouing.com</a>
+    <img class="u-photo" src={href('/favicon.png')} alt="" hidden />
+  </header>
 
   <div class="directory">
     {
@@ -40,12 +62,34 @@ const formatDate = (date: Date) =>
                   <ListItem
                     title={note.data.title}
                     href={href(`/notes/${note.id}`)}
-                    description={formatDate(note.data.date)}
+                    description={formatDateShort(note.data.date)}
                   />
                 ))}
                 <li>
                   <a class="more" href={href('/notes')}>
-                    All notes →
+                    All notes <IconArrowRight />
+                  </a>
+                </li>
+              </List>
+            </section>
+          )
+        }
+
+        if (group.id === 'topics') {
+          return (
+            <section class="group">
+              <h2 class="group-label">{group.label}</h2>
+              <List>
+                {latestTopics.map((topic) => (
+                  <ListItem
+                    title={topic.data.title}
+                    href={href(`/${topic.id}`)}
+                    description={topic.data.description || formatDateShort(topic.data.updated)}
+                  />
+                ))}
+                <li>
+                  <a class="more" href={href('/topics')}>
+                    All topics <IconArrowRight />
                   </a>
                 </li>
               </List>

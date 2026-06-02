@@ -1,14 +1,14 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import EditThisPage from '../../components/EditThisPage.astro'
-import TagList from '../../components/TagList.astro'
-import Backlinks from '../../components/Backlinks.astro'
+import Entry from '../../components/Entry.astro'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
+import { formatDate } from '../../lib/dates'
 
 export async function getStaticPaths() {
   const notes = published(await getCollection('notes'))
+
   return notes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
 }
 
@@ -16,30 +16,24 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+const permalink = new URL(`/notes/${entry.id}/`, Astro.site ?? Astro.url.origin).href
 ---
 
-<BaseLayout crumb={data.title}>
-  <article class="entry">
-    <header class="entry-header">
-      <h1>{data.title}</h1>
-      <div class="entry-bar">
-        <div class="meta">
-          <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
-        </div>
-        <EditThisPage path={entry.filePath} inline />
-      </div>
-      <TagList tags={data.tags} />
-    </header>
-
-    <div class="body">
-      <Content />
-    </div>
-
-    <footer class="entry-footer">
-      <Backlinks links={backlinks} />
-    </footer>
-  </article>
+<BaseLayout
+  crumb={data.title}
+  description={data.description}
+  ogType="article"
+  publishedTime={data.date.toISOString()}
+  tags={data.tags}>
+  <Entry
+    title={data.title}
+    tags={data.tags}
+    editPath={entry.filePath}
+    backlinks={backlinks}
+    permalink={permalink}>
+    <time slot="meta" class="dt-published" datetime={data.date.toISOString()}>
+      {formatDate(data.date)}
+    </time>
+    <Content />
+  </Entry>
 </BaseLayout>

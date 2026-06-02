@@ -1,0 +1,69 @@
+---
+// The shared shell for a filterable list/map directory page (Food, Hikes): the
+// `[data-filter-root]` container, the sticky filter toolbar (view toggle +
+// filters/sort), the results region with the map and empty state, and the
+// progressive-enhancement script. The list itself is passed as the default slot.
+import FilterBar from './FilterBar.astro'
+import ViewToggle from './ViewToggle.astro'
+
+interface Facet {
+  label: string
+  facet: string
+  options: string[]
+}
+
+interface SortOption {
+  label: string
+  value: string
+}
+
+interface Props {
+  label: string
+  count: number
+  searchPlaceholder?: string
+  facets: Facet[]
+  sorts?: SortOption[]
+  hasCoords: boolean
+  mapLabel: string
+  emptyText: string
+  class?: string
+}
+
+const {
+  label,
+  count,
+  searchPlaceholder,
+  facets,
+  sorts,
+  hasCoords,
+  mapLabel,
+  emptyText,
+  class: className,
+} = Astro.props
+---
+
+<div class={className} data-filter-root data-view="list">
+  <header class="secondary-header">
+    <div class="wrap">
+      {hasCoords && <ViewToggle />}
+      <FilterBar
+        label={label}
+        count={count}
+        searchPlaceholder={searchPlaceholder}
+        facets={facets}
+        sorts={sorts}
+      />
+    </div>
+  </header>
+
+  <div class="results">
+    <slot />
+    {hasCoords && <div class="map" data-map aria-label={mapLabel} />}
+    <p class="empty" data-filter-empty hidden>{emptyText}</p>
+  </div>
+</div>
+
+<script>
+  import { initFilterableMapPage } from '../scripts/views'
+  initFilterableMapPage()
+</script>

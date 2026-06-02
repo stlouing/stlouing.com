@@ -1,0 +1,58 @@
+---
+// Shared detail-page shell for collection entries (food, hikes, notes, topics):
+// the article header (title, a `meta` row + edit link, tags), the body, and a
+// backlinks footer. Passing `permalink` marks it up as an IndieWeb h-entry
+// (notes/topics); without it, it's a plain directory entry (food/hikes).
+//
+// Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
+// the meta row, e.g. an address), and the default slot (the rendered body).
+import EditThisPage from './EditThisPage.astro'
+import TagList from './TagList.astro'
+import Backlinks from './Backlinks.astro'
+import { href } from '../lib/url'
+import type { Backlink } from '../lib/backlinks'
+
+interface Props {
+  title: string
+  tags?: string[]
+  editPath?: string
+  backlinks?: Backlink[]
+  permalink?: string
+}
+
+const { title, tags = [], editPath, backlinks = [], permalink } = Astro.props
+const isArticle = Boolean(permalink)
+---
+
+<article class:list={['entry', { 'h-entry': isArticle }]}>
+  <header class="entry-header">
+    <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
+    <slot name="lede" />
+    <div class="entry-bar">
+      <div class="meta"><slot name="meta" /></div>
+      <!-- {editPath && <EditThisPage path={editPath} inline />} -->
+    </div>
+    <slot name="header-extra" />
+    <TagList tags={tags} />
+    {
+      isArticle && (
+        <>
+          <a class="u-url" rel="bookmark" href={permalink} hidden>
+            Permalink
+          </a>
+          <a class="p-author h-card" rel="author" href={href('/')} hidden>
+            St. Louing
+          </a>
+        </>
+      )
+    }
+  </header>
+
+  <div class:list={['body', { 'e-content': isArticle }]}>
+    <slot />
+  </div>
+
+  <footer class="entry-footer">
+    <Backlinks links={backlinks} />
+  </footer>
+</article>

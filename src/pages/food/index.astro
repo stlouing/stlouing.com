@@ -2,8 +2,7 @@
 import { getCollection, render } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import FilterBar from '../../components/FilterBar.astro'
-import ViewToggle from '../../components/ViewToggle.astro'
+import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
 import Chip from '../../components/Chip.astro'
 import Rating from '../../components/Rating.astro'
@@ -26,29 +25,24 @@ const hasCoords = places.some((place) => place.data.coords)
 ---
 
 <BaseLayout>
-  <div class="food" data-filter-root data-view="list">
-    <header class="secondary-header">
-      <div class="wrap">
-        {hasCoords && <ViewToggle />}
-        <FilterBar
-          label="places"
-          count={places.length}
-          searchPlaceholder="name, neighborhood..."
-          facets={[
-            { label: 'Cuisine', facet: 'cuisine', options: cuisines },
-            { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
-          ]}
-          sorts={[
-            { label: 'Name (A-Z)', value: 'title:asc' },
-            { label: 'Rating (high→low)', value: 'rating:desc' },
-            { label: 'Rating (low→high)', value: 'rating:asc' },
-          ]}
-        />
-      </div>
-    </header>
-
-    <div class="results">
-      <List title="Food" class="list-with-map">
+  <FilterMapPage
+    class="food"
+    label="places"
+    count={places.length}
+    searchPlaceholder="name, neighborhood..."
+    facets={[
+      { label: 'Cuisine', facet: 'cuisine', options: cuisines },
+      { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
+    ]}
+    sorts={[
+      { label: 'Name (A-Z)', value: 'title:asc' },
+      { label: 'Rating (high→low)', value: 'rating:desc' },
+      { label: 'Rating (low→high)', value: 'rating:asc' },
+    ]}
+    hasCoords={hasCoords}
+    mapLabel="Map of food spots"
+    emptyText="No places match those filters.">
+    <List title="Food" class="list-with-map">
         {
           rendered.map(({ place, Content }) => (
             <li
@@ -94,22 +88,18 @@ const hasCoords = places.some((place) => place.data.coords)
                 )}
               </div>
               {place.data.address && place.data.address.length > 0 && (
-                <p class="list-address">
-                  <IconMapPin /> {place.data.address.join(', ')}
-                </p>
+                <div class="list-address">
+                  <IconMapPin />
+                  <span>{place.data.address.join(', ')}</span>
+                </div>
               )}
-              <Content />
+              {/* Wrapped so the map view collapses it until selected (list view shows it). */}
+              <div class="list-description">
+                <Content />
+              </div>
             </li>
           ))
         }
       </List>
-      {hasCoords && <div class="map" data-map aria-label="Map of food spots" />}
-      <p class="empty" data-filter-empty hidden>No places match those filters.</p>
-    </div>
-  </div>
-
-  <script>
-    import { initFilterableMapPage } from '../../scripts/views'
-    initFilterableMapPage()
-  </script>
+  </FilterMapPage>
 </BaseLayout>

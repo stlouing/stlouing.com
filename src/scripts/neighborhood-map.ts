@@ -78,7 +78,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     selectedSlug = slug
     paintPath(slug, selectedStyle)
     setRowExpanded(slug, true)
-    rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    // Bring the chosen neighborhood to the top of the pane (scroll-padding on
+    // .content-pane keeps it clear of the sticky header).
+    rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     history.replaceState(null, '', `#${slug}`)
   }
 

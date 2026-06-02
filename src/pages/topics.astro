@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import List from '../components/List.astro'
+import ListItem from '../components/ListItem.astro'
+import { href } from '../lib/url'
+import { published, excerpt } from '../lib/content'
+
+// Evergreen pages, newest-tended first (not chronological like Notes).
+const topics = published(await getCollection('topics')).sort(
+  (left, right) => right.data.updated.valueOf() - left.data.updated.valueOf(),
+)
+---
+
+<BaseLayout>
+  <List title="Topics">
+    {
+      topics.map((topic) => (
+        <ListItem
+          title={topic.data.title}
+          href={href(`/${topic.id}`)}
+          description={topic.data.description ?? excerpt(topic.body)}
+        />
+      ))
+    }
+  </List>
+</BaseLayout>

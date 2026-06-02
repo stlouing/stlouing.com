@@ -21,50 +21,45 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
   const markers = new Map<HTMLElement, L.Marker>()
 
   let activeItem: HTMLElement | null = null
-  // Set while we close a popup ourselves (switching/toggling), so the marker's
-  // `popupclose` handler can tell our closes apart from the user pressing the X.
-  let closingActivePopup = false
 
-  function closePopupFor(item: HTMLElement): void {
-    closingActivePopup = true
-    markers.get(item)?.closePopup()
-    closingActivePopup = false
+  // The open popup is the single source of truth for selection. Leaflet already
+  // opens/closes the popup on marker click (and via its X button); we only mirror
+  // that state onto the list row through the marker's `popupopen`/`popupclose`
+  // events below. Doing it this way keeps the map and list in sync no matter how
+  // the popup was opened or closed, and avoids fighting Leaflet's own toggling.
+  // Accent-highlight the selected place's emoji marker (its DOM element carries
+  // the `.emoji-marker` class; `.is-selected` swaps its border to the accent).
+  function highlightMarker(item: HTMLElement, selected: boolean): void {
+    markers.get(item)?.getElement()?.classList.toggle('is-selected', selected)
   }
 
-  // One shared "active" item drives both the list (the `is-active` class shows
-  // the description + accent highlight in map view) and the map (open popup +
-  // panned marker). Selecting the active item again clears it.
-  function setActive(item: HTMLElement | null, options: { pan?: boolean } = {}): void {
-    if (activeItem && activeItem !== item) {
-      activeItem.classList.remove('is-active')
-      closePopupFor(activeItem)
-    }
-
-    if (item && item === activeItem) {
-      // Toggle off.
-      item.classList.remove('is-active')
-      closePopupFor(item)
-      activeItem = null
-
+  function activate(item: HTMLElement, options: { pan?: boolean } = {}): void {
+    if (activeItem === item) {
       return
+    }
+    if (activeItem) {
+      activeItem.classList.remove('is-active')
+      highlightMarker(activeItem, false)
     }
 
     activeItem = item
-    if (!item) {
-      return
-    }
-
     item.classList.add('is-active')
+    highlightMarker(item, true)
     item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
     const marker = markers.get(item)
-    if (marker) {
-      marker.closeTooltip()
-      marker.openPopup()
-      if (options.pan) {
-        map.panTo(marker.getLatLng())
-      }
+    if (marker && options.pan) {
+      map.panTo(marker.getLatLng())
     }
+  }
+
+  function deactivate(item: HTMLElement): void {
+    if (activeItem !== item) {
+      return
+    }
+    activeItem = null
+    item.classList.remove('is-active')
+    highlightMarker(item, false)
   }
 
   function sync(): void {
@@ -97,18 +92,18 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
         const placeMarker = L.marker([lat, lng], { icon })
           .bindPopup(infoHtml, { className: 'food-popup', offset: [0, 0] })
           .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
-        placeMarker.on('click', () => setActive(item, { pan: true }))
-        // Keep the hover tooltip off the active place — its popup stands alone.
+        // Selection follows the popup: opening it (by click, the list, or
+        // anything else) selects the row; closing it (toggle-click or the X)
+        // de-selects it.
+        placeMarker.on('popupopen', () => {
+          placeMarker.closeTooltip()
+          activate(item, { pan: true })
+        })
+        placeMarker.on('popupclose', () => deactivate(item))
+        // Don't stack the hover tooltip over the active place's popup.
         placeMarker.on('tooltipopen', () => {
           if (item === activeItem) {
             placeMarker.closeTooltip()
-          }
-        })
-        // Closing the popup with its X de-selects the list row too; our own
-        // programmatic closes are flagged so they don't trigger this.
-        placeMarker.on('popupclose', () => {
-          if (!closingActivePopup && item === activeItem) {
-            setActive(null)
           }
         })
         marker = placeMarker
@@ -116,10 +111,8 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
       }
 
       if (item.hidden) {
+        // Removing the marker closes its popup, which de-selects via popupclose.
         marker.remove()
-        if (item === activeItem) {
-          setActive(null)
-        }
       } else {
         marker.addTo(map)
         bounds.push([lat, lng])
@@ -133,9 +126,9 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
 
   const root = scope instanceof Element ? scope : null
 
-  // In map view, clicking a list title selects its item (expand + pan) instead
-  // of following its link. In list view the title is a normal link to the
-  // detail page, so we leave the click alone.
+  // In map view, clicking a list title toggles its place's popup (expand + pan)
+  // instead of following its link; the popup events keep the row in sync. In list
+  // view the title is a normal link to the detail page, so we leave it alone.
   for (const item of items) {
     const title = item.querySelector<HTMLElement>('.list-title')
     if (!title) {
@@ -146,7 +139,15 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
         return
       }
       event.preventDefault()
-      setActive(item, { pan: true })
+      const marker = markers.get(item)
+      if (!marker) {
+        return
+      }
+      if (item === activeItem) {
+        marker.closePopup()
+      } else {
+        marker.openPopup()
+      }
     })
   }
 

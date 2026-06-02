@@ -36,10 +36,14 @@ function buildWikiMap() {
       return `/notes/${id}`
     }
 
+    if (coll === 'topics') {
+      return `/${id}`
+    }
+
     return null
   }
 
-  for (const coll of ['food', 'hikes', 'notes']) {
+  for (const coll of ['food', 'hikes', 'notes', 'topics']) {
     const dir = path.join(contentRoot, coll)
     if (!fs.existsSync(dir)) {
       continue

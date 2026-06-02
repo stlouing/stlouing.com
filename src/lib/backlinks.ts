@@ -27,6 +27,10 @@ function entryUrl(collection: string, id: string, withBody: boolean): string {
     return `/notes/${id}`
   }
 
+  if (collection === 'topics') {
+    return `/${id}`
+  }
+
   return `/${collection}/${id}`
 }
 
@@ -64,6 +68,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
   add('hikes', await getCollection('hikes'))
   add('notes', await getCollection('notes'))
   add('neighborhoods', await getCollection('neighborhoods'))
+  add('topics', await getCollection('topics'))
 
   const map = new Map<string, Backlink[]>()
   for (const source of sources) {

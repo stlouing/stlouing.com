@@ -1,4 +1,4 @@
-export type Group = 'guides' | 'notes' | 'pages' | 'site'
+export type Group = 'guides' | 'notes' | 'topics' | 'site'
 
 export interface Section {
   label: string
@@ -11,19 +11,12 @@ export interface Section {
 // Homepage groups, in display order (a 2-up grid: guides | notes / pages | site).
 export const groups: { id: Group; label?: string }[] = [
   { id: 'guides', label: 'Guides' },
-  { id: 'pages', label: 'Pages' },
+  { id: 'topics', label: 'Topics' },
   { id: 'notes', label: 'Notes' },
   { id: 'site', label: 'Site' },
 ]
 
 export const sections: Section[] = [
-  {
-    label: 'Neighborhoods',
-    path: '/neighborhoods',
-    group: 'guides',
-    primary: true,
-    description: 'A map of St. Louis neighborhoods',
-  },
   {
     label: 'Food',
     path: '/food',
@@ -32,33 +25,28 @@ export const sections: Section[] = [
     description: 'Keeping track of my favorite spots',
   },
   {
+    label: 'Neighborhoods',
+    path: '/neighborhoods',
+    group: 'guides',
+    primary: true,
+    description: 'A map of St. Louis neighborhoods',
+  },
+  {
     label: 'Hikes',
     path: '/hikes',
     group: 'guides',
-    primary: true,
     description: 'Exploring the nature of Missouri',
   },
 
-  { label: 'Notes', path: '/notes', group: 'notes', primary: true },
+  {
+    label: 'Topics',
+    path: '/topics',
+    group: 'topics',
+    primary: true,
+    description: 'Evergreen pages, tended over time',
+  },
 
-  {
-    label: 'St. Louis Overview',
-    path: '/overview',
-    group: 'pages',
-    description: 'An assortment of St. Louis facts and observations',
-  },
-  {
-    label: 'Chicago and St. Louis',
-    path: '/chicago-and-st-louis',
-    group: 'pages',
-    description: 'The Windy City and the Gateway to the West',
-  },
-  {
-    label: 'St. Louis Regional Foods',
-    path: '/regional-foods',
-    group: 'pages',
-    description: 'Provel, t-ravs, and other things',
-  },
+  { label: 'Notes', path: '/notes', group: 'notes', primary: true },
 
   { label: 'About', path: '/about', group: 'site', primary: true, description: 'About this site' },
   { label: 'Changelog', path: '/changelog', group: 'site', description: 'Updates to the site' },

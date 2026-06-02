@@ -7,7 +7,7 @@ Maps, guides, and observations from around St. Louis.
 
 ## Syndication
 
-_TODO:_ [POSSE](https://indieweb.org/POSSE) (Publish (on your) Own Site, Syndicate Elsewhere. Here's the elsewhere to be:
+_TODO:_ Implement [POSSE](https://indieweb.org/POSSE) (Publish on your Own Site, Syndicate Elsewhere). Here's the elsewhere to be:
 
 - [@stlouing](https://github.com/stlouing) - GitHub
 - [@stlouing](https://instagram.com/stlouing) - Instagram

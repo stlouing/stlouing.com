@@ -1,8 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import FilterBar from '../../components/FilterBar.astro'
-import ViewToggle from '../../components/ViewToggle.astro'
+import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
 import Chip from '../../components/Chip.astro'
 import { href } from '../../lib/url'
@@ -22,68 +21,55 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
 ---
 
 <BaseLayout>
-  <div class="hikes" data-filter-root data-view="list">
-    <header class="secondary-header">
-      <div class="wrap">
-        {hasCoords && <ViewToggle />}
-        <FilterBar
-          label="hikes"
-          count={hikes.length}
-          searchPlaceholder="name, area..."
-          facets={[
-            { label: 'Difficulty', facet: 'difficulty', options: difficulties },
-            { label: 'Area', facet: 'area', options: areas },
-          ]}
-          sorts={[
-            { label: 'Name (A-Z)', value: 'title:asc' },
-            { label: 'Distance (short→long)', value: 'distance:asc' },
-            { label: 'Distance (long→short)', value: 'distance:desc' },
-          ]}
-        />
-      </div>
-    </header>
-
-    <div class="results">
-      <List title="Hikes" class="list-with-map">
-        {
-          rendered.map(({ hike, Content }) => (
-            <li
-              id={hike.id}
-              data-filter-item
-              data-difficulty={hike.data.difficulty ?? ''}
-              data-area={hike.data.area ?? ''}
-              data-coords={hike.data.coords?.join(',') ?? ''}
-              data-title={hike.data.title}
-              data-marker="🥾"
-              data-sort-title={hike.data.title}
-              data-sort-distance={hike.data.distanceMiles ?? ''}
-              data-search={[hike.data.title, hike.data.area, hike.data.difficulty, ...hike.data.tags]
-                .filter(Boolean)
-                .join(' ')}>
-              <div class="list-details">
-                {hasBody(hike) ? (
-                  <a class="list-title" href={href(`/hikes/${hike.id}`)}>
-                    {hike.data.title}
-                  </a>
-                ) : (
-                  <span class="list-title">{hike.data.title}</span>
-                )}
-                {hike.data.area && <span class="list-meta">{hike.data.area}</span>}
-                {hike.data.distanceMiles && <Chip>{hike.data.distanceMiles} mi</Chip>}
-                {hike.data.difficulty && <Chip>{hike.data.difficulty}</Chip>}
-              </div>
-              <Content />
-            </li>
-          ))
-        }
-      </List>
-      {hasCoords && <div class="map" data-map aria-label="Map of hikes" />}
-      <p class="empty" data-filter-empty hidden>No hikes match those filters.</p>
-    </div>
-  </div>
-
-  <script>
-    import { initFilterableMapPage } from '../../scripts/views'
-    initFilterableMapPage()
-  </script>
+  <FilterMapPage
+    class="hikes"
+    label="hikes"
+    count={hikes.length}
+    searchPlaceholder="name, area..."
+    facets={[
+      { label: 'Difficulty', facet: 'difficulty', options: difficulties },
+      { label: 'Area', facet: 'area', options: areas },
+    ]}
+    sorts={[
+      // { label: 'Name (A-Z)', value: 'title:asc' },
+      // { label: 'Distance (short→long)', value: 'distance:asc' },
+      // { label: 'Distance (long→short)', value: 'distance:desc' },
+    ]}
+    hasCoords={hasCoords}
+    mapLabel="Map of hikes"
+    emptyText="No hikes match those filters.">
+    <List title="Hikes" class="list-with-map">
+      {
+        rendered.map(({ hike, Content }) => (
+          <li
+            id={hike.id}
+            data-filter-item
+            data-difficulty={hike.data.difficulty ?? ''}
+            data-area={hike.data.area ?? ''}
+            data-coords={hike.data.coords?.join(',') ?? ''}
+            data-title={hike.data.title}
+            data-marker="🥾"
+            data-sort-title={hike.data.title}
+            data-sort-distance={hike.data.distanceMiles ?? ''}
+            data-search={[hike.data.title, hike.data.area, hike.data.difficulty, ...hike.data.tags]
+              .filter(Boolean)
+              .join(' ')}>
+            <div class="list-details">
+              {hasBody(hike) ? (
+                <a class="list-title" href={href(`/hikes/${hike.id}`)}>
+                  {hike.data.title}
+                </a>
+              ) : (
+                <span class="list-title">{hike.data.title}</span>
+              )}
+              {hike.data.area && <span class="list-meta">{hike.data.area}</span>}
+              {hike.data.distanceMiles && <Chip>{hike.data.distanceMiles} mi</Chip>}
+              {hike.data.difficulty && <Chip>{hike.data.difficulty}</Chip>}
+            </div>
+            <Content />
+          </li>
+        ))
+      }
+    </List>
+  </FilterMapPage>
 </BaseLayout>

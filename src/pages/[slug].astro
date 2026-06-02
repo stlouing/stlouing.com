@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Entry from '../components/Entry.astro'
+import { published } from '../lib/content'
+import { getBacklinks } from '../lib/backlinks'
+import { formatDate } from '../lib/dates'
+
+// Evergreen "Topics" entries live at flat top-level URLs (/overview, ...). Their
+// slugs never collide with the standalone .md pages (about, changelog), which are
+// static routes and take precedence.
+export async function getStaticPaths() {
+  const topics = published(await getCollection('topics'))
+
+  return topics.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+}
+
+const { entry } = Astro.props
+const { data } = entry
+const { Content } = await render(entry)
+const backlinks = await getBacklinks(entry.id)
+const permalink = new URL(`/${entry.id}/`, Astro.site ?? Astro.url.origin).href
+---
+
+<BaseLayout
+  crumb={data.title}
+  description={data.description}
+  ogType="article"
+  publishedTime={(data.created ?? data.updated).toISOString()}
+  tags={data.tags}>
+  <Entry
+    title={data.title}
+    tags={data.tags}
+    editPath={entry.filePath}
+    backlinks={backlinks}
+    permalink={permalink}>
+    {data.description && (
+      <p class="entry-summary p-summary" slot="lede">
+        {data.description}
+      </p>
+    )}
+    <Fragment slot="meta">
+      <span>
+        Updated{' '}
+        <time class="dt-updated" datetime={data.updated.toISOString()}>
+          {formatDate(data.updated)}
+        </time>
+      </span>
+      {
+        data.created && (
+          <time class="dt-published" datetime={data.created.toISOString()} hidden>
+            {formatDate(data.created)}
+          </time>
+        )
+      }
+    </Fragment>
+    <Content />
+  </Entry>
+</BaseLayout>
+
+<style>
+  /* Lede shown under a topic's title (its frontmatter `description`). */
+  .entry-summary {
+    margin: var(--spacing-xs) 0 0;
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    color: var(--color-accent);
+  }
+</style>

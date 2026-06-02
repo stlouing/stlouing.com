@@ -27,6 +27,10 @@ const { title, class: className, ...rest } = Astro.props
       font-weight: 400;
     }
 
+    time + .list-description {
+      margin-block-start: var(--spacing-sm);
+    }
+
     .list-meta {
       font-family: var(--font-mono);
       font-size: var(--font-size-sm);
@@ -77,6 +81,11 @@ const { title, class: className, ...rest } = Astro.props
       display: flex;
       align-items: center;
       gap: var(--spacing-sm);
+      color: var(--color-accent);
+
+      &:hover {
+        text-decoration-color: var(--color-accent);
+      }
     }
   }
 </style>

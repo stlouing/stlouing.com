@@ -1,3 +1,7 @@
+/* ===========================================================================
+   Theme tokens
+   =========================================================================== */
+
 /* Light theme */
 :root {
   color-scheme: light;
@@ -7,8 +11,9 @@
   --color-surface: #ffffff;
   --color-text: #1b1a17;
   --color-text-muted: #6f6b61;
+  --color-text-muted-2: #58554d;
   --color-line: #dcd8cb;
-  --color-line-input: #c7c3b4;
+  --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
   --color-map-accent: #5a3a93;
   --color-link: #225aa9;
@@ -37,6 +42,7 @@
   /* Misc */
   --letter-spacing: 0.04rem;
   --box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  --box-shadow-flag: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 }
 
 /* Dark theme: only the color tokens change (sizes, fonts, spacing are shared).
@@ -48,6 +54,7 @@
   --color-surface: #201f25;
   --color-text: #e9e8ec;
   --color-text-muted: #9b9aa3;
+  --color-text-muted-2: #afaeb5;
   --color-line: #343339;
   --color-line-input: #45444b;
   --color-accent: #e18484;
@@ -56,9 +63,12 @@
   --color-link-hover: #a8c8f2;
 
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
+  --box-shadow-flag: rgba(0, 0, 0, 0.85) 0px 3px 3px 0px;
 }
 
-/* Reset */
+/* ===========================================================================
+   Reset
+   =========================================================================== */
 *,
 *::before,
 *::after {
@@ -71,10 +81,6 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  margin: 0;
-}
-
 img,
 picture,
 svg,
@@ -84,6 +90,12 @@ video {
   height: auto;
 }
 
+/* Honor the `hidden` attribute even on elements the reset gives a `display`
+   (e.g. img) — author rules otherwise override the UA `[hidden]` rule. */
+[hidden] {
+  display: none;
+}
+
 input,
 button,
 textarea,
@@ -91,6 +103,15 @@ select {
   font: inherit;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ===========================================================================
+   Base elements / typography
+   =========================================================================== */
 body {
   margin: 0;
   min-height: 100dvh;
@@ -158,6 +179,46 @@ hr {
   margin-block: var(--spacing-lg);
 }
 
+time {
+  font-weight: 500;
+}
+
+:target {
+  scroll-margin-top: 1rem;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 4px;
+
+  &:hover {
+    text-decoration-style: solid;
+    text-decoration-color: var(--color-link-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+.wikilink-broken {
+  color: var(--color-text-muted);
+  border-block-end: 1px dotted var(--color-text-muted);
+}
+
+.icon {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* ===========================================================================
+   Layout
+   =========================================================================== */
 /* Screen readers */
 .skip-link {
   position: absolute;
@@ -173,17 +234,6 @@ hr {
   }
 }
 
-:target {
-  scroll-margin-top: 1rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* Layout */
 .wrap {
   width: 100%;
   max-width: var(--measure);
@@ -197,7 +247,9 @@ main {
   overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
 }
 
-/* Form */
+/* ===========================================================================
+   Forms (the filter toolbar inputs)
+   =========================================================================== */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -213,6 +265,7 @@ label {
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   font-family: var(--font-mono);
+  font-weight: 500;
 }
 
 input,
@@ -238,7 +291,11 @@ select {
   margin: 0;
 }
 
-/* Map */
+/* ===========================================================================
+   Map & directory pages
+   (Leaflet, the list/map split shells, neighborhoods pane, markers, tooltips,
+   popups, and the sticky filter toolbar)
+   =========================================================================== */
 [data-map] {
   height: 70vh;
   border-block: 1px solid var(--color-line);
@@ -293,10 +350,13 @@ body:has(.map-split) main > .wrap,
   grid-template-rows: 1fr;
 }
 
-/* Neighborhoods left pane: the writeups scroll while the map stays put. */
+/* Neighborhoods left pane: the writeups scroll while the map stays put. The
+   scroll-padding offsets the sticky .pane-header so a selected row lands just
+   below it (not hidden behind it) when scrolled to the top. */
 .map-split .content-pane {
   min-height: 0;
   overflow-y: auto;
+  scroll-padding-block-start: 38px;
 }
 
 /* Drop Leaflet's default square focus outline on clicked boundaries; the active
@@ -332,6 +392,7 @@ body:has(.map-split) main > .wrap,
     padding: var(--spacing-sm) var(--spacing-md);
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-line);
+    height: 38px;
   }
 
   .pane-header h1 {
@@ -501,155 +562,18 @@ body:has(.map-split) main > .wrap,
   height: 36px;
   font-size: 22px;
   line-height: 1;
-  border: 1px solid var(--color-line-input);
+  border: 1px solid var(--color-text-muted);
   border-radius: 50%;
   background: var(--color-background);
   box-shadow: var(--box-shadow);
 }
 
-a {
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
-
-  &:hover {
-    text-decoration-style: solid;
-    text-decoration-color: var(--color-link-hover);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-  }
+/* Selected place (from the list or the map): accent the marker's ring. */
+.leaflet-marker-icon.emoji-marker.is-selected {
+  border-color: var(--color-accent);
 }
 
-.wikilink-broken {
-  color: var(--color-text-muted);
-  border-block-end: 1px dotted var(--color-text-muted);
-}
-
-.stlouis-flag {
-  height: 30px;
-  width: 48px;
-  border-radius: 4px;
-}
-
-.icon {
-  color: var(--color-text-muted);
-}
-
-.back {
-  margin-block: var(--spacing-md) 0;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  margin-block: var(--spacing-xs) var(--spacing-md);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-}
-
-/* Detail pages (food/hikes/notes): an organized header bar holding the meta and
-   the edit link, divided from the body; tags + backlinks grouped in a footer. */
-.entry-header {
-  margin-block: var(--spacing-lg) var(--spacing-lg);
-  padding-block-end: var(--spacing-md);
-  border-block-end: 1px solid var(--color-line);
-
-  h1 {
-    margin: 0;
-  }
-
-  .address {
-    margin: var(--spacing-sm) 0 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    white-space: pre-line; /* render each address line on its own row */
-  }
-
-  .tags {
-    margin-block-start: var(--spacing-md);
-  }
-}
-
-.entry-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm) var(--spacing-md);
-  margin-block-start: var(--spacing-sm);
-
-  .meta {
-    margin: 0;
-  }
-}
-
-/* Show the footer divider only when there are tags or backlinks. */
-.entry-footer:has(.tags, .backlinks) {
-  margin-block-start: var(--spacing-lg);
-  border-block-start: 1px solid var(--color-line);
-}
-
-.empty {
-  margin-block-start: var(--spacing-md);
-  color: var(--color-text-muted);
-  font-style: italic;
-}
-
-.page {
-  h2 {
-    margin-block-start: var(--spacing-lg);
-    padding-block-start: var(--spacing-md);
-  }
-}
-
-h1.page-title {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-sm);
-  margin-bottom: 0;
-
-  span {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    font-weight: 400;
-    font-family: var(--font-mono);
-  }
-}
-
-.chips {
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.collection {
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-}
-
-.group-label {
-  margin-block-end: var(--spacing-xs);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-  color: var(--color-accent);
-}
-
+/* Sticky filter toolbar on directory pages (Food/Hikes). */
 .secondary-header {
   position: sticky;
   top: 0;
@@ -660,7 +584,7 @@ h1.page-title {
   border-block-end: 1px solid var(--color-line);
 
   .wrap {
-    padding-block: var(--spacing-md);
+    padding-block: var(--spacing-sm);
     display: flex;
     align-items: flex-end;
     gap: var(--spacing-md);
@@ -704,6 +628,12 @@ body:has([data-filter-root]) .site-header {
   pointer-events: none;
   line-height: 1.2;
   font-weight: 500;
+  z-index: 98;
+}
+
+/* Drop the tooltip arrow — its border can't match the 2px accent box cleanly. */
+.leaflet-tooltip.map-tooltip::before {
+  display: none;
 }
 
 /* Address line under a food marker's title (tooltip and popup share styling).
@@ -714,8 +644,8 @@ body:has([data-filter-root]) .site-header {
   display: block;
   margin-block-start: var(--spacing-xs);
   font-size: var(--font-size-xs);
-  font-weight: 400;
-  color: var(--color-text-muted);
+  font-weight: 500;
+  color: var(--color-text-muted-2);
   white-space: nowrap;
   line-height: 1.4;
 }
@@ -753,18 +683,134 @@ body:has([data-filter-root]) .site-header {
   display: none;
 }
 
-/* Address shown beneath a place in the Food list (comma-separated, one line). */
-.list-address {
+/* ===========================================================================
+   Detail pages (entry: food / hikes / notes / topics)
+   =========================================================================== */
+.meta {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  margin: var(--spacing-xs) 0 0;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-block: var(--spacing-xs) var(--spacing-md);
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
 
-/* Drop the tooltip arrow — its border can't match the 2px accent box cleanly. */
-.leaflet-tooltip.map-tooltip::before {
-  display: none;
+/* An organized header bar holding the meta and the edit link, divided from the
+   body; tags + backlinks grouped in a footer. */
+.entry-header {
+  margin-block: var(--spacing-lg) var(--spacing-lg);
+  padding-block-end: var(--spacing-md);
+  border-block-end: 1px solid var(--color-line);
+
+  h1 {
+    margin: 0;
+  }
+
+  .address {
+    margin: var(--spacing-sm) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 500;
+    white-space: pre-line; /* render each address line on its own row */
+  }
+}
+
+.entry-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm) var(--spacing-md);
+  margin-block-start: var(--spacing-xs);
+
+  .meta {
+    margin: 0;
+  }
+}
+
+/* Show the footer divider only when there are tags or backlinks. */
+.entry-footer:has(.tags, .backlinks) {
+  margin-block-start: var(--spacing-lg);
+  border-block-start: 1px solid var(--color-line);
+}
+
+.page {
+  h2 {
+    margin-block-start: var(--spacing-lg);
+    padding-block-start: var(--spacing-md);
+  }
+}
+
+h1.page-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  margin-bottom: 0;
+
+  span {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: 400;
+    font-family: var(--font-mono);
+  }
+}
+
+.back {
+  margin-block: var(--spacing-md) 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+/* ===========================================================================
+   Shared bits / utilities
+   =========================================================================== */
+.chips {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.collection {
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+}
+
+.group-label {
+  margin-block-end: var(--spacing-xs);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-accent);
+}
+
+/* "No matches" state under a filtered list. */
+.empty {
+  margin-block-start: var(--spacing-md);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Address shown beneath a place in the Food list (comma-separated, one line). */
+.list-address {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted-2);
+  font-weight: 500;
+}
+
+.stlouis-flag {
+  height: 30px;
+  width: 48px;
+  border-radius: 4px;
+  box-shadow: var(--box-shadow-flag);
 }
