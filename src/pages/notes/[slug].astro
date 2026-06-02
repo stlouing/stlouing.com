@@ -5,6 +5,7 @@ import Entry from '../../components/Entry.astro'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { formatDate } from '../../lib/dates'
+import { articleSchema } from '../../lib/schema'
 
 export async function getStaticPaths() {
   const notes = published(await getCollection('notes'))
@@ -16,7 +17,18 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
-const permalink = new URL(`/notes/${entry.id}/`, Astro.site ?? Astro.url.origin).href
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
+const permalink = new URL(`/notes/${entry.id}/`, siteOrigin).href
+const schema = articleSchema(
+  {
+    title: data.title,
+    url: permalink,
+    description: data.description,
+    published: data.date.toISOString(),
+    tags: data.tags,
+  },
+  siteOrigin,
+)
 ---
 
 <BaseLayout
@@ -24,7 +36,8 @@ const permalink = new URL(`/notes/${entry.id}/`, Astro.site ?? Astro.url.origin)
   description={data.description}
   ogType="article"
   publishedTime={data.date.toISOString()}
-  tags={data.tags}>
+  tags={data.tags}
+  jsonLd={schema}>
   <Entry
     title={data.title}
     tags={data.tags}

@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -66,6 +68,54 @@ function buildWikiMap() {
 
 const wikiMap = buildWikiMap()
 
+// Read a single frontmatter field's raw value from a Markdown file.
+function frontmatterField(file, field) {
+  const frontmatter = fs.readFileSync(file, 'utf8').match(/^---\n([\s\S]*?)\n---/)
+  if (!frontmatter) {
+    return null
+  }
+
+  const line = frontmatter[1].split('\n').find((row) => row.trim().startsWith(`${field}:`))
+  if (!line) {
+    return null
+  }
+
+  return line
+    .slice(line.indexOf(':') + 1)
+    .trim()
+    .replace(/^['"]|['"]$/g, '')
+}
+
+// Map each dated page's URL path -> its W3C date, for sitemap <lastmod>. Notes
+// use their post date; topics use their "last tended" date.
+function buildLastmod() {
+  const map = new Map()
+  const add = (collection, field, urlFor) => {
+    const dir = path.join(contentRoot, collection)
+    if (!fs.existsSync(dir)) {
+      return
+    }
+
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.md')) {
+        continue
+      }
+      const value = frontmatterField(path.join(dir, file), field)
+
+      if (value) {
+        map.set(urlFor(file.slice(0, -3)), value)
+      }
+    }
+  }
+
+  add('notes', 'date', (id) => `/notes/${id}`)
+  add('topics', 'updated', (id) => `/${id}`)
+
+  return map
+}
+
+const lastmodByPath = buildLastmod()
+
 // Resolve a wikilink target id to a base-prefixed URL, or null if unknown.
 function resolve(target) {
   const url = wikiMap.get(target)
@@ -82,6 +132,31 @@ function resolve(target) {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://stlouing.com',
-  integrations: [sitemap()],
-  markdown: { remarkPlugins: [[remarkWikiLink, { resolve }]] },
+  integrations: [
+    sitemap({
+      serialize(item) {
+        const pathname = new URL(item.url).pathname.replace(/\/$/, '') || '/'
+        const lastmod = lastmodByPath.get(pathname)
+        if (lastmod) {
+          item.lastmod = lastmod
+        }
+
+        return item
+      },
+    }),
+  ],
+  markdown: {
+    remarkPlugins: [[remarkWikiLink, { resolve }]],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'append',
+          properties: { className: ['heading-anchor'], ariaHidden: true, tabIndex: -1 },
+          content: { type: 'text', value: '#' },
+        },
+      ],
+    ],
+  },
 })

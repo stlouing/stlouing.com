@@ -5,6 +5,7 @@ import Entry from '../components/Entry.astro'
 import { published } from '../lib/content'
 import { getBacklinks } from '../lib/backlinks'
 import { formatDate } from '../lib/dates'
+import { articleSchema } from '../lib/schema'
 
 // Evergreen "Topics" entries live at flat top-level URLs (/overview, ...). Their
 // slugs never collide with the standalone .md pages (about, changelog), which are
@@ -19,7 +20,19 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
-const permalink = new URL(`/${entry.id}/`, Astro.site ?? Astro.url.origin).href
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
+const permalink = new URL(`/${entry.id}/`, siteOrigin).href
+const schema = articleSchema(
+  {
+    title: data.title,
+    url: permalink,
+    description: data.description,
+    published: (data.created ?? data.updated).toISOString(),
+    updated: data.updated.toISOString(),
+    tags: data.tags,
+  },
+  siteOrigin,
+)
 ---
 
 <BaseLayout
@@ -27,7 +40,8 @@ const permalink = new URL(`/${entry.id}/`, Astro.site ?? Astro.url.origin).href
   description={data.description}
   ogType="article"
   publishedTime={(data.created ?? data.updated).toISOString()}
-  tags={data.tags}>
+  tags={data.tags}
+  jsonLd={schema}>
   <Entry
     title={data.title}
     tags={data.tags}

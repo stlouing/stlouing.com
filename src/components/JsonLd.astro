@@ -1,0 +1,12 @@
+---
+// Emits a schema.org JSON-LD block. `<` is escaped so a value containing
+// "</script>" can't break out of the tag.
+interface Props {
+  data: object
+}
+
+const { data } = Astro.props
+const json = JSON.stringify(data).replace(/</g, '\\u003c')
+---
+
+<script type="application/ld+json" set:html={json} is:inline />

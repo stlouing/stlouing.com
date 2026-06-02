@@ -183,8 +183,11 @@ time {
   font-weight: 500;
 }
 
+/* Jumping to an in-page anchor (a heading permalink, a /food#id link) should
+   land below the sticky header, not behind it. --header-height is measured in
+   Header.astro; the fallback covers the no-JS / pre-hydration case. */
 :target {
-  scroll-margin-top: 1rem;
+  scroll-margin-top: calc(var(--header-height, 4rem) + var(--spacing-sm));
 }
 
 a {
@@ -214,6 +217,21 @@ a {
 .icon {
   color: var(--color-text-muted);
   flex-shrink: 0;
+}
+
+/* Permalink "#" appended to rendered Markdown headings (rehype-autolink-headings);
+   revealed on hover/focus of the heading. */
+.heading-anchor {
+  margin-inline-start: var(--spacing-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+:is(h1, h2, h3, h4, h5, h6):hover > .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
 }
 
 /* ===========================================================================

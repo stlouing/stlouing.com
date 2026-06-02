@@ -20,6 +20,14 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
   const items = [...scope.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const markers = new Map<HTMLElement, L.Marker>()
 
+  // Coordinates of every item (ignoring the current filter), so the map can be
+  // given a view even when a filter matches nothing.
+  const allBounds = items
+    .map((item) => (item.dataset.coords ?? '').split(',').map(Number))
+    .filter(([lat, lng]) => Number.isFinite(lat) && Number.isFinite(lng))
+    .map(([lat, lng]) => [lat, lng] as L.LatLngTuple)
+  let viewInitialized = false
+
   let activeItem: HTMLElement | null = null
 
   // The open popup is the single source of truth for selection. Leaflet already
@@ -121,6 +129,16 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
 
     if (bounds.length) {
       map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 })
+      viewInitialized = true
+    } else if (!viewInitialized) {
+      // A deep-linked filter matched nothing: still give the map a view so it
+      // renders an empty map instead of erroring with no center/zoom set.
+      if (allBounds.length) {
+        map.fitBounds(allBounds, { padding: [30, 30], maxZoom: 14 })
+      } else {
+        map.setView([38.627, -90.2], 11)
+      }
+      viewInitialized = true
     }
   }
 

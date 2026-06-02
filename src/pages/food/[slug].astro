@@ -7,6 +7,7 @@ import Rating from '../../components/Rating.astro'
 import { href } from '../../lib/url'
 import { published, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
+import { restaurantSchema } from '../../lib/schema'
 
 export async function getStaticPaths() {
   const places = published(await getCollection('food')).filter(hasBody)
@@ -18,9 +19,17 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
+const schema = restaurantSchema({
+  name: data.title,
+  url: new URL(`/food/${entry.id}/`, Astro.site ?? Astro.url.origin).href,
+  address: data.address,
+  coords: data.coords,
+  cuisine: data.cuisine,
+  rating: data.rating,
+})
 ---
 
-<BaseLayout crumb={data.title}>
+<BaseLayout crumb={data.title} jsonLd={schema}>
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
     <Fragment slot="meta">
       {data.rating && <Rating value={data.rating} />}

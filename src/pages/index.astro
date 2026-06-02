@@ -6,6 +6,7 @@ import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
 import { formatDateShort } from '../lib/dates'
+import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
@@ -33,9 +34,11 @@ const lastUpdated = new Date(
     ...allTopics.map((topic) => topic.data.updated.valueOf()),
   ),
 )
+
+const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={website}>
   <header class="h-card">
     <h1 class="page-title">St. Louing <span>since 2023</span></h1>
     <p class="tagline p-note">{tagline}</p>

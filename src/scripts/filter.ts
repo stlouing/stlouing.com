@@ -89,14 +89,62 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     root.dispatchEvent(new CustomEvent('filter:changed'))
   }
 
+  // Reflect the current filters/sort in the querystring so a filtered view is
+  // shareable and bookmarkable, and restore them on load.
+  function readUrl(): void {
+    const params = new URLSearchParams(location.search)
+    if (search) {
+      search.value = params.get('q') ?? ''
+    }
+    for (const facet of facets) {
+      const value = params.get(facet.dataset.filterFacet ?? '')
+      if (value !== null) {
+        facet.value = value
+      }
+    }
+    if (sort) {
+      const value = params.get('sort')
+      if (value !== null) {
+        sort.value = value
+      }
+    }
+  }
+
+  function writeUrl(): void {
+    const params = new URLSearchParams()
+    const query = (search?.value ?? '').trim()
+    if (query) {
+      params.set('q', query)
+    }
+    for (const facet of facets) {
+      if (facet.value) {
+        params.set(facet.dataset.filterFacet ?? '', facet.value)
+      }
+    }
+    // Omit the sort param while it's the default (first option).
+    if (sort && sort.value && sort.value !== sort.options[0]?.value) {
+      params.set('sort', sort.value)
+    }
+    const queryString = params.toString()
+    const url = queryString ? `${location.pathname}?${queryString}` : location.pathname
+    history.replaceState(null, '', url)
+  }
+
+  function applyAndSync(): void {
+    apply()
+    writeUrl()
+  }
+
   form?.addEventListener('submit', (event) => event.preventDefault())
-  search?.addEventListener('input', apply)
-  facets.forEach((facet) => facet.addEventListener('change', apply))
+  search?.addEventListener('input', applyAndSync)
+  facets.forEach((facet) => facet.addEventListener('change', applyAndSync))
   sort?.addEventListener('change', () => {
     applySort()
     root.dispatchEvent(new CustomEvent('filter:changed'))
+    writeUrl()
   })
 
+  readUrl()
   applySort()
   apply()
 }

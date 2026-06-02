@@ -7,6 +7,7 @@ import '@fontsource/ibm-plex-mono/700.css'
 
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import JsonLd from '../components/JsonLd.astro'
 import { href } from '../lib/url'
 import { sections } from '../lib/sections'
 import { SITE_DESCRIPTION, SOCIALS } from '../lib/site'
@@ -19,10 +20,12 @@ interface Props {
   ogType?: string
   publishedTime?: string
   tags?: string[]
+  // Page-specific schema.org JSON-LD (a BreadcrumbList is added automatically).
+  jsonLd?: object | object[]
 }
 
 const SITE_NAME = 'St. Louing'
-const { crumb, description, ogType = 'website', publishedTime, tags = [] } = Astro.props
+const { crumb, description, ogType = 'website', publishedTime, tags = [], jsonLd } = Astro.props
 
 const base = import.meta.env.BASE_URL
 let path = Astro.url.pathname
@@ -56,6 +59,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).hr
 // Social-share image. Absolute URL (required by OG); falls back to the site icon
 // until a dedicated share card is added at /og.png.
 const socialImage = new URL(href('/favicon.png'), Astro.site ?? Astro.url.origin).href
+
+// Structured data: an automatic BreadcrumbList from the trail, plus any
+// page-specific schema passed in.
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
+const breadcrumbSchema =
+  trail.length > 1
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: trail.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.label,
+          item: item.href ? new URL(item.href, siteOrigin).href : undefined,
+        })),
+      }
+    : null
+const structuredData = [
+  breadcrumbSchema,
+  ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []),
+].filter((schema): schema is object => Boolean(schema))
 ---
 
 <!doctype html>
@@ -96,6 +120,8 @@ const socialImage = new URL(href('/favicon.png'), Astro.site ?? Astro.url.origin
     <meta name="twitter:image" content={socialImage} />
 
     <meta name="generator" content={Astro.generator} />
+
+    {structuredData.map((schema) => <JsonLd data={schema} />)}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
