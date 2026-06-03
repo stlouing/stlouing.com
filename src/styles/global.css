@@ -17,7 +17,7 @@
   --color-accent: #9c3b2e;
   --color-map-accent: #5a3a93;
   --color-link: #225aa9;
-  --color-link-hover: #4788e3;
+  --color-link-hover: #17488d;
 
   /* Fonts */
   --font-body: ui-serif, Georgia, 'Times New Roman', serif;
@@ -199,6 +199,7 @@ a {
   text-underline-offset: 4px;
 
   &:hover {
+    color: var(--color-link-hover);
     text-decoration-style: solid;
     text-decoration-color: var(--color-link-hover);
   }
@@ -629,6 +630,13 @@ body:has(.map-split) main > .wrap,
    scroll away (list view) / sit statically (map shell) so they don't stack. */
 body:has([data-filter-root]) .site-header {
   position: static;
+}
+
+/* Leaflet stacks popups (pane z-index 700) above tooltips (650) by default. Lift
+   the tooltip pane above the popup pane so a hover tooltip shows over an open
+   popup; tooltips are pointer-events:none, so they don't block popup clicks. */
+.leaflet-pane.leaflet-tooltip-pane {
+  z-index: 760;
 }
 
 .leaflet-tooltip.map-tooltip {

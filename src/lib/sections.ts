@@ -49,6 +49,5 @@ export const sections: Section[] = [
   { label: 'Notes', path: '/notes', group: 'notes', primary: true },
 
   { label: 'About', path: '/about', group: 'site', primary: true, description: 'About this site' },
-  { label: 'Changelog', path: '/changelog', group: 'site', description: 'Updates to the site' },
   { label: 'Tags', path: '/tags', group: 'site', description: 'Browse everything by topic' },
 ]

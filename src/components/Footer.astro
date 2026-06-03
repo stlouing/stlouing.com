@@ -1,5 +1,6 @@
 ---
 import IconExternalLink from '../assets/IconExternalLink.astro'
+import IconRSS from '../assets/IconRSS.astro'
 import { href } from '../lib/url'
 ---
 
@@ -10,8 +11,7 @@ import { href } from '../lib/url'
       <a href="https://github.com/stlouing/stlouing.com" target="_blank"
         >Source <IconExternalLink /></a
       >
-      <a href={href('/changelog')}>Changelog</a>
-      <a href={href('/rss.xml')}>RSS</a>
+      <a href={href('/rss.xml')} target="_blank">RSS <IconRSS /></a>
     </nav>
   </div>
 </footer>
