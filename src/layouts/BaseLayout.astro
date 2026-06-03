@@ -112,9 +112,11 @@ const structuredData = [
     <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
-    {ogType === 'article' && publishedTime && (
-      <meta property="article:published_time" content={publishedTime} />
-    )}
+    {
+      ogType === 'article' && publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
     {ogType === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content={socialImage} />

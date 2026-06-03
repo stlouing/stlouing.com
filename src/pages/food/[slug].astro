@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Chip from '../../components/Chip.astro'
 import Rating from '../../components/Rating.astro'
+import SourceLink from '../../components/SourceLink.astro'
 import { href } from '../../lib/url'
 import { published, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
@@ -35,6 +36,7 @@ const schema = restaurantSchema({
       {data.rating && <Rating value={data.rating} />}
       {data.neighborhood && <span>{data.neighborhood}</span>}
       {data.cuisine.map((cuisine) => <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>)}
+      <SourceLink href={data.url} />
     </Fragment>
     {
       data.address && data.address.length > 0 && (

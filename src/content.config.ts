@@ -21,7 +21,7 @@ const food = defineCollection({
       .union([z.string(), z.array(z.string())])
       .transform((value) => (Array.isArray(value) ? value : [value]))
       .optional(),
-    instagram: z.string().url().optional(),
+    url: z.string().url().optional(),
     ...coords,
     ...taggable,
   }),
@@ -34,6 +34,8 @@ const hikes = defineCollection({
     area: z.string().optional(),
     distanceMiles: z.number().optional(),
     difficulty: z.enum(['easy', 'moderate', 'hard']).optional(),
+    // The hike's AllTrails (or similar) page.
+    url: z.string().url().optional(),
     ...coords,
     ...taggable,
   }),

@@ -5,9 +5,15 @@ title: About
 
 St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
 
-I've been on a quest to find the best food in St. Louis, and after realizing I've tried more St. Louis-style pizza than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered. And not just any type of website, but a slow-paced, text-based website, like the ones we used to make.
+I've been on a quest to find the best food in St. Louis, and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
 
 This site is not meant to be a definitive source of information about the St. Louis food scene or neighborhoods - just my own little field guide.
+
+## Purpose
+
+As the internet enshittifies, it becomes harder and harder to find quality content. Everything is about how much data a company can extract from you to show you targeted ads and get you to buy stuff. I miss when much of the internet consisted of text-based personal sites about obscure hobbies and interests, made with love. These sites were slow, and you'd check back every now and then to see if they wrote something new.
+
+That's the experience I'm trying to recreate here. I have nothing to sell. I don't want your data. I don't want to make money showing you ads or affiliate links. I just want to document my thoughts in a way that's fun for me and possibly interesting or useful to you.
 
 ## Contact
 
@@ -38,10 +44,12 @@ A few open-source projects this site relies on.
 - Web Framework: [Astro](https://astro.build)
 - Maps: [Leaflet](https://leafletjs.com) / [OpenStreetMap](https://www.openstreetmap.org/) / [Carto](https://carto.com/)
 - Icons: [Lucide](https://lucide.dev/icons)
+- Hosting: [Github Pages](https://docs.github.com/en/pages)
 
 ## Links
 
 - [Built St. Louis](https://www.builtstlouis.net): a website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
+- [pizzababble](https://www.instagram.com/pizzababble/?hl=en): The St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
 
 ## Etymology
 
@@ -49,11 +57,7 @@ The name "St. Louing" is meant to represent the ongoing nature of my journey. I 
 
 ## History
 
-This site began on May 28, 2026. My St. Louis journey began in 2023.
-
-## Ideas
-
-Maybe add a contact form, guestbook, or Slack/Discord channel.
+This site began on May 28, 2026. My St. Louis experience began in 2023.
 
 ## AI
 

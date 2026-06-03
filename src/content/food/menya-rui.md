@@ -7,7 +7,7 @@ address:
   - 3453 Hampton Ave
   - St. Louis, MO 63139
 coords: [38.59930816028945, -90.29243777813838]
-instagram: https://www.instagram.com/menyarui_stl/
+url: https://www.instagram.com/menyarui_stl/
 ---
 
 Content goes here.

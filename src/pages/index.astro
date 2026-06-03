@@ -12,9 +12,7 @@ import ListItem from '../components/ListItem.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
 const tagline = 'Maps, guides, and observations from around St. Louis'
-
-const intro =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.`
 
 const allNotes = published(await getCollection('notes')).sort(
   (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
@@ -24,16 +22,10 @@ const allTopics = published(await getCollection('topics')).sort(
 )
 
 // Latest few of each for the homepage columns.
-const latestNotes = allNotes.slice(0, 3)
-const latestTopics = allTopics.slice(0, 3)
+const latestNotes = allNotes.slice(0, 5)
+const latestTopics = allTopics.slice(0, 5)
 
-// Most recent change anywhere in the garden, for the "Last Updated" line.
-const lastUpdated = new Date(
-  Math.max(
-    ...allNotes.map((note) => note.data.date.valueOf()),
-    ...allTopics.map((topic) => topic.data.updated.valueOf()),
-  ),
-)
+const lastUpdated = new Date('2026-06-03')
 
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
@@ -42,7 +34,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   <header class="h-card">
     <h1 class="page-title">St. Louing <span>since 2023</span></h1>
     <p class="tagline p-note">{tagline}</p>
-    <p class="introduction">{intro}</p>
+    <p class="introduction">
+      {intro}
+      <a class="more inline" href={href('/about')}>Read more <IconArrowRight /></a>
+    </p>
     <p class="last-updated">
       <strong>Last Updated:</strong>
       <span>{formatDateShort(lastUpdated)}</span>
@@ -136,7 +131,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .introduction {
     max-width: 62ch;
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-md);
     margin-block: var(--spacing-sm);
     color: var(--color-text-muted);
   }
@@ -145,7 +140,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     font-family: var(--font-mono);
     font-style: italic;
     margin-bottom: var(--spacing-lg);
@@ -164,6 +159,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: start;
+    margin-block-end: 3rem;
   }
 
   @media (max-width: 34rem) {

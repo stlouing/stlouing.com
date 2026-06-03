@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Chip from '../../components/Chip.astro'
+import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 
@@ -24,6 +25,7 @@ const backlinks = await getBacklinks(entry.id)
       {data.area && <span>{data.area}</span>}
       {data.distanceMiles && <Chip>{data.distanceMiles} mi</Chip>}
       {data.difficulty && <Chip>{data.difficulty}</Chip>}
+      <SourceLink href={data.url} />
     </Fragment>
     <Content />
   </Entry>

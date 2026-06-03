@@ -53,6 +53,7 @@ const hasCoords = places.some((place) => place.data.coords)
               data-coords={place.data.coords?.join(',') ?? ''}
               data-title={place.data.title}
               data-address={(place.data.address ?? []).join('\n')}
+              data-url={place.data.url ?? ''}
               data-marker={cuisineEmoji(place.data.cuisine)}
               data-sort-title={place.data.title}
               data-sort-rating={place.data.rating ?? ''}

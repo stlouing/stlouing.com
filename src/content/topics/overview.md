@@ -1,6 +1,6 @@
 ---
 title: St. Louis Overview
-description: The good, the bad, and the Provel
+description: Thoughts, observations, and opinions
 created: 2026-05-28
 updated: 2026-05-31
 ---

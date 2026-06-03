@@ -22,7 +22,7 @@ export const sections: Section[] = [
     path: '/food',
     group: 'guides',
     primary: true,
-    description: 'Keeping track of my favorite spots',
+    description: 'A map of my favorite restaurants',
   },
   {
     label: 'Neighborhoods',

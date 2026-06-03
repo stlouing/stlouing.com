@@ -1,6 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
+import { hostLabel } from '../lib/links'
 
 export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
   const el = document.querySelector<HTMLElement>(mapSelector)
@@ -14,7 +15,12 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
   // Keep the selection sticky: clicking empty map space should not close the
   // open popup (which would visually de-select a place while its list row stays
   // active). Selection only changes when another marker is clicked.
-  const map = L.map(el, { scrollWheelZoom: true, touchZoom: true, closePopupOnClick: false })
+  const map = L.map(el, {
+    wheelPxPerZoomLevel: 60,
+    scrollWheelZoom: true,
+    touchZoom: true,
+    closePopupOnClick: false,
+  })
   addThemedTiles(map)
 
   const items = [...scope.querySelectorAll<HTMLElement>('[data-filter-item]')]
@@ -97,8 +103,16 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
           ? `<strong>${title}</strong><br><span class="tip-address">${addressLines.join('<br>')}</span>`
           : `<strong>${title}</strong>`
 
+        // The clickable popup also gets the source link (AllTrails, Instagram,
+        // …). The hover tooltip can't — it's pointer-events:none — so it stays
+        // info-only.
+        const url = item.dataset.url ?? ''
+        const popupHtml = url
+          ? `${infoHtml}<a class="popup-link" href="${url}" target="_blank" rel="noopener">${hostLabel(url)} ↗</a>`
+          : infoHtml
+
         const placeMarker = L.marker([lat, lng], { icon })
-          .bindPopup(infoHtml, { className: 'food-popup', offset: [0, 0] })
+          .bindPopup(popupHtml, { className: 'food-popup', offset: [0, 0] })
           .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
         // Selection follows the popup: opening it (by click, the list, or
         // anything else) selects the row; closing it (toggle-click or the X)

@@ -1,0 +1,35 @@
+---
+// A labeled external link to an entry's source (a hike's AllTrails page, a
+// place's Instagram or website, etc.). The label is derived from the host —
+// "AllTrails", "Instagram", or the bare domain — unless one is passed. Renders
+// nothing without an href.
+import IconExternalLink from '../assets/IconExternalLink.astro'
+import { hostLabel } from '../lib/links'
+
+interface Props {
+  href?: string
+  label?: string
+}
+
+const { href: linkHref, label } = Astro.props
+const text = label ?? (linkHref ? hostLabel(linkHref) : '')
+---
+
+{
+  linkHref && (
+    <a class="source-link" href={linkHref} target="_blank" rel="noopener">
+      {text}
+      <IconExternalLink />
+    </a>
+  )
+}
+
+<style>
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+</style>

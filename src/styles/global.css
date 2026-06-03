@@ -9,6 +9,7 @@
   /* Colors */
   --color-background: #fcfbf6;
   --color-surface: #ffffff;
+  --color-text-header: #070706;
   --color-text: #1b1a17;
   --color-text-muted: #6f6b61;
   --color-text-muted-2: #58554d;
@@ -52,6 +53,7 @@
 
   --color-background: #17171b;
   --color-surface: #201f25;
+  --color-text-header: #f3f1f7;
   --color-text: #e9e8ec;
   --color-text-muted: #9b9aa3;
   --color-text-muted-2: #afaeb5;
@@ -137,10 +139,12 @@ h4 {
 
 h1 {
   font-size: clamp(1.5rem, 1.3rem + 1vw, 1.9rem);
+  color: var(--color-text-header);
 }
 
 h2 {
   font-size: clamp(1.2rem, 1.1rem + 0.6vw, 1.45rem);
+  color: var(--color-text-header);
 }
 
 h3 {
@@ -210,6 +214,21 @@ a {
   }
 }
 
+a.more {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-accent);
+
+  &.inline {
+    display: inline-flex;
+  }
+
+  &:hover {
+    text-decoration-color: var(--color-accent);
+  }
+}
+
 .wikilink-broken {
   color: var(--color-text-muted);
   border-block-end: 1px dotted var(--color-text-muted);
@@ -228,6 +247,10 @@ a {
   text-decoration: none;
   opacity: 0;
   transition: opacity 0.1s ease;
+
+  &:hover {
+    color: var(--color-accent);
+  }
 }
 
 :is(h1, h2, h3, h4, h5, h6):hover > .heading-anchor,
@@ -264,6 +287,10 @@ main {
   flex: 1 0 auto;
   width: 100%;
   overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
+}
+
+.body {
+  margin-block-end: 3rem;
 }
 
 /* ===========================================================================
@@ -318,11 +345,12 @@ select {
 [data-map] {
   height: 70vh;
   border-block: 1px solid var(--color-line);
+  transform: translate3d(0, 0, 0);
 }
 
 /* CARTO dark tiles are very dim; lift brightness so streets stay legible. */
 .tiles-dark {
-  filter: brightness(1.9) contrast(0.95);
+  filter: brightness(2.5) contrast(0.95);
 }
 
 /* List view (default, and with JS off): show the list, hide the map. */
@@ -698,6 +726,15 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1.2;
+}
+
+/* Source link (AllTrails, Instagram, …) appended inside the popup. */
+.leaflet-popup.food-popup .popup-link {
+  display: inline-block;
+  margin-block-start: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-link);
 }
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {

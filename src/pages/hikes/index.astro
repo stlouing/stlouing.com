@@ -48,6 +48,7 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
             data-area={hike.data.area ?? ''}
             data-coords={hike.data.coords?.join(',') ?? ''}
             data-title={hike.data.title}
+            data-url={hike.data.url ?? ''}
             data-marker="🥾"
             data-sort-title={hike.data.title}
             data-sort-distance={hike.data.distanceMiles ?? ''}

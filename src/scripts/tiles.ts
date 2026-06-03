@@ -3,25 +3,32 @@ import * as L from 'leaflet'
 // Required tile attribution. OpenStreetMap's policy and CARTO's terms both
 // mandate visible credit; CARTO additionally needs its own line since its
 // basemap is built on OSM data.
-const osmAttribution =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 const cartoAttribution = `${osmAttribution} &copy; <a href="https://carto.com/attributions">CARTO</a>`
 
-// Base map tiles that follow the site theme. Light is standard OpenStreetMap;
-// dark is CARTO's dark basemap (keyless, attribution-only) — a real dark map
-// rather than a CSS invert of the light tiles. The dark layer gets a class so
-// CSS can lift its brightness (CARTO dark is very dim out of the box).
+// Base map tiles that follow the site theme, both from CARTO (keyless,
+// attribution-only) so both can serve crisp @2x tiles on high-DPI screens
+// (`detectRetina` + the `{r}` placeholder) — OpenStreetMap's own tiles have no
+// retina variant, so they look soft on those displays. Light is CARTO Voyager;
+// dark is CARTO dark, which gets a class so CSS can lift its brightness.
 const lightTiles = {
-  url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  options: { maxZoom: 19, attribution: osmAttribution } as L.TileLayerOptions,
+  url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  options: {
+    maxZoom: 19,
+    subdomains: 'abcd',
+    className: 'tiles-light',
+    detectRetina: true,
+    attribution: cartoAttribution,
+  } as L.TileLayerOptions,
 }
 
 const darkTiles = {
   url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
   options: {
-    maxZoom: 20,
+    maxZoom: 19,
     subdomains: 'abcd',
     className: 'tiles-dark',
+    detectRetina: true,
     attribution: cartoAttribution,
   } as L.TileLayerOptions,
 }
