@@ -5,7 +5,13 @@ import neighborhoods from '../data/neighborhoods.json'
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
 // the map and the generated sections always share one slug — no re-slugifying.
-const byNumber = new Map(neighborhoods.map((neighborhood) => [neighborhood.number, neighborhood]))
+// `ignored` rows are absorbed neighborhoods (e.g. the pieces of Dogtown) kept
+// only as data; skip them so they don't shadow the merged entry's number.
+const byNumber = new Map(
+  neighborhoods
+    .filter((neighborhood) => !('ignored' in neighborhood))
+    .map((neighborhood) => [neighborhood.number, neighborhood]),
+)
 
 /**
  * Clickable St. Louis neighborhood map. Draws each official boundary with its
@@ -142,13 +148,17 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       featureLayer.on('click', () => selectNeighborhood(slug))
 
       // Numbered badge centered on the boundary (non-interactive so clicks fall
-      // through to the polygon underneath).
+      // through to the polygon underneath). A merged neighborhood can show a
+      // range (e.g. Dogtown → "41-44"); the box widens to fit it.
       if (Number.isFinite(number)) {
+        const badge = entry && 'numberLabel' in entry ? entry.numberLabel : String(number)
+        const width = Math.max(20, badge.length * 9)
         L.marker(layerBounds.getCenter(), {
           icon: L.divIcon({
             className: 'neighborhood-number',
-            html: String(number),
-            iconSize: [20, 20],
+            html: badge,
+            iconSize: [width, 20],
+            iconAnchor: [width / 2, 10],
           }),
           interactive: false,
           keyboard: false,

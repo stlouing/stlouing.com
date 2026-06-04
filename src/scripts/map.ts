@@ -90,8 +90,8 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
           html: item.dataset.marker ?? '📍',
           iconSize: [36, 36],
           iconAnchor: [22, 22],
-          popupAnchor: [0, -26],
-          tooltipAnchor: [0, -24],
+          popupAnchor: [0, -30],
+          // tooltipAnchor: [0, -24],
         })
         // Hover shows a tooltip; clicking opens the richer popup. While a place
         // is active (its popup is open) we suppress that place's tooltip so the
@@ -100,7 +100,7 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
         const title = item.dataset.title ?? ''
         const addressLines = (item.dataset.address ?? '').split('\n').filter(Boolean)
         const infoHtml = addressLines.length
-          ? `<strong>${title}</strong><br><span class="tip-address">${addressLines.join('<br>')}</span>`
+          ? `<h2>${title}</h2><span class="tip-address">${addressLines.join('<br>')}</span>`
           : `<strong>${title}</strong>`
 
         // The clickable popup also gets the source link (AllTrails, Instagram,
@@ -111,23 +111,25 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
           ? `${infoHtml}<a class="popup-link" href="${url}" target="_blank" rel="noopener">${hostLabel(url)} ↗</a>`
           : infoHtml
 
-        const placeMarker = L.marker([lat, lng], { icon })
-          .bindPopup(popupHtml, { className: 'food-popup', offset: [0, 0] })
-          .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
+        const placeMarker = L.marker([lat, lng], { icon }).bindPopup(popupHtml, {
+          className: 'food-popup',
+          offset: [0, 0],
+        })
+        // .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
         // Selection follows the popup: opening it (by click, the list, or
         // anything else) selects the row; closing it (toggle-click or the X)
         // de-selects it.
         placeMarker.on('popupopen', () => {
-          placeMarker.closeTooltip()
+          // placeMarker.closeTooltip()
           activate(item, { pan: true })
         })
         placeMarker.on('popupclose', () => deactivate(item))
         // Don't stack the hover tooltip over the active place's popup.
-        placeMarker.on('tooltipopen', () => {
-          if (item === activeItem) {
-            placeMarker.closeTooltip()
-          }
-        })
+        // placeMarker.on('tooltipopen', () => {
+        //   if (item === activeItem) {
+        //     placeMarker.closeTooltip()
+        //   }
+        // })
         marker = placeMarker
         markers.set(item, marker)
       }

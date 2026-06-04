@@ -44,58 +44,64 @@ for (const place of foodPlaces) {
       <article class="page content-pane">
         <header class="pane-header">
           <h1>Neighborhoods</h1>
+          <p>Modified for colloquial use</p>
         </header>
         <List>
           {
-            neighborhoods.map((neighborhood) => {
-              const Content = rendered.get(neighborhood.slug)
-              const places = foodByNeighborhood.get(normalizeName(neighborhood.name)) ?? []
-              const isExpandable = Boolean(Content) || places.length > 0
+            neighborhoods
+              .filter((neighborhood) => !('ignored' in neighborhood))
+              .map((neighborhood) => {
+                const Content = rendered.get(neighborhood.slug)
+                const places = foodByNeighborhood.get(normalizeName(neighborhood.name)) ?? []
+                const isExpandable = Boolean(Content) || places.length > 0
+                const numberLabel = neighborhood?.numberLabel
+                  ? neighborhood.numberLabel
+                  : neighborhood.number
 
-              return (
-                <li data-section={neighborhood.slug}>
-                  {isExpandable ? (
-                    <button
-                      type="button"
-                      class="list-title neighborhood-toggle"
-                      aria-expanded="false">
-                      <span class="number">{neighborhood.number}.</span>
-                      {neighborhood.name}
+                return (
+                  <li data-section={neighborhood.slug}>
+                    {isExpandable ? (
+                      <button
+                        type="button"
+                        class="list-title neighborhood-toggle"
+                        aria-expanded="false">
+                        <span class="number">{`${numberLabel}.`}</span>
+                        {neighborhood.name}
 
-                      <IconCaretRight />
-                      <IconCaretDown />
-                    </button>
-                  ) : (
-                    <span class="list-title">
-                      <span class="number">{neighborhood.number}.</span>
-                      {neighborhood.name}
-                    </span>
-                  )}
-                  {isExpandable && (
-                    <div class="neighborhood-body list-description">
-                      {Content && <Content />}
-                      {places.length > 0 && (
-                        <div class="neighborhood-food">
-                          <h3>Food</h3>
-                          <ul>
-                            {places.map((place) => (
-                              <li>
-                                <a
-                                  href={href(
-                                    hasBody(place) ? `/food/${place.id}` : `/food#${place.id}`,
-                                  )}>
-                                  {place.data.title}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </li>
-              )
-            })
+                        <IconCaretRight />
+                        <IconCaretDown />
+                      </button>
+                    ) : (
+                      <span class="list-title">
+                        <span class="number">{`${numberLabel}.`}</span>
+                        {neighborhood.name}
+                      </span>
+                    )}
+                    {isExpandable && (
+                      <div class="neighborhood-body list-description">
+                        {Content && <Content />}
+                        {places.length > 0 && (
+                          <div class="neighborhood-food">
+                            <h3>Food</h3>
+                            <ul>
+                              {places.map((place) => (
+                                <li>
+                                  <a
+                                    href={href(
+                                      hasBody(place) ? `/food/${place.id}` : `/food#${place.id}`,
+                                    )}>
+                                    {place.data.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </li>
+                )
+              })
           }
         </List>
       </article>

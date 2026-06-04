@@ -43,31 +43,32 @@ const hasCoords = places.some((place) => place.data.coords)
     mapLabel="Map of food spots"
     emptyText="No places match those filters.">
     <List title="Food" class="list-with-map">
-        {
-          rendered.map(({ place, Content }) => (
-            <li
-              id={place.id}
-              data-filter-item
-              data-cuisine={place.data.cuisine.join('|')}
-              data-neighborhood={place.data.neighborhood ?? ''}
-              data-coords={place.data.coords?.join(',') ?? ''}
-              data-title={place.data.title}
-              data-address={(place.data.address ?? []).join('\n')}
-              data-url={place.data.url ?? ''}
-              data-marker={cuisineEmoji(place.data.cuisine)}
-              data-sort-title={place.data.title}
-              data-sort-rating={place.data.rating ?? ''}
-              data-search={[
-                place.data.title,
-                place.data.neighborhood,
-                ...(place.data.address ?? []),
-                ...place.data.cuisine,
-                ...place.data.tags,
-                place.body,
-              ]
-                .filter(Boolean)
-                .join(' ')}>
-              <div class="list-details">
+      {
+        rendered.map(({ place, Content }) => (
+          <li
+            id={place.id}
+            data-filter-item
+            data-cuisine={place.data.cuisine.join('|')}
+            data-neighborhood={place.data.neighborhood ?? ''}
+            data-coords={place.data.coords?.join(',') ?? ''}
+            data-title={place.data.title}
+            data-address={(place.data.address ?? []).join('\n')}
+            data-url={place.data.url ?? ''}
+            data-marker={cuisineEmoji(place.data.cuisine)}
+            data-sort-title={place.data.title}
+            data-sort-rating={place.data.rating ?? ''}
+            data-search={[
+              place.data.title,
+              place.data.neighborhood,
+              ...(place.data.address ?? []),
+              ...place.data.cuisine,
+              ...place.data.tags,
+              place.body,
+            ]
+              .filter(Boolean)
+              .join(' ')}>
+            <div class="list-details">
+              <div class="list-details-content">
                 {hasBody(place) ? (
                   <a class="list-title" href={href(`/food/${place.id}`)}>
                     {place.data.title}
@@ -76,31 +77,40 @@ const hasCoords = places.some((place) => place.data.coords)
                   <span class="list-title">{place.data.title}</span>
                 )}
                 {place.data.rating && <Rating value={place.data.rating} />}
-
                 {place.data.neighborhood && (
                   <span class="list-meta">{place.data.neighborhood}</span>
                 )}
-                {place.data.cuisine && (
-                  <div class="chips">
-                    {place.data.cuisine.map((cuisine) => (
-                      <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>
-                    ))}
-                  </div>
-                )}
               </div>
-              {place.data.address && place.data.address.length > 0 && (
-                <div class="list-address">
-                  <IconMapPin />
-                  <span>{place.data.address.join(', ')}</span>
+              {place.data.cuisine && (
+                <div class="chips">
+                  {place.data.cuisine.map((cuisine) => (
+                    <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>
+                  ))}
                 </div>
               )}
-              {/* Wrapped so the map view collapses it until selected (list view shows it). */}
-              <div class="list-description">
-                <Content />
+            </div>
+            {place.data.address && place.data.address.length > 0 && (
+              <div class="list-address">
+                <span>{place.data.address.join(', ')}</span>
               </div>
-            </li>
-          ))
-        }
-      </List>
+            )}
+            {/* Wrapped so the map view collapses it until selected (list view shows it). */}
+            <div class="list-description">
+              <Content />
+            </div>
+          </li>
+        ))
+      }
+    </List>
   </FilterMapPage>
 </BaseLayout>
+
+<style>
+  .list-details {
+    justify-content: space-between;
+  }
+
+  .list-description {
+    color: var(--color-text);
+  }
+</style>

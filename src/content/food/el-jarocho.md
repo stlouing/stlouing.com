@@ -9,4 +9,4 @@ address:
 coords: [38.567196556056146, -90.49418973395731]
 ---
 
-Content goes here.
+Best authentic steak taco in St. Louis.

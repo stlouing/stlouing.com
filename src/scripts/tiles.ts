@@ -17,7 +17,7 @@ const lightTiles = {
     maxZoom: 19,
     subdomains: 'abcd',
     className: 'tiles-light',
-    detectRetina: true,
+    // detectRetina: true,
     attribution: cartoAttribution,
   } as L.TileLayerOptions,
 }
@@ -28,7 +28,7 @@ const darkTiles = {
     maxZoom: 19,
     subdomains: 'abcd',
     className: 'tiles-dark',
-    detectRetina: true,
+    // detectRetina: true,
     attribution: cartoAttribution,
   } as L.TileLayerOptions,
 }

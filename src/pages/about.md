@@ -7,7 +7,7 @@ St. Louing is a personal project I created to document my experience living in S
 
 I've been on a quest to find the best food in St. Louis, and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
 
-This site is not meant to be a definitive source of information about the St. Louis food scene or neighborhoods - just my own little field guide.
+The site is not meant to be a definitive source of information about the STL food scene or neighborhoods, though. Just my own little field guide.
 
 ## Purpose
 
@@ -53,7 +53,7 @@ A few open-source projects this site relies on.
 
 ## Etymology
 
-The name "St. Louing" is meant to represent the ongoing nature of my journey. I know it sounds a little cheugy, but let's just roll with it.
+The name _St. Louing_ is meant to represent the ongoing nature of my journey. I know it sounds a little cheugy, but let's just roll with it.
 
 ## History
 

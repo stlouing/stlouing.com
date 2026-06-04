@@ -16,7 +16,7 @@
   --color-line: #dcd8cb;
   --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
-  --color-map-accent: #5a3a93;
+  --color-map-accent: #6a47a6;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
 
@@ -353,6 +353,13 @@ select {
   filter: brightness(2.5) contrast(0.95);
 }
 
+/* Dark mode: give the map a dark backdrop behind not-yet-loaded tiles, instead
+   of Leaflet's default light gray (which flashes brightly when zooming out).
+   Tuned to roughly match the brightened CARTO dark tiles. */
+:root[data-theme='dark'] .leaflet-container {
+  background: var(--color-background);
+}
+
 /* List view (default, and with JS off): show the list, hide the map. */
 [data-filter-root]:not([data-view='map']) [data-map] {
   display: none;
@@ -393,8 +400,15 @@ body:has(.map-split) main > .wrap,
   width: 100vw;
   margin-inline: calc(50% - 50vw);
   display: grid;
-  grid-template-columns: minmax(30%, 500px) 1fr;
+  grid-template-columns: 50% 1fr;
   grid-template-rows: 1fr;
+}
+
+@media screen and (min-width: 1100px) {
+  [data-view='map'] .results,
+  .map-split .results {
+    grid-template-columns: 550px 1fr;
+  }
 }
 
 /* Neighborhoods left pane: the writeups scroll while the map stays put. The
@@ -449,7 +463,13 @@ body:has(.map-split) main > .wrap,
     color: var(--color-muted);
   }
 
-  ul.list li {
+  .pane-header p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  ul.list > li {
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
   }
@@ -499,10 +519,20 @@ body:has(.map-split) main > .wrap,
   /* The writeup and food list stay collapsed until the row is expanded. */
   .neighborhood-body {
     display: none;
+
+    ul {
+      list-style-type: disc;
+    }
+
+    ::marker {
+      color: var(--color-accent);
+    }
   }
 
   [data-section].is-active .neighborhood-body {
     display: block;
+    margin-block-start: var(--spacing-sm) !important;
+    color: var(--color-text);
   }
 
   /* Restaurants located in this neighborhood (cross-linked from Food). */
@@ -607,7 +637,7 @@ body:has(.map-split) main > .wrap,
   justify-content: center;
   width: 36px;
   height: 36px;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1;
   border: 1px solid var(--color-text-muted);
   border-radius: 50%;
@@ -726,6 +756,12 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1.2;
+
+  h2 {
+    margin-block-start: 0;
+    margin-block-end: var(--spacing-sm);
+    font-size: var(--font-size-md);
+  }
 }
 
 /* Source link (AllTrails, Instagram, …) appended inside the popup. */
@@ -739,6 +775,10 @@ body:has([data-filter-root]) .site-header {
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {
   color: var(--color-text-muted);
+
+  &:hover {
+    color: var(--color-text);
+  }
 }
 
 /* Drop the arrow/tip — its border can't match the box cleanly. */
@@ -864,10 +904,10 @@ h1.page-title {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  margin: 0 0 var(--spacing-xs) 0;
+  margin: 0;
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted-2);
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
@@ -875,5 +915,5 @@ h1.page-title {
   height: 30px;
   width: 48px;
   border-radius: 4px;
-  box-shadow: var(--box-shadow-flag);
+  /* box-shadow: var(--box-shadow-flag); */
 }

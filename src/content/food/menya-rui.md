@@ -10,4 +10,4 @@ coords: [38.59930816028945, -90.29243777813838]
 url: https://www.instagram.com/menyarui_stl/
 ---
 
-Content goes here.
+An excellent Shoyu ramen.
