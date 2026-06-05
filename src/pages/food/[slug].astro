@@ -45,15 +45,33 @@ const trail = [
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
     <Fragment slot="meta">
-      {
-        data.address && data.address.length > 0 && (
-          <span class="address">{data.address.join(', ')}</span>
-        )
-      }
-      {data.cuisine.map((cuisine) => <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>)}
-      {data.rating && <Rating value={data.rating} />}
-      <SourceLink href={data.url} />
+      <div class="food-meta">
+        {
+          data.address && data.address.length > 0 && (
+            <span class="address">{data.address.join(', ')}</span>
+          )
+        }
+        <div class="food-sub-meta">
+          {data.rating && <Rating value={data.rating} />}
+          {data.cuisine.map((cuisine) => <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>)}
+          <SourceLink href={data.url} />
+        </div>
+      </div>
     </Fragment>
     <Content />
   </Entry>
 </BaseLayout>
+
+<style>
+  .food-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .food-sub-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+</style>

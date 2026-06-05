@@ -19,24 +19,6 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com).
 
-## Syndication
-
-I'm working on implementing [POSSE](https://indieweb.org/POSSE) (Publish on your Own Site, Syndicate Elsewhere).
-
-This website is the source of truth for anything I have to say. I use Instagram to follow local food, news, and other sources, and I use GitHub to host the code. All other platform will be used for content mirroring (eventually).
-
-- GitHub: [@stlouing](https://github.com/stlouing)
-- Instagram: [@stlouing](https://instagram.com/stlouing)
-- Reddit: [@stlouing](https://reddit.com/u/stlouing)
-- Twitter: [@stlouing](https://x.com/stlouing)
-- Bluesky: [@stlouing](https://bsky.app/profile/stlouing.com)
-- Substack: [@stlouing](https://stlouing.substack.com)
-- YouTube: [@stlouing](https://www.youtube.com/@stlouing)
-- TikTok: [@stlouing](https://www.tiktok.com/@stlouing)
-- Mastodon: [@stlouing](https://mastodon.social/@stlouing)
-- Medium: [@stlouing](https://medium.com/@stlouing)
-- [RSS](/rss.xml)
-
 ## Uses
 
 A few open-source projects this site relies on.

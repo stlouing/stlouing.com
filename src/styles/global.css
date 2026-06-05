@@ -617,6 +617,10 @@ body:has(.map-split) main > .wrap,
   background: var(--color-surface);
 }
 
+.list-with-map li.is-active .list-title {
+  color: var(--color-accent) !important;
+}
+
 .list-with-map .list-meta {
   font-family: var(--font-body);
   font-size: var(--font-size-md);
@@ -1012,7 +1016,7 @@ body:has([data-filter-root]) .site-header {
 
     a {
       color: var(--color-text);
-      /* text-decorat */
+      text-decoration-color: var(--color-accent);
     }
   }
 }
@@ -1077,7 +1081,7 @@ body:has([data-filter-root]) .site-header {
 .entry-bar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--spacing-sm) var(--spacing-md);
   margin-block-start: var(--spacing-xs);
