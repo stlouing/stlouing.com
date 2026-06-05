@@ -22,6 +22,10 @@ jobs:
       - uses: withastro/action@v3
         with:
           node-version: 26
+        env:
+          # Production basemap host. Set as a repo Actions variable (not a secret —
+          # it's public in the built site anyway); keeps the URL out of the repo.
+          PUBLIC_PMTILES_URL: ${{ vars.PUBLIC_PMTILES_URL }}
 
   deploy:
     needs: build

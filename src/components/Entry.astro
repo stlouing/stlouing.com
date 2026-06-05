@@ -30,7 +30,7 @@ const isArticle = Boolean(permalink)
     <slot name="lede" />
     <div class="entry-bar">
       <div class="meta"><slot name="meta" /></div>
-      <!-- {editPath && <EditThisPage path={editPath} inline />} -->
+      {editPath && <EditThisPage path={editPath} inline />}
     </div>
     <slot name="header-extra" />
     <TagList tags={tags} />

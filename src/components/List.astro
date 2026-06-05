@@ -8,7 +8,14 @@ const { title, class: className, ...rest } = Astro.props
 ---
 
 <div class:list={[className]} {...rest}>
-  {title && <h1>{title}</h1>}
+  {
+    title && (
+      <h1>
+        {title}
+        <slot name="actions" />
+      </h1>
+    )
+  }
   <ul class="list">
     <slot />
   </ul>
@@ -40,10 +47,10 @@ const { title, class: className, ...rest } = Astro.props
     }
 
     .list-meta {
-      font-family: var(--font-mono);
-      font-size: var(--font-size-sm);
+      font-family: var(--font-body);
+      font-size: var(--font-size-md);
       color: var(--color-text-muted);
-      font-style: italic;
+      font-style: normal;
       white-space: nowrap;
     }
 
@@ -81,9 +88,9 @@ const { title, class: className, ...rest } = Astro.props
     .list-details {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-start;
       gap: var(--spacing-sm);
-      row-gap: var(--spacing-xs);
+      row-gap: 0;
     }
 
     .list-details-content {

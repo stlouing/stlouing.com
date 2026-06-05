@@ -1,7 +1,7 @@
 ---
 title: 'Menya Rui'
 rating: 9
-cuisine: ['ramen', 'japanese']
+cuisine: ['ramen']
 neighborhood: 'Northampton'
 address:
   - 3453 Hampton Ave

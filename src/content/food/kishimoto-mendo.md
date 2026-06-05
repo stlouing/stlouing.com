@@ -1,7 +1,7 @@
 ---
 title: 'Kishimoto Mendo'
 rating: 10
-cuisine: ['ramen', 'japanese']
+cuisine: ['ramen']
 neighborhood: 'University City'
 address:
   - 6394 Delmar Blvd

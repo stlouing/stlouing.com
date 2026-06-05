@@ -5,7 +5,7 @@ title: About
 
 St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
 
-I've been on a quest to find the best food in St. Louis, and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
+I've been on a quest to find [the best food in St. Louis](/food), and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
 
 The site is not meant to be a definitive source of information about the STL food scene or neighborhoods, though. Just my own little field guide.
 
@@ -41,10 +41,11 @@ This website is the source of truth for anything I have to say. I use Instagram 
 
 A few open-source projects this site relies on.
 
+- Host: [Github Pages](https://docs.github.com/en/pages)
 - Web Framework: [Astro](https://astro.build)
-- Maps: [Leaflet](https://leafletjs.com) / [OpenStreetMap](https://www.openstreetmap.org/) / [Carto](https://carto.com/)
+- Maps: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
+  - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
 - Icons: [Lucide](https://lucide.dev/icons)
-- Hosting: [Github Pages](https://docs.github.com/en/pages)
 
 ## Links
 

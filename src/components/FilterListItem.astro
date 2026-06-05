@@ -1,0 +1,79 @@
+---
+// Shared row for the Food/Hikes filterable list+map (rendered inside List, within
+// FilterMapPage). Owns the markup the filter script + map depend on (the `<li>`
+// with `data-filter-item` and the `data-*` values) and the two-row layout; each
+// page supplies the collection-specific bits via the `row-end` and `sub` slots
+// and the spread `attrs` (its `data-<facet>` + `data-sort-*`). Styling lives in
+// global.css (`.list-with-map …`) so it also reaches the slotted chips/meta.
+import { href } from '../lib/url'
+import IconArrowRight from '../assets/IconArrowRight.astro'
+
+interface Props {
+  id: string
+  title: string
+  // Canonical detail page; the "Read more" target when expandable.
+  detailHref: string
+  // Has a written body → the title toggles the inline writeup open/closed.
+  expandable: boolean
+  marker: string
+  coords?: string
+  url?: string
+  search: string
+  // Per-collection data-* attributes (facets + data-sort-*) spread onto the <li>.
+  attrs?: Record<string, string>
+}
+
+const {
+  id,
+  title,
+  detailHref,
+  expandable,
+  marker,
+  coords = '',
+  url = '',
+  search,
+  attrs = {},
+} = Astro.props
+---
+
+<li
+  id={id}
+  data-filter-item
+  data-coords={coords}
+  data-title={title}
+  data-url={url}
+  data-marker={marker}
+  data-search={search}
+  {...attrs}>
+  <div class="list-details">
+    <div class="list-row">
+      {
+        expandable ? (
+          <button type="button" class="list-title">
+            {title}
+          </button>
+        ) : (
+          <span class="list-title">{title}</span>
+        )
+      }
+      <slot name="row-end" />
+    </div>
+    {
+      Astro.slots.has('sub') && (
+        <div class="list-sub">
+          <slot name="sub" />
+        </div>
+      )
+    }
+  </div>
+  {
+    expandable && (
+      <div class="list-description">
+        <slot />
+        <a class="more" href={href(detailHref)}>
+          Read more <IconArrowRight />
+        </a>
+      </div>
+    )
+  }
+</li>

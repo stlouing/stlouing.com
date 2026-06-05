@@ -4,12 +4,10 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
-import Chip from '../../components/Chip.astro'
+import FilterListItem from '../../components/FilterListItem.astro'
 import Rating from '../../components/Rating.astro'
-import { href } from '../../lib/url'
 import { published, hasBody } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
-import IconMapPin from '../../assets/IconMapPin.astro'
 
 const places = published(await getCollection('food')).sort((left, right) =>
   left.data.title.localeCompare(right.data.title),
@@ -29,7 +27,7 @@ const hasCoords = places.some((place) => place.data.coords)
     class="food"
     label="places"
     count={places.length}
-    searchPlaceholder="name, neighborhood..."
+    searchPlaceholder="name, cuisine..."
     facets={[
       { label: 'Cuisine', facet: 'cuisine', options: cuisines },
       { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
@@ -42,22 +40,18 @@ const hasCoords = places.some((place) => place.data.coords)
     hasCoords={hasCoords}
     mapLabel="Map of food spots"
     emptyText="No places match those filters.">
-    <List title="Food" class="list-with-map">
+    <List class="list-with-map">
       {
         rendered.map(({ place, Content }) => (
-          <li
+          <FilterListItem
             id={place.id}
-            data-filter-item
-            data-cuisine={place.data.cuisine.join('|')}
-            data-neighborhood={place.data.neighborhood ?? ''}
-            data-coords={place.data.coords?.join(',') ?? ''}
-            data-title={place.data.title}
-            data-address={(place.data.address ?? []).join('\n')}
-            data-url={place.data.url ?? ''}
-            data-marker={cuisineEmoji(place.data.cuisine)}
-            data-sort-title={place.data.title}
-            data-sort-rating={place.data.rating ?? ''}
-            data-search={[
+            title={place.data.title}
+            detailHref={`/food/${place.id}`}
+            expandable={hasBody(place)}
+            marker={cuisineEmoji(place.data.cuisine)}
+            coords={place.data.coords?.join(',') ?? ''}
+            url={place.data.url ?? ''}
+            search={[
               place.data.title,
               place.data.neighborhood,
               ...(place.data.address ?? []),
@@ -66,51 +60,43 @@ const hasCoords = places.some((place) => place.data.coords)
               place.body,
             ]
               .filter(Boolean)
-              .join(' ')}>
-            <div class="list-details">
-              <div class="list-details-content">
-                {hasBody(place) ? (
-                  <a class="list-title" href={href(`/food/${place.id}`)}>
-                    {place.data.title}
-                  </a>
-                ) : (
-                  <span class="list-title">{place.data.title}</span>
-                )}
-                {place.data.rating && <Rating value={place.data.rating} />}
-                {place.data.neighborhood && (
-                  <span class="list-meta">{place.data.neighborhood}</span>
-                )}
-              </div>
-              {place.data.cuisine && (
+              .join(' ')}
+            attrs={{
+              'data-cuisine': place.data.cuisine.join('|'),
+              'data-neighborhood': place.data.neighborhood ?? '',
+              'data-address': (place.data.address ?? []).join('\n'),
+              'data-sort-title': place.data.title,
+              'data-sort-rating': String(place.data.rating ?? ''),
+            }}>
+            {place.data.rating && <Rating slot="row-end" value={place.data.rating} />}
+            <Fragment slot="sub">
+              {place.data.neighborhood && (
+                <button
+                  type="button"
+                  class="list-meta list-meta-filter"
+                  data-filter-set="neighborhood"
+                  data-filter-value={place.data.neighborhood}>
+                  {place.data.neighborhood}
+                </button>
+              )}
+              {place.data.cuisine.length > 0 && (
                 <div class="chips">
                   {place.data.cuisine.map((cuisine) => (
-                    <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>
+                    <button
+                      type="button"
+                      class="chip"
+                      data-filter-set="cuisine"
+                      data-filter-value={cuisine}>
+                      {cuisine}
+                    </button>
                   ))}
                 </div>
               )}
-            </div>
-            {place.data.address && place.data.address.length > 0 && (
-              <div class="list-address">
-                <span>{place.data.address.join(', ')}</span>
-              </div>
-            )}
-            {/* Wrapped so the map view collapses it until selected (list view shows it). */}
-            <div class="list-description">
-              <Content />
-            </div>
-          </li>
+            </Fragment>
+            <Content />
+          </FilterListItem>
         ))
       }
     </List>
   </FilterMapPage>
 </BaseLayout>
-
-<style>
-  .list-details {
-    justify-content: space-between;
-  }
-
-  .list-description {
-    color: var(--color-text);
-  }
-</style>

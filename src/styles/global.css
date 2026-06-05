@@ -24,6 +24,7 @@
   --font-body: ui-serif, Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
+  --font-size-xxs: 0.7rem;
   --font-size-xs: 0.8rem;
   --font-size-sm: 0.9rem;
   --font-size-md: 1rem;
@@ -330,6 +331,10 @@ select {
   }
 }
 
+select {
+  max-width: 150px;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -348,14 +353,9 @@ select {
   transform: translate3d(0, 0, 0);
 }
 
-/* CARTO dark tiles are very dim; lift brightness so streets stay legible. */
-.tiles-dark {
-  filter: brightness(2.5) contrast(0.95);
-}
-
-/* Dark mode: give the map a dark backdrop behind not-yet-loaded tiles, instead
+/* Dark mode: give the map a dark backdrop behind not-yet-rendered tiles, instead
    of Leaflet's default light gray (which flashes brightly when zooming out).
-   Tuned to roughly match the brightened CARTO dark tiles. */
+   Roughly matches the dark vector flavor's background. */
 :root[data-theme='dark'] .leaflet-container {
   background: var(--color-background);
 }
@@ -407,7 +407,7 @@ body:has(.map-split) main > .wrap,
 @media screen and (min-width: 1100px) {
   [data-view='map'] .results,
   .map-split .results {
-    grid-template-columns: 550px 1fr;
+    grid-template-columns: 420px 1fr;
   }
 }
 
@@ -557,38 +557,167 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* Food/Hikes list rows collapse their description until the row is expanded
+   (clicking the title is the toggle), in both list and map views. The active
+   row's title takes the accent. */
+.list-with-map li:not(.is-active) .list-description {
+  display: none;
+}
+
+.list-with-map li.is-active .list-title {
+  color: var(--color-accent);
+}
+
+.list-with-map {
+  h1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+  }
+}
+
+/* Row padding is only for the cramped map-view sidebar; the plain List view keeps
+   the rows flush so they line up with the rest of the page. */
+[data-view='map'] .list-with-map .list li {
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+/* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the
+   meta/chips come from each page's slots, so these are global — not component
+   scoped — to reach that slotted content). */
+.list-with-map .list-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.list-with-map .list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.list-with-map .list-sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.list-with-map .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.list-with-map li.is-active {
+  background: var(--color-surface);
+}
+
+.list-with-map .list-meta {
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+
+/* The title toggles its row open/closed; reads like a heading, not a button or a
+   link. (In map view it's also clickable to open the place's popup.) */
+.list-with-map .list-title {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  font-family: inherit;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.list-with-map button.list-title {
+  cursor: pointer;
+}
+
+.list-with-map button.list-title:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+.list-with-map button.list-meta-filter {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.list-with-map button.list-meta-filter:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Pills that filter the list when clicked (cuisine, difficulty); a plain span
+   pill (e.g. hike distance) is non-interactive. */
+.list-with-map .chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--spacing-sm);
+  border: 1px solid var(--color-line-input);
+  border-radius: 20px;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+
+.list-with-map button.chip {
+  cursor: pointer;
+}
+
+.list-with-map button.chip:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.list-with-map .list-description {
+  color: var(--color-text);
+}
+
+.list-with-map .list-description .more {
+  margin-block-start: var(--spacing-sm);
+}
+
 [data-view='map'] .list-with-map {
   min-height: 0;
   overflow-y: auto;
-  padding-inline: var(--spacing-md);
 
-  /* Sticky title matching the neighborhoods .pane-header; the negative inline
-     margin bleeds it past this pane's padding so the bar spans full width. */
+  /* Sticky title matching the neighborhoods .pane-header. Padding aligns with the
+     list items (which carry their own padding); no negative margin, which would
+     overhang the pane and force a horizontal scrollbar. */
   h1 {
     position: sticky;
     top: 0;
     z-index: 4;
-    margin: 0 calc(-1 * var(--spacing-md));
     padding: var(--spacing-sm) var(--spacing-md);
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-line);
     font-family: var(--font-mono);
     font-size: var(--font-size-md);
     color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 42px;
   }
 
-  /* In the cramped split view, descriptions are collapsed until their item is
-     active (selected from the list or the map). The title acts as the toggle. */
+  /* Over the map, any title is clickable — it opens the place's popup. */
   .list-title {
     cursor: pointer;
-  }
-
-  li:not(.is-active) .list-description {
-    display: none;
-  }
-
-  li.is-active .list-title {
-    color: var(--color-accent);
   }
 }
 
@@ -598,8 +727,19 @@ body:has(.map-split) main > .wrap,
   border-inline-start: 1px solid var(--color-line);
 }
 
+/* Keep the empty-state in the list's grid cell so it can't add a third grid
+   track that shoves the map. It overlaps the (now-empty) list pane and only
+   shows when no rows match; centered so it clears the sticky list header. */
+[data-view='map'] .list-with-map,
+[data-view='map'] [data-filter-empty] {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 [data-view='map'] [data-filter-empty] {
   padding-inline: var(--spacing-md);
+  align-self: center;
+  text-align: center;
 }
 
 /* Narrow screens: filter pages show just the map so the user sees it in full. */
@@ -608,7 +748,8 @@ body:has(.map-split) main > .wrap,
     grid-template-columns: 1fr;
   }
 
-  [data-view='map'] .list-with-map {
+  [data-view='map'] .list-with-map,
+  [data-view='map'] [data-filter-empty] {
     display: none;
   }
 
@@ -650,6 +791,33 @@ body:has(.map-split) main > .wrap,
   border-color: var(--color-accent);
 }
 
+.leaflet-container .leaflet-control-attribution {
+  background-color: var(--color-background) !important;
+  color: var(--color-muted) !important;
+  border-color: var(--color-line) !important;
+}
+
+/* Style attribution links */
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--color-link) !important;
+  text-decoration: none;
+}
+
+/* Optional: Keep zoom controls matching the dark theme */
+.leaflet-bar a {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-line) !important;
+
+  &:hover span {
+    color: var(--color-accent);
+  }
+}
+
+.leaflet-touch .leaflet-bar {
+  border: 1px solid var(--color-line-input) !important;
+}
+
 /* Sticky filter toolbar on directory pages (Food/Hikes). */
 .secondary-header {
   position: sticky;
@@ -688,6 +856,85 @@ body:has(.map-split) main > .wrap,
    scroll away (list view) / sit statically (map shell) so they don't stack. */
 body:has([data-filter-root]) .site-header {
   position: static;
+}
+
+/* An applied facet dropdown is accented so it's obvious which filters are on. */
+.filters select.is-active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+}
+
+/* Second row of the sticky toolbar: the active-filter chip tray + clear-all.
+   Overrides the toolbar `.wrap` (which scrolls horizontally) so chips wrap. */
+.secondary-header .wrap.active-filters {
+  align-items: center;
+  flex-wrap: wrap;
+  overflow-x: visible;
+  /* border-block-start: 1px solid var(--color-line); */
+  padding: 0 var(--spacing-md) var(--spacing-sm) var(--spacing-md);
+}
+
+.active-filters[hidden] {
+  display: none;
+}
+
+.active-filters .active-label {
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.active-filters .filter-chips {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  min-width: 0;
+}
+
+/* Removable chip per applied filter (built in filter.ts). */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 3px var(--spacing-sm);
+  border: 1px solid var(--color-line-input);
+  border-radius: 20px;
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.filter-chip .chip-value {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.filter-chip .chip-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing);
+}
+
+.filter-chip .chip-x {
+  margin-left: var(--spacing-xs);
+}
+
+.filter-chip:hover {
+  border-color: var(--color-accent);
+}
+
+.filter-chip:hover .chip-x {
+  color: var(--color-accent);
 }
 
 /* Leaflet stacks popups (pane z-index 700) above tooltips (650) by default. Lift
@@ -760,7 +1007,13 @@ body:has([data-filter-root]) .site-header {
   h2 {
     margin-block-start: 0;
     margin-block-end: var(--spacing-sm);
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
+    white-space: nowrap;
+
+    a {
+      color: var(--color-text);
+      /* text-decorat */
+    }
   }
 }
 
@@ -791,8 +1044,9 @@ body:has([data-filter-root]) .site-header {
    =========================================================================== */
 .meta {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   margin-block: var(--spacing-xs) var(--spacing-md);
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
@@ -843,20 +1097,6 @@ body:has([data-filter-root]) .site-header {
   h2 {
     margin-block-start: var(--spacing-lg);
     padding-block-start: var(--spacing-md);
-  }
-}
-
-h1.page-title {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-sm);
-  margin-bottom: 0;
-
-  span {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    font-weight: 400;
-    font-family: var(--font-mono);
   }
 }
 

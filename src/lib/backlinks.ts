@@ -19,8 +19,13 @@ function hasContent(body?: string): boolean {
 
 // Canonical URL for a source entry (mirrors astro.config wiki map + lib/tags).
 function entryUrl(collection: string, id: string, withBody: boolean): string {
-  if (collection === 'food' || collection === 'hikes' || collection === 'neighborhoods') {
-    return withBody ? `/${collection}/${id}` : `/${collection}#${id}`
+  // Every food/hike entry has its own detail page (body or not).
+  if (collection === 'food' || collection === 'hikes') {
+    return `/${collection}/${id}`
+  }
+
+  if (collection === 'neighborhoods') {
+    return withBody ? `/neighborhoods/${id}` : `/neighborhoods#${id}`
   }
 
   if (collection === 'notes') {

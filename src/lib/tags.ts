@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content'
-import { published, hasBody } from './content'
+import { published } from './content'
 
 export interface TaggedItem {
   title: string
@@ -17,7 +17,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       // cuisines are browsable like tags (click "bbq" → /tags/bbq)
       tags: [...new Set([...entry.data.cuisine, ...entry.data.tags])],
       collection: 'food',
-      url: hasBody(entry) ? `/food/${entry.id}` : `/food#${entry.id}`,
+      url: `/food/${entry.id}`,
     })
   }
 
@@ -26,7 +26,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       title: entry.data.title,
       tags: entry.data.tags,
       collection: 'hikes',
-      url: hasBody(entry) ? `/hikes/${entry.id}` : `/hikes#${entry.id}`,
+      url: `/hikes/${entry.id}`,
     })
   }
 

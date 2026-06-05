@@ -2,16 +2,19 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Chip from '../../components/Chip.astro'
 import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { href } from '../../lib/url'
-import { published, hasBody } from '../../lib/content'
+import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
+import { neighborhoodHref } from '../../lib/neighborhoods'
 import { restaurantSchema } from '../../lib/schema'
 
+// Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
-  const places = published(await getCollection('food')).filter(hasBody)
+  const places = published(await getCollection('food'))
 
   return places.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
 }
@@ -20,6 +23,7 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
+const neighborhoodLink = await neighborhoodHref(data.neighborhood)
 const schema = restaurantSchema({
   name: data.title,
   url: new URL(`/food/${entry.id}/`, Astro.site ?? Astro.url.origin).href,
@@ -28,23 +32,28 @@ const schema = restaurantSchema({
   cuisine: data.cuisine,
   rating: data.rating,
 })
+
+// Breadcrumb: Food / <neighborhood> (the neighborhood links to its page when one
+// exists, otherwise it's a plain crumb).
+const trail = [
+  { label: 'Food', href: '/food' },
+  ...(data.neighborhood ? [{ label: data.neighborhood, href: neighborhoodLink ?? undefined }] : []),
+]
 ---
 
 <BaseLayout crumb={data.title} jsonLd={schema}>
+  <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
     <Fragment slot="meta">
-      {data.rating && <Rating value={data.rating} />}
-      {data.neighborhood && <span>{data.neighborhood}</span>}
+      {
+        data.address && data.address.length > 0 && (
+          <span class="address">{data.address.join(', ')}</span>
+        )
+      }
       {data.cuisine.map((cuisine) => <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>)}
+      {data.rating && <Rating value={data.rating} />}
       <SourceLink href={data.url} />
     </Fragment>
-    {
-      data.address && data.address.length > 0 && (
-        <p class="address" slot="header-extra">
-          {data.address.join('\n')}
-        </p>
-      )
-    }
     <Content />
   </Entry>
 </BaseLayout>

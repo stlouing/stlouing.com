@@ -3,8 +3,7 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
-import Chip from '../../components/Chip.astro'
-import { href } from '../../lib/url'
+import FilterListItem from '../../components/FilterListItem.astro'
 import { published, hasBody } from '../../lib/content'
 
 const hikes = published(await getCollection('hikes')).sort((left, right) =>
@@ -41,34 +40,50 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
     <List title="Hikes" class="list-with-map">
       {
         rendered.map(({ hike, Content }) => (
-          <li
+          <FilterListItem
             id={hike.id}
-            data-filter-item
-            data-difficulty={hike.data.difficulty ?? ''}
-            data-area={hike.data.area ?? ''}
-            data-coords={hike.data.coords?.join(',') ?? ''}
-            data-title={hike.data.title}
-            data-url={hike.data.url ?? ''}
-            data-marker="🥾"
-            data-sort-title={hike.data.title}
-            data-sort-distance={hike.data.distanceMiles ?? ''}
-            data-search={[hike.data.title, hike.data.area, hike.data.difficulty, ...hike.data.tags]
+            title={hike.data.title}
+            detailHref={`/hikes/${hike.id}`}
+            expandable={hasBody(hike)}
+            marker="🥾"
+            coords={hike.data.coords?.join(',') ?? ''}
+            url={hike.data.url ?? ''}
+            search={[hike.data.title, hike.data.area, hike.data.difficulty, ...hike.data.tags]
               .filter(Boolean)
-              .join(' ')}>
-            <div class="list-details">
-              {hasBody(hike) ? (
-                <a class="list-title" href={href(`/hikes/${hike.id}`)}>
-                  {hike.data.title}
-                </a>
-              ) : (
-                <span class="list-title">{hike.data.title}</span>
+              .join(' ')}
+            attrs={{
+              'data-difficulty': hike.data.difficulty ?? '',
+              'data-area': hike.data.area ?? '',
+              'data-sort-title': hike.data.title,
+              'data-sort-distance': String(hike.data.distanceMiles ?? ''),
+            }}>
+            <Fragment slot="sub">
+              {hike.data.area && (
+                <button
+                  type="button"
+                  class="list-meta list-meta-filter"
+                  data-filter-set="area"
+                  data-filter-value={hike.data.area}>
+                  {hike.data.area}
+                </button>
               )}
-              {hike.data.area && <span class="list-meta">{hike.data.area}</span>}
-              {hike.data.distanceMiles && <Chip>{hike.data.distanceMiles} mi</Chip>}
-              {hike.data.difficulty && <Chip>{hike.data.difficulty}</Chip>}
-            </div>
+              {(hike.data.difficulty || hike.data.distanceMiles) && (
+                <div class="chips">
+                  {hike.data.difficulty && (
+                    <button
+                      type="button"
+                      class="chip"
+                      data-filter-set="difficulty"
+                      data-filter-value={hike.data.difficulty}>
+                      {hike.data.difficulty}
+                    </button>
+                  )}
+                  {hike.data.distanceMiles && <span class="chip">{hike.data.distanceMiles} mi</span>}
+                </div>
+              )}
+            </Fragment>
             <Content />
-          </li>
+          </FilterListItem>
         ))
       }
     </List>

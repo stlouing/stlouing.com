@@ -1,0 +1,36 @@
+---
+// "Clear filters" pill for a filterable list header. Wired by filter.ts via the
+// [data-filter-clear] hook (resets search + facets + sort); hidden until a filter
+// is active. Drop into the List `actions` slot: `<ClearFilters slot="actions" />`.
+---
+
+<button type="button" class="filter-clear" data-filter-clear hidden>Clear filters</button>
+
+<style>
+  .filter-clear {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    color: var(--color-accent);
+    cursor: pointer;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .filter-clear:hover {
+    background: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  /* Shown only while a filter is active (filter.ts toggles the attribute). */
+  .filter-clear[hidden] {
+    display: none;
+  }
+</style>

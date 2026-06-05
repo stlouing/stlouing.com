@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Entry from '../../components/Entry.astro'
+import { href } from '../../lib/url'
+import { published } from '../../lib/content'
+import { getBacklinks } from '../../lib/backlinks'
+import { foodByNeighborhood, normalizeName } from '../../lib/neighborhoods'
+import IconArrowRight from '../../assets/IconArrowRight.astro'
+
+// A page per written neighborhood (a collection file) — mirrors food/[slug].
+export async function getStaticPaths() {
+  const entries = published(await getCollection('neighborhoods'))
+
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+}
+
+const { entry } = Astro.props
+const { data } = entry
+const { Content } = await render(entry)
+const backlinks = await getBacklinks(entry.id)
+
+// Food places located in this neighborhood (same loose name-join as the index).
+const placesByNeighborhood = await foodByNeighborhood()
+const places = placesByNeighborhood.get(normalizeName(data.title)) ?? []
+---
+
+<BaseLayout crumb={data.title}>
+  <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
+    <Content />
+    {
+      places.length > 0 && (
+        <section class="neighborhood-food">
+          <h2>Food</h2>
+          <ul>
+            {places.map((place) => (
+              <li>
+                <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+    <p>
+      <a class="more inline" href={href(`/neighborhoods#${entry.id}`)}>
+        View on the neighborhood map <IconArrowRight />
+      </a>
+    </p>
+  </Entry>
+</BaseLayout>

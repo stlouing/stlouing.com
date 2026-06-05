@@ -5,6 +5,7 @@
 // progressive-enhancement script. The list itself is passed as the default slot.
 import FilterBar from './FilterBar.astro'
 import ViewToggle from './ViewToggle.astro'
+import ClearFilters from './ClearFilters.astro'
 
 interface Facet {
   label: string
@@ -43,6 +44,17 @@ const {
 ---
 
 <div class={className} data-filter-root data-view="list">
+  {/* Pre-paint: set the saved/default view before this subtree paints, so the
+      page doesn't flash the list then snap into the map app-shell. Mirrors the
+      theme pre-paint script in BaseLayout. The storage key + default are
+      duplicated as literals because an inline script can't import views.ts. */}
+  <script is:inline>
+    {
+      const filterRoot = document.currentScript.parentElement
+      const savedView = localStorage.getItem('list-map-view')
+      filterRoot.dataset.view = savedView === 'list' || savedView === 'map' ? savedView : 'map'
+    }
+  </script>
   <header class="secondary-header">
     <div class="wrap">
       {hasCoords && <ViewToggle />}
@@ -53,6 +65,13 @@ const {
         facets={facets}
         sorts={sorts}
       />
+    </div>
+    {/* Applied-filter tray: chips for each active facet (filter.ts builds them)
+        plus the clear-all control. Hidden until a filter is active. */}
+    <div class="wrap active-filters" data-filter-active hidden>
+      <span class="active-label">Filters</span>
+      <div class="filter-chips" data-filter-chips></div>
+      <ClearFilters />
     </div>
   </header>
 

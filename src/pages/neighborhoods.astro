@@ -5,7 +5,8 @@ import List from '../components/List.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
-import { published, hasBody } from '../lib/content'
+import { published } from '../lib/content'
+import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconCaretRight from '../assets/IconCaretRight.astro'
 import IconCaretDown from '../assets/IconCaretDown.astro'
 
@@ -86,16 +87,16 @@ for (const place of foodPlaces) {
                             <ul>
                               {places.map((place) => (
                                 <li>
-                                  <a
-                                    href={href(
-                                      hasBody(place) ? `/food/${place.id}` : `/food#${place.id}`,
-                                    )}>
-                                    {place.data.title}
-                                  </a>
+                                  <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
                                 </li>
                               ))}
                             </ul>
                           </div>
+                        )}
+                        {Content && (
+                          <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                            Read more <IconArrowRight />
+                          </a>
                         )}
                       </div>
                     )}
@@ -113,5 +114,9 @@ for (const place of foodPlaces) {
 <style>
   .number {
     color: var(--color-accent);
+  }
+
+  .more {
+    margin-top: var(--spacing-sm);
   }
 </style>

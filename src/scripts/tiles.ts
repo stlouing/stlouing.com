@@ -1,51 +1,43 @@
 import * as L from 'leaflet'
+import { leafletLayer } from 'protomaps-leaflet'
 
-// Required tile attribution. OpenStreetMap's policy and CARTO's terms both
-// mandate visible credit; CARTO additionally needs its own line since its
-// basemap is built on OSM data.
-const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-const cartoAttribution = `${osmAttribution} &copy; <a href="https://carto.com/attributions">CARTO</a>`
+// Required tile attribution. The basemap is derived from OpenStreetMap and
+// rendered by Protomaps; OSM's ODbL mandates a visible OpenStreetMap credit.
+const osmAttribution =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+const protomapsAttribution = `<a href="https://protomaps.com">Protomaps</a> ${osmAttribution}`
 
-// Base map tiles that follow the site theme, both from CARTO (keyless,
-// attribution-only) so both can serve crisp @2x tiles on high-DPI screens
-// (`detectRetina` + the `{r}` placeholder) — OpenStreetMap's own tiles have no
-// retina variant, so they look soft on those displays. Light is CARTO Voyager;
-// dark is CARTO dark, which gets a class so CSS can lift its brightness.
-const lightTiles = {
-  url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-  options: {
-    maxZoom: 19,
-    subdomains: 'abcd',
-    className: 'tiles-light',
-    // detectRetina: true,
-    attribution: cartoAttribution,
-  } as L.TileLayerOptions,
-}
+// Vector basemap slice (a St. Louis-area cut of the global Protomaps build). The
+// ~29 MB .pmtiles is kept out of the repo: local dev reads it from public/, while
+// production reads it from object storage via PUBLIC_PMTILES_URL (set in CI, so the
+// host URL never lands in the repo). protomaps-leaflet reads either over range requests.
+const localPmtilesUrl = `${import.meta.env.BASE_URL}stl.pmtiles`
+// `||` (not `??`) so an unset CI variable — which GitHub Actions passes as an
+// empty string, not undefined — also falls back to the local path.
+const protomapsTilesUrl = import.meta.env.PUBLIC_PMTILES_URL || localPmtilesUrl
 
-const darkTiles = {
-  url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-  options: {
-    maxZoom: 19,
-    subdomains: 'abcd',
-    className: 'tiles-dark',
-    // detectRetina: true,
-    attribution: cartoAttribution,
-  } as L.TileLayerOptions,
-}
+// The extract was built to z14; protomaps-leaflet overzooms past that instead
+// of going blank, so the map stays usable when zoomed in tight.
+const protomapsMaxDataZoom = 14
 
 function isDarkTheme(): boolean {
   return document.documentElement.dataset.theme === 'dark'
 }
 
 /**
- * Adds a base tile layer that follows the site theme and swaps tiles live when
- * the user toggles dark mode (watched via the <html> data-theme attribute).
+ * Adds the vector basemap (protomaps-leaflet against the self-hosted St. Louis
+ * pmtiles slice). Renders crisp at any DPI and swaps between the built-in
+ * light/dark flavors live when the site theme toggles, watched via the <html>
+ * data-theme attribute.
  */
 export function addThemedTiles(map: L.Map): void {
-  function build(dark: boolean): L.TileLayer {
-    const tiles = dark ? darkTiles : lightTiles
-
-    return L.tileLayer(tiles.url, tiles.options)
+  function build(dark: boolean): L.GridLayer {
+    return leafletLayer({
+      url: protomapsTilesUrl,
+      flavor: dark ? 'dark' : 'light',
+      maxDataZoom: protomapsMaxDataZoom,
+      attribution: protomapsAttribution,
+    }) as unknown as L.GridLayer
   }
 
   let dark = isDarkTheme()

@@ -22,3 +22,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .vscode
+
+# self-hosted map tiles — kept local for dev, served from object storage in production
+public/*.pmtiles

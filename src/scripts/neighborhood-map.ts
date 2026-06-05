@@ -37,7 +37,13 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     return
   }
 
-  const map = L.map(element, { scrollWheelZoom: true, touchZoom: true })
+  const map = L.map(element, {
+    scrollWheelZoom: true,
+    touchZoom: true,
+    minZoom: 10,
+    maxZoom: 16,
+    zoomSnap: 0.5,
+  })
   addThemedTiles(map)
 
   const baseStyle: L.PathOptions = {
@@ -152,7 +158,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       // range (e.g. Dogtown → "41-44"); the box widens to fit it.
       if (Number.isFinite(number)) {
         const badge = entry && 'numberLabel' in entry ? entry.numberLabel : String(number)
-        const width = Math.max(20, badge.length * 9)
+        const width = Math.max(20, badge?.length || 1 * 9)
         L.marker(layerBounds.getCenter(), {
           icon: L.divIcon({
             className: 'neighborhood-number',
@@ -179,7 +185,5 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     title.addEventListener('click', () => selectNeighborhood(slug))
   }
 
-  // Fit the whole city, then step one level closer for a tighter default view.
-  map.fitBounds(bounds, { padding: [10, 10] })
-  map.setZoom(map.getZoom() + 1)
+  map.fitBounds(bounds, { padding: [0, -50], animate: false })
 }

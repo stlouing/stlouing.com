@@ -4,11 +4,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Chip from '../../components/Chip.astro'
 import SourceLink from '../../components/SourceLink.astro'
-import { published, hasBody } from '../../lib/content'
+import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 
 export async function getStaticPaths() {
-  const hikes = published(await getCollection('hikes')).filter(hasBody)
+  const hikes = published(await getCollection('hikes'))
 
   return hikes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
 }

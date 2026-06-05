@@ -3,7 +3,16 @@ import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
 import { hostLabel } from '../lib/links'
 
-export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
+export interface MapApi {
+  // Fix Leaflet's sizing after the map becomes visible.
+  refresh: () => void
+  // Open/close a place's popup (driven by the shared list-title click handler).
+  togglePopup: (item: HTMLElement) => void
+  // Clear the current selection (closes the open popup → de-selects the row).
+  deselect: () => void
+}
+
+export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   const el = document.querySelector<HTMLElement>(mapSelector)
 
   if (!el) {
@@ -16,10 +25,12 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
   // open popup (which would visually de-select a place while its list row stays
   // active). Selection only changes when another marker is clicked.
   const map = L.map(el, {
-    wheelPxPerZoomLevel: 60,
+    closePopupOnClick: false,
     scrollWheelZoom: true,
     touchZoom: true,
-    closePopupOnClick: false,
+    minZoom: 10,
+    maxZoom: 16,
+    zoomSnap: 0.5,
   })
   addThemedTiles(map)
 
@@ -98,9 +109,10 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
         // two never stack — the popup is simply left in place. Address lines
         // render under the title when present.
         const title = item.dataset.title ?? ''
+        console.log(item)
         const addressLines = (item.dataset.address ?? '').split('\n').filter(Boolean)
         const infoHtml = addressLines.length
-          ? `<h2>${title}</h2><span class="tip-address">${addressLines.join('<br>')}</span>`
+          ? `<h2><a href=${`/food/${item.id}`}>${title}</a></h2><span class="tip-address">${addressLines.join('<br>')}</span>`
           : `<strong>${title}</strong>`
 
         // The clickable popup also gets the source link (AllTrails, Instagram,
@@ -114,6 +126,8 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
         const placeMarker = L.marker([lat, lng], { icon }).bindPopup(popupHtml, {
           className: 'food-popup',
           offset: [0, 0],
+          maxWidth: 350,
+          minWidth: 220,
         })
         // .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
         // Selection follows the popup: opening it (by click, the list, or
@@ -158,36 +172,31 @@ export function initMap(mapSelector = '[data-map]'): (() => void) | undefined {
     }
   }
 
-  const root = scope instanceof Element ? scope : null
-
-  // In map view, clicking a list title toggles its place's popup (expand + pan)
-  // instead of following its link; the popup events keep the row in sync. In list
-  // view the title is a normal link to the detail page, so we leave it alone.
-  for (const item of items) {
-    const title = item.querySelector<HTMLElement>('.list-title')
-    if (!title) {
-      continue
+  // Open/close a place's popup on demand (the shared list-title click handler in
+  // views.ts calls this in map view). The popup's open/close events keep the row
+  // selection in sync; activeItem decides whether a click opens or closes.
+  function togglePopup(item: HTMLElement): void {
+    const marker = markers.get(item)
+    if (!marker) {
+      return
     }
-    title.addEventListener('click', (event) => {
-      if (root?.getAttribute('data-view') !== 'map') {
-        return
-      }
-      event.preventDefault()
-      const marker = markers.get(item)
-      if (!marker) {
-        return
-      }
-      if (item === activeItem) {
-        marker.closePopup()
-      } else {
-        marker.openPopup()
-      }
-    })
+    if (item === activeItem) {
+      marker.closePopup()
+    } else {
+      marker.openPopup()
+    }
+  }
+
+  // Close the open popup, which cascades through popupclose → deactivate to clear
+  // the row's `is-active` state and the marker highlight.
+  function deselect(): void {
+    if (activeItem) {
+      markers.get(activeItem)?.closePopup()
+    }
   }
 
   sync()
   scope.addEventListener('filter:changed', sync)
 
-  // Returned so callers can fix sizing after the map becomes visible.
-  return () => map.invalidateSize()
+  return { refresh: () => map.invalidateSize(), togglePopup, deselect }
 }

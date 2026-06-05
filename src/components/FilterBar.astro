@@ -19,7 +19,7 @@ interface Props {
   sorts?: SortOption[]
 }
 
-const { label, count, facets, searchPlaceholder = 'name…', sorts = [] } = Astro.props
+const { label, count, facets, searchPlaceholder = 'name...', sorts = [] } = Astro.props
 ---
 
 <form class="filters" role="search" aria-label={`Filter ${label}`}>
@@ -37,7 +37,11 @@ const { label, count, facets, searchPlaceholder = 'name…', sorts = [] } = Astr
     facets.map((facet) => (
       <p class="field">
         <label for={facet.facet}>{facet.label}</label>
-        <select id={facet.facet} data-filter-facet={facet.facet}>
+        <select
+          id={facet.facet}
+          data-filter-facet={facet.facet}
+          data-filter-label={facet.label}
+          autocomplete="off">
           <option value="">All</option>
           {facet.options.map((option) => (
             <option value={option}>{option}</option>

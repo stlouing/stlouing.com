@@ -31,12 +31,12 @@ export const sections: Section[] = [
     primary: true,
     description: 'A map of St. Louis neighborhoods',
   },
-  {
-    label: 'Hikes',
-    path: '/hikes',
-    group: 'guides',
-    description: 'Exploring the nature of Missouri',
-  },
+  // {
+  //   label: 'Hikes',
+  //   path: '/hikes',
+  //   group: 'guides',
+  //   description: 'Exploring the nature of Missouri',
+  // },
 
   {
     label: 'Topics',
