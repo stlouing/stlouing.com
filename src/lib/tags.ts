@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content'
 import { published } from './content'
+import { entryUrl } from './entry-url.mjs'
 
 export interface TaggedItem {
   title: string
@@ -17,7 +18,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       // cuisines are browsable like tags (click "bbq" → /tags/bbq)
       tags: [...new Set([...entry.data.cuisine, ...entry.data.tags])],
       collection: 'food',
-      url: `/food/${entry.id}`,
+      url: entryUrl('food', entry.id),
     })
   }
 
@@ -26,7 +27,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       title: entry.data.title,
       tags: entry.data.tags,
       collection: 'hikes',
-      url: `/hikes/${entry.id}`,
+      url: entryUrl('hikes', entry.id),
     })
   }
 
@@ -35,7 +36,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       title: entry.data.title,
       tags: entry.data.tags,
       collection: 'notes',
-      url: `/notes/${entry.id}`,
+      url: entryUrl('notes', entry.id),
     })
   }
 
@@ -44,7 +45,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       title: entry.data.title,
       tags: entry.data.tags,
       collection: 'neighborhoods',
-      url: `/neighborhoods/${entry.id}`,
+      url: entryUrl('neighborhoods', entry.id),
     })
   }
 
@@ -53,7 +54,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       title: entry.data.title,
       tags: entry.data.tags,
       collection: 'topics',
-      url: `/${entry.id}`,
+      url: entryUrl('topics', entry.id),
     })
   }
 

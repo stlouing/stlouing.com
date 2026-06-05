@@ -930,6 +930,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .filter-chip .chip-x {
+  display: inline-flex;
   margin-left: var(--spacing-xs);
 }
 
@@ -937,7 +938,7 @@ body:has([data-filter-root]) .site-header {
   border-color: var(--color-accent);
 }
 
-.filter-chip:hover .chip-x {
+.filter-chip:hover .chip-x .icon {
   color: var(--color-accent);
 }
 

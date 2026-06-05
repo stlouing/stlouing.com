@@ -60,7 +60,7 @@ for (const place of foodPlaces) {
                   : neighborhood.number
 
                 return (
-                  <li data-section={neighborhood.slug}>
+                  <li id={neighborhood.slug} data-section={neighborhood.slug}>
                     {isExpandable ? (
                       <button
                         type="button"

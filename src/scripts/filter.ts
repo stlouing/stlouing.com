@@ -29,6 +29,11 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   const chips = root.querySelector<HTMLElement>('[data-filter-chips]')
   const list = items[0]?.parentElement ?? null
 
+  // Mirrors src/assets/IconX.astro — client scripts can't import .astro, so the
+  // remove "x" on each runtime-built chip is inlined here.
+  const iconX =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>'
+
   // Build the active-filter chip tray: one removable chip per applied facet.
   function renderChips(): void {
     if (!chips) {
@@ -56,7 +61,7 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
       const removeMark = document.createElement('span')
       removeMark.className = 'chip-x'
       removeMark.setAttribute('aria-hidden', 'true')
-      removeMark.textContent = '×'
+      removeMark.innerHTML = iconX
 
       chip.append(labelSpan, valueSpan, removeMark)
       chips.appendChild(chip)

@@ -186,4 +186,16 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   map.fitBounds(bounds, { padding: [0, -50], animate: false })
+
+  // Deep-link support: /neighborhoods#slug selects that neighborhood on load, so
+  // the "View on the neighborhood map" links (and any backlinks) expand its
+  // writeup, highlight its boundary, and frame it on the map.
+  const initialSlug = location.hash.slice(1)
+  if (initialSlug && pathBySlug.has(initialSlug)) {
+    selectNeighborhood(initialSlug)
+    const selectedBounds = (pathBySlug.get(initialSlug) as L.Polygon | undefined)?.getBounds()
+    if (selectedBounds) {
+      map.fitBounds(selectedBounds, { padding: [40, 40], animate: false })
+    }
+  }
 }

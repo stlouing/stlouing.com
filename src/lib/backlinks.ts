@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content'
+import { entryUrl } from './entry-url.mjs'
 
 /**
  * Backlinks ("mentioned in"): scans every collection entry's body for
@@ -13,32 +14,6 @@ export interface Backlink {
 
 const WIKILINK = /\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g
 
-function hasContent(body?: string): boolean {
-  return (body ?? '').replace(/<!--[\s\S]*?-->/g, '').trim().length > 0
-}
-
-// Canonical URL for a source entry (mirrors astro.config wiki map + lib/tags).
-function entryUrl(collection: string, id: string, withBody: boolean): string {
-  // Every food/hike entry has its own detail page (body or not).
-  if (collection === 'food' || collection === 'hikes') {
-    return `/${collection}/${id}`
-  }
-
-  if (collection === 'neighborhoods') {
-    return withBody ? `/neighborhoods/${id}` : `/neighborhoods#${id}`
-  }
-
-  if (collection === 'notes') {
-    return `/notes/${id}`
-  }
-
-  if (collection === 'topics') {
-    return `/${id}`
-  }
-
-  return `/${collection}/${id}`
-}
-
 let cache: Map<string, Backlink[]> | null = null
 
 async function buildMap(): Promise<Map<string, Backlink[]>> {
@@ -51,7 +26,6 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
     collection: string
     title: string
     body: string
-    withBody: boolean
   }
   const sources: Source[] = []
   const add = (
@@ -64,7 +38,6 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
         collection,
         title: entry.data.title ?? entry.id,
         body: entry.body ?? '',
-        withBody: hasContent(entry.body),
       })
     }
   }
@@ -92,7 +65,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
       const list = map.get(target) ?? []
       list.push({
         title: source.title,
-        url: entryUrl(source.collection, source.id, source.withBody),
+        url: entryUrl(source.collection, source.id),
         collection: source.collection,
       })
       map.set(target, list)
