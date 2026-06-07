@@ -43,6 +43,11 @@ for (const place of foodPlaces) {
       <article class="page content-pane">
         <header class="pane-header">
           <h1>Neighborhoods</h1>
+          <ul class="region-legend" aria-label="Map regions">
+            <li class="region-legend-item region-north">North</li>
+            <li class="region-legend-item region-central">Central</li>
+            <li class="region-legend-item region-south">South</li>
+          </ul>
         </header>
         <List>
           {
@@ -112,5 +117,52 @@ for (const place of foodPlaces) {
 
   .more {
     margin-top: var(--spacing-sm);
+  }
+
+  /* Compact color key for the map's region groups, sitting beside the title.
+     Each dot pulls from the same --color-map-* token the polygons use. */
+  .region-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    gap: var(--spacing-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .region-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin: 0;
+    padding: 2px var(--spacing-sm);
+    border: 1px solid var(--color-line-input);
+    border-radius: 20px;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .region-legend-item::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--legend-color);
+    flex-shrink: 0;
+  }
+
+  .region-north {
+    --legend-color: var(--color-map-north);
+  }
+
+  .region-central {
+    --legend-color: var(--color-map-central);
+  }
+
+  .region-south {
+    --legend-color: var(--color-map-south);
   }
 </style>

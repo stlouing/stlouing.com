@@ -53,7 +53,9 @@ if (segments.length >= 1) {
 }
 
 const leaf = trail.length > 1 ? trail[trail.length - 1].label : undefined
-const pageTitle = leaf ? `${leaf} | ${SITE_NAME}` : `${SITE_NAME} | Maps, Guides, and Observations`
+const pageTitle = leaf
+  ? `${leaf} | ${SITE_NAME}`
+  : `${SITE_NAME} | Food, Neighborhoods, and Culture of St. Louis`
 
 const metaDescription = description ?? SITE_DESCRIPTION
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
