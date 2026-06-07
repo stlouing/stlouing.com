@@ -7,6 +7,8 @@ import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { foodByNeighborhood, normalizeName } from '../../lib/neighborhoods'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
+import neighborhoods from '../../data/neighborhoods.json'
+import { formatDate } from '../../lib/dates'
 
 // A page per written neighborhood (a collection file) — mirrors food/[slug].
 export async function getStaticPaths() {
@@ -30,11 +32,38 @@ const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods' },
   { label: data.title, href: `/neighborhoods#${entry.id}` },
 ]
+
+// Auto-generated description from the neighborhood's region + official number.
+// Kept here in code (not in the markdown frontmatter) so the wording is easy to
+// tweak in one place; the region comes from src/data/neighborhoods.json.
+const info = neighborhoods.find((item) => item.slug === entry.id) as
+  | { number: number; numberLabel?: string; group: string }
+  | undefined
+const description = info
+  ? `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}.`
+  : undefined
 ---
 
-<BaseLayout crumb={data.title}>
+<BaseLayout crumb={data.title} description={description}>
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
+    {
+      description && (
+        <p class="entry-summary" slot="lede">
+          {description}
+        </p>
+      )
+    }
+    {
+      data.updated && (
+        <Fragment slot="meta">
+          <span>
+            Last updated on
+            <time datetime={data.updated.toISOString()}>{formatDate(data.updated)}</time>
+          </span>
+        </Fragment>
+      )
+    }
     <Content />
     {
       places.length > 0 && (

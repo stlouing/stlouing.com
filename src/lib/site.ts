@@ -10,12 +10,8 @@ export interface Social {
   url: string
 }
 
-// The persona's (anonymous) accounts elsewhere. Single source of truth for the
-// `rel="me"` identity links in the head and the homepage h-card; mirrors the
-// list authored in about.md.
 export const SOCIALS: Social[] = [
   { label: 'GitHub', url: 'https://github.com/stlouing' },
-  { label: 'Instagram', url: 'https://instagram.com/stlouing' },
   { label: 'YouTube', url: 'https://www.youtube.com/@stlouing' },
   { label: 'Bluesky', url: 'https://bsky.app/profile/stlouing.com' },
   { label: 'Substack', url: 'https://stlouing.substack.com' },

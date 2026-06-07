@@ -22,14 +22,14 @@ export const sections: Section[] = [
     path: '/food',
     group: 'guides',
     primary: true,
-    description: `An interactive map of my favorite spots, filterable by cuisine and neighborhood. All ratings are subjective based on my taste and experiences.`,
+    description: `An interactive map of my favorite spots across the metro, filterable by cuisine and neighborhood. All ratings are subjective based on my taste and experiences.`,
   },
   {
     label: 'Neighborhoods',
     path: '/neighborhoods',
     group: 'guides',
     primary: true,
-    description: `A map of the 79 neighborhoods and 9 parks in St. Louis, where I can keep track of the unique things I've learned about each area.`,
+    description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, where I can keep track of the unique things I've learned about each area.`,
   },
   // {
   //   label: 'Hikes',

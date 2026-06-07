@@ -1,7 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
-import { hostLabel } from '../lib/links'
 
 export interface MapApi {
   // Fix Leaflet's sizing after the map becomes visible.
@@ -121,9 +120,16 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         // …). The hover tooltip can't — it's pointer-events:none — so it stays
         // info-only.
         const url = item.dataset.url ?? ''
-        const popupHtml = url
-          ? `${infoHtml}<a class="popup-link" href="${url}" target="_blank" rel="noopener">${hostLabel(url)} ↗</a>`
-          : infoHtml
+        const google = item.dataset.google ?? ''
+        const links = [
+          url &&
+            `<a class="popup-link" href="${url}" target="_blank" rel="noopener">Website ↗</a>`,
+          google &&
+            `<a class="popup-link" href="${google}" target="_blank" rel="noopener">Google Maps ↗</a>`,
+        ]
+          .filter(Boolean)
+          .join('')
+        const popupHtml = `${infoHtml}${links}`
 
         const placeMarker = L.marker([lat, lng], { icon }).bindPopup(popupHtml, {
           className: 'food-popup',

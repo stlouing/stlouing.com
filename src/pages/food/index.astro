@@ -69,6 +69,7 @@ const hasCoords = places.some((place) => place.data.coords)
               'data-address': (place.data.address ?? []).join('\n'),
               'data-sort-title': place.data.title,
               'data-sort-rating': String(place.data.rating ?? ''),
+              'data-google': place.data.google ?? '',
             }}>
             {place.data.rating && <RatingBadge slot="lead" value={place.data.rating} />}
             {place.data.neighborhood && (
@@ -101,7 +102,10 @@ const hasCoords = places.some((place) => place.data.coords)
                 {place.data.address[0]}
               </span>
             )}
-            <SourceLink href={place.data.url} />
+            <div class="place-links">
+              <SourceLink href={place.data.url} />
+              <SourceLink href={place.data.google} label="Google Maps" />
+            </div>
             <Content />
           </FilterListItem>
         ))

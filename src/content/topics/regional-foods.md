@@ -5,12 +5,24 @@ created: 2026-06-03
 updated: 2026-05-31
 ---
 
-## Gooey Butter Cake
-
-## St. Louis Style Pizza
-
-See [[st-louis-style-pizza|St. Louis Style Pizza]] for the full writeup.
-
 ## Toasted Ravioli
 
+## Gooey Butter Cake
+
+## St. Louis-style Pizza
+
+See [[st-louis-style-pizza|St. Louis-style Pizza]] for the full writeup.
+
+## Provel cheese
+
+## Pork Steak
+
+## Trashed Wings
+
+## Slinger
+
 ## St. Louis Salad
+
+## St. Paul Sandwich
+
+## Red Hot Riplets

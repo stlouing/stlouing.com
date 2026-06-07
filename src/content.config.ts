@@ -22,6 +22,8 @@ const food = defineCollection({
       .transform((value) => (Array.isArray(value) ? value : [value]))
       .optional(),
     url: z.string().url().optional(),
+    // Google Maps link for the place (official maps/search URL).
+    google: z.string().url().optional(),
     ...coords,
     ...taggable,
   }),
@@ -53,7 +55,7 @@ const notes = defineCollection({
 
 const neighborhoods = defineCollection({
   loader: md('neighborhoods'),
-  schema: z.object({ title: z.string(), ...taggable }),
+  schema: z.object({ title: z.string(), updated: z.coerce.date().optional(), ...taggable }),
 })
 
 // Evergreen, non-chronological pages (a "digital garden" section). Same

@@ -24,7 +24,23 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   const styles = getComputedStyle(document.documentElement)
-  const mapAccent = styles.getPropertyValue('--color-map-accent').trim() || '#5a3a93'
+  const readColor = (token: string, fallback: string) =>
+    styles.getPropertyValue(token).trim() || fallback
+  // One color per region group — top→bottom: North red, Central purple, South blue.
+  const colorCentral = readColor('--color-map-central', readColor('--color-map-accent', '#6a47a6'))
+  const colorNorth = readColor('--color-map-north', '#9c3b2e')
+  const colorSouth = readColor('--color-map-south', '#225aa9')
+
+  function colorForGroup(group: string | undefined): string {
+    if (group === 'North City') {
+      return colorNorth
+    }
+    if (group === 'South City') {
+      return colorSouth
+    }
+
+    return colorCentral
+  }
 
   let geojson: GeoJSON.FeatureCollection
   try {
@@ -46,19 +62,18 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   })
   addThemedTiles(map)
 
-  const baseStyle: L.PathOptions = {
-    color: mapAccent,
-    weight: 2,
-    fillColor: mapAccent,
-    fillOpacity: 0.1,
+  const colorBySlug = new Map<string, string>()
+  function baseStyleFor(slug: string): L.PathOptions {
+    const color = colorBySlug.get(slug) ?? colorCentral
+
+    return { color, weight: 2, fillColor: color, fillOpacity: 0.1 }
+  }
+  function selectedStyleFor(slug: string): L.PathOptions {
+    const color = colorBySlug.get(slug) ?? colorCentral
+
+    return { color, weight: 4, fillColor: color, fillOpacity: 0.4 }
   }
   const hoverStyle: L.PathOptions = { weight: 3, fillOpacity: 0.3 }
-  const selectedStyle: L.PathOptions = {
-    color: mapAccent,
-    weight: 4,
-    fillColor: mapAccent,
-    fillOpacity: 0.4,
-  }
 
   const rows = [...document.querySelectorAll<HTMLElement>('[data-section]')]
   const pathBySlug = new Map<string, L.Path>()
@@ -83,12 +98,12 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
 
     if (selectedSlug) {
-      paintPath(selectedSlug, baseStyle)
+      paintPath(selectedSlug, baseStyleFor(selectedSlug))
       setRowExpanded(selectedSlug, false)
     }
 
     selectedSlug = slug
-    paintPath(slug, selectedStyle)
+    paintPath(slug, selectedStyleFor(slug))
     setRowExpanded(slug, true)
     // Bring the chosen neighborhood to the top of the pane (scroll-padding on
     // .content-pane keeps it clear of the sticky header).
@@ -98,7 +113,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
   function clearSelection(): void {
     if (selectedSlug) {
-      paintPath(selectedSlug, baseStyle)
+      paintPath(selectedSlug, baseStyleFor(selectedSlug))
       setRowExpanded(selectedSlug, false)
     }
     selectedSlug = null
@@ -123,7 +138,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   const bounds = L.latLngBounds([])
 
   L.geoJSON(geojson, {
-    style: () => baseStyle,
+    style: (feature) => {
+      const color = colorForGroup(byNumber.get(Number(feature?.properties?.NHD_NUM))?.group)
+
+      return { color, weight: 2, fillColor: color, fillOpacity: 0.1 }
+    },
     onEachFeature: (feature, featureLayer) => {
       const number = Number(feature.properties?.NHD_NUM)
       const entry = byNumber.get(number)
@@ -134,6 +153,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       bounds.extend(layerBounds)
       if (slug) {
         pathBySlug.set(slug, path)
+        colorBySlug.set(slug, colorForGroup(entry?.group))
       }
 
       featureLayer.bindTooltip(name, {
@@ -149,7 +169,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         }
       })
       featureLayer.on('mouseout', () => {
-        path.setStyle(slug === selectedSlug ? selectedStyle : baseStyle)
+        path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
       })
       featureLayer.on('click', () => selectNeighborhood(slug))
 

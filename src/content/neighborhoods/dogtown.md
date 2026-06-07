@@ -1,5 +1,6 @@
 ---
 title: Dogtown
+updated: 2026-06-07
 ---
 
 Dogtown is an unofficial neighborhood made up of four city neighborhoods:

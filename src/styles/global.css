@@ -17,6 +17,10 @@
   --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
   --color-map-accent: #6a47a6;
+  /* Neighborhood map by region (top→bottom): North red, Central purple, South blue. */
+  --color-map-north: #9c3b2e;
+  --color-map-central: #6a47a6;
+  --color-map-south: #13458a;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
 
@@ -62,6 +66,9 @@
   --color-line-input: #45444b;
   --color-accent: #e18484;
   --color-map-accent: #b59ae0;
+  --color-map-north: #e18484;
+  --color-map-central: #b59ae0;
+  --color-map-south: #87acdd;
   --color-link: #7ba8e3;
   --color-link-hover: #a8c8f2;
 
@@ -592,6 +599,18 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* The website + Google Maps links sit on one row in the open panel. */
+.list-with-map .list-description .place-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-block-end: var(--spacing-md);
+
+  &:last-child {
+    margin-block-end: 0;
+  }
+}
+
 /* A row is a rating badge (left) beside the place details (right). */
 .list-with-map .list-details {
   display: flex;
@@ -1018,8 +1037,8 @@ body:has([data-filter-root]) .site-header {
 .map-tooltip .tip-address,
 .food-popup .tip-address {
   display: block;
-  margin-block-start: var(--spacing-xs);
-  font-size: var(--font-size-xs);
+  margin-block: var(--spacing-xs);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-muted-2);
   white-space: nowrap;
@@ -1045,6 +1064,7 @@ body:has([data-filter-root]) .site-header {
 .leaflet-popup.food-popup .leaflet-popup-content {
   margin: 0;
   padding: var(--spacing-md);
+  margin-right: var(--spacing-lg);
   font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1.2;
@@ -1056,6 +1076,7 @@ body:has([data-filter-root]) .site-header {
     white-space: nowrap;
 
     a {
+      font-weight: 700;
       color: var(--color-text);
       text-decoration-color: var(--color-accent);
     }
@@ -1064,7 +1085,7 @@ body:has([data-filter-root]) .site-header {
 
 /* Source link (AllTrails, Instagram, …) appended inside the popup. */
 .leaflet-popup.food-popup .popup-link {
-  display: inline-block;
+  display: block;
   margin-block-start: var(--spacing-sm);
   font-size: var(--font-size-sm);
   font-weight: 500;
@@ -1072,6 +1093,8 @@ body:has([data-filter-root]) .site-header {
 }
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
   color: var(--color-text-muted);
 
   &:hover {
@@ -1096,6 +1119,14 @@ body:has([data-filter-root]) .site-header {
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+}
+
+/* Italic accent lede under an entry title (topics, neighborhoods). */
+.entry-summary {
+  margin-block: var(--spacing-xs);
+  font-size: var(--font-size-lg);
+  font-style: italic;
+  color: var(--color-accent);
 }
 
 /* An organized header bar holding the meta and the edit link, divided from the
