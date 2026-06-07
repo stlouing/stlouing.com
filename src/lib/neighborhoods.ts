@@ -35,13 +35,15 @@ export async function neighborhoodHref(name: string | undefined): Promise<string
   if (!name) {
     return null
   }
+
   const slug = slugByName.get(normalizeName(name))
   if (!slug) {
     return null
   }
+
   const slugs = await neighborhoodPageSlugs()
 
-  return slugs.has(slug) ? `/neighborhoods/${slug}` : null
+  return slugs.has(slug) ? `/neighborhoods/${slug}` : `/neighborhoods#${slug}`
 }
 
 // Published food places grouped by normalized neighborhood name, for the

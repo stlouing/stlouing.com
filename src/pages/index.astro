@@ -25,6 +25,10 @@ const allTopics = published(await getCollection('topics')).sort(
 const latestNotes = allNotes.slice(0, 5)
 const latestTopics = allTopics.slice(0, 5)
 
+// Item counts shown next to the guide sections in the directory.
+const foodCount = published(await getCollection('food')).length
+const countByPath: Record<string, string> = { '/food': String(foodCount), '/neighborhoods': '88' }
+
 const lastUpdated = new Date('2026-06-03')
 
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
@@ -54,20 +58,20 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         if (group.id === 'notes') {
           return (
             <section class="group">
-              <h2 class="group-label">{group.label}</h2>
+              <div class="group-header">
+                <h2 class="group-label">{group.label}</h2>
+                <a class="all" href={href('/notes')}>
+                  All <IconArrowRight />
+                </a>
+              </div>
               <List>
                 {latestNotes.map((note) => (
                   <ListItem
                     title={note.data.title}
                     href={href(`/notes/${note.id}`)}
-                    description={formatDateShort(note.data.date)}
+                    meta={formatDateShort(note.data.date)}
                   />
                 ))}
-                <li>
-                  <a class="more" href={href('/notes')}>
-                    All notes <IconArrowRight />
-                  </a>
-                </li>
               </List>
             </section>
           )
@@ -76,7 +80,12 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         if (group.id === 'topics') {
           return (
             <section class="group">
-              <h2 class="group-label">{group.label}</h2>
+              <div class="group-header">
+                <h2 class="group-label">{group.label}</h2>
+                <a class="all" href={href('/topics')}>
+                  All <IconArrowRight />
+                </a>
+              </div>
               <List>
                 {latestTopics.map((topic) => (
                   <ListItem
@@ -85,11 +94,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                     description={topic.data.description || formatDateShort(topic.data.updated)}
                   />
                 ))}
-                <li>
-                  <a class="more" href={href('/topics')}>
-                    All topics <IconArrowRight />
-                  </a>
-                </li>
               </List>
             </section>
           )
@@ -103,7 +107,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
         return (
           <section class="group">
-            {group.label && <h2 class="group-label">{group.label}</h2>}
+            <div class="group-header">
+              <h2 class="group-label">{group.label}</h2>
+            </div>
 
             <List>
               {items.map((section) => (
@@ -111,6 +117,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                   title={section.label}
                   href={href(section.path)}
                   description={section.description}
+                  meta={countByPath[section.path]}
                 />
               ))}
             </List>
@@ -166,6 +173,51 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     span {
       color: var(--color-text-muted);
     }
+  }
+
+  /* Section header: label on the left, optional "all →" on the right, with a
+     dotted rule under both (matches the list-item separators below it). */
+  .group-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    border-block-end: 1px solid var(--color-text-muted);
+    padding-block-end: var(--spacing-xs);
+    margin-block-end: var(--spacing-xs);
+    min-height: 24px;
+  }
+
+  .group-header .group-label {
+    margin: 0;
+  }
+
+  .group-header .all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .group-header .all:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-style: solid;
+  }
+
+  /* Keep the arrow the same accent color as the link text. */
+  .group-header .all :global(.icon) {
+    color: inherit;
   }
 
   .directory {

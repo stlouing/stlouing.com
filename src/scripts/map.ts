@@ -64,11 +64,13 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
     if (activeItem) {
       activeItem.classList.remove('is-active')
+      activeItem.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
       highlightMarker(activeItem, false)
     }
 
     activeItem = item
     item.classList.add('is-active')
+    item.querySelector('.list-title')?.setAttribute('aria-expanded', 'true')
     highlightMarker(item, true)
     item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
@@ -84,6 +86,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
     activeItem = null
     item.classList.remove('is-active')
+    item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
     highlightMarker(item, false)
   }
 
@@ -109,7 +112,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         // two never stack — the popup is simply left in place. Address lines
         // render under the title when present.
         const title = item.dataset.title ?? ''
-        console.log(item)
         const addressLines = (item.dataset.address ?? '').split('\n').filter(Boolean)
         const infoHtml = addressLines.length
           ? `<h2><a href=${`/food/${item.id}`}>${title}</a></h2><span class="tip-address">${addressLines.join('<br>')}</span>`

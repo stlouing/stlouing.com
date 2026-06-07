@@ -11,7 +11,8 @@ const { value } = Astro.props
 
 <div class="rating">
   <IconStar />
-  <span class="score">{value}<span class="out-of">/10</span></span>
+  <span class="score"><span class="rating-value">{value}</span><span class="out-of">/10</span></span
+  >
 </div>
 
 <style>
@@ -29,9 +30,14 @@ const { value } = Astro.props
     color: var(--color-text);
   }
 
+  .rating-value {
+    font-size: var(--font-size-);
+  }
+
   .out-of {
     color: var(--color-text-muted);
     font-weight: 400;
+    font-size: 0.7rem;
   }
 
   /* Make the star a solid accent mark: fill it and override the shared muted

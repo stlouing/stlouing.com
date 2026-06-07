@@ -1,0 +1,33 @@
+---
+// Numeric score badge shown at the left of a Food list row (e.g. "9 / 10").
+// The detail page still uses the inline star <Rating> — this is the list look.
+interface Props {
+  value: number
+}
+
+const { value } = Astro.props
+---
+
+<div class="rating-badge">
+  {value}
+</div>
+
+<style>
+  .rating-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background: var(--color-accent);
+    border-radius: var(--radius);
+    color: var(--color-background);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03rem;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+  }
+</style>

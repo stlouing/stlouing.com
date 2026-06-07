@@ -1,20 +1,26 @@
 ---
 // Shared row for the Food/Hikes filterable list+map (rendered inside List, within
 // FilterMapPage). Owns the markup the filter script + map depend on (the `<li>`
-// with `data-filter-item` and the `data-*` values) and the two-row layout; each
-// page supplies the collection-specific bits via the `row-end` and `sub` slots
-// and the spread `attrs` (its `data-<facet>` + `data-sort-*`). Styling lives in
-// global.css (`.list-with-map …`) so it also reaches the slotted chips/meta.
+// with `data-filter-item` and the `data-*` values); each page fills the slots:
+//   lead         — left column, e.g. a rating badge
+//   title-after  — inline beside the name, e.g. the neighborhood
+//   row-end      — right of the headline, e.g. cuisine chips
+//   sub          — a second meta line, e.g. the address
+//   (default)    — the panel revealed when the row is expanded
+// Styling lives in global.css (`.list-with-map …`) so it reaches the slotted bits.
 import { href } from '../lib/url'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
 interface Props {
   id: string
   title: string
-  // Canonical detail page; the "Read more" target when expandable.
+  // Canonical detail page; the "Read more" target inside the open panel.
   detailHref: string
-  // Has a written body → the title toggles the inline writeup open/closed.
+  // Render the row as a disclosure: the title toggles the inline panel open.
   expandable: boolean
+  // Show the "Read more" deep link in the open panel — only worth it when the
+  // detail page holds more than the panel already shows (i.e. a real body).
+  readMore?: boolean
   marker: string
   coords?: string
   url?: string
@@ -28,6 +34,7 @@ const {
   title,
   detailHref,
   expandable,
+  readMore = true,
   marker,
   coords = '',
   url = '',
@@ -46,33 +53,47 @@ const {
   data-search={search}
   {...attrs}>
   <div class="list-details">
-    <div class="list-row">
-      {
-        expandable ? (
-          <button type="button" class="list-title">
-            {title}
-          </button>
-        ) : (
-          <span class="list-title">{title}</span>
-        )
-      }
-      <slot name="row-end" />
-    </div>
     {
-      Astro.slots.has('sub') && (
-        <div class="list-sub">
-          <slot name="sub" />
+      Astro.slots.has('lead') && (
+        <div class="list-lead">
+          <slot name="lead" />
         </div>
       )
     }
+    <div class="list-main">
+      <div class="list-row">
+        <div class="list-headline">
+          {
+            expandable ? (
+              <button type="button" class="list-title" aria-expanded="false">
+                {title}
+              </button>
+            ) : (
+              <span class="list-title">{title}</span>
+            )
+          }
+          <slot name="title-after" />
+        </div>
+        <slot name="row-end" />
+      </div>
+      {
+        Astro.slots.has('sub') && (
+          <div class="list-sub">
+            <slot name="sub" />
+          </div>
+        )
+      }
+    </div>
   </div>
   {
     expandable && (
       <div class="list-description">
         <slot />
-        <a class="more" href={href(detailHref)}>
-          Read more <IconArrowRight />
-        </a>
+        {readMore && (
+          <a class="more" href={href(detailHref)}>
+            Read more <IconArrowRight />
+          </a>
+        )}
       </div>
     )
   }

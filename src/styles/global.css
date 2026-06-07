@@ -28,7 +28,7 @@
   --font-size-xs: 0.8rem;
   --font-size-sm: 0.9rem;
   --font-size-md: 1rem;
-  --font-size-lg: 1.1rem;
+  --font-size-lg: 1.2rem;
 
   /* Type scale + rhythm */
   --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
@@ -139,7 +139,7 @@ h4 {
 }
 
 h1 {
-  font-size: clamp(1.5rem, 1.3rem + 1vw, 1.9rem);
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 2.5rem);
   color: var(--color-text-header);
 }
 
@@ -159,21 +159,26 @@ blockquote,
 pre,
 table,
 figure {
-  margin-block: 0 1em;
+  margin-block: 0 1rem;
 }
 
 ul,
 ol {
-  padding-inline-start: 1.4em;
+  padding-inline-start: 1.4rem;
 }
 
 li + li {
-  margin-block-start: 0.3em;
+  margin-block-start: 0.3rem;
+}
+
+ul li > ul,
+ul li > ol {
+  margin-block-end: 0;
 }
 
 blockquote {
   border-inline-start: 3px solid var(--color-accent);
-  padding-inline-start: 1em;
+  padding-inline-start: 1rem;
   color: var(--color-text-muted);
   font-style: italic;
 }
@@ -202,6 +207,7 @@ a {
   text-decoration-style: dotted;
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 4px;
+  font-weight: 500;
 
   &:hover {
     color: var(--color-link-hover);
@@ -404,10 +410,10 @@ body:has(.map-split) main > .wrap,
   grid-template-rows: 1fr;
 }
 
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1000px) {
   [data-view='map'] .results,
   .map-split .results {
-    grid-template-columns: 420px 1fr;
+    grid-template-columns: 500px 1fr;
   }
 }
 
@@ -436,7 +442,8 @@ body:has(.map-split) main > .wrap,
   color: var(--color-text);
   font-family: var(--font-mono);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .content-pane {
@@ -487,7 +494,7 @@ body:has(.map-split) main > .wrap,
     color: var(--color-accent);
   }
 
-  /* Disclosure toggle: a full-width title button with a leading caret. */
+  /* Disclosure toggle: a full-width title button (the whole name row is clickable). */
   .neighborhood-toggle {
     width: 100%;
     padding: 0;
@@ -495,25 +502,6 @@ body:has(.map-split) main > .wrap,
     background: none;
     text-align: start;
     cursor: pointer;
-  }
-
-  .neighborhood-toggle .icon {
-    display: inline-block;
-    vertical-align: -3px;
-    margin-inline-end: var(--spacing-xs);
-  }
-
-  /* Caret points right when collapsed, down when expanded. */
-  .neighborhood-toggle .icon-caret-down {
-    display: none;
-  }
-
-  [data-section].is-active .neighborhood-toggle .icon-caret-right {
-    display: none;
-  }
-
-  [data-section].is-active .neighborhood-toggle .icon-caret-down {
-    display: inline-block;
   }
 
   /* The writeup and food list stay collapsed until the row is expanded. */
@@ -577,21 +565,53 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+[data-view='map'] .list-with-map {
+}
+
 /* Row padding is only for the cramped map-view sidebar; the plain List view keeps
    the rows flush so they line up with the rest of the page. */
 [data-view='map'] .list-with-map .list li {
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+[data-view='map'] .list-with-map li.is-active {
+  background: var(--color-surface);
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the
    meta/chips come from each page's slots, so these are global — not component
    scoped — to reach that slotted content). */
-.list-with-map .list-details {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
+/* Indent the open panel past the rating badge so it lines up with the row's
+   text content instead of starting under the badge. */
+.list-with-map .list-description {
+  margin-left: calc(var(--spacing-md) + 35px);
+  margin-top: var(--spacing-sm);
+
+  p {
+    color: var(--color-text);
+  }
 }
 
+/* A row is a rating badge (left) beside the place details (right). */
+.list-with-map .list-details {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.list-with-map .list-lead {
+  flex-shrink: 0;
+}
+
+.list-with-map .list-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Row 1: headline (name + neighborhood) on the left, cuisine chips on the right. */
 .list-with-map .list-row {
   display: flex;
   align-items: center;
@@ -600,21 +620,36 @@ body:has(.map-split) main > .wrap,
   width: 100%;
 }
 
+.list-with-map .list-headline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  row-gap: var(--spacing-xs);
+  min-width: 0;
+  line-height: 1.1;
+}
+
+.list-with-map .list-dot {
+  color: var(--color-text-muted);
+}
+
+/* Row 2: the address (and any other muted second-line meta). */
 .list-with-map .list-sub {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--spacing-sm);
+  color: var(--color-text-muted-2);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: var(--font-mono);
 }
 
 .list-with-map .chips {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
-}
-
-.list-with-map li.is-active {
-  background: var(--color-surface);
 }
 
 .list-with-map li.is-active .list-title {
@@ -677,6 +712,7 @@ body:has(.map-split) main > .wrap,
   font-size: var(--font-size-xs);
   line-height: 1;
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .list-with-map button.chip {
@@ -686,10 +722,6 @@ body:has(.map-split) main > .wrap,
 .list-with-map button.chip:hover {
   color: var(--color-accent);
   border-color: var(--color-accent);
-}
-
-.list-with-map .list-description {
-  color: var(--color-text);
 }
 
 .list-with-map .list-description .more {
@@ -864,10 +896,11 @@ body:has([data-filter-root]) .site-header {
 
 /* An applied facet dropdown is accented so it's obvious which filters are on. */
 .filters select.is-active {
-  border-color: var(--color-accent);
+  /* border-color: var(--color-accent);
   color: var(--color-accent);
   font-weight: 600;
-  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)); */
+  font-weight: 600;
 }
 
 /* Second row of the sticky toolbar: the active-filter chip tray + clear-all.
@@ -922,6 +955,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .filter-chip .chip-label {
+  display: none;
   font-family: var(--font-mono);
   font-size: var(--font-size-xxs);
   text-transform: uppercase;
@@ -940,6 +974,12 @@ body:has([data-filter-root]) .site-header {
 
 .filter-chip:hover .chip-x .icon {
   color: var(--color-accent);
+}
+
+@media screen and (min-width: 600px) {
+  .filter-chip .chip-label {
+    display: block;
+  }
 }
 
 /* Leaflet stacks popups (pane z-index 700) above tooltips (650) by default. Lift
@@ -1070,7 +1110,7 @@ body:has([data-filter-root]) .site-header {
   }
 
   .address {
-    margin: var(--spacing-sm) 0 0;
+    margin-block: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);

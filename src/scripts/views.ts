@@ -59,6 +59,7 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
       mapApi?.deselect()
       for (const item of items) {
         item.classList.remove('is-active')
+        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
       }
     }
   }
@@ -87,7 +88,8 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
       }
       if (title.tagName === 'BUTTON') {
         event.preventDefault()
-        item.classList.toggle('is-active')
+        const expanded = item.classList.toggle('is-active')
+        title.setAttribute('aria-expanded', String(expanded))
       }
     })
   }

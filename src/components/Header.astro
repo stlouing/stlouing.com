@@ -78,4 +78,50 @@ interface Props {
       text-underline-offset: 3px;
     }
   }
+
+  /* Mobile: name + theme toggle on the top row, nav stacked below as an even
+     three-column grid. Desktop (above) is unchanged. */
+  @media (max-width: 700px) {
+    .header-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'name theme'
+        'nav nav';
+      align-items: center;
+      column-gap: var(--spacing-md);
+      row-gap: var(--spacing-sm);
+    }
+
+    .site-name {
+      grid-area: name;
+    }
+
+    /* Unwrap the actions so the nav and toggle place into the grid independently
+       (display:contents keeps them as DOM children but drops the wrapper box). */
+    .header-actions {
+      display: contents;
+    }
+
+    .header-actions :global(.theme-toggle) {
+      grid-area: theme;
+      justify-self: end;
+    }
+
+    .header-actions :global(.site-nav) {
+      grid-area: nav;
+      display: flex;
+      justify-content: start;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+    }
+  }
+
+  @media (max-width: 400px) {
+    .header-actions :global(.site-nav) {
+      grid-area: nav;
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+    }
+  }
 </style>

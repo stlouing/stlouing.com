@@ -5,7 +5,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
 import FilterListItem from '../../components/FilterListItem.astro'
-import Rating from '../../components/Rating.astro'
+import RatingBadge from '../../components/RatingBadge.astro'
+import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
 
@@ -47,7 +48,8 @@ const hasCoords = places.some((place) => place.data.coords)
             id={place.id}
             title={place.data.title}
             detailHref={`/food/${place.id}`}
-            expandable={hasBody(place)}
+            expandable={true}
+            readMore={hasBody(place)}
             marker={cuisineEmoji(place.data.cuisine)}
             coords={place.data.coords?.join(',') ?? ''}
             url={place.data.url ?? ''}
@@ -68,9 +70,10 @@ const hasCoords = places.some((place) => place.data.coords)
               'data-sort-title': place.data.title,
               'data-sort-rating': String(place.data.rating ?? ''),
             }}>
-            {place.data.rating && <Rating slot="row-end" value={place.data.rating} />}
-            <Fragment slot="sub">
-              {place.data.neighborhood && (
+            {place.data.rating && <RatingBadge slot="lead" value={place.data.rating} />}
+            {place.data.neighborhood && (
+              <Fragment slot="title-after">
+                {/* <span class="list-dot" aria-hidden="true">&middot;</span> */}
                 <button
                   type="button"
                   class="list-meta list-meta-filter"
@@ -78,21 +81,27 @@ const hasCoords = places.some((place) => place.data.coords)
                   data-filter-value={place.data.neighborhood}>
                   {place.data.neighborhood}
                 </button>
-              )}
-              {place.data.cuisine.length > 0 && (
-                <div class="chips">
-                  {place.data.cuisine.map((cuisine) => (
-                    <button
-                      type="button"
-                      class="chip"
-                      data-filter-set="cuisine"
-                      data-filter-value={cuisine}>
-                      {cuisine}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </Fragment>
+              </Fragment>
+            )}
+            {place.data.cuisine.length > 0 && (
+              <div class="chips" slot="row-end">
+                {place.data.cuisine.map((cuisine) => (
+                  <button
+                    type="button"
+                    class="chip"
+                    data-filter-set="cuisine"
+                    data-filter-value={cuisine}>
+                    {cuisine}
+                  </button>
+                ))}
+              </div>
+            )}
+            {place.data.address && place.data.address.length > 0 && (
+              <span class="place-address" slot="sub">
+                {place.data.address[0]}
+              </span>
+            )}
+            <SourceLink href={place.data.url} />
             <Content />
           </FilterListItem>
         ))

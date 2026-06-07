@@ -28,12 +28,13 @@ const isArticle = Boolean(permalink)
   <header class="entry-header">
     <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
     <slot name="lede" />
+    
     <div class="entry-bar">
-      <div class="meta"><slot name="meta" /></div>
+      <div class="meta"><slot name="meta" /><TagList tags={tags} /></div>
       {editPath && <EditThisPage path={editPath} inline />}
     </div>
+
     <slot name="header-extra" />
-    <TagList tags={tags} />
     {
       isArticle && (
         <>

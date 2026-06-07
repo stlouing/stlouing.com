@@ -6,7 +6,7 @@ import { href } from '../../lib/url'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { foodByNeighborhood, normalizeName } from '../../lib/neighborhoods'
-import IconArrowRight from '../../assets/IconArrowRight.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 
 // A page per written neighborhood (a collection file) — mirrors food/[slug].
 export async function getStaticPaths() {
@@ -23,9 +23,17 @@ const backlinks = await getBacklinks(entry.id)
 // Food places located in this neighborhood (same loose name-join as the index).
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(data.title)) ?? []
+
+// Breadcrumb: Neighborhoods / <name>. The leaf links to this neighborhood on the
+// map (its hash on the index), replacing the old inline "View on the map" link.
+const trail = [
+  { label: 'Neighborhoods', href: '/neighborhoods' },
+  { label: data.title, href: `/neighborhoods#${entry.id}` },
+]
 ---
 
 <BaseLayout crumb={data.title}>
+  <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
     <Content />
     {
@@ -35,17 +43,14 @@ const places = placesByNeighborhood.get(normalizeName(data.title)) ?? []
           <ul>
             {places.map((place) => (
               <li>
-                <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                <a class="place-link" href={href(`/food/${place.id}`)}>
+                  {place.data.title}
+                </a>
               </li>
             ))}
           </ul>
         </section>
       )
     }
-    <p>
-      <a class="more inline" href={href(`/neighborhoods#${entry.id}`)}>
-        View on the neighborhood map <IconArrowRight />
-      </a>
-    </p>
   </Entry>
 </BaseLayout>

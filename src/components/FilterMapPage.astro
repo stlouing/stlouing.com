@@ -44,10 +44,12 @@ const {
 ---
 
 <div class={className} data-filter-root data-view="list">
-  {/* Pre-paint: set the saved/default view before this subtree paints, so the
+  {
+    /* Pre-paint: set the saved/default view before this subtree paints, so the
       page doesn't flash the list then snap into the map app-shell. Mirrors the
       theme pre-paint script in BaseLayout. The storage key + default are
-      duplicated as literals because an inline script can't import views.ts. */}
+      duplicated as literals because an inline script can't import views.ts. */
+  }
   <script is:inline>
     {
       const filterRoot = document.currentScript.parentElement
@@ -66,10 +68,11 @@ const {
         sorts={sorts}
       />
     </div>
-    {/* Applied-filter tray: chips for each active facet (filter.ts builds them)
-        plus the clear-all control. Hidden until a filter is active. */}
+    {
+      /* Applied-filter tray: chips for each active facet (filter.ts builds them)
+        plus the clear-all control. Hidden until a filter is active. */
+    }
     <div class="wrap active-filters" data-filter-active hidden>
-      <span class="active-label">Filters</span>
       <div class="filter-chips" data-filter-chips></div>
       <ClearFilters />
     </div>

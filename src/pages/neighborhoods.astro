@@ -7,8 +7,6 @@ import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
 import IconArrowRight from '../assets/IconArrowRight.astro'
-import IconCaretRight from '../assets/IconCaretRight.astro'
-import IconCaretDown from '../assets/IconCaretDown.astro'
 
 // Pre-render the body of any neighborhood that has a written Markdown entry; the
 // rest fall back to a placeholder so all 88 sections exist on the page.
@@ -45,7 +43,6 @@ for (const place of foodPlaces) {
       <article class="page content-pane">
         <header class="pane-header">
           <h1>Neighborhoods</h1>
-          <p>Modified for colloquial use</p>
         </header>
         <List>
           {
@@ -68,9 +65,6 @@ for (const place of foodPlaces) {
                         aria-expanded="false">
                         <span class="number">{`${numberLabel}.`}</span>
                         {neighborhood.name}
-
-                        <IconCaretRight />
-                        <IconCaretDown />
                       </button>
                     ) : (
                       <span class="list-title">

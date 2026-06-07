@@ -1,8 +1,9 @@
 ---
-// One row of the shared `.list`. Renders the common title / meta / description
-// shape; pass `meta` for a plain string, or use the named `meta` slot for
-// semantic markup (e.g. <time>). Extra content (chips, collection labels) goes
-// through the default slot.
+// One row of the shared `.list`. The title and an optional trailing meta share a
+// space-between row; pass `meta` for a plain string (e.g. a count or date), or
+// use the named `meta` slot for semantic markup (e.g. <time>). The description
+// and any extra content (chips, collection labels) stack below via the default
+// slot.
 interface Props {
   title: string
   href?: string
@@ -14,17 +15,30 @@ const { title, href: linkHref, meta, description } = Astro.props
 ---
 
 <li>
-  {
-    linkHref ? (
-      <a class="list-title" href={linkHref}>
-        {title}
-      </a>
-    ) : (
-      <span class="list-title">{title}</span>
-    )
-  }
-  {meta && <span class="list-meta">{meta}</span>}
-  <slot name="meta" />
+  <div class="list-row">
+    {
+      linkHref ? (
+        <a class="list-title" href={linkHref}>
+          {title}
+        </a>
+      ) : (
+        <span class="list-title">{title}</span>
+      )
+    }
+    {meta && <span class="list-meta">{meta}</span>}
+    <slot name="meta" />
+  </div>
   {description && <p class="list-description">{description}</p>}
   <slot />
 </li>
+
+<style>
+  /* Title on the left, meta (count / date) flush right. Scoped to ListItem so it
+     never touches the food/hikes rows, which have their own `.list-row` rules. */
+  .list-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+</style>

@@ -6,3 +6,21 @@ updated: 2026-05-31
 ---
 
 If you've arrived on this page, you already have some thoughts.
+
+## Food
+
+### Pizza
+
+## Driving & Traffic
+
+## Weather
+
+## Things to Do
+
+## Transportation & Walkability
+
+## Affordability
+
+## Amenities
+
+## Proximity to Nature

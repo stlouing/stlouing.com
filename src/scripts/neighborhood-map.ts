@@ -185,17 +185,60 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     title.addEventListener('click', () => selectNeighborhood(slug))
   }
 
-  map.fitBounds(bounds, { padding: [0, -50], animate: false })
+  // Default framing favors the south + central city. The northernmost of Forest
+  // Park / CWE / Skinker (the top of #46) is the city's effective dividing line;
+  // everything above it is the north side we want scrolled out of view.
+  const topAnchorSlugs = ['forest-park', 'central-west-end', 'skinker-debaliviere']
+  const northEdges = topAnchorSlugs
+    .map((slug) => pathBySlug.get(slug) as L.Polygon | undefined)
+    .filter((anchorPath): anchorPath is L.Polygon => Boolean(anchorPath))
+    .map((anchorPath) => anchorPath.getBounds().getNorth())
+
+  // Pin the top of #46 just below the viewport top, then zoom one 0.5 step (the
+  // map's zoomSnap) tighter than the full-corridor fit so the south tip (Patch)
+  // is cropped off the bottom. Pinning the top — rather than fitBounds, which
+  // always keeps the whole span visible — makes the framing independent of the
+  // pane's aspect ratio. Bump ZOOM_BOOST to zoom in further.
+  const ZOOM_BOOST = 0.5
+  const TOP_INSET_PX = 8
+
+  function frameNeighborhood(): void {
+    if (northEdges.length === 0) {
+      map.fitBounds(bounds, { padding: [10, 10], animate: false })
+
+      return
+    }
+
+    const topLat = Math.max(...northEdges)
+    const midLng = (bounds.getWest() + bounds.getEast()) / 2
+    const corridor = L.latLngBounds(
+      [bounds.getSouth(), bounds.getWest()],
+      [topLat, bounds.getEast()],
+    )
+    const fitZoom = map.getBoundsZoom(corridor, false, L.point(TOP_INSET_PX, TOP_INSET_PX))
+    const targetZoom = Math.min(fitZoom + ZOOM_BOOST, map.getMaxZoom())
+
+    // Place the center so the top edge lands TOP_INSET_PX below the viewport top.
+    const topPoint = map.project([topLat, midLng], targetZoom)
+    const center = map.unproject(
+      topPoint.add(L.point(0, map.getSize().y / 2 - TOP_INSET_PX)),
+      targetZoom,
+    )
+    map.setView(center, targetZoom, { animate: false })
+  }
 
   // Deep-link support: /neighborhoods#slug selects that neighborhood on load, so
   // the "View on the neighborhood map" links (and any backlinks) expand its
-  // writeup, highlight its boundary, and frame it on the map.
+  // writeup, highlight its boundary, and frame it on the map. Otherwise fall back
+  // to the southside framing above.
   const initialSlug = location.hash.slice(1)
   if (initialSlug && pathBySlug.has(initialSlug)) {
     selectNeighborhood(initialSlug)
     const selectedBounds = (pathBySlug.get(initialSlug) as L.Polygon | undefined)?.getBounds()
     if (selectedBounds) {
-      map.fitBounds(selectedBounds, { padding: [40, 40], animate: false })
+      map.fitBounds(selectedBounds, { padding: [40, 40], animate: false, maxZoom: 13 })
     }
+  } else {
+    frameNeighborhood()
   }
 }
