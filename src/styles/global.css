@@ -68,7 +68,7 @@
   --color-map-north: #87acdd;
   --color-map-central: #e18484;
   --color-map-south: #b59ae0;
-  --color-link: #8bb5ec;
+  --color-link: #93bff8;
   --color-link-hover: #a8c8f2;
 
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
@@ -231,7 +231,7 @@ a.more {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: var(--color-accent);
+  color: var(--color-text-muted);
 
   &.inline {
     display: inline-flex;
@@ -597,7 +597,7 @@ body:has(.map-split) main > .wrap,
 /* Indent the open panel past the rating badge so it lines up with the row's
    text content instead of starting under the badge. */
 .list-with-map .list-description {
-  margin-left: calc(var(--spacing-md) + 35px);
+  margin-left: calc(var(--spacing-md) + 40px);
   margin-top: var(--spacing-sm);
 
   p {
@@ -627,6 +627,15 @@ body:has(.map-split) main > .wrap,
 
 .list-with-map .list-lead {
   flex-shrink: 0;
+  width: 40px;
+
+  .rating {
+    padding-top: 1px;
+  }
+
+  .out-of {
+    display: none;
+  }
 }
 
 .list-with-map .list-main {
@@ -678,10 +687,6 @@ body:has(.map-split) main > .wrap,
   gap: var(--spacing-xs);
 }
 
-.list-with-map li.is-active .list-title {
-  color: var(--color-accent) !important;
-}
-
 .list-with-map .list-meta {
   font-family: var(--font-body);
   font-size: var(--font-size-md);
@@ -730,15 +735,17 @@ body:has(.map-split) main > .wrap,
 .list-with-map .chip {
   display: inline-flex;
   align-items: center;
+  gap: var(--spacing-xs);
   padding: 3px var(--spacing-sm);
   border: 1px solid var(--color-line-input);
   border-radius: 20px;
-  background: none;
+  background: var(--color-surface);
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   line-height: 1;
   color: var(--color-text-muted);
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .list-with-map button.chip {

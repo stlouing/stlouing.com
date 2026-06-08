@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
 import FilterListItem from '../../components/FilterListItem.astro'
-import RatingBadge from '../../components/RatingBadge.astro'
+import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
@@ -36,8 +36,8 @@ const hasCoords = places.some((place) => place.data.coords)
     ]}
     sorts={[
       { label: 'Name (A-Z)', value: 'title:asc' },
-      { label: 'Rating (high→low)', value: 'rating:desc' },
-      { label: 'Rating (low→high)', value: 'rating:asc' },
+      { label: 'Rating (10→1)', value: 'rating:desc' },
+      { label: 'Rating (1→10)', value: 'rating:asc' },
     ]}
     hasCoords={hasCoords}
     mapLabel="Map of food spots"
@@ -72,7 +72,7 @@ const hasCoords = places.some((place) => place.data.coords)
               'data-sort-rating': String(place.data.rating ?? ''),
               'data-google': googleMapsHref(place.data),
             }}>
-            {place.data.rating && <RatingBadge slot="lead" value={place.data.rating} />}
+            {place.data.rating && <Rating slot="lead" value={place.data.rating} />}
             {place.data.neighborhood && (
               <Fragment slot="title-after">
                 <button
@@ -92,7 +92,7 @@ const hasCoords = places.some((place) => place.data.coords)
                     class="chip"
                     data-filter-set="cuisine"
                     data-filter-value={cuisine}>
-                    {cuisine}
+                    {cuisineEmoji(place.data.cuisine)} {cuisine}
                   </button>
                 ))}
               </div>
@@ -120,8 +120,8 @@ const hasCoords = places.some((place) => place.data.coords)
   .food-preview {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
     overflow: hidden;
   }
 </style>

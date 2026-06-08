@@ -47,19 +47,23 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
     }
 
     if (view === 'map') {
+      for (const item of items) {
+        item.classList.remove('is-active')
+        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
+      }
+
       if (mapApi) {
         mapApi.refresh()
       } else {
         mapApi = initMap() ?? null
       }
     } else {
-      // Leaving the map for the list: drop any selection so a place doesn't stay
-      // expanded/highlighted. Closing the popup de-selects via the map; also clear
-      // rows that were expanded directly in list view.
+      // Closing the popup de-selects via the map
       mapApi?.deselect()
+
       for (const item of items) {
-        item.classList.remove('is-active')
-        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
+        item.classList.add('is-active')
+        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'true')
       }
     }
   }

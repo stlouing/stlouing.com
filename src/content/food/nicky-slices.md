@@ -1,8 +1,8 @@
 ---
-title: 'Nicky Slices Pizza Club'
+title: Nicky Slices Pizza Club
 rating: 10
 cuisine: ['pizza']
-neighborhood: 'The Hill'
+neighborhood: The Hill
 address:
   - 2240 Edwards St
   - St. Louis, MO 63110

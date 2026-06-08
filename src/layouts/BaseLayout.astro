@@ -83,6 +83,17 @@ const structuredData = [
   breadcrumbSchema,
   ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []),
 ].filter((schema): schema is object => Boolean(schema))
+
+// Open the basemap CDN connection early so the first map tiles don't wait on a
+// cold DNS/TLS handshake. Prod only — local dev serves the pmtiles same-origin.
+let pmtilesOrigin: string | undefined
+try {
+  pmtilesOrigin = import.meta.env.PUBLIC_PMTILES_URL
+    ? new URL(import.meta.env.PUBLIC_PMTILES_URL).origin
+    : undefined
+} catch {
+  pmtilesOrigin = undefined
+}
 ---
 
 <!doctype html>
@@ -90,6 +101,8 @@ const structuredData = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {pmtilesOrigin && <link rel="preconnect" href={pmtilesOrigin} crossorigin />}
 
     <!-- Set the theme before paint: stored choice wins, else follow the OS. -->
     <script is:inline>

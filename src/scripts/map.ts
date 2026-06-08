@@ -122,8 +122,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         const url = item.dataset.url ?? ''
         const google = item.dataset.google ?? ''
         const links = [
-          url &&
-            `<a class="popup-link" href="${url}" target="_blank" rel="noopener">Website ↗</a>`,
+          url && `<a class="popup-link" href="${url}" target="_blank" rel="noopener">Website ↗</a>`,
           google &&
             `<a class="popup-link" href="${google}" target="_blank" rel="noopener">Google Maps ↗</a>`,
         ]
