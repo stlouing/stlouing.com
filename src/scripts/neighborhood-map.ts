@@ -205,41 +205,43 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     title.addEventListener('click', () => selectNeighborhood(slug))
   }
 
-  // Default framing favors the south + central city. The northernmost of Forest
-  // Park / CWE / Skinker (the top of #46) is the city's effective dividing line;
-  // everything above it is the north side we want scrolled out of view.
-  const topAnchorSlugs = ['forest-park', 'central-west-end', 'skinker-debaliviere']
-  const northEdges = topAnchorSlugs
+  // The zoom is sized from the central #46 corridor (Forest Park / CWE / Skinker
+  // line down to the south tip), so it doesn't change when the pin moves. The view
+  // is then pinned with the far-north #70 at the top — showing more of the north
+  // side — which puts #2 (Patch) near the bottom.
+  const zoomAnchorSlugs = ['forest-park', 'central-west-end', 'skinker-debaliviere']
+  const zoomNorthEdges = zoomAnchorSlugs
     .map((slug) => pathBySlug.get(slug) as L.Polygon | undefined)
     .filter((anchorPath): anchorPath is L.Polygon => Boolean(anchorPath))
     .map((anchorPath) => anchorPath.getBounds().getNorth())
 
-  // Pin the top of #46 just below the viewport top, then zoom one 0.5 step (the
-  // map's zoomSnap) tighter than the full-corridor fit so the south tip (Patch)
-  // is cropped off the bottom. Pinning the top — rather than fitBounds, which
-  // always keeps the whole span visible — makes the framing independent of the
-  // pane's aspect ratio. Bump ZOOM_BOOST to zoom in further.
-  const ZOOM_BOOST = 0.5
+  // Neighborhood whose north edge pins the top of the view. #70 = Mark Twain I-70
+  // Industrial (the far-north anchor). ZOOM_BOOST offsets the corridor fit (0 = fit);
+  // pinning the top — rather than fitBounds — keeps it independent of pane aspect.
+  const PIN_SLUG = 'mark-twain-i-70-industrial'
+  const ZOOM_BOOST = 0
   const TOP_INSET_PX = 8
 
   function frameNeighborhood(): void {
-    if (northEdges.length === 0) {
+    const pinPath = pathBySlug.get(PIN_SLUG) as L.Polygon | undefined
+    if (zoomNorthEdges.length === 0 || !pinPath) {
       map.fitBounds(bounds, { padding: [10, 10], animate: false })
 
       return
     }
 
-    const topLat = Math.max(...northEdges)
+    const zoomTopLat = Math.max(...zoomNorthEdges)
+    const pinTopLat = pinPath.getBounds().getNorth()
     const midLng = (bounds.getWest() + bounds.getEast()) / 2
     const corridor = L.latLngBounds(
       [bounds.getSouth(), bounds.getWest()],
-      [topLat, bounds.getEast()],
+      [zoomTopLat, bounds.getEast()],
     )
     const fitZoom = map.getBoundsZoom(corridor, false, L.point(TOP_INSET_PX, TOP_INSET_PX))
     const targetZoom = Math.min(fitZoom + ZOOM_BOOST, map.getMaxZoom())
 
-    // Place the center so the top edge lands TOP_INSET_PX below the viewport top.
-    const topPoint = map.project([topLat, midLng], targetZoom)
+    // Pin the top of #70 TOP_INSET_PX below the viewport top.
+    const topPoint = map.project([pinTopLat, midLng], targetZoom)
     const center = map.unproject(
       topPoint.add(L.point(0, map.getSize().y / 2 - TOP_INSET_PX)),
       targetZoom,

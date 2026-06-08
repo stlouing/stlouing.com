@@ -24,7 +24,8 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   const count = root.querySelector<HTMLElement>('[data-filter-count]')
   const empty = root.querySelector<HTMLElement>('[data-filter-empty]')
   const sort = root.querySelector<HTMLSelectElement>('[data-filter-sort]')
-  const clear = root.querySelector<HTMLElement>('[data-filter-clear]')
+  // There can be more than one (the toolbar pill + the one in the empty state).
+  const clears = [...root.querySelectorAll<HTMLElement>('[data-filter-clear]')]
   const tray = root.querySelector<HTMLElement>('[data-filter-active]')
   const chips = root.querySelector<HTMLElement>('[data-filter-chips]')
   const list = items[0]?.parentElement ?? null
@@ -139,7 +140,7 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     if (tray) {
       tray.hidden = !isFiltering
     }
-    if (clear) {
+    for (const clear of clears) {
       clear.hidden = !isFiltering
     }
 
@@ -234,7 +235,8 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   })
 
   // Reset search, every facet, and the sort to their defaults, then re-render.
-  clear?.addEventListener('click', () => {
+  // Shared by the toolbar pill and the empty-state pill.
+  function clearAll(): void {
     if (search) {
       search.value = ''
     }
@@ -246,7 +248,10 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     }
     applySort()
     applyAndSync()
-  })
+  }
+  for (const clear of clears) {
+    clear.addEventListener('click', clearAll)
+  }
 
   readUrl()
   applySort()

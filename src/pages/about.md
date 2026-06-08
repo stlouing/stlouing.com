@@ -28,6 +28,7 @@ A few open-source projects this site relies on.
 - Maps: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
 - Icons: [Lucide](https://lucide.dev/icons)
+- Analytics: [GoatCounter](https://www.goatcounter.com)
 
 ## Links
 

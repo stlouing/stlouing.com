@@ -12,6 +12,7 @@ import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
+import { cuisineEmoji } from '../../lib/emoji'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -53,10 +54,21 @@ const trail = [
           )
         }
         <div class="food-sub-meta">
-          {data.rating && <Rating value={data.rating} />}
-          {data.cuisine.map((cuisine) => <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>)}
-          <SourceLink href={data.url} />
-          <SourceLink href={googleMapsHref(data)} label="Google Maps" />
+          <div class="food-sub-meta-section">
+            {data.rating && <Rating value={data.rating} />}
+            {
+              data.cuisine.map((cuisine) => (
+                <Chip href={href(`/tags/${cuisine}`)}>
+                  {cuisineEmoji(data.cuisine)}
+                  {cuisine}{' '}
+                </Chip>
+              ))
+            }
+          </div>
+          <div class="food-sub-meta-section">
+            <SourceLink href={data.url} />
+            <SourceLink href={googleMapsHref(data)} label="Google Maps" />
+          </div>
         </div>
       </div>
     </Fragment>
@@ -79,11 +91,19 @@ const trail = [
     flex-wrap: wrap;
   }
 
+  .food-sub-meta-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    row-gap: var(--spacing-xs);
+    flex-wrap: wrap;
+  }
+
   @media screen and (max-width: 700px) {
     .food-sub-meta {
-      display: grid;
       align-items: flex-start;
-      grid-template-columns: repeat(2, 1fr);
+      flex-direction: column;
+      row-gap: var(--spacing-sm);
 
       .chip {
         width: fit-content;

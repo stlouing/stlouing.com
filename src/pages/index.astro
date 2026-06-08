@@ -27,7 +27,11 @@ const latestTopics = allTopics.slice(0, 5)
 
 // Item counts shown next to the guide sections in the directory.
 const foodCount = published(await getCollection('food')).length
-const countByPath: Record<string, string> = { '/food': String(foodCount), '/neighborhoods': '88' }
+const neighborhoodCount = published(await getCollection('neighborhoods')).length
+const countByPath: Record<string, string> = {
+  '/food': String(foodCount),
+  '/neighborhoods': String(neighborhoodCount),
+}
 
 const lastUpdated = new Date('2026-06-03')
 
@@ -42,10 +46,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       {intro}
       <a class="more inline" href={href('/about')}>Read more <IconArrowRight /></a>
     </p>
-    <p class="last-updated">
+    <!-- <p class="last-updated">
       <strong>Last Updated:</strong>
       <span>{formatDateShort(lastUpdated)}</span>
-    </p>
+    </p> -->
     {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
     <span class="p-name" hidden>St. Louing</span>
     <a class="u-url" href={href('/')} hidden>stlouing.com</a>
@@ -153,15 +157,15 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .introduction {
     max-width: 62ch;
     font-size: var(--font-size-md);
-    margin-block: var(--spacing-md);
-    color: var(--color-text-muted);
+    margin-block: var(--spacing-md) var(--spacing-lg);
+    color: var(--color-text);
   }
 
   .last-updated {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
     font-family: var(--font-mono);
     font-style: italic;
     margin-bottom: var(--spacing-lg);
@@ -197,12 +201,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     align-items: center;
     gap: var(--spacing-xs);
     flex-shrink: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
-    font-weight: 600;
-    text-decoration: none;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 500;
     text-decoration: underline;
     text-decoration-style: dotted;
     text-decoration-thickness: 2px;
@@ -213,6 +214,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-decoration-style: solid;
+    text-decoration-color: var(--color-accent);
   }
 
   /* Keep the arrow the same accent color as the link text. */

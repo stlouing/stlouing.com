@@ -499,14 +499,12 @@ body:has(.map-split) main > .wrap,
     color: var(--color-accent);
   }
 
-  /* Disclosure toggle: a full-width title button (the whole name row is clickable). */
   .neighborhood-toggle {
     width: 100%;
     padding: 0;
     border: 0;
     background: none;
     text-align: start;
-    cursor: pointer;
   }
 
   /* The writeup and food list stay collapsed until the row is expanded. */
@@ -1258,6 +1256,15 @@ body:has([data-filter-root]) .site-header {
   margin-block-start: var(--spacing-md);
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+/* The "Clear filters" pill that sits inside the empty state, on its own line. */
+.empty .filter-clear {
+  margin-block-start: var(--spacing-sm);
+}
+
+[data-view='map'] [data-filter-empty] .filter-clear {
+  margin-inline: auto;
 }
 
 /* Address shown beneath a place in the Food list (comma-separated, one line). */

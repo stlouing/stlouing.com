@@ -29,7 +29,7 @@ export const sections: Section[] = [
     path: '/neighborhoods',
     group: 'guides',
     primary: true,
-    description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, where I can keep track of the unique things I've learned about each area.`,
+    description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, where I can keep track of the unique things I've learned about a given area.`,
   },
   // {
   //   label: 'Hikes',

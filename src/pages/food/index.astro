@@ -92,7 +92,8 @@ const hasCoords = places.some((place) => place.data.coords)
                     class="chip"
                     data-filter-set="cuisine"
                     data-filter-value={cuisine}>
-                    {cuisineEmoji(place.data.cuisine)} {cuisine}
+                    <span>{cuisineEmoji(place.data.cuisine)}</span>
+                    <span>{cuisine}</span>
                   </button>
                 ))}
               </div>

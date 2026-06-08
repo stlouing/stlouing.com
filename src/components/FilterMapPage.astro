@@ -81,7 +81,10 @@ const {
   <div class="results">
     <slot />
     {hasCoords && <div class="map" data-map aria-label={mapLabel} />}
-    <p class="empty" data-filter-empty hidden>{emptyText}</p>
+    <p class="empty" data-filter-empty hidden>
+      {emptyText}
+      <ClearFilters />
+    </p>
   </div>
 </div>
 

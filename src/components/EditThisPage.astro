@@ -43,4 +43,11 @@ const { path, inline = false } = Astro.props
       }
     }
   }
+
+  /* Desktop-only chrome — hide the edit link on narrow screens. */
+  @media (max-width: 700px) {
+    .edit-page {
+      display: none;
+    }
+  }
 </style>

@@ -165,13 +165,13 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
 
     if (bounds.length) {
-      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 })
+      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 12 })
       viewInitialized = true
     } else if (!viewInitialized) {
       // A deep-linked filter matched nothing: still give the map a view so it
       // renders an empty map instead of erroring with no center/zoom set.
       if (allBounds.length) {
-        map.fitBounds(allBounds, { padding: [30, 30], maxZoom: 14 })
+        map.fitBounds(allBounds, { padding: [30, 30], maxZoom: 12 })
       } else {
         map.setView([38.627, -90.2], 11)
       }

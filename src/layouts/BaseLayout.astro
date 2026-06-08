@@ -140,6 +140,20 @@ try {
     <meta name="generator" content={Astro.generator} />
 
     {structuredData.map((schema) => <JsonLd data={schema} />)}
+
+    {/* Cookieless, no-consent-banner analytics (GoatCounter). Production builds
+        only, so local dev + previews don't count. Planned first-party-proxy
+        hardening is in README → Analytics. */}
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          data-goatcounter="https://stlouing.goatcounter.com/count"
+          async
+          src="https://gc.zgo.at/count.js"
+        />
+      )
+    }
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
