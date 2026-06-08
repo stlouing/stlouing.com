@@ -75,7 +75,6 @@ const hasCoords = places.some((place) => place.data.coords)
             {place.data.rating && <RatingBadge slot="lead" value={place.data.rating} />}
             {place.data.neighborhood && (
               <Fragment slot="title-after">
-                {/* <span class="list-dot" aria-hidden="true">&middot;</span> */}
                 <button
                   type="button"
                   class="list-meta list-meta-filter"
@@ -107,10 +106,22 @@ const hasCoords = places.some((place) => place.data.coords)
               <SourceLink href={place.data.url} />
               <SourceLink href={googleMapsHref(place.data)} label="Google Maps" />
             </div>
-            <Content />
+            <div class="food-preview">
+              <Content />
+            </div>
           </FilterListItem>
         ))
       }
     </List>
   </FilterMapPage>
 </BaseLayout>
+
+<style>
+  .food-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    overflow: hidden;
+  }
+</style>

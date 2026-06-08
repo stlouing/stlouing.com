@@ -1,8 +1,8 @@
 ---
-title: 'Kishimoto Mendo'
+title: Kishimoto Mendo
 rating: 10
 cuisine: ['ramen']
-neighborhood: 'University City'
+neighborhood: University City
 address:
   - 6394 Delmar Blvd
   - University City, MO 63130

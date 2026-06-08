@@ -1,13 +1,13 @@
 ---
-title: 'Menya Rui'
+title: Menya Rui
 rating: 9
 cuisine: ['ramen']
-neighborhood: 'Northampton'
+neighborhood: Northampton
 address:
   - 3453 Hampton Ave
   - St. Louis, MO 63139
 coords: [38.5991908, -90.2928562]
-url: https://www.instagram.com/menyarui_stl/
+url: https://www.instagram.com/menyarui_stl
 ---
 
-An excellent Shoyu ramen.
+Menya Rui was my introduction to ramen in St. Louis, which was lucky for me.

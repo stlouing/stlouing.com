@@ -611,7 +611,7 @@ body:has(.map-split) main > .wrap,
   flex-wrap: wrap;
   gap: var(--spacing-md);
   row-gap: var(--spacing-xs);
-  margin-block-end: var(--spacing-md);
+  margin-block-end: var(--spacing-sm);
 
   &:last-child {
     margin-block-end: 0;
@@ -650,7 +650,7 @@ body:has(.map-split) main > .wrap,
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   row-gap: var(--spacing-xs);
   min-width: 0;
   line-height: 1.1;

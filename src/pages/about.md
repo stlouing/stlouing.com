@@ -32,7 +32,7 @@ A few open-source projects this site relies on.
 ## Links
 
 - [Built St. Louis](https://www.builtstlouis.net): a website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
-- [pizzababble](https://www.instagram.com/pizzababble/?hl=en): The St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
+- [pizzababble](https://www.instagram.com/pizzababble): The St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
 
 ## Etymology
 
