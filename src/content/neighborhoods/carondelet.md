@@ -1,6 +1,7 @@
 ---
 title: Carondelet
-updated: 2026-06-07
+wikipedia: https://en.wikipedia.org/wiki/Carondelet,_St._Louis
+url: https://www.stlouis-mo.gov/live-work/community/neighborhoods/carondelet
 ---
 
 This is a neighbodhood.

@@ -5,18 +5,23 @@ import List from '../components/List.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
-import { published } from '../lib/content'
+import { published, hasBody } from '../lib/content'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
-// Pre-render the body of any neighborhood that has a written Markdown entry; the
-// rest fall back to a placeholder so all 88 sections exist on the page.
+// The list shows each written neighborhood's rendered writeup, clamped to a few
+// lines (keeps inline links + formatting, just cuts it off) with "Read more" to
+// the full page. Neighborhoods with a writeup start expanded.
 const entries = await getCollection('neighborhoods')
 type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
 const rendered = new Map<string, RenderedContent>()
+const writtenUp = new Set<string>()
 
 for (const entry of entries) {
   const { Content } = await render(entry)
   rendered.set(entry.id, Content)
+  if (hasBody(entry)) {
+    writtenUp.add(entry.id)
+  }
 }
 
 // Group food places by neighborhood so each section can list its restaurants.
@@ -57,17 +62,21 @@ for (const place of foodPlaces) {
                 const Content = rendered.get(neighborhood.slug)
                 const places = foodByNeighborhood.get(normalizeName(neighborhood.name)) ?? []
                 const isExpandable = Boolean(Content) || places.length > 0
+                const expanded = writtenUp.has(neighborhood.slug)
                 const numberLabel = neighborhood?.numberLabel
                   ? neighborhood.numberLabel
                   : neighborhood.number
 
                 return (
-                  <li id={neighborhood.slug} data-section={neighborhood.slug}>
+                  <li
+                    id={neighborhood.slug}
+                    data-section={neighborhood.slug}
+                    class:list={{ 'is-active': expanded }}>
                     {isExpandable ? (
                       <button
                         type="button"
                         class="list-title neighborhood-toggle"
-                        aria-expanded="false">
+                        aria-expanded={expanded ? 'true' : 'false'}>
                         <span class="number">{`${numberLabel}.`}</span>
                         {neighborhood.name}
                       </button>
@@ -79,7 +88,16 @@ for (const place of foodPlaces) {
                     )}
                     {isExpandable && (
                       <div class="neighborhood-body list-description">
-                        {Content && <Content />}
+                        {Content && (
+                          <div class="neighborhood-preview">
+                            <Content />
+                          </div>
+                        )}
+                        {Content && (
+                          <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                            Read more <IconArrowRight />
+                          </a>
+                        )}
                         {places.length > 0 && (
                           <div class="neighborhood-food">
                             <h3>Food</h3>
@@ -91,11 +109,6 @@ for (const place of foodPlaces) {
                               ))}
                             </ul>
                           </div>
-                        )}
-                        {Content && (
-                          <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
-                            Read more <IconArrowRight />
-                          </a>
                         )}
                       </div>
                     )}
@@ -117,6 +130,16 @@ for (const place of foodPlaces) {
 
   .more {
     margin-top: var(--spacing-sm);
+  }
+
+  /* Cut the inline writeup off after a few lines — keeps its links + formatting
+     (unlike a plain-text excerpt); the full text is on the "Read more" page. */
+  .neighborhood-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    overflow: hidden;
   }
 
   /* Compact color key for the map's region groups, sitting beside the title.

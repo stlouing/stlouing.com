@@ -8,7 +8,7 @@ import { getBacklinks } from '../../lib/backlinks'
 import { foodByNeighborhood, normalizeName } from '../../lib/neighborhoods'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import neighborhoods from '../../data/neighborhoods.json'
-import { formatDate } from '../../lib/dates'
+import SourceLink from '../../components/SourceLink.astro'
 
 // A page per written neighborhood (a collection file) — mirrors food/[slug].
 export async function getStaticPaths() {
@@ -55,30 +55,33 @@ const description = info
       )
     }
     {
-      data.updated && (
+      (data.url || data.wikipedia) && (
         <Fragment slot="meta">
-          <span>
-            Last updated on
-            <time datetime={data.updated.toISOString()}>{formatDate(data.updated)}</time>
-          </span>
+          <SourceLink href={data.url} />
+          <SourceLink href={data.wikipedia} label="Wikipedia" />
         </Fragment>
       )
     }
     <Content />
     {
       places.length > 0 && (
-        <section class="neighborhood-food">
-          <h2>Food</h2>
-          <ul>
-            {places.map((place) => (
-              <li>
-                <a class="place-link" href={href(`/food/${place.id}`)}>
-                  {place.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <footer class="entry-footer">
+          <nav class="backlinks">
+            <h2>Food</h2>
+            <ul>
+              {places.map((place) => (
+                <li>
+                  <a class="place-link" href={href(`/food/${place.id}`)}>
+                    {place.data.title}
+                  </a>
+                  <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
+                    {place.data.cuisine[0]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </footer>
       )
     }
   </Entry>

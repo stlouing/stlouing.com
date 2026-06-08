@@ -1,6 +1,6 @@
 ---
 title: Dogtown
-updated: 2026-06-07
+wikipedia: https://en.wikipedia.org/wiki/Dogtown,_St._Louis
 ---
 
 Dogtown is an unofficial neighborhood made up of four city neighborhoods:
@@ -11,3 +11,5 @@ Dogtown is an unofficial neighborhood made up of four city neighborhoods:
 - 44. Hi-Pointe
 
 It also consists of part of one additional neighborhood called Ellendale. I didn't feel like trying to figure out exactly where the bounds of Ellendale exist for Dogtown, so I just left it off the map boundary.
+
+I haven't spent much time in Dogtown yet, but I've been to a few restaurants.

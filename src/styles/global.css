@@ -17,10 +17,9 @@
   --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
   --color-map-accent: #6a47a6;
-  /* Neighborhood map by region (top→bottom): North red, Central purple, South blue. */
-  --color-map-north: #9c3b2e;
-  --color-map-central: #6a47a6;
-  --color-map-south: #13458a;
+  --color-map-north: #13458a;
+  --color-map-central: #9c3b2e;
+  --color-map-south: #6a47a6;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
 
@@ -66,10 +65,10 @@
   --color-line-input: #45444b;
   --color-accent: #e18484;
   --color-map-accent: #b59ae0;
-  --color-map-north: #e18484;
-  --color-map-central: #b59ae0;
-  --color-map-south: #87acdd;
-  --color-link: #7ba8e3;
+  --color-map-north: #87acdd;
+  --color-map-central: #e18484;
+  --color-map-south: #b59ae0;
+  --color-link: #8bb5ec;
   --color-link-hover: #a8c8f2;
 
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
@@ -303,7 +302,7 @@ main {
   overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
 }
 
-.body {
+.entry {
   margin-block-end: 3rem;
 }
 
@@ -532,7 +531,7 @@ body:has(.map-split) main > .wrap,
 
   /* Restaurants located in this neighborhood (cross-linked from Food). */
   .neighborhood-food {
-    margin-block-start: var(--spacing-sm);
+    margin-block-start: var(--spacing-md);
 
     h3 {
       margin: 0 0 var(--spacing-xs);
@@ -1185,6 +1184,35 @@ body:has([data-filter-root]) .site-header {
 /* ===========================================================================
    Shared bits / utilities
    =========================================================================== */
+
+.backlinks {
+  margin-block-start: var(--spacing-lg);
+
+  h2 {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+  }
+
+  ul {
+    list-style: none;
+    margin: var(--spacing-xs) 0 0;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  li {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: baseline;
+    padding-block: var(--spacing-xs);
+  }
+}
+
 .chips {
   display: flex;
   gap: var(--spacing-xs);
@@ -1196,6 +1224,8 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
+  font-weight: 500;
+  text-decoration: none;
 }
 
 .group-label {

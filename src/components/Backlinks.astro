@@ -24,39 +24,3 @@ const { links } = Astro.props
     </nav>
   )
 }
-
-<style>
-  .backlinks {
-    margin-block-start: var(--spacing-lg);
-
-    h2 {
-      font-family: var(--font-mono);
-      font-size: var(--font-size-xs);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: var(--letter-spacing);
-      color: var(--color-text-muted);
-    }
-
-    ul {
-      list-style: none;
-      margin: var(--spacing-xs) 0 0;
-      padding: 0;
-      font-family: var(--font-mono);
-      font-size: var(--font-size-sm);
-    }
-
-    li {
-      display: flex;
-      gap: var(--spacing-sm);
-      align-items: baseline;
-      padding-block: var(--spacing-xs);
-    }
-
-    .collection {
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
-      text-transform: uppercase;
-    }
-  }
-</style>

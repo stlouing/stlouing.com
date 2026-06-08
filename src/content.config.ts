@@ -55,7 +55,13 @@ const notes = defineCollection({
 
 const neighborhoods = defineCollection({
   loader: md('neighborhoods'),
-  schema: z.object({ title: z.string(), updated: z.coerce.date().optional(), ...taggable }),
+  schema: z.object({
+    title: z.string(),
+    // The neighborhood's own site and its Wikipedia article.
+    url: z.string().url().optional(),
+    wikipedia: z.string().url().optional(),
+    ...taggable,
+  }),
 })
 
 // Evergreen, non-chronological pages (a "digital garden" section). Same

@@ -1,6 +1,7 @@
 ---
 title: Central West End
-updated: 2026-06-07
+url: https://cwescene.com
+wikipedia: https://en.wikipedia.org/wiki/Central_West_End,_St._Louis
 ---
 
 The most urban neighborhood outside of downtown.
