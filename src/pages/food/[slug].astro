@@ -10,6 +10,7 @@ import { href } from '../../lib/url'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
+import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
@@ -55,7 +56,7 @@ const trail = [
           {data.rating && <Rating value={data.rating} />}
           {data.cuisine.map((cuisine) => <Chip href={href(`/tags/${cuisine}`)}>{cuisine}</Chip>)}
           <SourceLink href={data.url} />
-          <SourceLink href={data.google} label="Google Maps" />
+          <SourceLink href={googleMapsHref(data)} label="Google Maps" />
         </div>
       </div>
     </Fragment>

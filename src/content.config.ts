@@ -22,8 +22,6 @@ const food = defineCollection({
       .transform((value) => (Array.isArray(value) ? value : [value]))
       .optional(),
     url: z.string().url().optional(),
-    // Google Maps link for the place (official maps/search URL).
-    google: z.string().url().optional(),
     ...coords,
     ...taggable,
   }),
