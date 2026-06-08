@@ -75,16 +75,23 @@ for (const place of foodPlaces) {
                     {isExpandable ? (
                       <button
                         type="button"
-                        class="list-title neighborhood-toggle"
+                        class="neighborhood-toggle"
                         aria-expanded={expanded ? 'true' : 'false'}>
-                        <span class="number">{`${numberLabel}.`}</span>
-                        {neighborhood.name}
+                        <div class="list-title">
+                          <span class="number">{`${numberLabel}.`}</span>
+                          <span>{neighborhood.name}</span>
+                        </div>
+                        {Content && (
+                          <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                            More <IconArrowRight />
+                          </a>
+                        )}
                       </button>
                     ) : (
-                      <span class="list-title">
+                      <div class="list-title">
                         <span class="number">{`${numberLabel}.`}</span>
-                        {neighborhood.name}
-                      </span>
+                        <span>{neighborhood.name}</span>
+                      </div>
                     )}
                     {isExpandable && (
                       <div class="neighborhood-body list-description">
@@ -93,12 +100,12 @@ for (const place of foodPlaces) {
                             <Content />
                           </div>
                         )}
-                        {Content && (
+                        {/* {Content && (
                           <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
                             Read more <IconArrowRight />
                           </a>
-                        )}
-                        {places.length > 0 && (
+                        )} */}
+                        {/* {places.length > 0 && (
                           <div class="neighborhood-food">
                             <h3>Food</h3>
                             <ul>
@@ -109,7 +116,7 @@ for (const place of foodPlaces) {
                               ))}
                             </ul>
                           </div>
-                        )}
+                        )} */}
                       </div>
                     )}
                   </li>
@@ -129,7 +136,13 @@ for (const place of foodPlaces) {
   }
 
   .more {
-    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  button.neighborhood-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   /* Cut the inline writeup off after a few lines — keeps its links + formatting
@@ -166,6 +179,7 @@ for (const place of foodPlaces) {
     font-size: var(--font-size-xxs);
     color: var(--color-text-muted);
     white-space: nowrap;
+    font-weight: 500;
   }
 
   .region-legend-item::before {

@@ -472,8 +472,7 @@ body:has(.map-split) main > .wrap,
   .pane-header h1 {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: var(--font-size-md);
-    color: var(--color-muted);
+    font-size: var(--font-size-sm);
   }
 
   .pane-header p {
@@ -525,16 +524,15 @@ body:has(.map-split) main > .wrap,
 
   [data-section].is-active .neighborhood-body {
     display: block;
-    margin-block-start: var(--spacing-sm) !important;
+    margin-block-end: var(--spacing-sm) !important;
     color: var(--color-text);
   }
 
-  /* Restaurants located in this neighborhood (cross-linked from Food). */
   .neighborhood-food {
     margin-block-start: var(--spacing-md);
 
     h3 {
-      margin: 0 0 var(--spacing-xs);
+      margin: 0 0 var(--spacing-sm);
       font-family: var(--font-mono);
       font-size: var(--font-size-xs);
       text-transform: uppercase;
@@ -544,9 +542,18 @@ body:has(.map-split) main > .wrap,
 
     ul {
       margin: 0;
-      padding-inline-start: var(--spacing-lg);
+      padding: 0;
+      list-style: none;
       font-family: var(--font-mono);
       font-size: var(--font-size-sm);
+    }
+
+    a {
+      color: var(--color-text);
+
+      &:hover {
+        text-decoration-color: var(--color-accent);
+      }
     }
   }
 }
@@ -603,6 +610,7 @@ body:has(.map-split) main > .wrap,
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-md);
+  row-gap: var(--spacing-xs);
   margin-block-end: var(--spacing-md);
 
   &:last-child {
@@ -847,7 +855,7 @@ body:has(.map-split) main > .wrap,
 
 .leaflet-container .leaflet-control-attribution {
   background-color: var(--color-background) !important;
-  color: var(--color-muted) !important;
+  color: var(--color-text-muted) !important;
   border-color: var(--color-line) !important;
 }
 
@@ -1154,7 +1162,7 @@ body:has([data-filter-root]) .site-header {
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--spacing-sm) var(--spacing-md);
+  gap: var(--spacing-md);
   margin-block-start: var(--spacing-xs);
 
   .meta {

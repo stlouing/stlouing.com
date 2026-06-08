@@ -75,5 +75,19 @@ const trail = [
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+    row-gap: var(--spacing-xs);
+    flex-wrap: wrap;
+  }
+
+  @media screen and (max-width: 700px) {
+    .food-sub-meta {
+      display: grid;
+      align-items: flex-start;
+      grid-template-columns: repeat(2, 1fr);
+
+      .chip {
+        width: fit-content;
+      }
+    }
   }
 </style>
