@@ -5,7 +5,7 @@ import Entry from '../../components/Entry.astro'
 import { href } from '../../lib/url'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
-import { foodByNeighborhood, normalizeName } from '../../lib/neighborhoods'
+import { foodByNeighborhood, normalizeName, wikipediaHref } from '../../lib/neighborhoods'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import neighborhoods from '../../data/neighborhoods.json'
 import SourceLink from '../../components/SourceLink.astro'
@@ -54,14 +54,10 @@ const description = info
         </p>
       )
     }
-    {
-      (data.url || data.wikipedia) && (
-        <Fragment slot="meta">
-          <SourceLink href={data.url} />
-          <SourceLink href={data.wikipedia} label="Wikipedia" />
-        </Fragment>
-      )
-    }
+    <Fragment slot="meta">
+      <SourceLink href={data.url} />
+      <SourceLink href={data.wikipedia ?? wikipediaHref(data.title)} label="Wikipedia" />
+    </Fragment>
     <Content />
     {
       places.length > 0 && (

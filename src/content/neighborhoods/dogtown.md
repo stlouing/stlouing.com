@@ -1,6 +1,5 @@
 ---
 title: Dogtown
-wikipedia: https://en.wikipedia.org/wiki/Dogtown,_St._Louis
 ---
 
 Dogtown is an unofficial neighborhood made up of four city neighborhoods:

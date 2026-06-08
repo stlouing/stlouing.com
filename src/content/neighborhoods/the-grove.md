@@ -1,6 +1,5 @@
 ---
 title: The Grove
-wikipedia: https://en.wikipedia.org/wiki/The_Grove,_St._Louis
 url: https://www.thegrovestl.com
 ---
 

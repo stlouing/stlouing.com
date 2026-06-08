@@ -9,6 +9,13 @@ export function normalizeName(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
+// English Wikipedia article for a St. Louis neighborhood. Article titles follow
+// "<Name>, St. Louis" (spaces → underscores), so the link is generated from the
+// name; a frontmatter `wikipedia` value overrides it for the rare exception.
+export function wikipediaHref(name: string): string {
+  return `https://en.wikipedia.org/wiki/${name.replace(/ /g, '_')},_St._Louis`
+}
+
 // Normalized canonical name -> slug, from the neighborhood data (skipping the
 // `ignored` rows that are absorbed into a merged neighborhood like Dogtown).
 const slugByName = new Map(
