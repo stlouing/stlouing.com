@@ -59,8 +59,8 @@ const trail = [
             {
               data.cuisine.map((cuisine) => (
                 <Chip href={href(`/tags/${cuisine}`)}>
-                  {cuisineEmoji(data.cuisine)}
-                  {cuisine}{' '}
+                  <span>{cuisineEmoji(data.cuisine)}</span>
+                  <span>{cuisine}</span>
                 </Chip>
               ))
             }

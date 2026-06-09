@@ -1,8 +1,8 @@
 ---
-title: 'Sultan'
+title: Sultan
 rating: 9.5
 cuisine: ['middle eastern']
-neighborhood: 'The Grove'
+neighborhood: The Grove
 address:
   - 4200 Manchester Ave
   - St. Louis, MO 63110
