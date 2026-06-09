@@ -17,7 +17,7 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 ## Contact
 
-You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com).
+You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also [st.louing](https://instagram.com/st.louing) on Instagram.
 
 ## Uses
 

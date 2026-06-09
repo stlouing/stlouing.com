@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content'
+import { published } from './content'
 import { entryUrl } from './entry-url.mjs'
 
 /**
@@ -28,9 +29,15 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
     body: string
   }
   const sources: Source[] = []
-  const add = (
+  const add = <
+    Entry extends {
+      id: string
+      body?: string
+      data: { title?: string; draft?: boolean | undefined }
+    },
+  >(
     collection: string,
-    entries: { id: string; body?: string; data: { title?: string } }[],
+    entries: Entry[],
   ) => {
     for (const entry of entries) {
       sources.push({
@@ -42,11 +49,12 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
     }
   }
 
-  add('food', await getCollection('food'))
-  add('hikes', await getCollection('hikes'))
-  add('notes', await getCollection('notes'))
-  add('neighborhoods', await getCollection('neighborhoods'))
-  add('topics', await getCollection('topics'))
+  // Drafts shouldn't surface as a backlink source on a published page.
+  add('food', published(await getCollection('food')))
+  add('hikes', published(await getCollection('hikes')))
+  add('notes', published(await getCollection('notes')))
+  add('neighborhoods', published(await getCollection('neighborhoods')))
+  add('topics', published(await getCollection('topics')))
 
   const map = new Map<string, Backlink[]>()
   for (const source of sources) {

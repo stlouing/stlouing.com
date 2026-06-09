@@ -8,4 +8,5 @@ address:
   - St. Louis, MO 63110
 coords: [38.6268527, -90.2566985]
 url: https://www.stlgrace.com/menu
+draft: true
 ---

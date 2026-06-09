@@ -29,7 +29,13 @@ export function remarkWikiLink({ resolve }) {
         const label = (labelRaw ?? targetRaw).trim()
         const url = resolve(target)
         if (url) {
-          out.push({ type: 'link', url, children: [{ type: 'text', value: label }] })
+          out.push({
+            type: 'link',
+            url,
+            // Tag for the hovercard script + carry the target id it looks up.
+            data: { hProperties: { className: ['wikilink'], 'data-wikilink': target } },
+            children: [{ type: 'text', value: label }],
+          })
         } else {
           out.push({ type: 'html', value: `<span class="wikilink-broken">${label}</span>` })
         }

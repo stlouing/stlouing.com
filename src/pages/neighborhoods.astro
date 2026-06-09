@@ -11,7 +11,7 @@ import IconArrowRight from '../assets/IconArrowRight.astro'
 // The list shows each written neighborhood's rendered writeup, clamped to a few
 // lines (keeps inline links + formatting, just cuts it off) with "Read more" to
 // the full page. Neighborhoods with a writeup start expanded.
-const entries = await getCollection('neighborhoods')
+const entries = published(await getCollection('neighborhoods'))
 type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
 const rendered = new Map<string, RenderedContent>()
 const writtenUp = new Set<string>()

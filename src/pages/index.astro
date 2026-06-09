@@ -39,7 +39,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
 
 <BaseLayout jsonLd={website}>
-  <header class="h-card">
+  <header class="h-card index-header">
     <h1 class="page-title">St. Louing <span>since 2023</span></h1>
     <p class="tagline p-note">{tagline}</p>
     <p class="introduction">
@@ -145,6 +145,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       font-weight: 400;
       font-family: var(--font-mono);
     }
+  }
+
+  .index-header {
+    margin-bottom: 3rem;
   }
 
   .tagline {

@@ -1,5 +1,8 @@
-export function published<T extends { data: { draft?: boolean } }>(entries: T[]): T[] {
+export function published<
+  T extends { id: string; body?: string; data: { title?: string; draft?: boolean | undefined } },
+>(entries: T[]): T[] {
   if (import.meta.env.DEV) return entries
+
   return entries.filter((entry) => !entry.data.draft)
 }
 

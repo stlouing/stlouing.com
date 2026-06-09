@@ -11,4 +11,4 @@ url: https://www.menyarui.com
 instagram: https://www.instagram.com/menyarui_stl
 ---
 
-Menya Rui was my introduction to ramen in St. Louis, which was lucky for me.
+Menya Rui was my introduction to ramen in St. Louis, which was lucky for me, because it's awesome.

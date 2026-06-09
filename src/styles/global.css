@@ -251,6 +251,42 @@ a.more {
   border-block-end: 1px dotted var(--color-text-muted);
 }
 
+/* Desktop hover preview for wikilinks (positioned + toggled by
+   src/scripts/wikilink-preview.ts). */
+.wikilink-card {
+  position: absolute;
+  z-index: 50;
+  max-width: 300px;
+  padding: var(--spacing-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.wikilink-card.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wikilink-card-title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  margin-block-end: var(--spacing-md);
+}
+
+.wikilink-card-excerpt {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
 .icon {
   color: var(--color-text-muted);
   flex-shrink: 0;
@@ -511,10 +547,6 @@ body:has(.map-split) main > .wrap,
     cursor: pointer;
   }
 
-  [data-section].is-active .list-title {
-    color: var(--color-accent);
-  }
-
   .neighborhood-toggle {
     width: 100%;
     padding: 0;
@@ -577,10 +609,6 @@ body:has(.map-split) main > .wrap,
    row's title takes the accent. */
 .list-with-map li:not(.is-active) .list-description {
   display: none;
-}
-
-.list-with-map li.is-active .list-title {
-  color: var(--color-accent);
 }
 
 .list-with-map {

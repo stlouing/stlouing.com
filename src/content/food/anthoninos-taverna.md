@@ -8,4 +8,6 @@ address:
   - St. Louis, MO 63110
 coords: [38.6143767, -90.2778436]
 url: https://anthoninos.com
+instagram: https://www.instagram.com/anthoninos_taverna
+draft: true
 ---

@@ -15,7 +15,10 @@ const isActive = (path: string) => {
 <nav class="site-nav" aria-label="Primary">
   {
     items.map((section) => (
-      <a href={href(section.path)} aria-current={isActive(section.path) ? 'page' : undefined}>
+      <a
+        href={href(section.path)}
+        class={`nav-section-${section.label.toLowerCase()}`}
+        aria-current={isActive(section.path) ? 'page' : undefined}>
         {section.label}
       </a>
     ))
@@ -32,6 +35,7 @@ const isActive = (path: string) => {
     font-size: var(--font-size-sm);
 
     a {
+      display: block;
       color: var(--color-text);
       text-decoration: underline;
       text-decoration-style: dotted;
@@ -56,6 +60,12 @@ const isActive = (path: string) => {
         text-underline-offset: 4px;
         text-decoration-color: var(--color-accent);
       }
+    }
+  }
+
+  @media (max-width: 450px) {
+    .nav-section-notes {
+      display: none !important;
     }
   }
 </style>
