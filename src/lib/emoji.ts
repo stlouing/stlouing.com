@@ -16,6 +16,7 @@ const CUISINE_EMOJI: Record<string, string> = {
   coffee: '☕',
   dessert: '🍰',
   donuts: '🍩',
+  'hot dogs': '🌭',
   indian: '🍛',
   italian: '🍝',
   japanese: '🍣',

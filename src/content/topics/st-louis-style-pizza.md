@@ -1,6 +1,6 @@
 ---
 title: St. Louis-style Pizza
-description: Love it or hate it, it holds a special place in the heart of many
+description: Love it or hate it, it holds a special place in many hearts
 created: 2026-05-31
 updated: 2026-06-08
 ---

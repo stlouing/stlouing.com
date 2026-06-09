@@ -14,4 +14,4 @@ Middle eastern food in general is one of my favorite types of cuisine, and Leban
 
 The hummus, baba ganoush, and falafel at Taste of Lebanon are all fantastic - the best I've had in the St. Louis area. The lentil soup was also very good, and the various grilled meats are also good, though [[sultan|Sultan]]'s keftah tops my list.
 
-Taste of Lebanon also offers hookah and has a hookah room, which I have not experienced but I think it's cool that there's a location with both food and hookah.
+Taste of Lebanon also offers hookah and has a separate room for it, which I have not experienced but I think it's cool that there's a restaurant with both food and hookah available.

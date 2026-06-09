@@ -10,4 +10,4 @@ coords: [38.6136197, -90.2753012]
 url: https://www.nickyslices.com
 ---
 
-Detroit-style slices in the Hill.
+I love a good bready pizza. I know St. Louis is the town of cracker-crust pizza.

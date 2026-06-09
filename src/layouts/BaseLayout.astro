@@ -141,9 +141,11 @@ try {
 
     {structuredData.map((schema) => <JsonLd data={schema} />)}
 
-    {/* Cookieless, no-consent-banner analytics (GoatCounter). Production builds
+    {
+      /* Cookieless, no-consent-banner analytics (GoatCounter). Production builds
         only, so local dev + previews don't count. Planned first-party-proxy
-        hardening is in README → Analytics. */}
+        hardening is in README → Analytics. */
+    }
     {
       import.meta.env.PROD && (
         <script

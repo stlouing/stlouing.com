@@ -7,7 +7,7 @@ address:
   - 6394 Delmar Blvd
   - University City, MO 63130
 coords: [38.6557052, -90.304477]
-url: https://www.instagram.com/kishimoto_stl
+instagram: https://www.instagram.com/kishimoto_stl
 ---
 
 As a long time fan of Menya Rui, I've been hyped to try Kishimoto Mendo ever since it was announced. Kishimoto Mendo is the new Tonkotsu-style ramen concept from the chef-owner of Menya Rui. Tonkotsu is my favorite style of ramen, so although the Shoyu at Menay Rui is fantastic, I wasn't fully satisfied with the STL ramen scene.

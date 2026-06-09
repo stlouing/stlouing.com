@@ -13,6 +13,8 @@ import { neighborhoodHref } from '../../lib/neighborhoods'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji } from '../../lib/emoji'
+import IconArrowRight from '../../assets/IconArrowRight.astro'
+import IconMapPin from '../../assets/IconMapPin.astro'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -41,6 +43,32 @@ const trail = [
   { label: 'Food', href: '/food' },
   ...(data.neighborhood ? [{ label: data.neighborhood, href: neighborhoodLink ?? undefined }] : []),
 ]
+
+// Related places for the "more food" footer: others in the same neighborhood, and
+// others sharing this place's primary cuisine (best-rated first, capped, and
+// de-duped so a place shows in at most one group).
+const allFood = published(await getCollection('food'))
+const topRated = (places: typeof allFood) =>
+  [...places].sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0)).slice(0, 6)
+
+const relatedNeighborhood = data.neighborhood
+  ? topRated(
+      allFood.filter(
+        (place) => place.id !== entry.id && place.data.neighborhood === data.neighborhood,
+      ),
+    )
+  : []
+const primaryCuisine = data.cuisine[0]
+const relatedCuisine = primaryCuisine
+  ? topRated(
+      allFood.filter(
+        (place) =>
+          place.id !== entry.id &&
+          place.data.cuisine.includes(primaryCuisine) &&
+          place.data.neighborhood !== data.neighborhood,
+      ),
+    )
+  : []
 ---
 
 <BaseLayout crumb={data.title} jsonLd={schema}>
@@ -50,7 +78,11 @@ const trail = [
       <div class="food-meta">
         {
           data.address && data.address.length > 0 && (
-            <span class="address">{data.address.join(', ')}</span>
+            <>
+              <div class="address">
+                <IconMapPin /> {data.address.join(', ')}
+              </div>
+            </>
           )
         }
         <div class="food-sub-meta">
@@ -67,16 +99,58 @@ const trail = [
           </div>
           <div class="food-sub-meta-section">
             <SourceLink href={data.url} />
+            <SourceLink href={data.instagram} />
             <SourceLink href={googleMapsHref(data)} label="Google Maps" />
           </div>
         </div>
       </div>
     </Fragment>
     <Content />
+    <section class="more-food">
+      {
+        relatedNeighborhood.length > 0 && (
+          <nav class="backlinks">
+            <h2>More in {data.neighborhood}</h2>
+            <ul>
+              {relatedNeighborhood.map((place) => (
+                <li>
+                  <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                  {place.data.rating && <span class="collection">{place.data.rating}</span>}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+      {
+        relatedCuisine.length > 0 && (
+          <nav class="backlinks">
+            <h2>More {primaryCuisine}</h2>
+            <ul>
+              {relatedCuisine.map((place) => (
+                <li>
+                  <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                  {place.data.rating && <span class="collection">{place.data.rating}</span>}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+      <a class="more" href={href('/food')}>
+        All food <IconArrowRight />
+      </a>
+    </section>
   </Entry>
 </BaseLayout>
 
 <style>
+  .address {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-xs);
+  }
+
   .food-meta {
     display: flex;
     flex-direction: column;
@@ -97,6 +171,17 @@ const trail = [
     gap: var(--spacing-md);
     row-gap: var(--spacing-xs);
     flex-wrap: wrap;
+  }
+
+  /* "More food" footer — related places + a link back to the full list, so a
+     page ends on a path forward instead of just cutting off. */
+  .more-food {
+    margin-block-start: var(--spacing-lg);
+    border-block-start: 1px solid var(--color-line);
+  }
+
+  .more-food .more {
+    margin-block-start: var(--spacing-lg);
   }
 
   @media screen and (max-width: 700px) {

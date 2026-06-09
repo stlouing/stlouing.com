@@ -7,7 +7,7 @@ address:
   - 25 Stonegate Center
   - Twin Oaks, MO 63088
 coords: [38.5670372, -90.4946618]
-url: 'https://www.eljarochotaqueria.com'
+url: https://www.eljarochotaqueria.com
 ---
 
 One of the first things I needed to find after moving to St. Louis was authentic Mexican food. I've always been used to having endless options for authentic Mexican food, bakeries, snacks, and groceries, but I was surprised to discover that St. Louis has a much smaller hispanic population than I was used to.

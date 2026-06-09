@@ -22,6 +22,8 @@ const food = defineCollection({
       .transform((value) => (Array.isArray(value) ? value : [value]))
       .optional(),
     url: z.string().url().optional(),
+    // The place's Instagram profile.
+    instagram: z.string().url().optional(),
     ...coords,
     ...taggable,
   }),

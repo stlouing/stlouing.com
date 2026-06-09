@@ -71,6 +71,7 @@ const hasCoords = places.some((place) => place.data.coords)
               'data-sort-title': place.data.title,
               'data-sort-rating': String(place.data.rating ?? ''),
               'data-google': googleMapsHref(place.data),
+              'data-instagram': place.data.instagram ?? '',
             }}>
             {place.data.rating && <Rating slot="lead" value={place.data.rating} />}
             {place.data.neighborhood && (
@@ -105,6 +106,7 @@ const hasCoords = places.some((place) => place.data.coords)
             )}
             <div class="place-links">
               <SourceLink href={place.data.url} />
+              <SourceLink href={place.data.instagram} />
               <SourceLink href={googleMapsHref(place.data)} label="Google Maps" />
             </div>
             <div class="food-preview">

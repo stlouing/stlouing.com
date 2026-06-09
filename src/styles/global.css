@@ -37,7 +37,7 @@
   --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
 
   /* Space + measure */
-  --measure: 850px;
+  --measure: 860px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -55,21 +55,21 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --color-background: #17171b;
-  --color-surface: #201f25;
+  --color-background: #201f25;
+  --color-surface: #17171b;
   --color-text-header: #f3f1f7;
   --color-text: #e9e8ec;
   --color-text-muted: #9b9aa3;
   --color-text-muted-2: #afaeb5;
   --color-line: #343339;
   --color-line-input: #45444b;
-  --color-accent: #e18484;
+  --color-accent: #e07d8d;
   --color-map-accent: #b59ae0;
   --color-map-north: #87acdd;
   --color-map-central: #e18484;
   --color-map-south: #b59ae0;
-  --color-link: #93bff8;
-  --color-link-hover: #a8c8f2;
+  --color-link: #9aaaf8;
+  --color-link-hover: #b1bcf5;
 
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
   --box-shadow-flag: rgba(0, 0, 0, 0.85) 0px 3px 3px 0px;
@@ -237,6 +237,10 @@ a.more {
     display: inline-flex;
   }
 
+  &.end {
+    justify-self: flex-end;
+  }
+
   &:hover {
     text-decoration-color: var(--color-accent);
   }
@@ -302,8 +306,17 @@ main {
   overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
 }
 
-.entry {
+.entry,
+.body {
   margin-block-end: 3rem;
+
+  ::marker {
+    color: var(--color-accent);
+  }
+}
+
+.body {
+  margin-block-end: var(--spacing-lg);
 }
 
 /* ===========================================================================
@@ -467,6 +480,9 @@ body:has(.map-split) main > .wrap,
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-line);
     height: 38px;
+    /* Header chrome (title + region legend). Not selectable, so dragging a
+       selection across it can't trigger the sticky-element scroll-to-top quirk. */
+    user-select: none;
   }
 
   .pane-header h1 {
@@ -1049,12 +1065,12 @@ body:has([data-filter-root]) .site-header {
 .map-tooltip .tip-address,
 .food-popup .tip-address {
   display: block;
-  margin-block: var(--spacing-xs);
+  margin-block: var(--spacing-sm);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-muted-2);
   white-space: nowrap;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 /* Click popup for food markers: matches the hover tooltip's accent box. With
@@ -1222,7 +1238,7 @@ body:has([data-filter-root]) .site-header {
     display: flex;
     gap: var(--spacing-sm);
     align-items: baseline;
-    padding-block: var(--spacing-xs);
+    /* padding-block: var(--spacing-xs); */
   }
 }
 

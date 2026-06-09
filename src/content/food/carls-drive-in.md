@@ -8,6 +8,7 @@ address:
   - Brentwood, MO 63144
 coords: [38.6126433, -90.3544152]
 url: http://www.carlsdrivein.com
+instagram: https://www.instagram.com/stlcarlsdrivein
 ---
 
 Carl's Drive-In is a charming, no-frills spot right off historic route 66. It's cash only and seating is very limited, so it can get packed during peak hours. The menu is small and to the point - they do smash burgers to order, and they also have IBC root beer on tap. They also have what I think of as "Chicago tamales" on the menu, which I find delightful.
