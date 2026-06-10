@@ -555,15 +555,8 @@ body:has(.map-split) main > .wrap,
     cursor: pointer;
   }
 
-  .neighborhood-toggle {
-    width: 100%;
-    padding: 0;
-    border: 0;
-    background: none;
-    text-align: start;
-  }
-
-  /* The writeup and food list stay collapsed until the row is expanded. */
+  /* Shown for any neighborhood that has a writeup (its row carries is-active);
+     rows without one keep this hidden. The list doesn't collapse. */
   .neighborhood-body {
     display: none;
 
@@ -576,10 +569,11 @@ body:has(.map-split) main > .wrap,
     }
   }
 
-  [data-section].is-active .neighborhood-body {
-    display: block;
-    margin-block-end: var(--spacing-sm) !important;
-    color: var(--color-text);
+  [data-section].is-active {
+    .neighborhood-body {
+      display: block;
+      color: var(--color-text);
+    }
   }
 
   .neighborhood-food {
@@ -628,17 +622,10 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-[data-view='map'] .list-with-map {
-}
-
 /* Row padding is only for the cramped map-view sidebar; the plain List view keeps
    the rows flush so they line up with the rest of the page. */
 [data-view='map'] .list-with-map .list li {
   padding: var(--spacing-xs) var(--spacing-md);
-}
-
-[data-view='map'] .list-with-map li.is-active {
-  background: var(--color-surface);
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the

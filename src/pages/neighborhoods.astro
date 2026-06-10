@@ -5,23 +5,20 @@ import List from '../components/List.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
-import { published, hasBody } from '../lib/content'
+import { published } from '../lib/content'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
 // The list shows each written neighborhood's rendered writeup, clamped to a few
 // lines (keeps inline links + formatting, just cuts it off) with "Read more" to
-// the full page. Neighborhoods with a writeup start expanded.
+// the full page. Every neighborhood with a writeup is always expanded — the rows
+// don't collapse; the map is what highlights + scrolls to a given one.
 const entries = published(await getCollection('neighborhoods'))
 type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
 const rendered = new Map<string, RenderedContent>()
-const writtenUp = new Set<string>()
 
 for (const entry of entries) {
   const { Content } = await render(entry)
   rendered.set(entry.id, Content)
-  if (hasBody(entry)) {
-    writtenUp.add(entry.id)
-  }
 }
 
 // Group food places by neighborhood so each section can list its restaurants.
@@ -62,7 +59,6 @@ for (const place of foodPlaces) {
                 const Content = rendered.get(neighborhood.slug)
                 const places = foodByNeighborhood.get(normalizeName(neighborhood.name)) ?? []
                 const isExpandable = Boolean(Content) || places.length > 0
-                const expanded = writtenUp.has(neighborhood.slug)
                 const numberLabel = neighborhood?.numberLabel
                   ? neighborhood.numberLabel
                   : neighborhood.number
@@ -71,28 +67,18 @@ for (const place of foodPlaces) {
                   <li
                     id={neighborhood.slug}
                     data-section={neighborhood.slug}
-                    class:list={{ 'is-active': expanded }}>
-                    {isExpandable ? (
-                      <button
-                        type="button"
-                        class="neighborhood-toggle"
-                        aria-expanded={expanded ? 'true' : 'false'}>
-                        <div class="list-title">
-                          <span class="number">{`${numberLabel}.`}</span>
-                          <span>{neighborhood.name}</span>
-                        </div>
-                        {Content && (
-                          <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
-                            More <IconArrowRight />
-                          </a>
-                        )}
-                      </button>
-                    ) : (
+                    class:list={{ 'is-active': Boolean(Content) }}>
+                    <div class="neighborhood-head">
                       <div class="list-title">
                         <span class="number">{`${numberLabel}.`}</span>
                         <span>{neighborhood.name}</span>
                       </div>
-                    )}
+                      {Content && (
+                        <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                          More <IconArrowRight />
+                        </a>
+                      )}
+                    </div>
                     {isExpandable && (
                       <div class="neighborhood-body list-description">
                         {Content && (
@@ -134,10 +120,11 @@ for (const place of foodPlaces) {
     font-size: var(--font-size-sm);
   }
 
-  button.neighborhood-toggle {
+  .neighborhood-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--spacing-md);
   }
 
   /* Cut the inline writeup off after a few lines — keeps its links + formatting

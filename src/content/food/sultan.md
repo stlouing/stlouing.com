@@ -10,3 +10,5 @@ coords: [38.6271488, -90.254366]
 url: https://www.sultan-stl.com
 instagram: https://www.instagram.com/sultanmediterraneanrestaurant
 ---
+
+This is our go-to spot for middle eastern food. Specifically, the beef kefta kabob is fantastic. Everything else is good, too - the rice, the lentil soup, the baba ganoush. They also have a mint lemonade that is the perfect balance of mint, lemon, and sweetness.

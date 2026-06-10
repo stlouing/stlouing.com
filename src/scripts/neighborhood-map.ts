@@ -85,50 +85,24 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   // Single source of truth for selection, driven by both map and list clicks.
-  // Selecting a neighborhood expands its writeup inline (and highlights its
-  // boundary); selecting the already-selected one collapses it again. Other
-  // rows stay in place — only the chosen one expands. On mobile this never
-  // switches panes: a map click keeps you on the map (the floating toggle is
-  // the only way to flip to the writeups).
+  // Rows are always expanded (no collapsing), so selecting only highlights the
+  // neighborhood's boundary and brings its row to the top of the pane. On mobile
+  // a map click keeps you on the map; the floating toggle flips to the writeups.
   function selectNeighborhood(slug: string): void {
     if (selectedSlug === slug) {
-      clearSelection()
-
       return
     }
 
     if (selectedSlug) {
       paintPath(selectedSlug, baseStyleFor(selectedSlug))
-      setRowExpanded(selectedSlug, false)
     }
 
     selectedSlug = slug
     paintPath(slug, selectedStyleFor(slug))
-    setRowExpanded(slug, true)
     // Bring the chosen neighborhood to the top of the pane (scroll-padding on
     // .content-pane keeps it clear of the sticky header).
     rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     history.replaceState(null, '', `#${slug}`)
-  }
-
-  function clearSelection(): void {
-    if (selectedSlug) {
-      paintPath(selectedSlug, baseStyleFor(selectedSlug))
-      setRowExpanded(selectedSlug, false)
-    }
-    selectedSlug = null
-    history.replaceState(null, '', location.pathname + location.search)
-  }
-
-  // Expand/collapse a row's writeup: `is-active` toggles the body and caret via
-  // CSS, and `aria-expanded` keeps the disclosure button accessible.
-  function setRowExpanded(slug: string, expanded: boolean): void {
-    const row = rowFor(slug)
-    if (!row) {
-      return
-    }
-    row.classList.toggle('is-active', expanded)
-    row.querySelector('.neighborhood-toggle')?.setAttribute('aria-expanded', String(expanded))
   }
 
   function rowFor(slug: string): HTMLElement | undefined {
@@ -193,8 +167,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     },
   }).addTo(map)
 
-  // Clicking a list row expands its neighborhood (and toggles off), mirroring
-  // the map click.
+  // Clicking a list row highlights its neighborhood on the map and scrolls it to
+  // the top, mirroring a map click. Rows don't collapse — they stay expanded.
   for (const row of rows) {
     const slug = row.dataset.section
     if (!slug) {

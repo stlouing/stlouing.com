@@ -11,4 +11,6 @@ url: https://www.vinniesstl.com
 instagram: https://www.instagram.com/vinnies_stl
 ---
 
-There's only a few places in all of St. Louis that do a rendition of an Italian beef sandwich, as seen in [4 Chicago-style Italian beef sandwiches in St. Louis to satisfy fans of 'The Bear'](https://www.saucemagazine.com/places-2/4-chicago-style-italian-beef-sandwiches-in-st-louis-to-satisfy-fans-of-the-bear-17368213/). I've tried most of the list (I haven't been able to convince myself to try the Italian beef at [[blues-city-deli|Blue's City Deli]] when the reuben is calling to me) but none taste like the real thing to me.
+<!-- There's only a few places in all of St. Louis that do a rendition of an Italian beef sandwich, as seen in [4 Chicago-style Italian beef sandwiches in St. Louis to satisfy fans of 'The Bear'](https://www.saucemagazine.com/places-2/4-chicago-style-italian-beef-sandwiches-in-st-louis-to-satisfy-fans-of-the-bear-17368213/). I've tried most of the list (I haven't been able to convince myself to try the Italian beef at [[blues-city-deli|Blue's City Deli]] when the reuben is calling to me) but none taste quite like the real thing.
+
+I liked the neighborhood vibes at Vinny's, and I liked the gyro a lot. The Italian beef -->

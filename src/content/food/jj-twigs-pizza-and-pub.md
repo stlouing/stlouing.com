@@ -13,4 +13,4 @@ instagram: https://www.instagram.com/jjtwigs.valleypark
 
 J.J. Twig's is the only place in town that I know of that specifically makes a Chicago thin-crust pizza. They also make a "double decker pizza" - two pizzas stacked on top of each other with the crusts braided together.
 
-They have locations in Valley Park, O'Fallon, Southampton, and there's even one in the Northern Chicago suburbs in Palatine, IL. I've been to the Valley Park and Southampton locations, 
+They have locations in Valley Park, O'Fallon, Southampton, and there's even one in the Northern Chicago suburbs in Palatine, IL. I've been to the Valley Park and Southampton locations, and both have good food and good vibes. It's a great place to bring a group and have a drink and some pizza.

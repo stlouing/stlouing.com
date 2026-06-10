@@ -9,5 +9,4 @@ address:
 coords: [38.6301504, -90.2813523]
 url: https://www.macslocaleats.com
 instagram: https://www.instagram.com/macslocaleats
-draft: true
 ---
