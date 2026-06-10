@@ -31,9 +31,11 @@ const { href: chipHref, ...rest } = Astro.props
     color: var(--color-text-muted);
     border: 1px solid var(--color-line-input);
     border-radius: 20px;
-    padding: 3px var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
     text-decoration: none;
     line-height: 1;
+    font-weight: 500;
+    background: var(--color-surface);
   }
 
   .chip:hover {

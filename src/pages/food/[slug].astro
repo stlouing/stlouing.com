@@ -69,11 +69,18 @@ const relatedCuisine = primaryCuisine
       ),
     )
   : []
+
+// "Mentioned in" should only surface links not already shown in the related-food
+// groups above, so a place doesn't appear twice on the same page.
+const relatedIds = new Set([...relatedNeighborhood, ...relatedCuisine].map((place) => place.id))
+const mentionedIn = backlinks.filter(
+  (backlink) => !(backlink.collection === 'food' && relatedIds.has(backlink.id)),
+)
 ---
 
 <BaseLayout crumb={data.title} jsonLd={schema}>
   <Breadcrumbs trail={trail} />
-  <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
+  <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={mentionedIn}>
     <Fragment slot="meta">
       <div class="food-meta">
         {

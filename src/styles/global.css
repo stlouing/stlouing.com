@@ -481,6 +481,14 @@ body:has(.map-split) main > .wrap,
   scroll-padding-block-start: 38px;
 }
 
+/* The global :target margin is sized to the *site* header, which isn't the
+   sticky element inside this pane (the 38px .pane-header is, already cleared by
+   the scroll-padding above). Left in, the two stack and a deep-linked row like
+   /neighborhoods#benton-park lands ~64px too low. Reset it here. */
+.map-split .content-pane :target {
+  scroll-margin-top: 0;
+}
+
 /* Drop Leaflet's default square focus outline on clicked boundaries; the active
    region is shown by recoloring the polygon itself (see neighborhood-map.ts). */
 .neighborhood-map .leaflet-interactive:focus {
@@ -776,18 +784,19 @@ body:has(.map-split) main > .wrap,
    pill (e.g. hike distance) is non-interactive. */
 .list-with-map .chip {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: 3px var(--spacing-sm);
-  border: 1px solid var(--color-line-input);
-  border-radius: 20px;
-  background: var(--color-surface);
+  gap: var(--spacing-sm);
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  line-height: 1;
   color: var(--color-text-muted);
-  white-space: nowrap;
+  border: 1px solid var(--color-line-input);
+  border-radius: 20px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-decoration: none;
+  line-height: 1;
   font-weight: 500;
+  background: var(--color-surface);
 }
 
 .list-with-map button.chip {

@@ -22,7 +22,7 @@ export const sections: Section[] = [
     path: '/food',
     group: 'guides',
     primary: true,
-    description: `An interactive map of my favorite spots across the metro, filterable by cuisine and neighborhood. All ratings are subjective based on my taste and experiences.`,
+    description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective based on my taste and experiences.`,
   },
   {
     label: 'Neighborhoods',

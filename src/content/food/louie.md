@@ -1,6 +1,6 @@
 ---
 title: Louie
-rating: 10
+rating: 9.5
 cuisine: ['italian']
 neighborhood: Clayton
 address:
@@ -15,4 +15,4 @@ Louie is an excellent spot at an excellent location. It's right on the strip on 
 
 My partner and I went to Louie for an anniversary dinner and had a great time. The service was fantastic, as well as the food - particularly the bread and foccaccia, a personal favorite. They also get burrata flown in from Italy, so that was a treat.
 
-I also had the pizza, which I would probably rate a 9/10 - very good, but probably not the best in the whole city. Nonetheless, overall it was a great experience.
+I also had the pizza, which I would probably rate a 9/10 - very good, but probably not the best in the whole city. Overall it was a great experience and a great spot to go for a celebration.

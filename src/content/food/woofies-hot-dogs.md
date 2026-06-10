@@ -22,6 +22,7 @@ The ingredients on a Chicago dog are as follows:
 - Tomato slice (2x)
 - Sport pepper (2x)
 - Relish, neon green
+- Onion, diced
 - Mustard
 - Celery salt
 - Poppyseed bun

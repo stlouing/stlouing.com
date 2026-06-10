@@ -1,6 +1,6 @@
 ---
 title: La Tejana Taqueria
-rating: 1
+rating: 2
 cuisine: ['tacos']
 address:
   - 3149 N Lindbergh Blvd

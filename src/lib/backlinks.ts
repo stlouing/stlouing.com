@@ -8,6 +8,7 @@ import { entryUrl } from './entry-url.mjs'
  * link to it. Powers the "Mentioned in" list on detail pages.
  */
 export interface Backlink {
+  id: string
   title: string
   url: string
   collection: string
@@ -72,6 +73,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
       }
       const list = map.get(target) ?? []
       list.push({
+        id: source.id,
         title: source.title,
         url: entryUrl(source.collection, source.id),
         collection: source.collection,
