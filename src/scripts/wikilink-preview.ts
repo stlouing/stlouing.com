@@ -5,6 +5,12 @@
 interface Preview {
   title: string
   excerpt: string
+  // Food only: a cuisine chip (with its emoji) + neighborhood.
+  cuisine?: string[]
+  emoji?: string
+  neighborhood?: string
+  // Topic only: the curated tagline, shown in the accent color.
+  description?: string
 }
 
 const HOVER_DELAY = 500
@@ -67,6 +73,34 @@ export function initWikilinkPreviews(): void {
     title.className = 'wikilink-card-title'
     title.textContent = preview.title
     card.appendChild(title)
+
+    // Topic tagline, in the accent color.
+    if (preview.description) {
+      const description = document.createElement('p')
+      description.className = 'wikilink-card-description'
+      description.textContent = preview.description
+      card.appendChild(description)
+    }
+
+    // Food metadata: a cuisine chip (emoji on the first) + the neighborhood.
+    if (preview.cuisine?.length || preview.neighborhood) {
+      const meta = document.createElement('div')
+      meta.className = 'wikilink-card-meta'
+      preview.cuisine?.forEach((cuisine, index) => {
+        const chip = document.createElement('span')
+        chip.className = 'wikilink-card-chip'
+        chip.textContent = index === 0 && preview.emoji ? `${preview.emoji} ${cuisine}` : cuisine
+        meta.appendChild(chip)
+      })
+      if (preview.neighborhood) {
+        const neighborhood = document.createElement('span')
+        neighborhood.className = 'wikilink-card-neighborhood'
+        neighborhood.textContent = preview.neighborhood
+        meta.appendChild(neighborhood)
+      }
+      card.appendChild(meta)
+    }
+
     if (preview.excerpt) {
       const body = document.createElement('p')
       body.className = 'wikilink-card-excerpt'

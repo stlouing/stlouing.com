@@ -20,6 +20,7 @@ export function excerpt(body: string | undefined, max = 160): string {
   const text = (body ?? '')
     .replace(/```[\s\S]*?```/g, ' ') // fenced code blocks
     .replace(/<!--[\s\S]*?-->/g, ' ') // HTML comments
+    .replace(/<figure[\s\S]*?<\/figure>/gi, ' ') // figures (image + caption) aren't prose
     .replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (_match, target, label) => label ?? target)
     .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // markdown links/images -> text
     .replace(/^[>#\s]*/gm, '') // leading blockquote/heading markers

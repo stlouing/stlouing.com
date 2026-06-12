@@ -6,16 +6,11 @@ updated: 2026-06-11
 draft: true
 ---
 
-### Pie Guy
-
-### Elicia's Pizza
-
-### The Shaved Duck
-
-### Dinar Restaurant
-
-### Clasic Red Hots Albasha
-
-### Minerva Indian Cuisine
-
-### El Toluco
+- Pie Guy
+- Elicia's Pizza
+- The Shaved Duck
+- Dinar Restaurant
+- Clasic Red Hots Albasha
+- Minerva Indian Cuisine
+- El Toluco
+- Southern

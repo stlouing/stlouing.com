@@ -1,15 +1,24 @@
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { published, excerpt } from '../lib/content'
+import { cuisineEmoji } from '../lib/emoji'
 
-// Small map of `id -> { title, excerpt }` for every linkable (published) entry,
-// fetched once by the wikilink hovercard script (src/scripts/wikilink-preview.ts)
-// and cached. Keep the excerpt short — it's a hover preview, not the page.
+// Small map of `id -> { title, excerpt, ... }` for every linkable (published)
+// entry, fetched once by the wikilink hovercard script
+// (src/scripts/wikilink-preview.ts) and cached. Keep the excerpt short — it's a
+// hover preview, not the page. Food entries also carry cuisine + neighborhood so
+// the card can show them, which is especially useful for places with no writeup.
 const EXCERPT_CHARS = 200
 
 interface Preview {
   title: string
   excerpt: string
+  // Food only.
+  cuisine?: string[]
+  emoji?: string
+  neighborhood?: string
+  // Topic only: the curated tagline.
+  description?: string
 }
 
 export const GET: APIRoute = async () => {
@@ -23,11 +32,25 @@ export const GET: APIRoute = async () => {
     }
   }
 
-  add(await getCollection('food'))
+  for (const place of published(await getCollection('food'))) {
+    previews[place.id] = {
+      title: place.data?.title,
+      excerpt: excerpt(place.body, EXCERPT_CHARS),
+      cuisine: place.data?.cuisine,
+      emoji: cuisineEmoji(place.data?.cuisine),
+      neighborhood: place.data?.neighborhood,
+    }
+  }
+  for (const topic of published(await getCollection('topics'))) {
+    previews[topic.id] = {
+      title: topic.data?.title,
+      excerpt: excerpt(topic.body, EXCERPT_CHARS),
+      description: topic.data?.description,
+    }
+  }
   add(await getCollection('hikes'))
   add(await getCollection('notes'))
   add(await getCollection('neighborhoods'))
-  add(await getCollection('topics'))
 
   return new Response(JSON.stringify(previews), { headers: { 'content-type': 'application/json' } })
 }

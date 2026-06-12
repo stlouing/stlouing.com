@@ -1,4 +1,4 @@
-export type Group = 'guides' | 'notes' | 'topics' | 'site'
+export type Group = 'maps' | 'notes' | 'topics' | 'site'
 
 export interface Section {
   label: string
@@ -8,9 +8,9 @@ export interface Section {
   description?: string
 }
 
-// Homepage groups, in display order (a 2-up grid: guides | notes / pages | site).
+// Homepage groups, in display order (a 2-up grid: maps | notes / pages | site).
 export const groups: { id: Group; label?: string }[] = [
-  { id: 'guides', label: 'Guides' },
+  { id: 'maps', label: 'Maps' },
   { id: 'topics', label: 'Topics' },
   { id: 'notes', label: 'Notes' },
   { id: 'site', label: 'Site' },
@@ -20,21 +20,21 @@ export const sections: Section[] = [
   {
     label: 'Food',
     path: '/food',
-    group: 'guides',
+    group: 'maps',
     primary: true,
     description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective based on my taste and experiences.`,
   },
   {
     label: 'Neighborhoods',
     path: '/neighborhoods',
-    group: 'guides',
+    group: 'maps',
     primary: true,
     description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, where I can keep track of the unique things I've learned about a given area.`,
   },
   // {
   //   label: 'Hikes',
   //   path: '/hikes',
-  //   group: 'guides',
+  //   group: 'maps',
   //   description: 'Exploring the nature of Missouri',
   // },
 
