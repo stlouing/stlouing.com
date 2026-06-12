@@ -7,19 +7,17 @@ updated: 2026-06-08
 
 St. Louis-style pizza is a regional variation of pizza that is ubiquitous across the entire St. Louis metro area. For many, the pizza style is synonymous with Imo's, a local chain that has locations in all the far reaches of Missouri and southern Illinois, but many local pizza places all around St. Louis make their own variation of this unique pizza style.
 
-Although this style is famous for being divisive, it is generally beloved by St. Louisans, though overall it tends to be a love it-or-hate it type of situation.
-
 ## What defines a STL-style pizza?
 
 ### Cheese
 
-You can't talk about St. Louis-style pizza without taking about Provel - it's the most unique and controversial aspect of the pizza. Provel is made up of cheddar, Swiss, and provolone cheese with a hint of liquid smoke, and it's processed and emulsified like American cheese. I would say it tastes kind of similar to a smoked gouda with the consistency of American cheese (those who did not grow up with it often describe is as plasticy). Provel was developed in the '40s as an answer to the cheese pull "problem", so that slices could be cut and removed easily. Since it has that gooey texture, you can't end up accidentally pulling off all the cheese with a single bite, so I can understand the rationale.
+You can't talk about St. Louis-style pizza without taking about Provel - it's the most unique and controversial aspect of the pizza. Provel is made up of cheddar, Swiss, and provolone cheese with a hint of liquid smoke, and it's processed and emulsified like American cheese. I would say it tastes kind of similar to a smoked gouda with the consistency of American cheese (those who did not grow up with it often describe is as plasticy). Provel was developed in the '40s as an answer to the cheese pull issue, to ensure slices could be cut and removed easily. With Provel, you can't end up accidentally pulling off all the cheese on a slice with a single bite, so I can understand the rationale.
 
 Pizza generally consists of three ingredients (crust, sauce, and cheese) and most styles of pizza default to mozzarella. Provel being so different in both flavor and consistency from what anyone outside of the region expects is, in my opinion, what throws people off so much when they try it for the first time. I've had dozens of STL-style pizzas at this point so I know what to expect, but I will admit the first time I was genuiely confused about what I was experiencing and has been an aquired taste. If you grew up with Provel, however, that would be a different story, and you'd already be used to the taste and have fond memories of the pizza.
 
 ### Crust
 
-One thing all St. Louis-style pizzas have in common is the crust is very thin. Some describe it as unleavened, but in reality the dough is made with a light amount of yeast and low hydration, resulting in that cracker-thin crisp. In Kenji López-Alt's famous [In Defense of St. Louis-Style Pizza](https://www.yahoo.com/lifestyle/defense-st-louis-style-pizza-120000289.html) article, he describes it as a pizza nacho, which is definitely an interesting and not entirely inaccurate description.
+One thing all St. Louis-style pizzas have in common is the crust is very thin. Some describe it as unleavened, but usually the dough is made with a light amount of yeast and low hydration, resulting in that cracker-thin crisp. In Kenji López-Alt's famous [In Defense of St. Louis-Style Pizza](https://www.yahoo.com/lifestyle/defense-st-louis-style-pizza-120000289.html) article, he describes it as a pizza nacho, which is definitely an interesting and not entirely inaccurate description.
 
 ### Sauce
 
