@@ -8,4 +8,5 @@ address:
   - St. Louis, MO 63116
 coords: [38.5730436, -90.2649899]
 url: https://www.thestellarhog.com
+instagram: https://www.instagram.com/thestellarhog
 ---

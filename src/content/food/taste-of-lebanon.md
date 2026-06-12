@@ -8,6 +8,7 @@ address:
   - St. Louis, MO 63108
 coords: [38.6456551, -90.2615992]
 url: https://www.tasteoflebanonstl.com
+instagram: https://www.instagram.com/tasteof.lebanon
 ---
 
 Middle eastern food in general is one of my favorite types of cuisine, and Lebanese in specific is possibly my favorite variation of it. I was excited to discover Taste of Lebanon right in Central West End.

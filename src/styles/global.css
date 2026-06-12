@@ -11,7 +11,7 @@
   --color-surface: #ffffff;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
-  --color-text-article: #212120;
+  --color-text-article: #1d1d1c;
   --color-text-muted: #6f6b61;
   --color-text-muted-2: #58554d;
   --color-line: #dcd8cb;
@@ -156,9 +156,10 @@ h2 {
 }
 
 h3 {
-  font-size: clamp(1.1rem, 1.1rem + 0.6vw, 1.3rem);
-  margin-bottom: var(--spacing-md);
+  font-size: clamp(1.1rem, 1.1rem + 0.6vw, 1.2rem);
+  margin-bottom: var(--spacing-sm);
   font-family: var(--font-mono);
+  color: var(--color-accent);
 }
 
 p,
@@ -186,10 +187,33 @@ ul li > ol {
 }
 
 blockquote {
+  margin-inline: 0;
   border-inline-start: 3px solid var(--color-accent);
-  padding-inline-start: 1rem;
+  padding-inline-start: var(--spacing-md);
   color: var(--color-text-muted);
   font-style: italic;
+  font-size: var(--font-size-lg);
+}
+
+/* A single-paragraph quote shouldn't carry the inner paragraph's bottom margin
+   inside its border box. */
+blockquote > :last-child {
+  margin-block-end: 0;
+}
+
+/* When a <cite> attribution follows, tuck it close to the quote. */
+blockquote:has(+ p cite) {
+  margin-block-end: var(--spacing-md);
+}
+
+/* Source attribution under a pull quote: aligned under the quote's text, quieter
+   than body copy, and upright (the quote already carries the italic). */
+cite {
+  display: block;
+  padding-inline-start: calc(var(--spacing-md) + 3px);
+  font-size: var(--font-size-md);
+  font-style: normal;
+  color: var(--color-text-muted-2);
 }
 
 hr {
@@ -369,6 +393,10 @@ main {
 .body {
   color: var(--color-text-article);
   margin-block-end: var(--spacing-lg);
+
+  h2:not(:first-child) {
+    margin-top: 3rem;
+  }
 }
 
 /* ===========================================================================
@@ -1340,4 +1368,62 @@ body:has([data-filter-root]) .site-header {
   width: 48px;
   border-radius: 4px;
   /* box-shadow: var(--box-shadow-flag); */
+}
+
+.image-grid {
+  p {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* A single photo floated beside the article text with a caption. The <img> is an
+   optimized Markdown image; the <figure>/<figcaption> are raw HTML in the .md —
+   same wrap-Markdown-in-HTML approach as .image-grid. On narrow screens it drops
+   the float and goes full width so it doesn't crowd the text. */
+.figure {
+  width: min(280px, 40%);
+
+  &.right {
+    float: right;
+    margin: var(--spacing-xs) 0 var(--spacing-md) var(--spacing-lg);
+  }
+
+  &.left {
+    float: left;
+    margin: var(--spacing-xs) var(--spacing-lg) var(--spacing-md) 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  img {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+  }
+
+  figcaption {
+    margin-block-start: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .image-grid {
+    p {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .figure,
+  .figure.right,
+  .figure.left {
+    float: none;
+    width: 100%;
+    margin-inline: 0;
+  }
 }

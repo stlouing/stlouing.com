@@ -13,3 +13,9 @@ draft: true
 ### The Shaved Duck
 
 ### Dinar Restaurant
+
+### Clasic Red Hots Albasha
+
+### Minerva Indian Cuisine
+
+### El Toluco

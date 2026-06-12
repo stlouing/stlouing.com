@@ -1,7 +1,7 @@
 ---
 title: Failoni's Restaurant
 rating: 6
-cuisine: ['italian']
+cuisine: ['pizza']
 neighborhood: Dogtown
 address:
   - 6715 Manchester Ave

@@ -8,6 +8,7 @@ address:
   - University City, MO 63130
 coords: [38.6606232, -90.3483362]
 url: http://www.lapizzamenu.com
+instagram: https://www.instagram.com/la_pizza_inc
 ---
 
 La Pizza is one of the only places in St. Louis where you can get an authentic New York-style pizza. It's a small shop, mostly set up for takeout with a few small tables for dining in.
