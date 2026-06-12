@@ -9,8 +9,9 @@
   /* Colors */
   --color-background: #fcfbf6;
   --color-surface: #ffffff;
-  --color-text-header: #070706;
+  --color-text-heading: #070706;
   --color-text: #1b1a17;
+  --color-text-article: #212120;
   --color-text-muted: #6f6b61;
   --color-text-muted-2: #58554d;
   --color-line: #dcd8cb;
@@ -57,8 +58,9 @@
 
   --color-background: #201f25;
   --color-surface: #17171b;
-  --color-text-header: #f3f1f7;
+  --color-text-heading: #f3f1f7;
   --color-text: #e9e8ec;
+  --color-text-article: #cfcdd3;
   --color-text-muted: #9b9aa3;
   --color-text-muted-2: #afaeb5;
   --color-line: #343339;
@@ -142,20 +144,21 @@ h4 {
   line-height: 1.2;
   font-weight: 700;
   text-wrap: balance;
+  color: var(--color-text-heading);
 }
 
 h1 {
-  font-size: clamp(1.5rem, 1.3rem + 1vw, 2.5rem);
-  color: var(--color-text-header);
+  font-size: clamp(1.5rem, 1.4rem + 1vw, 2.5rem);
 }
 
 h2 {
-  font-size: clamp(1.2rem, 1.1rem + 0.6vw, 1.45rem);
-  color: var(--color-text-header);
+  font-size: clamp(1.3rem, 1.3rem + 0.6vw, 1.8rem);
 }
 
 h3 {
-  font-size: 1.05rem;
+  font-size: clamp(1.1rem, 1.1rem + 0.6vw, 1.3rem);
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-mono);
 }
 
 p,
@@ -204,6 +207,16 @@ time {
    Header.astro; the fallback covers the no-JS / pre-hydration case. */
 :target {
   scroll-margin-top: calc(var(--header-height, 4rem) + var(--spacing-sm));
+}
+
+u {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 4px;
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 a {
@@ -344,14 +357,17 @@ main {
 
 .entry,
 .body {
-  margin-block-end: 3rem;
-
   ::marker {
     color: var(--color-accent);
   }
 }
 
+.entry {
+  margin-block-end: 3rem;
+}
+
 .body {
+  color: var(--color-text-article);
   margin-block-end: var(--spacing-lg);
 }
 
