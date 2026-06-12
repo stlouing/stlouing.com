@@ -85,8 +85,8 @@ Here's where I've been so far:
 - Pappy's Smokehouse
 - Beast Craft BBQ Co.
 - Adam's Smokehouse
-- Sugarfire Smokehouse
 - Salt & Smoke BBQ
+- Sugarfire Smokehouse
 - Bandana's Bar-B-Q
 - Fourth City BBQ
 - The Shaved Duck (rip)
