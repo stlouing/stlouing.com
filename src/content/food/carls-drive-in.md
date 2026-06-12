@@ -11,7 +11,7 @@ url: http://www.carlsdrivein.com
 instagram: https://www.instagram.com/stlcarlsdrivein
 ---
 
-Carl's Drive-In is a charming, no-frills spot right off historic route 66. It's cash only and seating is very limited, so it can get packed during peak hours. The menu is small and to the point - they do smash burgers to order, and they also have IBC root beer on tap. They also have what I think of as "Chicago tamales" on the menu, which I find delightful.
+Carl's Drive-In is a charming, no-frills diner right off historic route 66. It's cash only and seating is very limited, so it can get packed during peak hours. The menu is small and to the point - they do smash burgers to order, and they also have IBC root beer on tap. They also have what I think of as "Chicago tamales" on the menu, which I find delightful.
 
 If you want a little taste of Americana, get an IBC root beer float, a double smash burger, and some fries.
 

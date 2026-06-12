@@ -9,7 +9,7 @@ It's also the only neighborhood, as far as I can tell, that has a cute little [n
 
 The Grove was one of the first places in St. Louis I was introduced to, as I had met up with some coworkers at The Gramophone, a popular sandwich shop. I've also been to Urban Chestnut, which is a brewery with a great vibe. (I went to both of these before I started paying attention to the food enough, so I'll have to revisit before I make entries for those spots in the [Food map](/food)).
 
-I have yet to experience any of the clubs or nightlife that The Grove has to offer, so I look forward to adding to this page once I visit some of those spots.
+I have yet to experience any of the clubs or nightlife that The Grove has to offer, so I look forward to adding to this page once I visit some of those bars.
 
 A few of my favorite restaurants in the city are in the Grove. I think [[sultan|Sultan]] is one of the best middle eastern restaurants around, and [[grace-meat-and-three|Grace Meat and Three]] is the best fried chicken in town. Pie Guy (RIP) was the best New York-style pizza I've had, but unfortunately they closed down.
 

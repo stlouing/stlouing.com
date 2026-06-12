@@ -277,7 +277,7 @@ a.more {
   font-weight: 700;
   font-size: var(--font-size-md);
   color: var(--color-text);
-  margin-block-end: var(--spacing-md);
+  margin-block-end: var(--spacing-sm);
 }
 
 .wikilink-card-excerpt {
