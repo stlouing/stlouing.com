@@ -7,9 +7,7 @@ updated: 2026-05-31
 
 Most cities are lucky to have one local food speciality they can lay claim to, but St. Louis has an abundance of them. I've been interested to discover the food items that either originated in St. Louis or can only be found here.
 
-One thing I've noticed across the board is that the main flavor profile across the board in St. Louis is "sweet". The signature BBQ sauce is sweet, the pizza sauce is sweet, the salad dressing is sweet, and the desserts are doubly sweet. You won't really find vinegary, sour, or bitter flavors.
-
-### In this article
+#### In this article
 
 - [Toasted Ravioli](#toasted-ravioli)
 - [St. Louis-style Pizza](#st-louis-style-pizza)
@@ -66,7 +64,7 @@ There are two things to discuss here - St. Louis-style BBQ, and St. Louis cut ri
 
 ### Ribs
 
-There's a popular cut of ribs called a St. Louis cut, which is a spare rib with the ends neatly trimmed, resulting in a rectangular shape. This allows for even cooking, as you don't have one end that is significantly wider than the other.
+There's a popular cut of ribs called a St. Louis cut, which is a spare rib with the ends neatly trimmed, resulting in a rectangular shape. This allows for even cooking, as you don't have one end that is significantly wider than the other. Surprisingly, most BBQ spots around here don't tend to use this cut.
 
 ### BBQ
 
@@ -134,3 +132,7 @@ A popular St. Louis tradition is to get Ted Drewes during Christmastime then wal
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Red_Hot_Riplets">Wikipedia</a>
 
 Red Hot Riplets are a brand of ridged chips with a unique sweet BBQ and cayenne flavor. In addition to just being a chip, you'll find Red Hot Riplet flavor and spice blend used often. Imo's tosses their fried wings in Red Hot Riplet seasoning as a dry rub. I'm generally not a fan of BBQ chips, but I do enjoy the Riplet rub on wings.
+
+## Flavors of St. Louis
+
+One thing I've noticed across the board is that the main flavor profile across the board in St. Louis is "sweet". The signature BBQ sauce is sweet, the pizza sauce is sweet, the salad dressing is sweet, and the desserts are doubly sweet. You won't really find vinegary, sour, or bitter flavors.
