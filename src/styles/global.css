@@ -1338,10 +1338,44 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
-/* Show the footer divider only when there are tags or backlinks. */
-.entry-footer:has(.tags, .backlinks) {
+/* Share button: native share sheet on mobile, copy-link fallback on desktop. */
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+/* Let the icon follow the button's color (the global .icon pins it muted). */
+.share-button .icon {
+  color: inherit;
+}
+
+.share-button:hover,
+.share-button.is-copied {
+  color: var(--color-accent);
+}
+
+/* One divider closes the article: the share button always sits at the top of the
+   footer, with any "Mentioned in" backlinks below it. Even spacing on both sides
+   of the rule (and above each footer child). */
+.entry-footer {
   margin-block-start: var(--spacing-lg);
+  padding-block-start: var(--spacing-lg);
   border-block-start: 1px solid var(--color-line);
+}
+
+/* The footer's padding sets the gap below the rule; don't double it with the
+   first child's own top margin (e.g. a .backlinks nav). */
+.entry-footer > :first-child {
+  margin-block-start: 0;
 }
 
 .back {

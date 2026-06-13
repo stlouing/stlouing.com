@@ -1,0 +1,23 @@
+---
+// Share button: native share sheet on mobile, copy-link fallback on desktop
+// (wired by src/scripts/share.ts). `title` seeds the native share payload.
+import IconShare from '../assets/IconShare.astro'
+
+interface Props {
+  title?: string
+  label?: string
+  class?: string
+}
+
+const { title, label = 'Share', class: className } = Astro.props
+---
+
+<button
+  type="button"
+  class:list={['share-button', className]}
+  data-share
+  data-share-title={title}
+  aria-label="Share this page">
+  <IconShare />
+  <span class="share-label">{label}</span>
+</button>

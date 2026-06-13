@@ -9,6 +9,7 @@
 import EditThisPage from './EditThisPage.astro'
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
+import ShareButton from './ShareButton.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
 
@@ -54,6 +55,7 @@ const isArticle = Boolean(permalink)
   </div>
 
   <footer class="entry-footer">
+    <ShareButton title={title} label="Share this page" class="share-footer" />
     <Backlinks links={backlinks} />
   </footer>
 </article>
