@@ -7,9 +7,9 @@ updated: 2026-06-11
 
 <figure class="figure left">
 
-![](../images/stl-pizza/cecil.png)
+![](../images/stl-pizza/imos.png)
 
-<figcaption>A pizza delivered from Cecil Whittaker's</figcaption>
+<figcaption>St. Louis-style pizza from Imo's</figcaption>
 </figure>
 
 St. Louis-style pizza is a regional variation of pizza that is ubiquitous across the entire St. Louis metro area. For many, the pizza style is synonymous with Imo's, a local chain that has locations in all the far reaches of Missouri and southern Illinois, but many local pizza places all around St. Louis make their own variation of this unique pizza style.
@@ -112,8 +112,8 @@ Here's a subjective rated list of the places I've tried. I would say the top thr
 1. <u>Pirrone's Pizzeria</u>: It's a bit out of the way from the city itself, but worth a visit. Pirrone's makes a rectangular pizza with a crispy, buttery crust, where the cheese and sauce blend to make an orange mix.
 1. <u>Faraci Pizza</u>: Similar to Pirrone's in size and shape, with a more bready, yeasty crust.
 1. <u>Salvage Yard</u>: A solid choice for a standard STL-style.
-1. [[failonis|Failoni's]]: A brick-oven pizza with a very crisp cracker-like like crust. (I believe this also counts as Uncle Leo's pizza, as they're under the same ownership, but I haven't tried it to confirm.)
 1. <u>Imo's Pizza</u>: By far the most famous and infamous pizza in town, Imo's is THE St. Louis pizza chain and the only STL-style many people have ever tried. Imo's has a mass-produced flavor to it, unlike the home-style vibes of a lot of other spots. The quality also varies a lot from location to location. It can be okay, but not the best representation of pizza in the area, in my opinion. Sometimes I do specifically crave an Imo's pizza, though.
+1. [[failonis|Failoni's]]: A brick-oven pizza with a very crisp cracker-like like crust. (I believe this also counts as Uncle Leo's pizza, as they're under the same ownership, but I haven't tried it to confirm.)
 1. <u>Nick & Elena's</u>: I know people love this place, and the old-school vibes are top-notch, but I didn't personally like the pizza (specifically the sauce was way too sweet for me).
 1. <u>Cecil Whittaker's</u>: This was one of my least favorite St. Louis-style pizzas I've tried. It's like an Imo's clone with lower quality ingredients.
 1. <u>Elicia's Pizza</u>: The first St. Louis-style pizza I ever tried was from Elicia's. It was completely burnt and inedible, and unfortunately they're no longer in business for me to know whether or not that was a fluke.
@@ -122,9 +122,18 @@ So I've tried a variety of fan favorites around the city, but I'm always open to
 
 ## What do I think?
 
+<figure class="figure left">
+
+![](../images/stl-pizza/cecil.png)
+
+<figcaption>Delivery from Cecil Whittaker's</figcaption>
+</figure>
+
 I like pizza. I think (almost) all pizza is good. I love trying new things, especially regional food that you can't get everywhere. My personal favorite styles of pizza are thick, bready styles, like Sicilian, Detroit-style and pan pizza. I'm also a fan of fresh, high-quality ingredients, like the fresh basil and mozzarella found on a Neapolitan marguerita pizza.
 
 So personally, St. Louis-style or even Chicago thin-crust are just never going to be on the top of my list, because I'm here for the dough. Nonetheless, I still like it and have acquired the taste since moving here, and I'm still excited to try all the spots and decide which one is my favorite. Sometimes I specifically crave a St. Louis-style pizza, and I'd miss it if I no longer lived here.
+
+But most of my favoerite pizzas around the city are not specifical St. Louis-style.
 
 ## Other pizza in St. Louis
 

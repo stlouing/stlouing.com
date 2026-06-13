@@ -13,15 +13,22 @@ const topics = published(await getCollection('topics')).sort(
 ---
 
 <BaseLayout>
-  <List title="Topics">
-    {
-      topics.map((topic) => (
-        <ListItem
-          title={topic.data.title}
-          href={href(`/${topic.id}`)}
-          description={topic.data.description ?? excerpt(topic.body)}
-        />
-      ))
-    }
-  </List>
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Topics</h1>
+      </div>
+    </header>
+    <List>
+      {
+        topics.map((topic) => (
+          <ListItem
+            title={topic.data.title}
+            href={href(`/${topic.id}`)}
+            description={topic.data.description ?? excerpt(topic.body)}
+          />
+        ))
+      }
+    </List>
+  </article>
 </BaseLayout>

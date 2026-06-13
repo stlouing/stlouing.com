@@ -474,7 +474,7 @@ main {
   margin-block-end: var(--spacing-lg);
 
   h2:not(:first-child) {
-    margin-top: 3rem;
+    margin-top: 2rem;
   }
 }
 
@@ -1342,13 +1342,6 @@ body:has([data-filter-root]) .site-header {
 .entry-footer:has(.tags, .backlinks) {
   margin-block-start: var(--spacing-lg);
   border-block-start: 1px solid var(--color-line);
-}
-
-.page {
-  h2 {
-    margin-block-start: var(--spacing-lg);
-    padding-block-start: var(--spacing-md);
-  }
 }
 
 .back {

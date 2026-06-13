@@ -30,14 +30,14 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
       { label: 'Area', facet: 'area', options: areas },
     ]}
     sorts={[
-      // { label: 'Name (A-Z)', value: 'title:asc' },
-      // { label: 'Distance (short→long)', value: 'distance:asc' },
-      // { label: 'Distance (long→short)', value: 'distance:desc' },
+      { label: 'Name (A-Z)', value: 'title:asc' },
+      { label: 'Distance (short→long)', value: 'distance:asc' },
+      { label: 'Distance (long→short)', value: 'distance:desc' },
     ]}
     hasCoords={hasCoords}
     mapLabel="Map of hikes"
     emptyText="No hikes match those filters.">
-    <List title="Hikes" class="list-with-map">
+    <List class="list-with-map">
       {
         rendered.map(({ hike, Content }) => (
           <FilterListItem
@@ -78,7 +78,9 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
                       {hike.data.difficulty}
                     </button>
                   )}
-                  {hike.data.distanceMiles && <span class="chip">{hike.data.distanceMiles} mi</span>}
+                  {hike.data.distanceMiles && (
+                    <span class="chip">{hike.data.distanceMiles} mi</span>
+                  )}
                 </div>
               )}
             </Fragment>
