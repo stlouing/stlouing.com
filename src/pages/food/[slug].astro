@@ -4,12 +4,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Chip from '../../components/Chip.astro'
-import Rating from '../../components/Rating.astro'
+import Verdict from '../../components/Verdict.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { href } from '../../lib/url'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
+import { resolveVerdict, verdictLabels } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji } from '../../lib/emoji'
@@ -25,6 +26,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { data } = entry
+const verdict = resolveVerdict(data)
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 const neighborhoodLink = await neighborhoodHref(data.neighborhood)
@@ -48,11 +50,15 @@ const trail = [
 // others sharing this place's primary cuisine (best-rated first, capped, and
 // de-duped so a place shows in at most one group).
 const allFood = published(await getCollection('food'))
-const topRated = (places: typeof allFood) =>
-  [...places].sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0)).slice(0, 6)
+// Top related places, each paired with its verdict for display.
+const topRelated = (places: typeof allFood) =>
+  [...places]
+    .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
+    .slice(0, 6)
+    .map((place) => ({ place, verdict: resolveVerdict(place.data) }))
 
 const relatedNeighborhood = data.neighborhood
-  ? topRated(
+  ? topRelated(
       allFood.filter(
         (place) => place.id !== entry.id && place.data.neighborhood === data.neighborhood,
       ),
@@ -60,7 +66,7 @@ const relatedNeighborhood = data.neighborhood
   : []
 const primaryCuisine = data.cuisine[0]
 const relatedCuisine = primaryCuisine
-  ? topRated(
+  ? topRelated(
       allFood.filter(
         (place) =>
           place.id !== entry.id &&
@@ -72,7 +78,7 @@ const relatedCuisine = primaryCuisine
 
 // "Mentioned in" should only surface links not already shown in the related-food
 // groups above, so a place doesn't appear twice on the same page.
-const relatedIds = new Set([...relatedNeighborhood, ...relatedCuisine].map((place) => place.id))
+const relatedIds = new Set([...relatedNeighborhood, ...relatedCuisine].map((item) => item.place.id))
 const mentionedIn = backlinks.filter(
   (backlink) => !(backlink.collection === 'food' && relatedIds.has(backlink.id)),
 )
@@ -94,7 +100,7 @@ const mentionedIn = backlinks.filter(
         }
         <div class="food-sub-meta">
           <div class="food-sub-meta-section">
-            {data.rating && <Rating value={data.rating} />}
+            {verdict && <Verdict verdict={verdict} icon />}
             {
               data.cuisine.map((cuisine) => (
                 <Chip href={href(`/tags/${cuisine}`)}>
@@ -119,10 +125,10 @@ const mentionedIn = backlinks.filter(
           <nav class="backlinks">
             <h2>More in {data.neighborhood}</h2>
             <ul>
-              {relatedNeighborhood.map((place) => (
+              {relatedNeighborhood.map(({ place, verdict }) => (
                 <li>
                   <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                  {place.data.rating && <span class="collection">{place.data.rating}</span>}
+                  {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
                 </li>
               ))}
             </ul>
@@ -134,10 +140,10 @@ const mentionedIn = backlinks.filter(
           <nav class="backlinks">
             <h2>More {primaryCuisine}</h2>
             <ul>
-              {relatedCuisine.map((place) => (
+              {relatedCuisine.map(({ place, verdict }) => (
                 <li>
                   <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                  {place.data.rating && <span class="collection">{place.data.rating}</span>}
+                  {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
                 </li>
               ))}
             </ul>
@@ -175,7 +181,7 @@ const mentionedIn = backlinks.filter(
   .food-sub-meta-section {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
     row-gap: var(--spacing-xs);
     flex-wrap: wrap;
   }

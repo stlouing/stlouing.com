@@ -6,13 +6,14 @@ import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
+import { wikipediaHref, neighborhoodInfo, neighborhoodResources } from '../lib/neighborhoods'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
-// The list shows each written neighborhood's rendered writeup, clamped to a few
-// lines (keeps inline links + formatting, just cuts it off) with "Read more" to
-// the full page. Every neighborhood with a writeup is always expanded — the rows
-// don't collapse; the map is what highlights + scrolls to a given one.
+// The list shows every neighborhood; ones with a writeup are listed first (then
+// the rest, in their numbered order). Written rows render their writeup expanded;
+// the map highlights + scrolls to a given one (see neighborhood-map.ts).
 const entries = published(await getCollection('neighborhoods'))
+const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
 type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
 const rendered = new Map<string, RenderedContent>()
 
@@ -21,21 +22,30 @@ for (const entry of entries) {
   rendered.set(entry.id, Content)
 }
 
-// Group food places by neighborhood so each section can list its restaurants.
-// Normalize names (lowercase, alphanumerics only) so e.g. "North Hampton" and
-// "Northampton" still join.
-const normalizeName = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '')
-const foodPlaces = published(await getCollection('food'))
-const foodByNeighborhood = new Map<string, typeof foodPlaces>()
+// Neighborhoods with a writeup come first (stable sort keeps the numbered order
+// within each group).
+const listed = neighborhoods
+  .filter((neighborhood) => !('ignored' in neighborhood))
+  .sort((left, right) => Number(rendered.has(right.slug)) - Number(rendered.has(left.slug)))
+const count = listed.length
+const writtenCount = listed.filter((neighborhood) => rendered.has(neighborhood.slug)).length
+const restCount = listed.length - writtenCount
 
-for (const place of foodPlaces) {
-  if (!place.data.neighborhood) {
-    continue
+// Per-neighborhood facts the map popup needs (area + resource links), stashed as
+// data attributes on each row so the client map can read them without re-deriving.
+function popupData(slug: string, name: string, group: string) {
+  const info = neighborhoodInfo(slug)
+  const niche = (info ? neighborhoodResources(info) : []).find(
+    (resource) => resource.label === 'Niche',
+  )?.href
+  const entry = entryBySlug.get(slug)
+
+  return {
+    area: group,
+    official: entry?.data.url,
+    wikipedia: entry?.data.wikipedia ?? wikipediaHref(name),
+    niche,
   }
-  const key = normalizeName(place.data.neighborhood)
-  const existing = foodByNeighborhood.get(key) ?? []
-  existing.push(place)
-  foodByNeighborhood.set(key, existing)
 }
 ---
 
@@ -43,64 +53,69 @@ for (const place of foodPlaces) {
   <div class="map-split" data-map-split data-view="map">
     <div class="results">
       <article class="page content-pane">
-        <header class="pane-header">
-          <h1>Neighborhoods</h1>
+        <div class="list-pane-header">
+          <span class="pane-left">
+            <h1 class="pane-title">Neighborhoods</h1>
+            <span class="pane-count">{count}</span>
+          </span>
           <ul class="region-legend" aria-label="Map regions">
             <li class="region-legend-item region-north">North</li>
             <li class="region-legend-item region-central">Central</li>
             <li class="region-legend-item region-south">South</li>
           </ul>
-        </header>
+        </div>
         <List>
           {
-            neighborhoods
-              .filter((neighborhood) => !('ignored' in neighborhood))
-              .map((neighborhood) => {
+            listed.map((neighborhood, index) => {
                 const Content = rendered.get(neighborhood.slug)
-                const places = foodByNeighborhood.get(normalizeName(neighborhood.name)) ?? []
-                const isExpandable = Boolean(Content) || places.length > 0
+                const written = rendered.has(neighborhood.slug)
                 const numberLabel = neighborhood?.numberLabel
                   ? neighborhood.numberLabel
                   : neighborhood.number
+                const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
+
+                // A section header sits above the first row of each group — the
+                // ones with a writeup, then the rest.
+                const previous = listed[index - 1]
+                const showHeader = index === 0 || written !== rendered.has(previous.slug)
 
                 return (
-                  <li
-                    id={neighborhood.slug}
-                    data-section={neighborhood.slug}
-                    class:list={{ 'is-active': Boolean(Content) }}>
-                    <div class="neighborhood-head">
-                      <div class="list-title">
-                        <span class="number">{`${numberLabel}.`}</span>
-                        <span>{neighborhood.name}</span>
+                  <Fragment>
+                    {showHeader && (
+                      <li class="section-head">
+                        <span class="section-label">{written ? 'Explored' : 'The rest'}</span>
+                        <span class="section-count">{written ? writtenCount : restCount}</span>
+                      </li>
+                    )}
+                    <li
+                      id={neighborhood.slug}
+                      data-section={neighborhood.slug}
+                      class:list={[{ 'is-written': written }]}
+                      data-area={popup.area}
+                      data-wikipedia={popup.wikipedia}
+                      data-niche={popup.niche}
+                      data-official={popup.official}
+                    >
+                      <div class="neighborhood-head">
+                        <div class="list-title">
+                          <span class="number">{`${numberLabel}.`}</span>
+                          <span>{neighborhood.name}</span>
+                        </div>
+                        {written && (
+                          <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                            More <IconArrowRight />
+                          </a>
+                        )}
                       </div>
-                      {Content && (
-                        <a class="more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
-                          More <IconArrowRight />
-                        </a>
-                      )}
-                    </div>
-                    {isExpandable && (
-                      <div class="neighborhood-body list-description">
-                        {Content && (
+                      {written && Content && (
+                        <div class="neighborhood-body list-description">
                           <div class="neighborhood-preview">
                             <Content />
                           </div>
-                        )}
-                        {/* {places.length > 0 && (
-                          <div class="neighborhood-food">
-                            <h3>Food</h3>
-                            <ul>
-                              {places.map((place) => (
-                                <li>
-                                  <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )} */}
-                      </div>
-                    )}
-                  </li>
+                        </div>
+                      )}
+                    </li>
+                  </Fragment>
                 )
               })
           }
@@ -112,8 +127,39 @@ for (const place of foodPlaces) {
 </BaseLayout>
 
 <style>
+  /* Match the Food list's row titles (body serif), not the mono List default. */
+  .neighborhood-head .list-title {
+    font-family: var(--font-body);
+  }
+
   .number {
     color: var(--color-accent);
+  }
+
+  /* Section header above each group (Explored / The rest): a quiet label with its
+     count flush right — no rule line, to keep the list from feeling line-heavy. */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
+    border: 0;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+  }
+
+  .section-count {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
   }
 
   .more {

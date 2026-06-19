@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:geo": "node scripts/build-neighborhood-geo.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "prettier": "prettier . --write"

@@ -1,4 +1,4 @@
-export type Group = 'maps' | 'notes' | 'topics' | 'site'
+export type Group = 'maps' | 'lists' | 'notes' | 'topics' | 'site'
 
 export interface Section {
   label: string
@@ -8,11 +8,13 @@ export interface Section {
   description?: string
 }
 
-// Homepage groups, in display order (a 2-up grid: maps | notes / pages | site).
+// Homepage groups, in display order. 'notes' is intentionally omitted for now —
+// it has no content yet, so the section stays defined (its page + feed work) but
+// isn't surfaced on the homepage or in the nav until there are posts.
 export const groups: { id: Group; label?: string }[] = [
   { id: 'maps', label: 'Maps' },
   { id: 'topics', label: 'Topics' },
-  { id: 'notes', label: 'Notes' },
+  { id: 'lists', label: 'Lists' },
   { id: 'site', label: 'Site' },
 ]
 
@@ -22,7 +24,7 @@ export const sections: Section[] = [
     path: '/food',
     group: 'maps',
     primary: true,
-    description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective based on my taste and experiences.`,
+    description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective, based on my taste and experiences.`,
   },
   {
     label: 'Neighborhoods',
@@ -46,8 +48,25 @@ export const sections: Section[] = [
     description: 'Evergreen pages, tended over time',
   },
 
-  { label: 'Notes', path: '/notes', group: 'notes', primary: true },
+  // Lists: my subjective picks and running lists. (Pronunciations + Slang are
+  // reference, reached via the St. Louis Overview topic; Want to Try lives with
+  // Food on the /food page — none of them are top-level groups anymore.)
+  {
+    label: 'Best of St. Louis Food',
+    path: '/best',
+    group: 'lists',
+    description: 'My favorite food so far, ranked and by category',
+  },
+  {
+    label: 'Want to try',
+    path: '/food/want-to-try',
+    group: 'lists',
+    description: "Places I haven't tried or rated yet",
+  },
+  // Hidden until it has posts (omitted from `groups` above and not `primary`).
+  { label: 'Notes', path: '/notes', group: 'notes' },
 
   { label: 'About', path: '/about', group: 'site', primary: true, description: 'About this site' },
   { label: 'Tags', path: '/tags', group: 'site', description: 'Browse everything by topic' },
+  { label: 'Feedback', path: '/feedback', group: 'site', description: 'Send a note or correction' },
 ]

@@ -68,6 +68,8 @@ const schema = articleSchema(
         )
       }
     </Fragment>
-    <Content />
+    <div class:list={{ 'topic-list': data.display === 'list' }}>
+      <Content />
+    </div>
   </Entry>
 </BaseLayout>

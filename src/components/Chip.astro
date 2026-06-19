@@ -1,21 +1,24 @@
 ---
-// A small pill of metadata (cuisine, distance, difficulty, etc.). Renders as a
-// link when `href` is given, otherwise a plain label. Shared by the Food and
-// Hikes pages.
+// A small pill of metadata (cuisine, verdict, distance, etc.). Renders as a link
+// when `href` is given, otherwise a plain label. Color + border read from
+// --chip-color / --chip-border, so variants (e.g. verdict chips, see global.css)
+// recolor it without redefining the pill.
 interface Props {
   href?: string
+  class?: string
+  round?: boolean
 }
 
-const { href: chipHref, ...rest } = Astro.props
+const { href: chipHref, class: className, round = false, ...rest } = Astro.props
 ---
 
 {
   chipHref ? (
-    <a class="chip" href={chipHref} {...rest}>
+    <a class:list={['chip', { round }, className]} href={chipHref} {...rest}>
       <slot />
     </a>
   ) : (
-    <span class="chip" {...rest}>
+    <span class:list={['chip', { round }, className]} {...rest}>
       <slot />
     </span>
   )
@@ -28,8 +31,8 @@ const { href: chipHref, ...rest } = Astro.props
     gap: var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    border: 1px solid var(--color-line-input);
+    color: var(--chip-color, var(--color-text-muted));
+    border: 1px solid var(--chip-border, var(--color-line-input));
     border-radius: 20px;
     padding: var(--spacing-xs) var(--spacing-sm);
     text-decoration: none;
@@ -38,7 +41,7 @@ const { href: chipHref, ...rest } = Astro.props
     background: var(--color-surface);
   }
 
-  .chip:hover {
+  a.chip:hover {
     color: var(--color-accent);
     border-color: var(--color-accent);
   }

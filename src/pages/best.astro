@@ -1,0 +1,221 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Verdict from '../components/Verdict.astro'
+import Chip from '../components/Chip.astro'
+import IconStar from '../assets/IconStar.astro'
+import { href } from '../lib/url'
+import { published } from '../lib/content'
+import { cuisineEmoji } from '../lib/emoji'
+import { resolveVerdict } from '../lib/verdict'
+import superlatives from '../data/superlatives.json'
+
+interface Award {
+  label: string
+  slug: string
+  note?: string
+}
+
+// Only rated places I've actually visited feed the rankings.
+const visited = published(await getCollection('food')).filter(
+  (place) => typeof place.data.rating === 'number',
+)
+
+// The single highest-rated place in each cuisine.
+const bestByCuisine = new Map<string, (typeof visited)[number]>()
+for (const place of visited) {
+  for (const cuisine of place.data.cuisine) {
+    const current = bestByCuisine.get(cuisine)
+    if (!current || (place.data.rating ?? 0) > (current.data.rating ?? 0)) {
+      bestByCuisine.set(cuisine, place)
+    }
+  }
+}
+const cuisineWinners = [...bestByCuisine.entries()].sort((left, right) =>
+  left[0].localeCompare(right[0]),
+)
+
+// Hand-authored favorites (the editorial picks a ranking can't express), resolved
+// from src/data/superlatives.json against the food collection.
+const foodBySlug = new Map(published(await getCollection('food')).map((place) => [place.id, place]))
+const favorites = (superlatives as Award[])
+  .map((award) => ({ ...award, place: foodBySlug.get(award.slug) }))
+  .filter((award) => award.place)
+
+const description = "The best of the St. Louis food I've tried, by category."
+---
+
+<BaseLayout crumb="Best of" description={description}>
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Best of St. Louis Food</h1>
+      </div>
+      <p class="entry-summary">My favorite restaurants so far</p>
+    </header>
+
+    <p>
+      To see all food I've explored so far, visit the <a href={href('/food')}>Food Map</a>. To see
+      all the places I have yet to try or rate, visit
+      <a href={href('/food/want-to-try')}>Want to try</a>.
+    </p>
+
+    {
+      favorites.length > 0 && (
+        <section class="fact-section">
+          <h2>The favorites</h2>
+          <p class="description" />
+          <div class="favorites-grid">
+            {favorites.map((award) => (
+              <a class="favorite" href={href(`/food/${award.place!.id}`)}>
+                <span class="favorite-star" aria-hidden="true">
+                  <IconStar />
+                </span>
+                <span class="favorite-text">
+                  <span class="favorite-label">{award.label}</span>
+                  <span class="favorite-name">{award.place!.data.title}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <hr />
+
+    <section class="fact-section">
+      <h2>Best by cuisine</h2>
+      <ul class="cuisine-best">
+        {
+          cuisineWinners.map(([cuisine, place]) => (
+            <li>
+              <Chip href={href(`/tags/${cuisine}`)}>
+                <span>{cuisineEmoji([cuisine])}</span>
+                <span>{cuisine}</span>
+              </Chip>
+              <a class="cuisine-name" href={href(`/food/${place.id}`)}>
+                {place.data.title}
+              </a>
+              <Verdict verdict={resolveVerdict(place.data) ?? 'neutral'} icon label={false} round />
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  /* The favorites: a 3-up grid of cards in one bordered frame. The dividers are
+     the grid's own 1px gap showing the line-colored track behind the cards, so
+     rows + columns are handled uniformly with no per-cell border math. */
+  .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .favorite {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--color-background);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .favorite:hover .favorite-name {
+    color: var(--color-accent);
+  }
+
+  .favorite-star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-surface);
+  }
+
+  .favorite-star :global(svg) {
+    fill: var(--color-background);
+    stroke: var(--color-background);
+  }
+
+  .favorite-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .favorite-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+  }
+
+  .favorite-name {
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  /* Best by cuisine: a row per cuisine — its chip, the winning place, and the
+     verdict chip pushed to the end. */
+  .cuisine-best {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cuisine-best li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin: 0;
+    padding-block: 2px;
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .cuisine-best li:last-child {
+    border-block-end: 0;
+  }
+
+  .cuisine-best .chip {
+    flex-shrink: 0;
+  }
+
+  .cuisine-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .cuisine-name:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  @media screen and (max-width: 600px) {
+    /* One column — the gap keeps drawing dividers between the stacked cards. */
+    .favorites-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

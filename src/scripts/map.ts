@@ -124,7 +124,8 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         const instagram = item.dataset.instagram ?? ''
         const google = item.dataset.google ?? ''
         const links = [
-          url && `<a class="popup-link" href="${url}" target="_blank" rel="noopener">${hostLabel(url)} ↗</a>`,
+          url &&
+            `<a class="popup-link" href="${url}" target="_blank" rel="noopener">${hostLabel(url)} ↗</a>`,
           instagram &&
             `<a class="popup-link" href="${instagram}" target="_blank" rel="noopener">Instagram ↗</a>`,
           google &&

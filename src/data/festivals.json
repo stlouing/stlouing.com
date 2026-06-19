@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Soulard Mardi Gras",
+    "neighborhood": "soulard",
+    "when": "February",
+    "blurb": "One of the country's largest Mardi Gras celebrations, centered on the bars and streets of Soulard. The Grand Parade runs the Saturday before Fat Tuesday."
+  },
+  {
+    "name": "Dogtown St. Patrick's Day Parade",
+    "neighborhood": "dogtown",
+    "when": "March 17",
+    "blurb": "A neighborhood parade held the morning of St. Patrick's Day in historically Irish Dogtown, separate from the larger downtown parade earlier in the month."
+  },
+  {
+    "name": "PrideFest",
+    "neighborhood": "downtown",
+    "when": "Late June",
+    "blurb": "St. Louis's Pride festival and Grand Pride Parade, held downtown around Soldiers Memorial and City Hall."
+  },
+  {
+    "name": "Fair Saint Louis",
+    "neighborhood": "downtown",
+    "when": "Early July",
+    "blurb": "Independence Day celebration, with fireworks and live music. The venue has shifted between the Gateway Arch grounds and Forest Park over the years."
+  },
+  {
+    "name": "Festival of Nations",
+    "neighborhood": "tower-grove-park",
+    "when": "Late August",
+    "blurb": "An international festival in Tower Grove Park with food, music, and dance from dozens of cultures across the St. Louis immigrant community."
+  },
+  {
+    "name": "Japanese Festival",
+    "neighborhood": "missouri-botanical-garden",
+    "when": "Labor Day weekend",
+    "blurb": "A long-running festival at the Missouri Botanical Garden, set around its Japanese garden, Seiwa-en, with taiko drumming, food, and tea ceremonies."
+  },
+  {
+    "name": "GroveFest",
+    "neighborhood": "the-grove",
+    "when": "Early October",
+    "blurb": "A street festival along Manchester Avenue in The Grove, the neighborhood that anchors much of the city's LGBTQ nightlife."
+  }
+]

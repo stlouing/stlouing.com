@@ -32,6 +32,8 @@ I was a bit thrown off by toasted ravioli when I first moved here, as I always e
 
 The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza and Beer]].
 
+<hr />
+
 ## St. Louis-style pizza
 
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/St._Louis-style_pizza">Wikipedia</a>
@@ -39,6 +41,8 @@ The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza an
 A polarizing pizza style that is the standard all across the St. Louis region, consisting of a cracker-thin crust, a sweet, thick tomato sauce, and gooey Provel cheese. See [[st-louis-style-pizza|St. Louis-style Pizza]] for the full writeup.
 
 My personal favorites for St. Louis-style pizza are [[farottos|Farotto's]], Faraci's, and Pirrone's.
+
+<hr />
 
 ## Provel cheese
 
@@ -48,6 +52,8 @@ The cheese of choice in St. Louis, Provel is an option in almost every pizza pla
 
 Although it's notable for its low melting point and unique texture it adds to pizza, you'll also find it liberally applied to mouse house salads in Italian restaurants across the city.
 
+<hr />
+
 ## Gooey butter cake
 
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Gooey_butter_cake">Wikipedia</a>
@@ -55,6 +61,8 @@ Although it's notable for its low melting point and unique texture it adds to pi
 The signature dessert of St. Louis, gooey butter cake is a dense, sticky, rich cake with a crisp, flaky top layer. It almost has the consistency of a light brownie, or a lemon bar without any lemon. You'll find them in many cafes alongside the croissants and muffins.
 
 The consistency can vary a lot from recipe to recipe, and I like it when there are contrasting textures between the rich, gooey center and the flaky crust, like a pie. Sometimes the whole thing has one unified texture, and it loses its appeal for me.
+
+<hr />
 
 ## St. Louis-style BBQ
 
@@ -91,15 +99,21 @@ Here's where I've been so far:
 - Fourth City BBQ
 - The Shaved Duck (rip)
 
+<hr />
+
 ## Pork steak
 
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Pork_steak">Wikipedia</a>
 
 Pork steak is a cut of meat derived from sliced pork butt, usually with the bone in. Often they're grilled over high heat then slathered in BBQ sauce and braised until tender. Although most BBQ spots in St. Louis won't have it on the menu, pork steak is known to all. It's one of the primary meats of choice for any backyard BBQ.
 
+<hr />
+
 ## Trashed wings
 
 Trashed wings are a double-fried style of bar wings. First the wings are fried, then tossed in sauce and fried again, caramelizing the sauce and making them twice as crisp.
+
+<hr />
 
 ## Slinger
 
@@ -107,17 +121,23 @@ Trashed wings are a double-fried style of bar wings. First the wings are fried, 
 
 A slinger is a greasy spoon diner meal that consists of eggs, hash browns and a hamburger patty, covered in chili and cheese. I haven't been drunk enough to ever need this meal, but I'm sure I'll be exposed to it eventually.
 
+<hr />
+
 ## St. Louis salad
 
 I don't think you'll find this on any other list of local cuisine, but I can tell you that the house salad served in many restaurants in STL is unique to the region. The lettuce, tomato, and onion are standard salad ingredients, but the Italian dressing is sweet, almost candy like, and the salad is liberally covered in Provel cheese. Some places have so much Provel on top of the salad that you can hardly see a piece of lettuce poking out.
 
 I do enjoy this salad, but I don't feel very healthy after eating it.
 
+<hr />
+
 ## St. Paul sandwich
 
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/St._Paul_sandwich">Wikipedia</a>
 
 I have yet to try this delicacy, but chop suey shops all around St. Louis have it on the menu. It consists of a fried egg foo young patty between two slices of white bread, with lettuce and mayonnaise. It's an interesting historical fusion of flavors, and I'm happy to see it lives on in the present day.
+
+<hr />
 
 ## Frozen custard/concrete
 
@@ -127,15 +147,21 @@ Ted Drewes Frozen Custard is the oldest frozen custard stand still in operation,
 
 A popular St. Louis tradition is to get Ted Drewes during Christmastime then walk down the streets of Candy Cane Lane, a neighborhood where every house is all done up with Christmas lights.
 
+<hr />
+
 ## Red Hot Riplets
 
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Red_Hot_Riplets">Wikipedia</a>
 
 Red Hot Riplets are a brand of ridged chips with a unique sweet BBQ and cayenne flavor. In addition to just being a chip, you'll find Red Hot Riplet flavor and spice blend used often. Imo's tosses their fried wings in Red Hot Riplet seasoning as a dry rub. I'm generally not a fan of BBQ chips, but I do enjoy the Riplet rub on wings.
 
+<hr />
+
 ## Flavors of St. Louis
 
 One thing I've noticed across the board is that the main flavor profile across the board in St. Louis is "sweet". The signature BBQ sauce is sweet, the pizza sauce is sweet, the salad dressing is sweet, and the desserts are doubly sweet. You won't really find vinegary, sour, or bitter flavors.
+
+<hr />
 
 ## Other things of note
 

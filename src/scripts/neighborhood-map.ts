@@ -77,6 +77,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
   const rows = [...document.querySelectorAll<HTMLElement>('[data-section]')]
   const pathBySlug = new Map<string, L.Path>()
+  const centerBySlug = new Map<string, L.LatLng>()
 
   let selectedSlug: string | null = null
 
@@ -84,29 +85,72 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     pathBySlug.get(slug)?.setStyle(style)
   }
 
-  // Single source of truth for selection, driven by both map and list clicks.
-  // Rows are always expanded (no collapsing), so selecting only highlights the
-  // neighborhood's boundary and brings its row to the top of the pane. On mobile
-  // a map click keeps you on the map; the floating toggle flips to the writeups.
-  function selectNeighborhood(slug: string): void {
+  function setRowActive(slug: string, active: boolean): void {
+    rowFor(slug)?.classList.toggle('is-active', active)
+  }
+
+  // Selection follows the boundary's popup (open = selected), mirroring the Food
+  // map. Opening a neighborhood's popup highlights its boundary, marks its row
+  // active, and scrolls that row to the top of the pane; closing it clears all
+  // three. Keyed by slug so switching neighborhoods stays in sync no matter how
+  // the popup was opened (map click or list row).
+  function activate(slug: string): void {
     if (selectedSlug === slug) {
       return
     }
 
     if (selectedSlug) {
       paintPath(selectedSlug, baseStyleFor(selectedSlug))
+      setRowActive(selectedSlug, false)
     }
 
     selectedSlug = slug
     paintPath(slug, selectedStyleFor(slug))
+    setRowActive(slug, true)
     // Bring the chosen neighborhood to the top of the pane (scroll-padding on
     // .content-pane keeps it clear of the sticky header).
     rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     history.replaceState(null, '', `#${slug}`)
   }
 
+  function deactivate(slug: string): void {
+    if (selectedSlug !== slug) {
+      return
+    }
+    paintPath(slug, baseStyleFor(slug))
+    setRowActive(slug, false)
+    selectedSlug = null
+  }
+
   function rowFor(slug: string): HTMLElement | undefined {
     return rows.find((row) => row.dataset.section === slug)
+  }
+
+  // The boundary popup matches the Food map's: the neighborhood name (linked to
+  // its page) in big text, its area, then quick resource links. The area + links
+  // are read off the matching list row's data attributes (set server-side).
+  function buildPopupHtml(slug: string, name: string): string {
+    if (!slug) {
+      return `<h2>${name}</h2>`
+    }
+    const row = rowFor(slug)
+    const area = row?.dataset.area ?? ''
+    const official = row?.dataset.official
+    const wikipedia = row?.dataset.wikipedia
+    const niche = row?.dataset.niche
+    const links = [
+      official &&
+        `<a class="popup-link" href="${official}" target="_blank" rel="noopener">Official site ↗</a>`,
+      wikipedia &&
+        `<a class="popup-link" href="${wikipedia}" target="_blank" rel="noopener">Wikipedia ↗</a>`,
+      niche && `<a class="popup-link" href="${niche}" target="_blank" rel="noopener">Niche ↗</a>`,
+    ]
+      .filter(Boolean)
+      .join('')
+    const areaHtml = area ? `<span class="tip-address">${area}</span>` : ''
+    const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
+
+    return `<h2><a href="${link}">${name}</a></h2>${areaHtml}${links}`
   }
 
   const bounds = L.latLngBounds([])
@@ -127,15 +171,25 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       bounds.extend(layerBounds)
       if (slug) {
         pathBySlug.set(slug, path)
+        centerBySlug.set(slug, layerBounds.getCenter())
         colorBySlug.set(slug, colorForGroup(entry?.group))
       }
 
-      featureLayer.bindTooltip(name, {
-        className: 'map-tooltip',
-        direction: 'top',
-        sticky: true,
-        opacity: 1,
+      featureLayer.bindPopup(buildPopupHtml(slug, name), {
+        className: 'food-popup',
+        maxWidth: 300,
+        minWidth: 200,
         offset: [0, -2],
+      })
+      featureLayer.on('popupopen', () => {
+        if (slug) {
+          activate(slug)
+        }
+      })
+      featureLayer.on('popupclose', () => {
+        if (slug) {
+          deactivate(slug)
+        }
       })
       featureLayer.on('mouseover', () => {
         if (slug !== selectedSlug) {
@@ -145,7 +199,6 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       featureLayer.on('mouseout', () => {
         path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
       })
-      featureLayer.on('click', () => selectNeighborhood(slug))
 
       // Numbered badge centered on the boundary (non-interactive so clicks fall
       // through to the polygon underneath). A merged neighborhood can show a
@@ -167,8 +220,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     },
   }).addTo(map)
 
-  // Clicking a list row highlights its neighborhood on the map and scrolls it to
-  // the top, mirroring a map click. Rows don't collapse — they stay expanded.
+  // Clicking a list row opens that neighborhood's map popup (which highlights its
+  // boundary + scrolls the row up); clicking the open one again closes it.
   for (const row of rows) {
     const slug = row.dataset.section
     if (!slug) {
@@ -176,7 +229,17 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
     const title = row.querySelector<HTMLElement>('.list-title') ?? row
     title.classList.add('is-clickable')
-    title.addEventListener('click', () => selectNeighborhood(slug))
+    title.addEventListener('click', () => {
+      const path = pathBySlug.get(slug)
+      if (!path) {
+        return
+      }
+      if (selectedSlug === slug) {
+        path.closePopup()
+      } else {
+        path.openPopup(centerBySlug.get(slug))
+      }
+    })
   }
 
   // The zoom is sized from the central #46 corridor (Forest Park / CWE / Skinker
@@ -224,12 +287,12 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   // Deep-link support: /neighborhoods#slug selects that neighborhood on load, so
-  // the "View on the neighborhood map" links (and any backlinks) expand its
-  // writeup, highlight its boundary, and frame it on the map. Otherwise fall back
-  // to the southside framing above.
+  // the "View on the neighborhood map" links (and any backlinks) highlight its
+  // boundary and frame it on the map. Otherwise fall back to the southside
+  // framing above.
   const initialSlug = location.hash.slice(1)
   if (initialSlug && pathBySlug.has(initialSlug)) {
-    selectNeighborhood(initialSlug)
+    activate(initialSlug)
     const selectedBounds = (pathBySlug.get(initialSlug) as L.Polygon | undefined)?.getBounds()
     if (selectedBounds) {
       map.fitBounds(selectedBounds, { padding: [40, 40], animate: false, maxZoom: 13 })

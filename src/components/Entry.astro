@@ -54,8 +54,20 @@ const isArticle = Boolean(permalink)
     <slot />
   </div>
 
-  <footer class="entry-footer">
-    <ShareButton title={title} label="Share this page" class="share-footer" />
+  <footer>
     <Backlinks links={backlinks} />
+    <div class="share-bar">
+      <ShareButton title={title} label="Share this page" class="share-footer" />
+      <a class="share-button" href={href('/feedback')}>Leave Feedback</a>
+    </div>
   </footer>
 </article>
+
+<style>
+  .share-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-block-start: var(--spacing-lg);
+  }
+</style>

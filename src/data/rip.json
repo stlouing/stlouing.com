@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Pie Guy",
+    "cuisine": ["pizza"],
+    "note": "It was my favorite NY-style pizza I've ever tried."
+  },
+  { "name": "Elicia's Pizza", "cuisine": ["pizza"] },
+  { "name": "The Shaved Duck", "cuisine": ["bbq"] },
+  { "name": "Dinar Restaurant", "cuisine": ["middle eastern"] },
+  { "name": "Clasic Red Hots Albasha", "cuisine": ["middle eastern"] },
+  { "name": "Minerva Indian Cuisine", "cuisine": ["indian"] },
+  { "name": "El Toluco", "cuisine": ["mexican"] },
+  { "name": "Southern", "cuisine": ["chicken"] }
+]

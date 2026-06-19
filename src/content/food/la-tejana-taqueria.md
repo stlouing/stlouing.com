@@ -8,5 +8,6 @@ address:
 coords: [38.722795, -90.407821]
 url: http://www.latejanastl.com
 neighborhood: St. Ann
+verdict: not-for-me
 draft: true
 ---

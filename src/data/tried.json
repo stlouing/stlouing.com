@@ -1,0 +1,15 @@
+[
+  { "name": "Balkan Treat Box", "cuisine": ["balkan"] },
+  { "name": "Mestiza", "cuisine": ["mexican"] },
+  { "name": "Tikka Tangy", "cuisine": ["indian"] },
+  { "name": "Signature India", "cuisine": ["indian"] },
+  { "name": "Taj Palace", "cuisine": ["indian"] },
+  { "name": "Thai Sawadee", "cuisine": ["thai"] },
+  { "name": "Lefty's Bagels", "cuisine": ["sandwich"] },
+  { "name": "Adam's Smokehouse", "cuisine": ["bbq"] },
+  { "name": "Gioia's Deli", "cuisine": ["sandwich"] },
+  { "name": "Mom's Deli", "cuisine": ["sandwich"] },
+  { "name": "LeGrand's Market and Catering", "cuisine": ["sandwich"] },
+  { "name": "Charlie Gitto's", "cuisine": ["italian"] },
+  { "name": "Faraci Restaurant", "cuisine": ["pizza"] }
+]

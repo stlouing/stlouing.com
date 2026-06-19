@@ -26,6 +26,10 @@ jobs:
           # Production basemap host. Set as a repo Actions variable (not a secret —
           # it's public in the built site anyway); keeps the URL out of the repo.
           PUBLIC_PMTILES_URL: ${{ vars.PUBLIC_PMTILES_URL }}
+          # Feedback form endpoint (Formspree). Same deal — public in the built
+          # site, but kept out of the source so clones don't inherit the URL. The
+          # FORMSPREE_URL Actions variable feeds the PUBLIC_-prefixed build env.
+          PUBLIC_FORMSPREE_URL: ${{ vars.FORMSPREE_URL }}
 
   deploy:
     needs: build

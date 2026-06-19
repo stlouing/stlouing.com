@@ -17,4 +17,4 @@ So far, I've tried the roast beef and the reuben sandwiches. The reuben is made 
 
 I'd like to work my way through the entire menu, because everything has been so good. I also have to get around to trying the Italian beef and updating with my thoughts.
 
-If I had to make a short list of "must try" spots in St. Louis, Blues City Deli would definitely be on it.
+Blues City Deli is definitely on my "must-try" spots in St. Louis.

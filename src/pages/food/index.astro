@@ -3,121 +3,164 @@ import { getCollection, render } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
-import List from '../../components/List.astro'
 import FilterListItem from '../../components/FilterListItem.astro'
-import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
+import { href } from '../../lib/url'
+import { resolveVerdict, type Verdict } from '../../lib/verdict'
+import IconArrowRight from '../../assets/IconArrowRight.astro'
 
-const places = published(await getCollection('food')).sort((left, right) =>
-  left.data.title.localeCompare(right.data.title),
-)
+// The list groups by verdict (Loved → Liked → Neutral) by default, or
+// alphabetically (A / B / C) via the sort control — the grouping itself is built
+// client-side by food-groups.ts. Only places with a verdict appear; unrated spots
+// stay off the list + map until they earn one.
+const verdictRank: Record<Verdict, number> = { loved: 0, liked: 1, neutral: 2, 'not-for-me': 3 }
+const verdictRankLetter: Record<Verdict, string> = {
+  loved: 'a',
+  liked: 'b',
+  neutral: 'c',
+  'not-for-me': 'd',
+}
+
+const all = published(await getCollection('food'))
 const rendered = await Promise.all(
-  places.map(async (place) => ({ place, Content: (await render(place)).Content })),
+  all.map(async (place) => ({
+    place,
+    Content: (await render(place)).Content,
+    verdict: resolveVerdict(place.data),
+  })),
 )
-const cuisines = [...new Set(places.flatMap((place) => place.data.cuisine))].sort()
+
+// Default DOM order is verdict-grouped then alphabetical (so the no-JS view reads
+// sensibly); filter.ts re-sorts on the client from the data-sort-* keys.
+const rated = rendered
+  .filter((entry) => entry.verdict)
+  .sort(
+    (left, right) =>
+      verdictRank[left.verdict as Verdict] - verdictRank[right.verdict as Verdict] ||
+      left.place.data.title.localeCompare(right.place.data.title),
+  )
+
+const count = rated.length
+const cuisines = [...new Set(rated.flatMap((entry) => entry.place.data.cuisine))].sort()
 const neighborhoods = [
-  ...new Set(places.map((place) => place.data.neighborhood).filter(Boolean)),
+  ...new Set(rated.map((entry) => entry.place.data.neighborhood).filter(Boolean)),
 ].sort() as string[]
-const hasCoords = places.some((place) => place.data.coords)
+const hasCoords = rated.some((entry) => entry.place.data.coords)
 ---
 
 <BaseLayout>
   <FilterMapPage
     class="food"
     label="places"
-    count={places.length}
+    count={count}
     searchPlaceholder="name, cuisine..."
     facets={[
       { label: 'Cuisine', facet: 'cuisine', options: cuisines },
       { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
     ]}
     sorts={[
-      { label: 'Name (A-Z)', value: 'title:asc' },
-      { label: 'Rating (10→1)', value: 'rating:desc' },
-      { label: 'Rating (1→10)', value: 'rating:asc' },
+      { label: 'Rating', value: 'verdict:asc' },
+      { label: 'Alphabetical', value: 'name:asc' },
     ]}
     hasCoords={hasCoords}
     mapLabel="Map of food spots"
     emptyText="No places match those filters.">
-    <List class="list-with-map">
-      {
-        rendered.map(({ place, Content }) => (
-          <FilterListItem
-            id={place.id}
-            title={place.data.title}
-            detailHref={`/food/${place.id}`}
-            expandable={true}
-            readMore={hasBody(place)}
-            marker={cuisineEmoji(place.data.cuisine)}
-            coords={place.data.coords?.join(',') ?? ''}
-            url={place.data.url ?? ''}
-            search={[
-              place.data.title,
-              place.data.neighborhood,
-              ...(place.data.address ?? []),
-              ...place.data.cuisine,
-              ...place.data.tags,
-              place.body,
-            ]
-              .filter(Boolean)
-              .join(' ')}
-            attrs={{
-              'data-cuisine': place.data.cuisine.join('|'),
-              'data-neighborhood': place.data.neighborhood ?? '',
-              'data-address': (place.data.address ?? []).join('\n'),
-              'data-sort-title': place.data.title,
-              'data-sort-rating': String(place.data.rating ?? ''),
-              'data-google': googleMapsHref(place.data),
-              'data-instagram': place.data.instagram ?? '',
-            }}>
-            {place.data.rating && <Rating slot="lead" value={place.data.rating} />}
-            {place.data.neighborhood && (
-              <Fragment slot="title-after">
-                <button
-                  type="button"
-                  class="list-meta list-meta-filter"
-                  data-filter-set="neighborhood"
-                  data-filter-value={place.data.neighborhood}>
-                  {place.data.neighborhood}
-                </button>
-              </Fragment>
-            )}
-            {place.data.cuisine.length > 0 && (
-              <div class="chips" slot="row-end">
-                {place.data.cuisine.map((cuisine) => (
+    <div class="list-with-map food-grouped">
+      <div class="list-pane-header">
+        <span class="pane-left">
+          <span class="pane-title">Food</span>
+          <span class="pane-count"><span data-filter-count>{count}</span> places</span>
+        </span>
+        <a class="pane-wishlist" href={href('/food/want-to-try')}>
+          Want to try <IconArrowRight />
+        </a>
+      </div>
+      <ul class="list" data-food-rows>
+        {
+          rated.map(({ place, Content, verdict }) => (
+            <FilterListItem
+              id={place.id}
+              title={place.data.title}
+              detailHref={`/food/${place.id}`}
+              expandable={true}
+              readMore={hasBody(place)}
+              marker={cuisineEmoji(place.data.cuisine)}
+              coords={place.data.coords?.join(',') ?? ''}
+              url={place.data.url ?? ''}
+              search={[
+                place.data.title,
+                place.data.neighborhood,
+                ...(place.data.address ?? []),
+                ...place.data.cuisine,
+                ...place.data.tags,
+                place.body,
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              attrs={{
+                'data-cuisine': place.data.cuisine.join('|'),
+                'data-neighborhood': place.data.neighborhood ?? '',
+                'data-address': (place.data.address ?? []).join('\n'),
+                'data-verdict': verdict as Verdict,
+                'data-sort-name': place.data.title.toLowerCase(),
+                'data-sort-verdict': `${verdictRankLetter[verdict as Verdict]}|${place.data.title.toLowerCase()}`,
+                'data-google': googleMapsHref(place.data),
+                'data-instagram': place.data.instagram ?? '',
+              }}>
+              {place.data.neighborhood && (
+                <Fragment slot="title-after">
                   <button
                     type="button"
-                    class="chip"
-                    data-filter-set="cuisine"
-                    data-filter-value={cuisine}>
-                    <span>{cuisineEmoji(place.data.cuisine)}</span>
-                    <span>{cuisine}</span>
+                    class="list-meta list-meta-filter"
+                    data-filter-set="neighborhood"
+                    data-filter-value={place.data.neighborhood}>
+                    {place.data.neighborhood}
                   </button>
-                ))}
+                </Fragment>
+              )}
+              {place.data.cuisine.length > 0 && (
+                <div class="chips" slot="row-end">
+                  {place.data.cuisine.map((cuisine) => (
+                    <button
+                      type="button"
+                      class="chip"
+                      data-filter-set="cuisine"
+                      data-filter-value={cuisine}>
+                      <span>{cuisineEmoji(place.data.cuisine)}</span>
+                      <span>{cuisine}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {place.data.address && place.data.address.length > 0 && (
+                <span class="place-address" slot="sub">
+                  {place.data.address[0]}
+                </span>
+              )}
+              <div class="place-links">
+                <SourceLink href={place.data.url} />
+                <SourceLink href={place.data.instagram} />
+                <SourceLink href={googleMapsHref(place.data)} label="Google Maps" />
               </div>
-            )}
-            {place.data.address && place.data.address.length > 0 && (
-              <span class="place-address" slot="sub">
-                {place.data.address[0]}
-              </span>
-            )}
-            <div class="place-links">
-              <SourceLink href={place.data.url} />
-              <SourceLink href={place.data.instagram} />
-              <SourceLink href={googleMapsHref(place.data)} label="Google Maps" />
-            </div>
-            <div class="food-preview">
-              <Content />
-            </div>
-          </FilterListItem>
-        ))
-      }
-    </List>
+              <div class="food-preview">
+                <Content />
+              </div>
+            </FilterListItem>
+          ))
+        }
+      </ul>
+    </div>
   </FilterMapPage>
 </BaseLayout>
+
+<script>
+  import { initFoodGroups } from '../../scripts/food-groups'
+
+  initFoodGroups()
+</script>
 
 <style>
   .food-preview {

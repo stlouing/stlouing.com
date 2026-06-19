@@ -58,12 +58,13 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
         mapApi = initMap() ?? null
       }
     } else {
-      // Closing the popup de-selects via the map
+      // Closing the popup de-selects via the map, then collapse every row so the
+      // list opens compact (each writeup expands on click, same as map view).
       mapApi?.deselect()
 
       for (const item of items) {
-        item.classList.add('is-active')
-        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'true')
+        item.classList.remove('is-active')
+        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
       }
     }
   }

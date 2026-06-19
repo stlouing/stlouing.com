@@ -23,6 +23,10 @@
   --color-map-south: #6a47a6;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
+  --color-verdict-loved: #9c3b2e;
+  --color-verdict-liked: #b0742e;
+  --color-verdict-neutral: #6f6b61;
+  --color-verdict-notforme: #74727c;
 
   /* Fonts */
   --font-body: ui-serif, Georgia, 'Times New Roman', serif;
@@ -74,6 +78,11 @@
   --color-map-south: #b59ae0;
   --color-link: #9aaaf8;
   --color-link-hover: #b1bcf5;
+
+  --color-verdict-loved: #e07d8d;
+  --color-verdict-liked: #d6a35a;
+  --color-verdict-neutral: #9b9aa3;
+  --color-verdict-notforme: #86848f;
 
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
   --box-shadow-floating:
@@ -273,7 +282,6 @@ a.more {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: var(--color-text-muted);
 
   &.inline {
     display: inline-flex;
@@ -282,37 +290,22 @@ a.more {
   &.end {
     justify-self: flex-end;
   }
-
-  &:hover {
-    text-decoration-color: var(--color-accent);
-  }
 }
 
 /* Quiet reference link under a section heading (e.g. a Wikipedia article):
    muted mono with an outward arrow, underlined only on hover. */
 a.wikipedia-link {
+  font-size: var(--font-size-sm);
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  color: var(--color-text-muted);
-  text-decoration: none;
-}
-
-a.wikipedia-link::after {
-  content: ' ↗';
-}
-
-a.wikipedia-link:hover {
-  color: var(--color-accent);
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: currentColor;
-  text-underline-offset: 4px;
 }
 
 /* Tuck the reference link up against the heading it annotates. */
 :is(h1, h2, h3, h4):has(+ p > a.wikipedia-link) {
   margin-block-end: var(--spacing-xs);
+}
+
+a.wikilink {
+  font-weight: 600;
 }
 
 .wikilink-broken {
@@ -408,6 +401,12 @@ a.wikipedia-link:hover {
   flex-shrink: 0;
 }
 
+/* Inside a chip, an icon follows the chip's color (e.g. a verdict chip's token)
+   rather than the global muted default. */
+.chip .icon {
+  color: inherit;
+}
+
 /* Permalink "#" appended to rendered Markdown headings (rehype-autolink-headings);
    revealed on hover/focus of the heading. */
 .heading-anchor {
@@ -450,6 +449,12 @@ a.wikipedia-link:hover {
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--spacing-md);
+}
+
+/* Standalone content pages (Want to try, Best of, …) shouldn't butt up against
+   the footer. Map pages don't use .page, so they're unaffected. */
+.page {
+  padding-block-end: var(--spacing-lg);
 }
 
 main {
@@ -596,7 +601,7 @@ body:has(.map-split) main > .wrap,
 }
 
 /* Neighborhoods left pane: the writeups scroll while the map stays put. The
-   scroll-padding offsets the sticky .pane-header so a selected row lands just
+   scroll-padding offsets the sticky .list-pane-header so a selected row lands just
    below it (not hidden behind it) when scrolled to the top. */
 .map-split .content-pane {
   min-height: 0;
@@ -605,7 +610,7 @@ body:has(.map-split) main > .wrap,
 }
 
 /* The global :target margin is sized to the *site* header, which isn't the
-   sticky element inside this pane (the 38px .pane-header is, already cleared by
+   sticky element inside this pane (the .list-pane-header is, already cleared by
    the scroll-padding above). Left in, the two stack and a deep-linked row like
    /neighborhoods#benton-park lands ~64px too low. Reset it here. */
 .map-split .content-pane :target {
@@ -633,35 +638,14 @@ body:has(.map-split) main > .wrap,
 }
 
 .content-pane {
-  /* Sticky header: title plus the "Back to all" link shown while a single
-     neighborhood is isolated. */
-  .pane-header {
+  /* The shared .list-pane-header sits at the top of the scrolling pane. Not
+     selectable, so dragging a selection across it can't trigger the
+     sticky-element scroll-to-top quirk. */
+  .list-pane-header {
     position: sticky;
     top: 0;
     z-index: 4;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--spacing-md);
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-line);
-    height: 38px;
-    /* Header chrome (title + region legend). Not selectable, so dragging a
-       selection across it can't trigger the sticky-element scroll-to-top quirk. */
     user-select: none;
-  }
-
-  .pane-header h1 {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-  }
-
-  .pane-header p {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--font-size-sm);
   }
 
   ul.list > li {
@@ -697,6 +681,12 @@ body:has(.map-split) main > .wrap,
       display: block;
       color: var(--color-text);
     }
+  }
+
+  /* Written neighborhoods show their writeup expanded by default (no click). */
+  [data-section].is-written .neighborhood-body {
+    display: block;
+    color: var(--color-text);
   }
 
   .neighborhood-food {
@@ -757,7 +747,7 @@ body:has(.map-split) main > .wrap,
 /* Indent the open panel past the rating badge so it lines up with the row's
    text content instead of starting under the badge. */
 .list-with-map .list-description {
-  margin-left: calc(var(--spacing-md) + 40px);
+  margin-left: calc(var(--spacing-md) + 56px);
   margin-top: var(--spacing-sm);
 
   p {
@@ -787,15 +777,7 @@ body:has(.map-split) main > .wrap,
 
 .list-with-map .list-lead {
   flex-shrink: 0;
-  width: 40px;
-
-  .rating {
-    padding-top: 1px;
-  }
-
-  .out-of {
-    display: none;
-  }
+  width: 56px;
 }
 
 .list-with-map .list-main {
@@ -926,7 +908,7 @@ body:has(.map-split) main > .wrap,
   min-height: 0;
   overflow-y: auto;
 
-  /* Sticky title matching the neighborhoods .pane-header. Padding aligns with the
+  /* Sticky title matching the neighborhoods .list-pane-header. Padding aligns with the
      list items (which carry their own padding); no negative margin, which would
      overhang the pane and force a horizontal scrollbar. */
   h1 {
@@ -1002,6 +984,214 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Food: grouped-by-verdict list
+   The Food list groups its rows under Loved / Liked / Fine headers (alphabetical
+   within each); a colored left bar on each row carries the verdict instead of a
+   word. These live here (not component-scoped) so they reach the FilterListItem
+   rows, which render in their own scope.
+   --------------------------------------------------------------------------- */
+
+/* Per-verdict accent, set on each group section + row via [data-verdict]. */
+.food-grouped [data-verdict='loved'] {
+  --verdict-color: var(--color-verdict-loved);
+}
+
+.food-grouped [data-verdict='liked'] {
+  --verdict-color: var(--color-verdict-liked);
+}
+
+.food-grouped [data-verdict='neutral'] {
+  --verdict-color: var(--color-verdict-neutral);
+}
+
+.food-grouped [data-verdict='not-for-me'] {
+  --verdict-color: var(--color-verdict-notforme);
+}
+
+/* Verdict chips (Verdict.astro) reuse the Chip pill, recolored to the verdict's
+   token via Chip's --chip-color / --chip-border hooks. */
+.chip.verdict-loved {
+  --chip-color: var(--color-verdict-loved);
+}
+
+.chip.verdict-liked {
+  --chip-color: var(--color-verdict-liked);
+}
+
+.chip.verdict-neutral {
+  --chip-color: var(--color-verdict-neutral);
+}
+
+.chip.verdict-not-for-me {
+  --chip-color: var(--color-verdict-notforme);
+}
+
+/* A circular chip — for icon-only content (e.g. an icon-only verdict). Equal
+   padding + square aspect + a 50% radius make a round badge around the glyph.
+   Lives here (not Chip's scoped style) so the dynamically-applied `round` class
+   isn't pruned as "unused" during Chip's scoped-CSS analysis. */
+.chip.round {
+  padding: 5px !important;
+  aspect-ratio: 1;
+  justify-content: center;
+  border-radius: 50% !important;
+}
+
+/* List-pane header (Food + Neighborhoods): a section title + count on the left,
+   page-specific actions on the right (Food's wishlist link, the neighborhood
+   region legend), on a surface card at the top of the scrolling pane. */
+.list-pane-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface);
+  border-block-end: 1px solid var(--color-line);
+}
+
+.list-pane-header .pane-left {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+}
+
+.list-pane-header .pane-title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.list-pane-header .pane-count {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* Food's pane is sticky in the map (split) view; in the full list-only view it
+   isn't (the filter toolbar is) and it blends into the page background. */
+[data-view='map'] .food-grouped .list-pane-header {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+}
+
+.food-grouped .pane-wishlist {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.food-grouped .pane-wishlist .icon {
+  color: inherit;
+}
+
+.food-grouped .pane-wishlist:hover {
+  color: var(--color-accent);
+}
+
+/* Group header rows (built by food-groups.ts): a dot (verdict mode) + label, a
+   rule filling the row, then the visible count — no row divider or verdict bar. */
+.food-grouped .list > li.group-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
+  border: 0;
+}
+
+.food-grouped .group-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--verdict-color, var(--color-text-muted));
+  flex-shrink: 0;
+}
+
+.food-grouped li.group-header .group-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--verdict-color, var(--color-text-muted));
+}
+
+/* Alphabetical mode: the letter dividers (no [data-verdict]) read bigger + accent. */
+.food-grouped li.group-header:not([data-verdict]) .group-label {
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+}
+
+/* Only alphabetical headers carry a rule line (it pushes the count to the end).
+   Verdict headers don't render this span, so their count stays beside the label. */
+.food-grouped .group-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--color-line);
+}
+
+.food-grouped li.group-header .group-count {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Base list styling (the generic List component isn't used here, so reproduce
+   the row dividers + padding), plus the verdict-colored left bar per row. */
+.food-grouped .list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.food-grouped .list > li {
+  margin: 0;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-block-end: 1px solid var(--color-line);
+  border-inline-start: 3px solid var(--verdict-color, var(--color-line));
+}
+
+.food-grouped .list > li:last-child {
+  border-block-end: none;
+}
+
+/* The last row of a section (i.e. right before the next section header) drops its
+   divider, so it doesn't double up with the header's rule line. */
+.food-grouped .list > li:has(+ li.group-header) {
+  border-block-end: none;
+}
+
+/* No lead column anymore (the bar carries the verdict), so the open panel lines
+   up with the row text instead of indenting past a badge. */
+.food-grouped .list-description {
+  margin-left: 0;
+}
+
+/* List-only view (no map): rows sit in a centered column rather than flush to the
+   pane edge, so drop the verdict left-bar (it'd float oddly mid-page) and blend
+   the pane header into the page instead of sitting on a surface card. The group
+   headers still carry the verdict color. */
+[data-filter-root]:not([data-view='map']) .food-grouped .list-pane-header {
+  background: var(--color-background);
+  padding-inline: 0;
+}
+
+[data-filter-root]:not([data-view='map']) .food-grouped .list > li {
+  border-inline-start: 0;
+  padding-inline: 0;
+}
+
 .leaflet-marker-icon.emoji-marker {
   display: flex;
   align-items: center;
@@ -1071,14 +1261,26 @@ body:has(.map-split) main > .wrap,
     }
   }
 
-  /* Keep each control at its natural width so the row scrolls, not wraps. */
-  .wrap > *,
-  .field {
+  /* The view toggle keeps its natural width; the filter form grows to fill the
+     toolbar and its fields share that space evenly (falling back to a horizontal
+     scroll only when they can't fit their min-width). */
+  .wrap > * {
     flex-shrink: 0;
   }
 
   .filters {
+    flex: 1 1 auto;
     flex-wrap: nowrap;
+  }
+
+  .filters .field {
+    flex: 1 1 0;
+    min-width: 7rem;
+  }
+
+  .filters .field :is(input, select) {
+    width: 100%;
+    max-width: none;
   }
 }
 
@@ -1212,7 +1414,7 @@ body:has([data-filter-root]) .site-header {
 .map-tooltip .tip-address,
 .food-popup .tip-address {
   display: block;
-  margin-block: var(--spacing-sm);
+  margin-block: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-muted-2);
@@ -1339,18 +1541,22 @@ body:has([data-filter-root]) .site-header {
 }
 
 /* Share button: native share sheet on mobile, copy-link fallback on desktop. */
-.share-button {
+.share-button,
+a.share-button {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: 0;
-  border: 0;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
   background: none;
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--color-text-muted);
+  text-decoration: none;
+  min-height: 38px;
 }
 
 /* Let the icon follow the button's color (the global .icon pins it muted). */
@@ -1361,21 +1567,6 @@ body:has([data-filter-root]) .site-header {
 .share-button:hover,
 .share-button.is-copied {
   color: var(--color-accent);
-}
-
-/* One divider closes the article: the share button always sits at the top of the
-   footer, with any "Mentioned in" backlinks below it. Even spacing on both sides
-   of the rule (and above each footer child). */
-.entry-footer {
-  margin-block-start: var(--spacing-lg);
-  padding-block-start: var(--spacing-lg);
-  border-block-start: 1px solid var(--color-line);
-}
-
-/* The footer's padding sets the gap below the rule; don't double it with the
-   first child's own top margin (e.g. a .backlinks nav). */
-.entry-footer > :first-child {
-  margin-block-start: 0;
 }
 
 .back {
@@ -1398,6 +1589,7 @@ body:has([data-filter-root]) .site-header {
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing);
     color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
   }
 
   ul {
@@ -1410,9 +1602,9 @@ body:has([data-filter-root]) .site-header {
 
   li {
     display: flex;
-    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-xs) var(--spacing-sm);
     align-items: baseline;
-    /* padding-block: var(--spacing-xs); */
   }
 }
 
@@ -1427,18 +1619,32 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
 }
 
+/* A mono uppercase section heading, used over a List on the Best of page. The
+   compact "name + label" lists everywhere else use .backlinks (above). */
+.fact-section {
+  margin-block-start: var(--spacing-lg);
+}
+
 .group-label {
-  margin-block-end: var(--spacing-xs);
+  margin-block-end: 0;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   color: var(--color-accent);
+}
+
+/* A topic rendered as a reference list (frontmatter `display: list`, e.g.
+   Regional Foods): mono section headings, while keeping full Markdown —
+   wikilinks, images, and sub-sections all still work. */
+.topic-list h2 {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-lg);
 }
 
 /* "No matches" state under a filtered list. */

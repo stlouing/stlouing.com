@@ -95,7 +95,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                   <ListItem
                     title={topic.data.title}
                     href={href(`/${topic.id}`)}
-                    description={topic.data.description || formatDateShort(topic.data.updated)}
+                    description={
+                      topic.data.description
+                        ? `${topic.data.description}.`
+                        : formatDateShort(topic.data.updated)
+                    }
                   />
                 ))}
               </List>

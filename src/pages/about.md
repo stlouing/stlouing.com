@@ -19,21 +19,38 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also [st.louing](https://instagram.com/st.louing) on Instagram.
 
+## Ideas and Brainstorming
+
+- St. Louis overview
+- Things to do in St. Louis
+- Like and Dislikes of STL
+- Does the arch control the weather?
+- Walkability of neighborhoods
+- Chicago and St. Louis guide
+- Nearby hiking
+
 ## Uses
 
 A few open-source projects this site relies on.
 
-- Host: [Github Pages](https://docs.github.com/en/pages)
-- Web Framework: [Astro](https://astro.build)
-- Maps: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
+- **Host**: [Github Pages](https://docs.github.com/en/pages)
+- **Web Framework**: [Astro](https://astro.build)
+- **Maps**: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
-- Icons: [Lucide](https://lucide.dev/icons)
-- Analytics: [GoatCounter](https://www.goatcounter.com)
+- **Icons**: [Lucide](https://lucide.dev/icons)
+- **Analytics**: [GoatCounter](https://www.goatcounter.com)
 
 ## Links
 
-- [Built St. Louis](https://www.builtstlouis.net): a website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
-- [pizzababble](https://www.instagram.com/pizzababble): The St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
+- [**Built St. Louis**](https://www.builtstlouis.net): a website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
+- [**St. Louis City Talk**](https://www.stlouiscitytalk.com/): many thoughts and pictures about St. Louis neighborhoods.
+- [**St. Louis Magazine**](https://www.stlmag.com/): STL-based magazine with news and events.
+- [**St. Louis Public Radio**](https://www.stlpr.org/): the St. Louis branch of the NPR network.
+- [**pizzababble**](https://www.instagram.com/pizzababble): the St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
+
+## Resources
+
+- [**St. Louis-MO.gov**](https://www.stlouis-mo.gov/): Used for determining neighborhood boundaries and facts.
 
 ## Etymology
 
@@ -42,7 +59,3 @@ The name _St. Louing_ is meant to represent the ongoing nature of my journey. I 
 ## History
 
 This site began on May 28, 2026. My St. Louis experience began in 2023.
-
-## AI
-
-No content on this site is written by AI.

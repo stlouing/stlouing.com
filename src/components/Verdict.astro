@@ -1,0 +1,44 @@
+---
+// A color-coded verdict label (Loved / Liked / Fine / Not for me), shown in place
+// of a numeric rating on the Food detail pages and the Best of page. It's just a
+// Chip recolored to the verdict's token — see the `.chip.verdict-*` rules in
+// global.css.
+import Chip from './Chip.astro'
+import { verdictLabels, type Verdict } from '../lib/verdict'
+import IconHeart from '../assets/IconHeart.astro'
+import IconThumbsUp from '../assets/IconThumbsUp.astro'
+import IconMeh from '../assets/IconMeh.astro'
+import IconThumbsDown from '../assets/IconThumbsDown.astro'
+
+// A Lucide icon per verdict: heart (loved), thumbs-up (liked), meh (neutral),
+// thumbs-down (not-for-me). Shown before the label when `icon` is set.
+const verdictIcons = {
+  loved: IconHeart,
+  liked: IconThumbsUp,
+  neutral: IconMeh,
+  'not-for-me': IconThumbsDown,
+} satisfies Record<Verdict, unknown>
+
+interface Props {
+  verdict: Verdict
+  // Show the verdict icon (off by default).
+  icon?: boolean
+  // Show the text label (on by default). Turn off for an icon-only chip — the
+  // label still rides along as an aria-label for screen readers.
+  label?: boolean
+  // Render as a circular badge (pairs with an icon-only chip).
+  round?: boolean
+}
+
+const { verdict, icon = false, label = true, round = false } = Astro.props
+const Icon = verdictIcons[verdict]
+---
+
+<Chip
+  class={`verdict-${verdict}`}
+  round={round}
+  aria-label={label ? undefined : verdictLabels[verdict]}
+>
+  {icon && <Icon />}
+  {label && <span>{verdictLabels[verdict]}</span>}
+</Chip>

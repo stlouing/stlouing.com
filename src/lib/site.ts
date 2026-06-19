@@ -5,6 +5,13 @@ export const DEFAULT_BRANCH = 'main'
 export const SITE_TITLE = 'St. Louing'
 export const SITE_DESCRIPTION = 'Discovering the food, neighborhoods, and culture of St. Louis'
 
+// Feedback form endpoint (Formspree). Comes from the PUBLIC_FORMSPREE_URL env var
+// (a local .env in dev, the FORMSPREE_URL Actions variable in CI). The PUBLIC_
+// prefix is required — Vite only exposes prefixed vars to import.meta.env, and the
+// URL is public in the built page anyway. Empty when unset, where the /feedback
+// page renders without the form (email fallback only).
+export const FEEDBACK_ENDPOINT = import.meta.env.PUBLIC_FORMSPREE_URL ?? ''
+
 export interface Social {
   label: string
   url: string

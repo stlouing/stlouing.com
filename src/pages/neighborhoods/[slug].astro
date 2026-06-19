@@ -2,51 +2,79 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
+import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import { href } from '../../lib/url'
 import { published } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
-import { foodByNeighborhood, normalizeName, wikipediaHref } from '../../lib/neighborhoods'
-import Breadcrumbs from '../../components/Breadcrumbs.astro'
+import {
+  foodByNeighborhood,
+  normalizeName,
+  wikipediaHref,
+  neighborhoodInfo,
+  neighborsOf,
+  festivalsIn,
+  neighborhoodResources,
+} from '../../lib/neighborhoods'
 import neighborhoods from '../../data/neighborhoods.json'
-import SourceLink from '../../components/SourceLink.astro'
+import IconExternalLink from '../../assets/IconExternalLink.astro'
 
-// A page per written neighborhood (a collection file) — mirrors food/[slug].
+// A page for EVERY real neighborhood, not just the ones with a writeup. Where a
+// markdown file exists its prose is rendered; otherwise the page still stands on
+// the computed data layer (region, borders, food, events, locator map), so no
+// neighborhood is a dead end.
 export async function getStaticPaths() {
   const entries = published(await getCollection('neighborhoods'))
+  const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
 
-  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+  return neighborhoods
+    .filter((neighborhood) => !('ignored' in neighborhood))
+    .map((neighborhood) => ({
+      params: { slug: neighborhood.slug },
+      props: { entry: entryBySlug.get(neighborhood.slug) ?? null },
+    }))
 }
 
+const { slug = '' } = Astro.params
 const { entry } = Astro.props
-const { data } = entry
-const { Content } = await render(entry)
-const backlinks = await getBacklinks(entry.id)
+const info = neighborhoodInfo(slug)
+const title = info?.name ?? slug
 
-// Food places located in this neighborhood (same loose name-join as the index).
+// Prose layer: present only when a markdown file backs this neighborhood.
+const rendered = entry ? await render(entry) : null
+const Content = rendered?.Content
+const backlinks = entry ? await getBacklinks(entry.id) : []
+const tags = entry?.data.tags ?? []
+const officialUrl = entry?.data.url
+const wikipedia = entry?.data.wikipedia ?? wikipediaHref(title)
+
+// Computed data layer.
+const neighbors = neighborsOf(slug)
+const festivals = festivalsIn(slug)
 const placesByNeighborhood = await foodByNeighborhood()
-const places = placesByNeighborhood.get(normalizeName(data.title)) ?? []
+const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
-// Breadcrumb: Neighborhoods / <name>. The leaf links to this neighborhood on the
-// map (its hash on the index), replacing the old inline "View on the map" link.
-const trail = [
-  { label: 'Neighborhoods', href: '/neighborhoods' },
-  { label: data.title, href: `/neighborhoods#${entry.id}` },
+// External resources: the place's own site (if any), Wikipedia, and the
+// auto-generated City of St. Louis + Niche profiles.
+const resourceLinks = [
+  ...(officialUrl ? [{ label: 'Official site', href: officialUrl }] : []),
+  { label: 'Wikipedia', href: wikipedia },
+  ...(info ? neighborhoodResources(info) : []),
 ]
 
-// Auto-generated description from the neighborhood's region + official number.
-// Kept here in code (not in the markdown frontmatter) so the wording is easy to
-// tweak in one place; the region comes from src/data/neighborhoods.json.
-const info = neighborhoods.find((item) => item.slug === entry.id) as
-  | { number: number; numberLabel?: string; group: string }
-  | undefined
 const description = info
-  ? `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}.`
+  ? `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
   : undefined
+
+const trail = [
+  { label: 'Neighborhoods', href: '/neighborhoods' },
+  { label: title, href: `/neighborhoods#${slug}` },
+]
 ---
 
-<BaseLayout crumb={data.title} description={description}>
+<BaseLayout crumb={title} description={description}>
   <Breadcrumbs trail={trail} />
-  <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
+  <Entry title={title} tags={tags} editPath={entry?.filePath} backlinks={backlinks}>
     {
       description && (
         <p class="entry-summary" slot="lede">
@@ -54,31 +82,133 @@ const description = info
         </p>
       )
     }
-    <Fragment slot="meta">
-      <SourceLink href={data.url} />
-      <SourceLink href={data.wikipedia ?? wikipediaHref(data.title)} label="Wikipedia" />
-    </Fragment>
-    <Content />
+    <figure class="locator-figure">
+      <NeighborhoodLocator slug={slug} name={title} />
+      <figcaption>Location of {title} within St. Louis</figcaption>
+    </figure>
+
+    {Content && <Content />}
+
     {
-      places.length > 0 && (
-        <footer class="entry-footer">
-          <nav class="backlinks">
-            <h2>Food</h2>
-            <ul>
-              {places.map((place) => (
-                <li>
-                  <a class="place-link" href={href(`/food/${place.id}`)}>
-                    {place.data.title}
-                  </a>
-                  <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
-                    {place.data.cuisine[0]}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </footer>
+      festivals.length > 0 && (
+        <nav class="backlinks">
+          <h2>Annual events</h2>
+          <ul>
+            {festivals.map((festival) => (
+              <li>
+                <span class="event-name">{festival.name}</span>
+                <span class="collection">{festival.when}</span>
+                <p class="event-note">{festival.blurb}</p>
+              </li>
+            ))}
+          </ul>
+        </nav>
       )
     }
+
+    {
+      places.length > 0 && (
+        <nav class="backlinks">
+          <h2>Food</h2>
+          <ul>
+            {places.map((place) => (
+              <li>
+                <a href={href(`/food/${place.id}`)}>
+                  {place.data.title}
+                </a>
+                <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
+                  {place.data.cuisine[0]}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      neighbors.length > 0 && (
+        <nav class="backlinks">
+          <h2>Borders</h2>
+          <ul>
+            {neighbors.map((neighbor) => (
+              <li>
+                <a href={href(`/neighborhoods/${neighbor.slug}`)}>
+                  {neighbor.name}
+                </a>
+                <span class="collection">{neighbor.group}</span>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <nav class="backlinks">
+      <h2>Resources</h2>
+      <ul>
+        {
+          resourceLinks.map((link) => (
+            <li>
+              <a href={link.href} target="_blank" rel="noopener">
+                {link.label}
+              </a>
+              <span class="collection">
+                <IconExternalLink />
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </Entry>
 </BaseLayout>
+
+<style>
+  /* The locator map floats beside the prose (or sits at the top of the data
+     layer when a neighborhood has no writeup yet). */
+  .locator-figure {
+    float: right;
+    width: clamp(110px, 28%, 150px);
+    margin: var(--spacing-xs) 0 var(--spacing-md) var(--spacing-lg);
+  }
+
+  .locator-figure :global(svg) {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .locator-figure figcaption {
+    margin-block-start: var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* Annual events read as a titled entry: a mono bold name, then the blurb as
+     normal body text on its own line (the .backlinks default is mono throughout). */
+  .event-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--color-text);
+    font-size: var(--font-size-md);
+  }
+
+  .event-note {
+    flex-basis: 100%;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-article);
+  }
+
+  @media screen and (max-width: 700px) {
+    .locator-figure {
+      float: none;
+      width: 140px;
+      margin-inline: 0;
+    }
+  }
+</style>

@@ -13,6 +13,9 @@ const food = defineCollection({
   schema: z.object({
     title: z.string(),
     rating: z.number().min(0).max(10).optional(),
+    // Shown in place of the number. Set explicitly, or derived from `rating`
+    // (9–10 loved, 7–8 liked, the rest neutral) by src/lib/verdict.ts.
+    verdict: z.enum(['loved', 'liked', 'neutral', 'not-for-me']).optional(),
     cuisine: z.array(z.string()).default([]),
     neighborhood: z.string().optional(),
     // A single line, or an array of lines (e.g. street, then city/state/zip).
@@ -73,6 +76,9 @@ const topics = defineCollection({
     description: z.string().optional(),
     updated: z.coerce.date(),
     created: z.coerce.date().optional(),
+    // 'list' renders the body in the compact reference-list look (mono section
+    // headings); 'article' is the default prose look.
+    display: z.enum(['article', 'list']).default('article'),
     ...taggable,
   }),
 })

@@ -2,7 +2,7 @@
 title: St. Louis-style Pizza
 description: Love it or hate it, it holds a special place in many hearts
 created: 2026-05-31
-updated: 2026-06-11
+updated: 2026-06-19
 ---
 
 <figure class="figure left">
@@ -101,22 +101,22 @@ I thought it came out pretty good, though I'd make some changes if I do it again
 
 <figure class="figure right">
 
-![](../images/stl-pizza/farottos.png)
+![](../images/stl-pizza/faraci.png)
 
-<figcaption>Pepperoni and sausage from Farotto's</figcaption>
+<figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
 </figure>
 
 Here's a subjective rated list of the places I've tried. I would say the top three are all vying for first place at the moment.
 
 1. [[farottos|Farotto's]]: A pizza with extra-extra-thin buttery, flaky crust, a slightly sweet sauce, and quality ingredients. Just don't get Jimmy's favorite (shrimp and bacon...why??). This is my place of choice to take out of town visitors, as the rest of the food is also great.
-1. <u>Pirrone's Pizzeria</u>: It's a bit out of the way from the city itself, but worth a visit. Pirrone's makes a rectangular pizza with a crispy, buttery crust, where the cheese and sauce blend to make an orange mix.
-1. <u>Faraci Pizza</u>: Similar to Pirrone's in size and shape, with a more bready, yeasty crust.
-1. <u>Salvage Yard</u>: A solid choice for a standard STL-style.
-1. <u>Imo's Pizza</u>: By far the most famous and infamous pizza in town, Imo's is THE St. Louis pizza chain and the only STL-style many people have ever tried. Imo's has a mass-produced flavor to it, unlike the home-style vibes of a lot of other spots. The quality also varies a lot from location to location. It can be okay, but not the best representation of pizza in the area, in my opinion. Sometimes I do specifically crave an Imo's pizza, though.
+1. **Pirrone's Pizzeria**: It's a bit out of the way from the city itself, but worth a visit. Pirrone's makes a rectangular pizza with a crispy, buttery crust, where the cheese and sauce blend to make an orange mix.
+1. **Faraci Pizza**: Similar to Pirrone's in size and shape, with a more bready, yeasty crust.
+1. **Salvage Yard**: A solid choice for a standard STL-style.
+1. **Imo's Pizza**: By far the most famous and infamous pizza in town, Imo's is THE St. Louis pizza chain and the only STL-style many people have ever tried. Imo's has a mass-produced flavor to it, unlike the home-style vibes of a lot of other spots. The quality also varies a lot from location to location. It can be okay, but not the best representation of pizza in the area, in my opinion. Sometimes I do specifically crave an Imo's pizza, though.
 1. [[failonis|Failoni's]]: A brick-oven pizza with a very crisp cracker-like like crust. (I believe this also counts as Uncle Leo's pizza, as they're under the same ownership, but I haven't tried it to confirm.)
-1. <u>Nick & Elena's</u>: I know people love this place, and the old-school vibes are top-notch, but I didn't personally like the pizza (specifically the sauce was way too sweet for me).
-1. <u>Cecil Whittaker's</u>: This was one of my least favorite St. Louis-style pizzas I've tried. It's like an Imo's clone with lower quality ingredients.
-1. <u>Elicia's Pizza</u>: The first St. Louis-style pizza I ever tried was from Elicia's. It was completely burnt and inedible, and unfortunately they're no longer in business for me to know whether or not that was a fluke.
+1. **Nick & Elena's**: I know people love this place, and the old-school vibes are top-notch, but I didn't personally like the pizza (specifically the sauce was way too sweet for me).
+1. **Cecil Whittaker's**: This was one of my least favorite St. Louis-style pizzas I've tried. It's like an Imo's clone with lower quality ingredients.
+1. **Elicia's Pizza**: The first St. Louis-style pizza I ever tried was from Elicia's. It was completely burnt and inedible, and unfortunately they're no longer in business for me to know whether or not that was a fluke.
 
 So I've tried a variety of fan favorites around the city, but I'm always open to new suggestions. A few I have yet to try are Affton Pizza Company, Angelo's, Kevin's Place, and plenty more.
 
@@ -133,7 +133,7 @@ I like pizza. I think (almost) all pizza is good. I love trying new things, espe
 
 So personally, St. Louis-style or even Chicago thin-crust are just never going to be on the top of my list, because I'm here for the dough. Nonetheless, I still like it and have acquired the taste since moving here, and I'm still excited to try all the spots and decide which one is my favorite. Sometimes I specifically crave a St. Louis-style pizza, and I'd miss it if I no longer lived here.
 
-But most of my favoerite pizzas around the city are not specifical St. Louis-style.
+But most of my favorite pizzas around the city are not specifically St. Louis-style.
 
 ## Other pizza in St. Louis
 

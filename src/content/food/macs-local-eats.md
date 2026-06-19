@@ -1,5 +1,6 @@
 ---
 title: Mac's Local Eats
+draft: true
 rating: 6
 cuisine: ['burgers']
 neighborhood: 'Dogtown'
