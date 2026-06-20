@@ -47,6 +47,7 @@ A few open-source projects this site relies on.
 - [**St. Louis Magazine**](https://www.stlmag.com/): STL-based magazine with news and events.
 - [**St. Louis Public Radio**](https://www.stlpr.org/): the St. Louis branch of the NPR network.
 - [**pizzababble**](https://www.instagram.com/pizzababble): the St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
+- [**STLFood on Reddit**](https://www.reddit.com/r/STLFood): the place to discuss food in St. Louis
 
 ## Resources
 

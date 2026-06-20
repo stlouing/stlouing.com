@@ -16,12 +16,12 @@ import { href } from '../lib/url'
       <a href={href('/rss.xml')} target="_blank">RSS <IconRSS /></a>
     </nav>
   </div>
+  <div class="river-border" aria-hidden="true"></div>
 </footer>
 
 <style>
   .site-footer {
     border-top: 1px solid var(--color-line);
-    padding-block: var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--color-text);
@@ -33,6 +33,15 @@ import { href } from '../lib/url'
     align-items: baseline;
     justify-content: space-between;
     gap: var(--spacing-md);
+    padding-block: var(--spacing-sm);
+  }
+
+  /* Decorative "river" ribbon at the very bottom — the St. Louis flag's
+     blue-and-white wave on red, repeated seamlessly. Flag colors are fixed in
+     both themes. Tweak the height (60–100px) to taste. */
+  .river-border {
+    height: 24px;
+    background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
   }
 
   .footer-nav {
