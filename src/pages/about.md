@@ -19,6 +19,8 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also [st.louing](https://instagram.com/st.louing) on Instagram.
 
+You can also use the [feedback form](/feedback).
+
 ## Ideas and Brainstorming
 
 - St. Louis overview
@@ -28,6 +30,7 @@ You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also 
 - Walkability of neighborhoods
 - Chicago and St. Louis guide
 - Nearby hiking
+- A case for St. Louis
 
 ## Uses
 

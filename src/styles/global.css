@@ -759,7 +759,7 @@ body:has(.map-split) main > .wrap,
 .list-with-map .list-description .place-links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: var(--spacing-xs);
   row-gap: var(--spacing-xs);
   margin-block-end: var(--spacing-sm);
 
@@ -1449,7 +1449,7 @@ body:has([data-filter-root]) .site-header {
   h2 {
     margin-block-start: 0;
     margin-block-end: var(--spacing-sm);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-md);
     white-space: nowrap;
 
     a {
@@ -1467,6 +1467,117 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-link);
+}
+
+/* A 2–3 line teaser of the writeup inside the popup (body serif, not mono). */
+.leaflet-popup.food-popup .tip-excerpt {
+  margin-block: var(--spacing-sm) 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-article);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Cuisine chip(s) + neighborhood pin row under the title. */
+.leaflet-popup.food-popup .popup-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-block: var(--spacing-xs) var(--spacing-sm);
+}
+
+.leaflet-popup.food-popup .popup-chip,
+.leaflet-popup.food-popup .popup-pin {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-input);
+  border-radius: 20px;
+  padding: 2px var(--spacing-sm);
+  white-space: nowrap;
+}
+
+/* Only the button form (food's cuisine/neighborhood filters) is interactive; the
+   neighborhood popup's area chip is a static <span>. */
+.leaflet-popup.food-popup button.popup-chip,
+.leaflet-popup.food-popup button.popup-pin {
+  cursor: pointer;
+}
+
+.leaflet-popup.food-popup button.popup-chip:hover,
+.leaflet-popup.food-popup button.popup-pin:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.leaflet-popup.food-popup .popup-pin svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+/* Action buttons — "View more" (accent) plus the external sources (outlined). */
+.leaflet-popup.food-popup .popup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+  margin-block-start: var(--spacing-md);
+}
+
+.leaflet-popup.food-popup .popup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-input);
+  border-radius: var(--radius);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  flex: 1;
+  white-space: nowrap;
+}
+
+.leaflet-popup.food-popup .popup-btn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* "View more" — a centered CTA fenced by hairlines on its own line, set apart
+   from the source button row below it. */
+.leaflet-popup.food-popup .popup-more-link {
+  display: block;
+  margin-block: var(--spacing-md) 0;
+  padding-block: var(--spacing-sm);
+  border-block: 1px solid var(--color-line);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.leaflet-popup.food-popup .popup-more-link:hover {
+  text-decoration: underline;
+}
+
+.leaflet-popup.food-popup .popup-btn-primary:hover {
+  color: var(--color-surface);
+  opacity: 0.92;
 }
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {
@@ -1553,10 +1664,11 @@ a.share-button {
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  font-weight: 500;
-  color: var(--color-text-muted);
+  font-weight: 600;
+  color: var(--color-text);
   text-decoration: none;
   min-height: 38px;
+  background: var(--color-surface);
 }
 
 /* Let the icon follow the button's color (the global .icon pins it muted). */

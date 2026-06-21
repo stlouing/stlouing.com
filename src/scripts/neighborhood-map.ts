@@ -3,6 +3,11 @@ import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
 import neighborhoods from '../data/neighborhoods.json'
 
+// Escape text before it goes into the popup's innerHTML.
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
 // the map and the generated sections always share one slug — no re-slugifying.
 // `ignored` rows are absorbed neighborhoods (e.g. the pieces of Dogtown) kept
@@ -131,26 +136,36 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   // are read off the matching list row's data attributes (set server-side).
   function buildPopupHtml(slug: string, name: string): string {
     if (!slug) {
-      return `<h2>${name}</h2>`
+      return `<h2>${escapeHtml(name)}</h2>`
     }
     const row = rowFor(slug)
     const area = row?.dataset.area ?? ''
     const official = row?.dataset.official
     const wikipedia = row?.dataset.wikipedia
     const niche = row?.dataset.niche
-    const links = [
+    const excerptText = row?.dataset.excerpt ?? ''
+    const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
+
+    // Same spirit as the food popup: linked title, an area chip, a writeup teaser
+    // (when written), a ruled "View more", then the resources as buttons.
+    const titleHtml = `<h2><a href="${link}">${escapeHtml(name)}</a></h2>`
+    const metaHtml = area
+      ? `<div class="popup-meta"><span class="popup-chip">${escapeHtml(area)}</span></div>`
+      : ''
+    const excerptHtml = excerptText ? `<p class="tip-excerpt">${escapeHtml(excerptText)}</p>` : ''
+    const moreHtml = excerptText ? `<a class="popup-more-link" href="${link}">View more</a>` : ''
+    const sources = [
       official &&
-        `<a class="popup-link" href="${official}" target="_blank" rel="noopener">Official site ↗</a>`,
+        `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Official site</a>`,
       wikipedia &&
-        `<a class="popup-link" href="${wikipedia}" target="_blank" rel="noopener">Wikipedia ↗</a>`,
-      niche && `<a class="popup-link" href="${niche}" target="_blank" rel="noopener">Niche ↗</a>`,
+        `<a class="popup-btn" href="${wikipedia}" target="_blank" rel="noopener">Wikipedia</a>`,
+      niche && `<a class="popup-btn" href="${niche}" target="_blank" rel="noopener">Niche</a>`,
     ]
       .filter(Boolean)
       .join('')
-    const areaHtml = area ? `<span class="tip-address">${area}</span>` : ''
-    const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
+    const sourcesHtml = sources ? `<div class="popup-actions">${sources}</div>` : ''
 
-    return `<h2><a href="${link}">${name}</a></h2>${areaHtml}${links}`
+    return `${titleHtml}${metaHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
   }
 
   const bounds = L.latLngBounds([])
@@ -177,8 +192,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
       featureLayer.bindPopup(buildPopupHtml(slug, name), {
         className: 'food-popup',
-        maxWidth: 300,
-        minWidth: 200,
+        maxWidth: 330,
+        minWidth: 210,
         offset: [0, -2],
       })
       featureLayer.on('popupopen', () => {

@@ -204,21 +204,23 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     writeUrl()
   })
 
-  // In-list controls that set a facet value when clicked (e.g. a cuisine pill or
-  // the neighborhood label on the food list). Reuses the normal apply + URL sync.
-  const setters = [...root.querySelectorAll<HTMLElement>('[data-filter-set]')]
-  for (const setter of setters) {
-    setter.addEventListener('click', () => {
-      const facetKey = setter.dataset.filterSet ?? ''
-      const value = setter.dataset.filterValue ?? ''
-      const select = facets.find((facet) => facet.dataset.filterFacet === facetKey)
-      if (!select) {
-        return
-      }
-      select.value = value
-      applyAndSync()
-    })
-  }
+  // Controls that set a facet value when clicked — a cuisine pill or neighborhood
+  // label on the list, or the chip/pin inside a map popup. Delegated on the root
+  // (not bound per element) so it also catches popup chips Leaflet inserts later.
+  root.addEventListener('click', (event) => {
+    const setter = (event.target as HTMLElement).closest<HTMLElement>('[data-filter-set]')
+    if (!setter) {
+      return
+    }
+    const facetKey = setter.dataset.filterSet ?? ''
+    const value = setter.dataset.filterValue ?? ''
+    const select = facets.find((facet) => facet.dataset.filterFacet === facetKey)
+    if (!select) {
+      return
+    }
+    select.value = value
+    applyAndSync()
+  })
 
   // Remove a single filter via its chip's ✕.
   chips?.addEventListener('click', (event) => {

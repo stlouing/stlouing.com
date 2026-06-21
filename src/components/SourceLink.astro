@@ -3,7 +3,6 @@
 // place's Instagram or website, etc.). The label is derived from the host —
 // "AllTrails", "Instagram", or the bare domain — unless one is passed. Renders
 // nothing without an href.
-import IconExternalLink from '../assets/IconExternalLink.astro'
 import { hostLabel } from '../lib/links'
 
 interface Props {
@@ -19,18 +18,35 @@ const text = label ?? (linkHref ? hostLabel(linkHref) : '')
   linkHref && (
     <a class="source-link" href={linkHref} target="_blank" rel="noopener">
       {text}
-      <IconExternalLink />
     </a>
   )
 }
 
 <style>
+  /* Button style, matching the food-map popup's source buttons. */
   .source-link {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
     font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     font-weight: 500;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-input);
+    border-radius: var(--radius);
+    padding: 2px var(--spacing-sm);
+    text-decoration: none;
+  }
+
+  .source-link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* The external-link glyph follows the button's text color (the global .icon
+     rule otherwise pins it muted). */
+  .source-link :global(.icon) {
+    color: inherit;
   }
 </style>

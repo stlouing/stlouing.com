@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import FilterListItem from '../../components/FilterListItem.astro'
 import SourceLink from '../../components/SourceLink.astro'
-import { published, hasBody } from '../../lib/content'
+import { published, hasBody, excerpt } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
@@ -86,7 +86,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
               title={place.data.title}
               detailHref={`/food/${place.id}`}
               expandable={true}
-              readMore={hasBody(place)}
+              readMore={false}
               marker={cuisineEmoji(place.data.cuisine)}
               coords={place.data.coords?.join(',') ?? ''}
               url={place.data.url ?? ''}
@@ -109,6 +109,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 'data-sort-verdict': `${verdictRankLetter[verdict as Verdict]}|${place.data.title.toLowerCase()}`,
                 'data-google': googleMapsHref(place.data),
                 'data-instagram': place.data.instagram ?? '',
+                'data-excerpt': hasBody(place) ? excerpt(place.body, 150) : '',
               }}>
               {place.data.neighborhood && (
                 <Fragment slot="title-after">
@@ -141,7 +142,12 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 </span>
               )}
               <div class="place-links">
-                <SourceLink href={place.data.url} />
+                {hasBody(place) && (
+                  <a class="place-link-primary" href={href(`/food/${place.id}`)}>
+                    View more
+                  </a>
+                )}
+                <SourceLink href={place.data.url} label="Website" />
                 <SourceLink href={place.data.instagram} />
                 <SourceLink href={googleMapsHref(place.data)} label="Google Maps" />
               </div>
@@ -169,5 +175,25 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     -webkit-line-clamp: 5;
     line-clamp: 5;
     overflow: hidden;
+  }
+
+  /* Accent "View more" button, ahead of the outlined source buttons. */
+  .place-link-primary {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-surface);
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    padding: 2px var(--spacing-sm);
+    text-decoration: none;
+  }
+
+  .place-link-primary:hover {
+    color: var(--color-surface);
+    opacity: 0.92;
   }
 </style>

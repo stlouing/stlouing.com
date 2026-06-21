@@ -82,6 +82,10 @@ interface Props {
   /* Mobile: name + theme toggle on the top row, nav stacked below as an even
      three-column grid. Desktop (above) is unchanged. */
   @media (max-width: 700px) {
+    .site-header {
+      padding-block: var(--spacing-sm);
+    }
+    
     .header-inner {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -114,6 +118,7 @@ interface Props {
       justify-content: start;
       column-gap: var(--spacing-lg);
       row-gap: var(--spacing-xs);
+      justify-content: space-between;
     }
   }
 </style>

@@ -5,7 +5,7 @@ import List from '../components/List.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
-import { published } from '../lib/content'
+import { published, excerpt } from '../lib/content'
 import { wikipediaHref, neighborhoodInfo, neighborhoodResources } from '../lib/neighborhoods'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
@@ -45,6 +45,7 @@ function popupData(slug: string, name: string, group: string) {
     official: entry?.data.url,
     wikipedia: entry?.data.wikipedia ?? wikipediaHref(name),
     niche,
+    excerpt: entry?.body ? excerpt(entry.body, 150) : undefined,
   }
 }
 ---
@@ -95,6 +96,7 @@ function popupData(slug: string, name: string, group: string) {
                       data-wikipedia={popup.wikipedia}
                       data-niche={popup.niche}
                       data-official={popup.official}
+                      data-excerpt={popup.excerpt}
                     >
                       <div class="neighborhood-head">
                         <div class="list-title">
