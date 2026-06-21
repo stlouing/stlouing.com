@@ -63,10 +63,27 @@ export const sections: Section[] = [
     group: 'lists',
     description: "Places I haven't tried or rated yet",
   },
+  {
+    label: 'Sitemap',
+    path: '/sitemap',
+    group: 'lists',
+    description: 'A human-readable index of every page',
+  },
   // Hidden until it has posts (omitted from `groups` above and not `primary`).
   { label: 'Notes', path: '/notes', group: 'notes' },
 
-  { label: 'About', path: '/about', group: 'site', primary: true, description: 'About this site' },
-  { label: 'Tags', path: '/tags', group: 'site', description: 'Browse everything by topic' },
-  { label: 'Feedback', path: '/feedback', group: 'site', description: 'Send a note or correction' },
+  {
+    label: 'About',
+    path: '/about',
+    group: 'site',
+    primary: true,
+    description: 'Why I made this site and what my goals are.',
+  },
+  { label: 'Tags', path: '/tags', group: 'site', description: 'Browse everything by topic.' },
+  {
+    label: 'Feedback',
+    path: '/feedback',
+    group: 'site',
+    description: 'Let me know your thoughts!',
+  },
 ]

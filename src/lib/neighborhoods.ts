@@ -149,6 +149,35 @@ export function neighborhoodResources(info: NeighborhoodInfo): ResourceLink[] {
   return links
 }
 
+// The full ordered list of a neighborhood's external resources — its own site
+// (if any), Wikipedia, then the City of St. Louis + Niche profiles. Shared by the
+// detail page's action bar and the neighborhoods list's expanded rows so both
+// render the same set of buttons.
+export function neighborhoodResourceLinks(
+  slug: string,
+  name: string,
+  officialUrl?: string,
+  wikipediaOverride?: string,
+): ResourceLink[] {
+  const info = neighborhoodInfo(slug)
+  const resources = info ? neighborhoodResources(info) : []
+
+  // Drop the frontmatter "Website" link when it points to the same place as a
+  // generated resource (e.g. Carondelet's official site IS its City of St. Louis
+  // page) — ignoring a trailing slash — so the same destination isn't listed twice.
+  const trimSlash = (url: string) => url.replace(/\/+$/, '')
+  const officialIsDuplicate = Boolean(
+    officialUrl &&
+    resources.some((resource) => trimSlash(resource.href) === trimSlash(officialUrl)),
+  )
+
+  return [
+    ...(officialUrl && !officialIsDuplicate ? [{ label: 'Website', href: officialUrl }] : []),
+    { label: 'Wikipedia', href: wikipediaOverride ?? wikipediaHref(name) },
+    ...resources,
+  ]
+}
+
 // Published food places grouped by normalized neighborhood name, for the
 // "Food in this neighborhood" cross-links on neighborhood pages.
 export async function foodByNeighborhood(): Promise<Map<string, CollectionEntry<'food'>[]>> {

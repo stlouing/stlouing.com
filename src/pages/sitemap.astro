@@ -1,0 +1,239 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { href } from '../lib/url'
+import { published } from '../lib/content'
+import neighborhoods from '../data/neighborhoods.json'
+import IconMapPin from '../assets/IconMapPin.astro'
+import IconArrowRight from '../assets/IconArrowRight.astro'
+
+// A human-readable map of the whole site, pulled live from the content
+// collections so it never drifts. (This is the people-facing index; the
+// machine-readable /sitemap.xml is separate.)
+const byTitle = (left: { data: { title: string } }, right: { data: { title: string } }): number =>
+  left.data.title.localeCompare(right.data.title)
+
+const food = published(await getCollection('food')).sort(byTitle)
+const topics = published(await getCollection('topics')).sort(byTitle)
+const notes = published(await getCollection('notes')).sort(byTitle)
+const hikes = published(await getCollection('hikes')).sort(byTitle)
+
+// Every real neighborhood (skip the `ignored` rows folded into a merged one),
+// alphabetical for findability — each has a page, written or data-only.
+const hoods = neighborhoods
+  .filter((neighborhood) => !('ignored' in neighborhood))
+  .sort((left, right) => left.name.localeCompare(right.name))
+
+interface Entry {
+  title: string
+  path: string
+}
+interface SitemapGroup {
+  label: string
+  path?: string
+  // The marquee interactive maps — given a featured treatment below.
+  featured?: boolean
+  items: Entry[]
+}
+
+// One shape for every group, so each renders identically (header + columns).
+const groups: SitemapGroup[] = [
+  {
+    label: 'Pages',
+    items: [
+      { title: 'About', path: '/about' },
+      { title: 'Best of St. Louis Food', path: '/best' },
+      { title: 'Want to try', path: '/food/want-to-try' },
+      { title: 'Tags', path: '/tags' },
+      { title: 'Feedback', path: '/feedback' },
+    ],
+  },
+  {
+    label: 'Topics',
+    path: '/topics',
+    items: topics.map((topic) => ({ title: topic.data.title, path: `/${topic.id}` })),
+  },
+  {
+    label: 'Food',
+    path: '/food',
+    featured: true,
+    items: food.map((place) => ({ title: place.data.title, path: `/food/${place.id}` })),
+  },
+  {
+    label: 'Neighborhoods',
+    path: '/neighborhoods',
+    featured: true,
+    items: hoods.map((neighborhood) => ({
+      title: neighborhood.name,
+      path: `/neighborhoods/${neighborhood.slug}`,
+    })),
+  },
+
+  ...(notes.length > 0
+    ? [
+        {
+          label: 'Notes',
+          path: '/notes',
+          items: notes.map((note) => ({ title: note.data.title, path: `/notes/${note.id}` })),
+        },
+      ]
+    : []),
+  ...(hikes.length > 0
+    ? [
+        {
+          label: 'Hikes',
+          path: '/hikes',
+          items: hikes.map((hike) => ({ title: hike.data.title, path: `/hikes/${hike.id}` })),
+        },
+      ]
+    : []),
+]
+---
+
+<BaseLayout crumb="Sitemap" description="A human-readable map of everything on St. Louing.">
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Sitemap</h1>
+      </div>
+    </header>
+
+    <div class="body">
+      {
+        groups.map((group) => (
+          <section class:list={['sitemap-section', { featured: group.featured }]}>
+            <h2 class="sitemap-head">
+              <span class="sitemap-head-label">
+                <span class="sitemap-label">{group.label}</span>
+                {group.featured && (
+                  <span class="sitemap-map-badge">
+                    <IconMapPin /> Map
+                  </span>
+                )}
+                <span class="sitemap-count">{group.items.length}</span>
+              </span>
+              {group.path && (
+                <a class="sitemap-viewall" href={href(group.path)}>
+                  {group.featured ? 'View map' : 'View all'} <IconArrowRight />
+                </a>
+              )}
+            </h2>
+            <ul class="sitemap-list">
+              {group.items.map((entry) => (
+                <li>
+                  <a href={href(entry.path)}>{entry.title}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .sitemap-section {
+    margin-block-start: var(--spacing-lg);
+  }
+
+  .sitemap-head-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  /* Quiet link out to each section's full index, opposite the header text. */
+  .sitemap-viewall {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .sitemap-viewall:hover {
+    color: var(--color-accent);
+  }
+
+  .sitemap-map-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 1px var(--spacing-sm);
+    border: 1px solid var(--color-accent);
+    border-radius: 20px;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+  }
+
+  .sitemap-map-badge :global(.icon) {
+    color: var(--color-accent);
+  }
+
+  /* Category header: a mono label with its count flush right, on a hairline rule —
+     mirrors the Food / Neighborhoods list section heads. */
+  .sitemap-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    margin: 0 0 var(--spacing-sm);
+    padding-block-end: var(--spacing-xs);
+    border-block-end: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-md);
+    font-weight: 700;
+  }
+
+  .sitemap-head a {
+    color: var(--color-text-heading);
+    text-decoration: none;
+  }
+
+  .sitemap-head a:hover {
+    color: var(--color-accent);
+  }
+
+  .sitemap-count {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  /* Two columns above mobile so long lists (85 neighborhoods) stay compact
+     instead of running down one endless column; a single column on mobile. */
+  .sitemap-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    column-gap: var(--spacing-lg);
+  }
+
+  @media (min-width: 600px) {
+    .sitemap-list {
+      column-count: 2;
+    }
+  }
+
+  .sitemap-list li {
+    margin: 0 0 var(--spacing-xs);
+    break-inside: avoid;
+  }
+
+  .sitemap-list a {
+    text-decoration: none;
+  }
+
+  .sitemap-list a:hover {
+    text-decoration: underline;
+    text-decoration-style: solid;
+  }
+</style>

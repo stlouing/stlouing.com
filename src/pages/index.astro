@@ -9,6 +9,7 @@ import { formatDateShort } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
+import NewsletterSignup from '../components/NewsletterSignup.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
 const tagline = 'Discovering the food, neighborhoods, and culture of St. Louis'
@@ -53,7 +54,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
     <span class="p-name" hidden>St. Louing</span>
     <a class="u-url" href={href('/')} hidden>stlouing.com</a>
-    <img class="u-photo" src={href('/favicon.png')} alt="" hidden />
+    <img class="u-photo" src={href('/og.png')} alt="" hidden />
+    <NewsletterSignup />
   </header>
 
   <div class="directory">
@@ -152,7 +154,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .index-header {
-    margin-bottom: 3rem;
+    margin-bottom: var(--spacing-lg);
   }
 
   .tagline {

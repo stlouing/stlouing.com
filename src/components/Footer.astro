@@ -1,7 +1,6 @@
 ---
-import IconExternalLink from '../assets/IconExternalLink.astro'
-import IconRSS from '../assets/IconRSS.astro'
 import { href } from '../lib/url'
+import { NEWSLETTER_URL } from '../lib/site'
 ---
 
 <footer class="site-footer">
@@ -9,11 +8,8 @@ import { href } from '../lib/url'
     <span class="footer-tagline">Made in STL</span>
     <nav class="footer-nav" aria-label="Footer">
       <a href="https://www.instagram.com/st.louing" target="_blank">@st.louing</a>
+      <a href={NEWSLETTER_URL} target="_blank">Newsletter</a>
       <a href={href('/feedback')}>Feedback</a>
-      <a href="https://github.com/stlouing/stlouing.com" target="_blank"
-        >Source <IconExternalLink /></a
-      >
-      <a href={href('/rss.xml')} target="_blank">RSS <IconRSS /></a>
     </nav>
   </div>
   <div class="river-border" aria-hidden="true"></div>

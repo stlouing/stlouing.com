@@ -5,6 +5,10 @@ export const DEFAULT_BRANCH = 'main'
 export const SITE_TITLE = 'St. Louing'
 export const SITE_DESCRIPTION = 'Discovering the food, neighborhoods, and culture of St. Louis'
 
+// Newsletter (Substack). The signup form GETs to `${NEWSLETTER_URL}/subscribe`,
+// which Substack prefills from the `email` param and handles double-opt-in.
+export const NEWSLETTER_URL = 'https://stlouing.substack.com'
+
 // Feedback form endpoint (Formspree). Comes from the PUBLIC_FORMSPREE_URL env var
 // (a local .env in dev, the FORMSPREE_URL Actions variable in CI). The PUBLIC_
 // prefix is required — Vite only exposes prefixed vars to import.meta.env, and the

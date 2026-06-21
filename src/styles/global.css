@@ -768,6 +768,37 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* A row of outlined resource buttons (a neighborhood's Wikipedia / City / Niche
+   links), used both at the top of a neighborhood detail page and in the
+   expanded list row. */
+.resource-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-block-start: var(--spacing-sm);
+}
+
+/* Accent "View more" button, ahead of the outlined source/resource buttons in
+   the Food + Neighborhoods lists. */
+.place-link-primary {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-surface);
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 2px var(--spacing-sm);
+  text-decoration: none;
+}
+
+.place-link-primary:hover {
+  color: var(--color-surface);
+  opacity: 0.92;
+}
+
 /* A row is a rating badge (left) beside the place details (right). */
 .list-with-map .list-details {
   display: flex;

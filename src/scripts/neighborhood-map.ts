@@ -142,6 +142,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     const area = row?.dataset.area ?? ''
     const official = row?.dataset.official
     const wikipedia = row?.dataset.wikipedia
+    const city = row?.dataset.city
     const niche = row?.dataset.niche
     const excerptText = row?.dataset.excerpt ?? ''
     const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
@@ -156,9 +157,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     const moreHtml = excerptText ? `<a class="popup-more-link" href="${link}">View more</a>` : ''
     const sources = [
       official &&
-        `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Official site</a>`,
+        `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Website</a>`,
       wikipedia &&
         `<a class="popup-btn" href="${wikipedia}" target="_blank" rel="noopener">Wikipedia</a>`,
+      city &&
+        `<a class="popup-btn" href="${city}" target="_blank" rel="noopener">City of St. Louis</a>`,
       niche && `<a class="popup-btn" href="${niche}" target="_blank" rel="noopener">Niche</a>`,
     ]
       .filter(Boolean)

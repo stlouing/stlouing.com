@@ -17,9 +17,18 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 ## Contact
 
-You can contact me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also [st.louing](https://instagram.com/st.louing) on Instagram.
+Please use the [contact form](/feedback) or email me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also [st.louing](https://instagram.com/st.louing) on Instagram. I'd love to hear from you!
 
-You can also use the [feedback form](/feedback).
+## Elsewhere
+
+This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](<(https://indieweb.org/POSSE)>) practice (Publish on your Own Site, Syndicate Elsewhere).
+
+- [Instagram](https://instagram.com/st.louing)
+- [Substack](https://stlouing.substack.com)
+- [Bluesky](https://bsky.app/profile/stlouing.com)
+- [Twitter](https://x.com/stlouing)
+- [RSS](/rss.xml)
+- [GitHub](https://github.com/stlouing)
 
 ## Ideas and Brainstorming
 

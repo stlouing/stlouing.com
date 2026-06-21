@@ -1,0 +1,98 @@
+---
+// Newsletter signup. A plain form that hands off to Substack (no iframe widget,
+// no tracking, works without JS): submitting GETs to `${NEWSLETTER_URL}/subscribe`
+// with the email, which Substack prefills + handles double-opt-in.
+// `compact` is the tighter variant used in entry footers.
+// NOTE: the headline/blurb are neutral placeholders — rewrite them in your voice.
+import { NEWSLETTER_URL } from '../lib/site'
+
+interface Props {
+  compact?: boolean
+}
+
+const { compact = false } = Astro.props
+---
+
+<section class:list={['newsletter', { compact }]} aria-label="Newsletter signup">
+  <div class="newsletter-text">
+    <p class="newsletter-title">Get new posts by email</p>
+    {
+      !compact && (
+        <p class="newsletter-blurb">
+          Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
+        </p>
+      )
+    }
+  </div>
+  <form class="newsletter-form" action={`${NEWSLETTER_URL}/subscribe`} method="get" target="_blank">
+    <input type="email" name="email" placeholder="you@email.com" aria-label="Your email" required />
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<style>
+  .newsletter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .newsletter.compact {
+    margin-block-start: var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .newsletter-text {
+    flex: 1 1 11rem;
+  }
+
+  .newsletter-title {
+    margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .newsletter-blurb {
+    margin: var(--spacing-xs) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    flex: 1 1 16rem;
+    max-width: 24rem;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  .newsletter-form button {
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--color-accent);
+    color: var(--color-surface);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .newsletter-form button:hover {
+    opacity: 0.92;
+  }
+</style>

@@ -10,14 +10,13 @@ import { getBacklinks } from '../../lib/backlinks'
 import {
   foodByNeighborhood,
   normalizeName,
-  wikipediaHref,
   neighborhoodInfo,
   neighborsOf,
   festivalsIn,
-  neighborhoodResources,
+  neighborhoodResourceLinks,
 } from '../../lib/neighborhoods'
 import neighborhoods from '../../data/neighborhoods.json'
-import IconExternalLink from '../../assets/IconExternalLink.astro'
+import SourceLink from '../../components/SourceLink.astro'
 
 // A page for EVERY real neighborhood, not just the ones with a writeup. Where a
 // markdown file exists its prose is rendered; otherwise the page still stands on
@@ -45,8 +44,6 @@ const rendered = entry ? await render(entry) : null
 const Content = rendered?.Content
 const backlinks = entry ? await getBacklinks(entry.id) : []
 const tags = entry?.data.tags ?? []
-const officialUrl = entry?.data.url
-const wikipedia = entry?.data.wikipedia ?? wikipediaHref(title)
 
 // Computed data layer.
 const neighbors = neighborsOf(slug)
@@ -55,12 +52,8 @@ const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
 // External resources: the place's own site (if any), Wikipedia, and the
-// auto-generated City of St. Louis + Niche profiles.
-const resourceLinks = [
-  ...(officialUrl ? [{ label: 'Official site', href: officialUrl }] : []),
-  { label: 'Wikipedia', href: wikipedia },
-  ...(info ? neighborhoodResources(info) : []),
-]
+// auto-generated City of St. Louis + Niche profiles — rendered as a button bar.
+const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
 const description = info
   ? `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
@@ -80,6 +73,15 @@ const trail = [
         <p class="entry-summary" slot="lede">
           {description}
         </p>
+      )
+    }
+    {
+      resourceLinks.length > 0 && (
+        <div class="resource-bar" slot="header-extra">
+          {resourceLinks.map((link) => (
+            <SourceLink href={link.href} label={link.label} />
+          ))}
+        </div>
       )
     }
     <figure class="locator-figure">
@@ -144,23 +146,6 @@ const trail = [
       )
     }
 
-    <nav class="backlinks">
-      <h2>Resources</h2>
-      <ul>
-        {
-          resourceLinks.map((link) => (
-            <li>
-              <a href={link.href} target="_blank" rel="noopener">
-                {link.label}
-              </a>
-              <span class="collection">
-                <IconExternalLink />
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
   </Entry>
 </BaseLayout>
 
