@@ -6,7 +6,6 @@
 //
 // Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
 // the meta row, e.g. an address), and the default slot (the rendered body).
-import EditThisPage from './EditThisPage.astro'
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
 import ShareButton from './ShareButton.astro'
@@ -33,7 +32,6 @@ const isArticle = Boolean(permalink)
 
     <div class="entry-bar">
       <div class="meta"><slot name="meta" /><TagList tags={tags} /></div>
-      <!-- {editPath && <EditThisPage path={editPath} inline />} -->
     </div>
 
     <slot name="header-extra" />

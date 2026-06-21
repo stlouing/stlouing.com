@@ -1,16 +1,11 @@
 ---
 import BaseLayout from './BaseLayout.astro'
-import EditThisPage from '../components/EditThisPage.astro'
 
 interface Props {
   frontmatter: { title?: string; description?: string }
-  file?: string
 }
 
-const { frontmatter, file } = Astro.props
-
-// Derive the repo-relative source path for the "Edit this page" link.
-const editPath = file ? `src/${file.split('/src/').slice(1).join('/src/')}` : undefined
+const { frontmatter } = Astro.props
 ---
 
 <BaseLayout crumb={frontmatter.title} description={frontmatter.description}>
@@ -18,7 +13,6 @@ const editPath = file ? `src/${file.split('/src/').slice(1).join('/src/')}` : un
     <header class="entry-header">
       <div class="entry-bar">
         {frontmatter.title && <h1>{frontmatter.title}</h1>}
-        <!-- <EditThisPage path={editPath} inline /> -->
       </div>
     </header>
     <div class="body">

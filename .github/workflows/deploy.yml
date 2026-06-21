@@ -23,13 +23,12 @@ jobs:
         with:
           node-version: 26
         env:
-          # Production basemap host. Set as a repo Actions variable (not a secret —
-          # it's public in the built site anyway); keeps the URL out of the repo.
+          # All public in the built site, but kept as repo Actions variables (not
+          # secrets, not in source) so clones/forks don't inherit them.
           PUBLIC_PMTILES_URL: ${{ vars.PUBLIC_PMTILES_URL }}
-          # Feedback form endpoint (Formspree). Same deal — public in the built
-          # site, but kept out of the source so clones don't inherit the URL. The
-          # FORMSPREE_URL Actions variable feeds the PUBLIC_-prefixed build env.
-          PUBLIC_FORMSPREE_URL: ${{ vars.FORMSPREE_URL }}
+          PUBLIC_FORMSPREE_URL: ${{ vars.PUBLIC_FORMSPREE_URL }}
+          PUBLIC_ANALYTICS_URL: ${{ vars.PUBLIC_ANALYTICS_URL }}
+          PUBLIC_NEWSLETTER_URL: ${{ vars.PUBLIC_NEWSLETTER_URL }}
 
   deploy:
     needs: build

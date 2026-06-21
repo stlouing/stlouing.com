@@ -5,9 +5,10 @@ export const DEFAULT_BRANCH = 'main'
 export const SITE_TITLE = 'St. Louing'
 export const SITE_DESCRIPTION = 'Discovering the food, neighborhoods, and culture of St. Louis'
 
-// Newsletter (Substack). The signup form GETs to `${NEWSLETTER_URL}/subscribe`,
-// which Substack prefills from the `email` param and handles double-opt-in.
-export const NEWSLETTER_URL = 'https://stlouing.substack.com'
+// Newsletter (Substack), env-driven so clones/forks don't inherit this URL — the
+// signup + footer link self-hide when it's unset. The signup form GETs to
+// `${NEWSLETTER_URL}/subscribe`, which Substack prefills from the `email` param.
+export const NEWSLETTER_URL = import.meta.env.PUBLIC_NEWSLETTER_URL ?? ''
 
 // Feedback form endpoint (Formspree). Comes from the PUBLIC_FORMSPREE_URL env var
 // (a local .env in dev, the FORMSPREE_URL Actions variable in CI). The PUBLIC_

@@ -50,6 +50,7 @@ A few open-source projects this site relies on.
 - **Maps**: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
 - **Icons**: [Lucide](https://lucide.dev/icons)
+- **Forms**: [Formspree](https://formspree.io)
 - **Analytics**: [GoatCounter](https://www.goatcounter.com)
 
 ## Links
@@ -64,6 +65,14 @@ A few open-source projects this site relies on.
 ## Resources
 
 - [**St. Louis-MO.gov**](https://www.stlouis-mo.gov/): Used for determining neighborhood boundaries and facts.
+
+## AI
+
+Everything on this site is written by me, not AI. I'm unhappy about the influx of AI written articles, and it's only getting worse.
+
+Thinking of topics and writing them up doesn't come easy to me, but I'm doing my best and hoping my writing improves over time.
+
+AI is used to speed up development of the code.
 
 ## Etymology
 

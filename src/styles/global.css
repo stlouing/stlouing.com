@@ -799,6 +799,14 @@ body:has(.map-split) main > .wrap,
   opacity: 0.92;
 }
 
+/* The decorative river border eats vertical space under the full-height map
+   layouts, so hide it on the map pages (Food + Neighborhoods) — keyed off each
+   page's map container so no per-page wiring is needed. */
+body:has([data-map]) .river-border,
+body:has([data-neighborhood-map]) .river-border {
+  display: none;
+}
+
 /* A row is a rating badge (left) beside the place details (right). */
 .list-with-map .list-details {
   display: flex;

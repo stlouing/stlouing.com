@@ -34,8 +34,6 @@ const countByPath: Record<string, string> = {
   '/neighborhoods': String(neighborhoodCount),
 }
 
-const lastUpdated = new Date('2026-06-03')
-
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
 
@@ -47,10 +45,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       {intro}
       <a class="more inline" href={href('/about')}>Read more <IconArrowRight /></a>
     </p>
-    <!-- <p class="last-updated">
-      <strong>Last Updated:</strong>
-      <span>{formatDateShort(lastUpdated)}</span>
-    </p> -->
     {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
     <span class="p-name" hidden>St. Louing</span>
     <a class="u-url" href={href('/')} hidden>stlouing.com</a>
@@ -169,24 +163,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-size: var(--font-size-md);
     margin-block: var(--spacing-md) var(--spacing-lg);
     color: var(--color-text);
-  }
-
-  .last-updated {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: var(--font-size-sm);
-    font-family: var(--font-mono);
-    font-style: italic;
-    margin-bottom: var(--spacing-lg);
-
-    strong {
-      font-weight: 500;
-    }
-
-    span {
-      color: var(--color-text-muted);
-    }
   }
 
   /* Section header: label on the left, optional "all →" on the right, with a

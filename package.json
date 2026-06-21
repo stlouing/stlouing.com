@@ -1,5 +1,8 @@
 {
   "name": "stlouing.com",
+  "description": "A personal website documenting the food, neighborhoods, and culture of St. Louis. Built with Astro.",
+  "license": "MIT",
+  "private": true,
   "type": "module",
   "version": "0.0.1",
   "engines": {

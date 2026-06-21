@@ -13,7 +13,9 @@ interface Props {
 const { compact = false } = Astro.props
 ---
 
-<section class:list={['newsletter', { compact }]} aria-label="Newsletter signup">
+{
+  NEWSLETTER_URL && (
+    <section class:list={['newsletter', { compact }]} aria-label="Newsletter signup">
   <div class="newsletter-text">
     <p class="newsletter-title">Get new posts by email</p>
     {
@@ -27,8 +29,10 @@ const { compact = false } = Astro.props
   <form class="newsletter-form" action={`${NEWSLETTER_URL}/subscribe`} method="get" target="_blank">
     <input type="email" name="email" placeholder="you@email.com" aria-label="Your email" required />
     <button type="submit">Subscribe</button>
-  </form>
-</section>
+      </form>
+    </section>
+  )
+}
 
 <style>
   .newsletter {

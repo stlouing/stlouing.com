@@ -93,6 +93,15 @@ try {
 } catch {
   pmtilesOrigin = undefined
 }
+
+// Analytics endpoint (GoatCounter), env-driven so a fork's deploy doesn't report
+// into this dashboard. Normalized to the /count endpoint the script expects.
+const analyticsBase = (import.meta.env.PUBLIC_ANALYTICS_URL ?? '').replace(/\/+$/, '')
+const analyticsUrl = analyticsBase
+  ? analyticsBase.endsWith('/count')
+    ? analyticsBase
+    : `${analyticsBase}/count`
+  : ''
 ---
 
 <!doctype html>
@@ -145,17 +154,12 @@ try {
 
     {
       /* Cookieless, no-consent-banner analytics (GoatCounter). Production builds
-        only, so local dev + previews don't count. Planned first-party-proxy
-        hardening is in README → Analytics. */
+        only (local dev + previews don't count) AND only when PUBLIC_ANALYTICS_URL
+        is set, so a fork without that var sends nothing here. */
     }
     {
-      import.meta.env.PROD && (
-        <script
-          is:inline
-          data-goatcounter="https://stlouing.goatcounter.com/count"
-          async
-          src="https://gc.zgo.at/count.js"
-        />
+      import.meta.env.PROD && analyticsUrl && (
+        <script is:inline data-goatcounter={analyticsUrl} async src="https://gc.zgo.at/count.js" />
       )
     }
   </head>
