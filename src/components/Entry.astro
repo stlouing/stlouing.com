@@ -55,11 +55,11 @@ const isArticle = Boolean(permalink)
 
   <footer>
     <Backlinks links={backlinks} />
+    <NewsletterSignup compact />
     <div class="share-bar">
       <ShareButton title={title} label="Share this page" class="share-footer" />
       <a class="share-button" href={href('/feedback')}>Leave Feedback</a>
     </div>
-    <NewsletterSignup compact />
   </footer>
 </article>
 

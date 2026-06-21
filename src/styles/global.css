@@ -1890,3 +1890,17 @@ a.share-button {
     margin-inline: 0;
   }
 }
+
+/* Decorative "river" ribbon at the very bottom — the St. Louis flag's
+     blue-and-white wave on red, repeated seamlessly. Flag colors are fixed in
+     both themes. Tweak the height (60–100px) to taste. */
+.river-border {
+  height: 16px;
+  background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .river-border {
+    display: none;
+  }
+}

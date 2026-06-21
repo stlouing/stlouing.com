@@ -10,6 +10,7 @@ A personal website documenting the food, neighborhoods, and culture of St. Louis
 - **[Leaflet](https://leafletjs.com)** + **[Protomaps](https://protomaps.com)** (`.pmtiles`) over **[OpenStreetMap](https://www.openstreetmap.org/)**
 - **[GitHub Pages](https://docs.github.com/en/pages)**
 - **[GoatCounter](https://www.goatcounter.com)**
+- **[Formspree](https://formspree.io)**
 
 ## Develop
 
