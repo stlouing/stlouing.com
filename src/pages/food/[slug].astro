@@ -16,6 +16,7 @@ import { resolveVerdict, verdictLabels } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji } from '../../lib/emoji'
+import IconMap from '../../assets/IconMap.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
@@ -140,7 +141,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
       <aside class="food-aside">
         <FoodLocator coords={data.coords} label={data.neighborhood} />
         <a class="button food-map-link" href={href('/food')}>
-          <IconMapPin /> Back to the food map
+          <IconMap /> Back to the Food Map
         </a>
         {data.pick && <MyPick pick={data.pick} cuisine={data.cuisine} />}
       </aside>
@@ -237,6 +238,10 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+    /* Contain the map's high Leaflet z-indexes in their own stacking context so
+       the sticky sidebar scrolls behind the site header (z-index 100), not over
+       it. */
+    isolation: isolate;
   }
 
   @media screen and (min-width: 900px) {
