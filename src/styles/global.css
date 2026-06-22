@@ -816,12 +816,21 @@ body:has(.map-split) main > .wrap,
   background: none;
   font-weight: 500;
   color: var(--color-text-muted);
+  /* As plain text links (no button border), they take the site's dotted
+     underline — unlike the bordered button variant on detail pages. */
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 4px;
 }
 
 .food-grouped .place-links .source-link:hover,
 .neighborhood-body .resource-bar .source-link:hover {
   color: var(--color-accent);
   border-color: transparent;
+  text-decoration-style: solid;
+  text-decoration-color: var(--color-accent);
 }
 
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City / Niche
