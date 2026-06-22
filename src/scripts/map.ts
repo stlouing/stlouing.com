@@ -42,6 +42,20 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   })
   addThemedTiles(map)
 
+  // Bottom edge (viewport px) of the sticky chrome stacked above the map — the
+  // site header plus the filter toolbar. A popup opened near the top is nudged
+  // below this so its title isn't hidden behind them (the cut-off popups on mobile).
+  function topChromeBottom(): number {
+    return ['.site-header', '.secondary-header']
+      .map((selector) => document.querySelector<HTMLElement>(selector))
+      .reduce(
+        (bottom, node) => (node ? Math.max(bottom, node.getBoundingClientRect().bottom) : bottom),
+        0,
+      )
+  }
+  const autoPanPaddingTopLeft = L.point(16, 16)
+  const autoPanPaddingBottomRight = L.point(16, 24)
+
   const items = [...scope.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const markers = new Map<HTMLElement, L.Marker>()
 
@@ -66,7 +80,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     markers.get(item)?.getElement()?.classList.toggle('is-selected', selected)
   }
 
-  function activate(item: HTMLElement, options: { pan?: boolean } = {}): void {
+  function activate(item: HTMLElement): void {
     if (activeItem === item) {
       return
     }
@@ -81,11 +95,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     item.querySelector('.list-title')?.setAttribute('aria-expanded', 'true')
     highlightMarker(item, true)
     item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-
-    const marker = markers.get(item)
-    if (marker && options.pan) {
-      map.panTo(marker.getLatLng())
-    }
   }
 
   function deactivate(item: HTMLElement): void {
@@ -175,14 +184,30 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
           offset: [0, 0],
           maxWidth: 330,
           minWidth: 210,
+          autoPanPaddingTopLeft,
+          autoPanPaddingBottomRight,
         })
         // .bindTooltip(infoHtml, { className: 'map-tooltip', direction: 'top', opacity: 1 })
         // Selection follows the popup: opening it (by click, the list, or
         // anything else) selects the row; closing it (toggle-click or the X)
         // de-selects it.
         placeMarker.on('popupopen', () => {
-          // placeMarker.closeTooltip()
-          activate(item, { pan: true })
+          // Select the row, but DON'T re-center the marker — centering overrides
+          // Leaflet's auto-pan and pushes a tall popup's title up under the chrome.
+          activate(item)
+          // Auto-pan keeps the popup inside the map, but the sticky header + filter
+          // toolbar overlay the map's top on mobile; nudge the popup down if its
+          // title is still tucked behind them.
+          requestAnimationFrame(() => {
+            const popupEl = placeMarker.getPopup()?.getElement()
+            if (!popupEl) {
+              return
+            }
+            const overlap = topChromeBottom() + 8 - popupEl.getBoundingClientRect().top
+            if (overlap > 0) {
+              map.panBy([0, -overlap], { animate: true })
+            }
+          })
         })
         placeMarker.on('popupclose', () => deactivate(item))
         // Don't stack the hover tooltip over the active place's popup.

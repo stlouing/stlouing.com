@@ -67,6 +67,14 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   })
   addThemedTiles(map)
 
+  // Extra top auto-pan padding so an opened popup clears the sticky header
+  // instead of being cut off at the top (most noticeable on mobile).
+  const headerHeight =
+    parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height'), 10) ||
+    64
+  const autoPanPaddingTopLeft = L.point(16, headerHeight + 16)
+  const autoPanPaddingBottomRight = L.point(16, 24)
+
   const colorBySlug = new Map<string, string>()
   function baseStyleFor(slug: string): L.PathOptions {
     const color = colorBySlug.get(slug) ?? colorCentral
@@ -198,6 +206,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         maxWidth: 330,
         minWidth: 210,
         offset: [0, -2],
+        autoPanPaddingTopLeft,
+        autoPanPaddingBottomRight,
       })
       featureLayer.on('popupopen', () => {
         if (slug) {

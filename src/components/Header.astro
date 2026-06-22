@@ -44,6 +44,11 @@ interface Props {
     border-block-end: 1px solid var(--color-line);
     padding-block: var(--spacing-md);
     background: var(--color-surface);
+    /* Own compositor layer + isolated stacking context: on mobile the Leaflet map
+       below otherwise bleeds a stale red strip (its selection ring / popup border)
+       under this sticky header until a repaint — e.g. a hover — clears it. */
+    transform: translateZ(0);
+    isolation: isolate;
   }
 
   .header-inner {
