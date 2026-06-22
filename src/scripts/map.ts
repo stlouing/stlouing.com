@@ -94,7 +94,9 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     item.classList.add('is-active')
     item.querySelector('.list-title')?.setAttribute('aria-expanded', 'true')
     highlightMarker(item, true)
-    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    // Always bring the selected row to the top of the pane (scroll-padding keeps
+    // it clear of the sticky header), not just the nearest edge.
+    item.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   function deactivate(item: HTMLElement): void {
