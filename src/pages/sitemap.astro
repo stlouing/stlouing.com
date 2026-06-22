@@ -113,7 +113,7 @@ const groups: SitemapGroup[] = [
                 <span class="sitemap-count">{group.items.length}</span>
               </span>
               {group.path && (
-                <a class="sitemap-viewall" href={href(group.path)}>
+                <a class="button" href={href(group.path)}>
                   {group.featured ? 'View map' : 'View all'} <IconArrowRight />
                 </a>
               )}
@@ -143,22 +143,6 @@ const groups: SitemapGroup[] = [
     gap: var(--spacing-sm);
   }
 
-  /* Quiet link out to each section's full index, opposite the header text. */
-  .sitemap-viewall {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    white-space: nowrap;
-    text-decoration: none;
-  }
-
-  .sitemap-viewall:hover {
-    color: var(--color-accent);
-  }
-
   .sitemap-map-badge {
     display: inline-flex;
     align-items: center;
@@ -182,7 +166,7 @@ const groups: SitemapGroup[] = [
      mirrors the Food / Neighborhoods list section heads. */
   .sitemap-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--spacing-sm);
     margin: 0 0 var(--spacing-sm);

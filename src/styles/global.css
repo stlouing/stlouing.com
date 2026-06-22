@@ -719,10 +719,10 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Food/Hikes list rows collapse their description until the row is expanded
-   (clicking the title is the toggle), in both list and map views. The active
-   row's title takes the accent. */
-.list-with-map li:not(.is-active) .list-description {
+/* Hikes list rows collapse their description until the row is expanded (clicking
+   the title is the toggle). Food (.food-grouped) shows every row's teaser inline
+   instead, so it's exempt. The active row's title still takes the accent. */
+.list-with-map:not(.food-grouped) li:not(.is-active) .list-description {
   display: none;
 }
 
@@ -738,7 +738,7 @@ body:has(.map-split) main > .wrap,
 /* Row padding is only for the cramped map-view sidebar; the plain List view keeps
    the rows flush so they line up with the rest of the page. */
 [data-view='map'] .list-with-map .list li {
-  padding: var(--spacing-xs) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the
@@ -755,6 +755,12 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* Food shows the teaser inline on every row (no disclosure, no lead badge), so
+   align it under the row text instead of indenting past a nonexistent badge. */
+.list-with-map.food-grouped .list-description {
+  margin-left: 0;
+}
+
 /* The website + Google Maps links sit on one row in the open panel. */
 .list-with-map .list-description .place-links {
   display: flex;
@@ -766,6 +772,56 @@ body:has(.map-split) main > .wrap,
   &:last-child {
     margin-block-end: 0;
   }
+}
+
+/* Food list (always-open rows): keep the actions row quiet so 22 of them don't
+   shout — a low-key accent "Read more →", a bullet, then the sources as muted
+   text links instead of buttons. Sits under the teaser. */
+.list-with-map.food-grouped .list-description .place-links {
+  align-items: center;
+  column-gap: var(--spacing-md);
+  row-gap: var(--spacing-xs);
+  margin-block: var(--spacing-sm) 0;
+}
+
+/* Quiet accent "Read more →" link in the Food + Neighborhood lists (replaces the
+   filled button now that every row shows its teaser inline). */
+.place-more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.place-more:hover {
+  color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-accent);
+}
+
+.place-more .icon {
+  color: inherit;
+}
+
+/* In the Food + Neighborhood lists, source links read as muted text, not the
+   outlined buttons used on detail pages. */
+.food-grouped .place-links .source-link,
+.neighborhood-body .resource-bar .source-link {
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.food-grouped .place-links .source-link:hover,
+.neighborhood-body .resource-bar .source-link:hover {
+  color: var(--color-accent);
+  border-color: transparent;
 }
 
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City / Niche
@@ -784,7 +840,7 @@ body:has(.map-split) main > .wrap,
   display: inline-flex;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--color-surface);
   background: var(--color-accent);
@@ -885,6 +941,7 @@ body:has([data-neighborhood-map]) .river-border {
   font-family: inherit;
   font-weight: 700;
   color: var(--color-text);
+  font-size: var(--font-size-lg);
 }
 
 .list-with-map button.list-title {
@@ -946,6 +1003,9 @@ body:has([data-neighborhood-map]) .river-border {
 [data-view='map'] .list-with-map {
   min-height: 0;
   overflow-y: auto;
+  /* Offset the sticky .list-pane-header so a marker-selected row scrolls to just
+     below it instead of being tucked behind it (its name otherwise hidden). */
+  scroll-padding-block-start: 40px;
 
   /* Sticky title matching the neighborhoods .list-pane-header. Padding aligns with the
      list items (which carry their own padding); no negative margin, which would
@@ -1196,7 +1256,7 @@ body:has([data-neighborhood-map]) .river-border {
 
 .food-grouped .list > li {
   margin: 0;
-  padding: var(--spacing-xs) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md);
   border-block-end: 1px solid var(--color-line);
   border-inline-start: 3px solid var(--verdict-color, var(--color-line));
 }
@@ -1491,8 +1551,9 @@ body:has([data-filter-root]) .site-header {
   h2 {
     margin-block-start: 0;
     margin-block-end: var(--spacing-sm);
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
     white-space: nowrap;
+    font-family: var(--font-body);
 
     a {
       font-weight: 700;
@@ -1693,7 +1754,10 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
-/* Share button: native share sheet on mobile, copy-link fallback on desktop. */
+/* Outlined button: mono label, line border, surface fill, accent on hover. The
+   shared base for the share/feedback buttons (.share-button keeps its copy-link
+   "is-copied" state) and the directory "View all / View map" links. */
+.button,
 .share-button,
 a.share-button {
   display: inline-flex;
@@ -1702,22 +1766,22 @@ a.share-button {
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
-  background: none;
+  background: var(--color-surface);
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-text);
   text-decoration: none;
-  min-height: 38px;
-  background: var(--color-surface);
 }
 
 /* Let the icon follow the button's color (the global .icon pins it muted). */
+.button .icon,
 .share-button .icon {
   color: inherit;
 }
 
+.button:hover,
 .share-button:hover,
 .share-button.is-copied {
   color: var(--color-accent);

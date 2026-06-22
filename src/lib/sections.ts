@@ -55,19 +55,19 @@ export const sections: Section[] = [
     label: 'Best of St. Louis Food',
     path: '/best',
     group: 'lists',
-    description: 'My favorite food so far, ranked and by category',
+    description: 'My favorite food so far, ranked and by category.',
   },
   {
     label: 'Want to try',
     path: '/food/want-to-try',
     group: 'lists',
-    description: "Places I haven't tried or rated yet",
+    description: "Places I haven't tried or rated yet.",
   },
   {
     label: 'Sitemap',
     path: '/sitemap',
     group: 'lists',
-    description: 'A human-readable index of every page',
+    description: 'A human-readable index of every page.',
   },
   // Hidden until it has posts (omitted from `groups` above and not `primary`).
   { label: 'Notes', path: '/notes', group: 'notes' },

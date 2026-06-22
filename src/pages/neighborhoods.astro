@@ -8,6 +8,7 @@ import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
 import { published, excerpt } from '../lib/content'
 import { neighborhoodResourceLinks } from '../lib/neighborhoods'
+import IconArrowRight from '../assets/IconArrowRight.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
 // the rest, in their numbered order). Written rows render their writeup expanded;
@@ -69,76 +70,73 @@ function popupData(slug: string, name: string, group: string) {
         <List>
           {
             listed.map((neighborhood, index) => {
-                const Content = rendered.get(neighborhood.slug)
-                const written = rendered.has(neighborhood.slug)
-                const numberLabel = neighborhood?.numberLabel
-                  ? neighborhood.numberLabel
-                  : neighborhood.number
-                const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
-                const entry = entryBySlug.get(neighborhood.slug)
-                // Keep the list row to 4 buttons max (the accent "View more" plus
-                // three resources); Niche is last, so it's the one that drops when
-                // a Website link is present alongside Wikipedia + City of St. Louis.
-                const resourceLinks = written
-                  ? neighborhoodResourceLinks(
-                      neighborhood.slug,
-                      neighborhood.name,
-                      entry?.data.url,
-                      entry?.data.wikipedia,
-                    ).slice(0, 3)
-                  : []
+              const Content = rendered.get(neighborhood.slug)
+              const written = rendered.has(neighborhood.slug)
+              const numberLabel = neighborhood?.numberLabel
+                ? neighborhood.numberLabel
+                : neighborhood.number
+              const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
+              const entry = entryBySlug.get(neighborhood.slug)
+              // Keep the list row to 4 buttons max (the accent "View more" plus
+              // three resources); Niche is last, so it's the one that drops when
+              // a Website link is present alongside Wikipedia + City of St. Louis.
+              const resourceLinks = written
+                ? neighborhoodResourceLinks(
+                    neighborhood.slug,
+                    neighborhood.name,
+                    entry?.data.url,
+                    entry?.data.wikipedia,
+                  ).slice(0, 3)
+                : []
 
-                // A section header sits above the first row of each group — the
-                // ones with a writeup, then the rest.
-                const previous = listed[index - 1]
-                const showHeader = index === 0 || written !== rendered.has(previous.slug)
+              // A section header sits above the first row of each group — the
+              // ones with a writeup, then the rest.
+              const previous = listed[index - 1]
+              const showHeader = index === 0 || written !== rendered.has(previous.slug)
 
-                return (
-                  <Fragment>
-                    {showHeader && (
-                      <li class="section-head">
-                        <span class="section-label">{written ? 'Explored' : 'The rest'}</span>
-                        <span class="section-count">{written ? writtenCount : restCount}</span>
-                      </li>
-                    )}
-                    <li
-                      id={neighborhood.slug}
-                      data-section={neighborhood.slug}
-                      class:list={[{ 'is-written': written }]}
-                      data-area={popup.area}
-                      data-wikipedia={popup.wikipedia}
-                      data-city={popup.city}
-                      data-niche={popup.niche}
-                      data-official={popup.official}
-                      data-excerpt={popup.excerpt}
-                    >
-                      <div class="neighborhood-head">
-                        <div class="list-title">
-                          <span class="number">{`${numberLabel}.`}</span>
-                          <span>{neighborhood.name}</span>
+              return (
+                <Fragment>
+                  {showHeader && (
+                    <li class="section-head">
+                      <span class="section-label">{written ? 'Explored' : 'The rest'}</span>
+                      <span class="section-count">{written ? writtenCount : restCount}</span>
+                    </li>
+                  )}
+                  <li
+                    id={neighborhood.slug}
+                    data-section={neighborhood.slug}
+                    class:list={[{ 'is-written': written }]}
+                    data-area={popup.area}
+                    data-wikipedia={popup.wikipedia}
+                    data-city={popup.city}
+                    data-niche={popup.niche}
+                    data-official={popup.official}
+                    data-excerpt={popup.excerpt}>
+                    <div class="neighborhood-head">
+                      <div class="list-title">
+                        <span class="number">{`${numberLabel}.`}</span>
+                        <span>{neighborhood.name}</span>
+                      </div>
+                    </div>
+                    {written && Content && (
+                      <div class="neighborhood-body list-description">
+                        <div class="neighborhood-preview">
+                          <Content />
+                        </div>
+                        <div class="resource-bar">
+                          <a class="place-more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                            Read more <IconArrowRight />
+                          </a>
+                          {resourceLinks.map((link) => (
+                            <SourceLink href={link.href} label={link.label} />
+                          ))}
                         </div>
                       </div>
-                      {written && Content && (
-                        <div class="neighborhood-body list-description">
-                          <div class="resource-bar">
-                            <a
-                              class="place-link-primary"
-                              href={href(`/neighborhoods/${neighborhood.slug}`)}>
-                              View more
-                            </a>
-                            {resourceLinks.map((link) => (
-                              <SourceLink href={link.href} label={link.label} />
-                            ))}
-                          </div>
-                          <div class="neighborhood-preview">
-                            <Content />
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  </Fragment>
-                )
-              })
+                    )}
+                  </li>
+                </Fragment>
+              )
+            })
           }
         </List>
       </article>
@@ -188,12 +186,18 @@ function popupData(slug: string, name: string, group: string) {
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-md);
+
+    .list-title {
+      font-size: var(--font-size-lg);
+    }
   }
 
-  /* Resource buttons sit above the writeup teaser, matching the Food list. */
+  /* The quiet actions row (Read more + muted source links) sits under the teaser,
+     matching the Food list. */
   .neighborhood-body .resource-bar {
-    margin-block-start: var(--spacing-xs);
-    margin-block-end: var(--spacing-sm);
+    align-items: center;
+    column-gap: var(--spacing-md);
+    margin-block: var(--spacing-sm) 0;
   }
 
   /* Cut the inline writeup off after a few lines — keeps its links + formatting

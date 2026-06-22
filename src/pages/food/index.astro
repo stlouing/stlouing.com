@@ -141,18 +141,18 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                   {place.data.address[0]}
                 </span>
               )}
+              <div class="food-preview">
+                <Content />
+              </div>
               <div class="place-links">
                 {hasBody(place) && (
-                  <a class="place-link-primary" href={href(`/food/${place.id}`)}>
-                    View more
+                  <a class="place-more" href={href(`/food/${place.id}`)}>
+                    Read more <IconArrowRight />
                   </a>
                 )}
                 <SourceLink href={place.data.url} label="Website" />
                 <SourceLink href={place.data.instagram} />
-                <SourceLink href={googleMapsHref(place.data)} label="Google Maps" />
-              </div>
-              <div class="food-preview">
-                <Content />
+                <SourceLink href={googleMapsHref(place.data)} label="Directions" />
               </div>
             </FilterListItem>
           ))
@@ -169,11 +169,13 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
 </script>
 
 <style>
+  /* A 2-line teaser, shown inline on every row (the list no longer collapses);
+     the full writeup is one tap away via "View more". */
   .food-preview {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
   }
 </style>

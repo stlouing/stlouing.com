@@ -36,12 +36,12 @@ const text = label ?? (linkHref ? hostLabel(linkHref) : '')
     border: 1px solid var(--color-line-input);
     border-radius: var(--radius);
     padding: 2px var(--spacing-sm);
-    text-decoration: none;
   }
 
   .source-link:hover {
     color: var(--color-accent);
     border-color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
   }
 
   /* The external-link glyph follows the button's text color (the global .icon
