@@ -5,7 +5,7 @@ import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import { href } from '../../lib/url'
-import { published } from '../../lib/content'
+import { published, excerpt } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
   foodByNeighborhood,
@@ -55,8 +55,24 @@ const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 // auto-generated City of St. Louis + Niche profiles — rendered as a button bar.
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
-const description = info
+// The generated fallback line for a neighborhood without its own summary.
+const generated = info
   ? `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
+  : undefined
+
+// On-page summary under the title: a manual `description` when set, otherwise the
+// generated line. Deliberately NOT the writeup excerpt — that just repeats the
+// opening paragraph rendered right below it.
+const summary = entry?.data.description ?? generated
+
+// SEO meta description: a real writeup excerpt is the most useful + unique per
+// page; fall back to the summary when there's no writeup.
+const metaDescription = entry?.body ? excerpt(entry.body, 155) : summary
+
+// SEO title to catch "<name> St. Louis" searches. Parks/cemeteries (numbered
+// 80+) aren't neighborhoods, so they just get the city.
+const seoTitle = info
+  ? `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis neighborhood'}`
   : undefined
 
 const trail = [
@@ -65,13 +81,13 @@ const trail = [
 ]
 ---
 
-<BaseLayout crumb={title} description={description}>
+<BaseLayout crumb={title} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
   <Entry title={title} tags={tags} editPath={entry?.filePath} backlinks={backlinks}>
     {
-      description && (
+      summary && (
         <p class="entry-summary" slot="lede">
-          {description}
+          {summary}
         </p>
       )
     }
@@ -130,7 +146,7 @@ const trail = [
 
     {
       neighbors.length > 0 && (
-        <nav class="backlinks">
+        <nav class="backlinks grid">
           <h2>Borders</h2>
           <ul>
             {neighbors.map((neighbor) => (
@@ -175,7 +191,6 @@ const trail = [
   /* Annual events read as a titled entry: a mono bold name, then the blurb as
      normal body text on its own line (the .backlinks default is mono throughout). */
   .event-name {
-    font-family: var(--font-mono);
     font-weight: 700;
     color: var(--color-text);
     font-size: var(--font-size-md);

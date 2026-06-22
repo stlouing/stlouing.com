@@ -17,6 +17,7 @@ const text = label ?? (linkHref ? hostLabel(linkHref) : '')
 {
   linkHref && (
     <a class="source-link" href={linkHref} target="_blank" rel="noopener">
+      <slot name="icon" />
       {text}
     </a>
   )
@@ -27,7 +28,7 @@ const text = label ?? (linkHref ? hostLabel(linkHref) : '')
   .source-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     font-weight: 500;

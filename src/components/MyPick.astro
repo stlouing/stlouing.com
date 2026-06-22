@@ -1,0 +1,71 @@
+---
+// A sidebar "My pick" card on a food page: the dish to order, with an optional
+// note. The emoji is the pick's own, falling back to the place's cuisine emoji.
+// Driven by the optional `pick` field in the food schema; renders nothing without
+// one (the writeup author fills it in per place).
+import { cuisineEmoji } from '../lib/emoji'
+
+interface Props {
+  pick: { name: string; note?: string; emoji?: string }
+  cuisine?: string[]
+}
+
+const { pick, cuisine = [] } = Astro.props
+const emoji = pick.emoji ?? cuisineEmoji(cuisine)
+---
+
+<aside class="side-card">
+  <h2 class="side-card-label">My pick</h2>
+  <div class="pick">
+    <div class="pick-body">
+      <strong class="pick-name"><span>{pick.name}</span> <span>{emoji}</span></strong>
+      {pick.note && <p class="pick-note">{pick.note}</p>}
+    </div>
+  </div>
+</aside>
+
+<style>
+  .side-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    background: var(--color-surface);
+  }
+
+  .side-card-label {
+    margin: 0 0 var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+  }
+
+  .pick {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .pick-emoji {
+    font-size: var(--font-size-lg);
+    line-height: 1.3;
+  }
+
+  .pick-name {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text-heading);
+  }
+
+  .pick-note {
+    margin: var(--spacing-xs) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+</style>

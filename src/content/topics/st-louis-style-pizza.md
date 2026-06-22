@@ -1,13 +1,13 @@
 ---
 title: St. Louis-style Pizza
-description: Love it or hate it, it holds a special place in many hearts
+description: Love or hate it, it holds a special place in many hearts
 created: 2026-05-31
-updated: 2026-06-19
+updated: 2026-06-22
 ---
 
 <figure class="figure left">
 
-![](../images/stl-pizza/imos.png)
+![St. Louis-style pizza from Imo's](../images/stl-pizza/imos.png)
 
 <figcaption>St. Louis-style pizza from Imo's</figcaption>
 </figure>
@@ -58,7 +58,7 @@ You'll see all the standard toppings on a STL-style. It's important that the sau
 
 <figure class="figure right">
 
-![](../images/stl-pizza/pizzamici.png)
+![Chicago-style pizza from Pizz'amici](../images/stl-pizza/pizzamici.png)
 
 <figcaption>Chicago-style pizza from Pizz'amici</figcaption>
 </figure>
@@ -91,7 +91,7 @@ Loosely based on a recipe posted on reddit by [HouseofProvel](https://www.reddit
 
 <div class="image-grid">
 
-![](../images/stl-pizza/homemadepizza1.png) ![](../images/stl-pizza/homemadepizza2.png) ![](../images/stl-pizza/homemadepizza3.png) ![](../images/stl-pizza/homemadepizza4.png) ![](../images/stl-pizza/homemadepizza5.png) ![](../images/stl-pizza/homemadepizza6.png)
+![Homemade St. Louis-style pizza](../images/stl-pizza/homemadepizza1.png) ![Homemade St. Louis-style pizza](../images/stl-pizza/homemadepizza2.png) ![Homemade St. Louis-style pizza](../images/stl-pizza/homemadepizza3.png) ![Homemade St. Louis-style pizza](../images/stl-pizza/homemadepizza4.png) ![Homemade St. Louis-style pizza](../images/stl-pizza/homemadepizza5.png) ![Homemade St. Louis-style pizza](../images/stl-pizza/homemadepizza6.png)
 
 </div>
 
@@ -101,7 +101,7 @@ I thought it came out pretty good, though I'd make some changes if I do it again
 
 <figure class="figure right">
 
-![](../images/stl-pizza/faraci.png)
+![Pepperoni and sausage from Faraci Pizza](../images/stl-pizza/faraci.png)
 
 <figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
 </figure>
@@ -124,7 +124,7 @@ So I've tried a variety of fan favorites around the city, but I'm always open to
 
 <figure class="figure left">
 
-![](../images/stl-pizza/cecil.png)
+![Delivery from Cecil Whittaker's](../images/stl-pizza/cecil.png)
 
 <figcaption>Delivery from Cecil Whittaker's</figcaption>
 </figure>

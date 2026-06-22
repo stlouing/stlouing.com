@@ -42,7 +42,7 @@
   --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
 
   /* Space + measure */
-  --measure: 860px;
+  --measure: 900px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -302,10 +302,6 @@ a.wikipedia-link {
 /* Tuck the reference link up against the heading it annotates. */
 :is(h1, h2, h3, h4):has(+ p > a.wikipedia-link) {
   margin-block-end: var(--spacing-xs);
-}
-
-a.wikilink {
-  font-weight: 600;
 }
 
 .wikilink-broken {
@@ -719,13 +715,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Hikes list rows collapse their description until the row is expanded (clicking
-   the title is the toggle). Food (.food-grouped) shows every row's teaser inline
-   instead, so it's exempt. The active row's title still takes the accent. */
-.list-with-map:not(.food-grouped) li:not(.is-active) .list-description {
-  display: none;
-}
-
 .list-with-map {
   h1 {
     display: flex;
@@ -733,12 +722,6 @@ body:has(.map-split) main > .wrap,
     justify-content: space-between;
     margin: 0;
   }
-}
-
-/* Row padding is only for the cramped map-view sidebar; the plain List view keeps
-   the rows flush so they line up with the rest of the page. */
-[data-view='map'] .list-with-map .list li {
-  padding: var(--spacing-sm) var(--spacing-md);
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the
@@ -951,13 +934,14 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 700;
   color: var(--color-text);
   font-size: var(--font-size-lg);
+  text-decoration: none;
 }
 
-.list-with-map button.list-title {
+.list-with-map a.list-title {
   cursor: pointer;
 }
 
-.list-with-map button.list-title:hover {
+.list-with-map a.list-title:hover {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -1135,6 +1119,21 @@ body:has([data-neighborhood-map]) .river-border {
   --chip-color: var(--color-verdict-notforme);
 }
 
+/* A filled verdict pill (food detail pages): the verdict color becomes the
+   background, with the surface color for contrast in both themes. `!important`
+   (like .chip.round below) wins the specificity tie with Chip's scoped base
+   rule, which is otherwise a cascade-order coin-flip. */
+.chip.is-filled {
+  color: var(--color-surface) !important;
+  background: var(--chip-color, var(--color-accent)) !important;
+  border-color: var(--chip-color, var(--color-accent)) !important;
+  font-weight: 600;
+}
+
+.chip.is-filled .icon {
+  color: inherit;
+}
+
 /* A circular chip — for icon-only content (e.g. an icon-only verdict). Equal
    padding + square aspect + a 50% radius make a round badge around the glyph.
    Lives here (not Chip's scoped style) so the dynamically-applied `round` class
@@ -1186,26 +1185,6 @@ body:has([data-neighborhood-map]) .river-border {
   position: sticky;
   top: 0;
   z-index: 6;
-}
-
-.food-grouped .pane-wishlist {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text-muted);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.food-grouped .pane-wishlist .icon {
-  color: inherit;
-}
-
-.food-grouped .pane-wishlist:hover {
-  color: var(--color-accent);
 }
 
 /* Group header rows (built by food-groups.ts): a dot (verdict mode) + label, a
@@ -1567,7 +1546,12 @@ body:has([data-filter-root]) .site-header {
     a {
       font-weight: 700;
       color: var(--color-text);
-      text-decoration-color: var(--color-accent);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--color-accent);
+      }
     }
   }
 }
@@ -1757,8 +1741,10 @@ body:has([data-filter-root]) .site-header {
   justify-content: space-between;
   gap: var(--spacing-md);
   margin-block-start: var(--spacing-xs);
+  width: 100%;
 
   .meta {
+    width: 100%;
     margin: 0;
   }
 }
@@ -1827,12 +1813,45 @@ a.share-button {
     font-size: var(--font-size-sm);
   }
 
+  /* Two-line rows: the primary name in the body (serif) face, with its mono
+     sub-label (neighborhood, cuisine, verdict, collection, …) tucked underneath. */
   li {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs) var(--spacing-sm);
-    align-items: baseline;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
   }
+
+  li + li {
+    margin-block-start: var(--spacing-sm);
+  }
+
+  /* The row title — body face, a step up from the mono sub, and unadorned until
+     hover so it reads as a heading rather than a link. */
+  li > a:not(.collection),
+  .event-name {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-text-heading);
+    text-decoration: none;
+  }
+
+  li > a:not(.collection):hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* The sub-label reads as a name (e.g. "Dogtown"), not a shouty uppercase tag. */
+  .collection {
+    font-weight: 500;
+  }
+}
+
+.backlinks.grid ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .chips {
@@ -1845,7 +1864,6 @@ a.share-button {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
   font-weight: 600;
   text-decoration: none;
 }

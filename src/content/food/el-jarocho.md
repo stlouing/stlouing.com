@@ -9,6 +9,10 @@ address:
 coords: [38.5670372, -90.4946618]
 url: https://www.eljarochotaqueria.com
 instagram: https://www.instagram.com/eljarochovalleypark
+pick:
+  name: Burrito Nuevo
+  note: Steak, French fries and queso fresco inside the burrito
+  emoji: 🌯
 ---
 
 One of the first things I needed to find after moving to St. Louis was authentic Mexican food. I've always been used to having endless options for authentic Mexican food, bakeries, snacks, and groceries, but I was surprised to discover that St. Louis has a much smaller hispanic population than I was used to.

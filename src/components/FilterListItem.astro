@@ -16,9 +16,7 @@ interface Props {
   title: string
   // Canonical detail page; the "Read more" target inside the open panel.
   detailHref: string
-  // Render the row as a disclosure: the title toggles the inline panel open.
-  expandable: boolean
-  // Show the "Read more" deep link in the open panel — only worth it when the
+  // Show the "Read more" deep link in the panel — only worth it when the
   // detail page holds more than the panel already shows (i.e. a real body).
   readMore?: boolean
   marker: string
@@ -33,7 +31,6 @@ const {
   id,
   title,
   detailHref,
-  expandable,
   readMore = true,
   marker,
   coords = '',
@@ -63,15 +60,7 @@ const {
     <div class="list-main">
       <div class="list-row">
         <div class="list-headline">
-          {
-            expandable ? (
-              <button type="button" class="list-title" aria-expanded="false">
-                {title}
-              </button>
-            ) : (
-              <span class="list-title">{title}</span>
-            )
-          }
+          <a class="list-title" href={href(detailHref)}>{title}</a>
           <slot name="title-after" />
         </div>
         <slot name="row-end" />
@@ -85,16 +74,14 @@ const {
       }
     </div>
   </div>
-  {
-    expandable && (
-      <div class="list-description">
-        <slot />
-        {readMore && (
-          <a class="more" href={href(detailHref)}>
-            Read more <IconArrowRight />
-          </a>
-        )}
-      </div>
-    )
-  }
+  <div class="list-description">
+    <slot />
+    {
+      readMore && (
+        <a class="more" href={href(detailHref)}>
+          Read more <IconArrowRight />
+        </a>
+      )
+    }
+  </div>
 </li>

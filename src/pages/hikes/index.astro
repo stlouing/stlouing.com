@@ -44,7 +44,6 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
             id={hike.id}
             title={hike.data.title}
             detailHref={`/hikes/${hike.id}`}
-            expandable={hasBody(hike)}
             marker="🥾"
             coords={hike.data.coords?.join(',') ?? ''}
             url={hike.data.url ?? ''}

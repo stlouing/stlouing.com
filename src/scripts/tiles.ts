@@ -3,8 +3,7 @@ import { leafletLayer } from 'protomaps-leaflet'
 
 // Required tile attribution. The basemap is derived from OpenStreetMap and
 // rendered by Protomaps; OSM's ODbL mandates a visible OpenStreetMap credit.
-const osmAttribution =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 const protomapsAttribution = `<a href="https://protomaps.com">Protomaps</a> ${osmAttribution}`
 
 // Vector basemap slice (a St. Louis-area cut of the global Protomaps build). The

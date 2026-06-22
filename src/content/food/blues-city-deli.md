@@ -9,6 +9,9 @@ address:
 coords: [38.6050506, -90.2181734]
 url: http://www.bluescitydeli.com
 instagram: https://www.instagram.com/bluescitydeli
+pick:
+  name: Reuben Sandwich
+  note: House Smoked Pastrami, Swiss and Sauerkraut, 1000 Island Dressing
 ---
 
 Blue's City Deli is an absolute gem of a spot. It's a sandwich shop with blues-themed decor and an outdoor patio. Expect to see a line when you go to visit, because the people know what's up.

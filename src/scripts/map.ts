@@ -86,13 +86,11 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
     if (activeItem) {
       activeItem.classList.remove('is-active')
-      activeItem.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
       highlightMarker(activeItem, false)
     }
 
     activeItem = item
     item.classList.add('is-active')
-    item.querySelector('.list-title')?.setAttribute('aria-expanded', 'true')
     highlightMarker(item, true)
     // Always bring the selected row to the top of the pane (scroll-padding keeps
     // it clear of the sticky header), not just the nearest edge.
@@ -105,7 +103,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
     activeItem = null
     item.classList.remove('is-active')
-    item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
     highlightMarker(item, false)
   }
 

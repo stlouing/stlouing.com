@@ -8,6 +8,9 @@ address:
   - University City, MO 63130
 coords: [38.6557052, -90.304477]
 instagram: https://www.instagram.com/kishimoto_stl
+pick:
+  name: Tonkotsu Classic
+  note: Rich pork bone broth with thin hakata style noodles, topped with pork belly chasyu, kikurage, scallion and pickled red ginger
 ---
 
 As a long time fan of Menya Rui, I've been hyped to try Kishimoto Mendo ever since it was announced. Kishimoto Mendo is the new Tonkotsu-style ramen concept from the chef-owner of Menya Rui. Tonkotsu is my favorite style of ramen, so although the Shoyu at Menay Rui is fantastic, I wasn't fully satisfied with the STL ramen scene.

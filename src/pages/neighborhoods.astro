@@ -113,10 +113,10 @@ function popupData(slug: string, name: string, group: string) {
                     data-official={popup.official}
                     data-excerpt={popup.excerpt}>
                     <div class="neighborhood-head">
-                      <div class="list-title">
+                      <a class="list-title" href={href(`/neighborhoods/${neighborhood.slug}`)}>
                         <span class="number">{`${numberLabel}.`}</span>
                         <span>{neighborhood.name}</span>
-                      </div>
+                      </a>
                     </div>
                     {written && Content && (
                       <div class="neighborhood-body list-description">
@@ -146,9 +146,20 @@ function popupData(slug: string, name: string, group: string) {
 </BaseLayout>
 
 <style>
-  /* Match the Food list's row titles (body serif), not the mono List default. */
+  /* Match the Food list's row titles (body serif, bold), not the mono List
+     default — and keep the link from picking up the global blue/underline. */
   .neighborhood-head .list-title {
     font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .neighborhood-head .list-title:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
   }
 
   .number {

@@ -14,6 +14,9 @@ import { SITE_DESCRIPTION, SOCIALS } from '../lib/site'
 
 interface Props {
   crumb?: string
+  // An SEO-tuned <title> leaf, used when it should differ from the (shorter)
+  // breadcrumb `crumb` — e.g. a food page adds its cuisine + "St. Louis".
+  title?: string
   description?: string
   // 'website' (default) or 'article' for notes, which also emit published-time
   // and tag metadata.
@@ -25,7 +28,8 @@ interface Props {
 }
 
 const SITE_NAME = 'St. Louing'
-const { crumb, description, ogType = 'website', publishedTime, tags = [], jsonLd } = Astro.props
+const { crumb, title, description, ogType = 'website', publishedTime, tags = [], jsonLd } =
+  Astro.props
 
 const base = import.meta.env.BASE_URL
 let path = Astro.url.pathname
@@ -53,8 +57,9 @@ if (segments.length >= 1) {
 }
 
 const leaf = trail.length > 1 ? trail[trail.length - 1].label : undefined
-const pageTitle = leaf
-  ? `${leaf} | ${SITE_NAME}`
+const titleLeaf = title ?? leaf
+const pageTitle = titleLeaf
+  ? `${titleLeaf} | ${SITE_NAME}`
   : `${SITE_NAME} | Food, Neighborhoods, and Culture of St. Louis`
 
 const metaDescription = description ?? SITE_DESCRIPTION

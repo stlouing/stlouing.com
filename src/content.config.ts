@@ -27,6 +27,11 @@ const food = defineCollection({
     url: z.string().url().optional(),
     // The place's Instagram profile.
     instagram: z.string().url().optional(),
+    // An editorial "my pick" for the sidebar: the dish to order, an optional
+    // note, and an optional emoji (falls back to the cuisine emoji).
+    pick: z
+      .object({ name: z.string(), note: z.string().optional(), emoji: z.string().optional() })
+      .optional(),
     ...coords,
     ...taggable,
   }),
@@ -60,6 +65,10 @@ const neighborhoods = defineCollection({
   loader: md('neighborhoods'),
   schema: z.object({
     title: z.string(),
+    // An optional summary shown under the title (and used as the meta
+    // description for a data-only neighborhood). Without one, the page falls
+    // back to the generated "Neighborhood #X" line.
+    description: z.string().optional(),
     // The neighborhood's own site and its Wikipedia article.
     url: z.string().url().optional(),
     wikipedia: z.string().url().optional(),

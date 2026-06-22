@@ -6,16 +6,19 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Chip from '../../components/Chip.astro'
 import Verdict from '../../components/Verdict.astro'
 import SourceLink from '../../components/SourceLink.astro'
+import FoodLocator from '../../components/FoodLocator.astro'
+import MyPick from '../../components/MyPick.astro'
 import { href } from '../../lib/url'
-import { published } from '../../lib/content'
+import { published, excerpt, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
 import { resolveVerdict, verdictLabels } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji } from '../../lib/emoji'
-import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
+import IconExternalLink from '../../assets/IconExternalLink.astro'
+import IconInstagram from '../../assets/IconInstagram.astro'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -82,9 +85,17 @@ const relatedIds = new Set([...relatedNeighborhood, ...relatedCuisine].map((item
 const mentionedIn = backlinks.filter(
   (backlink) => !(backlink.collection === 'food' && relatedIds.has(backlink.id)),
 )
+
+// SEO: a richer <title> (name + cuisine + city) than the bare breadcrumb name,
+// plus a per-page meta description pulled from the writeup so pages don't all
+// share the generic site description.
+const seoTitle = primaryCuisine
+  ? `${data.title} - ${primaryCuisine} in St. Louis`
+  : `${data.title} in St. Louis`
+const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
 ---
 
-<BaseLayout crumb={data.title} jsonLd={schema}>
+<BaseLayout crumb={data.title} title={seoTitle} description={seoDescription} jsonLd={schema}>
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={mentionedIn}>
     <Fragment slot="meta">
@@ -100,7 +111,7 @@ const mentionedIn = backlinks.filter(
         }
         <div class="food-sub-meta">
           <div class="food-sub-meta-section">
-            {verdict && <Verdict verdict={verdict} icon />}
+            {verdict && <Verdict verdict={verdict} icon filled />}
             {
               data.cuisine.map((cuisine) => (
                 <Chip href={href(`/tags/${cuisine}`)}>
@@ -110,50 +121,65 @@ const mentionedIn = backlinks.filter(
               ))
             }
           </div>
-          <div class="food-sub-meta-section">
-            <SourceLink href={data.url} label="Website" />
-            <SourceLink href={data.instagram} />
-            <SourceLink href={googleMapsHref(data)} label="Directions" />
+          <div class="food-sub-meta-section food-links">
+            <SourceLink href={data.url} label="Website">
+              <IconExternalLink slot="icon" />
+            </SourceLink>
+            <SourceLink href={data.instagram} label="Instagram">
+              <IconInstagram slot="icon" />
+            </SourceLink>
+            <SourceLink href={googleMapsHref(data)} label="Directions">
+              <IconMapPin slot="icon" />
+            </SourceLink>
           </div>
         </div>
       </div>
     </Fragment>
-    <Content />
-    <section class="more-food">
-      {
-        relatedNeighborhood.length > 0 && (
-          <nav class="backlinks">
-            <h2>More in {data.neighborhood}</h2>
-            <ul>
-              {relatedNeighborhood.map(({ place, verdict }) => (
-                <li>
-                  <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                  {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )
-      }
-      {
-        relatedCuisine.length > 0 && (
-          <nav class="backlinks">
-            <h2>More {primaryCuisine}</h2>
-            <ul>
-              {relatedCuisine.map(({ place, verdict }) => (
-                <li>
-                  <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                  {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )
-      }
-      <a class="more" href={href('/food')}>
-        All food <IconArrowRight />
-      </a>
-    </section>
+
+    <div class="food-layout">
+      <aside class="food-aside">
+        <FoodLocator coords={data.coords} label={data.neighborhood} />
+        <a class="button food-map-link" href={href('/food')}>
+          <IconMapPin /> Back to the food map
+        </a>
+        {data.pick && <MyPick pick={data.pick} cuisine={data.cuisine} />}
+      </aside>
+      <div class="food-main">
+        <Content />
+        <section class="more-food">
+          {
+            relatedNeighborhood.length > 0 && (
+              <nav class="backlinks">
+                <h2>More in {data.neighborhood}</h2>
+                <ul>
+                  {relatedNeighborhood.map(({ place, verdict }) => (
+                    <li>
+                      <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                      {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )
+          }
+          {
+            relatedCuisine.length > 0 && (
+              <nav class="backlinks">
+                <h2>More {primaryCuisine}</h2>
+                <ul>
+                  {relatedCuisine.map(({ place, verdict }) => (
+                    <li>
+                      <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                      {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )
+          }
+        </section>
+      </div>
+    </div>
   </Entry>
 </BaseLayout>
 
@@ -168,11 +194,13 @@ const mentionedIn = backlinks.filter(
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
+    width: 100%;
   }
 
   .food-sub-meta {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--spacing-md);
     row-gap: var(--spacing-xs);
     flex-wrap: wrap;
@@ -184,6 +212,54 @@ const mentionedIn = backlinks.filter(
     gap: var(--spacing-sm);
     row-gap: var(--spacing-xs);
     flex-wrap: wrap;
+  }
+
+  /* The source links sit to the right of the verdict + cuisine, and wrap toward
+     the right edge when the row is tight. */
+  .food-links {
+    justify-content: flex-end;
+  }
+
+  /* A full-width "back to the map" link under the sidebar locator. */
+  .food-map-link {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Writeup + sidebar. One column until there's room for the aside alongside. */
+  .food-layout {
+    display: grid;
+    gap: var(--spacing-lg);
+    margin-block-start: var(--spacing-lg);
+  }
+
+  .food-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  @media screen and (min-width: 900px) {
+    .food-layout {
+      grid-template-columns: minmax(0, 1fr) 290px;
+      align-items: start;
+      gap: 2.5rem;
+    }
+
+    /* DOM order is aside-then-main so the map + pick lead on mobile; on desktop
+       they're placed back into the right column. */
+    .food-main {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .food-aside {
+      grid-column: 2;
+      grid-row: 1;
+      position: sticky;
+      top: calc(var(--header-height, 4rem) + var(--spacing-md));
+      gap: var(--spacing-sm);
+    }
   }
 
   /* "More food" footer — related places + a link back to the full list, so a
@@ -198,14 +274,20 @@ const mentionedIn = backlinks.filter(
   }
 
   @media screen and (max-width: 700px) {
+    /* Stack the two meta groups, each filling the row: verdict + cuisine on top,
+       the source links spread across their own row below. */
     .food-sub-meta {
-      align-items: flex-start;
+      align-items: stretch;
       flex-direction: column;
       row-gap: var(--spacing-sm);
 
       .chip {
         width: fit-content;
       }
+    }
+
+    .food-links {
+      justify-content: flex-start;
     }
   }
 </style>

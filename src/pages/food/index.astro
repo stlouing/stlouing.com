@@ -74,9 +74,12 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
           <span class="pane-title">Food</span>
           <span class="pane-count"><span data-filter-count>{count}</span> places</span>
         </span>
-        <a class="pane-wishlist" href={href('/food/want-to-try')}>
-          Want to try <IconArrowRight />
-        </a>
+        <div class="pane-links">
+          <a class="pane-link" href={href('/best')}>Best of </a>
+          <a class="pane-link" href={href('/food/want-to-try')}>
+            Want to try <IconArrowRight />
+          </a>
+        </div>
       </div>
       <ul class="list" data-food-rows>
         {
@@ -85,7 +88,6 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
               id={place.id}
               title={place.data.title}
               detailHref={`/food/${place.id}`}
-              expandable={true}
               readMore={false}
               marker={cuisineEmoji(place.data.cuisine)}
               coords={place.data.coords?.join(',') ?? ''}
@@ -177,5 +179,34 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     -webkit-line-clamp: 2;
     line-clamp: 2;
     overflow: hidden;
+  }
+
+  .pane-links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .pane-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 2px var(--spacing-sm);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+  }
+
+  .pane-link .icon {
+    color: inherit;
+  }
+
+  .pane-link:hover {
+    color: var(--color-accent);
   }
 </style>

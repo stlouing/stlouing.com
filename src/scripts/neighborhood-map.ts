@@ -248,8 +248,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     },
   }).addTo(map)
 
-  // Clicking a list row opens that neighborhood's map popup (which highlights its
-  // boundary + scrolls the row up); clicking the open one again closes it.
+  // The row title links to the neighborhood's page. In the reading (list) view we
+  // let that link navigate; in map view we intercept the click to open that
+  // neighborhood's popup instead (highlighting its boundary + scrolling the row
+  // up), and clicking the open one again closes it.
+  const split = document.querySelector('[data-map-split]')
   for (const row of rows) {
     const slug = row.dataset.section
     if (!slug) {
@@ -257,7 +260,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
     const title = row.querySelector<HTMLElement>('.list-title') ?? row
     title.classList.add('is-clickable')
-    title.addEventListener('click', () => {
+    title.addEventListener('click', (event) => {
+      if (split?.getAttribute('data-view') !== 'map') {
+        return
+      }
+      event.preventDefault()
       const path = pathBySlug.get(slug)
       if (!path) {
         return

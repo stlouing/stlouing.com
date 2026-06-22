@@ -49,7 +49,6 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
     if (view === 'map') {
       for (const item of items) {
         item.classList.remove('is-active')
-        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
       }
 
       if (mapApi) {
@@ -58,13 +57,12 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
         mapApi = initMap() ?? null
       }
     } else {
-      // Closing the popup de-selects via the map, then collapse every row so the
-      // list opens compact (each writeup expands on click, same as map view).
+      // Closing the popup de-selects via the map; also clear any leftover row
+      // selection so the list isn't left with a stray highlight.
       mapApi?.deselect()
 
       for (const item of items) {
         item.classList.remove('is-active')
-        item.querySelector('.list-title')?.setAttribute('aria-expanded', 'false')
       }
     }
   }
@@ -73,11 +71,9 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
     button.addEventListener('click', () => setView(button.dataset.viewSet ?? 'list'))
   }
 
-  // Clicking a place's name expands its writeup inline (list view) or toggles its
-  // map popup (map view). Centralized here so list-view expansion works even
-  // before the map is lazily created; map-view selection is still driven by the
-  // popup events in map.ts. Only expandable rows (their title is a <button>)
-  // expand in list view; body-less rows still toggle their popup over the map.
+  // The title is a link to the detail page. In list view we let it navigate; in
+  // map view we intercept the click to open/close that place's popup instead
+  // (map-view selection is otherwise driven by the popup events in map.ts).
   const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')]
   for (const item of items) {
     const title = item.querySelector<HTMLElement>('.list-title')
@@ -88,13 +84,6 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
       if (root.dataset.view === 'map' && mapApi) {
         event.preventDefault()
         mapApi.togglePopup(item)
-
-        return
-      }
-      if (title.tagName === 'BUTTON') {
-        event.preventDefault()
-        const expanded = item.classList.toggle('is-active')
-        title.setAttribute('aria-expanded', String(expanded))
       }
     })
   }
