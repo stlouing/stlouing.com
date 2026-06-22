@@ -195,17 +195,32 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
           // Select the row, but DON'T re-center the marker — centering overrides
           // Leaflet's auto-pan and pushes a tall popup's title up under the chrome.
           activate(item)
-          // Auto-pan keeps the popup inside the map, but the sticky header + filter
-          // toolbar overlay the map's top on mobile; nudge the popup down if its
-          // title is still tucked behind them.
+          // Keep the whole popup on-screen: below the sticky header + filter
+          // toolbar at the top, and clear of the map's left/right edges (the
+          // sticky chrome overlays the top on mobile, and a wide popup near an
+          // edge can otherwise spill off-screen). The panBy offset is
+          // (current edge − desired edge), which nudges that edge into place.
           requestAnimationFrame(() => {
             const popupEl = placeMarker.getPopup()?.getElement()
             if (!popupEl) {
               return
             }
-            const overlap = topChromeBottom() + 8 - popupEl.getBoundingClientRect().top
-            if (overlap > 0) {
-              map.panBy([0, -overlap], { animate: true })
+            const popupRect = popupEl.getBoundingClientRect()
+            const mapRect = map.getContainer().getBoundingClientRect()
+            const pad = 16
+            const topLimit = topChromeBottom() + 8
+            let dx = 0
+            let dy = 0
+            if (popupRect.top < topLimit) {
+              dy = popupRect.top - topLimit
+            }
+            if (popupRect.left < mapRect.left + pad) {
+              dx = popupRect.left - (mapRect.left + pad)
+            } else if (popupRect.right > mapRect.right - pad) {
+              dx = popupRect.right - (mapRect.right - pad)
+            }
+            if (dx !== 0 || dy !== 0) {
+              map.panBy([dx, dy], { animate: true })
             }
           })
         })
