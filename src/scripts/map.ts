@@ -1,15 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
-
-// Escape text before it goes into the popup's innerHTML.
-function escapeHtml(value: string): string {
-  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
-
-// Lucide map-pin, inlined for the neighborhood pin in the popup.
-const PIN_SVG =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'
+import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
 
 export interface MapApi {
   // Fix Leaflet's sizing after the map becomes visible.
@@ -127,56 +119,45 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         // is active (its popup is open) we suppress that place's tooltip so the
         // two never stack — the popup is simply left in place. Address lines
         // render under the title when present.
-        const title = item.dataset.title ?? ''
-        const titleHtml = `<h2><a href="/food/${item.id}">${escapeHtml(title)}</a></h2>`
-
         // Cuisine chip(s) + a neighborhood pin, mirroring the list row's facets.
         const markerEmoji = item.dataset.marker ?? ''
         const cuisines = (item.dataset.cuisine ?? '').split('|').filter(Boolean)
         const neighborhood = item.dataset.neighborhood ?? ''
-        const chips = cuisines
-          .map(
-            (cuisine) =>
-              `<button type="button" class="popup-chip" data-filter-set="cuisine" data-filter-value="${escapeHtml(cuisine)}">${markerEmoji} ${escapeHtml(cuisine)}</button>`,
-          )
-          .join('')
-        const pin = neighborhood
-          ? `<button type="button" class="popup-pin" data-filter-set="neighborhood" data-filter-value="${escapeHtml(neighborhood)}">${PIN_SVG} ${escapeHtml(neighborhood)}</button>`
-          : ''
-        const metaHtml = chips || pin ? `<div class="popup-meta">${chips}${pin}</div>` : ''
+        const chips: PopupChip[] = cuisines.map((cuisine) => ({
+          label: cuisine,
+          leadingHtml: markerEmoji,
+          filterSet: 'cuisine',
+          filterValue: cuisine,
+        }))
+        if (neighborhood) {
+          chips.push({
+            label: neighborhood,
+            leadingHtml: PIN_SVG,
+            filterSet: 'neighborhood',
+            filterValue: neighborhood,
+          })
+        }
 
-        const addressLines = (item.dataset.address ?? '').split('\n').filter(Boolean)
-        const addressHtml = addressLines.length
-          ? `<span class="tip-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
-          : ''
-
-        // A short teaser of the writeup, when there is one.
-        const excerptText = item.dataset.excerpt ?? ''
-        const excerptHtml = excerptText
-          ? `<p class="tip-excerpt">${escapeHtml(excerptText)}</p>`
-          : ''
-
-        // Buttons: "View more" (the writeup) plus the external sources.
         const url = item.dataset.url ?? ''
         const instagram = item.dataset.instagram ?? ''
         const google = item.dataset.google ?? ''
-        // "View more" gets its own centered, ruled line; the external sources sit
-        // in a button row below it.
-        const moreHtml = excerptText
-          ? `<a class="popup-more-link" href="/food/${item.id}">View more</a>`
-          : ''
         const sources = [
-          url && `<a class="popup-btn" href="${url}" target="_blank" rel="noopener">Website</a>`,
-          instagram &&
-            `<a class="popup-btn" href="${instagram}" target="_blank" rel="noopener">Instagram</a>`,
-          google &&
-            `<a class="popup-btn" href="${google}" target="_blank" rel="noopener">Directions</a>`,
-        ]
-          .filter(Boolean)
-          .join('')
-        const sourcesHtml = sources ? `<div class="popup-actions">${sources}</div>` : ''
+          url && { label: 'Website', href: url },
+          instagram && { label: 'Instagram', href: instagram },
+          google && { label: 'Directions', href: google },
+        ].filter(Boolean) as PopupSource[]
 
-        const popupHtml = `${titleHtml}${metaHtml}${addressHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+        // "View more" only when there's a writeup teaser to deep-link into.
+        const excerptText = item.dataset.excerpt ?? ''
+        const popupHtml = buildPopupHtml({
+          title: item.dataset.title ?? '',
+          link: `/food/${item.id}`,
+          chips,
+          addressLines: (item.dataset.address ?? '').split('\n').filter(Boolean),
+          excerpt: excerptText,
+          sources,
+          showMore: Boolean(excerptText),
+        })
 
         const placeMarker = L.marker([lat, lng], { icon }).bindPopup(popupHtml, {
           className: 'food-popup',

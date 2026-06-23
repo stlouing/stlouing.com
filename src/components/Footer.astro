@@ -18,7 +18,6 @@ import { NEWSLETTER_URL } from '../lib/site'
       <a href={href('/feedback')}>Feedback</a>
     </nav>
   </div>
-  <div class="river-border" aria-hidden="true"></div>
 </footer>
 
 <style>
@@ -36,22 +35,6 @@ import { NEWSLETTER_URL } from '../lib/site'
     justify-content: space-between;
     gap: var(--spacing-md);
     padding-block: var(--spacing-sm);
-  }
-
-  /* Decorative "river" ribbon at the very bottom — the St. Louis flag's
-     blue-and-white wave on red, repeated seamlessly. Flag colors are fixed in
-     both themes. Tweak the height (60–100px) to taste. */
-  .river-border {
-    height: 16px;
-    background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
-  }
-
-  /* On small screens the footer competes with the full-height map pages, so drop
-     the decorative ribbon + tagline and keep just the links. */
-  @media screen and (max-width: 600px) {
-    .river-border {
-      display: none;
-    }
   }
 
   .footer-nav {

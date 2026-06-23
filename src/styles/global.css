@@ -363,7 +363,7 @@ a.wikipedia-link {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   margin-block-end: var(--spacing-sm);
 }
 
@@ -1483,15 +1483,6 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
-/* Source link (AllTrails, Instagram, …) appended inside the popup. */
-.leaflet-popup.food-popup .popup-link {
-  display: block;
-  margin-block-start: var(--spacing-sm);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-link);
-}
-
 /* A 2–3 line teaser of the writeup inside the popup (body serif, not mono). */
 .leaflet-popup.food-popup .tip-excerpt {
   margin-block: var(--spacing-sm) 0;
@@ -1515,36 +1506,16 @@ body:has([data-filter-root]) .site-header {
   margin-block: var(--spacing-xs) var(--spacing-sm);
 }
 
-.leaflet-popup.food-popup .popup-chip,
-.leaflet-popup.food-popup .popup-pin {
-  display: inline-flex;
-  align-items: center;
+/* The shared .chip pill (Phase 2); cursor + hover come from the global
+   button.chip rules. Padding + line-height are set explicitly here so Leaflet's
+   .leaflet-popup-content (line-height 1.3) can't squish the pill. The pin chip
+   carries an inline SVG. */
+.leaflet-popup.food-popup .chip {
   gap: var(--spacing-xs);
-  font-family: inherit;
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  color: var(--color-text-muted);
-  background: var(--color-surface);
-  border: 1px solid var(--color-line-input);
-  border-radius: 20px;
-  padding: 2px var(--spacing-sm);
-  white-space: nowrap;
+  padding: var(--spacing-xs) var(--spacing-sm);
 }
 
-/* Only the button form (food's cuisine/neighborhood filters) is interactive; the
-   neighborhood popup's area chip is a static <span>. */
-.leaflet-popup.food-popup button.popup-chip,
-.leaflet-popup.food-popup button.popup-pin {
-  cursor: pointer;
-}
-
-.leaflet-popup.food-popup button.popup-chip:hover,
-.leaflet-popup.food-popup button.popup-pin:hover {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-.leaflet-popup.food-popup .popup-pin svg {
+.leaflet-popup.food-popup .chip svg {
   width: 13px;
   height: 13px;
   flex-shrink: 0;
@@ -1559,25 +1530,17 @@ body:has([data-filter-root]) .site-header {
   margin-block-start: var(--spacing-md);
 }
 
-.leaflet-popup.food-popup .popup-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  text-decoration: none;
-  color: var(--color-text);
-  background: var(--color-surface);
-  border: 1px solid var(--color-line-input);
-  border-radius: var(--radius);
-  padding: var(--spacing-xs) var(--spacing-sm);
+/* The shared .btn outline (Phase 1), stretched to share the row evenly. The
+   color is re-asserted here because Leaflet's `.leaflet-container a` (0,1,1)
+   would otherwise tint the link buttons its default blue. */
+.leaflet-popup.food-popup .popup-actions .btn {
   flex: 1;
-  white-space: nowrap;
+  justify-content: center;
+  color: var(--color-text);
 }
 
-.leaflet-popup.food-popup .popup-btn:hover {
+.leaflet-popup.food-popup .popup-actions .btn:hover {
   color: var(--color-accent);
-  border-color: var(--color-accent);
 }
 
 /* "View more" — a centered CTA fenced by hairlines on its own line, set apart
@@ -1596,11 +1559,6 @@ body:has([data-filter-root]) .site-header {
 
 .leaflet-popup.food-popup .popup-more-link:hover {
   text-decoration: underline;
-}
-
-.leaflet-popup.food-popup .popup-btn-primary:hover {
-  color: var(--color-surface);
-  opacity: 0.92;
 }
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {

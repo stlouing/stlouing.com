@@ -1,12 +1,8 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
+import { buildPopupHtml, escapeHtml, type PopupSource } from './popup'
 import neighborhoods from '../data/neighborhoods.json'
-
-// Escape text before it goes into the popup's innerHTML.
-function escapeHtml(value: string): string {
-  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
 // the map and the generated sections always share one slug — no re-slugifying.
@@ -150,47 +146,33 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     return rows.find((row) => row.dataset.section === slug)
   }
 
-  // The boundary popup matches the Food map's: the neighborhood name (linked to
-  // its page) in big text, its area, then quick resource links. The area + links
-  // are read off the matching list row's data attributes (set server-side).
-  function buildPopupHtml(slug: string, name: string): string {
+  // The boundary popup matches the Food map's (shared buildPopupHtml): the
+  // neighborhood name (linked to its page), an area chip, a writeup teaser, then
+  // resource buttons. The area + links are read off the matching list row's data
+  // attributes (set server-side).
+  function popupHtmlFor(slug: string, name: string): string {
     if (!slug) {
       return `<h2>${escapeHtml(name)}</h2>`
     }
     const row = rowFor(slug)
     const area = row?.dataset.area ?? ''
-    const official = row?.dataset.official
-    const wikipedia = row?.dataset.wikipedia
-    const city = row?.dataset.city
-    const mytownview = row?.dataset.mytownview
-    const excerptText = row?.dataset.excerpt ?? ''
     const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
-
-    // Same spirit as the food popup: linked title, an area chip, a writeup teaser
-    // (when written), a ruled "View more", then the resources as buttons.
-    const titleHtml = `<h2><a href="${link}">${escapeHtml(name)}</a></h2>`
-    const metaHtml = area
-      ? `<div class="popup-meta"><span class="popup-chip">${escapeHtml(area)}</span></div>`
-      : ''
-    const excerptHtml = excerptText ? `<p class="tip-excerpt">${escapeHtml(excerptText)}</p>` : ''
-    // Every neighborhood has its own page (a writeup or the computed data layer),
-    // so "View more" always shows — not just when there's a writeup excerpt.
-    const moreHtml = `<a class="popup-more-link" href="${link}">View more</a>`
     const sources = [
-      wikipedia &&
-        `<a class="popup-btn" href="${wikipedia}" target="_blank" rel="noopener">Wikipedia</a>`,
-      mytownview &&
-        `<a class="popup-btn" href="${mytownview}" target="_blank" rel="noopener">MyTownView</a>`,
-      official &&
-        `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Website</a>`,
-      city &&
-        `<a class="popup-btn" href="${city}" target="_blank" rel="noopener">City of St. Louis</a>`,
-    ]
-      .filter(Boolean)
-      .join('')
-    const sourcesHtml = sources ? `<div class="popup-actions">${sources}</div>` : ''
+      row?.dataset.wikipedia && { label: 'Wikipedia', href: row.dataset.wikipedia },
+      row?.dataset.mytownview && { label: 'MyTownView', href: row.dataset.mytownview },
+      row?.dataset.official && { label: 'Website', href: row.dataset.official },
+      row?.dataset.city && { label: 'City of St. Louis', href: row.dataset.city },
+    ].filter(Boolean) as PopupSource[]
 
-    return `${titleHtml}${metaHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+    // Every neighborhood has its own page (a writeup or the computed data layer),
+    // so "View more" always shows — the builder's default.
+    return buildPopupHtml({
+      title: name,
+      link,
+      chips: area ? [{ label: area }] : [],
+      excerpt: row?.dataset.excerpt ?? '',
+      sources,
+    })
   }
 
   const bounds = L.latLngBounds([])
@@ -215,7 +197,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         colorBySlug.set(slug, colorForGroup(entry?.group))
       }
 
-      featureLayer.bindPopup(buildPopupHtml(slug, name), {
+      featureLayer.bindPopup(popupHtmlFor(slug, name), {
         className: 'food-popup',
         maxWidth: 330,
         minWidth: 210,
