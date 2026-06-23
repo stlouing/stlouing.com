@@ -1,6 +1,7 @@
 ---
 title: St. Louis-style Pizza
 description: Love or hate it, it holds a special place in many hearts
+ogImage: /og/st-louis-style-pizza.png
 created: 2026-05-31
 updated: 2026-06-22
 ---
@@ -22,7 +23,7 @@ My first experiences with STL-style pizza were not the best, and initially I was
 
 ### Cheese
 
-You can't talk about St. Louis-style pizza without taking about Provel - it's the most unique and controversial aspect of the pizza. Provel is made up of cheddar, Swiss, and provolone cheese with a hint of liquid smoke, and it's processed and emulsified like American cheese. I would say it tastes kind of similar to a smoked gouda with the consistency of American cheese (those who did not grow up with it often describe is as plasticy). Provel was developed in the '40s as an answer to the cheese pull issue, to ensure slices could be cut and removed easily. With Provel, you can't end up accidentally pulling off all the cheese on a slice with a single bite, so I can understand the rationale.
+You can't talk about St. Louis-style pizza without talking about Provel - it's the most unique and controversial aspect of the pizza. Provel is made up of cheddar, Swiss, and provolone cheese with a hint of liquid smoke, and it's processed and emulsified like American cheese. I would say it tastes kind of similar to a smoked gouda with the consistency of American cheese (those who did not grow up with it often describe it as plasticy). Provel was developed in the '40s as an answer to the cheese pull issue, to ensure slices could be cut and removed easily. With Provel, you can't end up accidentally pulling off all the cheese on a slice with a single bite, so I can understand the rationale.
 
 Pizza generally consists of three ingredients (crust, sauce, and cheese) and most styles of pizza default to mozzarella. Provel being so different in both flavor and consistency from what anyone outside of the region expects is, in my opinion, what throws people off so much when they try it for the first time.
 
@@ -113,7 +114,7 @@ Here's a subjective rated list of the places I've tried. I would say the top thr
 1. **Faraci Pizza**: Similar to Pirrone's in size and shape, with a more bready, yeasty crust.
 1. **Salvage Yard**: A solid choice for a standard STL-style.
 1. **Imo's Pizza**: By far the most famous and infamous pizza in town, Imo's is THE St. Louis pizza chain and the only STL-style many people have ever tried. Imo's has a mass-produced flavor to it, unlike the home-style vibes of a lot of other spots. The quality also varies a lot from location to location. It can be okay, but not the best representation of pizza in the area, in my opinion. Sometimes I do specifically crave an Imo's pizza, though.
-1. [[failonis|Failoni's]]: A brick-oven pizza with a very crisp cracker-like like crust. (I believe this also counts as Uncle Leo's pizza, as they're under the same ownership, but I haven't tried it to confirm.)
+1. [[failonis|Failoni's]]: A brick-oven pizza with a very crisp cracker-like crust. (I believe this also counts as Uncle Leo's pizza, as they're under the same ownership, but I haven't tried it to confirm.)
 1. **Nick & Elena's**: I know people love this place, and the old-school vibes are top-notch, but I didn't personally like the pizza (specifically the sauce was way too sweet for me).
 1. **Cecil Whittaker's**: This was one of my least favorite St. Louis-style pizzas I've tried. It's like an Imo's clone with lower quality ingredients.
 1. **Elicia's Pizza**: The first St. Louis-style pizza I ever tried was from Elicia's. It was completely burnt and inedible, and unfortunately they're no longer in business for me to know whether or not that was a fluke.

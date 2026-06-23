@@ -25,10 +25,13 @@ interface Props {
   tags?: string[]
   // Page-specific schema.org JSON-LD (a BreadcrumbList is added automatically).
   jsonLd?: object | object[]
+  // A per-page social-share image (root-relative path to a 1200x630 file in
+  // public/, e.g. "/og/st-louis-style-pizza.png"). Falls back to the site flag.
+  ogImage?: string
 }
 
 const SITE_NAME = 'St. Louing'
-const { crumb, title, description, ogType = 'website', publishedTime, tags = [], jsonLd } =
+const { crumb, title, description, ogType = 'website', publishedTime, tags = [], jsonLd, ogImage } =
   Astro.props
 
 const base = import.meta.env.BASE_URL
@@ -65,7 +68,9 @@ const pageTitle = titleLeaf
 const metaDescription = description ?? SITE_DESCRIPTION
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
 // Social-share image. Absolute URL (required by OG). A dedicated 1200x630 card
-const socialImage = new URL(href('/og.png'), Astro.site ?? Astro.url.origin).href
+const socialImage = new URL(href(ogImage ?? '/og.png'), Astro.site ?? Astro.url.origin).href
+// A custom share image gets the page title as alt; the default flag keeps its own.
+const socialImageAlt = ogImage ? (crumb ?? SITE_NAME) : `${SITE_NAME} - the St. Louis flag`
 
 // Structured data: an automatic BreadcrumbList from the trail, plus any
 // page-specific schema passed in.
@@ -143,7 +148,7 @@ const analyticsUrl = analyticsBase
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE_NAME} — the St. Louis flag`} />
+    <meta property="og:image:alt" content={socialImageAlt} />
     {
       ogType === 'article' && publishedTime && (
         <meta property="article:published_time" content={publishedTime} />

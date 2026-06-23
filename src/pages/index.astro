@@ -30,8 +30,8 @@ const latestTopics = allTopics.slice(0, 5)
 const foodCount = published(await getCollection('food')).length
 const neighborhoodCount = published(await getCollection('neighborhoods')).length
 const countByPath: Record<string, string> = {
-  '/food': String(foodCount),
-  '/neighborhoods': String(neighborhoodCount),
+  '/food': `${foodCount} writeups`,
+  '/neighborhoods': `${neighborhoodCount} explored`,
 }
 
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))

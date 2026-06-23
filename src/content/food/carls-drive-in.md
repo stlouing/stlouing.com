@@ -1,5 +1,6 @@
 ---
 title: Carl's Drive-In
+date: 2026-06-23
 rating: 7.5
 cuisine: ['burgers']
 neighborhood: Brentwood

@@ -1,5 +1,6 @@
 ---
 title: Sultan
+date: 2026-06-23
 rating: 9.5
 cuisine: ['middle eastern']
 neighborhood: The Grove

@@ -20,6 +20,18 @@ import {
 import neighborhoods from '../../data/neighborhoods.json'
 import SourceLink from '../../components/SourceLink.astro'
 import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
+import IconExternalLink from '../../assets/IconExternalLink.astro'
+import IconChart from '../../assets/IconChart.astro'
+import IconBook from '../../assets/IconBook.astro'
+import IconLandmark from '../../assets/IconLandmark.astro'
+
+// An icon per resource link, matching the Food page's labeled source links.
+const resourceIcons: Record<string, typeof IconExternalLink> = {
+  Wikipedia: IconBook,
+  MyTownView: IconChart,
+  Website: IconExternalLink,
+  'City of St. Louis': IconLandmark,
+}
 
 // A page for EVERY real neighborhood, not just the ones with a writeup. Where a
 // markdown file exists its prose is rendered; otherwise the page still stands on
@@ -42,9 +54,11 @@ const { entry } = Astro.props
 const info = neighborhoodInfo(slug)
 const title = info?.name ?? slug
 
-// Prose layer: present only when a markdown file backs this neighborhood.
+// Prose layer: present only when a markdown file with a real body backs this
+// neighborhood. Otherwise the page shows an explicit "not yet explored" stub.
 const rendered = entry ? await render(entry) : null
 const Content = rendered?.Content
+const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
 const tags = entry?.data.tags ?? []
 
@@ -56,7 +70,7 @@ const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
 // External resources: the place's own site (if any), Wikipedia, and the
-// auto-generated City of St. Louis + Niche profiles — rendered as a button bar.
+// auto-generated City of St. Louis + MyTownView profiles — rendered as a button bar.
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
 // The generated fallback line for a neighborhood without its own summary.
@@ -96,9 +110,14 @@ const trail = [
     {
       resourceLinks.length > 0 && (
         <div class="resource-bar" slot="header-extra">
-          {resourceLinks.map((link) => (
-            <SourceLink href={link.href} label={link.label} />
-          ))}
+          {resourceLinks.map((link) => {
+            const Icon = resourceIcons[link.label]
+            return (
+              <SourceLink href={link.href} label={link.label}>
+                {Icon && <Icon slot="icon" />}
+              </SourceLink>
+            )
+          })}
         </div>
       )
     }
@@ -107,11 +126,23 @@ const trail = [
         <NeighborhoodFacts population={population} />
         <figure class="locator-figure">
           <NeighborhoodLocator slug={slug} name={title} />
-          <figcaption>Location of {title} within St. Louis</figcaption>
+          <figcaption>{title} relative to St. Louis</figcaption>
         </figure>
       </aside>
       <div class="neighborhood-main">
-        {Content && <Content />}
+        {
+          hasWriteup && Content ? (
+            <Content />
+          ) : (
+            <div class="not-explored">
+              <p>I haven't explored {title} yet.</p>
+              <p>
+                Is there something you want to suggest here? Let me know in the{' '}
+                <a href={href('/feedback')}>feedback form</a>!
+              </p>
+            </div>
+          )
+        }
 
         {
           festivals.length > 0 && (
@@ -242,6 +273,24 @@ const trail = [
     font-family: var(--font-body);
     font-size: var(--font-size-md);
     color: var(--color-text-article);
+  }
+
+  /* Explicit stub treatment for a neighborhood without a writeup: a dashed note
+     reads as "intentionally unfinished" rather than a sparse, broken page. */
+  .not-explored {
+    margin-block-end: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 1px dashed var(--color-line-input);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+  }
+
+  .not-explored p {
+    margin: 0;
+  }
+
+  .not-explored p + p {
+    margin-block-start: var(--spacing-sm);
   }
 
   /* The tall locator SVG reads poorly stacked on mobile; the facts card stays. */

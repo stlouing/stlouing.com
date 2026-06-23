@@ -1,5 +1,6 @@
 ---
 title: Blues City Deli
+date: 2026-06-23
 rating: 10
 cuisine: ['sandwiches']
 neighborhood: Benton Park

@@ -1,5 +1,6 @@
 ---
 title: Woofies Hot Dogs
+date: 2026-06-23
 rating: 9
 cuisine: ['hot dogs']
 neighborhood: Overland

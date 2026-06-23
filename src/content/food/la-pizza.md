@@ -1,5 +1,6 @@
 ---
 title: La Pizza
+date: 2026-06-23
 rating: 7.5
 cuisine: ['pizza']
 neighborhood: University City

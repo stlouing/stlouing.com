@@ -1,5 +1,6 @@
 ---
 title: Bud's Pizza & Beer
+date: 2026-06-23
 rating: 8.5
 cuisine: ['pizza']
 neighborhood: 'Northampton'

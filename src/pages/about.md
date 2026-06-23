@@ -22,7 +22,7 @@ Please use the [contact form](/feedback) or email me at [hello@stlouing.com](mai
 
 ## Elsewhere
 
-This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](<(https://indieweb.org/POSSE)>) practice (Publish on your Own Site, Syndicate Elsewhere).
+This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).
 
 - Instagram: [st.louing](https://instagram.com/st.louing)
 - Substack: [stlouing](https://stlouing.substack.com)

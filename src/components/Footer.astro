@@ -49,8 +49,7 @@ import { NEWSLETTER_URL } from '../lib/site'
   /* On small screens the footer competes with the full-height map pages, so drop
      the decorative ribbon + tagline and keep just the links. */
   @media screen and (max-width: 600px) {
-    .river-border,
-    .footer-tagline {
+    .river-border {
       display: none;
     }
   }
@@ -78,17 +77,6 @@ import { NEWSLETTER_URL } from '../lib/site'
       &:hover {
         color: var(--color-accent);
       }
-    }
-  }
-
-  @media (max-width: 700px) {
-    .footer-inner {
-      justify-content: space-between;
-    }
-
-    .footer-nav {
-      width: 100%;
-      justify-content: space-between;
     }
   }
 </style>

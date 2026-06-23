@@ -1,5 +1,6 @@
 ---
 title: Kishimoto Mendo
+date: 2026-06-23
 rating: 10
 cuisine: ['ramen']
 neighborhood: University City

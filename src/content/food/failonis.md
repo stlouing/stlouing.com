@@ -1,5 +1,6 @@
 ---
 title: Failoni's Restaurant
+date: 2026-06-23
 rating: 6
 cuisine: ['pizza']
 neighborhood: Dogtown

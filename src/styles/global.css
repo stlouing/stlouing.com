@@ -729,15 +729,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-.list-with-map {
-  h1 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0;
-  }
-}
-
 /* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the
    meta/chips come from each page's slots, so these are global — not component
    scoped — to reach that slotted content). */
@@ -830,8 +821,8 @@ body:has(.map-split) main > .wrap,
   text-decoration-color: var(--color-accent);
 }
 
-/* A row of outlined resource buttons (a neighborhood's Wikipedia / City / Niche
-   links), used both at the top of a neighborhood detail page and in the
+/* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
+   MyTownView links), used both at the top of a neighborhood detail page and in the
    expanded list row. */
 .resource-bar {
   display: flex;
@@ -948,6 +939,7 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 700;
   color: var(--color-text);
   text-decoration: none;
+  font-size: var(--font-size-label);
 }
 
 .list-with-map a.list-title {
@@ -1012,25 +1004,6 @@ body:has([data-neighborhood-map]) .river-border {
   /* Offset the sticky .list-pane-header so a marker-selected row scrolls to just
      below it instead of being tucked behind it (its name otherwise hidden). */
   scroll-padding-block-start: 40px;
-
-  /* Sticky title matching the neighborhoods .list-pane-header. Padding aligns with the
-     list items (which carry their own padding); no negative margin, which would
-     overhang the pane and force a horizontal scrollbar. */
-  h1 {
-    position: sticky;
-    top: 0;
-    z-index: 4;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-line);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-md);
-    color: var(--color-text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 42px;
-  }
 
   /* Over the map, any title is clickable — it opens the place's popup. */
   .list-title {

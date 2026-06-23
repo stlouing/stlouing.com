@@ -46,7 +46,7 @@ function popupData(slug: string, name: string, group: string) {
     official: hrefFor('Website'),
     wikipedia: hrefFor('Wikipedia'),
     city: hrefFor('City of St. Louis'),
-    niche: hrefFor('Niche'),
+    mytownview: hrefFor('MyTownView'),
     // Preview text for the map popup: the writeup excerpt when there is one,
     // otherwise a manual description, then the generated "Neighborhood #X" line —
     // so every neighborhood's popup has a teaser + "View more" to its page.
@@ -85,16 +85,15 @@ function popupData(slug: string, name: string, group: string) {
                 : neighborhood.number
               const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
               const entry = entryBySlug.get(neighborhood.slug)
-              // Keep the list row to 4 buttons max (the accent "View more" plus
-              // three resources); Niche is last, so it's the one that drops when
-              // a Website link is present alongside Wikipedia + City of St. Louis.
+              // Show the full resource set (Wikipedia, MyTownView, and the
+              // optional Website + City of St. Louis) — MyTownView is always kept.
               const resourceLinks = written
                 ? neighborhoodResourceLinks(
                     neighborhood.slug,
                     neighborhood.name,
                     entry?.data.url,
                     entry?.data.wikipedia,
-                  ).slice(0, 3)
+                  )
                 : []
 
               // A section header sits above the first row of each group — the
@@ -117,7 +116,7 @@ function popupData(slug: string, name: string, group: string) {
                     data-area={popup.area}
                     data-wikipedia={popup.wikipedia}
                     data-city={popup.city}
-                    data-niche={popup.niche}
+                    data-mytownview={popup.mytownview}
                     data-official={popup.official}
                     data-excerpt={popup.excerpt}>
                     <div class="neighborhood-head">
@@ -161,6 +160,7 @@ function popupData(slug: string, name: string, group: string) {
     font-weight: 700;
     color: var(--color-text);
     text-decoration: none;
+    font-size: var(--font-size-label);
   }
 
   .neighborhood-head .list-title:hover {

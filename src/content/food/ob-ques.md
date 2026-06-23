@@ -1,5 +1,6 @@
 ---
 title: O'B'Que's
+date: 2026-06-23
 rating: 8.5
 cuisine: ['bbq']
 neighborhood: Chesterfield

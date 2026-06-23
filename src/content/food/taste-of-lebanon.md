@@ -1,5 +1,6 @@
 ---
 title: Taste of Lebanon
+date: 2026-06-23
 rating: 8.5
 cuisine: ['middle eastern']
 neighborhood: Central West End

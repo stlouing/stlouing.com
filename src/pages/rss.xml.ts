@@ -5,9 +5,10 @@ import { getCollection, render } from 'astro:content'
 import { published, excerpt } from '../lib/content'
 import { SITE_TITLE, SITE_DESCRIPTION } from '../lib/site'
 
-// Combined feed: chronological notes plus the evergreen Topics (dated by when
-// each was last tended), newest first. Each item carries a short description
-// (authored, else a generated excerpt) plus the full rendered body.
+// Combined feed: chronological notes, the evergreen Topics (dated by when each
+// was last tended), and dated Food reviews — newest first. Each item carries a
+// short description (authored, else a generated excerpt) plus the full rendered
+// body. Food entries without a `date` are left out of the feed.
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://stlouing.com')
   const origin = site.href.replace(/\/$/, '')
@@ -46,7 +47,23 @@ export async function GET(context: APIContext) {
     }),
   )
 
-  const items = [...noteItems, ...topicItems].sort(
+  // Food reviews only join the feed once dated (the feed is chronological).
+  const food = published(await getCollection('food')).filter((place) => place.data.date)
+  const foodItems = await Promise.all(
+    food.map(async (place) => {
+      const { Content } = await render(place)
+
+      return {
+        title: place.data.title,
+        pubDate: place.data.date as Date,
+        description: excerpt(place.body),
+        content: absolute(await container.renderToString(Content)),
+        link: `/food/${place.id}/`,
+      }
+    }),
+  )
+
+  const items = [...noteItems, ...topicItems, ...foodItems].sort(
     (left, right) => right.pubDate.valueOf() - left.pubDate.valueOf(),
   )
 

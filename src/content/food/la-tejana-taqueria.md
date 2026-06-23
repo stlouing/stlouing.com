@@ -1,5 +1,6 @@
 ---
 title: La Tejana Taqueria
+date: 2026-06-23
 rating: 2
 cuisine: ['tacos']
 address:

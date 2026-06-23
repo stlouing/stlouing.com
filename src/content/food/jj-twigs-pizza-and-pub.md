@@ -1,5 +1,6 @@
 ---
 title: JJ Twig's Pizza & Pub
+date: 2026-06-23
 rating: 8
 cuisine: ['pizza']
 neighborhood: Southampton

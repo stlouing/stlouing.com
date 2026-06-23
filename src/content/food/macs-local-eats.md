@@ -1,5 +1,6 @@
 ---
 title: Mac's Local Eats
+date: 2026-06-23
 draft: true
 rating: 6
 cuisine: ['burgers']

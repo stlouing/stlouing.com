@@ -1,5 +1,6 @@
 ---
 title: Stacked STL
+date: 2026-06-23
 rating: 7.5
 cuisine: ['burgers']
 neighborhood: Carondelet

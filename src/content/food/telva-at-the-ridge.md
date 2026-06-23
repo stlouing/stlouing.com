@@ -1,5 +1,6 @@
 ---
 title: Telva at the Ridge
+date: 2026-06-23
 rating: 9.5
 cuisine: ['cafe']
 neighborhood: Webster Groves

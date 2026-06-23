@@ -136,6 +136,14 @@ const cityNeighborhoodSlug: Record<string, string | null> = {
   dogtown: null,
 }
 
+// MyTownView's URL slug matches ours except for these. 'the-grove' lives at
+// 'forest-park-south-east'; 'dogtown' is a four-neighborhood merge with no single
+// MyTownView page (null → no link).
+const mytownviewSlug: Record<string, string | null> = {
+  'the-grove': 'forest-park-south-east',
+  dogtown: null,
+}
+
 // External reference links for a neighborhood (beyond its Wikipedia article,
 // which the page adds itself). Parks/cemeteries — the rows numbered 80+ — aren't
 // residential neighborhoods, so they get none.
@@ -156,21 +164,24 @@ export function neighborhoodResources(info: NeighborhoodInfo): ResourceLink[] {
     })
   }
 
-  // Niche keys off each neighborhood's common name, so our slug works directly
-  // (including Dogtown and The Grove). Coverage is best-effort — a few small
-  // neighborhoods may not have a profile.
-  links.push({
-    label: 'Niche',
-    href: `https://www.niche.com/places-to-live/n/${info.slug}-st-louis-mo/`,
-  })
+  // MyTownView keys its neighborhood pages off the slug directly (with the
+  // overrides above). Coverage is best-effort — a few neighborhoods (e.g. the
+  // Dogtown merge) have no profile, so they get no link.
+  const mtvSlug = info.slug in mytownviewSlug ? mytownviewSlug[info.slug] : info.slug
+  if (mtvSlug) {
+    links.push({
+      label: 'MyTownView',
+      href: `https://mytownview.com/missouri/st-louis-city/st-louis/${mtvSlug}`,
+    })
+  }
 
   return links
 }
 
-// The full ordered list of a neighborhood's external resources — its own site
-// (if any), Wikipedia, then the City of St. Louis + Niche profiles. Shared by the
-// detail page's action bar and the neighborhoods list's expanded rows so both
-// render the same set of buttons.
+// The full ordered list of a neighborhood's external resources: the always-present
+// Wikipedia + MyTownView links first, then the optional Website (from frontmatter)
+// and City of St. Louis page. Shared by the detail page's action bar, the list's
+// expanded rows, and the map popup so all render the same buttons in the same order.
 export function neighborhoodResourceLinks(
   slug: string,
   name: string,
@@ -189,10 +200,16 @@ export function neighborhoodResourceLinks(
     resources.some((resource) => trimSlash(resource.href) === trimSlash(officialUrl)),
   )
 
+  const mytownview = resources.find((resource) => resource.label === 'MyTownView')
+  const city = resources.find((resource) => resource.label === 'City of St. Louis')
+  const website =
+    officialUrl && !officialIsDuplicate ? { label: 'Website', href: officialUrl } : null
+
   return [
-    ...(officialUrl && !officialIsDuplicate ? [{ label: 'Website', href: officialUrl }] : []),
     { label: 'Wikipedia', href: wikipediaOverride ?? wikipediaHref(name) },
-    ...resources,
+    ...(mytownview ? [mytownview] : []),
+    ...(website ? [website] : []),
+    ...(city ? [city] : []),
   ]
 }
 

@@ -6,6 +6,7 @@ import { published } from '../lib/content'
 import { getBacklinks } from '../lib/backlinks'
 import { formatDate } from '../lib/dates'
 import { articleSchema } from '../lib/schema'
+import { href } from '../lib/url'
 
 // Evergreen "Topics" entries live at flat top-level URLs (/overview, ...). Their
 // slugs never collide with the standalone .md pages (about, changelog), which are
@@ -27,6 +28,7 @@ const schema = articleSchema(
     title: data.title,
     url: permalink,
     description: data.description,
+    image: new URL(href(data.ogImage ?? '/og.png'), siteOrigin).href,
     published: (data.created ?? data.updated).toISOString(),
     updated: data.updated.toISOString(),
     tags: data.tags,
@@ -38,6 +40,7 @@ const schema = articleSchema(
 <BaseLayout
   crumb={data.title}
   description={data.description}
+  ogImage={data.ogImage}
   ogType="article"
   publishedTime={(data.created ?? data.updated).toISOString()}
   tags={data.tags}

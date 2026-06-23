@@ -1,5 +1,6 @@
 ---
 title: Grace Meat & Three
+date: 2026-06-23
 rating: 8.5
 cuisine: ['chicken']
 neighborhood: The Grove

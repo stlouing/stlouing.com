@@ -162,7 +162,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     const official = row?.dataset.official
     const wikipedia = row?.dataset.wikipedia
     const city = row?.dataset.city
-    const niche = row?.dataset.niche
+    const mytownview = row?.dataset.mytownview
     const excerptText = row?.dataset.excerpt ?? ''
     const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
 
@@ -177,13 +177,14 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     // so "View more" always shows — not just when there's a writeup excerpt.
     const moreHtml = `<a class="popup-more-link" href="${link}">View more</a>`
     const sources = [
-      official &&
-        `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Website</a>`,
       wikipedia &&
         `<a class="popup-btn" href="${wikipedia}" target="_blank" rel="noopener">Wikipedia</a>`,
+      mytownview &&
+        `<a class="popup-btn" href="${mytownview}" target="_blank" rel="noopener">MyTownView</a>`,
+      official &&
+        `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Website</a>`,
       city &&
         `<a class="popup-btn" href="${city}" target="_blank" rel="noopener">City of St. Louis</a>`,
-      niche && `<a class="popup-btn" href="${niche}" target="_blank" rel="noopener">Niche</a>`,
     ]
       .filter(Boolean)
       .join('')

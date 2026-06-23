@@ -1,5 +1,6 @@
 ---
 title: Menya Rui
+date: 2026-06-23
 rating: 9
 cuisine: ['ramen']
 neighborhood: Northampton

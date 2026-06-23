@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content'
+import { getCollection } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
@@ -25,17 +25,13 @@ const verdictRankLetter: Record<Verdict, string> = {
 }
 
 const all = published(await getCollection('food'))
-const rendered = await Promise.all(
-  all.map(async (place) => ({
-    place,
-    Content: (await render(place)).Content,
-    verdict: resolveVerdict(place.data),
-  })),
-)
 
 // Default DOM order is verdict-grouped then alphabetical (so the no-JS view reads
-// sensibly); filter.ts re-sorts on the client from the data-sort-* keys.
-const rated = rendered
+// sensibly); filter.ts re-sorts on the client from the data-sort-* keys. Cards
+// render a plain-text excerpt (not the full writeup) so the route stays light —
+// the full prose lives on each /food/<slug> page.
+const rated = all
+  .map((place) => ({ place, verdict: resolveVerdict(place.data) }))
   .filter((entry) => entry.verdict)
   .sort(
     (left, right) =>
@@ -72,7 +68,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     <div class="list-with-map food-grouped">
       <div class="list-pane-header">
         <span class="pane-left">
-          <span class="pane-title">Food</span>
+          <h1 class="pane-title">Food</h1>
           <span class="pane-count"><span data-filter-count>{count}</span> places</span>
         </span>
         <div class="pane-links">
@@ -84,7 +80,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
       </div>
       <ul class="list" data-food-rows>
         {
-          rated.map(({ place, Content, verdict }) => (
+          rated.map(({ place, verdict }) => (
             <FilterListItem
               id={place.id}
               title={place.data.title}
@@ -99,7 +95,9 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 ...(place.data.address ?? []),
                 ...place.data.cuisine,
                 ...place.data.tags,
-                place.body,
+                // The excerpt (writeup opening), not the full body — keeps the
+                // route's payload light while still searching the prose lead-in.
+                hasBody(place) ? excerpt(place.body, 160) : '',
               ]
                 .filter(Boolean)
                 .join(' ')}
@@ -144,9 +142,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                   {place.data.address[0]}
                 </span>
               )}
-              <div class="food-preview">
-                <Content />
-              </div>
+              {hasBody(place) && <div class="food-preview">{excerpt(place.body, 160)}</div>}
               <div class="place-links">
                 {hasBody(place) && (
                   <a class="place-more" href={href(`/food/${place.id}`)}>

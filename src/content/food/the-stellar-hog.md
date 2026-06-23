@@ -1,5 +1,6 @@
 ---
 title: The Stellar Hog
+date: 2026-06-23
 rating: 7.5
 cuisine: ['bbq']
 neighborhood: Holly Hills

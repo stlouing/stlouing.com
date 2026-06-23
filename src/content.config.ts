@@ -12,6 +12,8 @@ const food = defineCollection({
   loader: md('food'),
   schema: z.object({
     title: z.string(),
+    // Publish date. When set, the entry joins the RSS feed (newest first).
+    date: z.coerce.date().optional(),
     rating: z.number().min(0).max(10).optional(),
     // Shown in place of the number. Set explicitly, or derived from `rating`
     // (9–10 loved, 7–8 liked, the rest neutral) by src/lib/verdict.ts.
@@ -32,6 +34,9 @@ const food = defineCollection({
     pick: z
       .object({ name: z.string(), note: z.string().optional(), emoji: z.string().optional() })
       .optional(),
+    // Root-relative path to a 1200x630 social-share image in public/ (the
+    // link-preview card). Falls back to the site flag when unset.
+    ogImage: z.string().optional(),
     ...coords,
     ...taggable,
   }),
@@ -83,6 +88,9 @@ const topics = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    // Root-relative path to a 1200x630 social-share image in public/ (the
+    // link-preview card). Falls back to the site flag when unset.
+    ogImage: z.string().optional(),
     updated: z.coerce.date(),
     created: z.coerce.date().optional(),
     // 'list' renders the body in the compact reference-list look (mono section

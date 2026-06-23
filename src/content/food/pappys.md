@@ -1,5 +1,6 @@
 ---
 title: Pappy's Smokehouse
+date: 2026-06-23
 cuisine: ['bbq']
 neighborhood: Midtown
 address:

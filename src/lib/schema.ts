@@ -22,6 +22,8 @@ interface ArticleInput {
   published?: string
   updated?: string
   tags?: string[]
+  // Absolute URL of the social-share image (per-page, else the site flag).
+  image?: string
 }
 
 export function articleSchema(input: ArticleInput, site: URL) {
@@ -31,6 +33,7 @@ export function articleSchema(input: ArticleInput, site: URL) {
     headline: input.title,
     description: input.description,
     url: input.url,
+    image: input.image,
     datePublished: input.published,
     dateModified: input.updated ?? input.published,
     keywords: input.tags?.length ? input.tags.join(', ') : undefined,
@@ -64,6 +67,8 @@ interface RestaurantInput {
   coords?: [number, number]
   cuisine?: string[]
   rating?: number
+  // Absolute URL of the social-share image (per-page, else the site flag).
+  image?: string
 }
 
 export function restaurantSchema(input: RestaurantInput) {
@@ -72,6 +77,7 @@ export function restaurantSchema(input: RestaurantInput) {
     '@type': 'Restaurant',
     name: input.name,
     url: input.url,
+    image: input.image,
     address: input.address?.length ? postalAddress(input.address) : undefined,
     geo: input.coords
       ? { '@type': 'GeoCoordinates', latitude: input.coords[0], longitude: input.coords[1] }

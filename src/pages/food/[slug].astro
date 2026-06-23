@@ -37,6 +37,7 @@ const neighborhoodLink = await neighborhoodHref(data.neighborhood)
 const schema = restaurantSchema({
   name: data.title,
   url: new URL(`/food/${entry.id}/`, Astro.site ?? Astro.url.origin).href,
+  image: new URL(href(data.ogImage ?? '/og.png'), Astro.site ?? Astro.url.origin).href,
   address: data.address,
   coords: data.coords,
   cuisine: data.cuisine,
@@ -96,7 +97,12 @@ const seoTitle = primaryCuisine
 const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
 ---
 
-<BaseLayout crumb={data.title} title={seoTitle} description={seoDescription} jsonLd={schema}>
+<BaseLayout
+  crumb={data.title}
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={data.ogImage}
+  jsonLd={schema}>
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={mentionedIn}>
     <Fragment slot="meta">

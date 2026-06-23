@@ -1,5 +1,6 @@
 ---
 title: Farotto's
+date: 2026-06-23
 rating: 9.5
 cuisine: ['pizza']
 neighborhood: Rock Hill
