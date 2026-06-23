@@ -1,0 +1,112 @@
+---
+// Shared row for the map-backed directory lists — Food/Hikes (filterable) and
+// Neighborhoods (section list). Renders the common chrome: an optional lead
+// column, the title link (with an optional `number.` prefix), inline + trailing
+// slots, an optional sub line, and the always-open `.list-description` panel.
+// Styling lives in global.css (`.map-list …`) so it reaches the slotted bits.
+//
+// Slots: lead, title-after, row-end, sub, and the default slot (the panel body).
+//
+// Filterable rows (Food/Hikes) carry the data-* attributes the filter + map
+// scripts read off each <li> (data-filter-item, coords, marker, search, …); the
+// Neighborhood list sets `filterable={false}` and passes its own via `attrs`.
+import { href } from '../lib/url'
+import IconArrowRight from '../assets/IconArrowRight.astro'
+
+interface Props {
+  id: string
+  title: string
+  // Canonical detail page; the "Read more" target inside the panel.
+  detailHref: string
+  // Optional numeric prefix shown before the title (the Neighborhoods list).
+  number?: string | number
+  // Show the built-in "Read more" deep link in the panel.
+  readMore?: boolean
+  // Filter rows only — emit the values the filter/map scripts read off the <li>.
+  filterable?: boolean
+  marker?: string
+  coords?: string
+  url?: string
+  search?: string
+  // Extra data-* attributes spread onto the <li> (facets, section keys, …).
+  attrs?: Record<string, string>
+  // Extra class(es) on the <li> (e.g. the Neighborhood list's `is-written`).
+  class?: string
+}
+
+const {
+  id,
+  title,
+  detailHref,
+  number,
+  readMore = true,
+  filterable = true,
+  marker = '',
+  coords = '',
+  url = '',
+  search = '',
+  attrs = {},
+  class: className,
+} = Astro.props
+
+// Filterable lists tag each row + carry the values the filter/map scripts read.
+const filterAttrs = filterable
+  ? {
+      'data-filter-item': '',
+      'data-coords': coords,
+      'data-title': title,
+      'data-url': url,
+      'data-marker': marker,
+      'data-search': search,
+    }
+  : {}
+
+// Skip an empty panel. Astro.slots.has('default') is true even when the slot
+// expression evaluates to nothing (an unwritten neighborhood passes `{false}`), so
+// render the slot and check it actually produced content before showing the panel.
+const slotHtml = Astro.slots.has('default') ? (await Astro.slots.render('default')).trim() : ''
+const showPanel = slotHtml.length > 0 || readMore
+---
+
+<li id={id} class:list={[className]} {...filterAttrs} {...attrs}>
+  <div class="list-details">
+    {
+      Astro.slots.has('lead') && (
+        <div class="list-lead">
+          <slot name="lead" />
+        </div>
+      )
+    }
+    <div class="list-main">
+      <div class="list-row">
+        <div class="list-headline">
+          <a class="list-title" href={href(detailHref)}>
+            {number !== undefined && <span class="number">{number}.</span>}
+            {number !== undefined ? <span>{title}</span> : title}
+          </a>
+          <slot name="title-after" />
+        </div>
+        <slot name="row-end" />
+      </div>
+      {
+        Astro.slots.has('sub') && (
+          <div class="list-sub">
+            <slot name="sub" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+  {
+    showPanel && (
+      <div class="list-description">
+        {slotHtml && <Fragment set:html={slotHtml} />}
+        {readMore && (
+          <a class="more" href={href(detailHref)} aria-label={`Read more about ${title}`}>
+            Read more <IconArrowRight />
+          </a>
+        )}
+      </div>
+    )
+  }
+</li>

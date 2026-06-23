@@ -6,10 +6,6 @@ import type { MapApi } from './map'
  * Wires a filterable list/map page: the shared filter plus a List/Map view
  * toggle. The map is created lazily the first time the Map view is shown (so
  * Leaflet measures a visible container) and re-synced on later switches.
- *
- * Markup (within `[data-filter-root]`): a `[data-view-toggle]` containing
- * `<button data-view-set="list|map">`, the list as `.list-with-map`, and the map as
- * `[data-map]`. With JS off, the toggle stays hidden and the list is shown.
  */
 // Shared across the Food and Hikes pages so the chosen view follows the user.
 // The same key + default are duplicated in the pre-paint inline script in

@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
-import FilterListItem from '../../components/FilterListItem.astro'
+import MapRow from '../../components/MapRow.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
@@ -65,7 +65,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     hasCoords={hasCoords}
     mapLabel="Map of food spots"
     emptyText="No places match those filters.">
-    <div class="list-with-map food-grouped">
+    <div class="map-list food-grouped">
       <div class="list-pane-header">
         <span class="pane-left">
           <h1 class="pane-title">Food</h1>
@@ -81,7 +81,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
       <ul class="list" data-food-rows>
         {
           rated.map(({ place, verdict }) => (
-            <FilterListItem
+            <MapRow
               id={place.id}
               title={place.data.title}
               detailHref={`/food/${place.id}`}
@@ -156,7 +156,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 <SourceLink href={place.data.instagram} variant="muted" />
                 <SourceLink href={googleMapsHref(place.data)} label="Directions" variant="muted" />
               </div>
-            </FilterListItem>
+            </MapRow>
           ))
         }
       </ul>

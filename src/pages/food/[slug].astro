@@ -8,11 +8,13 @@ import Verdict from '../../components/Verdict.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
+import RelatedList from '../../components/RelatedList.astro'
+import RelatedCard from '../../components/RelatedCard.astro'
 import { href } from '../../lib/url'
 import { published, excerpt, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
-import { resolveVerdict, verdictLabels } from '../../lib/verdict'
+import { resolveVerdict } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji } from '../../lib/emoji'
@@ -156,32 +158,30 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (
-              <nav class="backlinks">
-                <h2>More in {data.neighborhood}</h2>
-                <ul>
-                  {relatedNeighborhood.map(({ place, verdict }) => (
-                    <li>
-                      <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                      {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+              <RelatedList title={`More in ${data.neighborhood}`}>
+                {relatedNeighborhood.map(({ place, verdict }) => (
+                  <RelatedCard
+                    href={href(`/food/${place.id}`)}
+                    title={place.data.title}
+                    meta={place.data.cuisine[0]}
+                    verdict={verdict}
+                  />
+                ))}
+              </RelatedList>
             )
           }
           {
             relatedCuisine.length > 0 && (
-              <nav class="backlinks">
-                <h2>More {primaryCuisine}</h2>
-                <ul>
-                  {relatedCuisine.map(({ place, verdict }) => (
-                    <li>
-                      <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                      {verdict && <span class="collection">{verdictLabels[verdict]}</span>}
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+              <RelatedList title={`More ${primaryCuisine}`}>
+                {relatedCuisine.map(({ place, verdict }) => (
+                  <RelatedCard
+                    href={href(`/food/${place.id}`)}
+                    title={place.data.title}
+                    meta={place.data.neighborhood}
+                    verdict={verdict}
+                  />
+                ))}
+              </RelatedList>
             )
           }
         </section>
@@ -278,10 +278,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
   .more-food {
     margin-block-start: var(--spacing-lg);
     border-block-start: 1px solid var(--color-line);
-  }
-
-  .more-food .more {
-    margin-block-start: var(--spacing-lg);
   }
 
   @media screen and (max-width: 700px) {

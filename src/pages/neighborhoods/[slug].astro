@@ -4,7 +4,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
+import RelatedList from '../../components/RelatedList.astro'
+import RelatedCard from '../../components/RelatedCard.astro'
 import { href } from '../../lib/url'
+import { resolveVerdict } from '../../lib/verdict'
 import { published, excerpt } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -93,7 +96,7 @@ const seoTitle = info
 
 const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods' },
-  { label: title, href: `/neighborhoods#${slug}` },
+  { label: title, href: `/neighborhoods/${slug}` },
 ]
 ---
 
@@ -163,35 +166,30 @@ const trail = [
 
         {
           places.length > 0 && (
-            <nav class="backlinks">
-              <h2>Food</h2>
-              <ul>
-                {places.map((place) => (
-                  <li>
-                    <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                    <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
-                      {place.data.cuisine[0]}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <RelatedList title="Food">
+              {places.map((place) => (
+                <RelatedCard
+                  href={href(`/food/${place.id}`)}
+                  title={place.data.title}
+                  meta={place.data.cuisine[0]}
+                  verdict={resolveVerdict(place.data)}
+                />
+              ))}
+            </RelatedList>
           )
         }
 
         {
           neighbors.length > 0 && (
-            <nav class="backlinks grid">
-              <h2>Borders</h2>
-              <ul>
-                {neighbors.map((neighbor) => (
-                  <li>
-                    <a href={href(`/neighborhoods/${neighbor.slug}`)}>{neighbor.name}</a>
-                    <span class="collection">{neighbor.group}</span>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <RelatedList title="Borders">
+              {neighbors.map((neighbor) => (
+                <RelatedCard
+                  href={href(`/neighborhoods/${neighbor.slug}`)}
+                  title={neighbor.name}
+                  meta={neighbor.group}
+                />
+              ))}
+            </RelatedList>
           )
         }
       </div>

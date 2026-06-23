@@ -2,6 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
 import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
+import { keepPopupInView } from './map-shared'
 
 export interface MapApi {
   // Fix Leaflet's sizing after the map becomes visible.
@@ -35,16 +36,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   addThemedTiles(map)
 
   // Bottom edge (viewport px) of the sticky chrome stacked above the map — the
-  // site header plus the filter toolbar. A popup opened near the top is nudged
-  // below this so its title isn't hidden behind them (the cut-off popups on mobile).
-  function topChromeBottom(): number {
-    return ['.site-header', '.secondary-header']
-      .map((selector) => document.querySelector<HTMLElement>(selector))
-      .reduce(
-        (bottom, node) => (node ? Math.max(bottom, node.getBoundingClientRect().bottom) : bottom),
-        0,
-      )
-  }
+  // site header plus the filter toolbar (see keepPopupInView in map-shared).
   const autoPanPaddingTopLeft = L.point(16, 16)
   const autoPanPaddingBottomRight = L.point(16, 24)
 
@@ -175,34 +167,9 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
           // Select the row, but DON'T re-center the marker — centering overrides
           // Leaflet's auto-pan and pushes a tall popup's title up under the chrome.
           activate(item)
-          // Keep the whole popup on-screen: below the sticky header + filter
-          // toolbar at the top, and clear of the map's left/right edges (the
-          // sticky chrome overlays the top on mobile, and a wide popup near an
-          // edge can otherwise spill off-screen). The panBy offset is
-          // (current edge − desired edge), which nudges that edge into place.
-          requestAnimationFrame(() => {
-            const popupEl = placeMarker.getPopup()?.getElement()
-            if (!popupEl) {
-              return
-            }
-            const popupRect = popupEl.getBoundingClientRect()
-            const mapRect = map.getContainer().getBoundingClientRect()
-            const pad = 16
-            const topLimit = topChromeBottom() + 8
-            let dx = 0
-            let dy = 0
-            if (popupRect.top < topLimit) {
-              dy = popupRect.top - topLimit
-            }
-            if (popupRect.left < mapRect.left + pad) {
-              dx = popupRect.left - (mapRect.left + pad)
-            } else if (popupRect.right > mapRect.right - pad) {
-              dx = popupRect.right - (mapRect.right - pad)
-            }
-            if (dx !== 0 || dy !== 0) {
-              map.panBy([dx, dy], { animate: true })
-            }
-          })
+          // Keep the whole popup on-screen (below the sticky chrome, clear of the
+          // map edges) rather than leaving it to Leaflet's jerky autoPan.
+          keepPopupInView(map, () => placeMarker.getPopup()?.getElement() ?? undefined)
         })
         placeMarker.on('popupclose', () => deactivate(item))
         // Don't stack the hover tooltip over the active place's popup.

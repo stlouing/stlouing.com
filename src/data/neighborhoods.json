@@ -85,12 +85,7 @@
     "group": "Central Corridor"
   },
   { "number": 45, "name": "Wydown Skinker", "slug": "wydown-skinker", "group": "Central Corridor" },
-  {
-    "number": 46,
-    "name": "Skinker DeBaliviere",
-    "slug": "skinker-debaliviere",
-    "group": "Central Corridor"
-  },
+  { "number": 46, "name": "Delmar Loop", "slug": "delmar-loop", "group": "Central Corridor" },
   {
     "number": 47,
     "name": "DeBaliviere Place",

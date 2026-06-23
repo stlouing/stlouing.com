@@ -97,7 +97,13 @@ const description = "The best of the St. Louis food I've tried, by category."
               <a class="cuisine-name" href={href(`/food/${place.id}`)}>
                 {place.data.title}
               </a>
-              <Verdict verdict={resolveVerdict(place.data) ?? 'neutral'} icon label={false} round />
+              <Verdict
+                filled
+                verdict={resolveVerdict(place.data) ?? 'neutral'}
+                icon
+                label={false}
+                round
+              />
             </li>
           ))
         }
@@ -218,10 +224,17 @@ const description = "The best of the St. Louis food I've tried, by category."
     text-underline-offset: 2px;
   }
 
-  @media screen and (max-width: 600px) {
+  @media (max-width: 500px) {
     /* One column — the gap keeps drawing dividers between the stacked cards. */
     .favorites-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    /* One column — the gap keeps drawing dividers between the stacked cards. */
+    .favorites-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>

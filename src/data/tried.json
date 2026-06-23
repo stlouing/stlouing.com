@@ -11,5 +11,6 @@
   { "name": "Mom's Deli", "cuisine": ["sandwich"] },
   { "name": "LeGrand's Market and Catering", "cuisine": ["sandwich"] },
   { "name": "Charlie Gitto's", "cuisine": ["italian"] },
-  { "name": "Faraci Restaurant", "cuisine": ["pizza"] }
+  { "name": "Faraci Restaurant", "cuisine": ["pizza"] },
+  { "name": "Beast BBQ", "cuisine": ["bbq"] }
 ]

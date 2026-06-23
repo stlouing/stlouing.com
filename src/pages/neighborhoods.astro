@@ -2,11 +2,12 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import List from '../components/List.astro'
+import MapRow from '../components/MapRow.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import SourceLink from '../components/SourceLink.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
-import { published, excerpt } from '../lib/content'
+import { published, excerpt, hasBody } from '../lib/content'
 import { neighborhoodResourceLinks, neighborhoodGeneratedSummary } from '../lib/neighborhoods'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
@@ -23,13 +24,18 @@ for (const entry of entries) {
   rendered.set(entry.id, Content)
 }
 
+// "Written" means a real writeup body — not just that a markdown file exists. A
+// frontmatter-only entry (e.g. the Delmar Loop, which carries only its links)
+// renders no writeup, so it stays in "The rest" until prose is added.
+const isWritten = (slug: string) => hasBody(entryBySlug.get(slug) ?? {})
+
 // Neighborhoods with a writeup come first (stable sort keeps the numbered order
 // within each group).
 const listed = neighborhoods
   .filter((neighborhood) => !('ignored' in neighborhood))
-  .sort((left, right) => Number(rendered.has(right.slug)) - Number(rendered.has(left.slug)))
+  .sort((left, right) => Number(isWritten(right.slug)) - Number(isWritten(left.slug)))
 const count = listed.length
-const writtenCount = listed.filter((neighborhood) => rendered.has(neighborhood.slug)).length
+const writtenCount = listed.filter((neighborhood) => isWritten(neighborhood.slug)).length
 const restCount = listed.length - writtenCount
 
 // Per-neighborhood facts the map popup needs (area + resource links), stashed as
@@ -63,7 +69,7 @@ function popupData(slug: string, name: string, group: string) {
   description="A map and field guide to all 79 neighborhoods and 9 parks of the City of St. Louis, including local food, events, population, borders, and discoveries.">
   <div class="map-split" data-map-split data-view="map">
     <div class="results">
-      <article class="page content-pane">
+      <article class="page content-pane map-list section-list">
         <div class="list-pane-header">
           <span class="pane-left">
             <h1 class="pane-title">Neighborhoods</h1>
@@ -79,7 +85,7 @@ function popupData(slug: string, name: string, group: string) {
           {
             listed.map((neighborhood, index) => {
               const Content = rendered.get(neighborhood.slug)
-              const written = rendered.has(neighborhood.slug)
+              const written = isWritten(neighborhood.slug)
               const numberLabel = neighborhood?.numberLabel
                 ? neighborhood.numberLabel
                 : neighborhood.number
@@ -99,7 +105,7 @@ function popupData(slug: string, name: string, group: string) {
               // A section header sits above the first row of each group — the
               // ones with a writeup, then the rest.
               const previous = listed[index - 1]
-              const showHeader = index === 0 || written !== rendered.has(previous.slug)
+              const showHeader = index === 0 || written !== isWritten(previous.slug)
 
               return (
                 <Fragment>
@@ -109,28 +115,29 @@ function popupData(slug: string, name: string, group: string) {
                       <span class="section-count">{written ? writtenCount : restCount}</span>
                     </li>
                   )}
-                  <li
+                  <MapRow
                     id={neighborhood.slug}
-                    data-section={neighborhood.slug}
-                    class:list={[{ 'is-written': written }]}
-                    data-area={popup.area}
-                    data-wikipedia={popup.wikipedia}
-                    data-city={popup.city}
-                    data-mytownview={popup.mytownview}
-                    data-official={popup.official}
-                    data-excerpt={popup.excerpt}>
-                    <div class="neighborhood-head">
-                      <a class="list-title" href={href(`/neighborhoods/${neighborhood.slug}`)}>
-                        <span class="number">{`${numberLabel}.`}</span>
-                        <span>{neighborhood.name}</span>
-                      </a>
-                    </div>
+                    title={neighborhood.name}
+                    number={numberLabel}
+                    detailHref={`/neighborhoods/${neighborhood.slug}`}
+                    readMore={false}
+                    filterable={false}
+                    class={written ? 'is-written' : undefined}
+                    attrs={{
+                      'data-section': neighborhood.slug,
+                      'data-area': popup.area ?? '',
+                      'data-wikipedia': popup.wikipedia ?? '',
+                      'data-city': popup.city ?? '',
+                      'data-mytownview': popup.mytownview ?? '',
+                      'data-official': popup.official ?? '',
+                      'data-excerpt': popup.excerpt ?? '',
+                    }}>
                     {written && Content && (
-                      <div class="neighborhood-body list-description">
+                      <Fragment>
                         <div class="neighborhood-preview">
                           <Content />
                         </div>
-                        <div class="resource-bar">
+                        <div class="place-links">
                           <a
                             class="btn btn-quiet"
                             href={href(`/neighborhoods/${neighborhood.slug}`)}
@@ -141,9 +148,9 @@ function popupData(slug: string, name: string, group: string) {
                             <SourceLink href={link.href} label={link.label} variant="muted" />
                           ))}
                         </div>
-                      </div>
+                      </Fragment>
                     )}
-                  </li>
+                  </MapRow>
                 </Fragment>
               )
             })
@@ -156,29 +163,9 @@ function popupData(slug: string, name: string, group: string) {
 </BaseLayout>
 
 <style>
-  /* Match the Food list's row titles (body serif, bold), not the mono List
-     default — and keep the link from picking up the global blue/underline. */
-  .neighborhood-head .list-title {
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--color-text);
-    text-decoration: none;
-    font-size: var(--font-size-label);
-  }
-
-  .neighborhood-head .list-title:hover {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
-  }
-
-  .number {
-    color: var(--color-text-muted);
-  }
-
   /* Section header above each group (Explored / The rest): a quiet label with its
-     count flush right — no rule line, to keep the list from feeling line-heavy. */
+     count flush right — no rule line, to keep the list from feeling line-heavy.
+     (The row chrome + writeup panel are shared `.map-list` rules in global.css.) */
   .section-head {
     display: flex;
     align-items: baseline;
@@ -201,31 +188,6 @@ function popupData(slug: string, name: string, group: string) {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
-  }
-
-  .neighborhood-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-md);
-  }
-
-  /* The quiet actions row (Read more + muted source links) sits under the teaser,
-     matching the Food list. */
-  .neighborhood-body .resource-bar {
-    align-items: center;
-    column-gap: var(--spacing-md);
-    margin-block: var(--spacing-sm) 0;
-  }
-
-  /* Cut the inline writeup off after a few lines — keeps its links + formatting
-     (unlike a plain-text excerpt); the full text is on the "Read more" page. */
-  .neighborhood-preview {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
-    overflow: hidden;
   }
 
   /* Compact color key for the map's region groups, sitting beside the title.

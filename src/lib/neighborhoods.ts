@@ -53,7 +53,7 @@ export async function neighborhoodHref(name: string | undefined): Promise<string
 
   const slugs = await neighborhoodPageSlugs()
 
-  return slugs.has(slug) ? `/neighborhoods/${slug}` : `/neighborhoods#${slug}`
+  return slugs.has(slug) ? `/neighborhoods/${slug}` : `/neighborhoods/${slug}`
 }
 
 export interface NeighborhoodInfo {
@@ -129,6 +129,7 @@ export interface ResourceLink {
 // merge of four neighborhoods, so it has no single city page (mapped to null).
 const cityNeighborhoodSlug: Record<string, string | null> = {
   'the-grove': 'forest-park-southeast',
+  'delmar-loop': 'skinker-debaliviere',
   'greater-ville': 'the-greater-ville',
   'jeff-vanderlou': 'jeffvanderlou',
   'fairground-neighborhood': 'fairground',
@@ -141,6 +142,7 @@ const cityNeighborhoodSlug: Record<string, string | null> = {
 // MyTownView page (null → no link).
 const mytownviewSlug: Record<string, string | null> = {
   'the-grove': 'forest-park-south-east',
+  'delmar-loop': 'skinker-debaliviere',
   dogtown: null,
 }
 
@@ -191,22 +193,25 @@ export function neighborhoodResourceLinks(
   const info = neighborhoodInfo(slug)
   const resources = info ? neighborhoodResources(info) : []
 
-  // Drop the frontmatter "Website" link when it points to the same place as a
-  // generated resource (e.g. Carondelet's official site IS its City of St. Louis
-  // page) — ignoring a trailing slash — so the same destination isn't listed twice.
+  // A frontmatter `wikipedia` overrides the name-derived article; `url` (the
+  // neighborhood's own site) becomes the Website link.
+  const official = officialUrl
+  const wikipedia = wikipediaOverride ?? wikipediaHref(name)
+
+  // Drop the "Website" link when it points to the same place as a generated
+  // resource (e.g. Carondelet's official site IS its City of St. Louis page) —
+  // ignoring a trailing slash — so the same destination isn't listed twice.
   const trimSlash = (url: string) => url.replace(/\/+$/, '')
   const officialIsDuplicate = Boolean(
-    officialUrl &&
-    resources.some((resource) => trimSlash(resource.href) === trimSlash(officialUrl)),
+    official && resources.some((resource) => trimSlash(resource.href) === trimSlash(official)),
   )
 
   const mytownview = resources.find((resource) => resource.label === 'MyTownView')
   const city = resources.find((resource) => resource.label === 'City of St. Louis')
-  const website =
-    officialUrl && !officialIsDuplicate ? { label: 'Website', href: officialUrl } : null
+  const website = official && !officialIsDuplicate ? { label: 'Website', href: official } : null
 
   return [
-    { label: 'Wikipedia', href: wikipediaOverride ?? wikipediaHref(name) },
+    { label: 'Wikipedia', href: wikipedia },
     ...(mytownview ? [mytownview] : []),
     ...(website ? [website] : []),
     ...(city ? [city] : []),

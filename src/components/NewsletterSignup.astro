@@ -16,59 +16,67 @@ const { compact = false } = Astro.props
 {
   NEWSLETTER_URL && (
     <section class:list={['newsletter', { compact }]} aria-label="Newsletter signup">
-      <div class="newsletter-text">
-        <p class="newsletter-title">
-          <IconMail /> Get new posts by email
-        </p>
-        {!compact && (
-          <p class="newsletter-blurb">
-            Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
+      <div class="newsletter-inner">
+        <div class="newsletter-text">
+          <p class="newsletter-title">
+            <IconMail /> Get new posts by email
           </p>
-        )}
+          {!compact && (
+            <p class="newsletter-blurb">
+              Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
+            </p>
+          )}
+        </div>
+        <form
+          class="newsletter-form"
+          action={`${NEWSLETTER_URL}/subscribe`}
+          method="get"
+          target="_blank">
+          <input
+            type="email"
+            name="email"
+            placeholder="you@email.com"
+            aria-label="Your email"
+            required
+          />
+          <button type="submit">Subscribe</button>
+        </form>
       </div>
-      <form
-        class="newsletter-form"
-        action={`${NEWSLETTER_URL}/subscribe`}
-        method="get"
-        target="_blank">
-        <input
-          type="email"
-          name="email"
-          placeholder="you@email.com"
-          aria-label="Your email"
-          required
-        />
-        <button type="submit">Subscribe</button>
-      </form>
+      {/* River band as the card's bottom border (moved here from the footer). */}
+      <div class="river-border" aria-hidden="true" />
     </section>
   )
 }
 
 <style>
+  /* The card frame; overflow clips the river band to the rounded bottom corners. */
   .newsletter {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+
+  .newsletter-inner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-sm) var(--spacing-md);
     padding: var(--spacing-md);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    background: var(--color-surface);
   }
 
   /* Footer endcap: a faint accent wash + accent heading so the end-of-post CTA
      draws the eye (this variant is only used at the bottom of entries). */
   .newsletter.compact {
     margin-block-start: var(--spacing-lg);
-    padding: var(--spacing-md);
-    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-line));
+    /* border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-line));
     background: var(--color-surface);
-    background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface));
+    background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface)); */
   }
 
   .newsletter.compact .newsletter-title {
-    color: var(--color-accent);
+    /* color: var(--color-accent); */
   }
 
   .newsletter-text {

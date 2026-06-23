@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import List from '../../components/List.astro'
-import FilterListItem from '../../components/FilterListItem.astro'
+import MapRow from '../../components/MapRow.astro'
 import { published, hasBody } from '../../lib/content'
 
 const hikes = published(await getCollection('hikes')).sort((left, right) =>
@@ -37,10 +37,10 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
     hasCoords={hasCoords}
     mapLabel="Map of hikes"
     emptyText="No hikes match those filters.">
-    <List class="list-with-map">
+    <List class="map-list">
       {
         rendered.map(({ hike, Content }) => (
-          <FilterListItem
+          <MapRow
             id={hike.id}
             title={hike.data.title}
             detailHref={`/hikes/${hike.id}`}
@@ -84,7 +84,7 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
               )}
             </Fragment>
             <Content />
-          </FilterListItem>
+          </MapRow>
         ))
       }
     </List>

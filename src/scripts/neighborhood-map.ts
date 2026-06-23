@@ -2,6 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
 import { buildPopupHtml, escapeHtml, type PopupSource } from './popup'
+import { keepPopupInView } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
@@ -70,17 +71,6 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     64
   const autoPanPaddingTopLeft = L.point(16, headerHeight + 16)
   const autoPanPaddingBottomRight = L.point(16, 24)
-
-  // Bottom edge (viewport px) of the sticky chrome above the map — the site
-  // header. A popup opened near the top is nudged below this (mirrors the Food map).
-  function topChromeBottom(): number {
-    return ['.site-header', '.secondary-header']
-      .map((selector) => document.querySelector<HTMLElement>(selector))
-      .reduce(
-        (bottom, node) => (node ? Math.max(bottom, node.getBoundingClientRect().bottom) : bottom),
-        0,
-      )
-  }
 
   const colorBySlug = new Map<string, string>()
   function baseStyleFor(slug: string): L.PathOptions {
@@ -210,32 +200,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
           return
         }
         activate(slug)
-        // Mirror the Food map: nudge the popup clear of the sticky header (top)
-        // and the map's left/right edges, rather than leaving it to Leaflet's
-        // autoPan (which jerks the map around, especially on mobile).
-        requestAnimationFrame(() => {
-          const popupEl = featureLayer.getPopup()?.getElement()
-          if (!popupEl) {
-            return
-          }
-          const popupRect = popupEl.getBoundingClientRect()
-          const mapRect = map.getContainer().getBoundingClientRect()
-          const pad = 16
-          const topLimit = topChromeBottom() + 8
-          let dx = 0
-          let dy = 0
-          if (popupRect.top < topLimit) {
-            dy = popupRect.top - topLimit
-          }
-          if (popupRect.left < mapRect.left + pad) {
-            dx = popupRect.left - (mapRect.left + pad)
-          } else if (popupRect.right > mapRect.right - pad) {
-            dx = popupRect.right - (mapRect.right - pad)
-          }
-          if (dx !== 0 || dy !== 0) {
-            map.panBy([dx, dy], { animate: true })
-          }
-        })
+        // Keep the popup clear of the sticky chrome + map edges (see map-shared).
+        keepPopupInView(map, () => featureLayer.getPopup()?.getElement() ?? undefined)
       })
       featureLayer.on('popupclose', () => {
         if (slug) {
@@ -300,54 +266,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     })
   }
 
-  // The zoom is sized from the central #46 corridor (Forest Park / CWE / Skinker
-  // line down to the south tip), so it doesn't change when the pin moves. The view
-  // is then pinned with the far-north #70 at the top — showing more of the north
-  // side — which puts #2 (Patch) near the bottom.
-  const zoomAnchorSlugs = ['forest-park', 'central-west-end', 'skinker-debaliviere']
-  const zoomNorthEdges = zoomAnchorSlugs
-    .map((slug) => pathBySlug.get(slug) as L.Polygon | undefined)
-    .filter((anchorPath): anchorPath is L.Polygon => Boolean(anchorPath))
-    .map((anchorPath) => anchorPath.getBounds().getNorth())
-
-  // Neighborhood whose north edge pins the top of the view. #70 = Mark Twain I-70
-  // Industrial (the far-north anchor). ZOOM_BOOST offsets the corridor fit (0 = fit);
-  // pinning the top — rather than fitBounds — keeps it independent of pane aspect.
-  const PIN_SLUG = 'mark-twain-i-70-industrial'
-  const ZOOM_BOOST = 0
-  const TOP_INSET_PX = 8
-
-  function frameNeighborhood(): void {
-    const pinPath = pathBySlug.get(PIN_SLUG) as L.Polygon | undefined
-    if (zoomNorthEdges.length === 0 || !pinPath) {
-      map.fitBounds(bounds, { padding: [10, 10], animate: false })
-
-      return
-    }
-
-    const zoomTopLat = Math.max(...zoomNorthEdges)
-    const pinTopLat = pinPath.getBounds().getNorth()
-    const midLng = (bounds.getWest() + bounds.getEast()) / 2
-    const corridor = L.latLngBounds(
-      [bounds.getSouth(), bounds.getWest()],
-      [zoomTopLat, bounds.getEast()],
-    )
-    const fitZoom = map.getBoundsZoom(corridor, false, L.point(TOP_INSET_PX, TOP_INSET_PX))
-    const targetZoom = Math.min(fitZoom + ZOOM_BOOST, map.getMaxZoom())
-
-    // Pin the top of #70 TOP_INSET_PX below the viewport top.
-    const topPoint = map.project([pinTopLat, midLng], targetZoom)
-    const center = map.unproject(
-      topPoint.add(L.point(0, map.getSize().y / 2 - TOP_INSET_PX)),
-      targetZoom,
-    )
-    map.setView(center, targetZoom, { animate: false })
-  }
-
   // Deep-link support: /neighborhoods#slug selects that neighborhood on load, so
   // the "View on the neighborhood map" links (and any backlinks) highlight its
-  // boundary and frame it on the map. Otherwise fall back to the southside
-  // framing above.
+  // boundary and frame it on the map. Otherwise frame the whole City of St. Louis.
   const initialSlug = location.hash.slice(1)
   if (initialSlug && pathBySlug.has(initialSlug)) {
     activate(initialSlug)
@@ -356,6 +277,13 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       map.fitBounds(selectedBounds, { padding: [40, 40], animate: false, maxZoom: 13 })
     }
   } else {
-    frameNeighborhood()
+    // Frame the whole city, then zoom in half a level for a tighter default view.
+    map.fitBounds(bounds, { padding: [10, 10], animate: false })
+    map.setZoom(map.getZoom() + 0.5, { animate: false })
+    // Bias the view ~10% south: the far-north tip is a long, thin neighborhood we
+    // don't need centered, so drop it off the top and pull more of South City in.
+    const visibleLatSpan = map.getBounds().getNorth() - map.getBounds().getSouth()
+    const center = map.getCenter()
+    map.setView([center.lat - visibleLatSpan * 0.1, center.lng], map.getZoom(), { animate: false })
   }
 }

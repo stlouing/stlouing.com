@@ -43,7 +43,7 @@
   --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
 
   /* Space + measure */
-  --measure: 900px;
+  --measure: 880px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -52,6 +52,7 @@
 
   /* Misc */
   --letter-spacing: 0.04rem;
+  --letter-spacing-tight: -0.01rem;
   --box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   --box-shadow-floating:
     rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
@@ -403,6 +404,7 @@ a.wikipedia-link {
   color: var(--chip-color, var(--color-text-muted));
   text-decoration: none;
   white-space: nowrap;
+  margin-block-start: 0;
 }
 
 button.chip {
@@ -721,85 +723,25 @@ body:has(.map-split) main > .wrap,
     padding-right: var(--spacing-md);
   }
 
-  .unwritten {
-    color: var(--color-text-muted);
-    font-style: italic;
-  }
-
+  /* The title becomes click-to-open-popup in map view (neighborhood-map.ts). */
   .is-clickable {
     cursor: pointer;
   }
 
-  /* Shown for any neighborhood that has a writeup (its row carries is-active);
-     rows without one keep this hidden. The list doesn't collapse. */
-  .neighborhood-body {
-    display: none;
-
-    ul {
-      list-style-type: disc;
-    }
-
-    ::marker {
-      color: var(--color-accent);
-    }
-  }
-
-  [data-section].is-active {
-    .neighborhood-body {
-      display: block;
-      color: var(--color-text);
-    }
-  }
-
-  /* Written neighborhoods render their writeup expanded, so the row gets more
-     breathing room top + bottom than the List default (var(--spacing-xs)). The
-     `ul.list >` combinator is needed to outweigh List.astro's own `> li` rule;
-     left/right stay on the shared `ul.list > li` padding above. */
+  /* Written neighborhoods render their (clamped) writeup inline, so the row gets
+     more breathing room top + bottom than the List default (var(--spacing-xs)).
+     The `ul.list >` combinator outweighs List.astro's own `> li` rule. */
   ul.list > li.is-written {
     padding-block: var(--spacing-md);
   }
-
-  [data-section].is-written .neighborhood-body {
-    display: block;
-    color: var(--color-text);
-  }
-
-  .neighborhood-food {
-    margin-block-start: var(--spacing-md);
-
-    h3 {
-      margin: 0 0 var(--spacing-sm);
-      font-family: var(--font-mono);
-      font-size: var(--font-size-xs);
-      text-transform: uppercase;
-      letter-spacing: var(--letter-spacing);
-      color: var(--color-text-muted);
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      font-family: var(--font-mono);
-      font-size: var(--font-size-sm);
-    }
-
-    a {
-      color: var(--color-text);
-
-      &:hover {
-        text-decoration-color: var(--color-accent);
-      }
-    }
-  }
 }
 
-/* Shared Food/Hikes list-item layout + controls (markup in FilterListItem; the
+/* Shared Food/Hikes list-item layout + controls (markup in MapRow; the
    meta/chips come from each page's slots, so these are global — not component
    scoped — to reach that slotted content). */
 /* Indent the open panel past the rating badge so it lines up with the row's
    text content instead of starting under the badge. */
-.list-with-map .list-description {
+.map-list .list-description {
   margin-left: calc(var(--spacing-md) + 56px);
   margin-top: var(--spacing-sm);
 
@@ -808,14 +750,16 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Food shows the teaser inline on every row (no disclosure, no lead badge), so
-   align it under the row text instead of indenting past a nonexistent badge. */
-.list-with-map.food-grouped .list-description {
+/* Food + Neighborhoods show the teaser inline on every row (no lead badge), so
+   align the panel under the row text instead of indenting past a nonexistent
+   badge (only Hikes, with its rating badge, keeps the indent above). */
+.map-list.food-grouped .list-description,
+.map-list.section-list .list-description {
   margin-left: 0;
 }
 
 /* The website + Google Maps links sit on one row in the open panel. */
-.list-with-map .list-description .place-links {
+.map-list .list-description .place-links {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
@@ -827,14 +771,39 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Food list (always-open rows): keep the actions row quiet so 22 of them don't
-   shout — a low-key accent "Read more →", a bullet, then the sources as muted
-   text links instead of buttons. Sits under the teaser. */
-.list-with-map.food-grouped .list-description .place-links {
+/* Food + Neighborhood lists (always-open rows): keep the actions row quiet so a
+   long list doesn't shout — a low-key accent "Read more →" then the sources as
+   muted text links instead of buttons. Sits under the teaser. */
+.map-list.food-grouped .list-description .place-links,
+.map-list.section-list .list-description .place-links {
   align-items: center;
   column-gap: var(--spacing-md);
   row-gap: var(--spacing-xs);
   margin-block: var(--spacing-sm) 0;
+}
+
+/* Neighborhoods list (a section list, no lead badge): the title reads as a body
+   heading (not the mono Food title), the number sits quiet ahead of it, and the
+   open panel holds a clamped render of the writeup with accent list markers. */
+
+.map-list.section-list .number {
+  color: var(--color-text-muted);
+}
+
+.map-list.section-list .neighborhood-preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+
+  ul {
+    list-style: disc;
+  }
+
+  ::marker {
+    color: var(--color-accent);
+  }
 }
 
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
@@ -843,7 +812,7 @@ body:has(.map-split) main > .wrap,
 .resource-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   margin-block-start: var(--spacing-sm);
 }
 
@@ -877,18 +846,18 @@ body:has([data-neighborhood-map]) .river-border {
 }
 
 /* A row is a rating badge (left) beside the place details (right). */
-.list-with-map .list-details {
+.map-list .list-details {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
 }
 
-.list-with-map .list-lead {
+.map-list .list-lead {
   flex-shrink: 0;
   width: 56px;
 }
 
-.list-with-map .list-main {
+.map-list .list-main {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -897,7 +866,7 @@ body:has([data-neighborhood-map]) .river-border {
 }
 
 /* Row 1: headline (name + neighborhood) on the left, cuisine chips on the right. */
-.list-with-map .list-row {
+.map-list .list-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -905,7 +874,7 @@ body:has([data-neighborhood-map]) .river-border {
   width: 100%;
 }
 
-.list-with-map .list-headline {
+.map-list .list-headline {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
@@ -915,12 +884,12 @@ body:has([data-neighborhood-map]) .river-border {
   line-height: 1.1;
 }
 
-.list-with-map .list-dot {
+.map-list .list-dot {
   color: var(--color-text-muted);
 }
 
 /* Row 2: the address (and any other muted second-line meta). */
-.list-with-map .list-sub {
+.map-list .list-sub {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -931,13 +900,13 @@ body:has([data-neighborhood-map]) .river-border {
   font-family: var(--font-mono);
 }
 
-.list-with-map .chips {
+.map-list .chips {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
 }
 
-.list-with-map .list-meta {
+.map-list .list-meta {
   font-family: var(--font-body);
   font-size: var(--font-size-md);
   color: var(--color-text-muted);
@@ -945,7 +914,7 @@ body:has([data-neighborhood-map]) .river-border {
 
 /* The title toggles its row open/closed; reads like a heading, not a button or a
    link. (In map view it's also clickable to open the place's popup.) */
-.list-with-map .list-title {
+.map-list .list-title {
   display: block;
   padding: 0;
   border: 0;
@@ -956,27 +925,29 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-text);
   text-decoration: none;
   font-size: var(--font-size-label);
+  font-family: var(--font-mono);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
-.list-with-map a.list-title {
+.map-list a.list-title {
   cursor: pointer;
 }
 
-.list-with-map a.list-title:hover {
+.map-list a.list-title:hover {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
 }
 
-.list-with-map button.list-meta-filter {
+.map-list button.list-meta-filter {
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
 }
 
-.list-with-map button.list-meta-filter:hover {
+.map-list button.list-meta-filter:hover {
   color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -984,11 +955,11 @@ body:has([data-neighborhood-map]) .river-border {
 
 /* Pills that filter the list when clicked (cuisine, difficulty); a plain span
    pill (e.g. hike distance) is non-interactive. */
-.list-with-map .list-description .more {
+.map-list .list-description .more {
   margin-block-start: var(--spacing-sm);
 }
 
-[data-view='map'] .list-with-map {
+[data-view='map'] .map-list {
   min-height: 0;
   overflow-y: auto;
   /* Offset the sticky .list-pane-header so a marker-selected row scrolls to just
@@ -1010,7 +981,7 @@ body:has([data-neighborhood-map]) .river-border {
 /* Keep the empty-state in the list's grid cell so it can't add a third grid
    track that shoves the map. It overlaps the (now-empty) list pane and only
    shows when no rows match; centered so it clears the sticky list header. */
-[data-view='map'] .list-with-map,
+[data-view='map'] .map-list,
 [data-view='map'] [data-filter-empty] {
   grid-column: 1;
   grid-row: 1;
@@ -1028,7 +999,7 @@ body:has([data-neighborhood-map]) .river-border {
     grid-template-columns: 1fr;
   }
 
-  [data-view='map'] .list-with-map,
+  [data-view='map'] .map-list,
   [data-view='map'] [data-filter-empty] {
     display: none;
   }
@@ -1056,7 +1027,7 @@ body:has([data-neighborhood-map]) .river-border {
    Food: grouped-by-verdict list
    The Food list groups its rows under Loved / Liked / Fine headers (alphabetical
    within each); a colored left bar on each row carries the verdict instead of a
-   word. These live here (not component-scoped) so they reach the FilterListItem
+   word. These live here (not component-scoped) so they reach the MapRow
    rows, which render in their own scope.
    --------------------------------------------------------------------------- */
 
@@ -1115,10 +1086,15 @@ body:has([data-neighborhood-map]) .river-border {
    Lives here (not Chip's scoped style) so the dynamically-applied `round` class
    isn't pruned as "unused" during Chip's scoped-CSS analysis. */
 .chip.round {
-  padding: 5px !important;
+  padding: 4px !important;
   aspect-ratio: 1;
   justify-content: center;
   border-radius: 50% !important;
+
+  svg {
+    height: 12px;
+    width: 12px;
+  }
 }
 
 /* List-pane header (Food + Neighborhoods): a section title + count on the left,
@@ -1468,14 +1444,16 @@ body:has([data-filter-root]) .site-header {
     margin-block-end: var(--spacing-sm);
     font-size: var(--font-size-label);
     white-space: nowrap;
-    font-family: var(--font-body);
 
     a {
+      font-family: var(--font-mono);
+      letter-spacing: -0.02rem;
       font-weight: 700;
       color: var(--color-text);
       text-decoration: none;
 
       &:hover {
+        text-decoration-thickness: 2px !important;
         text-decoration: underline;
         text-decoration-color: var(--color-accent);
       }
@@ -1559,6 +1537,7 @@ body:has([data-filter-root]) .site-header {
 
 .leaflet-popup.food-popup .popup-more-link:hover {
   text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {
@@ -1692,6 +1671,11 @@ body:has([data-filter-root]) .site-header {
   gap: var(--spacing-xs);
   padding: 0;
   color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 4px;
 }
 
 .btn-quiet:hover {
@@ -1942,7 +1926,7 @@ body:has([data-filter-root]) .site-header {
      blue-and-white wave on red, repeated seamlessly. Flag colors are fixed in
      both themes. Tweak the height (60–100px) to taste. */
 .river-border {
-  height: 16px;
+  height: 14px;
   background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
 }
 

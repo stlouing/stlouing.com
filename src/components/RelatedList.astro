@@ -1,0 +1,42 @@
+---
+// A titled list of related entries (more food on a food page, the food + bordering
+// neighborhoods on a neighborhood page) — one row per item (see RelatedCard.astro).
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<section class="related">
+  <h2>{title}</h2>
+  <div class="related-list">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .related {
+    margin-block-start: var(--spacing-lg);
+  }
+
+  /* Match the related-section headings elsewhere: quiet mono uppercase. */
+  .related h2 {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  /* A bordered frame around the rows; overflow clips the row dividers to the
+     rounded corners. */
+  .related-list {
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+</style>
