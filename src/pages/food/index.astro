@@ -145,7 +145,10 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
               {hasBody(place) && <div class="food-preview">{excerpt(place.body, 160)}</div>}
               <div class="place-links">
                 {hasBody(place) && (
-                  <a class="place-more" href={href(`/food/${place.id}`)}>
+                  <a
+                    class="place-more"
+                    href={href(`/food/${place.id}`)}
+                    aria-label={`Read more about ${place.data.title}`}>
                     Read more <IconArrowRight />
                   </a>
                 )}

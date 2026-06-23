@@ -12,7 +12,13 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../lib/site'
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://stlouing.com')
   const origin = site.href.replace(/\/$/, '')
-  const absolute = (html: string) => html.replace(/(href|src)="\//g, `$1="${origin}/`)
+  // Make in-content links absolute: root-relative ("/...") against the origin, and
+  // bare "#fragment" anchors against the item's own page (a feed has no base URL,
+  // so a relative "#x" is invalid in content:encoded).
+  const absolutize = (html: string, path: string) =>
+    html
+      .replace(/(href|src)="\//g, `$1="${origin}/`)
+      .replace(/(href|src)="#/g, `$1="${origin}${path}#`)
 
   const container = await AstroContainer.create()
 
@@ -22,13 +28,14 @@ export async function GET(context: APIContext) {
   const noteItems = await Promise.all(
     notes.map(async (note) => {
       const { Content } = await render(note)
+      const link = `/notes/${note.id}/`
 
       return {
         title: note.data.title,
         pubDate: note.data.date,
         description: note.data.description ?? excerpt(note.body),
-        content: absolute(await container.renderToString(Content)),
-        link: `/notes/${note.id}/`,
+        content: absolutize(await container.renderToString(Content), link),
+        link,
       }
     }),
   )
@@ -36,13 +43,14 @@ export async function GET(context: APIContext) {
   const topicItems = await Promise.all(
     topics.map(async (topic) => {
       const { Content } = await render(topic)
+      const link = `/${topic.id}/`
 
       return {
         title: topic.data.title,
         pubDate: topic.data.updated,
         description: topic.data.description ?? excerpt(topic.body),
-        content: absolute(await container.renderToString(Content)),
-        link: `/${topic.id}/`,
+        content: absolutize(await container.renderToString(Content), link),
+        link,
       }
     }),
   )
@@ -52,13 +60,14 @@ export async function GET(context: APIContext) {
   const foodItems = await Promise.all(
     food.map(async (place) => {
       const { Content } = await render(place)
+      const link = `/food/${place.id}/`
 
       return {
         title: place.data.title,
         pubDate: place.data.date as Date,
         description: excerpt(place.body),
-        content: absolute(await container.renderToString(Content)),
-        link: `/food/${place.id}/`,
+        content: absolutize(await container.renderToString(Content), link),
+        link,
       }
     }),
   )
@@ -67,5 +76,14 @@ export async function GET(context: APIContext) {
     (left, right) => right.pubDate.valueOf() - left.pubDate.valueOf(),
   )
 
-  return rss({ title: SITE_TITLE, description: SITE_DESCRIPTION, site, items })
+  return rss({
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    site,
+    items,
+    // Advertise the feed's own canonical URL (atom:self), per feed-validator best
+    // practice — helps aggregators dedupe and re-find the feed.
+    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
+    customData: `<atom:link href="${origin}/rss.xml" rel="self" type="application/rss+xml" />`,
+  })
 }

@@ -43,7 +43,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     <p class="tagline p-note">{tagline}</p>
     <p class="introduction">
       {intro}
-      <a class="more inline" href={href('/about')}>Read more <IconArrowRight /></a>
+      <a class="more inline" href={href('/about')} aria-label="Read more about St. Louing">
+        Read more <IconArrowRight />
+      </a>
     </p>
     {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
     <span class="p-name" hidden>St. Louing</span>

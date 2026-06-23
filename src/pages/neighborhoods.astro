@@ -131,7 +131,10 @@ function popupData(slug: string, name: string, group: string) {
                           <Content />
                         </div>
                         <div class="resource-bar">
-                          <a class="place-more" href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                          <a
+                            class="place-more"
+                            href={href(`/neighborhoods/${neighborhood.slug}`)}
+                            aria-label={`Read more about ${neighborhood.name}`}>
                             Read more <IconArrowRight />
                           </a>
                           {resourceLinks.map((link) => (

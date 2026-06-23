@@ -78,7 +78,7 @@ const {
     <slot />
     {
       readMore && (
-        <a class="more" href={href(detailHref)}>
+        <a class="more" href={href(detailHref)} aria-label={`Read more about ${title}`}>
           Read more <IconArrowRight />
         </a>
       )
