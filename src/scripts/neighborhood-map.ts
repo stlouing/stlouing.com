@@ -173,7 +173,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       ? `<div class="popup-meta"><span class="popup-chip">${escapeHtml(area)}</span></div>`
       : ''
     const excerptHtml = excerptText ? `<p class="tip-excerpt">${escapeHtml(excerptText)}</p>` : ''
-    const moreHtml = excerptText ? `<a class="popup-more-link" href="${link}">View more</a>` : ''
+    // Every neighborhood has its own page (a writeup or the computed data layer),
+    // so "View more" always shows — not just when there's a writeup excerpt.
+    const moreHtml = `<a class="popup-more-link" href="${link}">View more</a>`
     const sources = [
       official &&
         `<a class="popup-btn" href="${official}" target="_blank" rel="noopener">Website</a>`,

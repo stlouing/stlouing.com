@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 import neighborhoods from '../data/neighborhoods.json'
 import geo from '../data/neighborhood-geo.json'
 import festivals from '../data/festivals.json'
+import population from '../data/neighborhood-population.json'
 import { published } from './content'
 
 // Match neighborhood names loosely (lowercase, alphanumerics only) so e.g.
@@ -73,6 +74,23 @@ const infoBySlug = new Map<string, NeighborhoodInfo>(
 
 export function neighborhoodInfo(slug: string): NeighborhoodInfo | undefined {
   return infoBySlug.get(slug)
+}
+
+// 2020 U.S. Census population for a neighborhood, or undefined where there's none
+// (parks/cemeteries). See scripts/build-neighborhood-population.mjs.
+export function neighborhoodPopulation(slug: string): number | undefined {
+  return (population as Record<string, number>)[slug]
+}
+
+// The generated "Neighborhood #X, in St. Louis's <region>" line — the default
+// page lede and the map popup's preview text when a neighborhood has no writeup.
+export function neighborhoodGeneratedSummary(slug: string): string | undefined {
+  const info = infoBySlug.get(slug)
+  if (!info) {
+    return undefined
+  }
+
+  return `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
 }
 
 // Neighborhoods that share a boundary with the given one, resolved from the

@@ -27,7 +27,7 @@ const description =
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">
-        <h1>Want to try</h1>
+        <h1>Want to Try</h1>
         <span class="count">{wishlist.length}</span>
       </div>
       <p class="entry-summary">The running list of places I still need to get to.</p>
@@ -40,7 +40,7 @@ const description =
           <p class="description">
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
-          <nav class="backlinks">
+          <nav class="backlinks grid">
             <ul>
               {wishlist.map((item) => (
                 <li>
@@ -68,7 +68,7 @@ const description =
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
-          <nav class="backlinks">
+          <nav class="backlinks grid">
             <ul>
               {beenTried.map((item) => (
                 <li>
@@ -94,7 +94,7 @@ const description =
           <p class="description">
             Restaurants I've visited that have closed down and no longer exist.
           </p>
-          <nav class="backlinks">
+          <nav class="backlinks grid">
             <ul>
               {inMemoriam.map((item) => (
                 <li>

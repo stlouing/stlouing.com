@@ -7,7 +7,7 @@ import SourceLink from '../components/SourceLink.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
 import { published, excerpt } from '../lib/content'
-import { neighborhoodResourceLinks } from '../lib/neighborhoods'
+import { neighborhoodResourceLinks, neighborhoodGeneratedSummary } from '../lib/neighborhoods'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
@@ -47,7 +47,13 @@ function popupData(slug: string, name: string, group: string) {
     wikipedia: hrefFor('Wikipedia'),
     city: hrefFor('City of St. Louis'),
     niche: hrefFor('Niche'),
-    excerpt: entry?.body ? excerpt(entry.body, 150) : undefined,
+    // Preview text for the map popup: the writeup excerpt when there is one,
+    // otherwise a manual description, then the generated "Neighborhood #X" line —
+    // so every neighborhood's popup has a teaser + "View more" to its page.
+    excerpt:
+      entry?.body !== undefined && entry.body.length > 0
+        ? excerpt(entry.body, 150)
+        : (entry?.data.description ?? neighborhoodGeneratedSummary(slug)),
   }
 }
 ---
@@ -163,7 +169,7 @@ function popupData(slug: string, name: string, group: string) {
   }
 
   .number {
-    color: var(--color-accent);
+    color: var(--color-text-muted);
   }
 
   /* Section header above each group (Explored / The rest): a quiet label with its

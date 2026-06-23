@@ -1,0 +1,87 @@
+---
+// A small "by the numbers" sidebar card for a neighborhood. Population only for
+// now (2020 U.S. Census). Renders nothing when there's no data — e.g. a park or
+// cemetery has no residential population.
+interface Props {
+  population?: number
+}
+
+const { population } = Astro.props
+const hasFacts = population != null
+---
+
+{
+  hasFacts && (
+    <aside class="side-card">
+      <h2 class="side-card-label">By the numbers</h2>
+      <dl class="facts">
+        {population != null && (
+          <div class="fact">
+            <dt>Population</dt>
+            <dd>{population.toLocaleString('en-US')}</dd>
+          </div>
+        )}
+      </dl>
+      <p class="fact-source">2020 U.S. Census</p>
+    </aside>
+  )
+}
+
+<style>
+  .side-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    background: var(--color-surface);
+  }
+
+  .side-card-label {
+    margin: 0 0 var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 700px) {
+    .side-card {
+      padding: var(--spacing-sm);
+    }
+  }
+
+  .facts {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .fact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+
+  .fact dt {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .fact dd {
+    margin: 0;
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fact-source {
+    margin: var(--spacing-sm) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    color: var(--color-text-muted);
+  }
+</style>

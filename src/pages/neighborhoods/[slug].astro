@@ -11,12 +11,15 @@ import {
   foodByNeighborhood,
   normalizeName,
   neighborhoodInfo,
+  neighborhoodPopulation,
+  neighborhoodGeneratedSummary,
   neighborsOf,
   festivalsIn,
   neighborhoodResourceLinks,
 } from '../../lib/neighborhoods'
 import neighborhoods from '../../data/neighborhoods.json'
 import SourceLink from '../../components/SourceLink.astro'
+import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
 
 // A page for EVERY real neighborhood, not just the ones with a writeup. Where a
 // markdown file exists its prose is rendered; otherwise the page still stands on
@@ -46,6 +49,7 @@ const backlinks = entry ? await getBacklinks(entry.id) : []
 const tags = entry?.data.tags ?? []
 
 // Computed data layer.
+const population = neighborhoodPopulation(slug)
 const neighbors = neighborsOf(slug)
 const festivals = festivalsIn(slug)
 const placesByNeighborhood = await foodByNeighborhood()
@@ -56,9 +60,7 @@ const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
 // The generated fallback line for a neighborhood without its own summary.
-const generated = info
-  ? `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
-  : undefined
+const generated = neighborhoodGeneratedSummary(slug)
 
 // On-page summary under the title: a manual `description` when set, otherwise the
 // generated line. Deliberately NOT the writeup excerpt — that just repeats the
@@ -100,73 +102,118 @@ const trail = [
         </div>
       )
     }
-    <figure class="locator-figure">
-      <NeighborhoodLocator slug={slug} name={title} />
-      <figcaption>Location of {title} within St. Louis</figcaption>
-    </figure>
+    <div class="neighborhood-layout">
+      <aside class="neighborhood-aside">
+        <NeighborhoodFacts population={population} />
+        <figure class="locator-figure">
+          <NeighborhoodLocator slug={slug} name={title} />
+          <figcaption>Location of {title} within St. Louis</figcaption>
+        </figure>
+      </aside>
+      <div class="neighborhood-main">
+        {Content && <Content />}
 
-    {Content && <Content />}
+        {
+          festivals.length > 0 && (
+            <nav class="backlinks">
+              <h2>Annual events</h2>
+              <ul>
+                {festivals.map((festival) => (
+                  <li>
+                    <span class="list-title-item">{festival.name}</span>
+                    <span class="collection">{festival.when}</span>
+                    <p class="event-note">{festival.blurb}</p>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
 
-    {
-      festivals.length > 0 && (
-        <nav class="backlinks">
-          <h2>Annual events</h2>
-          <ul>
-            {festivals.map((festival) => (
-              <li>
-                <span class="list-title-item">{festival.name}</span>
-                <span class="collection">{festival.when}</span>
-                <p class="event-note">{festival.blurb}</p>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )
-    }
+        {
+          places.length > 0 && (
+            <nav class="backlinks">
+              <h2>Food</h2>
+              <ul>
+                {places.map((place) => (
+                  <li>
+                    <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                    <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
+                      {place.data.cuisine[0]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
 
-    {
-      places.length > 0 && (
-        <nav class="backlinks">
-          <h2>Food</h2>
-          <ul>
-            {places.map((place) => (
-              <li>
-                <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
-                  {place.data.cuisine[0]}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )
-    }
-
-    {
-      neighbors.length > 0 && (
-        <nav class="backlinks grid">
-          <h2>Borders</h2>
-          <ul>
-            {neighbors.map((neighbor) => (
-              <li>
-                <a href={href(`/neighborhoods/${neighbor.slug}`)}>{neighbor.name}</a>
-                <span class="collection">{neighbor.group}</span>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )
-    }
+        {
+          neighbors.length > 0 && (
+            <nav class="backlinks grid">
+              <h2>Borders</h2>
+              <ul>
+                {neighbors.map((neighbor) => (
+                  <li>
+                    <a href={href(`/neighborhoods/${neighbor.slug}`)}>{neighbor.name}</a>
+                    <span class="collection">{neighbor.group}</span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
+      </div>
+    </div>
   </Entry>
 </BaseLayout>
 
 <style>
-  /* The locator map floats beside the prose (or sits at the top of the data
-     layer when a neighborhood has no writeup yet). */
+  /* Writeup + sidebar (locator map + facts), mirroring the Food detail page. One
+     column until there's room for the aside alongside. */
+  .neighborhood-layout {
+    display: grid;
+    gap: var(--spacing-lg);
+    margin-block-start: var(--spacing-md);
+  }
+
+  .neighborhood-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  @media screen and (min-width: 900px) {
+    .neighborhood-layout {
+      grid-template-columns: minmax(0, 1fr) 220px;
+      align-items: start;
+      gap: 2.5rem;
+    }
+
+    /* DOM order is aside-then-main so the locator + facts lead on mobile; on
+       desktop they're placed back into the right column. */
+    .neighborhood-main {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .neighborhood-aside {
+      grid-column: 2;
+      grid-row: 1;
+      position: sticky;
+      top: calc(var(--header-height, 4rem) + var(--spacing-md));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .side-card {
+      padding: var(--spacing-sm);
+    }
+  }
+
   .locator-figure {
-    float: right;
-    width: clamp(110px, 28%, 150px);
-    margin: var(--spacing-xs) 0 var(--spacing-md) var(--spacing-lg);
+    width: 100%;
+    margin: 0 auto;
   }
 
   .locator-figure :global(svg) {
@@ -197,11 +244,10 @@ const trail = [
     color: var(--color-text-article);
   }
 
+  /* The tall locator SVG reads poorly stacked on mobile; the facts card stays. */
   @media screen and (max-width: 700px) {
     .locator-figure {
-      float: none;
-      width: 140px;
-      margin-inline: 0;
+      display: none;
     }
   }
 </style>

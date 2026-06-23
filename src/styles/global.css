@@ -36,6 +36,7 @@
   --font-size-xs: 0.8rem;
   --font-size-sm: 0.9rem;
   --font-size-md: 1rem;
+  --font-size-label: 1.1rem;
   --font-size-lg: 1.2rem;
 
   /* Type scale + rhythm */
@@ -628,7 +629,7 @@ body:has(.map-split) main > .wrap,
   border-radius: 50%;
   color: var(--color-text);
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -685,7 +686,14 @@ body:has(.map-split) main > .wrap,
     }
   }
 
-  /* Written neighborhoods show their writeup expanded by default (no click). */
+  /* Written neighborhoods render their writeup expanded, so the row gets more
+     breathing room top + bottom than the List default (var(--spacing-xs)). The
+     `ul.list >` combinator is needed to outweigh List.astro's own `> li` rule;
+     left/right stay on the shared `ul.list > li` padding above. */
+  ul.list > li.is-written {
+    padding-block: var(--spacing-md);
+  }
+
   [data-section].is-written .neighborhood-body {
     display: block;
     color: var(--color-text);
@@ -1544,7 +1552,7 @@ body:has([data-filter-root]) .site-header {
   h2 {
     margin-block-start: 0;
     margin-block-end: var(--spacing-sm);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-label);
     white-space: nowrap;
     font-family: var(--font-body);
 
@@ -1857,6 +1865,20 @@ a.share-button {
 .backlinks.grid ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 700px) {
+  .backlinks.grid ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .backlinks.grid ul {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 }
 
 .chips {
