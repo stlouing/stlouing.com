@@ -88,7 +88,7 @@ export function initWikilinkPreviews(): void {
       meta.className = 'wikilink-card-meta'
       preview.cuisine?.forEach((cuisine, index) => {
         const chip = document.createElement('span')
-        chip.className = 'wikilink-card-chip'
+        chip.className = 'chip'
         chip.textContent = index === 0 && preview.emoji ? `${preview.emoji} ${cuisine}` : cuisine
         meta.appendChild(chip)
       })

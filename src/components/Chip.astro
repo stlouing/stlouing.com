@@ -23,26 +23,3 @@ const { href: chipHref, class: className, round = false, ...rest } = Astro.props
     </span>
   )
 }
-
-<style>
-  .chip {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    color: var(--chip-color, var(--color-text-muted));
-    border: 1px solid var(--chip-border, var(--color-line-input));
-    border-radius: 20px;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    text-decoration: none;
-    line-height: 1;
-    font-weight: 500;
-    background: var(--color-surface);
-  }
-
-  a.chip:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-</style>

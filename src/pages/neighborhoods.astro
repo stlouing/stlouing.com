@@ -70,9 +70,9 @@ function popupData(slug: string, name: string, group: string) {
             <span class="pane-count">{count}</span>
           </span>
           <ul class="region-legend" aria-label="Map regions">
-            <li class="region-legend-item region-north">North</li>
-            <li class="region-legend-item region-central">Central</li>
-            <li class="region-legend-item region-south">South</li>
+            <li class="chip chip-region region-north">North</li>
+            <li class="chip chip-region region-central">Central</li>
+            <li class="chip chip-region region-south">South</li>
           </ul>
         </div>
         <List>
@@ -238,30 +238,6 @@ function popupData(slug: string, name: string, group: string) {
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  .region-legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    margin: 0;
-    padding: 2px var(--spacing-sm);
-    border: 1px solid var(--color-line-input);
-    border-radius: 20px;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    color: var(--color-text-muted);
-    white-space: nowrap;
-    font-weight: 500;
-  }
-
-  .region-legend-item::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--legend-color);
-    flex-shrink: 0;
   }
 
   .region-north {

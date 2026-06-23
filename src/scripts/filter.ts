@@ -49,7 +49,7 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
       const facetLabel = facet.dataset.filterLabel ?? facetKey
       const chip = document.createElement('button')
       chip.type = 'button'
-      chip.className = 'filter-chip'
+      chip.className = 'chip chip-filter'
       chip.dataset.removeFacet = facetKey
       chip.setAttribute('aria-label', `Remove ${facetLabel} filter`)
 
