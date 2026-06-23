@@ -9,6 +9,10 @@ address:
 coords: [38.5922088, -90.2731165]
 url: https://budspizzabeer.com
 instagram: https://www.instagram.com/budspizzabeer
+pick:
+  name: Toasted Ravioli
+  note: Homemade, my favorite in St. Louis
+  emoji: 🥟
 ---
 
 After my favorite New York-style pizza place in town closed down, I was on the lookout for a good pizza place. I heard of Bud's Pizza and Beer being comparable, so I went to check it out, and it did not disappoint! The ambiance is great, it has cozy vintage vibes, plenty of seating, and I've always had good service here.

@@ -9,6 +9,9 @@ address:
 coords: [38.6094345, -90.3650895]
 url: https://www.farottos.com
 instagram: https://www.instagram.com/farottos
+pick:
+  name: STL Sticks
+  note: Crispy, breaded, fried melty Provel sticks
 ---
 
 Farotto's is is a family-owned restaurant that has been making pizzas since 1956, making it one of the oldest ones as far as I can tell (Imo's began in 1964). It's my top-rated spot for St. Louis-style pizza - their pizza has an extra-extra-thin crust and has a buttery and flaky aspect to it that I haven't experienced at any other pizza place. The sauce is slightly sweet but balanced, and blends well with the melted Provel.

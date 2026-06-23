@@ -114,7 +114,7 @@ const trail = [
           <ul>
             {festivals.map((festival) => (
               <li>
-                <span class="event-name">{festival.name}</span>
+                <span class="list-title-item">{festival.name}</span>
                 <span class="collection">{festival.when}</span>
                 <p class="event-note">{festival.blurb}</p>
               </li>
@@ -131,9 +131,7 @@ const trail = [
           <ul>
             {places.map((place) => (
               <li>
-                <a href={href(`/food/${place.id}`)}>
-                  {place.data.title}
-                </a>
+                <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
                 <a class="collection" href={href(`/food?cuisine=${place.data.cuisine[0]}`)}>
                   {place.data.cuisine[0]}
                 </a>
@@ -151,9 +149,7 @@ const trail = [
           <ul>
             {neighbors.map((neighbor) => (
               <li>
-                <a href={href(`/neighborhoods/${neighbor.slug}`)}>
-                  {neighbor.name}
-                </a>
+                <a href={href(`/neighborhoods/${neighbor.slug}`)}>{neighbor.name}</a>
                 <span class="collection">{neighbor.group}</span>
               </li>
             ))}
@@ -161,7 +157,6 @@ const trail = [
         </nav>
       )
     }
-
   </Entry>
 </BaseLayout>
 
@@ -188,9 +183,7 @@ const trail = [
     text-align: center;
   }
 
-  /* Annual events read as a titled entry: a mono bold name, then the blurb as
-     normal body text on its own line (the .backlinks default is mono throughout). */
-  .event-name {
+  .list-title-item {
     font-weight: 700;
     color: var(--color-text);
     font-size: var(--font-size-md);

@@ -44,7 +44,7 @@ const description =
             <ul>
               {wishlist.map((item) => (
                 <li>
-                  <span>{item.name}</span>
+                  <span class="list-title-item">{item.name}</span>
                   {item.cuisine && item.cuisine.length > 0 && (
                     <span class="collection">{item.cuisine.join(', ')}</span>
                   )}
@@ -72,7 +72,7 @@ const description =
             <ul>
               {beenTried.map((item) => (
                 <li>
-                  <span>{item.name}</span>
+                  <span class="list-title-item">{item.name}</span>
                   {item.cuisine && item.cuisine.length > 0 && (
                     <span class="collection">{item.cuisine.join(', ')}</span>
                   )}
@@ -98,7 +98,7 @@ const description =
             <ul>
               {inMemoriam.map((item) => (
                 <li>
-                  <span>{item.name}</span>
+                  <span class="list-title-item">{item.name}</span>
                   {item.cuisine && item.cuisine.length > 0 && (
                     <span class="collection">{item.cuisine.join(', ')}</span>
                   )}
@@ -118,11 +118,6 @@ const description =
     font-family: var(--font-mono);
     font-size: var(--font-size-md);
     color: var(--color-text-muted);
-  }
-
-  /* Each place name reads a touch heavier than the cuisine label beside it. */
-  .backlinks li > span:not(.collection) {
-    font-weight: 600;
   }
 
   /* Each section: a normal h2 + a line of description, then the compact list.

@@ -633,6 +633,12 @@ body:has(.map-split) main > .wrap,
   white-space: nowrap;
 }
 
+@media (max-width: 700px) {
+  .neighborhood-number {
+    font-size: 12px;
+  }
+}
+
 .content-pane {
   /* The shared .list-pane-header sits at the top of the scrolling pane. Not
      selectable, so dragging a selection across it can't trigger the
@@ -933,7 +939,6 @@ body:has([data-neighborhood-map]) .river-border {
   font-family: inherit;
   font-weight: 700;
   color: var(--color-text);
-  font-size: var(--font-size-lg);
   text-decoration: none;
 }
 
@@ -1829,7 +1834,7 @@ a.share-button {
   /* The row title — body face, a step up from the mono sub, and unadorned until
      hover so it reads as a heading rather than a link. */
   li > a:not(.collection),
-  .event-name {
+  .list-title-item {
     font-family: var(--font-body);
     font-size: var(--font-size-md);
     font-weight: 700;

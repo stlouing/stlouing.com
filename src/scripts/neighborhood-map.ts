@@ -75,6 +75,17 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   const autoPanPaddingTopLeft = L.point(16, headerHeight + 16)
   const autoPanPaddingBottomRight = L.point(16, 24)
 
+  // Bottom edge (viewport px) of the sticky chrome above the map — the site
+  // header. A popup opened near the top is nudged below this (mirrors the Food map).
+  function topChromeBottom(): number {
+    return ['.site-header', '.secondary-header']
+      .map((selector) => document.querySelector<HTMLElement>(selector))
+      .reduce(
+        (bottom, node) => (node ? Math.max(bottom, node.getBoundingClientRect().bottom) : bottom),
+        0,
+      )
+  }
+
   const colorBySlug = new Map<string, string>()
   function baseStyleFor(slug: string): L.PathOptions {
     const color = colorBySlug.get(slug) ?? colorCentral
@@ -210,9 +221,36 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         autoPanPaddingBottomRight,
       })
       featureLayer.on('popupopen', () => {
-        if (slug) {
-          activate(slug)
+        if (!slug) {
+          return
         }
+        activate(slug)
+        // Mirror the Food map: nudge the popup clear of the sticky header (top)
+        // and the map's left/right edges, rather than leaving it to Leaflet's
+        // autoPan (which jerks the map around, especially on mobile).
+        requestAnimationFrame(() => {
+          const popupEl = featureLayer.getPopup()?.getElement()
+          if (!popupEl) {
+            return
+          }
+          const popupRect = popupEl.getBoundingClientRect()
+          const mapRect = map.getContainer().getBoundingClientRect()
+          const pad = 16
+          const topLimit = topChromeBottom() + 8
+          let dx = 0
+          let dy = 0
+          if (popupRect.top < topLimit) {
+            dy = popupRect.top - topLimit
+          }
+          if (popupRect.left < mapRect.left + pad) {
+            dx = popupRect.left - (mapRect.left + pad)
+          } else if (popupRect.right > mapRect.right - pad) {
+            dx = popupRect.right - (mapRect.right - pad)
+          }
+          if (dx !== 0 || dy !== 0) {
+            map.panBy([dx, dy], { animate: true })
+          }
+        })
       })
       featureLayer.on('popupclose', () => {
         if (slug) {
