@@ -72,8 +72,8 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
           <span class="pane-count"><span data-filter-count>{count}</span> places</span>
         </span>
         <div class="pane-links">
-          <a class="pane-link" href={href('/best')}>Best of </a>
-          <a class="pane-link" href={href('/food/want-to-try')}>
+          <a class="btn btn-outline btn-compact" href={href('/best')}>Best of </a>
+          <a class="btn btn-outline btn-compact" href={href('/food/want-to-try')}>
             Want to try <IconArrowRight />
           </a>
         </div>
@@ -146,15 +146,15 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
               <div class="place-links">
                 {hasBody(place) && (
                   <a
-                    class="place-more"
+                    class="btn btn-quiet"
                     href={href(`/food/${place.id}`)}
                     aria-label={`Read more about ${place.data.title}`}>
                     Read more <IconArrowRight />
                   </a>
                 )}
-                <SourceLink href={place.data.url} label="Website" />
-                <SourceLink href={place.data.instagram} />
-                <SourceLink href={googleMapsHref(place.data)} label="Directions" />
+                <SourceLink href={place.data.url} label="Website" variant="muted" />
+                <SourceLink href={place.data.instagram} variant="muted" />
+                <SourceLink href={googleMapsHref(place.data)} label="Directions" variant="muted" />
               </div>
             </FilterListItem>
           ))
@@ -185,28 +185,5 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-  }
-
-  .pane-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    white-space: nowrap;
-    padding: 2px var(--spacing-sm);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-  }
-
-  .pane-link .icon {
-    color: inherit;
-  }
-
-  .pane-link:hover {
-    color: var(--color-accent);
   }
 </style>

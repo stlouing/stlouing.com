@@ -9,6 +9,7 @@
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
 import ShareButton from './ShareButton.astro'
+import Button from './Button.astro'
 import NewsletterSignup from './NewsletterSignup.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
@@ -58,7 +59,7 @@ const isArticle = Boolean(permalink)
     <NewsletterSignup compact />
     <div class="share-bar">
       <ShareButton title={title} label="Share this page" class="share-footer" />
-      <a class="share-button" href={href('/feedback')}>Leave Feedback</a>
+      <Button href={href('/feedback')}>Leave Feedback</Button>
     </div>
   </footer>
 </article>

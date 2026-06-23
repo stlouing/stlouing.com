@@ -772,55 +772,6 @@ body:has(.map-split) main > .wrap,
   margin-block: var(--spacing-sm) 0;
 }
 
-/* Quiet accent "Read more →" link in the Food + Neighborhood lists (replaces the
-   filled button now that every row shows its teaser inline). */
-.place-more {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-.place-more:hover {
-  color: var(--color-accent);
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent);
-}
-
-.place-more .icon {
-  color: inherit;
-}
-
-/* In the Food + Neighborhood lists, source links read as muted text, not the
-   outlined buttons used on detail pages. */
-.food-grouped .place-links .source-link,
-.neighborhood-body .resource-bar .source-link {
-  min-height: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  font-weight: 500;
-  color: var(--color-text-muted);
-  /* As plain text links (no button border), they take the site's dotted
-     underline — unlike the bordered button variant on detail pages. */
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
-}
-
-.food-grouped .place-links .source-link:hover,
-.neighborhood-body .resource-bar .source-link:hover {
-  color: var(--color-accent);
-  border-color: transparent;
-  text-decoration-style: solid;
-  text-decoration-color: var(--color-accent);
-}
-
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
    MyTownView links), used both at the top of a neighborhood detail page and in the
    expanded list row. */
@@ -1738,34 +1689,88 @@ body:has([data-filter-root]) .site-header {
 /* Outlined button: mono label, line border, surface fill, accent on hover. The
    shared base for the share/feedback buttons (.share-button keeps its copy-link
    "is-copied" state) and the directory "View all / View map" links. */
-.button,
-.share-button,
-a.share-button {
+/* ---------------------------------------------------------------------------
+   Buttons — one primitive (Button.astro), variants via modifier classes.
+   --------------------------------------------------------------------------- */
+.btn {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-line);
+  border: 1px solid transparent;
   border-radius: var(--radius);
-  background: var(--color-surface);
-  cursor: pointer;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 600;
-  color: var(--color-text);
   text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-/* Let the icon follow the button's color (the global .icon pins it muted). */
-.button .icon,
-.share-button .icon {
+/* Icons follow the button's text color (the global .icon rule pins them muted). */
+.btn .icon {
   color: inherit;
 }
 
-.button:hover,
-.share-button:hover,
-.share-button.is-copied {
+/* Tighter vertical padding for inline rows (source links, resource bars). */
+.btn-compact {
+  padding-block: 2px;
+}
+
+.btn-outline {
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-color: var(--color-line-input);
+}
+
+.btn-outline:hover,
+.btn-outline.is-copied {
   color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn-filled {
+  color: var(--color-background);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn-filled:hover {
+  opacity: 0.92;
+}
+
+/* Borderless accent text link ("Read more →"). */
+.btn-quiet {
+  gap: var(--spacing-xs);
+  padding: 0;
+  color: var(--color-accent);
+}
+
+.btn-quiet:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+/* Borderless muted text w/ dotted underline (source links inside lists). */
+.btn-muted {
+  gap: var(--spacing-xs);
+  padding: 0;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 4px;
+}
+
+.btn-muted:hover {
+  color: var(--color-accent);
+  text-decoration-style: solid;
+  text-decoration-color: var(--color-accent);
 }
 
 .back {

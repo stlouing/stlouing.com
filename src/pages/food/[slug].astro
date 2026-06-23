@@ -146,7 +146,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
     <div class="food-layout">
       <aside class="food-aside">
         <FoodLocator coords={data.coords} label={data.neighborhood} />
-        <a class="button food-map-link" href={href('/food')}>
+        <a class="btn btn-outline food-map-link" href={href('/food')}>
           <IconMap /> Back to the Food Map
         </a>
         {data.pick && <MyPick pick={data.pick} cuisine={data.cuisine} />}

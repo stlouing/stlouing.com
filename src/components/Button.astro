@@ -1,0 +1,34 @@
+---
+// The one button/link primitive. Renders an <a> when `href` is set, otherwise a
+// <button>. Put the label (and any icon) in the default slot — the icon follows
+// the button's text color via the global `.btn .icon` rule.
+//
+// variant:
+//   outline (default) — bordered surface button (Share, source links, CTAs)
+//   filled            — solid accent
+//   quiet             — borderless accent text link ("Read more →")
+//   muted             — borderless muted text w/ dotted underline (list sources)
+// compact: tighter vertical padding for inline rows.
+interface Props {
+  href?: string
+  variant?: 'outline' | 'filled' | 'quiet' | 'muted'
+  compact?: boolean
+  class?: string
+  [key: string]: unknown
+}
+
+const { href: linkHref, variant = 'outline', compact = false, class: className, ...rest } = Astro.props
+const classes = ['btn', `btn-${variant}`, { 'btn-compact': compact }, className]
+---
+
+{
+  linkHref ? (
+    <a class:list={classes} href={linkHref} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type="button" class:list={classes} {...rest}>
+      <slot />
+    </button>
+  )
+}
