@@ -30,6 +30,6 @@ The ingredients on a Chicago dog are as follows:
 
 None of these ingredients are optional or negotiable (unless you're making a depression dog, but that's another story).
 
-I'm happy to report that not only does Woofie's out in Overland not only make a good Chicago dog, but they make a _perfect_ Chicago dog. On top of that, they make the best smash burger I've ever had. I've you're looking for a good burger or dog in a no-frills joint that matches the vibe of your neighborhood corner hot dog stand in Chicago, head over to Woofie's!
+I'm happy to report that not only does Woofie's out in Overland not only make a good Chicago dog, but they make a _perfect_ Chicago dog. On top of that, they make the best smash burger I've ever had. If you're looking for a good burger or dog in a no-frills joint that matches the vibe of your neighborhood corner hot dog stand in Chicago, head over to Woofie's!
 
 I'm only giving them a 9 instead of a 10 because I wasn't a fan of the Italian beef sandwich they offered. It just didn't have the flavor and greasiness in the gravy that I'm looking for. Still on the hunt for a good Italian beef in St. Louis!

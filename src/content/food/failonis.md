@@ -17,6 +17,6 @@ I was impressed to learn that the building has been in operation since 1916 unde
 
 I checked it out recently and we got toasted ravioli, salad, cheesy garlic bread, and two St. Louis-style pizzas. Overall, I thought it was fine. The toasted ravioli tasted like the default ones you get from most bars. The house salad was particularly strange to me - I tasted almost no vinegar in the salad dressing whatsoever, it tasted extremely sweet and sugary.
 
-The pizzas were pretty good, I liked that the sauce was not overly sweet and didn't have the artifical flavor I taste at the chain restaurants. The crust was nice and crispy - they clearly perfected the low hydration, cracker crust made with yeast. It tasted very similar to when I made a St. Louis-style pizza at home with a three-day ferment, except theirs was crispier due to the brick oven cook.
+The pizzas were pretty good, I liked that the sauce was not overly sweet and didn't have the artificial flavor I taste at the chain restaurants. The crust was nice and crispy - they clearly perfected the low hydration, cracker crust made with yeast. It tasted very similar to when I made a St. Louis-style pizza at home with a three-day ferment, except theirs was crispier due to the brick oven cook.
 
 Overall, it was a decent STL-style pizza, but it's not in my top five. The patio was nice and it seems like a good place to bring a few friends and have a drink.

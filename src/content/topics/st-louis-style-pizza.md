@@ -26,7 +26,7 @@ You can't talk about St. Louis-style pizza without taking about Provel - it's th
 
 Pizza generally consists of three ingredients (crust, sauce, and cheese) and most styles of pizza default to mozzarella. Provel being so different in both flavor and consistency from what anyone outside of the region expects is, in my opinion, what throws people off so much when they try it for the first time.
 
-I've had dozens of STL-style pizzas at this point (see [my ratings](#my-ratings) below) so I know what to expect, but I will admit the first time I was genuiely confused about what I was experiencing and it has been an aquired taste. If you grew up with Provel, however, that would be a different story, and you'd already be used to the taste and have years of fond memories associated with it.
+I've had dozens of STL-style pizzas at this point (see [my ratings](#my-ratings) below) so I know what to expect, but I will admit the first time I was genuinely confused about what I was experiencing and it has been an acquired taste. If you grew up with Provel, however, that would be a different story, and you'd already be used to the taste and have years of fond memories associated with it.
 
 > But the truth is that my love for Provel is intense, almost mystical, and I’ve finally started taking it seriously.
 
@@ -129,7 +129,7 @@ So I've tried a variety of fan favorites around the city, but I'm always open to
 <figcaption>Delivery from Cecil Whittaker's</figcaption>
 </figure>
 
-I like pizza. I think (almost) all pizza is good. I love trying new things, especially regional food that you can't get everywhere. My personal favorite styles of pizza are thick, bready styles, like Sicilian, Detroit-style and pan pizza. I'm also a fan of fresh, high-quality ingredients, like the fresh basil and mozzarella found on a Neapolitan marguerita pizza.
+I like pizza. I think (almost) all pizza is good. I love trying new things, especially regional food that you can't get everywhere. My personal favorite styles of pizza are thick, bready styles, like Sicilian, Detroit-style and pan pizza. I'm also a fan of fresh, high-quality ingredients, like the fresh basil and mozzarella found on a Neapolitan margherita pizza.
 
 So personally, St. Louis-style or even Chicago thin-crust are just never going to be on the top of my list, because I'm here for the dough. Nonetheless, I still like it and have acquired the taste since moving here, and I'm still excited to try all the spots and decide which one is my favorite. Sometimes I specifically crave a St. Louis-style pizza, and I'd miss it if I no longer lived here.
 

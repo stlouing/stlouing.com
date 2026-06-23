@@ -11,7 +11,7 @@ url: https://www.stlgrace.com
 instagram: https://www.instagram.com/gracechickenfish
 ---
 
-Grace Meat & Three is a classic comfort food spot to get fried chicken and sides. It's located in The Grove alongisde a few other good restaurants.
+Grace Meat & Three is a classic comfort food spot to get fried chicken and sides. It's located in The Grove alongside a few other good restaurants.
 
 Grace used to have some competition in the fried chicken arena with Southern, a restaurant connected to Pappy's, but it closed down. Most of the other chicken spots are chains like Chuck's Hot Chicken and Dave's Hot Chicken, neither of which I like that much. I have yet to try Hodak's or Gus's, the two other local spots I've heard of.
 

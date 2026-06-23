@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/MarkdownPage.astro
 title: About
+description: 'St. Louing is an independent guide to the food and neighborhoods of St. Louis. A love letter to an underrated city, built in the spirit of the early internet.'
 ---
 
 St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.

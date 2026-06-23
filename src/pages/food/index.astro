@@ -51,7 +51,8 @@ const neighborhoods = [
 const hasCoords = rated.some((entry) => entry.place.data.coords)
 ---
 
-<BaseLayout>
+<BaseLayout
+  description="An interactive map of the restaurants I've checked out across the St. Louis metro, filterable by cuisine and neighborhood. Every rating is my own.">
   <FilterMapPage
     class="food"
     label="places"

@@ -21,7 +21,7 @@ The majority of Mexican restaurants in the St. Louis area are actually more alon
 
 Before I found El Jarocho I came across El Toluco, a similar Mexican grocery/taqueria combination that was close by, and they had awesome Al Pastor tacos - but unfortunately they closed down within a few months of finding it, so I was back on the search.
 
-I kept looking, and eventually I came across El Jarocho. I'll take any opportunity I can to talk up El Jarocho, because they've been an absolute godsend. Here you can find street tacos with corn tortillas, onions, cilantro, and meat, served with lime. The steak tacos are amazing, and the green sauce is top notch. My biggest complain about El Jarocho is they don't have Mexican rice or refried pinto beans - they have white rice and black beans.
+I kept looking, and eventually I came across El Jarocho. I'll take any opportunity I can to talk up El Jarocho, because they've been an absolute godsend. Here you can find street tacos with corn tortillas, onions, cilantro, and meat, served with lime. The steak tacos are amazing, and the green sauce is top notch. My biggest complaint about El Jarocho is they don't have Mexican rice or refried pinto beans - they have white rice and black beans.
 
 My favorite item on the menu is the "Burrito nuevo", which is a burrito filled with steak, queso fresco, and fries. It's very similar to the California Burrito that you'll find all over San Diego, just minus the guacamole.
 

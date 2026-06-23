@@ -16,4 +16,4 @@ pick:
 
 I know St. Louis is the town of thin cracker-crust pizza, but I'm particularly partial to the thicker, fluffier Detroit-style pizza. When I first moved here, I tried Motor Town Pizza and the Detroit-style at the now defunct Pie Guy, but neither scratched the itch for me. Jet's is a good option, but a chain is never going to be top-tier.
 
-Nicky Slices Pizza Club has identified and filled the gap for an amazing Detroit-style pizza place with their location in The Hill. My recommendation is to get The Roner - a Detroit-style with cupped pepproni and basil, drizzled with garlic chili hot honey.
+Nicky Slices Pizza Club has identified and filled the gap for an amazing Detroit-style pizza place with their location in The Hill. My recommendation is to get The Roner - a Detroit-style with cupped pepperoni and basil, drizzled with garlic chili hot honey.
