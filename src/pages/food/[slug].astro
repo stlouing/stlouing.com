@@ -17,7 +17,7 @@ import { neighborhoodHref } from '../../lib/neighborhoods'
 import { resolveVerdict } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
-import { cuisineEmoji } from '../../lib/emoji'
+import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import IconMap from '../../assets/IconMap.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
@@ -94,7 +94,7 @@ const mentionedIn = backlinks.filter(
 // plus a per-page meta description pulled from the writeup so pages don't all
 // share the generic site description.
 const seoTitle = primaryCuisine
-  ? `${data.title} - ${primaryCuisine} in St. Louis`
+  ? `${data.title} - ${cuisineLabel(primaryCuisine)} in St. Louis`
   : `${data.title} in St. Louis`
 const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
 ---
