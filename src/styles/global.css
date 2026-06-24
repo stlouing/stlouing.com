@@ -1960,10 +1960,11 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
-/* Decorative "river" ribbon at the very bottom — the St. Louis flag's
-     blue-and-white wave on red, repeated seamlessly. Flag colors are fixed in
-     both themes. Tweak the height (60–100px) to taste. */
+/* Decorative "river" ribbon — the St. Louis flag's blue-and-white wave on red,
+   repeated seamlessly. Flag colors are fixed in both themes. The height must stay
+   a multiple of 8: the 90×80 tile then scales to a whole-pixel width (24px → 27px),
+   so repeat-x doesn't round and leak a 1px red seam between tiles. */
 .river-border {
-  height: 20px;
+  height: 24px;
   background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
 }
