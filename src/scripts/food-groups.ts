@@ -45,15 +45,11 @@ export function initFoodGroups(rootSelector = '[data-filter-root]'): void {
     countEl.className = 'group-count'
     countEl.textContent = String(count)
 
-    // Alphabetical headers get a rule line that pushes the count to the right;
-    // verdict headers keep the count tucked next to the label.
-    if (mode === 'alpha') {
-      const rule = document.createElement('span')
-      rule.className = 'group-rule'
-      header.append(label, rule, countEl)
-    } else {
-      header.append(label, countEl)
-    }
+    // Both verdict + letter headers get a rule line that fills the row and pushes
+    // the count to the end (verdict headers also keep their leading dot).
+    const rule = document.createElement('span')
+    rule.className = 'group-rule'
+    header.append(label, rule, countEl)
 
     return header
   }

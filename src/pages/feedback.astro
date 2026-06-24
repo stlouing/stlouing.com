@@ -24,21 +24,21 @@ const description = 'Send a note, a correction, or a recommendation.'
             <textarea name="message" rows="6" required />
           </label>
 
-      <label class="field">
-        <span class="field-label">
-          Email <span class="optional">(optional, only if you want a reply)</span>
-        </span>
-        <input type="email" name="email" autocomplete="email" />
-      </label>
+          <label class="field">
+            <span class="field-label">
+              Email <span class="optional">(optional, only if you want a reply)</span>
+            </span>
+            <input type="email" name="email" autocomplete="email" />
+          </label>
 
-      <input type="hidden" name="_subject" value="St. Louing feedback" />
+          <input type="hidden" name="_subject" value="St. Louing feedback" />
 
-      <p class="gotcha" aria-hidden="true">
-        <label>
-          Leave this field empty
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-        </label>
-      </p>
+          <p class="gotcha" aria-hidden="true">
+            <label>
+              Leave this field empty
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
 
           <div class="form-actions">
             <button type="submit">Send</button>
@@ -131,9 +131,12 @@ const description = 'Send a note, a correction, or a recommendation.'
 
   .form-status,
   .feedback-alt {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+
+    a {
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+    }
   }
 
   .feedback-alt {

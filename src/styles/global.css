@@ -38,6 +38,7 @@
   --font-size-md: 1rem;
   --font-size-label: 1.1rem;
   --font-size-lg: 1.2rem;
+  --font-size-xl: 1.4rem;
 
   /* Type scale + rhythm */
   --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
@@ -47,6 +48,7 @@
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
+  --spacing-base: 1.25rem;
   --spacing-lg: 1.5rem;
   --radius: 6px;
 
@@ -405,6 +407,7 @@ a.wikipedia-link {
   text-decoration: none;
   white-space: nowrap;
   margin-block-start: 0;
+  max-height: 22px;
 }
 
 button.chip {
@@ -732,7 +735,7 @@ body:has(.map-split) main > .wrap,
      more breathing room top + bottom than the List default (var(--spacing-xs)).
      The `ul.list >` combinator outweighs List.astro's own `> li` rule. */
   ul.list > li.is-written {
-    padding-block: var(--spacing-md);
+    padding-block: var(--spacing-sm);
   }
 }
 
@@ -924,7 +927,6 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 700;
   color: var(--color-text);
   text-decoration: none;
-  font-size: var(--font-size-label);
   font-family: var(--font-mono);
   letter-spacing: var(--letter-spacing-tight);
 }
@@ -1179,12 +1181,12 @@ body:has([data-neighborhood-map]) .river-border {
 
 /* Alphabetical mode: the letter dividers (no [data-verdict]) read bigger + accent. */
 .food-grouped li.group-header:not([data-verdict]) .group-label {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   color: var(--color-accent);
 }
 
-/* Only alphabetical headers carry a rule line (it pushes the count to the end).
-   Verdict headers don't render this span, so their count stays beside the label. */
+/* Every group header carries a rule line that fills the row and pushes the count
+   to the end (verdict + alphabetical alike). */
 .food-grouped .group-rule {
   flex: 1;
   height: 1px;
@@ -1207,7 +1209,7 @@ body:has([data-neighborhood-map]) .river-border {
 
 .food-grouped .list > li {
   margin: 0;
-  padding: var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-block-end: 1px solid var(--color-line);
   border-inline-start: 3px solid var(--verdict-color, var(--color-line));
 }
@@ -1534,21 +1536,26 @@ body:has([data-filter-root]) .site-header {
 
 /* "View more" — a centered CTA fenced by hairlines on its own line, set apart
    from the source button row below it. */
+/* "View more" — a full-width, filled accent button. The color is set explicitly
+   (over Leaflet's .leaflet-container a) so the label reads on the accent fill. */
 .leaflet-popup.food-popup .popup-more-link {
   display: block;
-  margin-block: var(--spacing-md) 0;
-  padding-block: var(--spacing-sm);
-  border-block: 1px solid var(--color-line);
+  width: 100%;
+  margin-block-start: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius);
+  background: var(--color-accent);
   text-align: center;
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-background);
   text-decoration: none;
 }
 
 .leaflet-popup.food-popup .popup-more-link:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+  color: var(--color-background);
+  background: color-mix(in srgb, var(--color-accent) 85%, #000);
 }
 
 .leaflet-popup.food-popup .leaflet-popup-close-button {
@@ -1874,7 +1881,16 @@ body:has([data-filter-root]) .site-header {
   height: 30px;
   width: 48px;
   border-radius: 4px;
+  flex-shrink: 0;
   /* box-shadow: var(--box-shadow-flag); */
+}
+
+/* Shrink the flag on mobile so it doesn't crowd the header. */
+@media (max-width: 700px) {
+  .stlouis-flag {
+    height: 26px;
+    width: 42px;
+  }
 }
 
 .image-grid {
@@ -1941,10 +1957,4 @@ body:has([data-filter-root]) .site-header {
 .river-border {
   height: 14px;
   background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
-}
-
-@media screen and (max-width: 600px) {
-  .river-border {
-    display: none;
-  }
 }

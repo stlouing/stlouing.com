@@ -13,6 +13,7 @@ import Button from './Button.astro'
 import NewsletterSignup from './NewsletterSignup.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
+import IconPencil from '../assets/IconPencil.astro'
 
 interface Props {
   title: string
@@ -59,7 +60,7 @@ const isArticle = Boolean(permalink)
     <NewsletterSignup compact />
     <div class="share-bar">
       <ShareButton title={title} label="Share this page" class="share-footer" />
-      <Button href={href('/feedback')}>Leave Feedback</Button>
+      <Button href={href('/feedback')}><IconPencil />Leave Feedback</Button>
     </div>
   </footer>
 </article>

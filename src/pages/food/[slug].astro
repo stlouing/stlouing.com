@@ -112,9 +112,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
         {
           data.address && data.address.length > 0 && (
             <>
-              <div class="address">
-                <IconMapPin /> {data.address.join(', ')}
-              </div>
+              <div class="address">{data.address.join(', ')}</div>
             </>
           )
         }

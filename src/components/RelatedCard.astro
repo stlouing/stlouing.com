@@ -34,7 +34,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
               {meta}
             </span>
           )}
-          {verdict && <VerdictChip verdict={verdict} filled icon narrow />}
+          {verdict && <VerdictChip verdict={verdict} icon narrow />}
         </span>
       )
     }
@@ -50,7 +50,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-md);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: 4px 0;
     border-block-end: 1px solid var(--color-line);
     text-decoration: none;
     color: var(--color-text);
@@ -80,6 +80,12 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
   .related-arrow {
     display: inline-flex;
     flex-shrink: 0;
+  }
+
+  .related-card:hover .related-title {
+    text-decoration-thickness: 2px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .related-card:hover .related-title,

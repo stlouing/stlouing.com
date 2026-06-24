@@ -91,8 +91,9 @@ function popupData(slug: string, name: string, group: string) {
                 : neighborhood.number
               const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
               const entry = entryBySlug.get(neighborhood.slug)
-              // Show the full resource set (Wikipedia, MyTownView, and the
-              // optional Website + City of St. Louis) — MyTownView is always kept.
+              // The list row shows at most 3 resource links: drop the City of St.
+              // Louis page (it stays on the detail page) so the row keeps Wikipedia,
+              // MyTownView, and the optional Website.
               const resourceLinks = written
                 ? neighborhoodResourceLinks(
                     neighborhood.slug,
@@ -100,6 +101,8 @@ function popupData(slug: string, name: string, group: string) {
                     entry?.data.url,
                     entry?.data.wikipedia,
                   )
+                    .filter((link) => link.label !== 'City of St. Louis')
+                    .slice(0, 3)
                 : []
 
               // A section header sits above the first row of each group — the
@@ -200,6 +203,12 @@ function popupData(slug: string, name: string, group: string) {
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  @media (max-width: 700px) {
+    .region-legend {
+      display: none;
+    }
   }
 
   .region-north {
