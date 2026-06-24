@@ -11,6 +11,7 @@ import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
 import { resolveVerdict, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
+import IconAward from '../../assets/IconAward.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
 // alphabetically (A / B / C) via the sort control — the grouping itself is built
@@ -72,7 +73,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
           <span class="pane-count"><span data-filter-count>{count}</span> places</span>
         </span>
         <div class="pane-links">
-          <a class="btn btn-outline btn-compact" href={href('/best')}>Best of </a>
+          <a class="btn btn-outline btn-compact" href={href('/best')}><IconAward />Favorites</a>
           <a class="btn btn-outline btn-compact" href={href('/food/want-to-try')}>
             Want to try <IconArrowRight />
           </a>

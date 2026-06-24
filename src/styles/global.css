@@ -1097,6 +1097,17 @@ body:has([data-neighborhood-map]) .river-border {
   }
 }
 
+.is-narrow {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: var(--font-size-xxs);
+
+  svg {
+    height: 12px;
+    width: 12px;
+  }
+}
+
 /* List-pane header (Food + Neighborhoods): a section title + count on the left,
    page-specific actions on the right (Food's wishlist link, the neighborhood
    region legend), on a surface card at the top of the scrolling pane. */
@@ -1673,9 +1684,10 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 4px;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .btn-quiet:hover {
@@ -1694,14 +1706,16 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-text-muted);
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 4px;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .btn-muted:hover {
   color: var(--color-accent);
   text-decoration-style: solid;
+  text-decoration-thickness: 2px;
   text-decoration-color: var(--color-accent);
 }
 
@@ -1753,7 +1767,6 @@ body:has([data-filter-root]) .site-header {
      hover so it reads as a heading rather than a link. */
   li > a:not(.collection),
   .list-title-item {
-    font-family: var(--font-body);
     font-size: var(--font-size-md);
     font-weight: 700;
     color: var(--color-text-heading);

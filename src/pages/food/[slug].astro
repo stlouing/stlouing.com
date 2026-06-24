@@ -178,6 +178,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
                     href={href(`/food/${place.id}`)}
                     title={place.data.title}
                     meta={place.data.neighborhood}
+                    metaType="neighborhood"
                     verdict={verdict}
                   />
                 ))}

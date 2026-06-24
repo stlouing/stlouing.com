@@ -30,17 +30,24 @@ interface Props {
   round?: boolean
   // Fill the pill with the verdict color (off by default — used on detail pages).
   filled?: boolean
+  narrow?: boolean
 }
 
-const { verdict, icon = false, label = true, round = false, filled = false } = Astro.props
+const {
+  verdict,
+  icon = false,
+  label = true,
+  round = false,
+  filled = false,
+  narrow = false,
+} = Astro.props
 const Icon = verdictIcons[verdict]
 ---
 
 <Chip
-  class:list={[`verdict-${verdict}`, { 'is-filled': filled }]}
+  class:list={[`verdict-${verdict}`, { 'is-filled': filled, 'is-narrow': narrow }]}
   round={round}
-  aria-label={label ? undefined : verdictLabels[verdict]}
->
+  aria-label={label ? undefined : verdictLabels[verdict]}>
   {icon && <Icon />}
   {label && <span>{verdictLabels[verdict]}</span>}
 </Chip>

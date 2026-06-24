@@ -4,6 +4,7 @@
 // the verdict as a Chip — with a trailing arrow centered against the whole row.
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import VerdictChip from './Verdict.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
 import type { Verdict } from '../lib/verdict'
 
 interface Props {
@@ -13,9 +14,12 @@ interface Props {
   meta?: string
   // Optional verdict, shown as a Chip after the meta.
   verdict?: Verdict
+  // Whether `meta` is a place (neighborhood/region) — body face with a map icon —
+  // or a cuisine (mono tag). Controls the meta styling.
+  metaType?: 'neighborhood' | 'cuisine'
 }
 
-const { href, title, meta, verdict } = Astro.props
+const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
 ---
 
 <a class="related-card" href={href}>
@@ -24,8 +28,13 @@ const { href, title, meta, verdict } = Astro.props
     {
       (meta || verdict) && (
         <span class="related-meta">
-          {verdict && <VerdictChip verdict={verdict} filled label={false} icon round />}
-          {meta && <span class="related-context">{meta}</span>}
+          {meta && (
+            <span class:list={['related-context', { 'is-place': metaType === 'neighborhood' }]}>
+              {metaType === 'neighborhood' && <IconMapPin />}
+              {meta}
+            </span>
+          )}
+          {verdict && <VerdictChip verdict={verdict} filled icon narrow />}
         </span>
       )
     }
@@ -62,7 +71,7 @@ const { href, title, meta, verdict } = Astro.props
   .related-title {
     font-family: var(--font-mono);
     letter-spacing: var(--letter-spacing-tight);
-    font-size: var(--font-size-label);
+    font-size: var(--font-size-md);
     font-weight: 700;
     color: var(--color-text-heading);
     line-height: 1.2;
@@ -91,5 +100,18 @@ const { href, title, meta, verdict } = Astro.props
     font-weight: 500;
     font-family: var(--font-mono);
     text-transform: uppercase;
+  }
+
+  /* A place (neighborhood / region): body face with a leading map icon, not the
+     mono cuisine tag. */
+  .related-context.is-place {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    text-transform: none;
+    color: var(--color-text-muted);
   }
 </style>
