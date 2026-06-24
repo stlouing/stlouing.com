@@ -676,8 +676,10 @@ body:has(.map-split) main > .wrap,
 
 /* Neighborhoods left pane: the writeups scroll while the map stays put. The
    scroll-padding offsets the sticky .list-pane-header so a selected row lands just
-   below it (not hidden behind it) when scrolled to the top. */
-.map-split .content-pane {
+   below it (not hidden behind it) when scrolled to the top. The `.map-list` in the
+   selector keeps this 38px winning over the shared `[data-view='map'] .map-list`
+   default (40px, tuned for the slightly taller Food header). */
+.map-split .content-pane.map-list {
   min-height: 0;
   overflow-y: auto;
   scroll-padding-block-start: 38px;
@@ -1962,6 +1964,6 @@ body:has([data-filter-root]) .site-header {
      blue-and-white wave on red, repeated seamlessly. Flag colors are fixed in
      both themes. Tweak the height (60–100px) to taste. */
 .river-border {
-  height: 14px;
+  height: 20px;
   background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
 }
