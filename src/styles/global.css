@@ -204,6 +204,13 @@ ul li > ol {
   margin-block-end: 0;
 }
 
+code {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+  padding: 2px;
+}
+
 blockquote {
   margin-inline: 0;
   border-inline-start: 3px solid var(--color-accent);
