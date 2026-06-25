@@ -161,7 +161,7 @@ export function neighborhoodResources(info: NeighborhoodInfo): ResourceLink[] {
   const citySlug = info.slug in cityNeighborhoodSlug ? cityNeighborhoodSlug[info.slug] : info.slug
   if (citySlug) {
     links.push({
-      label: 'City of St. Louis',
+      label: 'St. Louis City',
       href: `https://www.stlouis-mo.gov/live-work/community/neighborhoods/${citySlug}/`,
     })
   }
@@ -207,7 +207,7 @@ export function neighborhoodResourceLinks(
   )
 
   const mytownview = resources.find((resource) => resource.label === 'MyTownView')
-  const city = resources.find((resource) => resource.label === 'City of St. Louis')
+  const city = resources.find((resource) => resource.label === 'St. Louis City')
   const website = official && !officialIsDuplicate ? { label: 'Website', href: official } : null
 
   return [

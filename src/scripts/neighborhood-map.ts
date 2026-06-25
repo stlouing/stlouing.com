@@ -151,7 +151,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       row?.dataset.wikipedia && { label: 'Wikipedia', href: row.dataset.wikipedia },
       row?.dataset.mytownview && { label: 'MyTownView', href: row.dataset.mytownview },
       row?.dataset.official && { label: 'Website', href: row.dataset.official },
-      row?.dataset.city && { label: 'City of St. Louis', href: row.dataset.city },
+      row?.dataset.city && { label: 'St. Louis City', href: row.dataset.city },
     ].filter(Boolean) as PopupSource[]
 
     // Every neighborhood has its own page (a writeup or the computed data layer),

@@ -57,19 +57,31 @@ const isArticle = Boolean(permalink)
 
   <footer>
     <Backlinks links={backlinks} />
-    <NewsletterSignup compact />
-    <div class="share-bar">
-      <ShareButton title={title} label="Share this page" class="share-footer" />
-      <Button href={href('/feedback')}><IconPencil />Leave Feedback</Button>
-    </div>
+    <section class="entry-end">
+      <div class="share-bar">
+        <ShareButton title={title} label="Share this page" class="share-footer" />
+        <Button href={href('/feedback')}><IconPencil />Leave Feedback</Button>
+      </div>
+      <NewsletterSignup compact />
+    </section>
   </footer>
 </article>
 
 <style>
+  /* Footer end-band: one hairline divides the page actions + newsletter from the
+     content, and the newsletter (with its river endcap) closes the page. */
+  .entry-end {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-block-start: var(--spacing-lg);
+    padding-block-start: var(--spacing-md);
+    border-block-start: 1px solid var(--color-line);
+  }
+
   .share-bar {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    margin-block-start: var(--spacing-lg);
   }
 </style>

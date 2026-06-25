@@ -69,8 +69,8 @@ const { compact = false } = Astro.props
   /* Footer endcap: a faint accent wash + accent heading so the end-of-post CTA
      draws the eye (this variant is only used at the bottom of entries). */
   .newsletter.compact {
-    margin-block-start: var(--spacing-lg);
-    /* border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-line));
+    /* The footer band (Entry.astro) now spaces this, so no top margin here.
+    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-line));
     background: var(--color-surface);
     background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface)); */
   }

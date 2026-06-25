@@ -81,7 +81,7 @@ const showPanel = slotHtml.length > 0 || readMore
       <div class="list-row">
         <div class="list-headline">
           <a class="list-title" href={href(detailHref)}>
-            {number !== undefined && <span class="number">{number}.</span>}
+            <!-- {number !== undefined && <span class="number">{number}.</span>} -->
             {number !== undefined ? <span>{title}</span> : title}
           </a>
           <slot name="title-after" />

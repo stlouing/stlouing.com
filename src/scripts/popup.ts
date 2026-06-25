@@ -56,6 +56,34 @@ function chipHtml(chip: PopupChip): string {
   return `<span class="chip">${inner}</span>`
 }
 
+// Inline 14×14 source icons (Lucide), matching the labeled links on the detail
+// pages. currentColor so each follows its button's text color. class="icon" lets
+// `.btn .icon` recolor it on hover.
+function sourceIcon(inner: string): string {
+  return `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true">${inner}</svg>`
+}
+
+const SOURCE_ICON: Record<string, string> = {
+  Wikipedia: sourceIcon(
+    '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  ),
+  MyTownView: sourceIcon(
+    '<path d="M12 16v5"/><path d="M16 14.639V21"/><path d="M20 10.656V21"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18.463V21"/><path d="M8 14.656V21"/>',
+  ),
+  Website: sourceIcon(
+    '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  ),
+  'St. Louis City': sourceIcon(
+    '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+  ),
+  Directions: sourceIcon(
+    '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  ),
+  Instagram: sourceIcon(
+    '<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>',
+  ),
+}
+
 export function buildPopupHtml(config: PopupConfig): string {
   const {
     title,
@@ -83,10 +111,10 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   const sourcesHtml = sources.length
     ? `<div class="popup-actions">${sources
-        .map(
-          (source) =>
-            `<a class="btn btn-outline" href="${source.href}" target="_blank" rel="noopener">${escapeHtml(source.label)}</a>`,
-        )
+        .map((source) => {
+          const icon = SOURCE_ICON[source.label] ?? ''
+          return `<a class="btn btn-outline" href="${source.href}" target="_blank" rel="noopener">${icon}${escapeHtml(source.label)}</a>`
+        })
         .join('')}</div>`
     : ''
 

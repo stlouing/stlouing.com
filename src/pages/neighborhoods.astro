@@ -51,7 +51,7 @@ function popupData(slug: string, name: string, group: string) {
     area: group,
     official: hrefFor('Website'),
     wikipedia: hrefFor('Wikipedia'),
-    city: hrefFor('City of St. Louis'),
+    city: hrefFor('St. Louis City'),
     mytownview: hrefFor('MyTownView'),
     // Preview text for the map popup: the writeup excerpt when there is one,
     // otherwise a manual description, then the generated "Neighborhood #X" line —
@@ -101,7 +101,7 @@ function popupData(slug: string, name: string, group: string) {
                     entry?.data.url,
                     entry?.data.wikipedia,
                   )
-                    .filter((link) => link.label !== 'City of St. Louis')
+                    .filter((link) => link.label !== 'St. Louis City')
                     .slice(0, 3)
                 : []
 
