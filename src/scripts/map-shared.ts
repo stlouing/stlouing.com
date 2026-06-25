@@ -3,6 +3,19 @@
 // page chrome and the map's edges in the same way.
 import type * as L from 'leaflet'
 
+// Slow the wheel zoom on Windows. A Windows mouse wheel reports much larger,
+// discrete deltas than a Mac trackpad, so the default `wheelPxPerZoomLevel` (60)
+// makes each notch a big zoom step — fast, and a burst of steps re-renders the
+// vector basemap canvas enough to crash Chrome's GPU process. A higher value means
+// more scroll per zoom level, so each notch is a small step: smoother, slower, and
+// fewer level-crossings (= fewer canvas re-renders) per gesture. We deliberately
+// keep the *default* short debounce — a long debounce accumulates a fast spin into
+// one big jump (the opposite of what we want). Windows-only so it doesn't dull the
+// zoom elsewhere; raise the number if it's still too fast, lower it if too sluggish.
+const isWindows = typeof navigator !== 'undefined' && /\bWindows NT\b/.test(navigator.userAgent)
+
+export const zoomEaseOptions: L.MapOptions = isWindows ? { wheelPxPerZoomLevel: 220 } : {}
+
 // Bottom edge (viewport px) of the page's sticky chrome above the map — the site
 // header plus the secondary/filter toolbar. A popup opened near the top is nudged
 // below this so its title isn't hidden behind them.

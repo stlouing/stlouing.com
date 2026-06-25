@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
 import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
-import { keepPopupInView } from './map-shared'
+import { keepPopupInView, zoomEaseOptions } from './map-shared'
 
 export interface MapApi {
   // Fix Leaflet's sizing after the map becomes visible.
@@ -26,6 +26,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // open popup (which would visually de-select a place while its list row stays
   // active). Selection only changes when another marker is clicked.
   const map = L.map(el, {
+    ...zoomEaseOptions,
     closePopupOnClick: false,
     scrollWheelZoom: true,
     touchZoom: true,

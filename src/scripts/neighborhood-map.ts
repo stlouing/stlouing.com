@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
 import { buildPopupHtml, escapeHtml, type PopupSource } from './popup'
-import { keepPopupInView } from './map-shared'
+import { keepPopupInView, zoomEaseOptions } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
@@ -56,6 +56,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   const map = L.map(element, {
+    ...zoomEaseOptions,
     scrollWheelZoom: true,
     touchZoom: true,
     minZoom: 10,
