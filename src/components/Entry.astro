@@ -70,13 +70,13 @@ const isArticle = Boolean(permalink)
 <style>
   /* Footer end-band: one hairline divides the page actions + newsletter from the
      content, and the newsletter (with its river endcap) closes the page. */
+  /* No top border here — the global site footer provides the one divider, so the
+     band relies on spacing alone (avoids a doubled rule near the footer). */
   .entry-end {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
     margin-block-start: var(--spacing-lg);
-    padding-block-start: var(--spacing-md);
-    border-block-start: 1px solid var(--color-line);
   }
 
   .share-bar {

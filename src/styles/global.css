@@ -813,7 +813,8 @@ body:has(.map-split) main > .wrap,
     list-style: disc;
   }
 
-  p, p:first-child {
+  p,
+  p:first-child {
     margin-block-start: 0 !important;
   }
 

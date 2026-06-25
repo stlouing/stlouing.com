@@ -19,6 +19,21 @@ const protomapsTilesUrl = import.meta.env.PUBLIC_PMTILES_URL || localPmtilesUrl
 // of going blank, so the map stays usable when zoomed in tight.
 const protomapsMaxDataZoom = 14
 
+// protomaps-leaflet renders the basemap to a canvas sized `256 * devicePixelRatio`
+// per tile. On Windows, Chrome's GPU process crashes the whole tab when these
+// GPU-accelerated canvases get large, and Windows display scaling (125–200%)
+// pushes devicePixelRatio to 1.25–2 — multiplying the per-tile memory until it
+// blows up on zoom/pan/filter. Render at 1× on Windows to keep the canvas small
+// (a slightly softer basemap, but no crash); other platforms keep retina up to 2×.
+// Tunable: raise the Windows value toward 1.5 if the basemap looks too soft and
+// the crash doesn't return. See Chromium GPU-canvas memory issues for background.
+const renderDevicePixelRatio = ((): number => {
+  const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1
+  const isWindows = typeof navigator !== 'undefined' && /\bWindows NT\b/.test(navigator.userAgent)
+
+  return isWindows ? 1 : Math.min(dpr, 2)
+})()
+
 function isDarkTheme(): boolean {
   return document.documentElement.dataset.theme === 'dark'
 }
@@ -36,6 +51,7 @@ export function addThemedTiles(map: L.Map): void {
       flavor: dark ? 'dark' : 'light',
       maxDataZoom: protomapsMaxDataZoom,
       attribution: protomapsAttribution,
+      devicePixelRatio: renderDevicePixelRatio,
     }) as unknown as L.GridLayer
   }
 
