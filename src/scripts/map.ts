@@ -91,6 +91,13 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   }
 
   function sync(): void {
+    // Close any open popup before re-fitting. A popup opened from a marker that
+    // survives the new filter (e.g. clicking its "University City" pin) would
+    // otherwise stay open and get reprojected on every later zoom/pan — extra work
+    // on an already GPU-stressed canvas, and a stale bit of UI. popupclose →
+    // deactivate clears the selection.
+    map.closePopup()
+
     const bounds: L.LatLngTuple[] = []
 
     for (const item of items) {
@@ -191,16 +198,20 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       }
     }
 
+    // `animate: false`: this runs on every filter change, and an animated fit is a
+    // multi-frame basemap repaint. Stacked up (e.g. per keystroke) those repaints
+    // balloon GPU-canvas memory and can crash the tab on Windows Chrome — jump
+    // instantly instead.
     if (bounds.length) {
-      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 12 })
+      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 12, animate: false })
       viewInitialized = true
     } else if (!viewInitialized) {
       // A deep-linked filter matched nothing: still give the map a view so it
       // renders an empty map instead of erroring with no center/zoom set.
       if (allBounds.length) {
-        map.fitBounds(allBounds, { padding: [30, 30], maxZoom: 12 })
+        map.fitBounds(allBounds, { padding: [30, 30], maxZoom: 12, animate: false })
       } else {
-        map.setView([38.627, -90.2], 11)
+        map.setView([38.627, -90.2], 11, { animate: false })
       }
       viewInitialized = true
     }

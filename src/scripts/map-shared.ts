@@ -42,7 +42,10 @@ export function keepPopupInView(map: L.Map, getPopupEl: () => HTMLElement | unde
       dx = popupRect.right - (mapRect.right - pad)
     }
     if (dx !== 0 || dy !== 0) {
-      map.panBy([dx, dy], { animate: true })
+      // Instant, not animated: an animated pan repaints the basemap canvas across
+      // many frames on every popup open, which piles onto GPU-canvas memory and can
+      // crash the tab on Windows Chrome.
+      map.panBy([dx, dy], { animate: false })
     }
   })
 }
