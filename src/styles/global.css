@@ -1012,7 +1012,6 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 500;
   color: var(--color-accent);
   font-size: var(--font-size-md);
-  margin-top: var(--spacing-xs);
 }
 
 .map-list .chips {
