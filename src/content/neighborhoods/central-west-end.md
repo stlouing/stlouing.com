@@ -1,7 +1,15 @@
 ---
 title: Central West End
 url: https://cwescene.com
-draft: true
+description: The most urban neighborhood outside of downtown
+vibe:
+  - historic
+  - walkable
+  - nightlife
+  - dining
+attractions:
+  - Cathedral Basilica of St. Louis
+  - Forest Park
+  - Euclid Avenue
+  - Maryland Plaza
 ---
-
-The most urban neighborhood outside of downtown.

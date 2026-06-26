@@ -1,5 +1,15 @@
 ---
 title: Dogtown
+url: https://www.dogtownunited.org
+description: The historic Irish neighborhood in St. Louis
+vibe:
+  - historic
+  - family-friendly
+  - dining
+attractions:
+  - St. Patrick's Day Parade
+  - Tamm Avenue
+  - Forest Park
 ---
 
 Dogtown is an unofficial neighborhood made up of four city neighborhoods: Cheltenham, Clayton-Tamm, Franz Park, and Hi-Pointe.

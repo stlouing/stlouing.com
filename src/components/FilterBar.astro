@@ -23,16 +23,6 @@ const { label, count, facets, searchPlaceholder = 'name...', sorts = [] } = Astr
 ---
 
 <form class="filters" role="search" aria-label={`Filter ${label}`}>
-  <p class="field">
-    <label for="q">Search</label>
-    <input
-      id="q"
-      type="search"
-      placeholder={searchPlaceholder}
-      autocomplete="off"
-      data-filter-search
-    />
-  </p>
   {
     facets.map((facet) => (
       <p class="field">
@@ -62,4 +52,14 @@ const { label, count, facets, searchPlaceholder = 'name...', sorts = [] } = Astr
       </p>
     )
   }
+  <p class="field">
+    <label for="q">Search</label>
+    <input
+      id="q"
+      type="search"
+      placeholder={searchPlaceholder}
+      autocomplete="off"
+      data-filter-search
+    />
+  </p>
 </form>

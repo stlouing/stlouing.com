@@ -1,6 +1,16 @@
 ---
 title: The Grove
 url: https://www.thegrovestl.com
+description: St. Louis's LGBTQ nightlife strip
+vibe:
+  - nightlife
+  - lgbtq
+  - music
+  - brewery
+attractions:
+  - Urban Chestnut Brewing Company
+  - The Grove neon sign
+  - Live music venues
 ---
 
 The Grove is the LGBTQ neighborhood in St. Louis, and is home to a strip of local restaurants and bars. The city neighborhood is officially named "Forest Park Southeast", but everyone knows this area as The Grove.

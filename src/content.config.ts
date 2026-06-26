@@ -77,6 +77,11 @@ const neighborhoods = defineCollection({
     // The neighborhood's own site and its Wikipedia article.
     url: z.string().url().optional(),
     wikipedia: z.string().url().optional(),
+    // A short, consistent set of vibe descriptors (e.g. historic, walkable,
+    // nightlife) and signature attractions/landmarks. Both factual + optional, so a
+    // data-only neighborhood can still carry them without a writeup.
+    vibe: z.array(z.string()).optional(),
+    attractions: z.array(z.string()).optional(),
     ...taggable,
   }),
 })

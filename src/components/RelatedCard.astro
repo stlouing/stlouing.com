@@ -5,6 +5,7 @@
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import VerdictChip from './Verdict.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
+import { cuisineEmoji, cuisineLabel } from '../lib/emoji'
 import type { Verdict } from '../lib/verdict'
 
 interface Props {
@@ -26,19 +27,26 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
   <span class="related-body">
     <span class="related-title">{title}</span>
     {
-      (meta || verdict) && (
+      meta && (
         <span class="related-meta">
-          {meta && (
-            <span class:list={['related-context', { 'is-place': metaType === 'neighborhood' }]}>
-              {metaType === 'neighborhood' && <IconMapPin />}
-              {meta}
-            </span>
-          )}
-          {verdict && <VerdictChip verdict={verdict} icon narrow />}
+          <span class:list={['related-context', { 'is-place': metaType === 'neighborhood' }]}>
+            {metaType === 'neighborhood' && (
+              <>
+                <IconMapPin /> {meta}
+              </>
+            )}
+            {metaType === 'cuisine' && (
+              <>
+                <span class="related-emoji">{cuisineEmoji([meta])}</span>
+                {cuisineLabel(meta)}
+              </>
+            )}
+          </span>
         </span>
       )
     }
   </span>
+  {verdict && <VerdictChip verdict={verdict} icon narrow filled />}
   <span class="related-arrow" aria-hidden="true"><IconArrowRight /></span>
 </a>
 
@@ -50,7 +58,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-md);
-    padding: 4px 0;
+    padding: var(--spacing-sm);
     border-block-end: 1px solid var(--color-line);
     text-decoration: none;
     color: var(--color-text);
@@ -62,6 +70,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
 
   .related-body {
     display: flex;
+    flex: 1;
     flex-direction: column;
     min-width: 0;
     gap: var(--spacing-xs);
@@ -75,6 +84,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
     font-weight: 700;
     color: var(--color-text-heading);
     line-height: 1.2;
+    text-underline-offset: 2px;
   }
 
   .related-arrow {
@@ -85,7 +95,6 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
   .related-card:hover .related-title {
     text-decoration-thickness: 2px;
     text-decoration: underline;
-    text-underline-offset: 4px;
   }
 
   .related-card:hover .related-title,
@@ -98,14 +107,20 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
     align-items: center;
     flex-wrap: wrap;
     gap: var(--spacing-sm);
+    line-height: 1;
   }
 
   .related-context {
-    font-size: var(--font-size-xs);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
     color: var(--color-text-muted);
     font-weight: 500;
-    font-family: var(--font-mono);
-    text-transform: uppercase;
+  }
+
+  /* The cuisine emoji sits a touch larger than the mono tag it leads. */
+  .related-emoji {
+    font-size: var(--font-size-md);
   }
 
   /* A place (neighborhood / region): body face with a leading map icon, not the

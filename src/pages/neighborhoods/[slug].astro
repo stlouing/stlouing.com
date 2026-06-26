@@ -27,6 +27,7 @@ import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconChart from '../../assets/IconChart.astro'
 import IconBook from '../../assets/IconBook.astro'
 import IconLandmark from '../../assets/IconLandmark.astro'
+import IconCalendar from '../../assets/IconCalendar.astro'
 
 // An icon per resource link, matching the Food page's labeled source links.
 const resourceIcons: Record<string, typeof IconExternalLink> = {
@@ -64,6 +65,11 @@ const Content = rendered?.Content
 const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
 const tags = entry?.data.tags ?? []
+
+// Structured neighborhood data (factual, optional) — shown above the writeup so a
+// data-only neighborhood still has substance.
+const vibe = entry?.data.vibe ?? []
+const attractions = entry?.data.attractions ?? []
 
 // Computed data layer.
 const population = neighborhoodPopulation(slug)
@@ -126,7 +132,7 @@ const trail = [
     }
     <div class="neighborhood-layout">
       <aside class="neighborhood-aside">
-        <NeighborhoodFacts population={population} />
+        <NeighborhoodFacts population={population} spots={places.length} vibe={vibe} />
         <figure class="locator-figure">
           <NeighborhoodLocator slug={slug} name={title} />
           <figcaption>{title} relative to St. Louis</figcaption>
@@ -148,19 +154,34 @@ const trail = [
         }
 
         {
+          attractions.length > 0 && (
+            <RelatedList title="Notable spots">
+              {attractions.map((spot) => (
+                <div class="spot-row">
+                  <IconLandmark />
+                  <span class="spot-name">{spot}</span>
+                </div>
+              ))}
+            </RelatedList>
+          )
+        }
+
+        {
           festivals.length > 0 && (
-            <nav class="backlinks">
-              <h2>Annual events</h2>
-              <ul>
-                {festivals.map((festival) => (
-                  <li>
-                    <span class="list-title-item">{festival.name}</span>
-                    <span class="collection">{festival.when}</span>
-                    <p class="event-note">{festival.blurb}</p>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <RelatedList title="Annual events">
+              {festivals.map((festival) => (
+                <div class="event-row">
+                  <IconCalendar />
+                  <div class="event-body">
+                    <div class="event-head">
+                      <span class="event-name">{festival.name}</span>
+                      <span class="event-when">{festival.when}</span>
+                    </div>
+                    <p class="event-blurb">{festival.blurb}</p>
+                  </div>
+                </div>
+              ))}
+            </RelatedList>
           )
         }
 
@@ -199,6 +220,34 @@ const trail = [
 </BaseLayout>
 
 <style>
+  /* Notable spots: static rows in the same framed list as Food / Borders below,
+     with a leading landmark icon in place of a link arrow. */
+  .spot-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .spot-row:last-child {
+    border-block-end: 0;
+  }
+
+  .spot-row :global(.icon) {
+    width: 16px;
+    height: 16px;
+    color: var(--color-accent);
+  }
+
+  .spot-name {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
+  }
+
   /* Writeup + sidebar (locator map + facts), mirroring the Food detail page. One
      column until there's room for the aside alongside. */
   .neighborhood-layout {
@@ -215,7 +264,7 @@ const trail = [
 
   @media screen and (min-width: 900px) {
     .neighborhood-layout {
-      grid-template-columns: minmax(0, 1fr) 220px;
+      grid-template-columns: minmax(0, 1fr) 260px;
       align-items: start;
       gap: 2.5rem;
     }
@@ -260,18 +309,60 @@ const trail = [
     text-align: center;
   }
 
-  .list-title-item {
-    font-weight: 700;
-    color: var(--color-text);
-    font-size: var(--font-size-md);
+  /* Annual events: framed rows like Notable spots, but each carries a date and a
+     blurb — a calendar icon, the name with its "when" pushed right, blurb below. */
+  .event-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-block-end: 1px solid var(--color-line);
   }
 
-  .event-note {
-    flex-basis: 100%;
-    margin: 0;
-    font-family: var(--font-body);
+  .event-row:last-child {
+    border-block-end: 0;
+  }
+
+  .event-row :global(.icon) {
+    width: 16px;
+    height: 16px;
+    margin-block-start: 3px;
+    color: var(--color-accent);
+  }
+
+  .event-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .event-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-md);
+  }
+
+  .event-name {
+    font-family: var(--font-mono);
     font-size: var(--font-size-md);
-    color: var(--color-text-article);
+    font-weight: 700;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
+  }
+
+  .event-when {
+    flex-shrink: 0;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .event-blurb {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--color-text-muted-2);
   }
 
   /* Explicit stub treatment for a neighborhood without a writeup: a dashed note

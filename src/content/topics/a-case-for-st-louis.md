@@ -4,15 +4,9 @@ updated: 2026-06-24
 draft: true
 ---
 
-## The Great Divorce
-
-### The Most Dangerous City
-
-### Thought Experiment
-
-### Blue City, Red State
-
 ## The Bad
+
+### A City in Decline
 
 ### The Delmar Divide
 
@@ -26,7 +20,7 @@ draft: true
 
 ### Built for Cars
 
-### A City in Decline
+### Blue City, Red State
 
 ## The Good
 

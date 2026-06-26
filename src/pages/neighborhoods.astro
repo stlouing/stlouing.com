@@ -53,13 +53,18 @@ function popupData(slug: string, name: string, group: string) {
     wikipedia: hrefFor('Wikipedia'),
     city: hrefFor('St. Louis City'),
     mytownview: hrefFor('MyTownView'),
-    // Preview text for the map popup: the writeup excerpt when there is one,
-    // otherwise a manual description, then the generated "Neighborhood #X" line —
-    // so every neighborhood's popup has a teaser + "View more" to its page.
+    // The accent tagline (the manual description), shown in the popup + list row
+    // when one is set.
+    tagline: entry?.data.description,
+    // Popup teaser: the writeup excerpt when there is one; otherwise the generated
+    // "Neighborhood #X" line, but only when there's no description to lead with
+    // (the accent tagline already covers that case).
     excerpt:
       entry?.body !== undefined && entry.body.length > 0
         ? excerpt(entry.body, 150)
-        : (entry?.data.description ?? neighborhoodGeneratedSummary(slug)),
+        : entry?.data.description
+          ? ''
+          : neighborhoodGeneratedSummary(slug),
   }
 }
 ---
@@ -133,8 +138,14 @@ function popupData(slug: string, name: string, group: string) {
                       'data-city': popup.city ?? '',
                       'data-mytownview': popup.mytownview ?? '',
                       'data-official': popup.official ?? '',
+                      'data-tagline': popup.tagline ?? '',
                       'data-excerpt': popup.excerpt ?? '',
                     }}>
+                    {popup.tagline && (
+                      <span slot="sub" class="neighborhood-tagline">
+                        {popup.tagline}
+                      </span>
+                    )}
                     {written && Content && (
                       <Fragment>
                         <div class="neighborhood-preview">

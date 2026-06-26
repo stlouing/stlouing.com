@@ -169,14 +169,13 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.3rem, 1.3rem + 0.6vw, 1.8rem);
+  font-size: clamp(1.3rem, 1.3rem + 0.6vw, 2rem);
   margin-bottom: 1.2rem;
 }
 
 h3 {
-  font-size: clamp(1.1rem, 1.1rem + 0.6vw, 1.2rem);
-  margin-bottom: var(--spacing-sm);
-  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 1.1rem + 0.6vw, 1.5rem);
+  margin-bottom: var(--spacing-md);
   color: var(--color-accent);
 }
 
@@ -249,6 +248,65 @@ hr {
 
 time {
   font-weight: 500;
+}
+
+/* Markdown tables in article content. Mono uppercase headers (matching the site's
+   section labels), hairline row dividers like the lists, and a faint zebra to keep
+   wide rows readable. */
+table {
+  border-collapse: collapse;
+  border: 1px solid var(--color-line);
+  font-size: var(--font-size-sm);
+}
+
+th,
+td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid var(--color-line);
+}
+
+/* Honor GFM column alignment (e.g. right-aligned numeric columns). The renderer
+   emits an `align` attribute, which the blanket `text-align: start` above would
+   otherwise win over; right-aligned columns also get tabular figures so digits
+   line up by place value. */
+th[align='right'],
+td[align='right'] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+th[align='center'],
+td[align='center'] {
+  text-align: center;
+}
+
+thead th {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-text);
+  border-block-end: 2px solid var(--color-line-input);
+}
+
+tbody tr:nth-child(even) {
+  background: var(--color-surface);
+}
+
+tbody tr:last-child td {
+  border-block-end: 0;
+}
+
+/* A short line directly above a table reads as its caption: small + quiet mono,
+   not a full heading (and not in the document outline). */
+/* p:has(+ table), */
+.table-caption {
+  margin-block-end: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
 }
 
 /* Jumping to an in-page anchor (a heading permalink, a /food#id link) should
@@ -719,6 +777,36 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* Explored neighborhoods get a clickable map pin (vs the quiet number on
+   unexplored ones): a region-colored teardrop whose tip points at the boundary
+   centroid, with an obvious pointer + hover lift. */
+.neighborhood-marker {
+  cursor: pointer;
+}
+
+.neighborhood-marker .marker-pin {
+  display: block;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+  transform-origin: 50% 100%;
+  transition: transform 0.12s ease;
+}
+
+/* The ring + center dot use --color-surface so they invert with the theme
+   alongside the region fill (white on the dark fills in light mode, dark on the
+   pastel fills in dark mode). */
+.neighborhood-marker .marker-pin-body {
+  stroke: var(--color-surface);
+  stroke-width: 2;
+}
+
+.neighborhood-marker .marker-pin-dot {
+  fill: var(--color-surface);
+}
+
+.neighborhood-marker:hover .marker-pin {
+  transform: scale(1.12);
+}
+
 .content-pane {
   /* The shared .list-pane-header sits at the top of the scrolling pane. Not
      selectable, so dragging a selection across it can't trigger the
@@ -915,6 +1003,16 @@ body:has([data-neighborhood-map]) .river-border {
   font-size: var(--font-size-sm);
   font-weight: 500;
   font-family: var(--font-mono);
+}
+
+/* A neighborhood's tagline (its description) under the name, in accent — the body
+   serif, not the mono of the surrounding sub line. */
+.map-list .neighborhood-tagline {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-muted);
+  font-size: var(--font-size-md);
+  margin-top: var(--spacing-xs);
 }
 
 .map-list .chips {
@@ -1485,6 +1583,17 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
+/* The neighborhood's one-line tagline (its description), in accent above the
+   teaser. */
+.leaflet-popup.food-popup .popup-tagline {
+  margin-block: var(--spacing-sm) 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-accent);
+}
+
 /* A 2–3 line teaser of the writeup inside the popup (body serif, not mono). */
 .leaflet-popup.food-popup .tip-excerpt {
   margin-block: var(--spacing-sm) 0;
@@ -1704,7 +1813,7 @@ body:has([data-filter-root]) .site-header {
   text-decoration-style: dotted;
   text-decoration-thickness: 1px;
   text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   letter-spacing: var(--letter-spacing-tight);
 }
 
@@ -1713,7 +1822,7 @@ body:has([data-filter-root]) .site-header {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color-accent);
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
 }
 
 /* Borderless muted text w/ dotted underline (source links inside lists). */
@@ -1726,7 +1835,7 @@ body:has([data-filter-root]) .site-header {
   text-decoration-style: dotted;
   text-decoration-thickness: 1px;
   text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   letter-spacing: var(--letter-spacing-tight);
 }
 

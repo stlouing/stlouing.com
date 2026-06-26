@@ -37,6 +37,9 @@ export interface PopupConfig {
   chips?: PopupChip[]
   // Food only: address lines, rendered under the title.
   addressLines?: string[]
+  // A one-line tagline (the neighborhood's description), shown in accent above
+  // the excerpt. Neighborhoods only; Food doesn't pass one.
+  tagline?: string
   // A short writeup teaser, clamped to a few lines by the popup CSS.
   excerpt?: string
   // Outlined buttons to external sources (Website, Instagram, Wikipedia, …).
@@ -90,6 +93,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     link,
     chips = [],
     addressLines = [],
+    tagline = '',
     excerpt = '',
     sources = [],
     showMore = true,
@@ -105,6 +109,8 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<span class="tip-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
     : ''
 
+  const taglineHtml = tagline ? `<p class="popup-tagline">${escapeHtml(tagline)}</p>` : ''
+
   const excerptHtml = excerpt ? `<p class="tip-excerpt">${escapeHtml(excerpt)}</p>` : ''
 
   const moreHtml = showMore ? `<a class="popup-more-link" href="${link}">View more</a>` : ''
@@ -118,5 +124,5 @@ export function buildPopupHtml(config: PopupConfig): string {
         .join('')}</div>`
     : ''
 
-  return `${titleHtml}${metaHtml}${addressHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+  return `${titleHtml}${metaHtml}${addressHtml}${taglineHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
 }

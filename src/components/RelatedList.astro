@@ -22,21 +22,20 @@ const { title } = Astro.props
 
   /* Match the related-section headings elsewhere: quiet mono uppercase. */
   .related h2 {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
+    font-family: var(--font-body);
+    font-size: var(--font-size-xl);
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-text-muted);
+    color: var(--color-text-heading);
     margin-bottom: var(--spacing-sm);
   }
 
   /* A bordered frame around the rows; overflow clips the row dividers to the
      rounded corners. */
   .related-list {
-    /* border: 1px solid var(--color-line); */
-    /* background: var(--color-surface); */
-    /* border-radius: var(--radius); */
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
     overflow: hidden;
   }
 </style>

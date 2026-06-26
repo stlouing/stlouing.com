@@ -1,28 +1,57 @@
 ---
-// A small "by the numbers" sidebar card for a neighborhood. Population only for
-// now (2020 U.S. Census). Renders nothing when there's no data — e.g. a park or
-// cemetery has no residential population.
+// The neighborhood aside card: a "by the numbers" block (population, mapped food
+// spots) plus the vibe tags, kept out of the main column so the page doesn't open
+// on a wall of metadata. Renders nothing when there's no data at all.
+import Chip from './Chip.astro'
+
 interface Props {
   population?: number
+  // Count of mapped food spots in this neighborhood (the Food list below).
+  spots?: number
+  // Descriptor tags (historic, dining, …) — moved here from the main column.
+  vibe?: string[]
 }
 
-const { population } = Astro.props
-const hasFacts = population != null
+const { population, spots, vibe = [] } = Astro.props
+const hasNumbers = population != null || (spots != null && spots > 0)
+const hasVibe = vibe.length > 0
+const hasCard = hasNumbers || hasVibe
 ---
 
 {
-  hasFacts && (
+  hasCard && (
     <aside class="side-card">
-      <h2 class="side-card-label">By the numbers</h2>
-      <dl class="facts">
-        {population != null && (
-          <div class="fact">
-            <dt>Population</dt>
-            <dd>{population.toLocaleString('en-US')}</dd>
+      {hasNumbers && (
+        <div class="card-section">
+          <h2 class="side-card-label">By the numbers</h2>
+          <dl class="facts">
+            {population != null && (
+              <div class="fact">
+                <dt>Population</dt>
+                <dd>{population.toLocaleString('en-US')}</dd>
+              </div>
+            )}
+          </dl>
+          {population != null && <p class="fact-source">2020 U.S. Census</p>}
+
+          {spots != null && spots > 0 && (
+            <div class="fact">
+              <dt>Spots I've explored</dt>
+              <dd>{spots}</dd>
+            </div>
+          )}
+        </div>
+      )}
+      {hasVibe && (
+        <div class:list={['card-section', { 'has-divider': hasNumbers }]}>
+          <h2 class="side-card-label">Vibe</h2>
+          <div class="vibe-chips">
+            {vibe.map((tag) => (
+              <Chip>{tag}</Chip>
+            ))}
           </div>
-        )}
-      </dl>
-      <p class="fact-source">2020 U.S. Census</p>
+        </div>
+      )}
     </aside>
   )
 }
@@ -33,6 +62,13 @@ const hasFacts = population != null
     border-radius: var(--radius);
     padding: var(--spacing-md);
     background: var(--color-surface);
+  }
+
+  /* A second section (Vibe under By the numbers) gets a hairline rule above it. */
+  .card-section.has-divider {
+    margin-block-start: var(--spacing-md);
+    padding-block-start: var(--spacing-md);
+    border-block-start: 1px solid var(--color-line);
   }
 
   .side-card-label {
@@ -81,9 +117,14 @@ const hasFacts = population != null
   }
 
   .fact-source {
-    margin: var(--spacing-sm) 0 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
     color: var(--color-text-muted);
+  }
+
+  .vibe-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
   }
 </style>

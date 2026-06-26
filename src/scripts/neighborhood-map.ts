@@ -161,6 +161,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       title: name,
       link,
       chips: area ? [{ label: area }] : [],
+      tagline: row?.dataset.tagline ?? '',
       excerpt: row?.dataset.excerpt ?? '',
       sources,
     })
@@ -218,22 +219,53 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
       })
 
-      // Numbered badge centered on the boundary (non-interactive so clicks fall
-      // through to the polygon underneath). A merged neighborhood can show a
-      // range (e.g. Dogtown → "41-44"); the box widens to fit it.
+      // Centered boundary badge. Explored neighborhoods (a writeup exists) get a
+      // filled, clickable region-colored marker that opens their popup — an obvious
+      // tap target; unexplored ones keep a quiet, non-interactive number so clicks
+      // fall through to the polygon. A merged neighborhood can show a range (e.g.
+      // Dogtown → "41-44"); the box widens to fit it.
       if (Number.isFinite(number)) {
         const badge = entry && 'numberLabel' in entry ? entry.numberLabel : String(number)
-        const width = Math.max(20, badge?.length || 1 * 9)
-        L.marker(layerBounds.getCenter(), {
-          icon: L.divIcon({
-            className: 'neighborhood-number',
-            html: badge,
-            iconSize: [width, 20],
-            iconAnchor: [width / 2, 10],
-          }),
-          interactive: false,
-          keyboard: false,
-        }).addTo(map)
+        const width = Math.max(26, (badge?.length ?? 1) * 11)
+        const explored = Boolean(slug) && (rowFor(slug)?.classList.contains('is-written') ?? false)
+
+        if (explored) {
+          const color = colorForGroup(entry?.group)
+          const marker = L.marker(layerBounds.getCenter(), {
+            icon: L.divIcon({
+              className: 'neighborhood-marker',
+              // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke
+              // (which sits half-outside the path edge) isn't clipped; the tip at
+              // path (12,32) lands at pixel (14,34) in the padded box.
+              html: `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="${color}" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`,
+              iconSize: [28, 36],
+              iconAnchor: [14, 34],
+            }),
+            title: name,
+            riseOnHover: true,
+          }).addTo(map)
+          marker.on('click', () => featureLayer.openPopup())
+          // Hovering the marker previews its boundary, like hovering the polygon.
+          marker.on('mouseover', () => {
+            if (slug !== selectedSlug) {
+              path.setStyle(hoverStyle)
+            }
+          })
+          marker.on('mouseout', () => {
+            path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
+          })
+        } else {
+          L.marker(layerBounds.getCenter(), {
+            icon: L.divIcon({
+              className: 'neighborhood-number',
+              html: badge,
+              iconSize: [width, 20],
+              iconAnchor: [width / 2, 10],
+            }),
+            interactive: false,
+            keyboard: false,
+          }).addTo(map)
+        }
       }
     },
   }).addTo(map)
