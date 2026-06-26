@@ -88,7 +88,7 @@ This might not be entirely accurate, and most places do the round pizza, but I t
 
 ## Making a pizza from scratch
 
-Loosely based on a recipe posted on reddit by [HouseofProvel](https://www.reddit.com/user/HouseofProvel), I made a St. Louis-style pizza from scratch with a three-day ferment on the crust. I opted to use slices of Provel as opposed to shredded as it's the way [Faraci's does it](https://www.faracispizza.com/ourpizza).
+Loosely based on a recipe posted on reddit by [HouseofProvel](https://www.reddit.com/user/HouseofProvel/), I made a St. Louis-style pizza from scratch with a three-day ferment on the crust. I opted to use slices of Provel as opposed to shredded as it's the way [Faraci's does it](https://www.faracispizza.com/ourpizza).
 
 <div class="image-grid">
 

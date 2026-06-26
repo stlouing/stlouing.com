@@ -1012,6 +1012,7 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 500;
   color: var(--color-accent);
   font-size: var(--font-size-md);
+  font-style: italic;
 }
 
 .map-list .chips {
@@ -1786,6 +1787,7 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-text);
   background: var(--color-surface);
   border-color: var(--color-line-input);
+  flex-shrink: 0;
 }
 
 .btn-outline:hover,
@@ -1798,6 +1800,7 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-background);
   background: var(--color-accent);
   border-color: var(--color-accent);
+  flex-shrink: 0;
 }
 
 .btn-filled:hover {
@@ -1815,6 +1818,7 @@ body:has([data-filter-root]) .site-header {
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 3px;
   letter-spacing: var(--letter-spacing-tight);
+  flex-shrink: 0;
 }
 
 .btn-quiet:hover {
@@ -1837,6 +1841,7 @@ body:has([data-filter-root]) .site-header {
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 3px;
   letter-spacing: var(--letter-spacing-tight);
+  flex-shrink: 0;
 }
 
 .btn-muted:hover {

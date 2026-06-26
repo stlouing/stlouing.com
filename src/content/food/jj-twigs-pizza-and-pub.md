@@ -8,7 +8,7 @@ address:
   - 5600 Hampton Ave
   - St. Louis, MO 63109
 coords: [38.5804182, -90.2933545]
-url: http://www.jjtwigsstl.com
+url: https://www.jjtwigsstl.com/
 instagram: https://www.instagram.com/jjtwigs.valleypark
 ---
 

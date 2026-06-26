@@ -8,7 +8,7 @@ address:
   - 9033 Manchester Rd
   - Brentwood, MO 63144
 coords: [38.6126433, -90.3544152]
-url: http://www.carlsdrivein.com
+url: https://www.carlsdrivein.com/
 instagram: https://www.instagram.com/stlcarlsdrivein
 ---
 

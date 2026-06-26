@@ -1,6 +1,6 @@
 ---
 title: St. Louis Overview
-description: An underrated city with great food and real problems
+description: An underrated city with great amenities and real problems
 created: 2026-05-28
 updated: 2026-06-26
 ---
@@ -13,15 +13,15 @@ In the mid 1800s, St. Louis was the [4th biggest city in the country](https://en
 
 ### The Great Divorce
 
-In 1876, the city of St. Louis voted to separate from St. Louis County, becoming one of only a few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in the U.S. Most other cities sit inside a county - Chicago is a city inside Cook County, for example, but STL city and county are completely separate entities.
+In 1876, the city of St. Louis voted to separate from St. Louis County, becoming one of only a few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in the U.S. Most other cities sit inside a county - Chicago is a city inside Cook County, for example, but St. Louis city and county are completely separate entities.
 
-This separation permanently froze the boundaries of St. Louis to 66.17 square miles, which resulted in a slew of unforeseen consequences for the city.
+This separation permanently froze the boundaries of St. Louis at 66.17 square miles, which resulted in a slew of unforeseen consequences for the city.
 
 ### A City in Decline
 
 Most other cities continued to grow and expand during this period. Chicago had [dozens of annexations](https://chicagology.com/population/annexation/) of its surrounding towns and villages, during which it expanded from 36 square miles in 1880 to 234 today.
 
-In 150 years, St. Louis hasn't expand at all.
+In 150 years, St. Louis hasn't expanded at all.
 
 | City          | Area in 1880 | Area in 2020 |
 | :------------ | -----------: | -----------: |
@@ -30,9 +30,9 @@ In 150 years, St. Louis hasn't expand at all.
 
 <p class="table-caption">Chicago and St. Louis size in square miles from 1880 to 2020</p>
 
-If St. Louis had followed in the steps of other cities, it would have absorbed many of the surrounding areas like Clayton, Maplewood, Richmond Heights, Webster Groves, and Kirkwood.
+If St. Louis had followed in the footsteps of other cities, it would have absorbed many of the surrounding areas like Clayton, Maplewood, Richmond Heights, Webster Groves, and Kirkwood.
 
-As it stands, St. Louis city is not even close to being in the top 150 largest in terms of square miles, yet the Metropolitan area has the [23rd highest population](https://en.wikipedia.org/wiki/Metropolitan_statistical_area) in the U.S.
+As it stands, St. Louis city is not even close to being in the top 150 largest (by area), yet the Greater St. Louis area has the [23rd highest population](https://en.wikipedia.org/wiki/Metropolitan_statistical_area) in the U.S.
 
 | Year | City population | County population |
 | :--- | --------------: | ----------------: |
@@ -41,7 +41,7 @@ As it stands, St. Louis city is not even close to being in the top 150 largest i
 
 <p class="table-caption">St. Louis City and County population from 1880 to 2020</p>
 
-The suburbs have rapidly expanded over this time period, but the city has stagnated. The city population actually reached a peak of 856,796 in 1950, but a series of factors (such as white flight, highway development, redlining, and the economy shifting away from the river) left the city in continuous decline since then.
+The suburbs have rapidly expanded over this time period, but the city has stagnated. The city population reached a peak of 856,796 in 1950, but a series of factors (such as white flight, highway development, redlining, and the economy shifting away from the river) left the city in continuous decline since then.
 
 ### The Most Dangerous City?
 
@@ -56,7 +56,7 @@ But while parts of St. Louis are legitimately dangerous, this stat doesn't reall
 
 <p class="table-caption">City population as a share of its metro, 2020</p>
 
-Since St. Louis hasn't expanded its boundaries in 150 years, they can't count lower crime adjacent suburban areas in their crime stats, causing it to skew towards the small, dense, concetrated areas.
+Since St. Louis hasn't expanded its boundaries in 150 years, lower-crime adjacent suburban areas aren't counted in the crime stats, causing the data to skew towards the dense and less safe areas.
 
 | Area                        | Population | Homicides | Rate per 100k |
 | :-------------------------- | ---------: | --------: | ------------: |
@@ -76,7 +76,7 @@ If combining the entire city and county of St. Louis seems like a contrived exam
 <p class="table-caption">St. Louis City + County vs. San Antonio, 2020</p>
 
 - **Misconception**: _"If the city joined county, the crime stats would be better."_
-- **Reality**: The crime stats would not change at all - the independent city issue does not cause St. Louis to be unfairly counted as a city vs. a metro.
+- **Reality**: The crime stats would not change at all - the independent city issue does not cause St. Louis to be unfairly counted as a city versus a metro. The problem is the frozen borders, and the damage is essentially done.
 
 #### Sources
 

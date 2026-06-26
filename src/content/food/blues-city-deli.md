@@ -8,7 +8,7 @@ address:
   - 2438 McNair Ave
   - St. Louis, MO 63104
 coords: [38.6050506, -90.2181734]
-url: http://www.bluescitydeli.com
+url: https://www.bluescitydeli.com/
 instagram: https://www.instagram.com/bluescitydeli
 pick:
   name: Reuben Sandwich

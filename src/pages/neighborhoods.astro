@@ -141,6 +141,11 @@ function popupData(slug: string, name: string, group: string) {
                       'data-tagline': popup.tagline ?? '',
                       'data-excerpt': popup.excerpt ?? '',
                     }}>
+                    {neighborhood.group && (
+                      <div class="chips" slot="row-end">
+                        <span class="chip">{neighborhood.group}</span>
+                      </div>
+                    )}
                     {popup.tagline && (
                       <span slot="sub" class="neighborhood-tagline">
                         {popup.tagline}
