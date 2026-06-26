@@ -1010,7 +1010,7 @@ body:has([data-neighborhood-map]) .river-border {
 .map-list .neighborhood-tagline {
   font-family: var(--font-body);
   font-weight: 500;
-  color: var(--color-muted);
+  color: var(--color-accent);
   font-size: var(--font-size-md);
   margin-top: var(--spacing-xs);
 }
@@ -1041,6 +1041,7 @@ body:has([data-neighborhood-map]) .river-border {
   text-decoration: none;
   font-family: var(--font-mono);
   letter-spacing: var(--letter-spacing-tight);
+  font-size: var(--font-size-label);
 }
 
 .map-list a.list-title {
