@@ -138,4 +138,4 @@ But most of my favorite pizzas around the city are not specifically St. Louis-st
 
 ## Other pizza in St. Louis
 
-Although St. Louis-style pizza is obviously the most common style to be found in the region, there's also New York-style at [[la-pizza|La Pizza]], Detroit style at [[nicky-slices|Nicky Slices Pizza Club]], Chicago thin-crust at [[jj-twigs-pizza-and-pub|J.J. Twig's]], Neapolitan style at Fordo's Killer Pizza, standard pizza at [[buds-pizza-and-beer|Bud's Pizza and Beer]], and many more found all around the city. I have yet to try a Sicilian-style or deep dish in St. Louis, but I'm looking forward to continuing my pizza journey.
+Although St. Louis-style pizza is obviously the most common style to be found in the region, there's also New York-style at [[la-pizza|La Pizza]], Detroit style at [[nicky-slices|Nicky Slices]], Chicago thin-crust at [[jj-twigs-pizza-and-pub|J.J. Twig's]], Neapolitan style at Fordo's Killer Pizza, standard pizza at [[buds-pizza-and-beer|Bud's Pizza and Beer]], and many more found all around the city. I have yet to try a Sicilian-style or deep dish in St. Louis, but I'm looking forward to continuing my pizza journey.

@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { addThemedTiles } from './tiles'
-import { buildPopupHtml, escapeHtml, type PopupSource } from './popup'
+import { buildPopupHtml, escapeHtml, type PopupChip, type PopupSource } from './popup'
 import { keepPopupInView, zoomEaseOptions } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
@@ -28,16 +28,26 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   const styles = getComputedStyle(document.documentElement)
   const readColor = (token: string, fallback: string) =>
     styles.getPropertyValue(token).trim() || fallback
-  // One color per region group — top→bottom: North red, Central purple, South blue.
-  const colorCentral = readColor('--color-map-central', readColor('--color-map-accent', '#6a47a6'))
-  const colorNorth = readColor('--color-map-north', '#9c3b2e')
-  const colorSouth = readColor('--color-map-south', '#225aa9')
+  // Section colors: the three St. Louis City regions (North yellow, Central red,
+  // South violet); St. Louis County is blue; parks are green by `type`, regardless
+  // of which region they sit in.
+  const colorNorth = readColor('--color-map-north', '#b8860b')
+  const colorCentral = readColor('--color-map-central', '#c0392b')
+  const colorSouth = readColor('--color-map-south', '#6a47a6')
+  const colorCounty = readColor('--color-map-county', '#2766ad')
+  const colorPark = readColor('--color-map-park', '#2e7d4a')
 
-  function colorForGroup(group: string | undefined): string {
-    if (group === 'North City') {
+  function colorForArea(area: { group?: string; type?: string } | undefined): string {
+    if (area?.type === 'park') {
+      return colorPark
+    }
+    if (area?.group === 'St. Louis County') {
+      return colorCounty
+    }
+    if (area?.group === 'North City') {
       return colorNorth
     }
-    if (group === 'South City') {
+    if (area?.group === 'South City') {
       return colorSouth
     }
 
@@ -147,6 +157,16 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
     const row = rowFor(slug)
     const area = row?.dataset.area ?? ''
+    const region = row?.dataset.region ?? ''
+    // Each chip carries its section's colored dot. Parks lead with a green "Park"
+    // chip, then their region chip (e.g. "Park" + "Central Corridor").
+    const chips: PopupChip[] = []
+    if (row?.dataset.type === 'park') {
+      chips.push({ label: 'Park', section: 'park' })
+    }
+    if (area) {
+      chips.push({ label: area, section: region })
+    }
     const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
     const sources = [
       row?.dataset.wikipedia && { label: 'Wikipedia', href: row.dataset.wikipedia },
@@ -160,7 +180,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     return buildPopupHtml({
       title: name,
       link,
-      chips: area ? [{ label: area }] : [],
+      chips,
       tagline: row?.dataset.tagline ?? '',
       excerpt: row?.dataset.excerpt ?? '',
       sources,
@@ -171,7 +191,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
   L.geoJSON(geojson, {
     style: (feature) => {
-      const color = colorForGroup(byNumber.get(Number(feature?.properties?.NHD_NUM))?.group)
+      const color = colorForArea(byNumber.get(Number(feature?.properties?.NHD_NUM)))
 
       return { color, weight: 2, fillColor: color, fillOpacity: 0.1 }
     },
@@ -186,14 +206,16 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       if (slug) {
         pathBySlug.set(slug, path)
         centerBySlug.set(slug, layerBounds.getCenter())
-        colorBySlug.set(slug, colorForGroup(entry?.group))
+        colorBySlug.set(slug, colorForArea(entry))
       }
 
       featureLayer.bindPopup(popupHtmlFor(slug, name), {
         className: 'food-popup',
         maxWidth: 330,
         minWidth: 210,
-        offset: [0, -2],
+        // Lift the popup clear of the marker (the explored pin rises ~34px from
+        // its tip), so it floats above it instead of covering it.
+        offset: [0, -38],
         autoPanPaddingTopLeft,
         autoPanPaddingBottomRight,
       })
@@ -230,7 +252,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         const explored = Boolean(slug) && (rowFor(slug)?.classList.contains('is-written') ?? false)
 
         if (explored) {
-          const color = colorForGroup(entry?.group)
+          const color = colorForArea(entry)
           const marker = L.marker(layerBounds.getCenter(), {
             icon: L.divIcon({
               className: 'neighborhood-marker',
@@ -244,7 +266,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
             title: name,
             riseOnHover: true,
           }).addTo(map)
-          marker.on('click', () => featureLayer.openPopup())
+          // Anchor the popup to the pin (the polygon's own center can differ from
+          // the marker's), so it sits directly above the marker.
+          marker.on('click', () => featureLayer.openPopup(marker.getLatLng()))
           // Hovering the marker previews its boundary, like hovering the polygon.
           marker.on('mouseover', () => {
             if (slug !== selectedSlug) {
@@ -254,7 +278,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
           marker.on('mouseout', () => {
             path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
           })
-        } else {
+        } else if (!entry?.type) {
+          // Only standard numbered city neighborhoods get a number badge — parks
+          // and county municipalities aren't numbered, so they show none.
           L.marker(layerBounds.getCenter(), {
             icon: L.divIcon({
               className: 'neighborhood-number',

@@ -67,6 +67,25 @@ function popupData(slug: string, name: string, group: string) {
           : neighborhoodGeneratedSummary(slug),
   }
 }
+
+// The map "section" for an area — drives the colored dot on its list chip, using
+// the same precedence as the map's colorForArea (park → county → city region).
+function sectionOf(area: { group?: string; type?: string }): string {
+  if (area.type === 'park') {
+    return 'park'
+  }
+  if (area.group === 'St. Louis County') {
+    return 'county'
+  }
+  if (area.group === 'North City') {
+    return 'north'
+  }
+  if (area.group === 'South City') {
+    return 'south'
+  }
+
+  return 'central'
+}
 ---
 
 <BaseLayout
@@ -80,11 +99,6 @@ function popupData(slug: string, name: string, group: string) {
             <h1 class="pane-title">Neighborhoods</h1>
             <span class="pane-count">{count}</span>
           </span>
-          <ul class="region-legend" aria-label="Map regions">
-            <li class="chip chip-region region-north">North</li>
-            <li class="chip chip-region region-central">Central</li>
-            <li class="chip chip-region region-south">South</li>
-          </ul>
         </div>
         <List>
           {
@@ -95,6 +109,10 @@ function popupData(slug: string, name: string, group: string) {
                 ? neighborhood.numberLabel
                 : neighborhood.number
               const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
+              const section = sectionOf(neighborhood)
+              // The group's own region/county dot color (ignoring type), so a park
+              // popup can show its region chip alongside the green "Park" chip.
+              const regionKey = sectionOf({ group: neighborhood.group })
               const entry = entryBySlug.get(neighborhood.slug)
               // The list row shows at most 3 resource links: drop the City of St.
               // Louis page (it stays on the detail page) so the row keeps Wikipedia,
@@ -138,12 +156,16 @@ function popupData(slug: string, name: string, group: string) {
                       'data-city': popup.city ?? '',
                       'data-mytownview': popup.mytownview ?? '',
                       'data-official': popup.official ?? '',
+                      'data-region': regionKey,
+                      'data-type': section === 'park' ? 'park' : '',
                       'data-tagline': popup.tagline ?? '',
                       'data-excerpt': popup.excerpt ?? '',
                     }}>
                     {neighborhood.group && (
                       <div class="chips" slot="row-end">
-                        <span class="chip">{neighborhood.group}</span>
+                        <span class:list={['chip', 'chip-region', `region-${section}`]}>
+                          {section === 'park' ? 'Park' : neighborhood.group}
+                        </span>
                       </div>
                     )}
                     {popup.tagline && (
@@ -209,33 +231,4 @@ function popupData(slug: string, name: string, group: string) {
     color: var(--color-text-muted);
   }
 
-  /* Compact color key for the map's region groups, sitting beside the title.
-     Each dot pulls from the same --color-map-* token the polygons use. */
-  .region-legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-self: center;
-    gap: var(--spacing-xs);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  @media (max-width: 700px) {
-    .region-legend {
-      display: none;
-    }
-  }
-
-  .region-north {
-    --legend-color: var(--color-map-north);
-  }
-
-  .region-central {
-    --legend-color: var(--color-map-central);
-  }
-
-  .region-south {
-    --legend-color: var(--color-map-south);
-  }
 </style>

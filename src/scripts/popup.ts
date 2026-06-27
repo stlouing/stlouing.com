@@ -22,6 +22,9 @@ export interface PopupChip {
   // otherwise it's a static <span> (e.g. the neighborhood popup's area chip).
   filterSet?: string
   filterValue?: string
+  // Section key (north/central/south/county/park) — adds a colored dot before the
+  // label via `.chip-region .region-<section>`. Used by the neighborhood popup.
+  section?: string
 }
 
 export interface PopupSource {
@@ -51,12 +54,14 @@ export interface PopupConfig {
 function chipHtml(chip: PopupChip): string {
   const leading = chip.leadingHtml ? `${chip.leadingHtml} ` : ''
   const inner = `${leading}${escapeHtml(chip.label)}`
+  // A section adds the colored dot (`.chip-region` + `.region-<section>`).
+  const cls = chip.section ? `chip chip-region region-${chip.section}` : 'chip'
   if (chip.filterSet) {
     const value = escapeHtml(chip.filterValue ?? chip.label)
-    return `<button type="button" class="chip" data-filter-set="${escapeHtml(chip.filterSet)}" data-filter-value="${value}">${inner}</button>`
+    return `<button type="button" class="${cls}" data-filter-set="${escapeHtml(chip.filterSet)}" data-filter-value="${value}">${inner}</button>`
   }
 
-  return `<span class="chip">${inner}</span>`
+  return `<span class="${cls}">${inner}</span>`
 }
 
 // Inline 14×14 source icons (Lucide), matching the labeled links on the detail

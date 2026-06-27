@@ -291,6 +291,7 @@ const trail = [
   }
 
   .locator-figure {
+    display: none;
     width: 100%;
     margin: 0 auto;
   }
@@ -384,9 +385,9 @@ const trail = [
   }
 
   /* The tall locator SVG reads poorly stacked on mobile; the facts card stays. */
-  @media screen and (max-width: 700px) {
+  @media screen and (min-width: 900px) {
     .locator-figure {
-      display: none;
+      display: block;
     }
   }
 </style>

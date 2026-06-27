@@ -18,9 +18,12 @@
   --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
   --color-map-accent: #6a47a6;
-  --color-map-north: #13458a;
-  --color-map-central: #9c3b2e;
+  /* City regions (north→south): yellow, red, violet; county blue; parks green. */
+  --color-map-north: #b8860b;
+  --color-map-central: #c0392b;
   --color-map-south: #6a47a6;
+  --color-map-county: #2766ad;
+  --color-map-park: #2e7d4a;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
   --color-verdict-loved: #9c3b2e;
@@ -77,9 +80,11 @@
   --color-line-input: #45444b;
   --color-accent: #e07d8d;
   --color-map-accent: #b59ae0;
-  --color-map-north: #87acdd;
-  --color-map-central: #e18484;
+  --color-map-north: #dcc24f;
+  --color-map-central: #e6877a;
   --color-map-south: #b59ae0;
+  --color-map-county: #84b0e6;
+  --color-map-park: #7ec98a;
   --color-link: #9aaaf8;
   --color-link-hover: #b1bcf5;
 
@@ -518,12 +523,12 @@ button.chip:hover {
   }
 }
 
-/* Region legend chip (Neighborhoods): a colored dot before the label.
-   --legend-color is set per region by the page. */
+/* Section chip (Neighborhoods list): a colored dot before the label.
+   --legend-color is set per section by the page (region/county/park). */
 .chip-region {
-  gap: var(--spacing-xs);
-  padding-block: 2px;
-  font-size: var(--font-size-xxs);
+  gap: 6px;
+  padding-block: 3px;
+  font-size: var(--font-size-xs);
 }
 
 .chip-region::before {
@@ -533,6 +538,28 @@ button.chip:hover {
   border-radius: 50%;
   background: var(--legend-color);
   flex-shrink: 0;
+}
+
+/* Section dot color per group/type — global so both the list chips and the
+   JS-built map popup chips pick it up via the region-<section> class. */
+.region-north {
+  --legend-color: var(--color-map-north);
+}
+
+.region-central {
+  --legend-color: var(--color-map-central);
+}
+
+.region-south {
+  --legend-color: var(--color-map-south);
+}
+
+.region-county {
+  --legend-color: var(--color-map-county);
+}
+
+.region-park {
+  --legend-color: var(--color-map-park);
 }
 
 .chip .icon {
@@ -1943,11 +1970,13 @@ body:has([data-filter-root]) .site-header {
 
 .collection {
   color: var(--color-text-muted);
+  /* 
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   font-weight: 600;
   text-decoration: none;
+  letter-spacing: 0; */
 }
 
 /* A mono uppercase section heading, used over a List on the Best of page. The

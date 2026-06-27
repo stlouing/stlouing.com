@@ -149,23 +149,109 @@
   },
   { "number": 78, "name": "Hamilton Heights", "slug": "hamilton-heights", "group": "North City" },
   { "number": 79, "name": "North Riverfront", "slug": "north-riverfront", "group": "North City" },
-  { "number": 80, "name": "Carondelet Park", "slug": "carondelet-park", "group": "South City" },
-  { "number": 81, "name": "Tower Grove Park", "slug": "tower-grove-park", "group": "South City" },
-  { "number": 82, "name": "Forest Park", "slug": "forest-park", "group": "Central Corridor" },
-  { "number": 83, "name": "Fairground Park", "slug": "fairground-park", "group": "North City" },
-  { "number": 84, "name": "Penrose Park", "slug": "penrose-park", "group": "North City" },
-  { "number": 85, "name": "O'Fallon Park", "slug": "ofallon-park", "group": "North City" },
+  {
+    "number": 80,
+    "name": "Carondelet Park",
+    "slug": "carondelet-park",
+    "group": "South City",
+    "type": "park"
+  },
+  {
+    "number": 81,
+    "name": "Tower Grove Park",
+    "slug": "tower-grove-park",
+    "group": "South City",
+    "type": "park"
+  },
+  {
+    "number": 82,
+    "name": "Forest Park",
+    "slug": "forest-park",
+    "group": "Central Corridor",
+    "type": "park"
+  },
+  {
+    "number": 83,
+    "name": "Fairground Park",
+    "slug": "fairground-park",
+    "group": "North City",
+    "type": "park"
+  },
+  {
+    "number": 84,
+    "name": "Penrose Park",
+    "slug": "penrose-park",
+    "group": "North City",
+    "type": "park"
+  },
+  {
+    "number": 85,
+    "name": "O'Fallon Park",
+    "slug": "ofallon-park",
+    "group": "North City",
+    "type": "park"
+  },
   {
     "number": 86,
     "name": "Bellefontaine/Calvary Cemetery",
     "slug": "bellefontainecalvary-cemetery",
-    "group": "North City"
+    "group": "North City",
+    "type": "park"
   },
   {
     "number": 87,
     "name": "Missouri Botanical Garden",
     "slug": "missouri-botanical-garden",
-    "group": "South City"
+    "group": "South City",
+    "type": "park"
   },
-  { "number": 88, "name": "Willmore Park", "slug": "willmore-park", "group": "South City" }
+  {
+    "number": 88,
+    "name": "Willmore Park",
+    "slug": "willmore-park",
+    "group": "South City",
+    "type": "park"
+  },
+  {
+    "number": 90,
+    "name": "Clayton",
+    "slug": "clayton",
+    "group": "St. Louis County",
+    "type": "city"
+  },
+  {
+    "number": 91,
+    "name": "University City",
+    "slug": "university-city",
+    "group": "St. Louis County",
+    "type": "city"
+  },
+  {
+    "number": 92,
+    "name": "Maplewood",
+    "slug": "maplewood",
+    "group": "St. Louis County",
+    "type": "city"
+  },
+  {
+    "number": 93,
+    "name": "Kirkwood",
+    "slug": "kirkwood",
+    "group": "St. Louis County",
+    "type": "city"
+  },
+  {
+    "number": 94,
+    "name": "Webster Groves",
+    "slug": "webster-groves",
+    "group": "St. Louis County",
+    "type": "city"
+  },
+  {
+    "number": 95,
+    "name": "Affton",
+    "slug": "affton",
+    "group": "St. Louis County",
+    "type": "community"
+  }
 ]

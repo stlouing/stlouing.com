@@ -62,6 +62,9 @@ export interface NeighborhoodInfo {
   name: string
   slug: string
   group: string
+  // Non-neighborhood areas: 'park' (city green spaces) or 'city' (St. Louis County
+  // municipalities). Standard numbered city neighborhoods have no type.
+  type?: string
 }
 
 // The real (non-`ignored`) neighborhoods, keyed by slug. Drops the rows that are
@@ -82,12 +85,17 @@ export function neighborhoodPopulation(slug: string): number | undefined {
   return (population as Record<string, number>)[slug]
 }
 
-// The generated "Neighborhood #X, in St. Louis's <region>" line — the default
-// page lede and the map popup's preview text when a neighborhood has no writeup.
+// The generated default lede / map-popup preview when an area has no writeup.
+// Numbered city neighborhoods read "Neighborhood #X, in St. Louis's <region>";
+// parks and county municipalities (which aren't numbered city neighborhoods) read
+// "<Name>, a <type> in <region>" — e.g. "Clayton, a city in St. Louis County".
 export function neighborhoodGeneratedSummary(slug: string): string | undefined {
   const info = infoBySlug.get(slug)
   if (!info) {
     return undefined
+  }
+  if (info.type) {
+    return `${info.name}, a ${info.type} in ${info.group}`
   }
 
   return `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
