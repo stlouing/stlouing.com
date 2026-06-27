@@ -129,9 +129,10 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     paintPath(slug, selectedStyleFor(slug))
     setRowActive(slug, true)
     // Bring the chosen neighborhood to the top of the pane (scroll-padding on
-    // .content-pane keeps it clear of the sticky header).
+    // .content-pane keeps it clear of the sticky header). Selection is deliberately
+    // NOT written to the URL as `#slug` — every neighborhood has its own page now,
+    // so the hash would just be a redundant, history-polluting side effect.
     rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    history.replaceState(null, '', `#${slug}`)
   }
 
   function deactivate(slug: string): void {
@@ -328,21 +329,49 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   // Deep-link support: /neighborhoods#slug selects that neighborhood on load, so
   // the "View on the neighborhood map" links (and any backlinks) highlight its
   // boundary and frame it on the map. Otherwise frame the whole City of St. Louis.
-  const initialSlug = location.hash.slice(1)
-  if (initialSlug && pathBySlug.has(initialSlug)) {
-    activate(initialSlug)
-    const selectedBounds = (pathBySlug.get(initialSlug) as L.Polygon | undefined)?.getBounds()
-    if (selectedBounds) {
-      map.fitBounds(selectedBounds, { padding: [40, 40], animate: false, maxZoom: 13 })
+  function frameInitialView(): void {
+    const initialSlug = location.hash.slice(1)
+    if (initialSlug && pathBySlug.has(initialSlug)) {
+      activate(initialSlug)
+      const selectedBounds = (pathBySlug.get(initialSlug) as L.Polygon | undefined)?.getBounds()
+      if (selectedBounds) {
+        map.fitBounds(selectedBounds, { padding: [40, 40], animate: false, maxZoom: 13 })
+      }
+    } else {
+      // Frame the whole city, then zoom in half a level for a tighter default view.
+      map.fitBounds(bounds, { padding: [10, 10], animate: false })
+      map.setZoom(map.getZoom() + 0.5, { animate: false })
+      // Bias the view ~10% south: the far-north tip is a long, thin neighborhood we
+      // don't need centered, so drop it off the top and pull more of South City in.
+      const visibleLatSpan = map.getBounds().getNorth() - map.getBounds().getSouth()
+      const center = map.getCenter()
+      map.setView([center.lat - visibleLatSpan * 0.1, center.lng], map.getZoom(), { animate: false })
     }
-  } else {
-    // Frame the whole city, then zoom in half a level for a tighter default view.
-    map.fitBounds(bounds, { padding: [10, 10], animate: false })
-    map.setZoom(map.getZoom() + 0.5, { animate: false })
-    // Bias the view ~10% south: the far-north tip is a long, thin neighborhood we
-    // don't need centered, so drop it off the top and pull more of South City in.
-    const visibleLatSpan = map.getBounds().getNorth() - map.getBounds().getSouth()
-    const center = map.getCenter()
-    map.setView([center.lat - visibleLatSpan * 0.1, center.lng], map.getZoom(), { animate: false })
   }
+
+  // On mobile the page now opens on the reading pane, so the map starts hidden and
+  // Leaflet would measure a zero-size container. Only frame once it actually has a
+  // size; if it's hidden at load, wait for the first switch to the map pane, then
+  // re-measure and frame. Desktop (both panes always visible) frames immediately.
+  let framed = false
+  function frameWhenSized(): void {
+    if (framed || element.clientHeight === 0) {
+      return
+    }
+    framed = true
+    frameInitialView()
+  }
+
+  if (split) {
+    const observer = new MutationObserver(() => {
+      if (split.getAttribute('data-view') !== 'map') {
+        return
+      }
+      map.invalidateSize()
+      frameWhenSized()
+    })
+    observer.observe(split, { attributes: true, attributeFilter: ['data-view'] })
+  }
+
+  frameWhenSized()
 }

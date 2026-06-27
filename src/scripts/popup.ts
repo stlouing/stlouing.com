@@ -84,7 +84,7 @@ const SOURCE_ICON: Record<string, string> = {
   'St. Louis City': sourceIcon(
     '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
   ),
-  Directions: sourceIcon(
+  'Google Maps': sourceIcon(
     '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
   ),
   Instagram: sourceIcon(

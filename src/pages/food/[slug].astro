@@ -135,7 +135,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
             <SourceLink href={data.instagram} label="Instagram">
               <IconInstagram slot="icon" />
             </SourceLink>
-            <SourceLink href={googleMapsHref(data)} label="Directions">
+            <SourceLink href={googleMapsHref(data)} label="Google Maps">
               <IconMapPin slot="icon" />
             </SourceLink>
           </div>
@@ -144,13 +144,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
     </Fragment>
 
     <div class="food-layout">
-      <aside class="food-aside">
-        <FoodLocator coords={data.coords} label={data.neighborhood} />
-        <a class="btn btn-outline food-map-link" href={href('/food')}>
-          <IconMap /> Back to the Food Map
-        </a>
-        {data.pick && <MyPick pick={data.pick} cuisine={data.cuisine} />}
-      </aside>
       <div class="food-main">
         <Content />
         <section class="more-food">
@@ -185,6 +178,13 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
           }
         </section>
       </div>
+      <aside class="food-aside">
+        <FoodLocator coords={data.coords} label={data.neighborhood} />
+        <a class="btn btn-outline food-map-link" href={href('/food')}>
+          <IconMap /> Back to the Food Map
+        </a>
+        {data.pick && <MyPick pick={data.pick} cuisine={data.cuisine} />}
+      </aside>
     </div>
   </Entry>
 </BaseLayout>
@@ -256,8 +256,8 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
       gap: 2.5rem;
     }
 
-    /* DOM order is aside-then-main so the map + pick lead on mobile; on desktop
-       they're placed back into the right column. */
+    /* DOM order is main-then-aside so the writeup leads on mobile (the map + pick
+       follow it); on desktop the aside is placed back into the right column. */
     .food-main {
       grid-column: 1;
       grid-row: 1;

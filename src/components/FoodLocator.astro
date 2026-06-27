@@ -35,6 +35,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
   /* The placeholder before the map loads: a faint diagonal hatch, echoing the
      map's own grid, so the box reads as a map even while the chunk is fetching. */
   .food-locator-map {
+    position: relative;
     height: 220px;
     border: 1px solid var(--color-line);
     border-radius: var(--radius);

@@ -22,12 +22,11 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
 
   const scope: Element | Document = el.closest('[data-filter-root]') ?? document
 
-  // Keep the selection sticky: clicking empty map space should not close the
-  // open popup (which would visually de-select a place while its list row stays
-  // active). Selection only changes when another marker is clicked.
+  // Clicking empty map space closes the open popup, which cascades through
+  // popupclose → deactivate to de-select the row (matching the neighborhood map).
+  // Leaflet's default closePopupOnClick handles this.
   const map = L.map(el, {
     ...zoomEaseOptions,
-    closePopupOnClick: false,
     scrollWheelZoom: true,
     touchZoom: true,
     minZoom: 10,
@@ -144,7 +143,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         const sources = [
           url && { label: 'Website', href: url },
           instagram && { label: 'Instagram', href: instagram },
-          google && { label: 'Directions', href: google },
+          google && { label: 'Google Maps', href: google },
         ].filter(Boolean) as PopupSource[]
 
         // "View more" only when there's a writeup teaser to deep-link into.

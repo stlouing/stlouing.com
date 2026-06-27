@@ -54,7 +54,12 @@ const {
     {
       const filterRoot = document.currentScript.parentElement
       const savedView = localStorage.getItem('list-map-view')
-      filterRoot.dataset.view = savedView === 'list' || savedView === 'map' ? savedView : 'map'
+      // No saved preference: default to the list on mobile (so the page opens on
+      // readable rows, not a full-bleed map a one-finger swipe can't scroll past)
+      // and to the map on wider screens.
+      const defaultView = window.matchMedia('(max-width: 700px)').matches ? 'list' : 'map'
+      filterRoot.dataset.view =
+        savedView === 'list' || savedView === 'map' ? savedView : defaultView
     }
   </script>
   <header class="secondary-header">

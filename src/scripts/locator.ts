@@ -39,4 +39,40 @@ export function initLocator(el: HTMLElement): void {
     iconAnchor: [14, 26],
   })
   L.marker([lat, lng], { icon, interactive: false, keyboard: false }).addTo(map)
+
+  // On touch devices the locator sits inline in a scrolling page, so a one-finger
+  // drag should scroll the page past the map — not get trapped panning it. Gate
+  // dragging behind a two-finger gesture (pinch-zoom already needs two fingers),
+  // and flash a hint when a single finger lands on the map.
+  if (L.Browser.mobile) {
+    map.dragging.disable()
+
+    const hint = document.createElement('div')
+    hint.className = 'map-gesture-hint'
+    hint.textContent = 'Use two fingers to move the map'
+    el.appendChild(hint)
+
+    el.addEventListener(
+      'touchstart',
+      (event) => {
+        if (event.touches.length >= 2) {
+          map.dragging.enable()
+          el.classList.remove('is-gesture-hint')
+        } else {
+          map.dragging.disable()
+          el.classList.add('is-gesture-hint')
+        }
+      },
+      { passive: true },
+    )
+
+    el.addEventListener('touchend', (event) => {
+      if (event.touches.length < 2) {
+        map.dragging.disable()
+      }
+      if (event.touches.length === 0) {
+        el.classList.remove('is-gesture-hint')
+      }
+    })
+  }
 }
