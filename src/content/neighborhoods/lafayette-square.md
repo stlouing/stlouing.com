@@ -2,7 +2,7 @@
 title: Lafayette Square
 url: https://lafayettesquare.org
 description: Historic mansions around the city's oldest park
-vibe:
+tags:
   - historic
   - walkable
   - green

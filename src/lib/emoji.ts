@@ -58,3 +58,25 @@ export function cuisineEmoji(cuisines: string[]): string {
 
   return '🍽️'
 }
+
+// Shared icon per vibe/tag, used by the neighborhood "Vibe" chips. Keyed by the
+// lowercase tag; tags without an entry simply render without a leading icon.
+const TAG_EMOJI: Record<string, string> = {
+  walkable: '🚶',
+  historic: '🏛️',
+  dining: '🍽️',
+  nightlife: '🌃',
+  green: '🌳',
+  music: '🎵',
+  sports: '🏟️',
+  shopping: '🛍️',
+  arts: '🎨',
+  brewery: '🍺',
+  italian: '🍝',
+  lgbtq: '🏳️‍🌈',
+}
+
+// The icon for a tag, or undefined when none is mapped.
+export function tagEmoji(tag: string): string | undefined {
+  return TAG_EMOJI[tag.trim().toLowerCase()]
+}

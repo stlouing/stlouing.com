@@ -2,7 +2,7 @@
 title: Downtown
 url: https://www.downtownstl.org
 description: The central business and sports district
-vibe:
+tags:
   - historic
   - sports
   - arts

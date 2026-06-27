@@ -2,7 +2,7 @@
 title: The Grove
 url: https://www.thegrovestl.com
 description: St. Louis's LGBTQ nightlife strip
-vibe:
+tags:
   - nightlife
   - lgbtq
   - music

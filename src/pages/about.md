@@ -8,7 +8,7 @@ St. Louing is a personal project I created to document my experience living in S
 
 I've been on a quest to find [the best food in St. Louis](/food), and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
 
-The site is not meant to be a definitive source of information about the STL food scene or neighborhoods, though. Just my own little field guide. There is a heavy focus on food as that's my primary way of exploring the city and culture.
+The site is not meant to be a definitive source of information about the STL food scene or neighborhoods - just my own little field guide. There is a heavy focus on food as that's my primary way of exploring the city and culture.
 
 ## Purpose
 

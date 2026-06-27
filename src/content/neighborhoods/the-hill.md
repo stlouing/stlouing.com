@@ -2,10 +2,9 @@
 title: The Hill
 url: https://www.hillstl.org
 description: Little Italy in St. Louis
-vibe:
+tags:
   - historic
   - dining
-  - family-friendly
   - italian
 attractions:
   - St. Ambrose Church

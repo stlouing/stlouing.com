@@ -64,11 +64,11 @@ const rendered = entry ? await render(entry) : null
 const Content = rendered?.Content
 const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
+// The neighborhood's tags double as the aside "Vibe" chips, so they're shown there
+// (with icons, linking to /tags) rather than in the Entry header's tag row.
 const tags = entry?.data.tags ?? []
 
-// Structured neighborhood data (factual, optional) — shown above the writeup so a
-// data-only neighborhood still has substance.
-const vibe = entry?.data.vibe ?? []
+// Signature attractions/landmarks for the "Notable spots" list.
 const attractions = entry?.data.attractions ?? []
 
 // Computed data layer.
@@ -108,7 +108,7 @@ const trail = [
 
 <BaseLayout crumb={title} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
-  <Entry title={title} tags={tags} editPath={entry?.filePath} backlinks={backlinks}>
+  <Entry title={title} editPath={entry?.filePath} backlinks={backlinks}>
     {
       summary && (
         <p class="entry-summary" slot="lede">
@@ -132,7 +132,7 @@ const trail = [
     }
     <div class="neighborhood-layout">
       <aside class="neighborhood-aside">
-        <NeighborhoodFacts population={population} spots={places.length} vibe={vibe} />
+        <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
         <figure class="locator-figure">
           <NeighborhoodLocator slug={slug} name={title} />
           <figcaption>{title} relative to St. Louis</figcaption>

@@ -2,10 +2,9 @@
 title: Shaw
 url: https://shawstlouis.org
 description: Historic, charming homes by the Botanical Garden
-vibe:
+tags:
   - historic
   - green
-  - family-friendly
   - walkable
 attractions:
   - Missouri Botanical Garden

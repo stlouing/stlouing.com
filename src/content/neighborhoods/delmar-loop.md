@@ -3,7 +3,7 @@ title: Delmar Loop
 url: https://visittheloop.com/
 wikipedia: https://en.wikipedia.org/wiki/Delmar_Loop
 description: A walkable strip of music venues and restaurants
-vibe:
+tags:
   - walkable
   - nightlife
   - music

@@ -2,12 +2,10 @@
 title: Dogtown
 url: https://www.dogtownunited.org
 description: The historic Irish neighborhood in St. Louis
-vibe:
+tags:
   - historic
-  - family-friendly
   - dining
 attractions:
-  - St. Patrick's Day Parade
   - Tamm Avenue
   - Forest Park
 ---

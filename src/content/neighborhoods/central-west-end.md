@@ -2,7 +2,7 @@
 title: Central West End
 url: https://cwescene.com
 description: The most urban neighborhood outside of downtown
-vibe:
+tags:
   - historic
   - walkable
   - nightlife
