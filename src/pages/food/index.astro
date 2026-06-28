@@ -111,6 +111,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 'data-sort-verdict': `${verdictRankLetter[verdict as Verdict]}|${place.data.title.toLowerCase()}`,
                 'data-google': googleMapsHref(place.data),
                 'data-instagram': place.data.instagram ?? '',
+                'data-tagline': place.data.description ?? '',
                 'data-excerpt': hasBody(place) ? excerpt(place.body, 150) : '',
               }}>
               {place.data.neighborhood && (
@@ -138,24 +139,24 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                   ))}
                 </div>
               )}
-              {place.data.address && place.data.address.length > 0 && (
-                <span class="place-address" slot="sub">
-                  {place.data.address[0]}
+              {place.data.description && (
+                <span class="food-tagline" slot="sub">
+                  {place.data.description}
                 </span>
               )}
               {hasBody(place) && <div class="food-preview">{excerpt(place.body, 160)}</div>}
               <div class="place-links">
+                {/* <SourceLink href={place.data.url} label="Website" variant="muted" />
+                <SourceLink href={place.data.instagram} variant="muted" />
+                <SourceLink href={googleMapsHref(place.data)} label="Google Maps" variant="muted" /> */}
                 {hasBody(place) && (
                   <a
-                    class="btn btn-quiet"
+                    class="btn btn-filled btn-compact ml-auto"
                     href={href(`/food/${place.id}`)}
                     aria-label={`Read more about ${place.data.title}`}>
                     Read more <IconArrowRight />
                   </a>
                 )}
-                <SourceLink href={place.data.url} label="Website" variant="muted" />
-                <SourceLink href={place.data.instagram} variant="muted" />
-                <SourceLink href={googleMapsHref(place.data)} label="Google Maps" variant="muted" />
               </div>
             </MapRow>
           ))

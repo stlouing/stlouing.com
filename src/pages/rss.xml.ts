@@ -6,9 +6,10 @@ import { published, excerpt } from '../lib/content'
 import { SITE_TITLE, SITE_DESCRIPTION } from '../lib/site'
 
 // Combined feed: chronological notes, the evergreen Topics (dated by when each
-// was last tended), and dated Food reviews — newest first. Each item carries a
-// short description (authored, else a generated excerpt) plus the full rendered
-// body. Food entries without a `date` are left out of the feed.
+// was last tended), dated Food reviews, and dated Neighborhood writeups — newest
+// first. Each item carries a short description (authored, else a generated
+// excerpt) plus the full rendered body. Food + Neighborhood entries without a
+// `date` are left out of the feed.
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://stlouing.com')
   const origin = site.href.replace(/\/$/, '')
@@ -72,7 +73,28 @@ export async function GET(context: APIContext) {
     }),
   )
 
-  const items = [...noteItems, ...topicItems, ...foodItems].sort(
+  // Neighborhood writeups join the feed once dated, mirroring Food. The summary
+  // falls back to the authored `description` (which data-only entries carry)
+  // before a body excerpt.
+  const neighborhoods = published(await getCollection('neighborhoods')).filter(
+    (neighborhood) => neighborhood.data.date,
+  )
+  const neighborhoodItems = await Promise.all(
+    neighborhoods.map(async (neighborhood) => {
+      const { Content } = await render(neighborhood)
+      const link = `/neighborhoods/${neighborhood.id}/`
+
+      return {
+        title: neighborhood.data.title,
+        pubDate: neighborhood.data.date as Date,
+        description: neighborhood.data.description ?? excerpt(neighborhood.body),
+        content: absolutize(await container.renderToString(Content), link),
+        link,
+      }
+    }),
+  )
+
+  const items = [...noteItems, ...topicItems, ...foodItems, ...neighborhoodItems].sort(
     (left, right) => right.pubDate.valueOf() - left.pubDate.valueOf(),
   )
 

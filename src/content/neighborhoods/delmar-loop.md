@@ -1,5 +1,6 @@
 ---
 title: Delmar Loop
+date: 2026-06-28
 url: https://visittheloop.com/
 wikipedia: https://en.wikipedia.org/wiki/Delmar_Loop
 description: A walkable strip of music venues and restaurants
@@ -18,7 +19,7 @@ attractions:
 
 The Delmar Loop, often referred to as just The Loop, is a commercial strip that straddles the western edge of St. Louis city and the east end of University City.
 
-There are a lot of notable features in the area that distinguish it from other parts of the city, such as a Hollywood Star style Walk of Fame of famous St. Louisans, and a the [Loop Trolley](https://www.looptrolley.com/) that passes through the neighborhood and ferries people to Forest Park.
+There are a lot of notable features in the area that distinguish it from other parts of the city, such as a Hollywood Star style Walk of Fame of famous St. Louisans, and the [Loop Trolley](https://www.looptrolley.com/) that passes through the neighborhood and ferries people to Forest Park.
 
 [The Pageant](https://www.thepageant.com/) and Delmar Hall are two back-to-back concert halls that host many of the bands and artists that pass through St. Louis.
 

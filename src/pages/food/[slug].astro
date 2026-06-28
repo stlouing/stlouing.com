@@ -107,6 +107,13 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
   jsonLd={schema}>
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={mentionedIn}>
+    {
+      data.description && (
+        <p class="entry-summary" slot="lede">
+          {data.description}
+        </p>
+      )
+    }
     <Fragment slot="meta">
       <div class="food-meta">
         {

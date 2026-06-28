@@ -1,5 +1,6 @@
 ---
 title: La Tejana Taqueria
+description: 'A hyped taqueria that let me down on my visit'
 date: 2026-06-23
 rating: 2
 cuisine: ['tacos']
@@ -9,6 +10,7 @@ address:
 coords: [38.722795, -90.407821]
 url: http://www.latejanastl.com
 neighborhood: St. Ann
+verdict: not-for-me
 ---
 
 One of the first types of cuisine I was on the lookout for when I arrived in St. Louis was authentic Mexican food. I saw La Tejana come up frequently in recommendations. It's located in one of the few of St. Louis that has a concentration of Hispanic folks, so it seemed promising.

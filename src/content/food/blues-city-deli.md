@@ -1,6 +1,7 @@
 ---
 title: Blues City Deli
 date: 2026-06-23
+description: 'A very St. Louis sandwich shop with the best reuben in town'
 rating: 10
 cuisine: ['sandwiches']
 neighborhood: Benton Park

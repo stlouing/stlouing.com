@@ -1,5 +1,6 @@
 ---
 title: Downtown
+date: 2026-06-28
 url: https://www.downtownstl.org
 description: The central business and sports district
 tags:
@@ -13,7 +14,7 @@ attractions:
   - City Museum
 ---
 
-Crossing over the Mississippi river into St. Louis, you'll be welcomed by The Gateway Arch, the world's tallest manmade arch and one of America's most recognizable monuments. You'll immediately enter into Downtown, St. Louis's business district that houses multiple sports stadiums and tourist attractions.
+Crossing over the Mississippi river into St. Louis, you'll be welcomed by The Gateway Arch, the world's tallest manmade arch and one of America's most recognizable monuments. You'll immediately enter into Downtown, St. Louis's business district that houses multiple sports venues and tourist attractions.
 
 One of the biggest highlights is [City Museum](https://citymuseum.org/), one of the most unique places I've ever been. Calling it a "museum" gives the wrong impression for what it is - a giant concrete playground for both kids and adults. It's hard to describe without experiencing it.
 

@@ -1,5 +1,6 @@
 ---
 title: El Jarocho
+description: "The authentic street tacos I've been looking for"
 date: 2026-06-23
 rating: 9
 cuisine: ['tacos']

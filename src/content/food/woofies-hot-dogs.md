@@ -1,5 +1,6 @@
 ---
 title: Woofies Hot Dogs
+description: 'A perfect Chicago dog and the best smash burger around'
 date: 2026-06-23
 rating: 9
 cuisine: ['hot dogs']

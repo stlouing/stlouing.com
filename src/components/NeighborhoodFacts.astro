@@ -3,8 +3,8 @@
 // spots) plus the vibe tags, kept out of the main column so the page doesn't open
 // on a wall of metadata. Renders nothing when there's no data at all.
 import Chip from './Chip.astro'
+import TagIcon from './TagIcon.astro'
 import { href } from '../lib/url'
-import { tagEmoji } from '../lib/emoji'
 
 interface Props {
   population?: number
@@ -25,7 +25,7 @@ const hasCard = hasNumbers || hasVibe
   hasCard && (
     <aside class="side-card">
       {hasNumbers && (
-        <div class="card-section">
+        <div class="card-section card-numbers">
           <h2 class="side-card-label">By the numbers</h2>
           <dl class="facts">
             {population != null && (
@@ -34,30 +34,26 @@ const hasCard = hasNumbers || hasVibe
                 <dd>{population.toLocaleString('en-US')}</dd>
               </div>
             )}
+            {population != null && <p class="fact-source">2020 U.S. Census</p>}
+            {spots != null && spots > 0 && (
+              <div class="fact">
+                <dt>Spots explored</dt>
+                <dd>{spots}</dd>
+              </div>
+            )}
           </dl>
-          {population != null && <p class="fact-source">2020 U.S. Census</p>}
-
-          {spots != null && spots > 0 && (
-            <div class="fact">
-              <dt>Spots I've explored</dt>
-              <dd>{spots}</dd>
-            </div>
-          )}
         </div>
       )}
       {hasVibe && (
         <div class:list={['card-section', { 'has-divider': hasNumbers }]}>
           <h2 class="side-card-label">Vibe</h2>
           <div class="vibe-chips">
-            {tags.map((tag) => {
-              const emoji = tagEmoji(tag)
-              return (
-                <Chip href={href(`/tags/${tag}`)}>
-                  {emoji && <span>{emoji}</span>}
-                  <span>{tag}</span>
-                </Chip>
-              )
-            })}
+            {tags.map((tag) => (
+              <Chip href={href(`/tags/${tag}`)}>
+                <TagIcon tag={tag} />
+                <span>{tag}</span>
+              </Chip>
+            ))}
           </div>
         </div>
       )}
@@ -90,17 +86,11 @@ const hasCard = hasNumbers || hasVibe
     color: var(--color-text-muted);
   }
 
-  @media (max-width: 700px) {
-    .side-card {
-      padding: var(--spacing-sm);
-    }
-  }
-
   .facts {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: 0;
   }
 
   .fact {
@@ -126,6 +116,7 @@ const hasCard = hasNumbers || hasVibe
   }
 
   .fact-source {
+    margin: 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
     color: var(--color-text-muted);
@@ -135,5 +126,68 @@ const hasCard = hasNumbers || hasVibe
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-xs);
+  }
+
+  /* Mobile (declared last so it wins over the base rules at this width). The
+     aside leads the page here, so it sheds the boxed card and reads as plain
+     content: the two stats become self-labeled columns split by a vertical
+     divider, and the section heading + census note drop away. */
+  @media (max-width: 899px) {
+    .side-card {
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: none;
+    }
+
+    .card-numbers > .side-card-label,
+    .fact-source {
+      display: none;
+    }
+
+    .facts {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 0;
+    }
+
+    .fact {
+      flex: 1 1 0;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: var(--spacing-xs);
+    }
+
+    .fact:first-child {
+      padding-inline-end: var(--spacing-md);
+    }
+
+    /* The divider + its breathing room sit on the second stat, and only when
+       there are two — a lone stat stays flush-left without a stray rule. */
+    .fact:last-child:not(:first-child) {
+      padding-inline-start: var(--spacing-md);
+      border-inline-start: 1px solid var(--color-line);
+    }
+
+    /* Labels read as compact mono captions under each big value. */
+    .fact dt {
+      font-family: var(--font-mono);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing);
+      line-height: 1.3;
+    }
+
+    .fact dd {
+      font-size: var(--font-size-xl);
+      line-height: 1.1;
+    }
+
+    /* Hairline between the numbers and the vibe tags, now that the box is gone. */
+    .card-section.has-divider {
+      margin-block-start: var(--spacing-md);
+      padding-block-start: var(--spacing-md);
+    }
   }
 </style>

@@ -1,13 +1,11 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Verdict from '../components/Verdict.astro'
 import Chip from '../components/Chip.astro'
 import IconStar from '../assets/IconStar.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
 import { cuisineEmoji } from '../lib/emoji'
-import { resolveVerdict } from '../lib/verdict'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
@@ -90,20 +88,18 @@ const description = "The best of the St. Louis food I've tried, by category."
         {
           cuisineWinners.map(([cuisine, place]) => (
             <li>
-              <Chip href={href(`/tags/${cuisine}`)}>
-                <span>{cuisineEmoji([cuisine])}</span>
-                <span>{cuisine}</span>
-              </Chip>
-              <a class="cuisine-name" href={href(`/food/${place.id}`)}>
-                {place.data.title}
-              </a>
-              <Verdict
-                filled
-                verdict={resolveVerdict(place.data) ?? 'neutral'}
-                icon
-                label={false}
-                round
-              />
+              <div class="cuisine-head">
+                <a class="cuisine-name" href={href(`/food/${place.id}`)}>
+                  {place.data.title}
+                </a>
+                <Chip href={href(`/tags/${cuisine}`)}>
+                  <span>{cuisineEmoji([cuisine])}</span>
+                  <span>{cuisine}</span>
+                </Chip>
+              </div>
+              {place.data.description && (
+                <p class="cuisine-description">{place.data.description}</p>
+              )}
             </li>
           ))
         }
@@ -183,8 +179,8 @@ const description = "The best of the St. Louis food I've tried, by category."
     color: var(--color-text);
   }
 
-  /* Best by cuisine: a row per cuisine — its chip, the winning place, and the
-     verdict chip pushed to the end. */
+  /* Best by cuisine: one entry per cuisine — the winning place's name with its
+     cuisine chip pushed to the end, and the place's description on the line below. */
   .cuisine-best {
     margin: 0;
     padding: 0;
@@ -193,10 +189,9 @@ const description = "The best of the St. Louis food I've tried, by category."
 
   .cuisine-best li {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+    flex-direction: column;
     margin: 0;
-    padding-block: 3px;
+    padding-block: var(--spacing-sm);
     border-block-end: 1px solid var(--color-line);
   }
 
@@ -204,7 +199,14 @@ const description = "The best of the St. Louis food I've tried, by category."
     border-block-end: 0;
   }
 
-  .cuisine-best .chip {
+  /* Top row: the place name (left) and its cuisine chip pushed to the right. */
+  .cuisine-head {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .cuisine-head .chip {
     flex-shrink: 0;
   }
 
@@ -215,6 +217,8 @@ const description = "The best of the St. Louis food I've tried, by category."
     color: var(--color-text);
     text-decoration: none;
     font-family: var(--font-mono);
+    font-size: var(--font-size-label);
+    letter-spacing: var(--letter-spacing-tight);
   }
 
   .cuisine-name:hover {
@@ -223,6 +227,11 @@ const description = "The best of the St. Louis food I've tried, by category."
     text-decoration-style: solid;
     text-decoration-thickness: 2px;
     text-underline-offset: 2px;
+  }
+
+  .cuisine-description {
+    margin: 0;
+    color: var(--color-text-muted-2);
   }
 
   @media (max-width: 700px) {

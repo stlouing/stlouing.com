@@ -1,5 +1,6 @@
 ---
 title: O'B'Que's
+description: 'The most legit Texas-style brisket in town'
 date: 2026-06-23
 rating: 8.5
 cuisine: ['bbq']

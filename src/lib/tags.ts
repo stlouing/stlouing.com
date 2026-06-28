@@ -26,7 +26,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
     items.push({
       title: entry.data.title,
       tags: entry.data.tags,
-      collection: 'hikes',
+      collection: 'Hikes',
       url: entryUrl('hikes', entry.id),
     })
   }
@@ -35,7 +35,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
     items.push({
       title: entry.data.title,
       tags: entry.data.tags,
-      collection: 'notes',
+      collection: 'Notes',
       url: entryUrl('notes', entry.id),
     })
   }
@@ -44,7 +44,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
     items.push({
       title: entry.data.title,
       tags: entry.data.tags,
-      collection: 'neighborhoods',
+      collection: 'Neighborhoods',
       url: entryUrl('neighborhoods', entry.id),
     })
   }
@@ -53,7 +53,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
     items.push({
       title: entry.data.title,
       tags: entry.data.tags,
-      collection: 'topics',
+      collection: 'Topics',
       url: entryUrl('topics', entry.id),
     })
   }

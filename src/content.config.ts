@@ -12,6 +12,9 @@ const food = defineCollection({
   loader: md('food'),
   schema: z.object({
     title: z.string(),
+    // A one-line tagline shown under the title (detail page) and on the food
+    // list row, in accent. Mirrors the neighborhood `description`.
+    description: z.string().optional(),
     // Publish date. When set, the entry joins the RSS feed (newest first).
     date: z.coerce.date().optional(),
     rating: z.number().min(0).max(10).optional(),
@@ -70,6 +73,9 @@ const neighborhoods = defineCollection({
   loader: md('neighborhoods'),
   schema: z.object({
     title: z.string(),
+    // Publish date. When set, the neighborhood joins the RSS feed (newest
+    // first), the same way a dated Food review does.
+    date: z.coerce.date().optional(),
     // An optional summary shown under the title (and used as the meta
     // description for a data-only neighborhood). Without one, the page falls
     // back to the generated "Neighborhood #X" line.

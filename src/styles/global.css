@@ -366,6 +366,10 @@ a.more {
   }
 }
 
+.ml-auto {
+  margin-left: auto;
+}
+
 /* Quiet reference link under a section heading (e.g. a Wikipedia article):
    muted mono with an outward arrow, underlined only on hover. */
 a.wikipedia-link {
@@ -859,7 +863,7 @@ body:has(.map-split) main > .wrap,
      more breathing room top + bottom than the List default (var(--spacing-xs)).
      The `ul.list >` combinator outweighs List.astro's own `> li` rule. */
   ul.list > li.is-written {
-    padding-block: var(--spacing-sm);
+    padding-block: var(--spacing-md);
   }
 }
 
@@ -870,7 +874,7 @@ body:has(.map-split) main > .wrap,
    text content instead of starting under the badge. */
 .map-list .list-description {
   margin-left: calc(var(--spacing-md) + 56px);
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-md);
 
   p {
     color: var(--color-text);
@@ -906,12 +910,21 @@ body:has(.map-split) main > .wrap,
   align-items: center;
   column-gap: var(--spacing-md);
   row-gap: var(--spacing-xs);
-  margin-block: var(--spacing-sm) 0;
+  margin-block: var(--spacing-md) 0;
 }
 
 /* Neighborhoods list (a section list, no lead badge): the title reads as a body
-   heading (not the mono Food title), the number sits quiet ahead of it, and the
+   heading (like the Food title), the number sits quiet ahead of it, and the
    open panel holds a clamped render of the writeup with accent list markers. */
+
+/* This list is built with the shared <List> component, whose scoped title style
+   (the mono reference-list look) otherwise overrides `.map-list .list-title`.
+   Pin the body-serif map-list title for it, with enough specificity to clear the
+   component rule. */
+.map-list.section-list ul.list .list-headline a.list-title {
+  font-family: var(--font-body);
+  font-size: var(--font-size-lg);
+}
 
 .map-list.section-list .number {
   color: var(--color-text-muted);
@@ -1032,9 +1045,11 @@ body:has([data-neighborhood-map]) .river-border {
   font-family: var(--font-mono);
 }
 
-/* A neighborhood's tagline (its description) under the name, in accent — the body
-   serif, not the mono of the surrounding sub line. */
-.map-list .neighborhood-tagline {
+/* A tagline (the entry's description) under the name, in accent — the body
+   serif, not the mono of the surrounding sub line. Shared by the neighborhood
+   list and the food list. */
+.map-list .neighborhood-tagline,
+.map-list .food-tagline {
   font-family: var(--font-body);
   font-weight: 500;
   color: var(--color-accent);
@@ -1066,9 +1081,8 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 700;
   color: var(--color-text);
   text-decoration: none;
-  font-family: var(--font-mono);
-  letter-spacing: var(--letter-spacing-tight);
-  font-size: var(--font-size-label);
+  font-family: var(--font-body);
+  font-size: var(--font-size-lg);
 }
 
 .map-list a.list-title {
@@ -1311,10 +1325,6 @@ body:has([data-neighborhood-map]) .river-border {
 }
 
 .food-grouped li.group-header .group-label {
-  font-family: var(--font-body);
-  font-size: var(--font-size-lg);
-  font-weight: 700;
-  text-transform: none;
   color: var(--verdict-color, var(--color-text-muted));
   letter-spacing: 0;
 }
@@ -1337,6 +1347,7 @@ body:has([data-neighborhood-map]) .river-border {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 /* Base list styling (the generic List component isn't used here, so reproduce
@@ -1349,7 +1360,7 @@ body:has([data-neighborhood-map]) .river-border {
 
 .food-grouped .list > li {
   margin: 0;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md);
   border-block-end: 1px solid var(--color-line);
 }
 
@@ -1617,7 +1628,7 @@ body:has([data-filter-root]) .site-header {
 
   h2 {
     margin-block-start: 0;
-    margin-block-end: var(--spacing-sm);
+    margin-block-end: var(--spacing-xs);
     font-size: var(--font-size-label);
     white-space: nowrap;
 
@@ -1640,9 +1651,9 @@ body:has([data-filter-root]) .site-header {
 /* The neighborhood's one-line tagline (its description), in accent above the
    teaser. */
 .leaflet-popup.food-popup .popup-tagline {
-  margin-block: var(--spacing-sm) 0;
+  margin-block: var(--spacing-xs) 0;
   font-family: var(--font-body);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   line-height: 1.4;
   color: var(--color-accent);
@@ -1692,7 +1703,7 @@ body:has([data-filter-root]) .site-header {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--spacing-xs);
-  margin-block-start: var(--spacing-md);
+  margin-block-start: var(--spacing-sm);
 }
 
 /* The shared .btn outline (Phase 1), stretched to share the row evenly. The
@@ -1857,6 +1868,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .btn-filled:hover {
+  color: white;
   opacity: 0.92;
 }
 
@@ -1941,7 +1953,7 @@ body:has([data-filter-root]) .site-header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 2px;
+    /* gap: 2px; */
   }
 
   li + li {
@@ -1956,6 +1968,7 @@ body:has([data-filter-root]) .site-header {
     font-weight: 700;
     color: var(--color-text-heading);
     text-decoration: none;
+    line-height: 1.2;
   }
 
   li > a:not(.collection):hover {
@@ -1973,6 +1986,8 @@ body:has([data-filter-root]) .site-header {
 .backlinks.grid ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xs);
+  column-gap: var(--spacing-sm);
 }
 
 @media (max-width: 700px) {
@@ -1996,13 +2011,10 @@ body:has([data-filter-root]) .site-header {
 
 .collection {
   color: var(--color-text-muted);
-  /* 
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  text-transform: uppercase;
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
   text-decoration: none;
-  letter-spacing: 0; */
+  letter-spacing: 0;
 }
 
 /* A mono uppercase section heading, used over a List on the Best of page. The

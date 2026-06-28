@@ -282,16 +282,16 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         } else if (!entry?.type) {
           // Only standard numbered city neighborhoods get a number badge — parks
           // and county municipalities aren't numbered, so they show none.
-          L.marker(layerBounds.getCenter(), {
-            icon: L.divIcon({
-              className: 'neighborhood-number',
-              html: badge,
-              iconSize: [width, 20],
-              iconAnchor: [width / 2, 10],
-            }),
-            interactive: false,
-            keyboard: false,
-          }).addTo(map)
+          // L.marker(layerBounds.getCenter(), {
+          //   icon: L.divIcon({
+          //     className: 'neighborhood-number',
+          //     html: badge,
+          //     iconSize: [width, 20],
+          //     iconAnchor: [width / 2, 10],
+          //   }),
+          //   interactive: false,
+          //   keyboard: false,
+          // }).addTo(map)
         }
       }
     },

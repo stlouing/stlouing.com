@@ -1,5 +1,6 @@
 ---
 title: Dogtown
+date: 2026-06-28
 url: https://www.dogtownunited.org
 description: The historic Irish neighborhood in St. Louis
 tags:

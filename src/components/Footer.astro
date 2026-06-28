@@ -1,20 +1,15 @@
 ---
 import { href } from '../lib/url'
 import { NEWSLETTER_URL } from '../lib/site'
+import IconHeart from '../assets/IconHeart.astro'
 ---
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <span class="footer-tagline">Made in STL</span>
+    <span class="footer-tagline"><IconHeart /> Made in STL</span>
     <nav class="footer-nav" aria-label="Footer">
       <a href="https://www.instagram.com/st.louing" target="_blank">@st.louing</a>
-      {
-        NEWSLETTER_URL && (
-          <a href={NEWSLETTER_URL} target="_blank">
-            Newsletter
-          </a>
-        )
-      }
+      <a href={NEWSLETTER_URL} target="_blank"> Newsletter</a>
       <a href={href('/feedback')}>Feedback</a>
     </nav>
   </div>
@@ -29,6 +24,9 @@ import { NEWSLETTER_URL } from '../lib/site'
   }
 
   .footer-tagline {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
     font-weight: 500;
   }
 

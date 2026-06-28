@@ -4,6 +4,7 @@ date: 2026-06-27
 rating: 8.5
 cuisine: ['indian']
 neighborhood: Central West End
+description: Casual Indian and Middle Eastern fusion restaurant
 address:
   - 90 N Euclid Ave
   - St. Louis, MO 63108
@@ -15,3 +16,7 @@ pick:
   note: Boneless marinade tandoori chicken made in butter, fresh tomatoes and house special spices
   emoji: 🥘
 ---
+
+Tikka Tangy is great for when you want a cozy night in with samosas and Butter Chicken or Chicken Tikka Masala. The curry is flavorful, rich, and consistently good.
+
+They also have pizzas, which I haven't tried, and some middle eastern dishes like shawarma and hummus, which I have tried and thought it was just okay. I usually stick to the Indian dishes at Tikka Tangy.

@@ -192,15 +192,15 @@ function sectionOf(area: { group?: string; type?: string }): string {
                           <Content />
                         </div>
                         <div class="place-links">
+                          {/* {resourceLinks.map((link) => (
+                            <SourceLink href={link.href} label={link.label} variant="muted" />
+                          ))} */}
                           <a
-                            class="btn btn-quiet"
+                            class="btn btn-filled btn-compact ml-auto"
                             href={href(`/neighborhoods/${neighborhood.slug}`)}
                             aria-label={`Read more about ${neighborhood.name}`}>
                             Read more <IconArrowRight />
                           </a>
-                          {resourceLinks.map((link) => (
-                            <SourceLink href={link.href} label={link.label} variant="muted" />
-                          ))}
                         </div>
                       </Fragment>
                     )}
@@ -242,6 +242,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
+    font-weight: 500;
   }
-
 </style>

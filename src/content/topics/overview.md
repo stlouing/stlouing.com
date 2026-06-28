@@ -1,6 +1,6 @@
 ---
 title: St. Louis Overview
-description: An underrated city with great amenities and real problems
+description: What I've learned about the Gateway to the West
 created: 2026-05-28
 updated: 2026-06-26
 ---

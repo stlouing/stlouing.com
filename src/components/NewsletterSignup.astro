@@ -13,40 +13,37 @@ interface Props {
 const { compact = false } = Astro.props
 ---
 
-{
-  NEWSLETTER_URL && (
-    <section class:list={['newsletter', { compact }]} aria-label="Newsletter signup">
-      <div class="newsletter-inner">
-        <div class="newsletter-text">
-          <p class="newsletter-title">
-            <IconMail /> Get new posts by email
+<section class:list={['newsletter', { compact }]} aria-label="Newsletter signup">
+  <div class="newsletter-inner">
+    <div class="newsletter-text">
+      <p class="newsletter-title">
+        <IconMail /> Get new posts by email
+      </p>
+      {
+        !compact && (
+          <p class="newsletter-blurb">
+            Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
           </p>
-          {!compact && (
-            <p class="newsletter-blurb">
-              Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
-            </p>
-          )}
-        </div>
-        <form
-          class="newsletter-form"
-          action={`${NEWSLETTER_URL}/subscribe`}
-          method="get"
-          target="_blank">
-          <input
-            type="email"
-            name="email"
-            placeholder="you@email.com"
-            aria-label="Your email"
-            required
-          />
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-      {/* River band as the card's bottom border (moved here from the footer). */}
-      <div class="river-border" aria-hidden="true" />
-    </section>
-  )
-}
+        )
+      }
+    </div>
+    <form
+      class="newsletter-form"
+      action={`${NEWSLETTER_URL}/subscribe`}
+      method="get"
+      target="_blank">
+      <input
+        type="email"
+        name="email"
+        placeholder="you@email.com"
+        aria-label="Your email"
+        required
+      />
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+  <div class="river-border" aria-hidden="true"></div>
+</section>
 
 <style>
   /* The card frame; overflow clips the river band to the rounded bottom corners. */
@@ -55,6 +52,10 @@ const { compact = false } = Astro.props
     border-radius: var(--radius);
     background: var(--color-surface);
     overflow: hidden;
+
+    .river-border {
+      display: none;
+    }
   }
 
   .newsletter-inner {
@@ -69,6 +70,9 @@ const { compact = false } = Astro.props
   /* Footer endcap: a faint accent wash + accent heading so the end-of-post CTA
      draws the eye (this variant is only used at the bottom of entries). */
   .newsletter.compact {
+    .river-border {
+      display: block;
+    }
     /* The footer band (Entry.astro) now spaces this, so no top margin here.
     border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-line));
     background: var(--color-surface);

@@ -1,5 +1,6 @@
 ---
 title: Pappy's Smokehouse
+description: "The best ribs I've ever had"
 date: 2026-06-23
 cuisine: ['bbq']
 neighborhood: Midtown

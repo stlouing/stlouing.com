@@ -1,5 +1,6 @@
 ---
 title: Nicky Slices Pizza Club
+description: 'An amazing Detroit-style pie in The Hill'
 date: 2026-06-23
 rating: 10
 cuisine: ['pizza']
