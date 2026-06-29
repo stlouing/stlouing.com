@@ -437,6 +437,7 @@ a.wikipedia-link {
   color: var(--color-text);
   margin-block-end: var(--spacing-sm);
   letter-spacing: var(--letter-spacing-tight);
+  line-height: 1.2;
 }
 
 .wikilink-card-excerpt {

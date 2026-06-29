@@ -10,9 +10,11 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:fresh": "npm run clean && astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "clean": "rm -f .astro/data-store.json node_modules/.astro/data-store.json",
     "prettier": "prettier . --write"
   },
   "dependencies": {

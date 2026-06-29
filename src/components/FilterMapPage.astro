@@ -1,8 +1,14 @@
 ---
 // The shared shell for a filterable list/map directory page (Food, Hikes): the
-// `[data-filter-root]` container, the sticky filter toolbar (view toggle +
-// filters/sort), the results region with the map and empty state, and the
-// progressive-enhancement script. The list itself is passed as the default slot.
+// `[data-filter-root]` container, the sticky filter toolbar (filters/sort), the
+// results region with the map and empty state, and the progressive-enhancement
+// script. The list itself is passed as the default slot.
+//
+// Two view modes:
+// - default ("toggle"): a top List/Map ViewToggle, one pane at a time (Hikes).
+// - `floating`: no top toggle; desktop always shows both panes, mobile opens on
+//   the list and flips to the map via a floating bottom button (Food, matching
+//   the Neighborhoods page).
 import FilterBar from './FilterBar.astro'
 import ViewToggle from './ViewToggle.astro'
 import ClearFilters from './ClearFilters.astro'
@@ -28,6 +34,7 @@ interface Props {
   mapLabel: string
   emptyText: string
   class?: string
+  floating?: boolean
 }
 
 const {
@@ -40,31 +47,52 @@ const {
   mapLabel,
   emptyText,
   class: className,
+  floating = false,
 } = Astro.props
 ---
 
-<div class={className} data-filter-root data-view="list">
+<div
+  class={className}
+  data-filter-root
+  data-view="list"
+  data-view-mode={floating ? 'floating' : 'toggle'}
+>
   {
-    /* Pre-paint: set the saved/default view before this subtree paints, so the
-      page doesn't flash the list then snap into the map app-shell. Mirrors the
-      theme pre-paint script in BaseLayout. The storage key + default are
-      duplicated as literals because an inline script can't import views.ts. */
+    /* Pre-paint: set the starting view before this subtree paints, so the page
+      doesn't flash one layout then snap into another. Mirrors the theme pre-paint
+      script in BaseLayout. */
   }
-  <script is:inline>
-    {
-      const filterRoot = document.currentScript.parentElement
-      const savedView = localStorage.getItem('list-map-view')
-      // No saved preference: default to the list on mobile (so the page opens on
-      // readable rows, not a full-bleed map a one-finger swipe can't scroll past)
-      // and to the map on wider screens.
-      const defaultView = window.matchMedia('(max-width: 700px)').matches ? 'list' : 'map'
-      filterRoot.dataset.view =
-        savedView === 'list' || savedView === 'map' ? savedView : defaultView
-    }
-  </script>
+  {
+    floating ? (
+      <script is:inline>
+        {
+          const filterRoot = document.currentScript.parentElement
+          // Floating mode: open on the list on mobile (readable rows first, and
+          // the map isn't built until the user asks for it); desktop always shows
+          // both panes, which is the 'map' state.
+          filterRoot.dataset.view = window.matchMedia('(max-width: 700px)').matches
+            ? 'list'
+            : 'map'
+        }
+      </script>
+    ) : (
+      <script is:inline>
+        {
+          const filterRoot = document.currentScript.parentElement
+          const savedView = localStorage.getItem('list-map-view')
+          // No saved preference: default to the list on mobile (so the page opens
+          // on readable rows, not a full-bleed map a one-finger swipe can't scroll
+          // past) and to the map on wider screens.
+          const defaultView = window.matchMedia('(max-width: 700px)').matches ? 'list' : 'map'
+          filterRoot.dataset.view =
+            savedView === 'list' || savedView === 'map' ? savedView : defaultView
+        }
+      </script>
+    )
+  }
   <header class="secondary-header">
     <div class="wrap">
-      {hasCoords && <ViewToggle />}
+      {hasCoords && !floating && <ViewToggle />}
       <FilterBar
         label={label}
         count={count}
@@ -86,6 +114,13 @@ const {
   <div class="results">
     <slot />
     {hasCoords && <div class="map" data-map aria-label={mapLabel} />}
+    {
+      hasCoords && floating && (
+        <button type="button" class="map-split-toggle" data-map-split-toggle>
+          Map
+        </button>
+      )
+    }
     <p class="empty" data-filter-empty hidden>
       {emptyText}
       <ClearFilters />
@@ -97,3 +132,32 @@ const {
   import { initFilterableMapPage } from '../scripts/views'
   initFilterableMapPage()
 </script>
+
+<style>
+  /* Floating view switch (floating mode only): mobile only — desktop shows both
+     panes, so there's nothing to toggle. Matches the Neighborhoods page button. */
+  .map-split-toggle {
+    display: none;
+  }
+
+  @media (max-width: 700px) {
+    .map-split-toggle {
+      display: block;
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: 1px solid var(--color-accent);
+      border-radius: 999px;
+      background: var(--color-accent);
+      color: var(--color-background);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--box-shadow);
+    }
+  }
+</style>
