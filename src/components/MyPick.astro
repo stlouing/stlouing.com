@@ -15,7 +15,7 @@ const emoji = pick.emoji ?? cuisineEmoji(cuisine)
 ---
 
 <div class="my-pick">
-  <h2 class="my-pick-label">My pick</h2>
+  <h2 class="my-pick-label section-label">My pick</h2>
   <div class="pick">
     <div class="pick-body">
       <strong class="pick-name"><span>{pick.name}</span> <span>{emoji}</span></strong>
@@ -26,14 +26,9 @@ const emoji = pick.emoji ?? cuisineEmoji(cuisine)
 
 <style>
   /* No card chrome of its own — the pick lives inside the food sidebar card. */
+  /* Font from the shared global `.section-label`; keep only the spacing. */
   .my-pick-label {
     margin: 0 0 var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-text-muted);
   }
 
   .pick {

@@ -1087,27 +1087,32 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-text-muted);
 }
 
-/* The title toggles its row open/closed; reads like a heading, not a button or a
-   link. (In map view it's also clickable to open the place's popup.) */
-.map-list .list-title {
+/* Shared list row title — the food/neighborhood map lists and the compact
+   backlinks / want-to-try / best-of lists use ONE recipe so they always match.
+   Reads like a heading, not a button or link (in map view it's also clickable to
+   open the place's popup). */
+.map-list .list-title,
+.backlinks li > a:not(.collection),
+.backlinks .list-title-item {
   display: block;
   padding: 0;
   border: 0;
   background: none;
   text-align: start;
-  font-family: inherit;
-  font-weight: 700;
-  color: var(--color-text);
-  text-decoration: none;
   font-family: var(--font-body);
   font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-heading);
+  text-decoration: none;
 }
 
 .map-list a.list-title {
   cursor: pointer;
 }
 
-.map-list a.list-title:hover {
+.map-list a.list-title:hover,
+.backlinks li > a:not(.collection):hover {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -1797,6 +1802,10 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-lg);
   color: var(--color-accent);
   font-weight: 500;
+
+  &:last-child {
+    margin-block: 0;
+  }
 }
 
 /* An organized header bar holding the meta and the edit link, divided from the
@@ -1945,15 +1954,23 @@ body:has([data-filter-root]) .site-header {
    Shared bits / utilities
    =========================================================================== */
 
+/* The shared section/list-header label: quiet mono uppercase, used over every
+   list + card section header (Mentioned in, Notable spots, By the numbers, My
+   pick, Explored / The rest, Location, …). One definition so they never drift;
+   each usage keeps its own margin via its own class. */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-text-muted);
+}
+
 .backlinks {
   margin-block-start: var(--spacing-lg);
 
   h2 {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
     margin-bottom: var(--spacing-sm);
   }
 
@@ -1965,33 +1982,14 @@ body:has([data-filter-root]) .site-header {
     font-size: var(--font-size-sm);
   }
 
-  /* Two-line rows: the primary name in the body (serif) face, with its mono
-     sub-label (neighborhood, cuisine, verdict, collection, …) tucked underneath. */
+  /* Two-line rows: the primary name (the shared .list-title recipe, above) with
+     its mono sub-label (neighborhood, cuisine, verdict, collection, …) under it. */
   li {
     display: flex;
     flex-direction: column;
     gap: 2px;
     align-items: flex-start;
     margin-block-start: var(--spacing-sm);
-  }
-
-  /* The row title — body face, a step up from the mono sub, and unadorned until
-     hover so it reads as a heading rather than a link. */
-  li > a:not(.collection),
-  .list-title-item {
-    font-size: var(--font-size-label);
-    font-weight: 700;
-    font-family: var(--font-body);
-    color: var(--color-text-heading);
-    text-decoration: none;
-    line-height: 1.2;
-  }
-
-  li > a:not(.collection):hover {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    text-decoration-color: var(--color-accent);
   }
 }
 

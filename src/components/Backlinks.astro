@@ -12,7 +12,7 @@ const { links } = Astro.props
 {
   links.length > 0 && (
     <nav class="backlinks" aria-label="Mentioned in">
-      <h2>Mentioned in</h2>
+      <h2 class="section-label">Mentioned in</h2>
       <ul>
         {links.map((link) => (
           <li>

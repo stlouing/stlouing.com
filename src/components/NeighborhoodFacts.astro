@@ -26,7 +26,7 @@ const hasCard = hasNumbers || hasVibe
     <aside class="side-card">
       {hasNumbers && (
         <div class="card-section card-numbers">
-          <h2 class="side-card-label">By the numbers</h2>
+          <h2 class="side-card-label section-label">By the numbers</h2>
           <dl class="facts">
             {population != null && (
               <div class="fact">
@@ -46,7 +46,7 @@ const hasCard = hasNumbers || hasVibe
       )}
       {hasVibe && (
         <div class:list={['card-section', { 'has-divider': hasNumbers }]}>
-          <h2 class="side-card-label">Vibe</h2>
+          <h2 class="side-card-label section-label">Vibe</h2>
           <div class="vibe-chips">
             {tags.map((tag) => (
               <Chip href={href(`/tags/${tag}`)}>
@@ -76,14 +76,10 @@ const hasCard = hasNumbers || hasVibe
     border-block-start: 1px solid var(--color-line);
   }
 
+  /* Font comes from the shared global `.section-label`; this keeps only the
+     card-specific spacing (and the `.card-numbers` mobile-hide selector below). */
   .side-card-label {
     margin: 0 0 var(--spacing-sm);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-text-muted);
   }
 
   .facts {

@@ -17,4 +17,4 @@ It's hard for me to properly rate Pappy's, because I'm a bit torn on it. On the 
 
 The first time I went to Pappy's, which was also one of my first BBQ experiences in St. Louis, I got brisket and a few sides. Pappy's doesn't really do Texas-style brisket, rather more of a thinly sliced brisket, which wasn't what I was looking for. I also wasn't a big fan of the fried corn, which I've never had before. Later I learned to order the ribs and it really blew me away.
 
-Go to Pappy's, get the ribs. They're awesome.
+Go to Pappy's, get the ribs. They're good.

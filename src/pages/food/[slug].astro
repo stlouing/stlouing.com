@@ -179,7 +179,7 @@ const seoDescription = data.description ?? (hasBody(entry) ? excerpt(entry.body,
         </section>
       </div>
       <aside class="food-aside">
-        <h2 class="food-aside-title">Location</h2>
+        <h2 class="food-aside-title section-label">Location</h2>
         <div class="food-card">
           <FoodLocator coords={data.coords} label={data.neighborhood} />
           <div class="food-card-body">
@@ -302,16 +302,10 @@ const seoDescription = data.description ?? (hasBody(entry) ? excerpt(entry.body,
   }
 
   /* On mobile the aside stacks under the writeup, so the map gets a heading
-     instead of appearing out of nowhere. Hidden on desktop, where the sticky
-     sidebar already reads as its own column. */
+     (the shared global `.section-label`) instead of appearing out of nowhere.
+     Hidden on desktop, where the sticky sidebar already reads as its own column. */
   .food-aside-title {
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-text-muted);
   }
 
   @media screen and (min-width: 900px) {

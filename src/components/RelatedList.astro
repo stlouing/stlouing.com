@@ -9,7 +9,7 @@ const { title } = Astro.props
 ---
 
 <section class="related">
-  <h2>{title}</h2>
+  <h2 class="section-label">{title}</h2>
   <div class="related-list">
     <slot />
   </div>
@@ -20,14 +20,9 @@ const { title } = Astro.props
     margin-block-start: var(--spacing-lg);
   }
 
-  /* Match the related-section headings elsewhere: quiet mono uppercase. */
+  /* Heading font comes from the shared global `.section-label`; keep only the
+     spacing below it. */
   .related h2 {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-text-muted);
     margin-bottom: var(--spacing-xs);
   }
 
