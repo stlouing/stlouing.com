@@ -11,10 +11,16 @@ tags:
   - dining
   - shopping
 attractions:
-  - Blueberry Hill
-  - Tivoli Theatre
-  - The Pageant
-  - St. Louis Walk of Fame
+  - name: The Pageant
+    url: https://www.thepageant.com
+    description: A 2,300-capacity concert hall hosting national touring acts.
+  - name: Tivoli Theatre
+    url: https://visittheloop.com/
+    description: A restored 1924 movie theatre showing indie films and classics.
+  - name: St. Louis Walk of Fame
+    description: Brass sidewalk stars along Delmar honoring famous St. Louisans.
+  - name: Moonrise Hotel
+    description: A space-themed hotel with a rooftop bar and a giant rotating moon.
 ---
 
 The Delmar Loop, often referred to as just The Loop, is a commercial strip that straddles the western edge of St. Louis city and the east end of University City.

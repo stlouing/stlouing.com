@@ -8,10 +8,12 @@ tags:
   - lgbtq
   - music
   - brewery
+  - dining
 attractions:
-  - Urban Chestnut Brewing Company
-  - The Grove neon sign
-  - Live music venues
+  - name: The Grove neon sign
+    description: The neighborhood's landmark neon entry sign arching over Manchester Avenue.
+  - name: Manchester Avenue
+    description: The nightlife strip of bars, clubs, and restaurants.
 ---
 
 The Grove is the LGBTQ neighborhood in St. Louis, and is home to a strip of local restaurants and bars. The city neighborhood is officially named "Forest Park Southeast", but everyone knows this area as The Grove.

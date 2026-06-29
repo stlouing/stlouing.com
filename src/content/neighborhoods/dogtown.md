@@ -6,9 +6,16 @@ description: The historic Irish neighborhood in St. Louis
 tags:
   - historic
   - dining
+  - charming
+  - walkable
 attractions:
-  - Tamm Avenue
-  - Forest Park
+  - name: St. James the Greater Church
+    url: https://www.stjamesthegreater.org/
+    description: The hilltop Irish Catholic parish, built by parishioners during the Depression.
+  - name: Tamm Avenue
+    description: Dogtown's main street of neighborhood bars and restaurants.
+  - name: Dogtown St. Patrick's Day Parade
+    description: The city's neighborhood St. Patrick's Day parade, an Irish tradition.
 ---
 
 Dogtown is an unofficial neighborhood made up of four city neighborhoods: Cheltenham, Clayton-Tamm, Franz Park, and Hi-Pointe.

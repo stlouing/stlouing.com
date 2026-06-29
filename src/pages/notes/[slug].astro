@@ -41,7 +41,6 @@ const schema = articleSchema(
   <Entry
     title={data.title}
     tags={data.tags}
-    editPath={entry.filePath}
     backlinks={backlinks}
     permalink={permalink}>
     <time slot="meta" class="dt-published" datetime={data.date.toISOString()}>

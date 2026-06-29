@@ -6,12 +6,23 @@ description: The central business and sports district
 tags:
   - historic
   - sports
-  - arts
+  - urban
   - walkable
 attractions:
-  - Gateway Arch
-  - Busch Stadium
-  - City Museum
+  - name: Gateway Arch
+    url: https://www.gatewayarch.com
+    description: The tallest arch in the world, and a national park.
+  - name: City Museum
+    url: https://www.citymuseum.org
+    description: A surreal playground of reclaimed architecture for kids and adults.
+  - name: Busch Stadium
+    url: https://www.mlb.com/cardinals/ballpark
+    description: Home of the St. Louis Cardinals.
+  - name: Citygarden
+    description: A downtown sculpture park with fountains and public art.
+  - name: Union Station
+    url: https://www.stlouisunionstation.com
+    description: A grand 1894 train station, now a hotel with an aquarium and Ferris wheel.
 ---
 
 Crossing over the Mississippi river into St. Louis, you'll be welcomed by The Gateway Arch, the world's tallest manmade arch and one of America's most recognizable monuments. You'll immediately enter into Downtown, St. Louis's business district that houses multiple sports venues and tourist attractions.

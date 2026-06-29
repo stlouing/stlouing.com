@@ -9,7 +9,11 @@ tags:
   - dining
   - charming
 attractions:
-  - Macklind Avenue Business District
+  - name: Macklind Avenue Business District
+    url: https://macklindbdstl.com/
+    description: A compact strip of locally owned shops, cafes, and restaurants.
+  - name: Hampton Avenue
+    description: The commercial corridor along the neighborhood's western edge.
 ---
 
 Southampton is a charming neighborhood close to many bars and restaurants all along Hampton Ave, such as Mom's Deli, J.J. Twig's, Salvage Yard, and Salt & Smoke BBQ. The area is affectionately known as "SOHA".

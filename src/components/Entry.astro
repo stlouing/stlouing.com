@@ -1,7 +1,7 @@
 ---
 // Shared detail-page shell for collection entries (food, hikes, notes, topics):
-// the article header (title, a `meta` row + edit link, tags), the body, and a
-// backlinks footer. Passing `permalink` marks it up as an IndieWeb h-entry
+// the article header (title, a `meta` row, tags), the body, and a backlinks
+// footer. Passing `permalink` marks it up as an IndieWeb h-entry
 // (notes/topics); without it, it's a plain directory entry (food/hikes).
 //
 // Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
@@ -18,12 +18,11 @@ import IconPencil from '../assets/IconPencil.astro'
 interface Props {
   title: string
   tags?: string[]
-  editPath?: string
   backlinks?: Backlink[]
   permalink?: string
 }
 
-const { title, tags = [], editPath, backlinks = [], permalink } = Astro.props
+const { title, tags = [], backlinks = [], permalink } = Astro.props
 const isArticle = Boolean(permalink)
 ---
 
@@ -32,9 +31,16 @@ const isArticle = Boolean(permalink)
     <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
     <slot name="lede" />
 
-    <div class="entry-bar">
-      <div class="meta"><slot name="meta" /><TagList tags={tags} /></div>
-    </div>
+    {
+      (Astro.slots.has('meta') || tags.length > 0) && (
+        <div class="entry-bar">
+          <div class="meta">
+            <slot name="meta" />
+            <TagList tags={tags} />
+          </div>
+        </div>
+      )
+    }
 
     <slot name="header-extra" />
     {

@@ -10,6 +10,9 @@ address:
   - St. Louis, MO 63114
 coords: [38.6886012, -90.3625141]
 instagram: https://www.instagram.com/woofieshotdogs
+pick:
+  name: Chicago-style hot dog
+  note: An authentic dog "dragged through the garden"
 ---
 
 There are three staple foods of the Chicagoan's diet - the Italian beef sandwich, the Chicago-style hotdog, and deep dish pizza. You spend enough time in the Chicagoland area, and you think these things are ubiquitous, found everywhere.

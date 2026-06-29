@@ -6,6 +6,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
+import IconRow from '../../components/IconRow.astro'
 import { href } from '../../lib/url'
 import { resolveVerdict } from '../../lib/verdict'
 import { published, excerpt } from '../../lib/content'
@@ -111,7 +112,7 @@ const trail = [
 
 <BaseLayout crumb={title} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
-  <Entry title={title} editPath={entry?.filePath} backlinks={backlinks}>
+  <Entry title={title} backlinks={backlinks}>
     {
       summary && (
         <p class="entry-summary" slot="lede">
@@ -164,10 +165,9 @@ const trail = [
           attractions.length > 0 && (
             <RelatedList title="Notable spots">
               {attractions.map((spot) => (
-                <div class="spot-row">
-                  <IconLandmark />
-                  <span class="spot-name">{spot}</span>
-                </div>
+                <IconRow name={spot.name} url={spot.url} description={spot.description}>
+                  <IconLandmark slot="icon" />
+                </IconRow>
               ))}
             </RelatedList>
           )
@@ -177,16 +177,9 @@ const trail = [
           festivals.length > 0 && (
             <RelatedList title="Annual events">
               {festivals.map((festival) => (
-                <div class="event-row">
-                  <IconCalendar />
-                  <div class="event-body">
-                    <div class="event-head">
-                      <span class="event-name">{festival.name}</span>
-                      <span class="event-when">{festival.when}</span>
-                    </div>
-                    <p class="event-blurb">{festival.blurb}</p>
-                  </div>
-                </div>
+                <IconRow name={festival.name} meta={festival.when} description={festival.blurb}>
+                  <IconCalendar slot="icon" />
+                </IconRow>
               ))}
             </RelatedList>
           )
@@ -227,35 +220,6 @@ const trail = [
 </BaseLayout>
 
 <style>
-  /* Notable spots: static rows in the same framed list as Food / Borders below,
-     with a leading landmark icon in place of a link arrow. */
-  .spot-row {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) 0;
-    border-block-end: 1px solid var(--color-line);
-  }
-
-  .spot-row:last-child {
-    border-block-end: 0;
-  }
-
-  .spot-row :global(.icon) {
-    width: 16px;
-    height: 16px;
-    color: var(--color-accent);
-  }
-
-  .spot-name {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-md);
-    font-weight: 700;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
-    line-height: 1.2;
-  }
-
   /* Writeup + sidebar (locator map + facts), mirroring the Food detail page. One
      column until there's room for the aside alongside. */
   .neighborhood-layout {
@@ -316,62 +280,6 @@ const trail = [
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
     text-align: center;
-  }
-
-  /* Annual events: framed rows like Notable spots, but each carries a date and a
-     blurb — a calendar icon, the name with its "when" pushed right, blurb below. */
-  .event-row {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) 0;
-    border-block-end: 1px solid var(--color-line);
-  }
-
-  .event-row:last-child {
-    border-block-end: 0;
-  }
-
-  .event-row :global(.icon) {
-    width: 16px;
-    height: 16px;
-    margin-block-start: 3px;
-    color: var(--color-accent);
-  }
-
-  .event-body {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-
-  .event-head {
-    display: flex;
-    align-items: baseline;
-    gap: var(--spacing-md);
-  }
-
-  .event-name {
-    font-size: var(--font-size-label);
-    font-weight: 700;
-    color: var(--color-text-heading);
-  }
-
-  .event-when {
-    flex-shrink: 0;
-    font-weight: 500;
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-    white-space: nowrap;
-  }
-
-  .event-blurb {
-    margin: 0;
-    line-height: 1.4;
-    color: var(--color-text-muted-2);
   }
 
   /* Explicit stub treatment for a neighborhood without a writeup: a dashed note

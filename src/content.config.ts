@@ -84,9 +84,23 @@ const neighborhoods = defineCollection({
     url: z.string().url().optional(),
     wikipedia: z.string().url().optional(),
     // Signature attractions/landmarks (factual + optional, so a data-only
-    // neighborhood can still carry them without a writeup). Vibe descriptors
-    // (historic, walkable, …) live in `tags` so they join the site tag taxonomy.
-    attractions: z.array(z.string()).optional(),
+    // neighborhood can still carry them without a writeup). Each is a name with
+    // an optional link + one-line description; a bare string is shorthand for
+    // name-only. Normalized to objects so consumers always get the same shape.
+    // Vibe descriptors (historic, walkable, …) live in `tags`.
+    attractions: z
+      .array(
+        z.union([
+          z.string(),
+          z.object({
+            name: z.string(),
+            url: z.string().url().optional(),
+            description: z.string().optional(),
+          }),
+        ]),
+      )
+      .transform((list) => list.map((item) => (typeof item === 'string' ? { name: item } : item)))
+      .optional(),
     ...taggable,
   }),
 })

@@ -474,7 +474,7 @@ a.wikipedia-link {
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--chip-border, var(--color-line-input));
   border-radius: 20px;
@@ -1700,7 +1700,7 @@ body:has([data-filter-root]) .site-header {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
-  margin-block: var(--spacing-xs) var(--spacing-sm);
+  margin-block: var(--spacing-xs) var(--spacing-md);
 }
 
 /* The shared .chip pill (Phase 2); cursor + hover come from the global
@@ -1795,14 +1795,10 @@ body:has([data-filter-root]) .site-header {
 
 /* Italic accent lede under an entry title (topics, neighborhoods). */
 .entry-summary {
-  margin-block: 0 var(--spacing-md);
   font-size: var(--font-size-lg);
   color: var(--color-accent);
   font-weight: 500;
-
-  &:last-child {
-    margin-block: 0;
-  }
+  margin: 0;
 }
 
 /* An organized header bar holding the meta and the edit link, divided from the

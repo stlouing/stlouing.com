@@ -20,7 +20,7 @@ const backlinks = await getBacklinks(entry.id)
 ---
 
 <BaseLayout crumb={data.title}>
-  <Entry title={data.title} tags={data.tags} editPath={entry.filePath} backlinks={backlinks}>
+  <Entry title={data.title} tags={data.tags} backlinks={backlinks}>
     <Fragment slot="meta">
       {data.area && <span>{data.area}</span>}
       {data.distanceMiles && <Chip>{data.distanceMiles} mi</Chip>}
