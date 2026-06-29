@@ -14,25 +14,19 @@ const { pick, cuisine = [] } = Astro.props
 const emoji = pick.emoji ?? cuisineEmoji(cuisine)
 ---
 
-<aside class="side-card">
-  <h2 class="side-card-label">My pick</h2>
+<div class="my-pick">
+  <h2 class="my-pick-label">My pick</h2>
   <div class="pick">
     <div class="pick-body">
       <strong class="pick-name"><span>{pick.name}</span> <span>{emoji}</span></strong>
       {pick.note && <p class="pick-note">{pick.note}</p>}
     </div>
   </div>
-</aside>
+</div>
 
 <style>
-  .side-card {
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    padding: var(--spacing-md);
-    background: var(--color-surface);
-  }
-
-  .side-card-label {
+  /* No card chrome of its own — the pick lives inside the food sidebar card. */
+  .my-pick-label {
     margin: 0 0 var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
@@ -48,21 +42,17 @@ const emoji = pick.emoji ?? cuisineEmoji(cuisine)
     gap: var(--spacing-sm);
   }
 
-  .pick-emoji {
-    font-size: var(--font-size-lg);
-    line-height: 1.3;
-  }
-
+  /* The dish name reads as a serif heading (like the page title), with the emoji
+     trailing it. */
   .pick-name {
     display: flex;
     gap: var(--spacing-sm);
-    align-items: center;
-    font-size: var(--font-size-md);
+    align-items: baseline;
+    font-family: var(--font-body);
+    font-size: var(--font-size-label);
     font-weight: 700;
     line-height: 1.2;
     color: var(--color-text-heading);
-    font-family: var(--font-mono);
-    letter-spacing: var(--letter-spacing-tight);
   }
 
   .pick-note {

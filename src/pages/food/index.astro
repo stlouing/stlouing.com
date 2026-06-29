@@ -12,6 +12,7 @@ import { href } from '../../lib/url'
 import { resolveVerdict, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconAward from '../../assets/IconAward.astro'
+import IconMapPin from '../../assets/IconMapPin.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
 // alphabetically (A / B / C) via the sort control — the grouping itself is built
@@ -114,19 +115,17 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 'data-tagline': place.data.description ?? '',
                 'data-excerpt': hasBody(place) ? excerpt(place.body, 150) : '',
               }}>
-              {place.data.neighborhood && (
-                <Fragment slot="title-after">
-                  <button
-                    type="button"
-                    class="list-meta list-meta-filter"
-                    data-filter-set="neighborhood"
-                    data-filter-value={place.data.neighborhood}>
-                    {place.data.neighborhood}
-                  </button>
-                </Fragment>
+              {hasBody(place) && (
+                <a
+                  class="btn btn-quiet"
+                  slot="row-end"
+                  href={href(`/food/${place.id}`)}
+                  aria-label={`Read more about ${place.data.title}`}>
+                  More <IconArrowRight />
+                </a>
               )}
-              {place.data.cuisine.length > 0 && (
-                <div class="chips" slot="row-end">
+              {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
+                <div class="chips" slot="sub">
                   {place.data.cuisine.map((cuisine) => (
                     <button
                       type="button"
@@ -137,27 +136,20 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                       <span>{cuisine}</span>
                     </button>
                   ))}
+                  {place.data.neighborhood && (
+                    <button
+                      type="button"
+                      class="chip"
+                      data-filter-set="neighborhood"
+                      data-filter-value={place.data.neighborhood}>
+                      <IconMapPin />
+                      <span>{place.data.neighborhood}</span>
+                    </button>
+                  )}
                 </div>
               )}
-              {place.data.description && (
-                <span class="food-tagline" slot="sub">
-                  {place.data.description}
-                </span>
-              )}
+              {place.data.description && <div class="food-tagline">{place.data.description}</div>}
               {hasBody(place) && <div class="food-preview">{excerpt(place.body, 160)}</div>}
-              <div class="place-links">
-                {/* <SourceLink href={place.data.url} label="Website" variant="muted" />
-                <SourceLink href={place.data.instagram} variant="muted" />
-                <SourceLink href={googleMapsHref(place.data)} label="Google Maps" variant="muted" /> */}
-                {hasBody(place) && (
-                  <a
-                    class="btn btn-filled btn-compact ml-auto"
-                    href={href(`/food/${place.id}`)}
-                    aria-label={`Read more about ${place.data.title}`}>
-                    Read more <IconArrowRight />
-                  </a>
-                )}
-              </div>
             </MapRow>
           ))
         }
@@ -173,6 +165,12 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
 </script>
 
 <style>
+  /* The tagline sits in the open row body (under the chips), directly above the
+     excerpt, so give it room before the teaser below. */
+  .food-tagline {
+    margin-block-end: var(--spacing-xs);
+  }
+
   /* A 2-line teaser, shown inline on every row (the list no longer collapses);
      the full writeup is one tap away via "View more". */
   .food-preview {

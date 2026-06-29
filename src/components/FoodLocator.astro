@@ -22,7 +22,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
         role="img"
         aria-label={description}
       />
-      <span class="food-locator-tag">Map{label ? ` · ${label}` : ''}</span>
+      <span class="food-locator-tag">{label ?? 'Map'}</span>
     </div>
   )
 }
@@ -33,12 +33,13 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
   }
 
   /* The placeholder before the map loads: a faint diagonal hatch, echoing the
-     map's own grid, so the box reads as a map even while the chunk is fetching. */
+     map's own grid, so the box reads as a map even while the chunk is fetching.
+     No border/radius of its own — it sits flush at the top of the food card, whose
+     overflow clips the top corners, with a hairline dividing it from the body. */
   .food-locator-map {
     position: relative;
     height: 220px;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
+    border-block-end: 1px solid var(--color-line);
     background:
       repeating-linear-gradient(
         45deg,
@@ -49,19 +50,20 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
     overflow: hidden;
   }
 
-  /* "map · Neighborhood" tag, above Leaflet's panes and out of its container so
-     initializing the map doesn't disturb it. Raised to clear the attribution
-     bar that runs along the bottom edge once the map loads. */
+  /* The neighborhood tag, above Leaflet's panes and out of its container so
+     initializing the map doesn't disturb it. Bottom-left, clear of Leaflet's
+     bottom-right attribution bar. */
   .food-locator-tag {
     position: absolute;
     z-index: 500;
-    right: var(--spacing-sm);
-    bottom: calc(var(--spacing-sm) + 18px);
+    left: var(--spacing-sm);
+    bottom: var(--spacing-sm);
     padding: 2px var(--spacing-sm);
+    border: 1px solid var(--color-line);
     border-radius: var(--radius);
-    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
     font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-xs);
     color: var(--color-text-muted);
     pointer-events: none;
   }

@@ -40,8 +40,8 @@ export interface PopupConfig {
   chips?: PopupChip[]
   // Food only: address lines, rendered under the title.
   addressLines?: string[]
-  // A one-line tagline (the entry's description), shown in accent directly under
-  // the title and above the chips. Passed by both the Food and Neighborhood maps.
+  // A one-line tagline (the entry's description), shown in accent below the chips.
+  // Passed by both the Food and Neighborhood maps.
   tagline?: string
   // A short writeup teaser, clamped to a few lines by the popup CSS.
   excerpt?: string
@@ -129,7 +129,7 @@ export function buildPopupHtml(config: PopupConfig): string {
         .join('')}</div>`
     : ''
 
-  // Tagline sits directly under the title, above the chips; the address (Food)
-  // follows the chip row.
-  return `${titleHtml}${taglineHtml}${metaHtml}${addressHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+  // Order mirrors the list rows: title, then the chips, then the tagline
+  // (description), with the address (Food) and excerpt below.
+  return `${titleHtml}${metaHtml}${taglineHtml}${addressHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
 }

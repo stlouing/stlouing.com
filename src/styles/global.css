@@ -7,8 +7,8 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #fcfbf6;
-  --color-surface: #ffffff;
+  --color-background: #f7f3e8;
+  --color-surface: #faf7f1;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -477,7 +477,7 @@ a.wikipedia-link {
   font-size: var(--font-size-xs);
   font-weight: 500;
   line-height: 1;
-  color: var(--chip-color, var(--color-text-muted));
+  color: var(--chip-color, var(--color-text-muted-2));
   text-decoration: none;
   white-space: nowrap;
   margin-block-start: 0;
@@ -564,6 +564,17 @@ button.chip:hover {
 
 .region-park {
   --legend-color: var(--color-map-park);
+}
+
+/* The Neighborhoods list region chip carries a map-pin instead of the dot: hide
+   the ::before dot when an icon is present, and tint the pin the region color (so
+   the popup chips, which have no icon, keep their dot). */
+.chip-region:has(.icon)::before {
+  display: none;
+}
+
+.chip.chip-region .icon {
+  color: var(--legend-color);
 }
 
 .chip .icon {
@@ -1061,6 +1072,7 @@ body:has([data-neighborhood-map]) .river-border {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
 }
 
 .map-list .list-meta {
@@ -1611,7 +1623,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .leaflet-popup.food-popup .leaflet-popup-content-wrapper {
-  background: var(--color-background);
+  background: var(--color-surface);
   color: var(--color-text);
   border: 2px solid var(--color-accent);
   border-radius: var(--radius);
@@ -1641,6 +1653,7 @@ body:has([data-filter-root]) .site-header {
 
       &:hover {
         text-decoration-thickness: 2px !important;
+        text-underline-offset: 3px;
         text-decoration: underline;
         text-decoration-color: var(--color-accent);
       }
@@ -1774,7 +1787,7 @@ body:has([data-filter-root]) .site-header {
 
 /* Italic accent lede under an entry title (topics, neighborhoods). */
 .entry-summary {
-  margin-block: var(--spacing-xs);
+  margin-block: 0 var(--spacing-md);
   font-size: var(--font-size-lg);
   font-style: italic;
   color: var(--color-accent);

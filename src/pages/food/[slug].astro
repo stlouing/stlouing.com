@@ -18,7 +18,7 @@ import { resolveVerdict } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
-import IconMap from '../../assets/IconMap.astro'
+import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
@@ -116,13 +116,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
     }
     <Fragment slot="meta">
       <div class="food-meta">
-        {
-          data.address && data.address.length > 0 && (
-            <>
-              <div class="address">{data.address.join(', ')}</div>
-            </>
-          )
-        }
         <div class="food-sub-meta">
           <div class="food-sub-meta-section">
             {verdict && <Verdict verdict={verdict} icon filled />}
@@ -186,21 +179,78 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
         </section>
       </div>
       <aside class="food-aside">
-        <FoodLocator coords={data.coords} label={data.neighborhood} />
-        <a class="btn btn-outline food-map-link" href={href('/food')}>
-          <IconMap /> Back to the Food Map
-        </a>
-        {data.pick && <MyPick pick={data.pick} cuisine={data.cuisine} />}
+        <div class="food-card">
+          <FoodLocator coords={data.coords} label={data.neighborhood} />
+          <div class="food-card-body">
+            {
+              data.address && data.address.length > 0 && (
+                <address class="food-address">
+                  {data.address.map((line) => (
+                    <span>{line}</span>
+                  ))}
+                </address>
+              )
+            }
+            <a class="btn btn-quiet food-back-link" href={href('/food')}>
+              Back to the Food Map <IconArrowRight />
+            </a>
+            {
+              data.pick && (
+                <>
+                  <hr class="food-card-divider" />
+                  <MyPick pick={data.pick} cuisine={data.cuisine} />
+                </>
+              )
+            }
+          </div>
+        </div>
       </aside>
     </div>
   </Entry>
 </BaseLayout>
 
 <style>
-  .address {
+  /* The sidebar map, address, "back to the map" link, and the pick all live in one
+     bordered card: the map sits flush at the top (its own corners clipped by the
+     card), and the rest is a left-aligned, padded body below it. */
+  .food-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+
+  .food-card-body {
     display: flex;
-    align-items: baseline;
-    gap: var(--spacing-xs);
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  /* The postal address under the map (a quiet mono block, one line per address
+     line), left-aligned in the card body. */
+  .food-address {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-style: normal;
+    color: var(--color-text-muted-2);
+    text-align: start;
+    font-weight: 500;
+  }
+
+  /* A content-width "back to the map" link (the rest of the body stretches full
+     width so its text wraps). */
+  .food-back-link {
+    align-self: flex-start;
+  }
+
+  /* Hairline between the back link and the pick; the body's gap spaces it. */
+  .food-card-divider {
+    margin: 0;
+    border: 0;
+    border-block-start: 1px solid var(--color-line);
   }
 
   .food-meta {
@@ -231,12 +281,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
      the right edge when the row is tight. */
   .food-links {
     justify-content: flex-end;
-  }
-
-  /* A full-width "back to the map" link under the sidebar locator. */
-  .food-map-link {
-    justify-content: center;
-    width: 100%;
   }
 
   /* Writeup + sidebar. One column until there's room for the aside alongside. */

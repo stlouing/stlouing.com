@@ -10,6 +10,7 @@ import { href } from '../lib/url'
 import { published, excerpt, hasBody } from '../lib/content'
 import { neighborhoodResourceLinks, neighborhoodGeneratedSummary } from '../lib/neighborhoods'
 import IconArrowRight from '../assets/IconArrowRight.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
 // the rest, in their numbered order). Written rows render their writeup expanded;
@@ -174,35 +175,30 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-tagline': popup.tagline ?? '',
                       'data-excerpt': popup.excerpt ?? '',
                     }}>
+                    {written && (
+                      <a
+                        class="btn btn-quiet"
+                        slot="row-end"
+                        href={href(`/neighborhoods/${neighborhood.slug}`)}
+                        aria-label={`Read more about ${neighborhood.name}`}>
+                        More <IconArrowRight />
+                      </a>
+                    )}
                     {neighborhood.group && (
-                      <div class="chips" slot="row-end">
+                      <div class="chips" slot="sub">
                         <span class:list={['chip', 'chip-region', `region-${section}`]}>
-                          {section === 'park' ? 'Park' : neighborhood.group}
+                          <IconMapPin />
+                          <span>{section === 'park' ? 'Park' : neighborhood.group}</span>
                         </span>
                       </div>
                     )}
                     {popup.tagline && (
-                      <span slot="sub" class="neighborhood-tagline">
-                        {popup.tagline}
-                      </span>
+                      <div class="neighborhood-tagline">{popup.tagline}</div>
                     )}
                     {written && Content && (
-                      <Fragment>
-                        <div class="neighborhood-preview">
-                          <Content />
-                        </div>
-                        <div class="place-links">
-                          {/* {resourceLinks.map((link) => (
-                            <SourceLink href={link.href} label={link.label} variant="muted" />
-                          ))} */}
-                          <a
-                            class="btn btn-filled btn-compact ml-auto"
-                            href={href(`/neighborhoods/${neighborhood.slug}`)}
-                            aria-label={`Read more about ${neighborhood.name}`}>
-                            Read more <IconArrowRight />
-                          </a>
-                        </div>
-                      </Fragment>
+                      <div class="neighborhood-preview">
+                        <Content />
+                      </div>
                     )}
                   </MapRow>
                 </Fragment>
@@ -243,5 +239,11 @@ function sectionOf(area: { group?: string; type?: string }): string {
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
     font-weight: 500;
+  }
+
+  /* The tagline sits in the open row body (under the region chip), directly above
+     the writeup preview, so give it room before the preview below. */
+  .neighborhood-tagline {
+    margin-block-end: var(--spacing-xs);
   }
 </style>
