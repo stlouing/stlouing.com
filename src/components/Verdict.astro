@@ -7,16 +7,17 @@ import Chip from './Chip.astro'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import IconHeart from '../assets/IconHeart.astro'
 import IconThumbsUp from '../assets/IconThumbsUp.astro'
-import IconMeh from '../assets/IconMeh.astro'
-import IconThumbsDown from '../assets/IconThumbsDown.astro'
+import IconCircleMinus from '../assets/IconCircleMinus.astro'
+import IconHeartOff from '../assets/IconHeartOff.astro'
 
-// A Lucide icon per verdict: heart (loved), thumbs-up (liked), meh (neutral),
-// thumbs-down (not-for-me). Shown before the label when `icon` is set.
+// A Lucide icon per verdict: heart (loved), thumbs-up (liked), circle-minus
+// (neutral), heart-off (not-for-me) — softer, less aggressive than thumbs/faces.
+// Shown before the label when `icon` is set.
 const verdictIcons = {
   loved: IconHeart,
   liked: IconThumbsUp,
-  neutral: IconMeh,
-  'not-for-me': IconThumbsDown,
+  neutral: IconCircleMinus,
+  'not-for-me': IconHeartOff,
 } satisfies Record<Verdict, unknown>
 
 interface Props {

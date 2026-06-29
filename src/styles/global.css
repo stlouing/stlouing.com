@@ -78,7 +78,7 @@
   --color-text-muted-2: #afaeb5;
   --color-line: #343339;
   --color-line-input: #45444b;
-  --color-accent: #e07d8d;
+  --color-accent: #ee7b8e;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
   --color-map-central: #e6877a;
@@ -88,7 +88,7 @@
   --color-link: #9aaaf8;
   --color-link-hover: #b1bcf5;
 
-  --color-verdict-loved: #e07d8d;
+  --color-verdict-loved: #ee7b8e;
   --color-verdict-liked: #d6a35a;
   --color-verdict-neutral: #9b9aa3;
   --color-verdict-notforme: #86848f;
@@ -1964,7 +1964,7 @@ body:has([data-filter-root]) .site-header {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
-  color: var(--color-text-muted);
+  color: var(--color-accent);
 }
 
 .backlinks {
@@ -1987,7 +1987,6 @@ body:has([data-filter-root]) .site-header {
   li {
     display: flex;
     flex-direction: column;
-    gap: 2px;
     align-items: flex-start;
     margin-block-start: var(--spacing-sm);
   }
@@ -1996,8 +1995,7 @@ body:has([data-filter-root]) .site-header {
 .backlinks.grid ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xs);
-  column-gap: var(--spacing-sm);
+  gap: var(--spacing-sm);
 }
 
 @media (max-width: 700px) {
