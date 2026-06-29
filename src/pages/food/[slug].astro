@@ -123,7 +123,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
               data.cuisine.map((cuisine) => (
                 <Chip href={href(`/food?cuisine=${cuisine}`)}>
                   <span>{cuisineEmoji(data.cuisine)}</span>
-                  <span>{cuisine}</span>
+                  <span>{cuisineLabel(cuisine)}</span>
                 </Chip>
               ))
             }

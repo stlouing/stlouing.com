@@ -6,7 +6,7 @@ import FilterMapPage from '../../components/FilterMapPage.astro'
 import MapRow from '../../components/MapRow.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt } from '../../lib/content'
-import { cuisineEmoji } from '../../lib/emoji'
+import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
 import { resolveVerdict, type Verdict } from '../../lib/verdict'
@@ -71,12 +71,12 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
       <div class="list-pane-header">
         <span class="pane-left">
           <h1 class="pane-title">Food</h1>
-          <span class="pane-count"><span data-filter-count>{count}</span> places</span>
+          <span class="pane-count"><span data-filter-count>{count}</span></span>
         </span>
         <div class="pane-links">
           <a class="btn btn-outline btn-compact" href={href('/best')}><IconAward />Favorites</a>
           <a class="btn btn-outline btn-compact" href={href('/food/want-to-try')}>
-            Want to try <IconArrowRight />
+            On the List <IconArrowRight />
           </a>
         </div>
       </div>
@@ -104,7 +104,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 .filter(Boolean)
                 .join(' ')}
               attrs={{
-                'data-cuisine': place.data.cuisine.join('|'),
+                'data-cuisine': place.data.cuisine[0],
                 'data-neighborhood': place.data.neighborhood ?? '',
                 'data-address': (place.data.address ?? []).join('\n'),
                 'data-verdict': verdict as Verdict,
@@ -133,7 +133,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                       data-filter-set="cuisine"
                       data-filter-value={cuisine}>
                       <span>{cuisineEmoji(place.data.cuisine)}</span>
-                      <span>{cuisine}</span>
+                      <span>{cuisineLabel(cuisine)}</span>
                     </button>
                   ))}
                   {place.data.neighborhood && (

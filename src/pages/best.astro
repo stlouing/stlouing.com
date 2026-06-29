@@ -1,11 +1,9 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Chip from '../components/Chip.astro'
-import IconStar from '../assets/IconStar.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
-import { cuisineEmoji } from '../lib/emoji'
+import { cuisineEmoji, cuisineLabel } from '../lib/emoji'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
@@ -55,19 +53,18 @@ const description = "The best of the St. Louis food I've tried, by category."
     <p>
       To see all food I've explored so far, visit the <a href={href('/food')}>Food Map</a>. To see
       all the places I have yet to try or rate, visit
-      <a href={href('/food/want-to-try')}>Want to try</a>.
+      <a href={href('/food/want-to-try')}>Want to Try</a>.
     </p>
 
     {
       favorites.length > 0 && (
         <section class="fact-section">
           <h2>The favorites</h2>
-          <p class="description" />
           <div class="favorites-grid">
             {favorites.map((award) => (
               <a class="favorite" href={href(`/food/${award.place!.id}`)}>
-                <span class="favorite-star" aria-hidden="true">
-                  <IconStar />
+                <span class="favorite-emoji" aria-hidden="true">
+                  {cuisineEmoji(award.place!.data.cuisine)}
                 </span>
                 <span class="favorite-text">
                   <span class="favorite-label">{award.label}</span>
@@ -84,26 +81,18 @@ const description = "The best of the St. Louis food I've tried, by category."
 
     <section class="fact-section">
       <h2>Best by cuisine</h2>
-      <ul class="cuisine-best">
-        {
-          cuisineWinners.map(([cuisine, place]) => (
-            <li>
-              <div class="cuisine-head">
-                <a class="cuisine-name" href={href(`/food/${place.id}`)}>
-                  {place.data.title}
-                </a>
-                <Chip href={href(`/tags/${cuisine}`)}>
-                  <span>{cuisineEmoji([cuisine])}</span>
-                  <span>{cuisine}</span>
-                </Chip>
-              </div>
-              {place.data.description && (
-                <p class="cuisine-description">{place.data.description}</p>
-              )}
-            </li>
-          ))
-        }
-      </ul>
+      <nav class="backlinks grid" aria-label="Best by cuisine">
+        <ul>
+          {
+            cuisineWinners.map(([cuisine, place]) => (
+              <li>
+                <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
+                <span class="collection">{cuisineLabel(cuisine)}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
     </section>
   </article>
 </BaseLayout>
@@ -142,21 +131,11 @@ const description = "The best of the St. Louis food I've tried, by category."
     }
   }
 
-  .favorite-star {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* The leading cuisine emoji, in place of the old star badge. */
+  .favorite-emoji {
     flex-shrink: 0;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: var(--color-accent);
-    color: var(--color-surface);
-  }
-
-  .favorite-star :global(svg) {
-    fill: var(--color-background);
-    stroke: var(--color-background);
+    font-size: var(--font-size-xl);
+    line-height: 1;
   }
 
   .favorite-text {
@@ -179,70 +158,13 @@ const description = "The best of the St. Louis food I've tried, by category."
     color: var(--color-text);
   }
 
-  /* Best by cuisine: one entry per cuisine — the winning place's name with its
-     cuisine chip pushed to the end, and the place's description on the line below. */
-  .cuisine-best {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .cuisine-best li {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding-block: var(--spacing-sm);
-    border-block-end: 1px solid var(--color-line);
-  }
-
-  .cuisine-best li:last-child {
-    border-block-end: 0;
-  }
-
-  /* Top row: the place name (left) and its cuisine chip pushed to the right. */
-  .cuisine-head {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-
-  .cuisine-head .chip {
-    flex-shrink: 0;
-  }
-
-  .cuisine-name {
-    flex: 1;
-    min-width: 0;
-    font-weight: 700;
-    color: var(--color-text);
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-label);
-    letter-spacing: var(--letter-spacing-tight);
-  }
-
-  .cuisine-name:hover {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
-  }
-
-  .cuisine-description {
-    margin: 0;
-    color: var(--color-text-muted-2);
-  }
-
   @media (max-width: 700px) {
-    /* One column — the gap keeps drawing dividers between the stacked cards. */
     .favorites-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (max-width: 500px) {
-    /* One column — the gap keeps drawing dividers between the stacked cards. */
     .favorites-grid {
       grid-template-columns: 1fr;
     }

@@ -32,7 +32,7 @@
   --color-verdict-notforme: #74727c;
 
   /* Fonts */
-  --font-body: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-body: 'Gelasio', Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxs: 0.7rem;
@@ -1062,7 +1062,7 @@ body:has([data-neighborhood-map]) .river-border {
 .map-list .neighborhood-tagline,
 .map-list .food-tagline {
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-accent);
   font-size: var(--font-size-md);
   font-style: italic;
@@ -1667,8 +1667,8 @@ body:has([data-filter-root]) .site-header {
   margin-block: var(--spacing-xs) 0;
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
-  font-weight: 500;
-  line-height: 1.4;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--color-accent);
 }
 
