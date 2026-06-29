@@ -155,6 +155,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
                     href={href(`/food/${place.id}`)}
                     title={place.data.title}
                     meta={place.data.cuisine[0]}
+                    emoji={cuisineEmoji([place.data.cuisine[0]])}
                     verdict={verdict}
                   />
                 ))}
@@ -170,6 +171,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
                     title={place.data.title}
                     meta={place.data.neighborhood}
                     metaType="neighborhood"
+                    emoji={cuisineEmoji([primaryCuisine])}
                     verdict={verdict}
                   />
                 ))}

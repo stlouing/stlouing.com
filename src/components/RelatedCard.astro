@@ -1,66 +1,102 @@
 ---
-// One row in a RelatedList: the entry name (body face, like a list title) over a
-// quiet meta line — a context label (neighborhood, cuisine, region) and, optionally,
-// the verdict as a Chip — with a trailing arrow centered against the whole row.
+// One row in a RelatedList: a leading mark (a cuisine emoji, or a line icon via
+// the `icon` slot) beside a column of an optional muted mono kicker (the meta)
+// over the serif name, plus an optional one-line description. Trailing slot holds
+// a stat, rating, or verdict, then a navigation affordance (a right arrow for
+// internal links, an external-link icon for outbound ones, nothing for non-links).
 import IconArrowRight from '../assets/IconArrowRight.astro'
+import IconExternalLink from '../assets/IconExternalLink.astro'
+import IconStar from '../assets/IconStar.astro'
 import VerdictChip from './Verdict.astro'
-import IconMapPin from '../assets/IconMapPin.astro'
-import { cuisineEmoji, cuisineLabel } from '../lib/emoji'
+import { cuisineLabel } from '../lib/emoji'
 import type { Verdict } from '../lib/verdict'
 
 interface Props {
-  href: string
+  // When given, the row is a link; otherwise it renders as a plain row.
+  href?: string
   title: string
-  // Left side of the meta line (e.g. the neighborhood, cuisine, or region).
+  // The kicker text above the name (cuisine, neighborhood, event date, …).
   meta?: string
-  // Optional verdict, shown as a Chip after the meta.
+  // How to render `meta`: 'cuisine' maps the key to its label; anything else is
+  // shown verbatim.
+  metaType?: 'cuisine' | 'neighborhood' | 'date'
+  // Optional verdict, shown as a Chip before the trailing affordance.
   verdict?: Verdict
-  // Whether `meta` is a place (neighborhood/region) — body face with a map icon —
-  // or a cuisine (mono tag). Controls the meta styling.
-  metaType?: 'neighborhood' | 'cuisine'
-  // Optional right-aligned secondary stat (e.g. a neighborhood's population),
-  // styled distinctly from the left-side meta/location text.
+  // Optional right-aligned secondary stat (e.g. a neighborhood's population).
   stat?: string
+  // Optional leading emoji (e.g. a cuisine glyph). Mutually exclusive with the
+  // `icon` slot.
+  emoji?: string
+  // Optional 0–10 score, rendered as a trailing accent star badge.
+  rating?: number
+  // Optional one-line description beneath the name.
+  description?: string
+  // Open the link in a new tab (uses the external-link affordance).
+  external?: boolean
 }
 
-const { href, title, meta, verdict, metaType = 'cuisine', stat } = Astro.props
+const {
+  href,
+  title,
+  meta,
+  metaType = 'cuisine',
+  verdict,
+  stat,
+  emoji,
+  rating,
+  description,
+  external = false,
+} = Astro.props
+
+const hasIcon = Astro.slots.has('icon')
+const Tag = href ? 'a' : 'div'
+const linkAttributes = href
+  ? external
+    ? { href, target: '_blank', rel: 'noopener' }
+    : { href }
+  : {}
 ---
 
-<a class="related-card" href={href}>
+<Tag class:list={['related-card', { 'has-description': description }]} {...linkAttributes}>
+  {emoji && <span class="related-lead" aria-hidden="true">{emoji}</span>}
+  {
+    hasIcon && (
+      <span class="related-lead related-lead-icon" aria-hidden="true">
+        <slot name="icon" />
+      </span>
+    )
+  }
   <span class="related-body">
+    {meta && <span class="related-kicker">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>}
     <span class="related-title">{title}</span>
-    {
-      meta && (
-        <span class="related-meta">
-          <span class:list={['related-context', { 'is-place': metaType === 'neighborhood' }]}>
-            {metaType === 'neighborhood' && (
-              <>
-                <IconMapPin /> {meta}
-              </>
-            )}
-            {metaType === 'cuisine' && (
-              <>
-                <span class="related-emoji">{cuisineEmoji([meta])}</span>
-                {cuisineLabel(meta)}
-              </>
-            )}
-          </span>
-        </span>
-      )
-    }
+    {description && <p class="related-desc">{description}</p>}
   </span>
   {stat && <span class="related-stat">{stat}</span>}
+  {
+    rating != null && (
+      <span class="related-rating">
+        <IconStar />
+        {rating}
+      </span>
+    )
+  }
   {verdict && <VerdictChip verdict={verdict} icon narrow filled />}
-  <span class="related-arrow" aria-hidden="true"><IconArrowRight /></span>
-</a>
+  {
+    href && (
+      <span class="related-arrow" aria-hidden="true">
+        {external ? <IconExternalLink /> : <IconArrowRight />}
+      </span>
+    )
+  }
+</Tag>
 
 <style>
-  /* One row per item, divided by a hairline (no divider after the last). The arrow
-     is centered against the row; the title + meta stack on the left. */
+  /* One row per item, divided by a hairline (no divider after the last). The lead
+     + trailing affordance sit on either side of the flex:1 body; rows with a
+     description top-align so the lead lines up with the name's first line. */
   .related-card {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--spacing-md);
     padding: var(--spacing-sm) 0;
     border-block-end: 1px solid var(--color-line);
@@ -68,8 +104,36 @@ const { href, title, meta, verdict, metaType = 'cuisine', stat } = Astro.props
     color: var(--color-text);
   }
 
+  .related-card.has-description {
+    align-items: flex-start;
+  }
+
   .related-card:last-child {
     border-block-end: 0;
+  }
+
+  /* The leading mark: an emoji at the body's largest size, or a line icon recolored
+     to the accent and sized to sit beside it. */
+  .related-lead {
+    flex-shrink: 0;
+    font-size: var(--font-size-xl);
+    line-height: 1;
+  }
+
+  .related-lead-icon {
+    display: inline-flex;
+  }
+
+  .related-lead-icon :global(.icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-accent);
+  }
+
+  /* Nudge the icon down to optically align with the first text line in tall,
+     description-bearing rows. */
+  .related-card.has-description .related-lead-icon :global(.icon) {
+    margin-block-start: 2px;
   }
 
   .related-body {
@@ -80,15 +144,34 @@ const { href, title, meta, verdict, metaType = 'cuisine', stat } = Astro.props
     gap: var(--spacing-xs);
   }
 
-  /* Body face, a step up from the mono meta — reads as a heading, accent on hover. */
+  /* The meta as a muted mono kicker above the name. */
+  .related-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+    line-height: 1.2;
+  }
+
+  /* The name reads as the Best page's serif card title. */
   .related-title {
+    font-family: var(--font-body);
     font-size: var(--font-size-md);
     font-weight: 700;
     color: var(--color-text-heading);
     line-height: 1.2;
     text-underline-offset: 2px;
-    font-family: var(--font-mono);
-    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .related-desc {
+    margin: 0;
+    color: var(--color-text-muted-2);
+    line-height: 1.3;
   }
 
   .related-arrow {
@@ -96,42 +179,44 @@ const { href, title, meta, verdict, metaType = 'cuisine', stat } = Astro.props
     flex-shrink: 0;
   }
 
-  .related-card:hover .related-title {
-    text-decoration-thickness: 2px;
+  /* Hover affordances only on actual links. */
+  a.related-card:hover .related-title {
     text-decoration: underline;
+    text-decoration-thickness: 2px;
   }
 
-  .related-card:hover .related-title,
-  .related-card:hover .related-arrow :global(.icon) {
+  a.related-card:hover .related-title,
+  a.related-card:hover .related-arrow :global(.icon) {
     color: var(--color-accent);
   }
 
-  .related-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    line-height: 1;
-  }
-
-  .related-context {
+  /* A trailing rating badge: an accent star beside the 0–10 score, mono and
+     tabular so scores line up down the column. */
+  .related-rating {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-    color: var(--color-text-muted);
-    font-weight: 500;
+    flex-shrink: 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--color-accent);
   }
 
-  /* The cuisine emoji sits a touch larger than the mono tag it leads. */
-  .related-emoji {
-    font-size: var(--font-size-md);
+  /* The global `.icon` rule pins icons muted, so set the accent color here (not
+     via currentColor) and fill the star so it reads as a solid accent mark. */
+  .related-rating :global(.icon) {
+    width: 0.9em;
+    height: 0.9em;
+    color: var(--color-accent);
+    fill: currentColor;
+    stroke: currentColor;
   }
 
-  /* A right-aligned secondary stat (e.g. population), pushed to the row's end by
-     the flex:1 body. Distinct from the muted location meta: darker, heavier, and
-     tabular so figures line up down the column. */
+  /* A right-aligned secondary stat (e.g. population): darker and heavier than the
+     muted kicker, tabular so figures line up down the column. */
   .related-stat {
     flex-shrink: 0;
     text-align: end;

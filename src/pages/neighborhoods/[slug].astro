@@ -6,7 +6,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
-import IconRow from '../../components/IconRow.astro'
+import IconMapPin from '../../assets/IconMapPin.astro'
 import { href } from '../../lib/url'
 import { resolveVerdict } from '../../lib/verdict'
 import { published, excerpt } from '../../lib/content'
@@ -22,6 +22,7 @@ import {
   festivalsIn,
   neighborhoodResourceLinks,
 } from '../../lib/neighborhoods'
+import { cuisineEmoji } from '../../lib/emoji'
 import neighborhoods from '../../data/neighborhoods.json'
 import SourceLink from '../../components/SourceLink.astro'
 import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
@@ -174,9 +175,14 @@ const trail = [
           attractions.length > 0 && (
             <RelatedList title="Notable spots">
               {attractions.map((spot) => (
-                <IconRow name={spot.name} url={spot.url} description={spot.description}>
+                <RelatedCard
+                  href={spot.url}
+                  title={spot.name}
+                  description={spot.description}
+                  external
+                >
                   <IconLandmark slot="icon" />
-                </IconRow>
+                </RelatedCard>
               ))}
             </RelatedList>
           )
@@ -186,9 +192,14 @@ const trail = [
           festivals.length > 0 && (
             <RelatedList title="Annual events">
               {festivals.map((festival) => (
-                <IconRow name={festival.name} meta={festival.when} description={festival.blurb}>
+                <RelatedCard
+                  title={festival.name}
+                  meta={festival.when}
+                  metaType="date"
+                  description={festival.blurb}
+                >
                   <IconCalendar slot="icon" />
-                </IconRow>
+                </RelatedCard>
               ))}
             </RelatedList>
           )
@@ -202,6 +213,7 @@ const trail = [
                   href={href(`/food/${place.id}`)}
                   title={place.data.title}
                   meta={place.data.cuisine[0]}
+                  emoji={cuisineEmoji([place.data.cuisine[0]])}
                   verdict={resolveVerdict(place.data)}
                 />
               ))}
@@ -225,7 +237,9 @@ const trail = [
                         ? `${neighborPopulation.toLocaleString('en-US')} residents`
                         : undefined
                     }
-                  />
+                  >
+                    <IconMapPin slot="icon" />
+                  </RelatedCard>
                 )
               })}
             </RelatedList>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import RelatedCard from '../../components/RelatedCard.astro'
 import wantToTry from '../../data/want-to-try.json'
 import tried from '../../data/tried.json'
 import rip from '../../data/rip.json'
@@ -19,6 +20,25 @@ const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(righ
 const wishlist = (wantToTry as FoodNote[]).slice().sort(byName)
 const beenTried = (tried as FoodNote[]).slice().sort(byName)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
+
+// The leading cuisine emoji for a row, when the item has a cuisine.
+const cardEmoji = (item: FoodNote) => {
+  if (item.cuisine && item.cuisine.length > 0) {
+    return cuisineEmoji(item.cuisine)
+  }
+
+  return undefined
+}
+
+// The kicker line: the cuisine label and neighborhood, whichever are present.
+const cardMeta = (item: FoodNote) => {
+  const parts = [
+    item.cuisine && item.cuisine.length > 0 ? cuisineLabel(item.cuisine[0]) : null,
+    item.neighborhood ?? null,
+  ].filter(Boolean)
+
+  return parts.length > 0 ? parts.join(' · ') : undefined
+}
 
 const description =
   "Places in St. Louis I haven't been to yet, plus a few that I haven't gotten around to writing about yet."
@@ -41,21 +61,17 @@ const description =
           <p class="description">
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
-          <nav class="backlinks grid">
-            <ul>
-              {wishlist.map((item) => (
-                <li>
-                  <span class="list-title-item">{item.name}</span>
-                  {item.cuisine && item.cuisine.length > 0 && (
-                    <span class="collection">
-                      {cuisineEmoji(item.cuisine)} {cuisineLabel(item.cuisine[0])}
-                    </span>
-                  )}
-                  {item.neighborhood && <span class="collection">{item.neighborhood}</span>}
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div class="card-list">
+            {wishlist.map((item) => (
+              <RelatedCard
+                title={item.name}
+                emoji={cardEmoji(item)}
+                meta={cardMeta(item)}
+                metaType="neighborhood"
+                description={item.note}
+              />
+            ))}
+          </div>
         </section>
       ) : (
         <p class="empty">Nothing on the list right now.</p>
@@ -71,21 +87,17 @@ const description =
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
-          <nav class="backlinks grid">
-            <ul>
-              {beenTried.map((item) => (
-                <li>
-                  <span class="list-title-item">{item.name}</span>
-                  {item.cuisine && item.cuisine.length > 0 && (
-                    <span class="collection">
-                      {cuisineEmoji(item.cuisine)} {cuisineLabel(item.cuisine[0])}
-                    </span>
-                  )}
-                  {item.neighborhood && <span class="collection">{item.neighborhood}</span>}
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div class="card-list">
+            {beenTried.map((item) => (
+              <RelatedCard
+                title={item.name}
+                emoji={cardEmoji(item)}
+                meta={cardMeta(item)}
+                metaType="neighborhood"
+                description={item.note}
+              />
+            ))}
+          </div>
         </section>
       )
     }
@@ -96,24 +108,18 @@ const description =
       inMemoriam.length > 0 && (
         <section>
           <h2>RIP</h2>
-          <p class="description">
-            Restaurants I've visited that have closed down and no longer exist.
-          </p>
-          <nav class="backlinks grid">
-            <ul>
-              {inMemoriam.map((item) => (
-                <li>
-                  <span class="list-title-item">{item.name}</span>
-                  {item.cuisine && item.cuisine.length > 0 && (
-                    <span class="collection">
-                      {cuisineEmoji(item.cuisine)} {cuisineLabel(item.cuisine[0])}
-                    </span>
-                  )}
-                  {item.neighborhood && <span class="collection">{item.neighborhood}</span>}
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <p class="description">Restaurants I've visited that have closed down and no longer exist.</p>
+          <div class="card-list">
+            {inMemoriam.map((item) => (
+              <RelatedCard
+                title={item.name}
+                emoji={cardEmoji(item)}
+                meta={cardMeta(item)}
+                metaType="neighborhood"
+                description={item.note}
+              />
+            ))}
+          </div>
         </section>
       )
     }
@@ -127,14 +133,23 @@ const description =
     color: var(--color-text-muted);
   }
 
-  /* Each section: a normal h2 + a line of description, then the compact list.
-     (The h2 sits outside .backlinks so it keeps the default heading style.) */
+  /* Each section: a normal h2 + a line of description, then the list of cards. */
   section {
     margin-block-start: var(--spacing-lg);
   }
 
-  section .backlinks {
-    margin-block-start: 0;
+  /* These lists run long, so split them into two columns on desktop. The rows
+     keep their own hairline dividers; the column gap separates the two stacks. */
+  .card-list {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 700px) {
+    .card-list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--spacing-lg);
+    }
   }
 
   /* Pull the description up close under its heading, and quiet it down. */

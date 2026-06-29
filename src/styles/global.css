@@ -7,14 +7,14 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #fbf9f3;
-  --color-surface: #fdfdfb;
+  --color-background: #faf6ec;
+  --color-surface: #fffdf7;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
   --color-text-muted: #6f6b61;
   --color-text-muted-2: #58554d;
-  --color-line: #dcd8cb;
+  --color-line: #ddd2bd;
   --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
   --color-map-accent: #6a47a6;
@@ -1666,7 +1666,7 @@ body:has([data-filter-root]) .site-header {
 
   h2 {
     margin-block-start: 0;
-    margin-block-end: var(--spacing-sm);
+    margin-block-end: var(--spacing-xs);
     font-size: var(--font-size-label);
     white-space: nowrap;
 

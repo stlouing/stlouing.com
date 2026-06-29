@@ -3,7 +3,9 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
-import { cuisineEmoji, cuisineLabel } from '../lib/emoji'
+import { cuisineEmoji } from '../lib/emoji'
+import RelatedList from '../components/RelatedList.astro'
+import RelatedCard from '../components/RelatedCard.astro'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
@@ -27,8 +29,8 @@ for (const place of visited) {
     }
   }
 }
-const cuisineWinners = [...bestByCuisine.entries()].sort((left, right) =>
-  left[0].localeCompare(right[0]),
+const cuisineWinners = [...bestByCuisine.entries()].sort(
+  (left, right) => (right[1].data.rating ?? 0) - (left[1].data.rating ?? 0),
 )
 
 // Hand-authored favorites (the editorial picks a ranking can't express), resolved
@@ -83,20 +85,19 @@ const description = "The best of the St. Louis food I've tried, by category."
     <section class="fact-section">
       <h2>Best by cuisine</h2>
       <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
-      <nav class="backlinks grid" aria-label="Best by cuisine">
-        <ul>
-          {
-            cuisineWinners.map(([cuisine, place]) => (
-              <li>
-                <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                <span class="collection">
-                  {cuisineEmoji([cuisine])} {cuisineLabel(cuisine)}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+      <div class="cuisine-winners">
+        {
+          cuisineWinners.map(([cuisine, place]) => (
+            <RelatedCard
+              href={href(`/food/${place.id}`)}
+              title={place.data.title}
+              meta={cuisine}
+              emoji={cuisineEmoji([cuisine])}
+              rating={place.data.rating}
+            />
+          ))
+        }
+      </div>
     </section>
   </article>
 </BaseLayout>
