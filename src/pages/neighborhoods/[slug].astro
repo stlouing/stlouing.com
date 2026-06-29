@@ -90,9 +90,10 @@ const generated = neighborhoodGeneratedSummary(slug)
 // opening paragraph rendered right below it.
 const summary = entry?.data.description ?? generated
 
-// SEO meta description: a real writeup excerpt is the most useful + unique per
-// page; fall back to the summary when there's no writeup.
-const metaDescription = entry?.body ? excerpt(entry.body, 155) : summary
+// SEO meta description: the authored `description` when set, else a writeup
+// excerpt, else the generated summary line.
+const metaDescription =
+  entry?.data.description ?? (entry?.body ? excerpt(entry.body, 155) : generated)
 
 // SEO title to catch "<name> St. Louis" searches. Parks/cemeteries (numbered
 // 80+) aren't neighborhoods, so they just get the city.
@@ -316,7 +317,7 @@ const trail = [
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-sm);
-    padding: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
     border-block-end: 1px solid var(--color-line);
   }
 
@@ -346,10 +347,8 @@ const trail = [
   }
 
   .event-name {
-    font-family: var(--font-mono);
     font-size: var(--font-size-md);
     font-weight: 700;
-    letter-spacing: var(--letter-spacing-tight);
     color: var(--color-text-heading);
   }
 
@@ -357,6 +356,8 @@ const trail = [
     flex-shrink: 0;
     font-weight: 500;
     color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
     white-space: nowrap;
   }
 

@@ -91,12 +91,12 @@ const mentionedIn = backlinks.filter(
 )
 
 // SEO: a richer <title> (name + cuisine + city) than the bare breadcrumb name,
-// plus a per-page meta description pulled from the writeup so pages don't all
-// share the generic site description.
+// plus a per-page meta description — the authored tagline when set, else a writeup
+// excerpt, else the generic site description.
 const seoTitle = primaryCuisine
   ? `${data.title} - ${cuisineLabel(primaryCuisine)} in St. Louis`
   : `${data.title} in St. Louis`
-const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
+const seoDescription = data.description ?? (hasBody(entry) ? excerpt(entry.body, 155) : undefined)
 ---
 
 <BaseLayout
@@ -179,6 +179,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
         </section>
       </div>
       <aside class="food-aside">
+        <h2 class="food-aside-title">Location</h2>
         <div class="food-card">
           <FoodLocator coords={data.coords} label={data.neighborhood} />
           <div class="food-card-body">
@@ -300,11 +301,28 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : undefined
     isolation: isolate;
   }
 
+  /* On mobile the aside stacks under the writeup, so the map gets a heading
+     instead of appearing out of nowhere. Hidden on desktop, where the sticky
+     sidebar already reads as its own column. */
+  .food-aside-title {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-text-muted);
+  }
+
   @media screen and (min-width: 900px) {
     .food-layout {
       grid-template-columns: minmax(0, 1fr) 290px;
       align-items: start;
       gap: 2.5rem;
+    }
+
+    .food-aside-title {
+      display: none;
     }
 
     /* DOM order is main-then-aside so the writeup leads on mobile (the map + pick

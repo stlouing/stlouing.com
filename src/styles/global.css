@@ -7,8 +7,8 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #f7f3e8;
-  --color-surface: #faf7f1;
+  --color-background: #fbf9f3;
+  --color-surface: #fdfdfb;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -434,7 +434,7 @@ a.wikipedia-link {
   font-size: var(--font-size-sm);
   color: var(--color-accent);
   line-height: 1.3;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .wikilink-card-description:last-child {
@@ -1071,7 +1071,7 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 600;
   color: var(--color-accent);
   font-size: var(--font-size-md);
-  font-style: italic;
+  line-height: 1.2;
 }
 
 .map-list .chips {
@@ -1629,7 +1629,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .leaflet-popup.food-popup .leaflet-popup-content-wrapper {
-  background: var(--color-surface);
+  background: var(--color-background);
   color: var(--color-text);
   border: 2px solid var(--color-accent);
   border-radius: var(--radius);
@@ -1795,8 +1795,8 @@ body:has([data-filter-root]) .site-header {
 .entry-summary {
   margin-block: 0 var(--spacing-md);
   font-size: var(--font-size-lg);
-  font-style: italic;
   color: var(--color-accent);
+  font-weight: 500;
 }
 
 /* An organized header bar holding the meta and the edit link, divided from the
@@ -1953,7 +1953,6 @@ body:has([data-filter-root]) .site-header {
     font-size: var(--font-size-xs);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
     color: var(--color-text-muted);
     margin-bottom: var(--spacing-sm);
   }
@@ -1971,11 +1970,8 @@ body:has([data-filter-root]) .site-header {
   li {
     display: flex;
     flex-direction: column;
+    gap: 2px;
     align-items: flex-start;
-    /* gap: 2px; */
-  }
-
-  li + li {
     margin-block-start: var(--spacing-sm);
   }
 
@@ -1983,8 +1979,9 @@ body:has([data-filter-root]) .site-header {
      hover so it reads as a heading rather than a link. */
   li > a:not(.collection),
   .list-title-item {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-label);
     font-weight: 700;
+    font-family: var(--font-body);
     color: var(--color-text-heading);
     text-decoration: none;
     line-height: 1.2;
@@ -1993,12 +1990,8 @@ body:has([data-filter-root]) .site-header {
   li > a:not(.collection):hover {
     color: var(--color-accent);
     text-decoration: underline;
+    text-underline-offset: 2px;
     text-decoration-color: var(--color-accent);
-  }
-
-  /* The sub-label reads as a name (e.g. "Dogtown"), not a shouty uppercase tag. */
-  .collection {
-    font-weight: 500;
   }
 }
 
@@ -2031,9 +2024,10 @@ body:has([data-filter-root]) .site-header {
 .collection {
   color: var(--color-text-muted);
   font-family: var(--font-body);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   text-decoration: none;
-  letter-spacing: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
 }
 
 /* A mono uppercase section heading, used over a List on the Best of page. The

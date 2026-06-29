@@ -51,13 +51,13 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
   }
 
   /* The neighborhood tag, above Leaflet's panes and out of its container so
-     initializing the map doesn't disturb it. Bottom-left, clear of Leaflet's
-     bottom-right attribution bar. */
+     initializing the map doesn't disturb it. Top-left, clear of the bottom
+     attribution bar (the zoom control is moved to the top-right to match). */
   .food-locator-tag {
     position: absolute;
     z-index: 500;
     left: var(--spacing-sm);
-    bottom: var(--spacing-sm);
+    top: var(--spacing-sm);
     padding: 2px var(--spacing-sm);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);

@@ -28,8 +28,10 @@ export function initLocator(el: HTMLElement): void {
     maxZoom: 17,
     scrollWheelZoom: false,
   })
-  // Keep the required OSM/Protomaps credit clear of the corner tag.
+  // Keep the required OSM/Protomaps credit + zoom control clear of the top-left
+  // neighborhood tag: credit along the bottom, zoom moved to the top-right.
   map.attributionControl.setPosition('bottomleft')
+  map.zoomControl.setPosition('topright')
   addThemedTiles(map)
 
   const icon = L.divIcon({

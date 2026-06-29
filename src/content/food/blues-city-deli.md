@@ -1,7 +1,7 @@
 ---
 title: Blues City Deli
 date: 2026-06-23
-description: 'An icon sandwich shop with the best Reuben in town'
+description: 'An iconic sandwich shop with a fantastic Reuben'
 rating: 10
 cuisine: ['sandwiches']
 neighborhood: Benton Park

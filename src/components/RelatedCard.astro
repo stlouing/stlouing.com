@@ -78,8 +78,6 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
 
   /* Body face, a step up from the mono meta — reads as a heading, accent on hover. */
   .related-title {
-    font-family: var(--font-mono);
-    letter-spacing: var(--letter-spacing-tight);
     font-size: var(--font-size-md);
     font-weight: 700;
     color: var(--color-text-heading);
@@ -116,23 +114,12 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
     gap: var(--spacing-sm);
     color: var(--color-text-muted);
     font-weight: 500;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
   }
 
   /* The cuisine emoji sits a touch larger than the mono tag it leads. */
   .related-emoji {
     font-size: var(--font-size-md);
-  }
-
-  /* A place (neighborhood / region): body face with a leading map icon, not the
-     mono cuisine tag. */
-  .related-context.is-place {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-family: var(--font-body);
-    font-size: var(--font-size-md);
-    font-weight: 400;
-    text-transform: none;
-    color: var(--color-text-muted);
   }
 </style>

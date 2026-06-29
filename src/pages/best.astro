@@ -59,7 +59,8 @@ const description = "The best of the St. Louis food I've tried, by category."
     {
       favorites.length > 0 && (
         <section class="fact-section">
-          <h2>The favorites</h2>
+          <h2>Favorites</h2>
+          <p class="description">My favorite individual items throughout the St. Louis area.</p>
           <div class="favorites-grid">
             {favorites.map((award) => (
               <a class="favorite" href={href(`/food/${award.place!.id}`)}>
@@ -81,13 +82,16 @@ const description = "The best of the St. Louis food I've tried, by category."
 
     <section class="fact-section">
       <h2>Best by cuisine</h2>
+      <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
       <nav class="backlinks grid" aria-label="Best by cuisine">
         <ul>
           {
             cuisineWinners.map(([cuisine, place]) => (
               <li>
                 <a href={href(`/food/${place.id}`)}>{place.data.title}</a>
-                <span class="collection">{cuisineLabel(cuisine)}</span>
+                <span class="collection">
+                  {cuisineEmoji([cuisine])} {cuisineLabel(cuisine)}
+                </span>
               </li>
             ))
           }
@@ -168,5 +172,15 @@ const description = "The best of the St. Louis food I've tried, by category."
     .favorites-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .fact-section {
+    h2 {
+      margin-bottom: var(--spacing-xs);
+    }
+  }
+
+  .description {
+    color: var(--color-text-muted-2);
   }
 </style>
