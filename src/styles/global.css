@@ -701,6 +701,7 @@ label {
   letter-spacing: var(--letter-spacing);
   font-family: var(--font-mono);
   font-weight: 500;
+  line-height: 1;
 }
 
 input,
