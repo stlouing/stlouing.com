@@ -105,6 +105,10 @@ function resolve(target) {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://stlouing.com',
+  // The "On the List" page used to live at /food/want-to-try; keep old links alive.
+  redirects: {
+    '/food/want-to-try': '/food/on-the-list',
+  },
   integrations: [
     sitemap({
       serialize(item) {

@@ -91,12 +91,12 @@ const mentionedIn = backlinks.filter(
 )
 
 // SEO: a richer <title> (name + cuisine + city) than the bare breadcrumb name,
-// plus a per-page meta description — the authored tagline when set, else a writeup
-// excerpt, else the generic site description.
+// plus a per-page meta description — the writeup excerpt when there is one (a fuller
+// sentence than the short tagline), else the authored tagline, else the site default.
 const seoTitle = primaryCuisine
   ? `${data.title} - ${cuisineLabel(primaryCuisine)} in St. Louis`
   : `${data.title} in St. Louis`
-const seoDescription = data.description ?? (hasBody(entry) ? excerpt(entry.body, 155) : undefined)
+const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.description
 ---
 
 <BaseLayout

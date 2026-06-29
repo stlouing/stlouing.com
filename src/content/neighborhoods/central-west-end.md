@@ -2,7 +2,7 @@
 title: Central West End
 date: 2026-06-28
 url: https://cwescene.com
-description: The most urban neighborhood outside of downtown
+description: An upscale urban neighborhood near Forest Park
 tags:
   - historic
   - walkable

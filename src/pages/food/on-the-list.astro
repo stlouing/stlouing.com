@@ -21,14 +21,14 @@ const beenTried = (tried as FoodNote[]).slice().sort(byName)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
 
 const description =
-  "Places in St. Louis I haven't been to yet, plus a few that didn't leave a mark."
+  "Places in St. Louis I haven't been to yet, plus a few that I haven't gotten around to writing about yet."
 ---
 
-<BaseLayout crumb="Want to try" description={description}>
+<BaseLayout crumb="On the List" description={description}>
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">
-        <h1>Want to Try</h1>
+        <h1>On the List</h1>
         <span class="count">{wishlist.length}</span>
       </div>
       <p class="entry-summary">The running list of places I still need to get to.</p>

@@ -91,10 +91,11 @@ const generated = neighborhoodGeneratedSummary(slug)
 // opening paragraph rendered right below it.
 const summary = entry?.data.description ?? generated
 
-// SEO meta description: the authored `description` when set, else a writeup
-// excerpt, else the generated summary line.
-const metaDescription =
-  entry?.data.description ?? (entry?.body ? excerpt(entry.body, 155) : generated)
+// SEO meta description: the writeup excerpt when there is one (a fuller sentence
+// than the short tagline), else the authored `description`, else the generated line.
+const metaDescription = entry?.body
+  ? excerpt(entry.body, 155)
+  : (entry?.data.description ?? generated)
 
 // SEO title to catch "<name> St. Louis" searches. Parks/cemeteries (numbered
 // 80+) aren't neighborhoods, so they just get the city.
