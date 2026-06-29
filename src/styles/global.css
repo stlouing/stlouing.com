@@ -286,6 +286,13 @@ td[align='right'] {
   font-variant-numeric: tabular-nums;
 }
 
+/* Keep numeric values intact on narrow screens — figures like "(est.) 278,144"
+   and unit values like "66 sq. mi" read as one token and shouldn't break across
+   lines. Scoped to the data cells so long header labels can still wrap. */
+td[align='right'] {
+  white-space: nowrap;
+}
+
 th[align='center'],
 td[align='center'] {
   text-align: center;

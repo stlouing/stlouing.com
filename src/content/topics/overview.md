@@ -11,9 +11,7 @@ I've learned a lot about St. Louis and the surrounding region over the last few 
 
 In the mid 1800s, St. Louis was the [4th biggest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870). The city was on an upswing, seeing a massive boom in population and industry that continued into the early 1900s when the city hosted the Olympics and the World's Fair.
 
-The city has been on the decline for a while, though - the population reached a high of 850,000 in the 1950s, but has declined ever since, and now has under 300,000 residents.
-
-A lot of factors have led to this outcome, but one of the significant issues for the region is due to the City/County split known as "The Great Divorce".
+The population reached a high of 850,000 in the 1950s, but now has under 300,000 residents. A series of factors (such as white flight, highway development, redlining, and the economy shifting away from the river) left the city in continuous decline since then, but one of the significant issues for the region is the City/County split known as "The Great Divorce".
 
 ### The Great Divorce
 
@@ -45,7 +43,7 @@ As it stands, St. Louis city is not even close to being in the top 150 largest (
 
 <p class="table-caption">St. Louis City and County population from 1880 to 2020</p>
 
-The suburbs have rapidly expanded over this time period, but the city has stagnated. The city population reached a peak of 856,796 in 1950, but a series of factors (such as white flight, highway development, redlining, and the economy shifting away from the river) left the city in continuous decline since then.
+The suburbs have rapidly expanded over this time period, but the city has stagnated.
 
 ### The Most Dangerous City?
 
