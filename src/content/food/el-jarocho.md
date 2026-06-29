@@ -1,6 +1,6 @@
 ---
 title: El Jarocho
-description: "The authentic street tacos I've been looking for"
+description: Authentic street tacos in St. Louis
 date: 2026-06-23
 rating: 9
 cuisine: ['tacos']

@@ -1,6 +1,6 @@
 ---
 title: La Tejana Taqueria
-description: 'A hyped taqueria that let me down on my visit'
+description: A hyped taqueria that didn't come through for me
 date: 2026-06-23
 rating: 2
 cuisine: ['tacos']

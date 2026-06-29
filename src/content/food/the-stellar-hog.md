@@ -1,6 +1,6 @@
 ---
 title: The Stellar Hog
-description: 'Intergalactic BBQ vibes and a big patio'
+description: Intergalactic BBQ vibes and a big patio
 date: 2026-06-23
 rating: 7.5
 cuisine: ['bbq']

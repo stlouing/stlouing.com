@@ -1,6 +1,6 @@
 ---
 title: Pappy's Smokehouse
-description: 'The best ribs in St. Louis'
+description: Standout ribs at a popular BBQ spot
 date: 2026-06-23
 cuisine: ['bbq']
 neighborhood: Midtown

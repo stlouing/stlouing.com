@@ -1,6 +1,6 @@
 ---
 title: Failoni's Restaurant
-description: 'A 1916 Dogtown spot for brick-oven STL-style pie'
+description: A 1916 Dogtown spot for brick-oven STL-style pie
 date: 2026-06-23
 rating: 6
 cuisine: ['pizza']

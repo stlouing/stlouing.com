@@ -1,6 +1,6 @@
 ---
 title: Farotto's
-description: 'My top St. Louis-style pizza, buttery and thin'
+description: My top St. Louis-style pizza
 date: 2026-06-23
 rating: 9.5
 cuisine: ['pizza']

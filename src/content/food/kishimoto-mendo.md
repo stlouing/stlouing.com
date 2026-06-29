@@ -1,6 +1,6 @@
 ---
 title: Kishimoto Mendo
-description: "The best Tonkotsu ramen I've ever had"
+description: Rich, comforting Tonkotsu ramen
 date: 2026-06-23
 rating: 10
 cuisine: ['ramen']

@@ -1,6 +1,6 @@
 ---
 title: O'B'Que's
-description: 'Legit Texas-style brisket'
+description: Legit Texas-style brisket
 date: 2026-06-23
 rating: 8.5
 cuisine: ['bbq']

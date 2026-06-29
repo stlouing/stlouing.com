@@ -1,6 +1,6 @@
 ---
 title: Louie
-description: 'An upscale Italian restaurant, great for a celebration'
+description: An upscale Italian restaurant
 date: 2026-06-23
 rating: 9.5
 cuisine: ['italian']

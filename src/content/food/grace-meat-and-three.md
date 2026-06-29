@@ -1,6 +1,6 @@
 ---
 title: Grace Meat & Three
-description: 'Comfort-food fried chicken and sides in The Grove'
+description: Comfort-food fried chicken and sides
 date: 2026-06-23
 rating: 8.5
 cuisine: ['chicken']

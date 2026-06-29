@@ -1,6 +1,6 @@
 ---
 title: Vinnie's Italian Beef & Gyros
-description: 'A solid gyro, but not my favorite Chicago beef'
+description: A solid gyro, but not my favorite beef
 date: 2026-06-23
 rating: 6.5
 cuisine: ['sandwiches']

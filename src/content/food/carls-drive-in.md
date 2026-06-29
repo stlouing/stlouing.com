@@ -1,6 +1,6 @@
 ---
 title: Carl's Drive-In
-description: 'A no-frills Route 66 drive-in for smash burgers'
+description: No-frills Route 66 drive-in for smash burgers
 date: 2026-06-23
 rating: 7.5
 cuisine: ['burgers']

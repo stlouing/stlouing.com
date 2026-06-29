@@ -1,6 +1,6 @@
 ---
 title: Sultan
-description: 'Our go-to spot for Middle Eastern'
+description: Our go-to spot for Middle Eastern
 date: 2026-06-27
 rating: 9.5
 cuisine: ['middle eastern']

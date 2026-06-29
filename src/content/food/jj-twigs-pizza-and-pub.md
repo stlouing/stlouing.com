@@ -1,6 +1,6 @@
 ---
 title: JJ Twig's Pizza & Pub
-description: 'One of the few Chicago thin-crust pizza spots'
+description: One of the few Chicago thin-crust pizza spots
 date: 2026-06-23
 rating: 8
 cuisine: ['pizza']
