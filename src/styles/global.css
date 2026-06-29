@@ -251,6 +251,10 @@ hr {
   margin-block: var(--spacing-lg);
 }
 
+strong {
+  font-weight: 600;
+}
+
 time {
   font-weight: 500;
 }
@@ -411,9 +415,10 @@ a.wikipedia-link {
 .wikilink-card-title {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-label);
   color: var(--color-text);
   margin-block-end: var(--spacing-sm);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .wikilink-card-excerpt {
@@ -428,7 +433,8 @@ a.wikipedia-link {
   margin-block: 0 var(--spacing-sm);
   font-size: var(--font-size-sm);
   color: var(--color-accent);
-  line-height: 1.4;
+  line-height: 1.3;
+  font-weight: 600;
 }
 
 .wikilink-card-description:last-child {

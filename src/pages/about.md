@@ -24,12 +24,12 @@ Please use the [contact form](/feedback) or email me at [hello@stlouing.com](mai
 
 This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).
 
-- Instagram: [st.louing](https://instagram.com/st.louing)
-- Substack: [stlouing](https://stlouing.substack.com)
-- Bluesky: [stlouing](https://bsky.app/profile/stlouing.com)
-- Twitter: [stlouing](https://x.com/stlouing)
-- GitHub: [stlouing](https://github.com/stlouing)
-- [RSS](/rss.xml)
+- **Instagram**: [st.louing](https://instagram.com/st.louing)
+- **Substack**: [stlouing](https://stlouing.substack.com)
+- **Bluesky**: [stlouing](https://bsky.app/profile/stlouing.com)
+- **Twitter**: [stlouing](https://x.com/stlouing)
+- **GitHub**: [stlouing](https://github.com/stlouing)
+- [**RSS**](/rss.xml)
 
 ## Ideas and Brainstorming
 
@@ -46,26 +46,30 @@ This site is the source of truth, and I'll automatically publish to these other 
 
 A few open-source projects this site relies on.
 
-- Host: [Github Pages](https://docs.github.com/en/pages)
-- Web Framework: [Astro](https://astro.build)
-- Maps: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
+- **Host**: [Github Pages](https://docs.github.com/en/pages)
+- **Web Framework**: [Astro](https://astro.build)
+- **Maps**: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
-- Icons: [Lucide](https://lucide.dev/icons)
-- Forms: [Formspree](https://formspree.io)
-- Analytics: [GoatCounter](https://www.goatcounter.com)
+- **Icons**: [Lucide](https://lucide.dev/icons)
+- **Forms**: [Formspree](https://formspree.io)
+- **Analytics**: [GoatCounter](https://www.goatcounter.com)
 
 ## Links
 
-- [Built St. Louis](https://www.builtstlouis.net): a website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
-- [St. Louis City Talk](https://www.stlouiscitytalk.com/): many thoughts and pictures about St. Louis neighborhoods.
-- [St. Louis Magazine](https://www.stlmag.com/): STL-based magazine with news and events.
-- [St. Louis Public Radio](https://www.stlpr.org/): the St. Louis branch of the NPR network.
-- [pizzababble](https://www.instagram.com/pizzababble): the St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
-- [STLFood on Reddit](https://www.reddit.com/r/STLFood): the place to discuss food in St. Louis
-
-## Resources
-
-- [St. Louis-MO.gov](https://www.stlouis-mo.gov/): Used for determining neighborhood boundaries and facts.
+- [**Built St. Louis**](https://www.builtstlouis.net)
+  - A website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
+- [**St. Louis City Talk**](https://www.stlouiscitytalk.com/)
+  - Many thoughts and pictures about St. Louis neighborhoods.
+- [**St. Louis Magazine**](https://www.stlmag.com/)
+  - STL-based magazine with news and events.
+- [**St. Louis Public Radio**](https://www.stlpr.org/)
+  - The St. Louis branch of the NPR network.
+- [**pizzababble**](https://www.instagram.com/pizzababble)
+  - The St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
+- [**STLFood on Reddit**](https://www.reddit.com/r/STLFood)
+  - he place to discuss food in St. Louis.
+- [**St. Louis-MO.gov**](https://www.stlouis-mo.gov/)
+  - Used for determining neighborhood boundaries and facts.
 
 ## AI
 

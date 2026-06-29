@@ -4,7 +4,7 @@ description: 'Cozy pizza joint with the best toasted ravs around'
 date: 2026-06-23
 rating: 8.5
 cuisine: ['pizza']
-neighborhood: 'Northampton'
+neighborhood: 'North Hampton'
 address:
   - 3805 S Kingshighway Blvd
   - St. Louis, MO 63109
