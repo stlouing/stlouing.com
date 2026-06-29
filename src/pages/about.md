@@ -18,9 +18,10 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 ## Contact
 
-Please use the [contact form](/feedback) or email me at [hello@stlouing.com](mailto:hello@stlouing.com). I'm also [st.louing](https://instagram.com/st.louing) on Instagram. I'd love to hear from you!
+I'd love to hear from you!
 
-## Elsewhere
+- Fill out the [contact form](/feedback)
+- Email me at [hello@stlouing.com](mailto:hello@stlouing.com).
 
 This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).
 

@@ -1,6 +1,6 @@
 ---
 title: La Pizza
-description: 'The most authentic New York slice in town'
+description: 'An authentic New York slice'
 date: 2026-06-23
 rating: 7.5
 cuisine: ['pizza']
