@@ -98,15 +98,24 @@ const metaDescription = entry?.body
   ? excerpt(entry.body, 155)
   : (entry?.data.description ?? generated)
 
-// SEO title to catch "<name> St. Louis" searches. Parks/cemeteries (numbered
-// 80+) aren't neighborhoods, so they just get the city.
-const seoTitle = info
-  ? `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis neighborhood'}`
-  : undefined
+// SEO title: prefer the neighborhood's own tagline — a richer leaf than the
+// generic "a St. Louis neighborhood" — but always keep "St. Louis" in the title
+// for search (the site-name suffix is "St. Louing", which doesn't count). Parks
+// and neighborhoods without a tagline fall back to the generic city form.
+const tagline = entry?.data.description
+const mentionsStLouis = (text: string) => /st\.?\s*louis/i.test(text)
+
+let seoTitle: string | undefined
+if (info && tagline) {
+  const leaf = `${title} — ${tagline}`
+  seoTitle = mentionsStLouis(leaf) ? leaf : `${leaf}, St. Louis`
+} else if (info) {
+  seoTitle = `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis neighborhood'}`
+}
 
 const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods' },
-  { label: title, href: `/neighborhoods/${slug}` },
+  { label: title },
 ]
 ---
 
@@ -203,14 +212,22 @@ const trail = [
         {
           neighbors.length > 0 && (
             <RelatedList title="Borders">
-              {neighbors.map((neighbor) => (
-                <RelatedCard
-                  href={href(`/neighborhoods/${neighbor.slug}`)}
-                  title={neighbor.name}
-                  meta={neighbor.group}
-                  metaType="neighborhood"
-                />
-              ))}
+              {neighbors.map((neighbor) => {
+                const neighborPopulation = neighborhoodPopulation(neighbor.slug)
+                return (
+                  <RelatedCard
+                    href={href(`/neighborhoods/${neighbor.slug}`)}
+                    title={neighbor.name}
+                    meta={neighbor.group}
+                    metaType="neighborhood"
+                    stat={
+                      neighborPopulation
+                        ? `${neighborPopulation.toLocaleString('en-US')} residents`
+                        : undefined
+                    }
+                  />
+                )
+              })}
             </RelatedList>
           )
         }

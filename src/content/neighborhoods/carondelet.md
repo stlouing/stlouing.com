@@ -6,6 +6,7 @@ tags:
   - historic
   - green
   - charming
+  - riverside
 attractions:
   - name: Carondelet Park
     description: The city's third-largest park, with lakes, a boathouse, and trails.

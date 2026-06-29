@@ -9,6 +9,7 @@ tags:
   - nightlife
   - dining
   - urban
+  - upscale
 attractions:
   - name: Cathedral Basilica of St. Louis
     url: https://cathedralstl.org

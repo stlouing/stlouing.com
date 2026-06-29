@@ -6,7 +6,8 @@ tags:
   - walkable
   - dining
   - green
-  - charming
+  - residential
+  - international
 attractions:
   - name: Tower Grove Park
     url: https://www.towergrovepark.org

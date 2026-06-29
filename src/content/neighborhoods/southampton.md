@@ -4,6 +4,7 @@ description: A tight-knit residential square mile
 url: https://www.southamptonstl.org/
 wikipedia: https://en.wikipedia.org/wiki/Southampton,_St._Louis
 tags:
+  - residential
   - historic
   - walkable
   - dining

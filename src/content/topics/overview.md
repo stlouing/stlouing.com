@@ -86,15 +86,15 @@ If combining the entire city and county of St. Louis seems like a contrived exam
 
 ## Pronunciations
 
-- Carondelet: kuh-RON-duh-let or CRON-duh-let
-- Chouteau: SHOW-doe
-- Creve Coeur: kreev-core
-- Des Peres: duh-PAIR
-- Florissant: FLOR-uh-sent
-- Gravois: GRAV-oy
-- Laclede: luh-CLEED
-- Meramec: MER-uh-mack
-- Soulard: SOO-lard
+- **Carondelet**: kuh-RON-duh-let or CRON-duh-let
+- **Chouteau**: SHOW-doe
+- **Creve Coeur**: kreev-core
+- **Des Peres**: duh-PAIR
+- **Florissant**: FLOR-uh-sent
+- **Gravois**: GRAV-oy
+- **Laclede**: luh-CLEED
+- **Meramec**: MER-uh-mack
+- **Soulard**: SOO-lard
 
 ## Slang and St. Louis-isms
 

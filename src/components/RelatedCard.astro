@@ -18,9 +18,12 @@ interface Props {
   // Whether `meta` is a place (neighborhood/region) — body face with a map icon —
   // or a cuisine (mono tag). Controls the meta styling.
   metaType?: 'neighborhood' | 'cuisine'
+  // Optional right-aligned secondary stat (e.g. a neighborhood's population),
+  // styled distinctly from the left-side meta/location text.
+  stat?: string
 }
 
-const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
+const { href, title, meta, verdict, metaType = 'cuisine', stat } = Astro.props
 ---
 
 <a class="related-card" href={href}>
@@ -46,6 +49,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
       )
     }
   </span>
+  {stat && <span class="related-stat">{stat}</span>}
   {verdict && <VerdictChip verdict={verdict} icon narrow filled />}
   <span class="related-arrow" aria-hidden="true"><IconArrowRight /></span>
 </a>
@@ -113,7 +117,7 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
   .related-context {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
     color: var(--color-text-muted);
     font-weight: 500;
     font-family: var(--font-mono);
@@ -123,5 +127,19 @@ const { href, title, meta, verdict, metaType = 'cuisine' } = Astro.props
   /* The cuisine emoji sits a touch larger than the mono tag it leads. */
   .related-emoji {
     font-size: var(--font-size-md);
+  }
+
+  /* A right-aligned secondary stat (e.g. population), pushed to the row's end by
+     the flex:1 body. Distinct from the muted location meta: darker, heavier, and
+     tabular so figures line up down the column. */
+  .related-stat {
+    flex-shrink: 0;
+    text-align: end;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 </style>

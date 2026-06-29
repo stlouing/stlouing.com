@@ -4,6 +4,7 @@ date: 2026-06-28
 description: A landmark windmill anchoring Little Bosnia
 wikipedia: https://en.wikipedia.org/wiki/Bevo_Mill,_St._Louis
 tags:
+  - bosnian
   - historic
   - dining
   - charming

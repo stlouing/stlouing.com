@@ -10,6 +10,7 @@ tags:
   - music
   - dining
   - shopping
+  - college
 attractions:
   - name: The Pageant
     url: https://www.thepageant.com

@@ -5,9 +5,9 @@ url: https://www.grandcenter.org/
 tags:
   - arts
   - music
+  - college
+  - tech
   - urban
-  - dining
-  - historic
 attractions:
   - name: Cortex Innovation Community
     url: https://www.cortexstl.org/
