@@ -24,5 +24,7 @@
   { "name": "The Gramophone", "cuisine": ["sandwich"] },
   { "name": "The London Tea Room", "cuisine": ["cafe"] },
   { "name": "Tiger88", "cuisine": ["vietnamese"] },
-  { "name": "Zlatno Zitos", "cuisine": ["balkan"] }
+  { "name": "Zlatno Zitos", "cuisine": ["balkan"] },
+  { "name": "Songbird", "cuisine": ["breakfast"] },
+  { "name": "Sasha's", "cuisine": ["wine"] }
 ]

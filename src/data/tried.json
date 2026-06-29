@@ -15,5 +15,8 @@
   { "name": "Salvage Yard", "cuisine": ["pizza"] },
   { "name": "Signature India", "cuisine": ["indian"] },
   { "name": "Taj Palace", "cuisine": ["indian"] },
-  { "name": "Thai Sawadee", "cuisine": ["thai"] }
+  { "name": "Thai Sawadee", "cuisine": ["thai"] },
+  { "name": "Park Avenue", "cuisine": ["cafe"] },
+  { "name": "Comet Coffee", "cuisine": ["cafe"] },
+  { "name": "Damn Fine Hand Pies", "cuisine": ["cafe"] }
 ]

@@ -17,9 +17,7 @@ See [[regional-foods|Regional Foods of St. Louis]] for toasted ravioli, gooey bu
 
 ## The Delmar Divide
 
-Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city. It represents a racial diving line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). North of Delmar, the population is 98% black, and south of Delmar, it's around 72% white.
-
-Everything north of Delmar is known as "North City".
+Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city. It represents a racial diving line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). North of Delmar, the population is 98% black, and south of Delmar, it's around 72% white. Everything north of Delmar is known as "North City".
 
 The [Interactive St. Louis Vacancy Map](https://www.stlvacancytools.com/) demonstrates one of the stark divides that happens right along the line.
 
@@ -50,7 +48,7 @@ There is a specific regional dialect of French known as [Missouri French](https:
 
 ## Regional Dialect
 
-- **Catty Corner** - I only heard "kitty corner" growing up, but in the STL region, people say "catty corner". This data is substantiated in the [Harvard dialect study](http://dialect.redlog.net/staticmaps/q_76.html).
+- **Catty Corner** - In the STL region people say "catty corner", whereas in the north it's "kitty corner". This data is substantiated in the [Harvard dialect study](http://dialect.redlog.net/staticmaps/q_76.html).
 
 ## Local Customs
 

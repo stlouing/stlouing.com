@@ -1101,14 +1101,11 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-text-muted);
 }
 
-/* Shared list row title — the food/neighborhood map lists and the compact
-   backlinks / want-to-try / best-of lists use ONE recipe so they always match.
-   Reads like a heading, not a button or link (in map view it's also clickable to
-   open the place's popup). */
+/* Shared list row title for the food/neighborhood map lists. Reads like a
+   heading, not a button or link (in map view it's also clickable to open the
+   place's popup). */
 .map-list .list-title,
-.map-list a.list-title,
-.backlinks li > a:not(.collection),
-.backlinks .list-title-item {
+.map-list a.list-title {
   display: block;
   padding: 0;
   border: 0;
@@ -1127,8 +1124,7 @@ body:has([data-neighborhood-map]) .river-border {
   cursor: pointer;
 }
 
-.map-list a.list-title:hover,
-.backlinks li > a:not(.collection):hover {
+.map-list a.list-title:hover {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -1979,51 +1975,6 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent);
 }
 
-.backlinks {
-  margin-block-start: var(--spacing-lg);
-
-  h2 {
-    margin-bottom: var(--spacing-sm);
-  }
-
-  ul {
-    list-style: none;
-    margin: var(--spacing-xs) 0 0;
-    padding: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-  }
-
-  /* Two-line rows: the primary name (the shared .list-title recipe, above) with
-     its mono sub-label (neighborhood, cuisine, verdict, collection, …) under it. */
-  li {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-block-start: var(--spacing-sm);
-  }
-}
-
-.backlinks.grid ul {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-sm);
-}
-
-@media (max-width: 700px) {
-  .backlinks.grid ul {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 500px) {
-  .backlinks.grid ul {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-}
-
 .chips {
   display: flex;
   gap: var(--spacing-xs);
@@ -2038,8 +1989,7 @@ body:has([data-filter-root]) .site-header {
   font-weight: 500;
 }
 
-/* A mono uppercase section heading, used over a List on the Best of page. The
-   compact "name + label" lists everywhere else use .backlinks (above). */
+/* A mono uppercase section heading, used over a List on the Best of page. */
 .fact-section {
   margin-block-start: var(--spacing-lg);
 }

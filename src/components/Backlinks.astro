@@ -1,5 +1,12 @@
 ---
 import { href } from '../lib/url'
+import RelatedList from './RelatedList.astro'
+import RelatedCard from './RelatedCard.astro'
+import IconUtensils from '../assets/IconUtensils.astro'
+import IconMountain from '../assets/IconMountain.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
+import IconPencil from '../assets/IconPencil.astro'
+import IconBook from '../assets/IconBook.astro'
 import type { Backlink } from '../lib/backlinks'
 
 interface Props {
@@ -7,22 +14,40 @@ interface Props {
 }
 
 const { links } = Astro.props
+
+// A leading icon + singular kicker label per collection, so each "Mentioned in"
+// row reads like the other related lists (icon + type + name). Topics are the
+// fallback for any unmapped collection.
+const iconByCollection: Record<string, typeof IconBook> = {
+  food: IconUtensils,
+  hikes: IconMountain,
+  neighborhoods: IconMapPin,
+  notes: IconPencil,
+  topics: IconBook,
+}
+
+const labelByCollection: Record<string, string> = {
+  food: 'Food',
+  hikes: 'Hike',
+  neighborhoods: 'Neighborhood',
+  notes: 'Note',
+  topics: 'Topic',
+}
 ---
 
 {
   links.length > 0 && (
-    <nav class="backlinks" aria-label="Mentioned in">
-      <h2 class="section-label">Mentioned in</h2>
-      <ul>
-        {links.map((link) => (
-          <li>
-            <a href={href(link.url)}>{link.title}</a>
-            <span class="collection">
-              {link.collection.charAt(0).toUpperCase() + link.collection.slice(1)}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <RelatedList title="Mentioned in">
+      {links.map((link) => {
+        const Icon = iconByCollection[link.collection] ?? IconBook
+        const label = labelByCollection[link.collection] ?? link.collection
+
+        return (
+          <RelatedCard href={href(link.url)} title={link.title} meta={label} metaType="text">
+            <Icon slot="icon" />
+          </RelatedCard>
+        )
+      })}
+    </RelatedList>
   )
 }
