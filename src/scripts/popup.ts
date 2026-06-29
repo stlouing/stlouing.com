@@ -131,5 +131,5 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   // Order mirrors the list rows: title, then the chips, then the tagline
   // (description), with the address (Food) and excerpt below.
-  return `${titleHtml}${metaHtml}${taglineHtml}${addressHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+  return `${titleHtml}${metaHtml}${taglineHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
 }
