@@ -75,9 +75,12 @@ const { class: className, ...rest } = Astro.props
     .list-title {
       display: block;
       font-weight: 700;
-      color: var(--color-text);
+      color: var(--color-text-heading);
       text-decoration: none;
-      font-size: var(--font-size-label);
+      font-size: var(--font-size-md);
+      font-family: var(--font-mono);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.2;
 
       + .list-description {
         margin-block-start: 0;

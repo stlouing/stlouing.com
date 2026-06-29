@@ -938,11 +938,6 @@ body:has(.map-split) main > .wrap,
    (the mono reference-list look) otherwise overrides `.map-list .list-title`.
    Pin the body-serif map-list title for it, with enough specificity to clear the
    component rule. */
-.map-list.section-list ul.list .list-headline a.list-title {
-  font-family: var(--font-body);
-  font-size: var(--font-size-lg);
-}
-
 .map-list.section-list .number {
   color: var(--color-text-muted);
 }
@@ -1092,6 +1087,7 @@ body:has([data-neighborhood-map]) .river-border {
    Reads like a heading, not a button or link (in map view it's also clickable to
    open the place's popup). */
 .map-list .list-title,
+.map-list a.list-title,
 .backlinks li > a:not(.collection),
 .backlinks .list-title-item {
   display: block;
@@ -1099,12 +1095,13 @@ body:has([data-neighborhood-map]) .river-border {
   border: 0;
   background: none;
   text-align: start;
-  font-family: var(--font-body);
-  font-size: var(--font-size-lg);
   font-weight: 700;
-  line-height: 1.2;
   color: var(--color-text-heading);
   text-decoration: none;
+  font-size: var(--font-size-md);
+  font-family: var(--font-mono);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: 1.2;
 }
 
 .map-list a.list-title {
