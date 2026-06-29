@@ -69,11 +69,11 @@ If St. Louis City and County were to be one combined entity, what would the stat
 Measured across the city and county together, the rate drops to 27 per 100k. If treating that combined area as a single city seems contrived, consider San Antonio, Texas, which covers comparable ground with a comparable population.
 
 | Place                   |       Area | Population | Homicides | Rate per 100k |
-| :---------------------- | ---------: | ---------: | --------: | ------------- |
-| St. Louis City          |  66 sq. mi |    301,578 |       263 | **87**        |
-| St. Louis County        | 523 sq. mi |  1,004,125 |        91 | **9**         |
-| St. Louis City + County | 589 sq. mi |  1,305,703 |       354 | **27**        |
-| San Antonio             | 461 sq. mi |  1,434,625 |       128 | **9**         |
+| :---------------------- | ---------: | ---------: | --------: | ------------: |
+| St. Louis City          |  66 sq. mi |    301,578 |       263 |        **87** |
+| St. Louis County        | 523 sq. mi |  1,004,125 |        91 |         **9** |
+| St. Louis City + County | 589 sq. mi |  1,305,703 |       354 |        **27** |
+| San Antonio             | 461 sq. mi |  1,434,625 |       128 |         **9** |
 
 <p class="table-caption">St. Louis City + County compared with San Antonio, 2020</p>
 
@@ -82,7 +82,7 @@ Obviously, changing the crime statistic does not make the dangerous parts of the
 Though there are some misconceptions to address.
 
 - **Misconception**: _"If the city rejoined the county, the crime stats would improve."_
-- **Reality**: They wouldn't change at all. The number is high because the borders froze in 1876, and that damage is done. However, there are other potential efficiency improvements that could come about from a merger.
+- **Reality**: They wouldn't change at all. The number is high because the borders froze in 1876, and that damage is done. St. Louis would need to expand its borders to improve the crime stats. However, there are other potential efficiency improvements that could come about from a merger.
 
 #### Sources
 

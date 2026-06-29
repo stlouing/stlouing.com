@@ -266,6 +266,15 @@ table {
   border-collapse: collapse;
   border: 1px solid var(--color-line);
   font-size: var(--font-size-sm);
+
+  /* `main` uses overflow-x: clip to contain full-bleed maps, so a table wider
+     than the viewport would be cut off with no way to reach it. Make the table
+     its own horizontal scroll container so wide tables scroll in place instead
+     of being clipped by the page. */
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 th,
@@ -286,9 +295,11 @@ td[align='right'] {
   font-variant-numeric: tabular-nums;
 }
 
-/* Keep numeric values intact on narrow screens — figures like "(est.) 278,144"
-   and unit values like "66 sq. mi" read as one token and shouldn't break across
-   lines. Scoped to the data cells so long header labels can still wrap. */
+/* Keep numeric values and headers intact on narrow screens — figures like
+   "(est.) 278,144", unit values like "66 sq. mi", and the mono header labels
+   read as single tokens and shouldn't break across lines. The table scrolls
+   horizontally when this pushes it past the viewport. */
+th,
 td[align='right'] {
   white-space: nowrap;
 }
