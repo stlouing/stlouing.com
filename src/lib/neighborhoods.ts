@@ -79,6 +79,13 @@ export function neighborhoodInfo(slug: string): NeighborhoodInfo | undefined {
   return infoBySlug.get(slug)
 }
 
+// True when this neighborhood has a locator silhouette shape. City neighborhoods
+// do; St. Louis County municipalities (90+) aren't in the city outline, so their
+// page hides the locator rather than showing an empty figure.
+export function hasNeighborhoodShape(slug: string): boolean {
+  return slug in (geo.shapes as Record<string, string>)
+}
+
 // 2020 U.S. Census population for a neighborhood, or undefined where there's none
 // (parks/cemeteries). See scripts/build-neighborhood-population.mjs.
 export function neighborhoodPopulation(slug: string): number | undefined {
@@ -95,7 +102,7 @@ export function neighborhoodGeneratedSummary(slug: string): string | undefined {
     return undefined
   }
   if (info.type) {
-    return `${info.name}, a ${info.type} in ${info.group}`
+    return `A ${info.type} in ${info.group}`
   }
 
   return `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`

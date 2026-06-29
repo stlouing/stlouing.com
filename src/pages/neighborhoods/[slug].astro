@@ -14,6 +14,7 @@ import {
   foodByNeighborhood,
   normalizeName,
   neighborhoodInfo,
+  hasNeighborhoodShape,
   neighborhoodPopulation,
   neighborhoodGeneratedSummary,
   neighborsOf,
@@ -134,10 +135,14 @@ const trail = [
     <div class="neighborhood-layout">
       <aside class="neighborhood-aside">
         <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
-        <figure class="locator-figure">
-          <NeighborhoodLocator slug={slug} name={title} />
-          <figcaption>{title} relative to St. Louis</figcaption>
-        </figure>
+        {
+          hasNeighborhoodShape(slug) && (
+            <figure class="locator-figure">
+              <NeighborhoodLocator slug={slug} name={title} />
+              <figcaption>{title} relative to St. Louis</figcaption>
+            </figure>
+          )
+        }
       </aside>
       <div class="neighborhood-main">
         {

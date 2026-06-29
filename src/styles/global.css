@@ -1961,7 +1961,7 @@ body:has([data-filter-root]) .site-header {
 .section-label {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   color: var(--color-text-muted);
