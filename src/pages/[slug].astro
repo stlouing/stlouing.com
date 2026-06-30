@@ -55,13 +55,11 @@ const schema = articleSchema(
         {data.description}
       </p>
     )}
-    <Fragment slot="meta">
-      <span>
-        Last updated on
-        <time class="dt-updated" datetime={data.updated.toISOString()}>
-          {formatDate(data.updated)}
-        </time>
-      </span>
+    <Fragment slot="footer-meta">
+      Last updated on
+      <time class="dt-updated" datetime={data.updated.toISOString()}>
+        {formatDate(data.updated)}
+      </time>
       {
         data.created && (
           <time class="dt-published" datetime={data.created.toISOString()} hidden>

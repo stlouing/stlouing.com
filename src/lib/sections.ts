@@ -31,7 +31,7 @@ export const sections: Section[] = [
     path: '/neighborhoods',
     group: 'maps',
     primary: true,
-    description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, where I can keep track of the unique things I've learned about a given area.`,
+    description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, plus a few additional points of interest in the county.`,
   },
   // {
   //   label: 'Hikes',
@@ -45,7 +45,7 @@ export const sections: Section[] = [
     path: '/topics',
     group: 'topics',
     primary: true,
-    description: 'Evergreen pages, tended over time',
+    description: "Field notes and deep dives on what I've learned.",
   },
 
   // Lists: my subjective picks and running lists. (Pronunciations + Slang are
@@ -55,7 +55,7 @@ export const sections: Section[] = [
     label: 'Best of St. Louis Food',
     path: '/best',
     group: 'lists',
-    description: 'My favorite food so far, ranked and by category.',
+    description: 'My favorite restaurants and cafes so far!',
   },
   {
     label: 'On the List',
@@ -67,7 +67,7 @@ export const sections: Section[] = [
     label: 'Sitemap',
     path: '/sitemap',
     group: 'lists',
-    description: 'A human-readable index of every page.',
+    description: 'An index of every page on the site.',
   },
   // Hidden until it has posts (omitted from `groups` above and not `primary`).
   { label: 'Notes', path: '/notes', group: 'notes' },

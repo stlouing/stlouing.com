@@ -20,7 +20,7 @@ const { trail } = Astro.props
         {item.href ? (
           <a href={href(item.href)}>{item.label}</a>
         ) : (
-          <span class="crumb" aria-current="page">
+          <span class="crumb" aria-current={index === trail.length - 1 ? 'page' : undefined}>
             {item.label}
           </span>
         )}
@@ -60,7 +60,7 @@ const { trail } = Astro.props
       }
     }
 
-    [aria-current='page'] {
+    .crumb {
       font-weight: 500;
       color: var(--color-text-muted-2);
       line-height: 1;

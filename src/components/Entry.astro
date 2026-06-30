@@ -5,7 +5,8 @@
 // (notes/topics); without it, it's a plain directory entry (food/hikes).
 //
 // Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
-// the meta row, e.g. an address), and the default slot (the rendered body).
+// the meta row, e.g. an address), `footer-meta` (a quiet line at the foot of the
+// article, e.g. a last-updated timestamp), and the default slot (the body).
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
 import ShareButton from './ShareButton.astro'
@@ -62,6 +63,13 @@ const isArticle = Boolean(permalink)
   </div>
 
   <footer>
+    {
+      Astro.slots.has('footer-meta') && (
+        <p class="entry-footer-meta">
+          <slot name="footer-meta" />
+        </p>
+      )
+    }
     <Backlinks links={backlinks} />
     <section class="entry-end">
       <div class="share-bar">
@@ -89,5 +97,13 @@ const isArticle = Boolean(permalink)
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+  }
+
+  /* A quiet last-updated line closing the article, well below the title. */
+  .entry-footer-meta {
+    margin: 0 0 var(--spacing-lg);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
   }
 </style>

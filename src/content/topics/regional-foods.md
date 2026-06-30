@@ -34,14 +34,14 @@ The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza an
 
 <hr />
 
+## St. Louis-style pizza
+
 <figure class="figure right">
 
 ![Pepperoni and sausage from Faraci Pizza](../images/stl-pizza/faraci.png)
 
 <figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
 </figure>
-
-## St. Louis-style pizza
 
 <a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/St._Louis-style_pizza">Wikipedia</a>
 

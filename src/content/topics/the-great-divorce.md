@@ -13,7 +13,7 @@ The population reached a high of 850,000 in the 1950s, but now has under 300,000
 
 ### The City-County Split
 
-In 1876, the city of St. Louis voted to separate from St. Louis County, becoming one of only a few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in the U.S. Most other cities sit inside a county - Chicago is a city inside Cook County, for example, but St. Louis city and county are completely separate entities.
+In 1876, the City of St. Louis voted to separate from St. Louis County, becoming one of only a few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in the U.S. Most other cities sit inside a county - Chicago is a city inside Cook County, for example, but St. Louis City and County are completely separate entities.
 
 This separation permanently froze the boundaries of St. Louis at 66.17 square miles, which resulted in a slew of unforeseen consequences for the city.
 
@@ -32,7 +32,7 @@ In 150 years, St. Louis hasn't expanded at all.
 
 If St. Louis had followed in the footsteps of other cities, it would have absorbed many of the surrounding areas like Clayton, Maplewood, Richmond Heights, Webster Groves, and Kirkwood.
 
-As it stands, St. Louis city is not even close to being in the top 150 largest (by area), yet the Greater St. Louis area has the [23rd highest population](https://en.wikipedia.org/wiki/Metropolitan_statistical_area) in the U.S.
+As it stands, St. Louis City is not even close to being in the top 150 largest (by area), yet the Greater St. Louis area has the [23rd highest population](https://en.wikipedia.org/wiki/Metropolitan_statistical_area) in the U.S.
 
 | Year | City population | County population |
 | :--- | --------------: | ----------------: |
@@ -64,7 +64,7 @@ Crime is reported by geographic boundary. Since St. Louis hasn't expanded its bo
 
 If St. Louis City and County were to be one combined entity, what would the stats look like?
 
-Measured across the city and county together, the rate drops to 27 per 100k. If treating that combined area as a single city seems contrived, consider San Antonio, Texas, which covers comparable ground with a comparable population.
+Measured across the City and County together, the rate drops to 27 per 100k. If treating that combined area as a single city seems contrived, consider San Antonio, Texas, which covers comparable ground with a comparable population.
 
 | Place                   |       Area | Population | Homicides | Rate per 100k |
 | :---------------------- | ---------: | ---------: | --------: | ------------: |
@@ -79,7 +79,7 @@ Obviously, changing the crime statistic does not make the dangerous parts of the
 
 Though there are some misconceptions to address.
 
-- **Misconception**: _"If the city rejoined the county, the crime stats would improve."_
+- **Misconception**: _"If the City rejoined the County, the crime stats would improve."_
 - **Reality**: They wouldn't change at all. The number is high because the borders froze in 1876, and that damage is done. St. Louis would need to expand its borders to improve the crime stats. However, there are other potential efficiency improvements that could come about from a merger.
 
 #### Sources

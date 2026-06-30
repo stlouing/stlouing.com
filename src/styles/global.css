@@ -819,6 +819,34 @@ body:has(.map-split) main > .wrap,
   scroll-margin-top: 0;
 }
 
+/* Floating list/map switch on the directory pages (Food + Neighborhoods): mobile
+   only, since desktop shows both panes and has nothing to toggle. Shared here
+   because both pages render the same `.map-split-toggle` button. */
+.map-split-toggle {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .map-split-toggle {
+    display: block;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: 1px solid var(--color-accent);
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+  }
+}
+
 /* Drop Leaflet's default square focus outline on clicked boundaries; the active
    region is shown by recoloring the polygon itself (see neighborhood-map.ts). */
 .neighborhood-map .leaflet-interactive:focus {
