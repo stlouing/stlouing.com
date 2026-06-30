@@ -118,6 +118,12 @@ const linkAttributes = href
     align-items: flex-start;
   }
 
+  /* No divider after the last row of a single column. Multi-column containers
+     (e.g. On the List's grid) re-assert it so both stacks end on an even line. */
+  .related-card:last-child {
+    border-block-end: 0;
+  }
+
   /* The leading mark: an emoji at the body's largest size, or a line icon recolored
      to the accent and sized to sit beside it. */
   .related-lead {

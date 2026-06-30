@@ -148,6 +148,12 @@ const description =
       grid-template-columns: 1fr 1fr;
       column-gap: var(--spacing-lg);
     }
+
+    /* Two columns: keep every row's divider, including the last card, so the two
+       stacks end on an even line instead of one column dropping its border. */
+    .card-list :global(.related-card:last-child) {
+      border-block-end: 1px solid var(--color-line);
+    }
   }
 
   /* Pull the description up close under its heading, and quiet it down. */

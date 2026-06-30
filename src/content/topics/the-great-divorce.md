@@ -69,21 +69,19 @@ Measured across the City and County together, the rate drops to 27 per 100k. If 
 
 <p class="table-caption">St. Louis City + County compared with San Antonio, 2020</p>
 
+Even if you combine St. Louis City and County, the crime stats are above the national average, but much lower than St. Louis City alone.
+
 Obviously, changing the crime statistic does not make the dangerous parts of the city any less dangerous, and that's a serious problem. But St. Louis could be viewed in a more reasonable light if it was set up in a more comparable way to other cities.
 
-Though there are some misconceptions to address.
-
-- **Misconception**: _"The crime stats in St. Louis are not judged fairly because it's an independent city"_
-- **Reality**: Cities are still compared with other cities. St. Louis City is compared with the City of Chicago, for example, not Cook County.
-
-And another:
-
-- **Misconception**: _"If the City rejoined the County, the crime stats would improve."_
-- **Reality**: They wouldn't change immediately. The number is high because the borders froze in 1876. St. Louis would need to expand its borders to improve the crime stats.
+Just to be clear, merging the County and City together now would not change any crime stats at all - the number is high because the borders froze in 1876. St. Louis would need to expand its borders to improve the crime stats.
 
 The City and County finding a way to work together would not immediately fix the all problems from the last 150 years, but it seems like it could be a step towards healing. I think if St. Louis was not on the top of every "most dangerous city" list, people would be more likely to visit and move here.
 
 #### Sources
 
-- [St. Louis has highest murder rate in U.S. in 2020](https://fox2now.com/news/missouri/st-louis-has-highest-murder-rate-in-u-s-in-2020-other-crimes-decreasing/) - Fox 2 St. Louis
-- [Homicides rose in San Antonio, U.S. in 2020](https://sanantonioreport.org/san-antonio-us-more-homicides-2020/) - San Antonio Report
+The "rate per 100k" is calculated, not reported, from these sources. I tried to be as accurate as possible but it's all estimation.
+
+- [QuickFacts: St. Louis city and St. Louis County](https://www.census.gov/quickfacts/fact/table/stlouiscitymissouri,stlouiscountymissouri/PST045224) - U.S. Census Bureau — 2020 populations
+- [St. Louis has highest murder rate in U.S. in 2020](https://fox2now.com/news/missouri/st-louis-has-highest-murder-rate-in-u-s-in-2020-other-crimes-decreasing/) - Fox 2 St. Louis — the City's 263 homicides and 87-per-100k rate
+- [St. Louis homicide rate in 2020 highest in 50 years](https://www.stltoday.com/news/local/metro/st-louis-homicide-rate-in-2020-highest-in-50-years-with-262-killings/article_b3c323a7-bc38-55bc-812b-08990b0eb289.html) - St. Louis Post-Dispatch — St. Louis County's 91 homicides (about 9 per 100k)
+- [Homicides rose in San Antonio, U.S. in 2020](https://sanantonioreport.org/san-antonio-us-more-homicides-2020/) - San Antonio Report — San Antonio's 128 homicides

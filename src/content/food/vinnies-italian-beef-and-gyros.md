@@ -1,6 +1,6 @@
 ---
 title: Vinnie's Italian Beef & Gyros
-description: A solid gyro, but not my favorite beef
+description: A solid gyro and one of the few beefs in town
 date: 2026-06-23
 rating: 6.5
 cuisine: ['sandwiches']
