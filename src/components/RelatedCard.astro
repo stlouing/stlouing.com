@@ -31,6 +31,9 @@ interface Props {
   rating?: number
   // Optional one-line description beneath the name.
   description?: string
+  // Optional vibe tags, rendered as small chips beneath the description. Plain
+  // spans (not links), since the card itself may already be a link.
+  tags?: string[]
   // Open the link in a new tab (uses the external-link affordance).
   external?: boolean
 }
@@ -45,6 +48,7 @@ const {
   emoji,
   rating,
   description,
+  tags = [],
   external = false,
 } = Astro.props
 
@@ -57,7 +61,9 @@ const linkAttributes = href
   : {}
 ---
 
-<Tag class:list={['related-card', { 'has-description': description }]} {...linkAttributes}>
+<Tag
+  class:list={['related-card', { 'has-description': description || tags.length > 0 }]}
+  {...linkAttributes}>
   {
     emoji && (
       <span class="related-lead" aria-hidden="true">
@@ -80,6 +86,15 @@ const linkAttributes = href
     }
     <span class="related-title">{title}</span>
     {description && <p class="related-desc">{description}</p>}
+    {
+      tags.length > 0 && (
+        <span class="related-tags" aria-hidden="true">
+          {tags.map((tag) => (
+            <span class="related-tag">{tag}</span>
+          ))}
+        </span>
+      )
+    }
   </span>
   {stat && <span class="related-stat">{stat}</span>}
   {
@@ -130,6 +145,7 @@ const linkAttributes = href
     flex-shrink: 0;
     font-size: var(--font-size-xl);
     line-height: 1;
+    padding-top: 2px;
   }
 
   .related-lead-icon {
@@ -184,6 +200,27 @@ const linkAttributes = href
     margin: 0;
     color: var(--color-text-muted-2);
     line-height: 1.3;
+  }
+
+  /* Vibe tags: small mono pills beneath the description (e.g. a neighborhood's
+     character). Plain, non-interactive — the row's own link carries the click. */
+  .related-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin-block-start: var(--spacing-xs);
+  }
+
+  .related-tag {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-muted-2);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 1px var(--spacing-sm);
+    line-height: 1.4;
+    background: var(--color-surface);
   }
 
   .related-arrow {

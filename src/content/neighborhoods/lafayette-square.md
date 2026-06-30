@@ -9,9 +9,9 @@ tags:
   - charming
 attractions:
   - name: Lafayette Park
-    description: The oldest park west of the Mississippi (1836), with a lake and an iron bridge.
+    description: A charming park with a lake and an iron bridge.
   - name: Victorian "Painted Ladies"
-    description: Grand restored Victorian mansions ringing the park.
+    description: Grand restored Victorian mansions.
   - name: Benton Place
-    description: St. Louis's first private street (1868), a gated enclave of Victorian homes.
+    description: St. Louis's first private street, a gated enclave of Victorian homes.
 ---

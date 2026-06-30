@@ -21,6 +21,7 @@ import {
   neighborsOf,
   festivalsIn,
   neighborhoodResourceLinks,
+  regionOf,
 } from '../../lib/neighborhoods'
 import { cuisineEmoji } from '../../lib/emoji'
 import neighborhoods from '../../data/neighborhoods.json'
@@ -81,6 +82,30 @@ const festivals = festivalsIn(slug)
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
+// Each neighborhood's tagline + vibe tags (and whether it has a writeup), keyed by
+// slug, for the "Nearby Neighborhoods" cards. Unexplored neighborhoods have no
+// tagline/tags and fall back to a placeholder on the card.
+const neighborMetaBySlug = new Map(
+  published(await getCollection('neighborhoods')).map((neighborhoodEntry) => [
+    neighborhoodEntry.id,
+    {
+      description: neighborhoodEntry.data.description,
+      tags: neighborhoodEntry.data.tags ?? [],
+      written: Boolean(neighborhoodEntry.body && neighborhoodEntry.body.trim()),
+    },
+  ]),
+)
+
+// Show up to 5 nearby neighborhoods, explored ones first — unexplored ones only
+// fill in when there aren't 5 explored neighbors to show.
+const exploredNeighbors = neighbors.filter(
+  (neighbor) => neighborMetaBySlug.get(neighbor.slug)?.written,
+)
+const unexploredNeighbors = neighbors.filter(
+  (neighbor) => !neighborMetaBySlug.get(neighbor.slug)?.written,
+)
+const nearbyNeighbors = [...exploredNeighbors, ...unexploredNeighbors].slice(0, 5)
+
 // External resources: the place's own site (if any), Wikipedia, and the
 // auto-generated City of St. Louis + MyTownView profiles — rendered as a button bar.
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
@@ -108,17 +133,18 @@ const mentionsStLouis = (text: string) => /st\.?\s*louis/i.test(text)
 
 let seoTitle: string | undefined
 if (info && tagline) {
-  const leaf = `${title} — ${tagline}`
+  const leaf = `${title}, St. Louis | ${tagline}`
   seoTitle = mentionsStLouis(leaf) ? leaf : `${leaf}, St. Louis`
 } else if (info) {
   seoTitle = `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis neighborhood'}`
 }
 
-// The region (South City, Central Corridor, …) sits between the index and the
-// neighborhood as a non-linking crumb — it groups, but has no page of its own.
+// The region (South City, Parks, …) sits between the index and the neighborhood,
+// linking to that region's landing page.
+const region = info ? regionOf(info) : undefined
 const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods' },
-  ...(info?.group ? [{ label: info.group }] : []),
+  ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}` }] : []),
   { label: title },
 ]
 ---
@@ -175,6 +201,22 @@ const trail = [
         }
 
         {
+          places.length > 0 && (
+            <RelatedList title="Food">
+              {places.map((place) => (
+                <RelatedCard
+                  href={href(`/food/${place.id}`)}
+                  title={place.data.title}
+                  meta={place.data.cuisine[0]}
+                  emoji={cuisineEmoji([place.data.cuisine[0]])}
+                  verdict={resolveVerdict(place.data)}
+                />
+              ))}
+            </RelatedList>
+          )
+        }
+
+        {
           attractions.length > 0 && (
             <RelatedList title="Notable spots">
               {attractions.map((spot) => (
@@ -207,37 +249,18 @@ const trail = [
         }
 
         {
-          places.length > 0 && (
-            <RelatedList title="Food">
-              {places.map((place) => (
-                <RelatedCard
-                  href={href(`/food/${place.id}`)}
-                  title={place.data.title}
-                  meta={place.data.cuisine[0]}
-                  emoji={cuisineEmoji([place.data.cuisine[0]])}
-                  verdict={resolveVerdict(place.data)}
-                />
-              ))}
-            </RelatedList>
-          )
-        }
-
-        {
-          neighbors.length > 0 && (
-            <RelatedList title="Borders">
-              {neighbors.map((neighbor) => {
-                const neighborPopulation = neighborhoodPopulation(neighbor.slug)
+          nearbyNeighbors.length > 0 && (
+            <RelatedList title="Nearby Neighborhoods">
+              {nearbyNeighbors.map((neighbor) => {
+                const neighborMeta = neighborMetaBySlug.get(neighbor.slug)
                 return (
                   <RelatedCard
                     href={href(`/neighborhoods/${neighbor.slug}`)}
                     title={neighbor.name}
                     meta={neighbor.group}
                     metaType="neighborhood"
-                    stat={
-                      neighborPopulation
-                        ? `${neighborPopulation.toLocaleString('en-US')} residents`
-                        : undefined
-                    }>
+                    description={neighborMeta?.description ?? 'Not explored yet'}
+                    tags={neighborMeta?.tags ?? []}>
                     <IconMapPin slot="icon" />
                   </RelatedCard>
                 )
@@ -267,7 +290,7 @@ const trail = [
 
   @media screen and (min-width: 900px) {
     .neighborhood-layout {
-      grid-template-columns: minmax(0, 1fr) 260px;
+      grid-template-columns: minmax(0, 1fr) 250px;
       align-items: start;
       gap: 2.5rem;
     }

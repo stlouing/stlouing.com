@@ -5,14 +5,37 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
+import { resolveVerdict } from '../lib/verdict'
 import { formatDateShort } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
+import TopicIcon from '../components/TopicIcon.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
+import IconUtensils from '../assets/IconUtensils.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
+import IconAward from '../assets/IconAward.astro'
+import IconListChecks from '../assets/IconListChecks.astro'
+import IconFolderTree from '../assets/IconFolderTree.astro'
+import IconInfo from '../assets/IconInfo.astro'
+import IconTags from '../assets/IconTags.astro'
+import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
+
+// A Lucide icon per directory section, keyed by path. Topic icons come from the
+// shared <TopicIcon> component (so the homepage + /topics stay in sync).
+const iconByPath: Record<string, typeof IconInfo> = {
+  '/food': IconUtensils,
+  '/neighborhoods': IconMapPin,
+  '/best': IconAward,
+  '/food/on-the-list': IconListChecks,
+  '/sitemap': IconFolderTree,
+  '/about': IconInfo,
+  '/tags': IconTags,
+  '/feedback': IconMessageCircleHeart,
+}
 
 const tagline = 'An independent guide to the food, neighborhoods, and culture of St. Louis.'
-const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.`
+const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore this fascinating city with me!`
 
 const allNotes = published(await getCollection('notes')).sort(
   (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
@@ -23,15 +46,25 @@ const allTopics = published(await getCollection('topics')).sort(
 
 // Latest few of each for the homepage columns.
 const latestNotes = allNotes.slice(0, 5)
-const latestTopics = allTopics.slice(0, 5)
+const latestTopics = allTopics.slice(0, 4)
 
 // Item counts shown next to the guide sections in the directory.
-const foodCount = published(await getCollection('food')).length
+const allFood = published(await getCollection('food'))
+const foodCount = allFood.length
 const neighborhoodCount = published(await getCollection('neighborhoods')).length
 const countByPath: Record<string, string> = {
   '/food': `${foodCount} writeups`,
   '/neighborhoods': `${neighborhoodCount} explored`,
 }
+
+// "By the numbers" stats (right of "Start here").
+const lovedCount = allFood.filter((place) => resolveVerdict(place.data) === 'loved').length
+const topicCount = allTopics.length
+const stats = [
+  { value: foodCount, label: 'food spots mapped' },
+  { value: topicCount, label: 'topics written' },
+  { value: lovedCount, label: 'spots loved' },
+]
 
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
@@ -51,6 +84,44 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     <a class="u-url" href={href('/')} hidden>stlouing.com</a>
     <img class="u-photo" src={href('/og.png')} alt="" hidden />
   </header>
+
+  <div class="intro-row">
+    <section class="start-here" aria-labelledby="start-here-title">
+      <h2 id="start-here-title" class="start-here-title">Start here</h2>
+      <ol class="start-here-steps">
+        <li>
+          <a href={href('/overview')}>
+            <span class="step-label">Read the <strong>overview</strong></span>
+            <IconArrowRight />
+          </a>
+        </li>
+        <li>
+          <a href={href('/food')}>
+            <span class="step-label">Browse the interactive <strong>food map</strong></span>
+            <IconArrowRight />
+          </a>
+        </li>
+        <li>
+          <a href={href('/neighborhoods')}>
+            <span class="step-label">Explore the <strong>neighborhoods</strong></span>
+            <IconArrowRight />
+          </a>
+        </li>
+        <li>
+          <a href={href('/the-great-divorce')}>
+            <span class="step-label">Learn about the City-County split</span>
+            <IconArrowRight />
+          </a>
+        </li>
+        <li>
+          <a href={href('/regional-foods')}>
+            <span class="step-label">Discover regional foods</span>
+            <IconArrowRight />
+          </a>
+        </li>
+      </ol>
+    </section>
+  </div>
 
   <div class="directory">
     {
@@ -95,8 +166,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                       topic.data.description
                         ? `${topic.data.description}.`
                         : formatDateShort(topic.data.updated)
-                    }
-                  />
+                    }>
+                    <TopicIcon id={topic.id} slot="icon" />
+                  </ListItem>
                 ))}
               </List>
             </section>
@@ -116,14 +188,18 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             </div>
 
             <List>
-              {items.map((section) => (
-                <ListItem
-                  title={section.label}
-                  href={href(section.path)}
-                  description={section.description}
-                  meta={countByPath[section.path]}
-                />
-              ))}
+              {items.map((section) => {
+                const Icon = iconByPath[section.path]
+                return (
+                  <ListItem
+                    title={section.label}
+                    href={href(section.path)}
+                    description={section.description}
+                    meta={countByPath[section.path]}>
+                    {Icon && <Icon slot="icon" />}
+                  </ListItem>
+                )
+              })}
             </List>
           </section>
         )
@@ -160,9 +236,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .introduction {
-    max-width: 55ch;
+    max-width: 65ch;
     font-size: var(--font-size-md);
-    margin-block: var(--spacing-md) var(--spacing-xl);
+    margin-block: var(--spacing-md);
     color: var(--color-text);
   }
 
@@ -207,6 +283,107 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   /* Keep the arrow the same accent color as the link text. */
   .group-header .all :global(.icon) {
     color: inherit;
+  }
+
+  .intro-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+    margin-block: 0 var(--spacing-xl);
+  }
+
+  /* A wayfinding callout for first-time visitors landing from search: the accent
+     left edge + accent mono label match the site's other callouts (TOC, quotes). */
+  .start-here {
+    /* Hug the content rather than stretching across the full column, which left a
+       lot of dead space to the right of the short list. */
+    width: fit-content;
+    max-width: 100%;
+    padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md) var(--spacing-base);
+    border: 1px solid var(--color-line);
+    border-inline-start: 3px solid var(--color-accent);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .start-here-title {
+    margin: 0 0 var(--spacing-md);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+  }
+
+  .start-here-steps {
+    margin: 0;
+    padding-inline-start: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: var(--font-size-md);
+    line-height: 1.3;
+  }
+
+  /* Drop the global `li + li` spacing so the rows sit closer; the small flex gap
+     is the only space between them. */
+  .start-here-steps li {
+    margin: 0;
+  }
+
+  .start-here-steps li::marker {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  /* Each step is a row: emoji, label, then an arrow that slides in on hover. The
+     whole row tints with a faint accent wash and nudges right on hover. */
+  .start-here-steps a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-inline-start: calc(-1 * var(--spacing-sm));
+    border-radius: var(--radius);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+  }
+
+  /* Arrow pinned to the row's end, hidden until hover, then fades + slides in.
+     Its slot is reserved (opacity/transform only), so the label never shifts. */
+  .start-here-steps a :global(.icon) {
+    width: 1rem;
+    height: 1rem;
+    margin-inline-start: auto;
+    color: var(--color-accent);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .start-here-steps a:hover {
+    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+
+  .start-here-steps a:hover :global(.icon) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .start-here-steps a,
+    .start-here-steps a :global(.icon) {
+      transition: none;
+    }
   }
 
   .directory {

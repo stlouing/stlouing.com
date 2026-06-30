@@ -1,10 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import List from '../components/List.astro'
 import MapRow from '../components/MapRow.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
-import SourceLink from '../components/SourceLink.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
 import { published, excerpt, hasBody } from '../lib/content'
@@ -114,7 +112,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
             <span class="pane-count">{count}</span>
           </span>
         </div>
-        <List>
+        <ul class="list">
           {
             listed.map((neighborhood, index) => {
               const Content = rendered.get(neighborhood.slug)
@@ -158,7 +156,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
                   <MapRow
                     id={neighborhood.slug}
                     title={neighborhood.name}
-                    number={numberLabel}
                     detailHref={`/neighborhoods/${neighborhood.slug}`}
                     readMore={false}
                     filterable={false}
@@ -205,7 +202,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
               )
             })
           }
-        </List>
+        </ul>
       </article>
       <NeighborhoodMap />
     </div>

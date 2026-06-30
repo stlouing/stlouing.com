@@ -21,6 +21,18 @@ As a further note, people will also refer to "West County", "South County", and 
 
 There is no "East County", as that would be St. Louis City. However, the area east of the Mississippi river is also part of the Greater St. Louis region, and commonly referred to as ["Metro East"](https://en.wikipedia.org/wiki/Metro_East). This includes East St. Louis, Belleville, O'Fallon, and a few others.
 
+## The Red City
+
+One thing to get used to in St. Louis is how red everything is. St. Louis was once the [largest brick producer in the world](https://blog.stlouisbank.com/the-bricks-that-built-st-louis/), due to innovations in brickmaking combined with the abundance of clay in the Mississippi river, and that legacy really shows all throughout the city.
+
+So many homes in the city are early 20th century brick-built homes, and many entire historic neighborhoods are preserved in this style, such as Shaw and Lafayette Square.
+
+## Free Amenities
+
+St. Louis actually has a crazy amount of free amenities and punches above its weight in this category relative to other mid-sized cities. The St. Louis Zoo is a standout example of this, a world-class zoo that holds its own against any other free or paid zoo outside of San Diego. There are also a ton of museums, such as the Art Museum, Missouri History Museum, and Science Center that are all free any day of the week, not just once a month on a random Tuesday.
+
+The parks and green spaces are also really impressive. [[forest-park|Forest Park]] is one of the largest city parks in America, and contains everything from the zoo and museums to outdoor ampitheatres and golf courses. [[tower-grove-park|Tower Grove Park]] hosts a farmer's market and community events.
+
 ## The Delmar Divide
 
 Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city. It represents a racial diving line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). Everything north of Delmar is known as "North City".

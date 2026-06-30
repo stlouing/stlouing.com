@@ -61,9 +61,10 @@ const { class: className, ...rest } = Astro.props
       font-size: var(--font-size-sm);
     }
 
+    /* The row's vertical padding lives on the link inside (.list-item) so the
+       hover highlight covers the whole row; the divider stays on the li. */
     > li {
       margin: 0;
-      padding-block: var(--spacing-xs);
       border-block-end: 1px solid var(--color-line);
 
       &:last-child {
@@ -71,7 +72,6 @@ const { class: className, ...rest } = Astro.props
       }
     }
 
-    a.list-title,
     .list-title {
       display: block;
       font-weight: 700;
@@ -84,14 +84,6 @@ const { class: className, ...rest } = Astro.props
 
       + .list-description {
         margin-block-start: 0;
-      }
-
-      &:hover {
-        color: var(--color-accent);
-        text-decoration: underline;
-        text-decoration-style: solid;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 2px;
       }
     }
 

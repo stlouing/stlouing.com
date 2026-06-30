@@ -150,7 +150,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 </div>
               )}
               {place.data.description && <div class="food-tagline">{place.data.description}</div>}
-              {hasBody(place) && <div class="food-preview">{excerpt(place.body, 160)}</div>}
+              {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
             </MapRow>
           ))
         }
@@ -180,6 +180,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     -webkit-line-clamp: 2;
     line-clamp: 2;
     overflow: hidden;
+    line-height: 1.4;
   }
 
   .pane-links {

@@ -1,0 +1,148 @@
+---
+// Landing page for a neighborhood region (South City, Parks, …): a list of every
+// neighborhood in the region, linking to each detail page. Rendered by the thin
+// static routes under src/pages/neighborhoods/ (e.g. south-city.astro), which sit
+// above the dynamic [slug].astro and so don't collide with it.
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Breadcrumbs from './Breadcrumbs.astro'
+import RelatedCard from './RelatedCard.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
+import { published } from '../lib/content'
+import { href } from '../lib/url'
+import { regions, neighborhoodsInRegion } from '../lib/neighborhoods'
+
+interface Props {
+  region: string
+}
+
+const { region: regionSlug } = Astro.props
+const region = regions.find((entry) => entry.slug === regionSlug)
+
+if (!region) {
+  throw new Error(`RegionPage: unknown region "${regionSlug}"`)
+}
+
+// Each neighborhood's tagline + vibe tags (and whether it has a writeup), keyed by
+// slug — the same data the "Nearby Neighborhoods" cards use.
+const metaBySlug = new Map(
+  published(await getCollection('neighborhoods')).map((entry) => [
+    entry.id,
+    {
+      description: entry.data.description,
+      tags: entry.data.tags ?? [],
+      written: Boolean(entry.body && entry.body.trim()),
+    },
+  ]),
+)
+
+// Explored (written) neighborhoods first, then the rest in their numbered order.
+const members = neighborhoodsInRegion(regionSlug)
+const sorted = [...members].sort(
+  (left, right) =>
+    Number(metaBySlug.get(right.slug)?.written ?? false) -
+    Number(metaBySlug.get(left.slug)?.written ?? false),
+)
+
+const count = members.length
+const metaDescription = `Every neighborhood in ${region.label}, St. Louis — ${count} in all.`
+const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }, { label: region.label }]
+---
+
+<BaseLayout crumb={region.label} description={metaDescription}>
+  <Breadcrumbs trail={trail} />
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>{region.label}</h1>
+        <span class="count">{count}</span>
+      </div>
+    </header>
+    <nav class="region-nav" aria-label="Regions">
+      {
+        regions.map((other) =>
+          other.slug === regionSlug ? (
+            <span class="region-nav-current" aria-current="page">
+              {other.label}
+            </span>
+          ) : (
+            <a href={href(`/neighborhoods/${other.slug}`)}>{other.label}</a>
+          ),
+        )
+      }
+    </nav>
+    <div class="region-list">
+      {
+        sorted.map((neighborhood) => {
+          const meta = metaBySlug.get(neighborhood.slug)
+
+          return (
+            <RelatedCard
+              href={href(`/neighborhoods/${neighborhood.slug}`)}
+              title={neighborhood.name}
+              description={meta?.description ?? 'Not explored yet'}
+              tags={meta?.tags ?? []}
+            >
+              <IconMapPin slot="icon" />
+            </RelatedCard>
+          )
+        })
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .entry-bar {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+  }
+
+  /* Jump between regions, styled as pill tabs: the current region is a filled
+     accent pill, the rest are outlined and light up on hover. */
+  .region-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-block: 0 var(--spacing-lg);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+  }
+
+  .region-nav a,
+  .region-nav-current {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    line-height: 1;
+  }
+
+  .region-nav a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .region-nav a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .region-nav-current {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  .count {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+  }
+</style>

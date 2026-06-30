@@ -413,16 +413,6 @@ tbody tr:last-child td {
   scroll-margin-top: calc(var(--header-height, 4rem) + var(--spacing-sm));
 }
 
-u {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
-  font-weight: 500;
-  color: var(--color-text);
-}
-
 a {
   color: var(--color-link);
   /* Regular links carry no underline at rest — the link color signals them — and
@@ -432,7 +422,7 @@ a {
   text-decoration-thickness: 2px;
   text-decoration-style: solid;
   text-decoration-color: var(--color-text-muted);
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   font-weight: 500;
 
   &:hover {
@@ -1022,12 +1012,6 @@ body:has(.map-split) main > .wrap,
     cursor: pointer;
   }
 
-  /* Written neighborhoods render their (clamped) writeup inline, so the row gets
-     more breathing room top + bottom than the List default (var(--spacing-xs)).
-     The `ul.list >` combinator outweighs List.astro's own `> li` rule. */
-  ul.list > li.is-written {
-    padding-block: var(--spacing-md);
-  }
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in MapRow; the
@@ -1080,10 +1064,7 @@ body:has(.map-split) main > .wrap,
    heading (like the Food title), the number sits quiet ahead of it, and the
    open panel holds a clamped render of the writeup with accent list markers. */
 
-/* This list is built with the shared <List> component, whose scoped title style
-   (the mono reference-list look) otherwise overrides `.map-list .list-title`.
-   Pin the body-serif map-list title for it, with enough specificity to clear the
-   component rule. */
+/* The number prefix (when shown) sits quiet ahead of the neighborhood name. */
 .map-list.section-list .number {
   color: var(--color-text-muted);
 }
@@ -1094,6 +1075,7 @@ body:has(.map-split) main > .wrap,
   -webkit-line-clamp: 5;
   line-clamp: 5;
   overflow: hidden;
+  line-height: 1.4;
 
   ul {
     list-style: disc;
@@ -1148,6 +1130,26 @@ body:has([data-neighborhood-map]) .river-border {
   display: none;
 }
 
+/* Shared list reset + row dividers for BOTH map lists (Food + Neighborhoods), so
+   they're styled from one place. Neither uses the generic <List> component — they
+   render a raw <ul class="list"> of <MapRow> rows. Food layers on row padding +
+   group-header logic below. */
+.map-list .list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.map-list .list > li {
+  margin: 0;
+  padding: var(--spacing-md);
+  border-block-end: 1px solid var(--color-line);
+}
+
+.map-list .list > li:last-child {
+  border-block-end: 0;
+}
+
 /* A row is a rating badge (left) beside the place details (right). */
 .map-list .list-details {
   display: flex;
@@ -1165,7 +1167,6 @@ body:has([data-neighborhood-map]) .river-border {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 /* Row 1: headline (name + neighborhood) on the left, cuisine chips on the right. */
@@ -1255,6 +1256,7 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-accent);
   text-underline-offset: 2px;
 }
 
@@ -1510,24 +1512,6 @@ body:has([data-neighborhood-map]) .river-border {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   font-weight: 500;
-}
-
-/* Base list styling (the generic List component isn't used here, so reproduce
-   the row dividers + padding), plus the verdict-colored left bar per row. */
-.food-grouped .list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.food-grouped .list > li {
-  margin: 0;
-  padding: var(--spacing-md);
-  border-block-end: 1px solid var(--color-line);
-}
-
-.food-grouped .list > li:last-child {
-  border-block-end: none;
 }
 
 /* The last row of a section (i.e. right before the next section header) drops its
@@ -1802,9 +1786,10 @@ body:has([data-filter-root]) .site-header {
       text-decoration: none;
 
       &:hover {
-        text-decoration-thickness: 2px !important;
+        text-decoration-thickness: 2px;
         text-underline-offset: 3px;
         text-decoration: underline;
+        color: var(--color-accent);
         text-decoration-color: var(--color-accent);
       }
     }

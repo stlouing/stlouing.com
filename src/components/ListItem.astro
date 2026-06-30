@@ -1,9 +1,11 @@
 ---
-// One row of the shared `.list`. The title and an optional trailing meta share a
-// space-between row; pass `meta` for a plain string (e.g. a count or date), or
-// use the named `meta` slot for semantic markup (e.g. <time>). The description
-// and any extra content (chips, collection labels) stack below via the default
-// slot.
+// One row of the shared `.list`. The entire row is a single link (when `href` is
+// given), so the whole thing is clickable with a hover highlight — like the
+// RelatedCard rows, rather than only the title being a link. The title and an
+// optional trailing meta share a space-between row; pass `meta` for a plain string
+// (count/date) or use the `meta` slot for semantic markup (e.g. <time>). The
+// description and any extra content (chips, collection labels) stack below via the
+// default slot. Pass an `icon` slot for a leading accent icon.
 interface Props {
   title: string
   href?: string
@@ -12,29 +14,76 @@ interface Props {
 }
 
 const { title, href: linkHref, meta, description } = Astro.props
+const Tag = linkHref ? 'a' : 'div'
+const hasIcon = Astro.slots.has('icon')
 ---
 
 <li>
-  <div class="list-row">
+  <Tag class:list={['list-item', { 'has-icon': hasIcon }]} href={linkHref}>
     {
-      linkHref ? (
-        <a class="list-title" href={linkHref}>
-          {title}
-        </a>
-      ) : (
-        <span class="list-title">{title}</span>
+      hasIcon && (
+        <span class="list-icon" aria-hidden="true">
+          <slot name="icon" />
+        </span>
       )
     }
-    {meta && <span class="list-meta">{meta}</span>}
-    <slot name="meta" />
-  </div>
-  {description && <p class="list-description">{description}</p>}
-  <slot />
+    <span class="list-item-body">
+      <div class="list-row">
+        <span class="list-title">{title}</span>
+        {meta && <span class="list-meta">{meta}</span>}
+        <slot name="meta" />
+      </div>
+      {description && <p class="list-description">{description}</p>}
+      <slot />
+    </span>
+  </Tag>
 </li>
 
 <style>
-  /* Title on the left, meta (count / date) flush right. Scoped to ListItem so it
-     never touches the food/hikes rows, which have their own `.list-row` rules. */
+  /* The whole row is the click target; on hover only the title reacts (accent +
+     underline). The row's divider comes from `.list > li` in List.astro. */
+  .list-item {
+    display: block;
+    padding-block: var(--spacing-sm);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* With a leading icon the row becomes an icon + body flex pair, aligned the same
+     way as the RelatedCard lead (1.25rem accent icon, spacing-md gap, nudged 2px
+     to sit against the title's first line). */
+  .list-item.has-icon {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .list-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Leading icon: accent (overriding the global muted `.icon`). */
+  .list-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+  }
+
+  .list-icon :global(.icon) {
+    width: 1rem;
+    height: 1rem;
+    margin-block-start: 2px;
+    color: var(--color-accent);
+  }
+
+  a.list-item:hover .list-title {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  /* Title on the left, meta (count / date) flush right. */
   .list-row {
     display: flex;
     align-items: baseline;

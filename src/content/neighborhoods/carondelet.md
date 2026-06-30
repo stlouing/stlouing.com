@@ -5,8 +5,8 @@ description: A historic riverside neighborhood with one of the city's biggest pa
 tags:
   - historic
   - green
-  - charming
   - riverside
+  - industrial
 attractions:
   - name: Carondelet Park
     description: The city's third-largest park, with lakes, a boathouse, and trails.

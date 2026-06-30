@@ -79,6 +79,42 @@ export function neighborhoodInfo(slug: string): NeighborhoodInfo | undefined {
   return infoBySlug.get(slug)
 }
 
+// Regions group the neighborhoods for their landing pages (/neighborhoods/<slug>).
+// Parks are their own region; every other neighborhood falls under its map group.
+export interface Region {
+  slug: string
+  label: string
+}
+
+const REGION_SLUG_BY_GROUP: Record<string, string> = {
+  'Central Corridor': 'central-corridor',
+  'South City': 'south-city',
+  'North City': 'north-city',
+  'St. Louis County': 'st-louis-county',
+}
+
+export const regions: Region[] = [
+  { slug: 'central-corridor', label: 'Central Corridor' },
+  { slug: 'south-city', label: 'South City' },
+  { slug: 'north-city', label: 'North City' },
+  { slug: 'st-louis-county', label: 'St. Louis County' },
+  { slug: 'parks', label: 'Parks' },
+]
+
+// The region a neighborhood belongs to: parks first (they span groups), then by group.
+export function regionOf(info: NeighborhoodInfo): Region {
+  if (info.type === 'park') {
+    return { slug: 'parks', label: 'Parks' }
+  }
+
+  return { slug: REGION_SLUG_BY_GROUP[info.group] ?? '', label: info.group }
+}
+
+// Every neighborhood in a region, in numbered order (the JSON's natural order).
+export function neighborhoodsInRegion(regionSlug: string): NeighborhoodInfo[] {
+  return [...infoBySlug.values()].filter((info) => regionOf(info).slug === regionSlug)
+}
+
 // True when this neighborhood has a locator silhouette shape. City neighborhoods
 // do; St. Louis County municipalities (90+) aren't in the city outline, so their
 // page hides the locator rather than showing an empty figure.

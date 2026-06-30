@@ -61,7 +61,7 @@ const allFood = published(await getCollection('food'))
 const topRelated = (places: typeof allFood) =>
   [...places]
     .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
-    .slice(0, 6)
+    .slice(0, 5)
     .map((place) => ({ place, verdict: resolveVerdict(place.data) }))
 
 const relatedNeighborhood = data.neighborhood

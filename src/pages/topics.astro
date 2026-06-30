@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
+import TopicIcon from '../components/TopicIcon.astro'
 import { href } from '../lib/url'
 import { published, excerpt } from '../lib/content'
 
@@ -38,7 +39,9 @@ const topics = published(await getCollection('topics')).sort((left, right) => {
             description={
               topic.data.description ? `${topic.data.description}.` : excerpt(topic.body)
             }
-          />
+          >
+            <TopicIcon id={topic.id} slot="icon" />
+          </ListItem>
         ))
       }
     </List>

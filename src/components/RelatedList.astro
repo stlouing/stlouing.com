@@ -23,7 +23,10 @@ const { title } = Astro.props
   /* Heading font comes from the shared global `.section-label`; keep only the
      spacing below it. */
   .related h2 {
+    margin-block-start: var(--spacing-xl);
     margin-bottom: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--color-accent);
   }
 
   /* A bordered frame around the rows; overflow clips the row dividers to the

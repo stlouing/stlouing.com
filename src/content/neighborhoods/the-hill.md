@@ -8,6 +8,7 @@ tags:
   - dining
   - italian
   - walkable
+  - residential
 attractions:
   - name: St. Ambrose Catholic Church
     description: The 1926 parish church at the heart of the Italian neighborhood.
