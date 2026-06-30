@@ -45,11 +45,15 @@ const sorted = [...members].sort(
 )
 
 const count = members.length
+// "Central Corridor of St. Louis", but don't double up on a region that already
+// names the city (e.g. "St. Louis County").
+const seoTitle = region.label.includes('St. Louis') ? region.label : `${region.label} of St. Louis`
 const metaDescription = `Every neighborhood in ${region.label}, St. Louis — ${count} in all.`
-const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }, { label: region.label }]
+// Breadcrumb stops at the index — the region name is already the page H1 + tab.
+const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }]
 ---
 
-<BaseLayout crumb={region.label} description={metaDescription}>
+<BaseLayout crumb={region.label} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
   <article class="page">
     <header class="entry-header">
@@ -80,9 +84,8 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }, { label: regi
             <RelatedCard
               href={href(`/neighborhoods/${neighborhood.slug}`)}
               title={neighborhood.name}
-              description={meta?.description ?? 'Not explored yet'}
-              tags={meta?.tags ?? []}
-            >
+              description={meta?.description ?? ''}
+              tags={meta?.tags ?? []}>
               <IconMapPin slot="icon" />
             </RelatedCard>
           )
@@ -99,45 +102,39 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }, { label: regi
     gap: var(--spacing-sm);
   }
 
-  /* Jump between regions, styled as pill tabs: the current region is a filled
-     accent pill, the rest are outlined and light up on hover. */
+  /* A tab bar: a hairline runs under the whole row, and the current region's tab
+     carries an accent underline indicator sitting on that baseline. */
   .region-nav {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-lg);
     margin-block: 0 var(--spacing-lg);
+    border-block-end: 1px solid var(--color-line);
     font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-sm);
   }
 
   .region-nav a,
   .region-nav-current {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: 1px solid var(--color-line);
-    border-radius: 999px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    line-height: 1;
-  }
-
-  .region-nav a {
+    padding-block: var(--spacing-xs);
+    /* Pull the tab's own border down onto the row's baseline so the active
+       indicator overlaps the hairline instead of doubling it. */
+    margin-block-end: -1px;
+    border-block-end: 2px solid transparent;
     color: var(--color-text-muted);
     text-decoration: none;
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease;
+    letter-spacing: var(--letter-spacing-tight);
   }
 
   .region-nav a:hover {
     color: var(--color-accent);
-    border-color: var(--color-accent);
   }
 
+  /* The active tab. */
   .region-nav-current {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: var(--color-background);
+    color: var(--color-text-heading);
+    font-weight: 700;
+    border-block-end-color: var(--color-accent);
   }
 
   .count {

@@ -35,7 +35,7 @@ const iconByPath: Record<string, typeof IconInfo> = {
 }
 
 const tagline = 'An independent guide to the food, neighborhoods, and culture of St. Louis.'
-const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore this fascinating city with me!`
+const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore this underrated city with me!`
 
 const allNotes = published(await getCollection('notes')).sort(
   (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
@@ -85,44 +85,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     <img class="u-photo" src={href('/og.png')} alt="" hidden />
   </header>
 
-  <div class="intro-row">
-    <section class="start-here" aria-labelledby="start-here-title">
-      <h2 id="start-here-title" class="start-here-title">Start here</h2>
-      <ol class="start-here-steps">
-        <li>
-          <a href={href('/overview')}>
-            <span class="step-label">Read the <strong>overview</strong></span>
-            <IconArrowRight />
-          </a>
-        </li>
-        <li>
-          <a href={href('/food')}>
-            <span class="step-label">Browse the interactive <strong>food map</strong></span>
-            <IconArrowRight />
-          </a>
-        </li>
-        <li>
-          <a href={href('/neighborhoods')}>
-            <span class="step-label">Explore the <strong>neighborhoods</strong></span>
-            <IconArrowRight />
-          </a>
-        </li>
-        <li>
-          <a href={href('/the-great-divorce')}>
-            <span class="step-label">Learn about the City-County split</span>
-            <IconArrowRight />
-          </a>
-        </li>
-        <li>
-          <a href={href('/regional-foods')}>
-            <span class="step-label">Discover regional foods</span>
-            <IconArrowRight />
-          </a>
-        </li>
-      </ol>
-    </section>
-  </div>
-
   <div class="directory">
     {
       groups.map((group) => {
@@ -153,9 +115,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             <section class="group">
               <div class="group-header">
                 <h2 class="group-label">{group.label}</h2>
-                <a class="all" href={href('/topics')}>
-                  All <IconArrowRight />
-                </a>
               </div>
               <List>
                 {latestTopics.map((topic) => (
@@ -224,7 +183,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .index-header {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
   }
 
   .tagline {
@@ -252,7 +211,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     border-block-end: 1px solid var(--color-text-muted);
     padding-block-end: var(--spacing-xs);
     margin-block-end: var(--spacing-xs);
-    min-height: 24px;
   }
 
   .group-header .group-label {

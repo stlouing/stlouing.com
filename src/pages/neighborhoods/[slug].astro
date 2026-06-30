@@ -27,6 +27,7 @@ import { cuisineEmoji } from '../../lib/emoji'
 import neighborhoods from '../../data/neighborhoods.json'
 import SourceLink from '../../components/SourceLink.astro'
 import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
+import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconChart from '../../assets/IconChart.astro'
 import IconBook from '../../assets/IconBook.astro'
@@ -139,13 +140,11 @@ if (info && tagline) {
   seoTitle = `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis neighborhood'}`
 }
 
-// The region (South City, Parks, …) sits between the index and the neighborhood,
-// linking to that region's landing page.
+// Breadcrumb stops at the region (the neighborhood name is already the page H1).
 const region = info ? regionOf(info) : undefined
 const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods' },
   ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}` }] : []),
-  { label: title },
 ]
 ---
 
@@ -184,6 +183,9 @@ const trail = [
             </figure>
           )
         }
+        <a class="btn btn-quiet neighborhood-back-link" href={href('/neighborhoods')}>
+          Back to the Neighborhoods Map <IconArrowRight />
+        </a>
       </aside>
       <div class="neighborhood-main">
         {
@@ -259,7 +261,7 @@ const trail = [
                     title={neighbor.name}
                     meta={neighbor.group}
                     metaType="neighborhood"
-                    description={neighborMeta?.description ?? 'Not explored yet'}
+                    description={neighborMeta?.description ?? ''}
                     tags={neighborMeta?.tags ?? []}>
                     <IconMapPin slot="icon" />
                   </RelatedCard>
@@ -286,6 +288,11 @@ const trail = [
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+  }
+
+  /* Content-width "back to the map" link (mirrors the food page's). */
+  .neighborhood-back-link {
+    align-self: flex-start;
   }
 
   @media screen and (min-width: 900px) {

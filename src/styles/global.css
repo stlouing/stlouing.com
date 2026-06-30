@@ -470,6 +470,14 @@ a.more {
   &.end {
     justify-self: flex-end;
   }
+
+  /* "Read more →" affordances underline on hover (they sit outside `.body`, so the
+     prose hover rule doesn't reach them). */
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
 }
 
 .ml-auto {

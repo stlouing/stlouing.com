@@ -340,8 +340,8 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   /* "More food" footer — related places + a link back to the full list, so a
      page ends on a path forward instead of just cutting off. */
   .more-food {
+    padding-block-start: var(--spacing-xs);
     margin-block-start: var(--spacing-lg);
-    border-block-start: 1px solid var(--color-line);
   }
 
   @media screen and (max-width: 700px) {
