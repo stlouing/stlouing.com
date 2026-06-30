@@ -7,6 +7,8 @@ updated: 2026-05-31
 
 Most cities are lucky to have one local food speciality they can lay claim to, but St. Louis has an abundance of them. I've been interested to discover the food items that either originated in St. Louis or can only be found here. So here's what I've discovered so far.
 
+<nav class="toc" aria-label="In this article">
+
 #### In this article
 
 - [Toasted Ravioli](#toasted-ravioli)
@@ -22,9 +24,9 @@ Most cities are lucky to have one local food speciality they can lay claim to, b
 - [Frozen Custard Concrete](#frozen-custard-concrete)
 - [Red Hot Riplets](#red-hot-riplets)
 
-## Toasted Ravioli
+</nav>
 
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Toasted_ravioli">Wikipedia</a>
+## Toasted Ravioli
 
 You'd be hard pressed to find a bar or restaurant in the entire St. Louis metro area that doesn't serve toasted ravioli, also known as t-ravs. It's the default appetizer of choice throughout the region. They're little beef-filled ravioli that are deep fried, sprinkled with parmesan, and served with marinara sauce for dipping.
 
@@ -43,17 +45,15 @@ The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza an
 <figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
 </figure>
 
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/St._Louis-style_pizza">Wikipedia</a>
+A polarizing pizza style that is the standard all across the St. Louis region, consisting of a cracker-thin crust, a sweet, thick tomato sauce, and gooey Provel cheese.
 
-A polarizing pizza style that is the standard all across the St. Louis region, consisting of a cracker-thin crust, a sweet, thick tomato sauce, and gooey Provel cheese. See [[st-louis-style-pizza|St. Louis-style Pizza]] for the full writeup.
+See [[st-louis-style-pizza|St. Louis-style Pizza]] for the full writeup.
 
 My personal favorites for St. Louis-style pizza are [[farottos|Farotto's]], Faraci's, and Pirrone's.
 
 <hr />
 
 ## Provel cheese
-
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Provel">Wikipedia</a>
 
 The cheese of choice in St. Louis, Provel is an option in almost every pizza place and sandwich shop around the city. It's a processed cheese product made of cheddar, provolone, and Swiss cheese, all mixed together with a hint of liquid smoke. It's the ingredient that makes St. Louis-style pizza controversial, with its goopy texture and smoky, funky flavor.
 
@@ -63,8 +63,6 @@ Although it's notable for its low melting point and unique texture it adds to pi
 
 ## Gooey butter cake
 
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Gooey_butter_cake">Wikipedia</a>
-
 The signature dessert of St. Louis, gooey butter cake is a dense, sticky, rich cake with a crisp, flaky top layer. It almost has the consistency of a light brownie, or a lemon bar without any lemon. You'll find them in many cafes alongside the croissants and muffins.
 
 The consistency can vary a lot from recipe to recipe, and I like it when there are contrasting textures between the rich, gooey center and the flaky crust, like a pie. Sometimes the whole thing has one unified texture, and it loses its appeal for me.
@@ -73,13 +71,11 @@ The consistency can vary a lot from recipe to recipe, and I like it when there a
 
 ## St. Louis-style BBQ
 
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/St._Louis-style_barbecue">Wikipedia</a>
-
 There are two things to discuss here - St. Louis-style BBQ, and St. Louis cut ribs.
 
 ### Ribs
 
-There's a popular cut of ribs called a St. Louis cut, which is a spare rib with the ends neatly trimmed, resulting in a rectangular shape. This allows for even cooking, as you don't have one end that is significantly wider than the other. Surprisingly, most BBQ spots around here don't tend to use this cut.
+There's a popular cut of ribs called a "St. Louis cut", which is a spare rib with the ends neatly trimmed, resulting in a rectangular shape. This allows for even cooking, as you don't have one end that is significantly wider than the other. Surprisingly, most BBQ spots around here don't tend to use this cut.
 
 ### BBQ
 
@@ -87,7 +83,7 @@ BBQ in St. Louis is another contentious topic, with many arguing about what the 
 
 Here's what I've observed: I've been to around a dozen BBQ spots in St. Louis so far, and I can say pork is king here. Pappy's is the most famous for their ribs, and it's well deserved. You'll see pork steak on the menu at Beast BBQ, and most backyard BBQs. I would recommend against getting brisket, particularly if you're a fan of Texas brisket, as the style is not really found here. (O'B'Que's in Chesterfield is the closest I've found.)
 
-I've heard it said that St. Louisans consume the most amount of BBQ sauce per capita, which tracks with the BBQ style. Ribs, pork steaks, and even backyard grilled hot dogs are slathered in sweet BBQ sauce. Pappy's makes a Sweet Jane BBQ, which goes great on pulled pork or smoked chicken, and Maull's is a classic BBQ sauce from the region. Personally, I'm partial to [Freddie Lee's Ghetto sauce](https://freddieleesgourmetsauces.com/home-test/).
+I've heard it said that St. Louisans consume the most amount of BBQ sauce per capita, which tracks with the BBQ style. Ribs, pork steaks, and even backyard grilled hot dogs are slathered in sweet BBQ sauce. Pappy's makes a Sweet Jane BBQ, which goes great on pulled pork or smoked chicken, and Maull's is a classic BBQ sauce from the region. I'm partial to [Freddie Lee's Ghetto sauce](https://freddieleesgourmetsauces.com/home-test/).
 
 I have also found that the smoked wings are slept on - they're crisp and juicy and have been my favorite thing on the menu at several spots. Some places also have their own specialties, like the smoked salami at Adam's Smokehouse.
 
@@ -110,8 +106,6 @@ Here's where I've been so far:
 
 ## Pork steak
 
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Pork_steak">Wikipedia</a>
-
 Pork steak is a cut of meat derived from sliced pork butt, usually with the bone in. Often they're grilled over high heat then slathered in BBQ sauce and braised until tender. Although most BBQ spots in St. Louis won't have it on the menu, pork steak is known to all. It's one of the primary meats of choice for any backyard BBQ.
 
 <hr />
@@ -123,8 +117,6 @@ Trashed wings are a double-fried style of bar wings. First the wings are fried, 
 <hr />
 
 ## Slinger
-
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Slinger_(dish)">Wikipedia</a>
 
 A slinger is a greasy spoon diner meal that consists of eggs, hash browns and a hamburger patty, covered in chili and cheese. I haven't been drunk enough to ever need this meal, but I'm sure I'll be exposed to it eventually.
 
@@ -140,15 +132,11 @@ I do enjoy this salad, but I don't feel very healthy after eating it.
 
 ## St. Paul sandwich
 
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/St._Paul_sandwich">Wikipedia</a>
-
 I have yet to try this delicacy, but chop suey shops all around St. Louis have it on the menu. It consists of a fried egg foo young patty between two slices of white bread, with lettuce and mayonnaise. It's an interesting historical fusion of flavors, and I'm happy to see it lives on in the present day.
 
 <hr />
 
 ## Frozen custard/concrete
-
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Frozen_custard">Wikipedia</a>
 
 Ted Drewes Frozen Custard is the oldest frozen custard stand still in operation, founded in 1929. They began the concept of the concrete, a frozen custard with mix-ins, which was later co-opted by Dairy Queen, which they called blizzards.
 
@@ -157,8 +145,6 @@ A popular St. Louis tradition is to get Ted Drewes during Christmastime then wal
 <hr />
 
 ## Red Hot Riplets
-
-<a target="_blank" class="wikipedia-link" href="https://en.wikipedia.org/wiki/Red_Hot_Riplets">Wikipedia</a>
 
 Red Hot Riplets are a brand of ridged chips with a unique sweet BBQ and cayenne flavor. In addition to just being a chip, you'll find Red Hot Riplet flavor and spice blend used often. Imo's tosses their fried wings in Red Hot Riplet seasoning as a dry rub. I'm generally not a fan of BBQ chips, but I do enjoy the Riplet rub on wings.
 
@@ -172,4 +158,4 @@ One thing I've noticed across the board is that the main flavor profile across t
 
 ## Other things of note
 
-St. Louis is home to the [largest Bosnian population in the U.S.](https://www.bbc.com/travel/article/20220117-st-louis-the-us-city-transformed-by-heartbreak) and as a result, there are a fair amount of Bosnian and Balkan restaurants - notably Balkan Treat Box and a strip of restaurants in the Bevo Mill neighborhood.
+St. Louis is home to the [largest Bosnian population in the U.S.](https://www.bbc.com/travel/article/20220117-st-louis-the-us-city-transformed-by-heartbreak) and as a result, there are a fair amount of Bosnian and Balkan restaurants - notably Balkan Treat Box and a strip of restaurants in the [[bevo-mill|Bevo Mill]] neighborhood.

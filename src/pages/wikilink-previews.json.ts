@@ -17,7 +17,7 @@ interface Preview {
   cuisine?: string[]
   emoji?: string
   neighborhood?: string
-  // Topic only: the curated tagline.
+  // Food, topics + neighborhoods: the curated tagline.
   description?: string
 }
 
@@ -39,6 +39,7 @@ export const GET: APIRoute = async () => {
       cuisine: place.data?.cuisine,
       emoji: cuisineEmoji(place.data?.cuisine),
       neighborhood: place.data?.neighborhood,
+      description: place.data?.description,
     }
   }
   for (const topic of published(await getCollection('topics'))) {
@@ -50,7 +51,15 @@ export const GET: APIRoute = async () => {
   }
   add(await getCollection('hikes'))
   add(await getCollection('notes'))
-  add(await getCollection('neighborhoods'))
+  // Neighborhoods carry their tagline (e.g. The Grove → "St. Louis's LGBTQ
+  // nightlife strip") so the card leads with it, like topics do.
+  for (const neighborhood of published(await getCollection('neighborhoods'))) {
+    previews[neighborhood.id] = {
+      title: neighborhood.data.title,
+      excerpt: excerpt(neighborhood.body, EXCERPT_CHARS),
+      description: neighborhood.data.description,
+    }
+  }
 
   return new Response(JSON.stringify(previews), { headers: { 'content-type': 'application/json' } })
 }

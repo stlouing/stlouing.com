@@ -72,12 +72,6 @@ A few open-source projects this site relies on.
 - [**St. Louis-MO.gov**](https://www.stlouis-mo.gov/)
   - Used for determining neighborhood boundaries and facts.
 
-## AI
-
-Everything on this site is written by me, not AI.
-
-AI is used to speed up development of the code.
-
 ## Etymology
 
 The name _St. Louing_ is meant to represent the ongoing nature of my journey. I know it sounds a little cheugy, but let's just roll with it.

@@ -17,7 +17,13 @@ interface Props {
   [key: string]: unknown
 }
 
-const { href: linkHref, variant = 'outline', compact = false, class: className, ...rest } = Astro.props
+const {
+  href: linkHref,
+  variant = 'outline',
+  compact = false,
+  class: className,
+  ...rest
+} = Astro.props
 const classes = ['btn', `btn-${variant}`, { 'btn-compact': compact }, className]
 ---
 

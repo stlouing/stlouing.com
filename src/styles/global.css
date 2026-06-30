@@ -53,6 +53,7 @@
   --spacing-md: 1rem;
   --spacing-base: 1.25rem;
   --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
   --radius: 6px;
 
   /* Misc */
@@ -331,9 +332,78 @@ tbody tr:last-child td {
    not a full heading (and not in the document outline). */
 /* p:has(+ table), */
 .table-caption {
-  margin-block-end: var(--spacing-lg);
+  margin-block: -0.5rem var(--spacing-lg);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+}
+
+/* In-article table of contents (e.g. Regional Foods): a compact boxed index that
+   breaks into two columns on wider screens so a long anchor list stays scannable
+   instead of running down the page. */
+.toc {
+  margin-block: 0 var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-base) var(--spacing-md);
+  border: 1px solid var(--color-line);
+  /* An accent left edge ties the box to the site's blockquote/callout language. */
+  border-inline-start: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+/* The "In this article" heading reads as an accent mono label here (matching the
+   site's section labels), not a section heading — and it doesn't need its
+   appended permalink anchor. */
+.toc h4 {
+  margin-block: var(--spacing-xs) var(--spacing-sm);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-accent);
+}
+
+.toc h4 .heading-anchor {
+  display: none;
+}
+
+.toc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  columns: 3;
+  column-gap: var(--spacing-lg);
+}
+
+.toc li {
+  margin: 0;
+  break-inside: avoid;
+}
+
+.toc a {
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 800px) {
+  .toc ul {
+    columns: 2;
+  }
+}
+
+@media (max-width: 500px) {
+  .toc ul {
+    columns: 1;
+  }
 }
 
 /* Jumping to an in-page anchor (a heading permalink, a /food#id link) should
@@ -355,22 +425,46 @@ u {
 
 a {
   color: var(--color-link);
-  text-decoration: underline;
+  /* Regular links carry no underline at rest — the link color signals them — and
+     gain a solid underline on hover. The decoration longhands stay set so the
+     underline is ready the moment the line turns on. */
+  text-decoration-line: none;
   text-decoration-thickness: 2px;
-  text-decoration-style: dotted;
+  text-decoration-style: solid;
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 4px;
   font-weight: 500;
 
   &:hover {
     color: var(--color-link-hover);
-    text-decoration-style: solid;
     text-decoration-color: var(--color-link-hover);
   }
 
   &:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+}
+
+/* Regular links gain a solid underline on hover only in article *prose* —
+   paragraphs, list items, quotes, table cells. Component lists/cards (e.g.
+   .related-card), chips, and buttons also live inside `.body` but render their
+   anchors outside these text elements, so they stay underline-free on hover. */
+.body :is(p, li, blockquote, td, th) a:hover {
+  text-decoration-line: underline;
+}
+
+/* The dotted underline is the wiki-style affordance — reserved for internal
+   [[wikilinks]] and Wikipedia references, which carry it at rest (regular links
+   show no underline until hover). It firms to a solid underline on hover, and
+   works anywhere since wikilinks only appear in content. */
+a.wikilink,
+a.wikipedia-link {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+
+  &:hover {
+    text-decoration-style: solid;
   }
 }
 
@@ -392,16 +486,15 @@ a.more {
   margin-left: auto;
 }
 
-/* Quiet reference link under a section heading (e.g. a Wikipedia article):
-   muted mono with an outward arrow, underlined only on hover. */
 a.wikipedia-link {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-family: var(--font-mono);
-}
+  color: var(--color-text-muted);
+  text-underline-offset: 3px;
 
-/* Tuck the reference link up against the heading it annotates. */
-:is(h1, h2, h3, h4):has(+ p > a.wikipedia-link) {
-  margin-block-end: var(--spacing-xs);
+  &:hover {
+    text-decoration-color: var(--color-accent);
+  }
 }
 
 .wikilink-broken {
@@ -449,7 +542,7 @@ a.wikipedia-link {
 
 /* Topic-only tagline in the hovercard (the entry's `description`). */
 .wikilink-card-description {
-  margin-block: 0 var(--spacing-sm);
+  margin-block: 0 var(--spacing-xs);
   font-size: var(--font-size-sm);
   color: var(--color-accent);
   line-height: 1.3;
@@ -466,7 +559,7 @@ a.wikipedia-link {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-sm);
-  margin-block-end: var(--spacing-sm);
+  margin-block-end: var(--spacing-md);
 }
 
 .wikilink-card-meta:last-child {
@@ -477,11 +570,16 @@ a.wikipedia-link {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .icon {
   color: var(--color-text-muted);
   flex-shrink: 0;
+
+  &.icon-accent {
+    color: var(--color-accent);
+  }
 }
 
 /* Inside a chip, an icon follows the chip's color (e.g. a verdict chip's token)

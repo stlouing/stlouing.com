@@ -5,7 +5,11 @@ created: 2026-05-28
 updated: 2026-06-29
 ---
 
-I've learned a lot about St. Louis and the surrounding region over the last few years.
+This is where I document what I've learned about St. Louis.
+
+## St. Louis Regional Food
+
+See [[regional-foods|Regional Foods of St. Louis]] for toasted ravioli, gooey butter cake, slingers and of course, [[st-louis-style-pizza|St. Louis-style Pizza]].
 
 ## The City-County Split
 
@@ -17,13 +21,9 @@ As a further note, people will also refer to "West County", "South County", and 
 
 There is no "East County", as that would be St. Louis City. However, the area east of the Mississippi river is also part of the Greater St. Louis region, and commonly referred to as ["Metro East"](https://en.wikipedia.org/wiki/Metro_East). This includes East St. Louis, Belleville, O'Fallon, and a few others.
 
-## St. Louis Regional Food
-
-See [[regional-foods|Regional Foods of St. Louis]] for toasted ravioli, gooey butter cake, slingers and of course, [[st-louis-style-pizza|St. Louis-style Pizza]].
-
 ## The Delmar Divide
 
-Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city. It represents a racial diving line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). North of Delmar, the population is 98% black, and south of Delmar, it's around 72% white. Everything north of Delmar is known as "North City".
+Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city. It represents a racial diving line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). Everything north of Delmar is known as "North City".
 
 The [Interactive St. Louis Vacancy Map](https://www.stlvacancytools.com/) demonstrates one of the stark divides that happens right along the line.
 
@@ -57,20 +57,18 @@ There is a specific regional dialect of French known as [Missouri French](https:
 
 ## Local Customs
 
-### "Where'd you go to high school?"
+### Where did you go to high school?
 
-Frequently cited to be a common icebreaker for St. Louisans, this phrase can be used to sussed out what socioeconomic circle a person belongs to. It seems this might be derived from the fact that the schools within the actual bounds of St. Louis city are generally not the best, and many wealthy people who live in the city send their children to private schools instead. I have yet to have anyone ask me this question, but I'm not a local.
+Frequently cited to be a common icebreaker for St. Louisans, the phrase "Where did you go to high school?" can be used to sussed out what socioeconomic circle a person belongs to, or perhaps find shared aquaintances. I have yet to have anyone ask me this question, but I'm not a local.
 
 ### Halloween
 
-In St. Louis, kids have to tell a joke to get treats on Halloween, which it a really cool and unique local custom.
+In St. Louis, kids have to tell a joke to get treats on Halloween, which is one of my favorite locals customs.
 
 ### Golf carts
 
-People drive golf carts all around the St. Louis area. According to The Hill, [golf carts are allowed on Missouri streets](https://www.hillstl.org/golf-cart-safety/), so this explains why it's so common here.
+People drive golf carts all around the St. Louis area. According to The Hill, [golf carts are allowed on Missouri streets](https://www.hillstl.org/golf-cart-safety/), which explains why it's so common here.
 
-### Expired Temporary License Plates
+### Expired Temp Plates
 
-It's common to see cars driving around with expired license plates or temp plates, and there is a general lack of enforcement on this issue.
-
-The Missouri DMV is privately owned, and requires significantly more steps than other states based on my personal experience (emissions testing, car safety testing, private property confirmation). Since Missouri requires private property taxes to be paid every year on cars registered in the state, car ownership is a lot more expensive here. St. Louis is also a very car-centric city - it would not be very easy to get around without a car. Missouri also does not require Driver's Ed, so overall it's just a good idea to pay extra attention and drive defensively when driving in St. Louis.
+It's common to see cars driving around with expired license plates or temp plates. The Missouri DMV is privately owned, and requires significantly more steps than other many states (emissions testing, car safety testing, private property confirmation, etc.). Since Missouri requires private property taxes to be paid every year on cars registered in the state, car ownership is a lot more expensive here, which may help explain why there are so many expired temp plates in the wild.

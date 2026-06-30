@@ -9,7 +9,7 @@ interface Preview {
   cuisine?: string[]
   emoji?: string
   neighborhood?: string
-  // Topic only: the curated tagline, shown in the accent color.
+  // Food, topics + neighborhoods: the curated tagline, shown in the accent color.
   description?: string
 }
 

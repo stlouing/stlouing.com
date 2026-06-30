@@ -5,8 +5,6 @@ created: 2026-06-29
 updated: 2026-06-29
 ---
 
-## The Great Divorce
-
 In the mid 1800s, St. Louis was the [4th biggest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870). The city was on an upswing, seeing a massive boom in population and industry that continued into the early 1900s when the city hosted the Olympics and the World's Fair.
 
 The population reached a high of 850,000 in the 1950s, but now has under 300,000 residents. A series of factors (such as white flight, highway development, redlining, and the economy shifting away from the river) left the city in continuous decline since then, but one of the significant issues for the region is the City-County split known as "The Great Divorce".
@@ -19,9 +17,7 @@ This separation permanently froze the boundaries of St. Louis at 66.17 square mi
 
 ### Frozen Borders
 
-Most other cities continued to grow and expand during this period. Chicago had [dozens of annexations](https://chicagology.com/population/annexation/) of its surrounding towns and villages, during which it expanded from 36 square miles in 1880 to 234 today.
-
-In 150 years, St. Louis hasn't expanded at all.
+Most other cities continued to grow and expand during this period. Chicago had [dozens of annexations](https://chicagology.com/population/annexation/) of its surrounding towns and villages, during which it expanded from 36 square miles in 1880 to 234 today, but St. Louis remained the same size.
 
 | City          |  Area in 1880 |  Area in 2020 |
 | :------------ | ------------: | ------------: |
@@ -47,7 +43,7 @@ The suburbs have rapidly expanded over this time period, but the city has stagna
 
 St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) among mid-sized cities.
 
-But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story.
+But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its Metro area - in stark contrast to the nearly 30% that Chicago represents, as a comparison.
 
 | City          | Metro population | City population | City share of metro |
 | :------------ | ---------------: | --------------: | ------------------: |
@@ -55,8 +51,6 @@ But while parts of St. Louis are legitimately dangerous, this stat doesn't tell 
 | **St. Louis** |    **2,820,253** |     **301,578** |             **10%** |
 
 <p class="table-caption">City population as a share of its metro, 2020</p>
-
-St. Louis City only represents 10% of the population of its Metro area - in stark contrast to the nearly 30% that Chicago represents.
 
 Crime is reported by geographic boundary. Since St. Louis hasn't expanded its borders in 150 years, its lower-crime suburbs fall outside the city line and never enter its stats, so the rate reflects only the dense urban core, not the wider region that encompasses St. Louis.
 
@@ -75,12 +69,19 @@ Measured across the City and County together, the rate drops to 27 per 100k. If 
 
 <p class="table-caption">St. Louis City + County compared with San Antonio, 2020</p>
 
-Obviously, changing the crime statistic does not make the dangerous parts of the city any less dangerous, and that's a real problem. But it does put St. Louis in a more reasonable light.
+Obviously, changing the crime statistic does not make the dangerous parts of the city any less dangerous, and that's a serious problem. But St. Louis could be viewed in a more reasonable light if it was set up in a more comparable way to other cities.
 
 Though there are some misconceptions to address.
 
+- **Misconception**: _"The crime stats in St. Louis are not judged fairly because it's an independent city"_
+- **Reality**: Cities are still compared with other cities. St. Louis City is compared with the City of Chicago, for example, not Cook County.
+
+And another:
+
 - **Misconception**: _"If the City rejoined the County, the crime stats would improve."_
-- **Reality**: They wouldn't change at all. The number is high because the borders froze in 1876, and that damage is done. St. Louis would need to expand its borders to improve the crime stats. However, there are other potential efficiency improvements that could come about from a merger.
+- **Reality**: They wouldn't change immediately. The number is high because the borders froze in 1876. St. Louis would need to expand its borders to improve the crime stats.
+
+The City and County finding a way to work together would not immediately fix the all problems from the last 150 years, but it seems like it could be a step towards healing. I think if St. Louis was not on the top of every "most dangerous city" list, people would be more likely to visit and move here.
 
 #### Sources
 

@@ -19,13 +19,9 @@ const { compact = false } = Astro.props
       <p class="newsletter-title">
         <IconMail /> Get new posts by email
       </p>
-      {
-        !compact && (
-          <p class="newsletter-blurb">
-            Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
-          </p>
-        )
-      }
+      <p class="newsletter-blurb">
+        Occasional St. Louis writeups, if I have something worth sending. You won't get spam.
+      </p>
     </div>
     <form
       class="newsletter-form"

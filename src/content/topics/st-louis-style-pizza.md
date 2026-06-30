@@ -110,6 +110,7 @@ I thought it came out pretty good, though I'd make some changes if I do it again
 Here's a subjective rated list of the places I've tried. I would say the top three are all vying for first place at the moment.
 
 1. [[farottos|Farotto's]]: A pizza with extra-extra-thin buttery, flaky crust, a slightly sweet sauce, and quality ingredients. Just don't get Jimmy's favorite (shrimp and bacon...why??). This is my place of choice to take out of town visitors, as the rest of the food is also great.
+1. [[bonos-pizzeria|Bono's Pizzeria]]: Crispy, thin, tavern-esque pizza with light sauce and Provel.
 1. **Pirrone's Pizzeria**: It's a bit out of the way from the city itself, but worth a visit. Pirrone's makes a rectangular pizza with a crispy, buttery crust, where the cheese and sauce blend to make an orange mix.
 1. **Faraci Pizza**: Similar to Pirrone's in size and shape, with a more bready, yeasty crust.
 1. **Salvage Yard**: A solid choice for a standard STL-style.
