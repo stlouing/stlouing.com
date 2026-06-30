@@ -1,14 +1,18 @@
 [
   { "name": "Classic Red Hots Albasha", "cuisine": ["middle eastern"] },
-  { "name": "Dinar Restaurant", "cuisine": ["middle eastern"] },
-  { "name": "El Toluco", "cuisine": ["mexican"] },
-  { "name": "Elicia's Pizza", "cuisine": ["pizza"] },
-  { "name": "Minerva Indian Cuisine", "cuisine": ["indian"] },
   {
-    "name": "Pie Guy",
-    "cuisine": ["pizza"],
-    "note": "It was my favorite NY-style pizza I've ever tried."
+    "name": "Dinar Restaurant",
+    "cuisine": ["middle eastern"],
+    "note": "I still miss the lentil soup."
   },
+  { "name": "El Toluco", "cuisine": ["mexican"], "note": "They had the best Al Pastor tacos." },
+  {
+    "name": "Elicia's Pizza",
+    "cuisine": ["pizza"],
+    "note": "The first St. Louis-style pizza I tried."
+  },
+  { "name": "Minerva Indian Cuisine", "cuisine": ["indian"] },
+  { "name": "Pie Guy", "cuisine": ["pizza"], "note": "It was my favorite NY-style pizza." },
   { "name": "Southern", "cuisine": ["chicken"] },
   { "name": "The Shaved Duck", "cuisine": ["bbq"] }
 ]

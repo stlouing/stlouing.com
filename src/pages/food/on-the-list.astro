@@ -18,7 +18,7 @@ interface FoodNote {
 
 const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(right.name)
 const wishlist = (wantToTry as FoodNote[]).slice().sort(byName)
-const beenTried = (tried as FoodNote[]).slice().sort(byName)
+const triedList = (tried as FoodNote[]).slice().sort(byName)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
 
 // The leading cuisine emoji for a row, when the item has a cuisine.
@@ -78,17 +78,15 @@ const description =
       )
     }
 
-    <hr />
-
     {
-      beenTried.length > 0 && (
+      triedList.length > 0 && (
         <section>
           <h2>Tried, not yet rated</h2>
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
           <div class="card-list">
-            {beenTried.map((item) => (
+            {triedList.map((item) => (
               <RelatedCard
                 title={item.name}
                 emoji={cardEmoji(item)}
@@ -102,13 +100,13 @@ const description =
       )
     }
 
-    <hr />
-
     {
       inMemoriam.length > 0 && (
         <section>
           <h2>RIP</h2>
-          <p class="description">Restaurants I've visited that have closed down and no longer exist.</p>
+          <p class="description">
+            Restaurants I've visited that have closed down and no longer exist.
+          </p>
           <div class="card-list">
             {inMemoriam.map((item) => (
               <RelatedCard
@@ -135,7 +133,7 @@ const description =
 
   /* Each section: a normal h2 + a line of description, then the list of cards. */
   section {
-    margin-block-start: var(--spacing-lg);
+    margin-block-start: var(--spacing-xl);
   }
 
   /* These lists run long, so split them into two columns on desktop. The rows

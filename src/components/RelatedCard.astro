@@ -58,7 +58,13 @@ const linkAttributes = href
 ---
 
 <Tag class:list={['related-card', { 'has-description': description }]} {...linkAttributes}>
-  {emoji && <span class="related-lead" aria-hidden="true">{emoji}</span>}
+  {
+    emoji && (
+      <span class="related-lead" aria-hidden="true">
+        {emoji}
+      </span>
+    )
+  }
   {
     hasIcon && (
       <span class="related-lead related-lead-icon" aria-hidden="true">
@@ -67,7 +73,11 @@ const linkAttributes = href
     )
   }
   <span class="related-body">
-    {meta && <span class="related-kicker">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>}
+    {
+      meta && (
+        <span class="related-kicker">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>
+      )
+    }
     <span class="related-title">{title}</span>
     {description && <p class="related-desc">{description}</p>}
   </span>
@@ -106,10 +116,6 @@ const linkAttributes = href
 
   .related-card.has-description {
     align-items: flex-start;
-  }
-
-  .related-card:last-child {
-    border-block-end: 0;
   }
 
   /* The leading mark: an emoji at the body's largest size, or a line icon recolored
