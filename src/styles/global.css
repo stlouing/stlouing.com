@@ -380,6 +380,8 @@ tbody tr:last-child td {
 .toc li {
   margin: 0;
   break-inside: avoid;
+  line-height: 1.2;
+  padding-block: var(--spacing-xs);
 }
 
 .toc a {
@@ -497,7 +499,6 @@ a.wikipedia-link {
 
 .wikilink-broken {
   color: var(--color-text-muted);
-  border-block-end: 1px dotted var(--color-text-muted);
 }
 
 /* Desktop hover preview for wikilinks (positioned + toggled by
@@ -1019,7 +1020,6 @@ body:has(.map-split) main > .wrap,
   .is-clickable {
     cursor: pointer;
   }
-
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in MapRow; the

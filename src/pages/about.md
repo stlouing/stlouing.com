@@ -25,11 +25,11 @@ I'd love to hear from you!
 
 This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).
 
-- **Instagram**: [st.louing](https://instagram.com/st.louing)
-- **Substack**: [stlouing](https://stlouing.substack.com)
-- **Bluesky**: [stlouing](https://bsky.app/profile/stlouing.com)
-- **Twitter**: [stlouing](https://x.com/stlouing)
-- **GitHub**: [stlouing](https://github.com/stlouing)
+- **Instagram** - [st.louing](https://instagram.com/st.louing)
+- **Substack** - [stlouing](https://stlouing.substack.com)
+- **Bluesky** - [stlouing](https://bsky.app/profile/stlouing.com)
+- **Twitter** - [stlouing](https://x.com/stlouing)
+- **GitHub** - [stlouing](https://github.com/stlouing)
 - [**RSS**](/rss.xml)
 
 ## Ideas and Brainstorming
@@ -47,13 +47,13 @@ This site is the source of truth, and I'll automatically publish to these other 
 
 A few open-source projects this site relies on.
 
-- **Host**: [Github Pages](https://docs.github.com/en/pages)
-- **Web Framework**: [Astro](https://astro.build)
-- **Maps**: [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
+- **Host** - [Github Pages](https://docs.github.com/en/pages)
+- **Web Framework** - [Astro](https://astro.build)
+- **Maps** - [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
-- **Icons**: [Lucide](https://lucide.dev/icons)
-- **Forms**: [Formspree](https://formspree.io)
-- **Analytics**: [GoatCounter](https://www.goatcounter.com)
+- **Icons** - [Lucide](https://lucide.dev/icons)
+- **Forms** - [Formspree](https://formspree.io)
+- **Analytics** - [GoatCounter](https://www.goatcounter.com)
 
 ## Links
 
