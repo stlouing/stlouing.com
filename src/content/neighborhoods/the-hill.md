@@ -24,6 +24,8 @@ The neighborhood's slogan is "Improve, not move", part of community outreach eff
 
 There's a nice mix of restaurants, delis, cafes, breweries, and other businesses intertwined with the homes in the neighborhood, making it a pleasant place to walk around. There are a few well-known, nice Italian restaurants such as Charlie Gitto's, Anthonino's Taverna, and Mama's on the Hill. Of course, my favorite pizza club in the city, [[nicky-slices|Nicky Slices Pizza Club]] is there, too.
 
+### Impressions
+
 I appreciate that there's hardly a chain restaurant in sight in the neighborhood, and there's a good amount of energy, with people sitting at outdoor cafes and walking around.
 
 The real estate of the neighborhood consists of a lot of very small, brick-built shotgun style homes, with some newer builds beginning to pop up. A lot of St. Louis is vehemently opposed to new architecture as preserving the original 1900s architecture is a big part of the city character, so many residents add additions to their homes to match modern living expectations while keeping some of the old flavor.

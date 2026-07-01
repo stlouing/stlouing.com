@@ -35,7 +35,7 @@ const iconByPath: Record<string, typeof IconInfo> = {
 }
 
 const tagline = 'An independent guide to the food, neighborhoods, and culture of St. Louis.'
-const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore this underrated city with me!`
+const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore the city with me!`
 
 const allNotes = published(await getCollection('notes')).sort(
   (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),

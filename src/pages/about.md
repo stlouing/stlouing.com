@@ -34,7 +34,6 @@ This site is the source of truth, and I'll automatically publish to these other 
 
 ## Ideas and Brainstorming
 
-- St. Louis overview
 - Things to do in St. Louis
 - Like and Dislikes of STL
 - Does the arch control the weather?

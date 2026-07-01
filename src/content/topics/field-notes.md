@@ -1,5 +1,5 @@
 ---
-title: St. Louis Overview
+title: St. Louis Field Notes
 description: What I've learned about the Gateway to the West so far
 created: 2026-05-28
 updated: 2026-06-29
@@ -8,6 +8,8 @@ updated: 2026-06-29
 St. Louis is a little city with a lot of regional culture. This page is a little index for me to document what I've discovered after living here for a while.
 
 ## The food
+
+My number one way of exploring any city is through the food, and I'm documenting that thoroughly in [the Food Map](/food). I've also aggregated my [Best of St. Louis](/food) list, as well as [all the spots I haven't written about yet](/food/on-the-list).
 
 ### Regional food
 

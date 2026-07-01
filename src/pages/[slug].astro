@@ -8,7 +8,7 @@ import { formatDate } from '../lib/dates'
 import { articleSchema } from '../lib/schema'
 import { href } from '../lib/url'
 
-// Evergreen "Topics" entries live at flat top-level URLs (/overview, ...). Their
+// Evergreen "Topics" entries live at flat top-level URLs. Their
 // slugs never collide with the standalone .md pages (about, changelog), which are
 // static routes and take precedence.
 export async function getStaticPaths() {
@@ -45,16 +45,14 @@ const schema = articleSchema(
   publishedTime={(data.created ?? data.updated).toISOString()}
   tags={data.tags}
   jsonLd={schema}>
-  <Entry
-    title={data.title}
-    tags={data.tags}
-    backlinks={backlinks}
-    permalink={permalink}>
-    {data.description && (
-      <p class="entry-summary p-summary" slot="lede">
-        {data.description}
-      </p>
-    )}
+  <Entry title={data.title} tags={data.tags} backlinks={backlinks} permalink={permalink}>
+    {
+      data.description && (
+        <p class="entry-summary p-summary" slot="lede">
+          {data.description}
+        </p>
+      )
+    }
     <Fragment slot="footer-meta">
       Last updated on
       <time class="dt-updated" datetime={data.updated.toISOString()}>

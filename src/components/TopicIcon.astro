@@ -1,7 +1,7 @@
 ---
 // A Lucide icon for a topic, keyed by its id, shared by the homepage directory
 // and the /topics list so both stay in sync. Unmapped topics fall back to a book.
-import IconCompass from '../assets/IconCompass.astro'
+import IconNotebookPen from '../assets/IconNotebookPen.astro'
 import IconHeartCrack from '../assets/IconHeartCrack.astro'
 import IconPizza from '../assets/IconPizza.astro'
 import IconUtensils from '../assets/IconUtensils.astro'
@@ -14,7 +14,7 @@ interface Props {
 const { id } = Astro.props
 
 const iconByTopic: Record<string, typeof IconBook> = {
-  overview: IconCompass,
+  'field-notes': IconNotebookPen,
   'the-great-divorce': IconHeartCrack,
   'st-louis-style-pizza': IconPizza,
   'regional-foods': IconUtensils,
