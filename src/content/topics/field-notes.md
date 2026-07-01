@@ -7,15 +7,17 @@ updated: 2026-06-29
 
 St. Louis is a little city with a lot of regional culture. This page is a little index for me to document what I've discovered after living here for a while.
 
-## The food
+## The Food
 
-My number one way of exploring any city is through the food, and I'm documenting that thoroughly in [the Food Map](/food). I've also aggregated my [Best of St. Louis](/food) list, as well as [all the spots I haven't written about yet](/food/on-the-list).
+[The Food Map](/food) is my number one way of exploring the city.
+
+I've also put together a list of the [Best Food in St. Louis](/food), and [all the spots I haven't written about yet](/food/on-the-list).
 
 ### Regional food
 
 See [[regional-foods|Regional Foods of St. Louis]] for toasted ravioli, gooey butter cake, slingers and of course, [[st-louis-style-pizza|St. Louis-style Pizza]].
 
-## The City-County split
+## The City-County Split
 
 Not long after moving to St. Louis, I realized people don't say "city and suburbs" around here, they say "city and county". See [[the-great-divorce|The Great Divorce]] to learn about the St. Louis city and county divide, and my thought experiment about what the crime stats in St. Louis might look like with a united region.
 
@@ -31,11 +33,11 @@ One thing to get used to in St. Louis is how red everything is. St. Louis was on
 
 Many homes throughout the city are early 20th century brick-built homes, and entire historic neighborhoods are preserved in this style, such as Shaw and Lafayette Square.
 
-## Free attractions
+## Free Attractions
 
-St. Louis actually has a crazy amount of free amenities and punches above its weight in this category relative to other mid-sized cities. The St. Louis Zoo is a standout example of this, a world-class zoo that holds its own against any other free or paid zoo outside of San Diego. There are also a ton of museums, such as the Art Museum, Missouri History Museum, and Science Center that are all free any day of the week, not just once a month on a random Tuesday.
+St. Louis actually has a crazy amount of free amenities, especially relative to other mid-sized cities. The St. Louis Zoo is the most obvious example of this: a world-class zoo that holds its own against any other free or paid zoo (outside of San Diego). The Art Museum, Missouri History Museum, and Science Center are all free _any_ day of the week, not just once a month on a Tuesday.
 
-The parks and green spaces are also really impressive. [[forest-park|Forest Park]] is one of the largest city parks in America, and contains everything from the zoo and museums to outdoor amphitheaters and golf courses. [[tower-grove-park|Tower Grove Park]] is more of a local neighborhood park that hosts a farmer's market and community events.
+One of the biggest draws of St. Louis is all the green space. [[forest-park|Forest Park]] is one of the largest city parks in America, and contains everything from the zoo and museums to outdoor amphitheaters and golf courses. [[tower-grove-park|Tower Grove Park]] is more of a local neighborhood park that hosts a farmer's market and community events.
 
 ## The Delmar Divide
 
@@ -49,7 +51,7 @@ The [Interactive St. Louis Vacancy Map](https://www.stlvacancytools.com/) demons
 
 Although many of the streets in St. Louis have French sounding names, there are St. Louis-specific pronunciations for them that are not incredibly obvious.
 
-There is a specific regional dialect of French known as [Missouri French](https://en.wikipedia.org/wiki/Missouri_French) (or Paw-Paw French) that these pronunciations seem to have been derived from.
+There is a specific regional dialect of French known as [Missouri French](https://en.wikipedia.org/wiki/Missouri_French) (or Paw-Paw French) that these pronunciations have been derived from.
 
 - **Carondelet** - kuh-RON-duh-let
 - **Chouteau** - SHOW-doe
@@ -73,7 +75,7 @@ There is a specific regional dialect of French known as [Missouri French](https:
 - **Highway Farty** - Highway 40 was renamed to Interstate 64, but many people still call it "Highway Farty" affectionately.
 - **The Lou** - A popular nickname for St. Louis.
 
-## Local customs
+## Local Customs
 
 ### Where did you go to high school?
 

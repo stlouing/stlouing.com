@@ -19,7 +19,7 @@ Although divisive, St. Louis-style pizza has fervent defenders (I reference two 
 
 My first experiences with STL-style pizza were not the best, and initially I was the classic dismissive transplant, but over time I've acquired a taste and appreciation for this regional specialty. For every birthday, graduation, and celebration, St. Louis-style pizza is there for us, and I can see why so many people feel so deeply protective of it.
 
-## What defines a STL-style pizza?
+## What is an STL-style Pizza?
 
 ### Cheese
 
@@ -55,7 +55,7 @@ St. Louis-style pizza, like other Midwest styles of pizza, is cut into squares, 
 
 You'll see all the standard toppings on a STL-style. It's important that the sausage should be bulk sausage placed on the pizza raw, not pre-cooked sausage bits like you'll see at national chain pizza spots. I don't know why, but I've also seen a lot of shrimp as a topping here which I've never seen anywhere else (not a fan), and if you get bacon on your pizza, it's in the form of whole strips as opposed to bacon bits (am a fan).
 
-## Tavern-style controversy
+## Tavern-style Controversy
 
 <figure class="figure right">
 
@@ -72,9 +72,9 @@ Personally, I choose to think of it all as Midwestern-style pizza with regional 
 
 I think St. Louis has their own thing going here and it's pretty cool that something so unique and special can be found all over this region and almost nowhere else.
 
-## Regional sub-variations
+## Regional Sub-variations
 
-Even within St. Louis-style pizza, there are seemingly sub-variations.
+Even within St. Louis-style pizza, there are sub-variations.
 
 ### North
 
@@ -86,7 +86,7 @@ Meanwhile, Failoni's and the original Imo's are based on the south side of the S
 
 This might not be entirely accurate, and most places do the round pizza, but I think it's interesting to note.
 
-## Making a pizza from scratch
+## Making a Pizza from Scratch
 
 Loosely based on a recipe posted on reddit by [HouseofProvel](https://www.reddit.com/user/HouseofProvel/), I made a St. Louis-style pizza from scratch with a three-day ferment on the crust. I opted to use slices of Provel as opposed to shredded as it's the way [Faraci's does it](https://www.faracispizza.com/ourpizza).
 
@@ -122,7 +122,7 @@ Here's a subjective rated list of the places I've tried. I would say the top thr
 
 So I've tried a variety of fan favorites around the city, but I'm always open to new suggestions. A few I have yet to try are Affton Pizza Company, Angelo's, Kevin's Place, and plenty more.
 
-## What do I think?
+## What do I Think?
 
 <figure class="figure left">
 
@@ -137,6 +137,6 @@ So personally, St. Louis-style or even Chicago thin-crust are just never going t
 
 But most of my favorite pizzas around the city are not specifically St. Louis-style.
 
-## Other pizza in St. Louis
+## Other Pizza in St. Louis
 
 Although St. Louis-style pizza is obviously the most common style to be found in the region, there's also New York-style at [[la-pizza|La Pizza]], Detroit style at [[nicky-slices|Nicky Slices]], Chicago thin-crust at [[jj-twigs-pizza-and-pub|J.J. Twig's]], Neapolitan style at Fordo's Killer Pizza, standard pizza at [[buds-pizza-and-beer|Bud's Pizza and Beer]], and many more found all around the city. I have yet to try a Sicilian-style or deep dish in St. Louis, but I'm looking forward to continuing my pizza journey.

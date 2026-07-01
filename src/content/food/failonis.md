@@ -21,4 +21,4 @@ I checked it out recently and we got toasted ravioli, salad, cheesy garlic bread
 
 The pizzas were pretty good, I liked that the sauce was not overly sweet and didn't have the artificial flavor I taste at the chain restaurants. The crust was nice and crispy - they clearly perfected the low hydration, cracker crust made with yeast. It tasted very similar to when I made a St. Louis-style pizza at home with a three-day ferment, except theirs was crispier due to the brick oven cook.
 
-Overall, it was a decent STL-style pizza, but it's not in my top five. The patio was nice and it seems like a good place to bring a few friends and have a drink.
+Overall, it was a decent STL-style pizza, but it's not in my top five. The patio was nice and it would be a good place to bring a few friends and have a drink.

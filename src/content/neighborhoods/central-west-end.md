@@ -31,4 +31,4 @@ It's also home to Up-Down Arcade, an arcade full of retro games, craft beers, an
 
 ### Impressions
 
-Of all the neighborhoods I've explored, Central West End has the most vibrant energy with people walking around and sitting at outdoor cafes and restaurants, or visiting the various book stores and boutique stores. I think Central West End is competing with Downtown as "the place to be" for tourists, transplants, and residents, and seems to be doing a pretty good job of it.
+Of all the neighborhoods I've explored, Central West End has the most vibrant energy with people walking around and sitting at outdoor cafes and restaurants, or visiting the various book stores and boutique stores. I think Central West End is competing with Downtown as "the place to be" for tourists, transplants, and residents, and is doing a pretty good job of it.
