@@ -1907,6 +1907,7 @@ body:has([data-filter-root]) .site-header {
   flex: 1;
   justify-content: center;
   color: var(--color-text);
+  flex-shrink: 0;
 }
 
 .leaflet-popup.food-popup .popup-actions .btn:hover {
