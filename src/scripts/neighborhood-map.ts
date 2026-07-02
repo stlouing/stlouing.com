@@ -236,10 +236,13 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
   // One reused popup. Opening it for a slug re-anchors + refills it; the single
   // instance means only one is ever open. Its close event clears the selection.
+  // `anchor: 'bottom'` pins it ABOVE the pin so it never flips sides as you pan/near
+  // edges; keepPopupInView pans the map to keep it on-screen instead.
   const popup = new maplibregl.Popup({
     className: 'food-popup',
     closeButton: true,
     closeOnClick: false,
+    anchor: 'bottom',
     maxWidth: '330px',
     // Lift the popup clear of the explored pin (which rises ~34px from its tip).
     offset: 38,

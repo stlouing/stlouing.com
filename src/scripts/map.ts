@@ -137,11 +137,15 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     })
 
     // closeOnClick:false — we manage closing (map-click + single-open) so the row
-    // selection stays in sync; a radial offset lifts the popup clear of the marker.
+    // selection stays in sync. `anchor: 'bottom'` pins the popup ABOVE the marker
+    // so it never flips sides as you pan/near edges; keepPopupInView pans the map
+    // to keep it on-screen instead (matching the old Leaflet behavior). The offset
+    // lifts it clear of the marker.
     const popup = new maplibregl.Popup({
       className: 'food-popup',
       closeButton: true,
       closeOnClick: false,
+      anchor: 'bottom',
       maxWidth: '330px',
       offset: 22,
       focusAfterOpen: false,
