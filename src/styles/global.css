@@ -1133,6 +1133,10 @@ body:has([data-neighborhood-map]) .river-border {
    overlay to this row. */
 .map-list .list > li {
   position: relative;
+  /* Own stacking context so the chips' `z-index: 1` (which lifts them above the
+     stretched title overlay) stays contained to this row and can't bleed above
+     the sticky filter header on scroll. */
+  isolation: isolate;
   margin: 0;
   padding: var(--spacing-md);
   /* Reserve room on the right for the absolutely-positioned `.list-arrow` so row
