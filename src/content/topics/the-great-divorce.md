@@ -5,15 +5,15 @@ created: 2026-06-29
 updated: 2026-06-29
 ---
 
-In the mid 1800s, St. Louis was the [4th biggest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870). The city was on an upswing, seeing a massive boom in population and industry that continued into the early 1900s when the city hosted the Olympics and the World's Fair.
+There was a time when St. Louis was the [4th biggest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870). The city was on an upswing all throughout the 19th century, seeing a massive boom in population and industry. St. Louis's rise continued well into the early 20th century, when the city hosted both the Olympics and the World's Fair.
 
-The population reached a high of 850,000 in the 1950s, but now has under 300,000 residents. A series of factors (such as white flight, highway development, redlining, and the economy shifting away from the river) left the city in continuous decline since then, but one of the significant issues for the region is the City-County split known as "The Great Divorce".
+A series of factors such as white flight, highway development, redlining, and the economy shifting away from the river left the city in continuous decline since then, but one of the most significant issues for the region was the City-County split known as "The Great Divorce".
 
 ### The City-County Split
 
-In 1876, the City of St. Louis voted to separate from St. Louis County, becoming one of only a few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in the U.S. Most other cities sit inside a county - Chicago is a city inside Cook County, for example, but St. Louis City and County are completely separate entities.
+The City of St. Louis voted to separate from St. Louis County in 1876, becoming one of only a few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in the U.S. Most other cities sit inside a county - Chicago is a city inside Cook County, for example, but St. Louis City and County are completely separate entities.
 
-This separation permanently froze the boundaries of St. Louis at 66.17 square miles, which resulted in a slew of unforeseen consequences for the city.
+This separation permanently froze the boundaries of St. Louis at 66.17 square miles, which resulted in unforeseen consequences for the city.
 
 ### Frozen Borders
 
@@ -56,7 +56,7 @@ Crime is reported by geographic boundary. Since St. Louis hasn't expanded its bo
 
 ### Thought Experiment
 
-If St. Louis City and County were to be one combined entity, what would the stats look like?
+If St. Louis City and County were to be one combined entity, what would the stats look like? I decided to add up the numbers to see how much of a difference it would make.
 
 Measured across the City and County together, the rate drops to 27 per 100k. If treating that combined area as a single city seems contrived, consider San Antonio, Texas, which covers comparable ground with a comparable population.
 
@@ -69,7 +69,7 @@ Measured across the City and County together, the rate drops to 27 per 100k. If 
 
 <p class="table-caption">St. Louis City + County compared with San Antonio, 2020</p>
 
-Even if you combine St. Louis City and County, the crime stats are above the national average, but much lower than St. Louis City alone.
+For a combined City/County entity, the homicide rate would drop from 87 to 27. Even in this hypothetical scenario, the crime stats are still above the national average, but much lower than St. Louis City alone.
 
 Obviously, changing the crime statistic does not make the dangerous parts of the city any less dangerous, and that's a serious problem. But St. Louis could be viewed in a more reasonable light if it was set up in a more comparable way to other cities.
 

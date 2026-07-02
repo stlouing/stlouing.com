@@ -78,7 +78,15 @@ const attractions = entry?.data.attractions ?? []
 
 // Computed data layer.
 const population = neighborhoodPopulation(slug)
-const neighbors = neighborsOf(slug)
+// Nearby neighborhoods: a manual `neighbors` list (frontmatter) for entries the
+// geo adjacency graph doesn't cover (county municipalities), else the computed set.
+const neighbors =
+  entry?.data.neighbors && entry.data.neighbors.length > 0
+    ? entry.data.neighbors.flatMap((neighborSlug) => {
+        const neighbor = neighborhoodInfo(neighborSlug)
+        return neighbor ? [neighbor] : []
+      })
+    : neighborsOf(slug)
 const festivals = festivalsIn(slug)
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []

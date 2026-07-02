@@ -7,8 +7,8 @@ import neighborhoods from '../data/neighborhoods.json'
 import { href } from '../lib/url'
 import { published, excerpt, hasBody } from '../lib/content'
 import { neighborhoodResourceLinks, neighborhoodGeneratedSummary } from '../lib/neighborhoods'
-import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
+import IconArrowRight from '../assets/IconArrowRight.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
 // the rest, in their numbered order). Written rows render their writeup expanded;
@@ -172,15 +172,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-tagline': popup.tagline ?? '',
                       'data-excerpt': popup.excerpt ?? '',
                     }}>
-                    {written && (
-                      <a
-                        class="btn btn-quiet"
-                        slot="row-end"
-                        href={href(`/neighborhoods/${neighborhood.slug}`)}
-                        aria-label={`Read more about ${neighborhood.name}`}>
-                        More <IconArrowRight />
-                      </a>
-                    )}
                     {neighborhood.group && (
                       <div class="chips" slot="sub">
                         <span class:list={['chip', 'chip-region', `region-${section}`]}>
@@ -189,13 +180,18 @@ function sectionOf(area: { group?: string; type?: string }): string {
                         </span>
                       </div>
                     )}
-                    {popup.tagline && (
-                      <div class="neighborhood-tagline">{popup.tagline}</div>
-                    )}
+                    {popup.tagline && <div class="neighborhood-tagline">{popup.tagline}</div>}
                     {written && Content && (
                       <div class="neighborhood-preview">
                         <Content />
                       </div>
+                    )}
+                    {written && (
+                      <a
+                        class="btn btn-filled btn-block"
+                        href={href(`/neighborhoods/${neighborhood.slug}`)}>
+                        Read more <IconArrowRight />
+                      </a>
                     )}
                   </MapRow>
                 </Fragment>

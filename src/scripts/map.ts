@@ -146,7 +146,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
           google && { label: 'Google Maps', href: google },
         ].filter(Boolean) as PopupSource[]
 
-        // "View more" only when there's a writeup teaser to deep-link into.
         const excerptText = item.dataset.excerpt ?? ''
         const popupHtml = buildPopupHtml({
           title: item.dataset.title ?? '',

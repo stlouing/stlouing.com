@@ -116,15 +116,6 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                 'data-tagline': place.data.description ?? '',
                 'data-excerpt': hasBody(place) ? excerpt(place.body, 150) : '',
               }}>
-              {hasBody(place) && (
-                <a
-                  class="btn btn-quiet"
-                  slot="row-end"
-                  href={href(`/food/${place.id}`)}
-                  aria-label={`Read more about ${place.data.title}`}>
-                  More <IconArrowRight />
-                </a>
-              )}
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
                 <div class="chips" slot="sub">
                   {place.data.cuisine.map((cuisine) => (
@@ -151,6 +142,11 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
               )}
               {place.data.description && <div class="food-tagline">{place.data.description}</div>}
               {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
+              {hasBody(place) && (
+                <a class="btn btn-filled btn-block" href={href(`/food/${place.id}`)}>
+                  Read more <IconArrowRight />
+                </a>
+              )}
             </MapRow>
           ))
         }
@@ -172,8 +168,6 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     margin-block-end: var(--spacing-xs);
   }
 
-  /* A 2-line teaser, shown inline on every row (the list no longer collapses);
-     the full writeup is one tap away via "View more". */
   .food-preview {
     display: -webkit-box;
     -webkit-box-orient: vertical;

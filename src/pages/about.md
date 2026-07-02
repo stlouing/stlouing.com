@@ -67,7 +67,7 @@ A few open-source projects this site relies on.
 - [**pizzababble**](https://www.instagram.com/pizzababble)
   - The St. Louis pizza guy. He's out here fighting the good fight. I've discovered some new places thanks to his feed.
 - [**STLFood on Reddit**](https://www.reddit.com/r/STLFood)
-  - he place to discuss food in St. Louis.
+  - The place to discuss food in St. Louis.
 - [**St. Louis-MO.gov**](https://www.stlouis-mo.gov/)
   - Used for determining neighborhood boundaries and facts.
 

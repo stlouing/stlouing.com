@@ -7,11 +7,11 @@ updated: 2026-06-29
 
 St. Louis is a little city with a lot of regional culture. This page is a little index for me to document what I've discovered after living here for a while.
 
-## The Food
+## Food
 
-[The Food Map](/food) is my number one way of exploring the city.
-
-I've also put together a list of the [Best Food in St. Louis](/food), and [all the spots I haven't written about yet](/food/on-the-list).
+- [The Food Map](/food) is my number one way of exploring the city.
+- I put together a list of the [Best Food in St. Louis](/best).
+- Finally, [all the spots I haven't written about yet](/food/on-the-list).
 
 ### Regional food
 
@@ -35,7 +35,9 @@ Many homes throughout the city are early 20th century brick-built homes, and ent
 
 ## Free Attractions
 
-St. Louis actually has a crazy amount of free amenities, especially relative to other mid-sized cities. The St. Louis Zoo is the most obvious example of this: a world-class zoo that holds its own against any other free or paid zoo (outside of San Diego). The Art Museum, Missouri History Museum, and Science Center are all free _any_ day of the week, not just once a month on a Tuesday.
+St. Louis actually has an impressive amount of free amenities, especially relative to other mid-sized cities. The St. Louis Zoo is the most obvious example of this: a world-class zoo that holds its own against any other free or paid zoo. The Art Museum, Missouri History Museum, and Science Center are all free _any_ day of the week, not just once a month on a Tuesday. It's cool that there are so many things to do and they're not price prohibitive.
+
+### Parks
 
 One of the biggest draws of St. Louis is all the green space. [[forest-park|Forest Park]] is one of the largest city parks in America, and contains everything from the zoo and museums to outdoor amphitheaters and golf courses. [[tower-grove-park|Tower Grove Park]] is more of a local neighborhood park that hosts a farmer's market and community events.
 
@@ -62,6 +64,7 @@ There is a specific regional dialect of French known as [Missouri French](https:
 - **Laclede** - luh-CLEED
 - **Meramec** - MER-uh-mack
 - **Soulard** - SOO-lard
+- **Debaliviere** - duh-BAHL-a-ver
 
 ### Regional dialect
 
@@ -69,11 +72,12 @@ There is a specific regional dialect of French known as [Missouri French](https:
 - **Warsh** - Similar to the above, sometimes you'll hear "warsh" instead of "wash" among an older generation.
 - **Catty Corner** - This is not entirely specific to the STL region, but people say "catty corner" here, whereas in the north it's "kitty corner". This data is substantiated in the [Harvard dialect study](http://dialect.redlog.net/staticmaps/q_76.html).
 
-### Slang and St. Louis-isms
+### St. Louis-isms
 
-- **Hoosier** - In the rest of the U.S., Hoosier refers to someone from Indiana, but in St. Louis it's more of a general insult along the lines of "white trash" or "redneck".
-- **Highway Farty** - Highway 40 was renamed to Interstate 64, but many people still call it "Highway Farty" affectionately.
 - **The Lou** - A popular nickname for St. Louis.
+- **Hoosier** - In the rest of the U.S., Hoosier refers to someone from Indiana, but in St. Louis it's more of a general insult along the lines of "white trash" or "redneck".
+- **Highway Farty** - Highway 40 is part of Interstate 64, and many people still call it "Highway Farty" affectionately.
+- **Jeffco** - Jefferson County, the immediate county to the west of St. Louis County.
 
 ## Local Customs
 
@@ -91,4 +95,6 @@ People drive golf carts all around the St. Louis area. According to The Hill nei
 
 ### Expired temp plates
 
-It's common to see cars driving around with expired license plates or temp plates. The Missouri DMV is run by privately owned offices, and requires significantly more steps than many other states (emissions testing, car safety testing, personal property confirmation, etc.). Since Missouri requires personal property taxes to be paid every year on cars registered in the state, car ownership is a lot more expensive here, which may help explain why there are so many expired temp plates in the wild.
+It's common to see cars driving around with expired license plates or temp plates. The Missouri DMV is run by privately owned offices, and requires significantly more steps than many other states (emissions testing, car safety testing, personal property confirmation, etc.).
+
+Since Missouri requires personal property taxes to be paid every year on cars registered in the state, car ownership is a lot more expensive here, which may help explain why there are so many expired temp plates in the wild. It's also not heavily enforced.

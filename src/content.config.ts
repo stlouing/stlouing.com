@@ -83,6 +83,10 @@ const neighborhoods = defineCollection({
     // The neighborhood's own site and its Wikipedia article.
     url: z.string().url().optional(),
     wikipedia: z.string().url().optional(),
+    // Nearby neighborhood slugs — a manual list for entries the geo adjacency
+    // graph doesn't cover (e.g. St. Louis County municipalities). Overrides the
+    // computed geographic neighbors when set.
+    neighbors: z.array(z.string()).default([]),
     // Signature attractions/landmarks (factual + optional, so a data-only
     // neighborhood can still carry them without a writeup). Each is a name with
     // an optional link + one-line description; a bare string is shorthand for

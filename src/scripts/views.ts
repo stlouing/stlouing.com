@@ -58,7 +58,7 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
 
     // The floating button names the view it switches TO.
     if (floatingToggle) {
-      floatingToggle.textContent = view === 'map' ? 'Read' : 'Map'
+      floatingToggle.textContent = view === 'map' ? 'List' : 'Map'
     }
 
     if (view === 'map') {

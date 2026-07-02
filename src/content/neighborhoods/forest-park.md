@@ -1,7 +1,7 @@
 ---
 title: Forest Park
 url: https://www.forestparkforever.org/
-description: An urban oasis of green space and world class amenities
+description: An urban oasis of green space and world-class amenities
 tags:
   - green
   - walkable
