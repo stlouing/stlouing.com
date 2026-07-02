@@ -1783,7 +1783,6 @@ body:has([data-filter-root]) .site-header {
 .maplibregl-popup.food-popup .popup-tagline {
   margin-block: var(--spacing-xs) 0;
   font-family: var(--font-body);
-  font-size: var(--font-size-sm);
   font-weight: 600;
   line-height: 1.2;
   color: var(--color-accent);
@@ -2079,11 +2078,6 @@ body:has([data-filter-root]) .site-header {
 
 .collection {
   color: var(--color-text-muted);
-  font-family: var(--font-body);
-  font-size: var(--font-size-sm);
-  text-decoration: none;
-  font-family: var(--font-mono);
-  font-weight: 500;
 }
 
 /* A mono uppercase section heading, used over a List on the Best of page. */
