@@ -4,6 +4,16 @@ import '@fontsource/ibm-plex-mono/400.css'
 import '@fontsource/ibm-plex-mono/500.css'
 import '@fontsource/ibm-plex-mono/600.css'
 import '@fontsource/ibm-plex-mono/700.css'
+// Body serif (Gelasio), self-hosted via fontsource instead of Google Fonts — no
+// third-party request/privacy leak. Normal + italic at the four weights the UI uses.
+import '@fontsource/gelasio/400.css'
+import '@fontsource/gelasio/500.css'
+import '@fontsource/gelasio/600.css'
+import '@fontsource/gelasio/700.css'
+import '@fontsource/gelasio/400-italic.css'
+import '@fontsource/gelasio/500-italic.css'
+import '@fontsource/gelasio/600-italic.css'
+import '@fontsource/gelasio/700-italic.css'
 
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
@@ -120,14 +130,8 @@ const analyticsUrl = analyticsBase
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    {/* Body serif (Gelasio): a Georgia-metric-compatible face that, unlike the
-       system serif, carries real 500/600 weights for the semibold steps. */}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
-    />
+    {/* Body serif (Gelasio) is now self-hosted via @fontsource (imported above),
+       so there's no Google Fonts stylesheet/preconnect here anymore. */}
 
     {pmtilesOrigin && <link rel="preconnect" href={pmtilesOrigin} crossorigin />}
 

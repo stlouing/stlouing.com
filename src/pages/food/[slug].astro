@@ -187,11 +187,14 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           <div class="food-card-body">
             {
               data.address && data.address.length > 0 && (
-                <address class="food-address">
-                  {data.address.map((line) => (
-                    <span>{line}</span>
-                  ))}
-                </address>
+                <div class="food-address-block">
+                  <h2 class="section-label food-address-label">Address</h2>
+                  <address class="food-address">
+                    {data.address.map((line) => (
+                      <span>{line}</span>
+                    ))}
+                  </address>
+                </div>
               )
             }
             <a class="btn btn-quiet food-back-link" href={href('/food')}>
@@ -228,6 +231,12 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     flex-direction: column;
     gap: var(--spacing-md);
     padding: var(--spacing-md);
+  }
+
+  /* "Address" label tucked tight above the lines (mirrors the "My pick" label:
+     shared `.section-label` font, small bottom margin). */
+  .food-address-label {
+    margin: 0 0 var(--spacing-xs);
   }
 
   /* The postal address under the map (a quiet mono block, one line per address
@@ -351,7 +360,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     .food-sub-meta {
       align-items: stretch;
       flex-direction: column;
-      row-gap: var(--spacing-sm);
+      row-gap: var(--spacing-md);
 
       .chip {
         width: fit-content;

@@ -1,8 +1,9 @@
-import 'leaflet/dist/leaflet.css'
-import * as L from 'leaflet'
-import { addThemedTiles } from './tiles'
+import maplibregl from 'maplibre-gl'
+import type { ExpressionSpecification } from 'maplibre-gl'
+import type { Feature, FeatureCollection, Geometry, Position } from 'geojson'
+import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, escapeHtml, type PopupChip, type PopupSource } from './popup'
-import { keepPopupInView, zoomEaseOptions } from './map-shared'
+import { keepPopupInView } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
@@ -15,9 +16,30 @@ const byNumber = new Map(
     .map((neighborhood) => [neighborhood.number, neighborhood]),
 )
 
+// Walk every [lng, lat] coordinate of a Polygon/MultiPolygon feature.
+function forEachPosition(geometry: Geometry, fn: (position: Position) => void): void {
+  if (geometry.type === 'Polygon') {
+    for (const ring of geometry.coordinates) {
+      for (const position of ring) {
+        fn(position)
+      }
+    }
+  } else if (geometry.type === 'MultiPolygon') {
+    for (const polygon of geometry.coordinates) {
+      for (const ring of polygon) {
+        for (const position of ring) {
+          fn(position)
+        }
+      }
+    }
+  }
+}
+
 /**
- * Clickable St. Louis neighborhood map. Draws each official boundary with its
- * number and, on click, expands that neighborhood's writeup in the left pane.
+ * Clickable St. Louis neighborhood map (MapLibre GL / WebGL). Draws each official
+ * boundary, and on click expands that neighborhood's writeup in the left pane.
+ * Boundaries are one geojson source; hover + selection are driven by feature-state
+ * so the GPU repaints without touching the DOM.
  */
 export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'): Promise<void> {
   const element = document.querySelector<HTMLElement>(selector)
@@ -25,36 +47,64 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     return
   }
 
-  const styles = getComputedStyle(document.documentElement)
-  const readColor = (token: string, fallback: string) =>
-    styles.getPropertyValue(token).trim() || fallback
-  // Section colors: the three St. Louis City regions (North yellow, Central red,
-  // South violet); St. Louis County is blue; parks are green by `type`, regardless
-  // of which region they sit in.
-  const colorNorth = readColor('--color-map-north', '#b8860b')
-  const colorCentral = readColor('--color-map-central', '#c0392b')
-  const colorSouth = readColor('--color-map-south', '#6a47a6')
-  const colorCounty = readColor('--color-map-county', '#2766ad')
-  const colorPark = readColor('--color-map-park', '#2e7d4a')
+  type RegionKey = 'north' | 'central' | 'south' | 'county' | 'park'
 
-  function colorForArea(area: { group?: string; type?: string } | undefined): string {
-    if (area?.type === 'park') {
-      return colorPark
-    }
-    if (area?.group === 'St. Louis County') {
-      return colorCounty
-    }
-    if (area?.group === 'North City') {
-      return colorNorth
-    }
-    if (area?.group === 'South City') {
-      return colorSouth
-    }
+  // Section colors, read live from the CSS map-color tokens (they differ light/dark).
+  // The three St. Louis City regions (North yellow, Central red, South violet); St.
+  // Louis County is blue; parks are green by `type`, regardless of region.
+  function readRegionColors(): Record<RegionKey, string> {
+    const styles = getComputedStyle(document.documentElement)
+    const readColor = (token: string, fallback: string) =>
+      styles.getPropertyValue(token).trim() || fallback
 
-    return colorCentral
+    return {
+      north: readColor('--color-map-north', '#b8860b'),
+      central: readColor('--color-map-central', '#c0392b'),
+      south: readColor('--color-map-south', '#6a47a6'),
+      county: readColor('--color-map-county', '#2766ad'),
+      park: readColor('--color-map-park', '#2e7d4a'),
+    }
   }
 
-  let geojson: GeoJSON.FeatureCollection
+  function regionKeyForArea(area: { group?: string; type?: string } | undefined): RegionKey {
+    if (area?.type === 'park') {
+      return 'park'
+    }
+    if (area?.group === 'St. Louis County') {
+      return 'county'
+    }
+    if (area?.group === 'North City') {
+      return 'north'
+    }
+    if (area?.group === 'South City') {
+      return 'south'
+    }
+
+    return 'central'
+  }
+
+  // Fill/line color as a MapLibre `match` on each feature's region key, so the whole
+  // basemap recolors with one setPaintProperty when the theme toggles.
+  let regionColors = readRegionColors()
+  function regionColorExpression(): ExpressionSpecification {
+    return [
+      'match',
+      ['get', 'region'],
+      'north',
+      regionColors.north,
+      'central',
+      regionColors.central,
+      'south',
+      regionColors.south,
+      'county',
+      regionColors.county,
+      'park',
+      regionColors.park,
+      regionColors.central,
+    ]
+  }
+
+  let geojson: FeatureCollection
   try {
     const response = await fetch(`${import.meta.env.BASE_URL}stl-neighborhoods.geojson`)
     if (!response.ok) {
@@ -65,78 +115,77 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     return
   }
 
-  const map = L.map(element, {
-    ...zoomEaseOptions,
-    scrollWheelZoom: true,
-    touchZoom: true,
-    minZoom: 10,
-    // Fewer zoom levels = fewer basemap re-render passes per gesture, which is
-    // what accumulates into the GPU-canvas crash on heavy zooming. zoomSnap:1
-    // snaps to whole levels (half as many render levels as 0.5); maxZoom:15
-    // keeps one overzoom level past the z14 data for street detail while trimming
-    // the extra level. See the churn note in tiles.ts.
-    maxZoom: 15,
-    zoomSnap: 1,
-  })
-  addThemedTiles(map)
-
-  // Extra top auto-pan padding so an opened popup clears the sticky header
-  // instead of being cut off at the top (most noticeable on mobile).
-  const headerHeight =
-    parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height'), 10) ||
-    64
-  const autoPanPaddingTopLeft = L.point(16, headerHeight + 16)
-  const autoPanPaddingBottomRight = L.point(16, 24)
-
-  const colorBySlug = new Map<string, string>()
-  function baseStyleFor(slug: string): L.PathOptions {
-    const color = colorBySlug.get(slug) ?? colorCentral
-
-    return { color, weight: 2, fillColor: color, fillOpacity: 0.1 }
-  }
-  function selectedStyleFor(slug: string): L.PathOptions {
-    const color = colorBySlug.get(slug) ?? colorCentral
-
-    return { color, weight: 4, fillColor: color, fillOpacity: 0.4 }
-  }
-  const hoverStyle: L.PathOptions = { weight: 3, fillOpacity: 0.3 }
-
   const rows = [...document.querySelectorAll<HTMLElement>('[data-section]')]
-  const pathBySlug = new Map<string, L.Path>()
-  const centerBySlug = new Map<string, L.LatLng>()
+  function rowFor(slug: string): HTMLElement | undefined {
+    return rows.find((row) => row.dataset.section === slug)
+  }
+
+  // Preprocess the boundaries: give each feature a stable numeric id (for
+  // feature-state), stamp its region color + slug + name into its properties (so
+  // the paint expressions and click handler read them straight off the feature),
+  // and collect per-slug centers/bounds + the whole-city bounds for framing.
+  const SOURCE_ID = 'neighborhoods'
+  const FILL_LAYER = 'neighborhoods-fill'
+  const LINE_LAYER = 'neighborhoods-line'
+  const slugToFeatureIds = new Map<string, number[]>()
+  const centerBySlug = new Map<string, [number, number]>()
+  const boundsBySlug = new Map<string, maplibregl.LngLatBounds>()
+  const nameBySlug = new Map<string, string>()
+  const regionKeyBySlug = new Map<string, RegionKey>()
+  const pinBodyBySlug = new Map<string, Element>()
+  const cityBounds = new maplibregl.LngLatBounds()
+
+  geojson.features.forEach((feature: Feature, index: number) => {
+    feature.id = index
+    const number = Number(feature.properties?.NHD_NUM)
+    const entry = byNumber.get(number)
+    const name = entry?.name ?? String(feature.properties?.NHD_NAME ?? 'Neighborhood')
+    const slug = entry?.slug ?? ''
+    const region = regionKeyForArea(entry)
+    feature.properties = { ...feature.properties, region, slug, name }
+
+    const featureBounds = new maplibregl.LngLatBounds()
+    forEachPosition(feature.geometry, (position) => {
+      const lngLat: [number, number] = [position[0], position[1]]
+      featureBounds.extend(lngLat)
+      cityBounds.extend(lngLat)
+    })
+
+    if (slug) {
+      slugToFeatureIds.set(slug, [...(slugToFeatureIds.get(slug) ?? []), index])
+      centerBySlug.set(slug, featureBounds.getCenter().toArray() as [number, number])
+      boundsBySlug.set(slug, featureBounds)
+      nameBySlug.set(slug, name)
+      regionKeyBySlug.set(slug, region)
+    }
+  })
+
+  const map = createBasemapMap(element, { minZoom: 10, maxZoom: 15 })
 
   let selectedSlug: string | null = null
+  let hoveredId: number | null = null
 
-  function paintPath(slug: string, style: L.PathOptions): void {
-    pathBySlug.get(slug)?.setStyle(style)
-  }
-
-  function setRowActive(slug: string, active: boolean): void {
-    rowFor(slug)?.classList.toggle('is-active', active)
+  function setSlugState(slug: string, state: { selected?: boolean; hover?: boolean }): void {
+    for (const id of slugToFeatureIds.get(slug) ?? []) {
+      map.setFeatureState({ source: SOURCE_ID, id }, state)
+    }
   }
 
   // Selection follows the boundary's popup (open = selected), mirroring the Food
-  // map. Opening a neighborhood's popup highlights its boundary, marks its row
-  // active, and scrolls that row to the top of the pane; closing it clears all
-  // three. Keyed by slug so switching neighborhoods stays in sync no matter how
-  // the popup was opened (map click or list row).
+  // map: opening highlights the boundary (feature-state), marks its row active,
+  // and scrolls that row to the top of the pane; closing clears all three.
   function activate(slug: string): void {
     if (selectedSlug === slug) {
       return
     }
-
     if (selectedSlug) {
-      paintPath(selectedSlug, baseStyleFor(selectedSlug))
-      setRowActive(selectedSlug, false)
+      setSlugState(selectedSlug, { selected: false })
+      rowFor(selectedSlug)?.classList.remove('is-active')
     }
 
     selectedSlug = slug
-    paintPath(slug, selectedStyleFor(slug))
-    setRowActive(slug, true)
-    // Bring the chosen neighborhood to the top of the pane (scroll-padding on
-    // .content-pane keeps it clear of the sticky header). Selection is deliberately
-    // NOT written to the URL as `#slug` — every neighborhood has its own page now,
-    // so the hash would just be a redundant, history-polluting side effect.
+    setSlugState(slug, { selected: true })
+    rowFor(slug)?.classList.add('is-active')
     rowFor(slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -144,28 +193,22 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     if (selectedSlug !== slug) {
       return
     }
-    paintPath(slug, baseStyleFor(slug))
-    setRowActive(slug, false)
+    setSlugState(slug, { selected: false })
+    rowFor(slug)?.classList.remove('is-active')
     selectedSlug = null
-  }
-
-  function rowFor(slug: string): HTMLElement | undefined {
-    return rows.find((row) => row.dataset.section === slug)
   }
 
   // The boundary popup matches the Food map's (shared buildPopupHtml): the
   // neighborhood name (linked to its page), an area chip, a writeup teaser, then
-  // resource buttons. The area + links are read off the matching list row's data
-  // attributes (set server-side).
-  function popupHtmlFor(slug: string, name: string): string {
+  // resource buttons — read off the matching list row's data attributes.
+  function popupHtmlFor(slug: string): string {
+    const name = nameBySlug.get(slug) ?? ''
     if (!slug) {
       return `<h2>${escapeHtml(name)}</h2>`
     }
     const row = rowFor(slug)
     const area = row?.dataset.area ?? ''
     const region = row?.dataset.region ?? ''
-    // Each chip carries its section's colored dot. Parks lead with a green "Park"
-    // chip, then their region chip (e.g. "Park" + "Central Corridor").
     const chips: PopupChip[] = []
     if (row?.dataset.type === 'park') {
       chips.push({ label: 'Park', section: 'park' })
@@ -181,8 +224,6 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       row?.dataset.city && { label: 'St. Louis City', href: row.dataset.city },
     ].filter(Boolean) as PopupSource[]
 
-    // Every neighborhood has its own page (a writeup or the computed data layer),
-    // so "View more" always shows — the builder's default.
     return buildPopupHtml({
       title: name,
       link,
@@ -193,119 +234,179 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     })
   }
 
-  const bounds = L.latLngBounds([])
+  // One reused popup. Opening it for a slug re-anchors + refills it; the single
+  // instance means only one is ever open. Its close event clears the selection.
+  const popup = new maplibregl.Popup({
+    className: 'food-popup',
+    closeButton: true,
+    closeOnClick: false,
+    maxWidth: '330px',
+    // Lift the popup clear of the explored pin (which rises ~34px from its tip).
+    offset: 38,
+    focusAfterOpen: false,
+  })
+  popup.on('close', () => {
+    if (selectedSlug) {
+      deactivate(selectedSlug)
+    }
+  })
 
-  L.geoJSON(geojson, {
-    style: (feature) => {
-      const color = colorForArea(byNumber.get(Number(feature?.properties?.NHD_NUM)))
+  function openPopupFor(slug: string): void {
+    const center = centerBySlug.get(slug)
+    if (!center) {
+      return
+    }
+    popup.setLngLat(center).setHTML(popupHtmlFor(slug)).addTo(map)
+    activate(slug)
+    // Keep the popup clear of the sticky chrome + map edges (see map-shared).
+    keepPopupInView(map, () => popup.getElement() ?? undefined)
+  }
 
-      return { color, weight: 2, fillColor: color, fillOpacity: 0.1 }
-    },
-    onEachFeature: (feature, featureLayer) => {
-      const number = Number(feature.properties?.NHD_NUM)
-      const entry = byNumber.get(number)
-      const name = entry?.name ?? String(feature.properties?.NHD_NAME ?? 'Neighborhood')
-      const slug = entry?.slug ?? ''
-      const path = featureLayer as L.Path
-      const layerBounds = (featureLayer as L.Polygon).getBounds()
-      bounds.extend(layerBounds)
-      if (slug) {
-        pathBySlug.set(slug, path)
-        centerBySlug.set(slug, layerBounds.getCenter())
-        colorBySlug.set(slug, colorForArea(entry))
+  function togglePopupFor(slug: string): void {
+    if (selectedSlug === slug) {
+      popup.remove()
+    } else {
+      openPopupFor(slug)
+    }
+  }
+
+  // Add (or re-add, after a theme-driven setStyle) the boundary source + fill/line
+  // layers. fill/line opacity + width come from feature-state so hover/selection
+  // repaint on the GPU. Re-applies the current selection after a style reload.
+  function addBoundaryLayers(): void {
+    if (!map.getSource(SOURCE_ID)) {
+      map.addSource(SOURCE_ID, { type: 'geojson', data: geojson })
+    }
+    if (!map.getLayer(FILL_LAYER)) {
+      map.addLayer({
+        id: FILL_LAYER,
+        type: 'fill',
+        source: SOURCE_ID,
+        paint: {
+          'fill-color': regionColorExpression(),
+          'fill-opacity': [
+            'case',
+            ['boolean', ['feature-state', 'selected'], false],
+            0.4,
+            ['boolean', ['feature-state', 'hover'], false],
+            0.3,
+            0.1,
+          ],
+        },
+      })
+    }
+    if (!map.getLayer(LINE_LAYER)) {
+      map.addLayer({
+        id: LINE_LAYER,
+        type: 'line',
+        source: SOURCE_ID,
+        paint: {
+          'line-color': regionColorExpression(),
+          'line-width': [
+            'case',
+            ['boolean', ['feature-state', 'selected'], false],
+            4,
+            ['boolean', ['feature-state', 'hover'], false],
+            3,
+            2,
+          ],
+        },
+      })
+    }
+    // Feature-state is cleared by a style reload; restore the live selection.
+    if (selectedSlug) {
+      setSlugState(selectedSlug, { selected: true })
+    }
+  }
+
+  // Explored neighborhoods (a writeup exists) get a filled, clickable region-colored
+  // pin marker that opens their popup; unexplored ones have none, so clicks fall
+  // through to the polygon.
+  function addExploredMarkers(): void {
+    for (const [slug, ids] of slugToFeatureIds) {
+      if (ids.length === 0) {
+        continue
+      }
+      const explored = rowFor(slug)?.classList.contains('is-written') ?? false
+      if (!explored) {
+        continue
+      }
+      const center = centerBySlug.get(slug)
+      if (!center) {
+        continue
+      }
+      const region = regionKeyBySlug.get(slug) ?? 'central'
+      const color = regionColors[region]
+
+      const element = document.createElement('div')
+      element.className = 'neighborhood-marker'
+      // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke (which
+      // sits half-outside the path edge) isn't clipped; the tip at path (12,32)
+      // lands at pixel (14,34) in the padded box.
+      element.innerHTML = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="${color}" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
+      // Keep the pin body so it recolors alongside the polygons on a theme swap.
+      const pinBody = element.querySelector('.marker-pin-body')
+      if (pinBody) {
+        pinBodyBySlug.set(slug, pinBody)
       }
 
-      featureLayer.bindPopup(popupHtmlFor(slug, name), {
-        className: 'food-popup',
-        maxWidth: 330,
-        minWidth: 210,
-        // Lift the popup clear of the marker (the explored pin rises ~34px from
-        // its tip), so it floats above it instead of covering it.
-        offset: [0, -38],
-        autoPanPaddingTopLeft,
-        autoPanPaddingBottomRight,
+      new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(center).addTo(map)
+
+      element.addEventListener('click', (event) => {
+        event.stopPropagation()
+        openPopupFor(slug)
       })
-      featureLayer.on('popupopen', () => {
-        if (!slug) {
-          return
-        }
-        activate(slug)
-        // Keep the popup clear of the sticky chrome + map edges (see map-shared).
-        keepPopupInView(map, () => featureLayer.getPopup()?.getElement() ?? undefined)
-      })
-      featureLayer.on('popupclose', () => {
-        if (slug) {
-          deactivate(slug)
-        }
-      })
-      featureLayer.on('mouseover', () => {
+      // Hovering the marker previews its boundary, like hovering the polygon.
+      element.addEventListener('mouseenter', () => {
         if (slug !== selectedSlug) {
-          path.setStyle(hoverStyle)
+          setSlugState(slug, { hover: true })
         }
       })
-      featureLayer.on('mouseout', () => {
-        path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
+      element.addEventListener('mouseleave', () => {
+        setSlugState(slug, { hover: false })
       })
+    }
+  }
 
-      // Centered boundary badge. Explored neighborhoods (a writeup exists) get a
-      // filled, clickable region-colored marker that opens their popup — an obvious
-      // tap target; unexplored ones keep a quiet, non-interactive number so clicks
-      // fall through to the polygon. A merged neighborhood can show a range (e.g.
-      // Dogtown → "41-44"); the box widens to fit it.
-      if (Number.isFinite(number)) {
-        const badge = entry && 'numberLabel' in entry ? entry.numberLabel : String(number)
-        const width = Math.max(26, (badge?.length ?? 1) * 11)
-        const explored = Boolean(slug) && (rowFor(slug)?.classList.contains('is-written') ?? false)
-
-        if (explored) {
-          const color = colorForArea(entry)
-          const marker = L.marker(layerBounds.getCenter(), {
-            icon: L.divIcon({
-              className: 'neighborhood-marker',
-              // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke
-              // (which sits half-outside the path edge) isn't clipped; the tip at
-              // path (12,32) lands at pixel (14,34) in the padded box.
-              html: `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="${color}" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`,
-              iconSize: [28, 36],
-              iconAnchor: [14, 34],
-            }),
-            title: name,
-            riseOnHover: true,
-          }).addTo(map)
-          // Anchor the popup to the pin (the polygon's own center can differ from
-          // the marker's), so it sits directly above the marker.
-          marker.on('click', () => featureLayer.openPopup(marker.getLatLng()))
-          // Hovering the marker previews its boundary, like hovering the polygon.
-          marker.on('mouseover', () => {
-            if (slug !== selectedSlug) {
-              path.setStyle(hoverStyle)
-            }
-          })
-          marker.on('mouseout', () => {
-            path.setStyle(slug === selectedSlug ? selectedStyleFor(slug) : baseStyleFor(slug))
-          })
-        } else if (!entry?.type) {
-          // Only standard numbered city neighborhoods get a number badge — parks
-          // and county municipalities aren't numbered, so they show none.
-          // L.marker(layerBounds.getCenter(), {
-          //   icon: L.divIcon({
-          //     className: 'neighborhood-number',
-          //     html: badge,
-          //     iconSize: [width, 20],
-          //     iconAnchor: [width / 2, 10],
-          //   }),
-          //   interactive: false,
-          //   keyboard: false,
-          // }).addTo(map)
-        }
+  // Boundary hover (feature-state) + click-to-open. A single map-level click opens
+  // the boundary under the pointer or, on empty space, closes the popup.
+  function addBoundaryInteractions(): void {
+    map.on('mousemove', FILL_LAYER, (event) => {
+      const feature = event.features?.[0]
+      if (feature?.id === undefined) {
+        return
       }
-    },
-  }).addTo(map)
+      const id = feature.id as number
+      if (hoveredId !== null && hoveredId !== id) {
+        map.setFeatureState({ source: SOURCE_ID, id: hoveredId }, { hover: false })
+      }
+      hoveredId = id
+      const slug = String(feature.properties?.slug ?? '')
+      if (slug !== selectedSlug) {
+        map.setFeatureState({ source: SOURCE_ID, id }, { hover: true })
+      }
+      map.getCanvas().style.cursor = 'pointer'
+    })
+    map.on('mouseleave', FILL_LAYER, () => {
+      if (hoveredId !== null) {
+        map.setFeatureState({ source: SOURCE_ID, id: hoveredId }, { hover: false })
+      }
+      hoveredId = null
+      map.getCanvas().style.cursor = ''
+    })
+    map.on('click', (event) => {
+      const hits = map.queryRenderedFeatures(event.point, { layers: [FILL_LAYER] })
+      const slug = hits.length ? String(hits[0].properties?.slug ?? '') : ''
+      if (slug) {
+        openPopupFor(slug)
+      } else {
+        popup.remove()
+      }
+    })
+  }
 
-  // The row title links to the neighborhood's page. In the reading (list) view we
-  // let that link navigate; in map view we intercept the click to open that
-  // neighborhood's popup instead (highlighting its boundary + scrolling the row
-  // up), and clicking the open one again closes it.
+  // The row title links to the neighborhood's page. In map view we intercept the
+  // click to open/close that neighborhood's popup instead of navigating.
   const split = document.querySelector('[data-map-split]')
   for (const row of rows) {
     const slug = row.dataset.section
@@ -319,45 +420,51 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         return
       }
       event.preventDefault()
-      const path = pathBySlug.get(slug)
-      if (!path) {
-        return
-      }
-      if (selectedSlug === slug) {
-        path.closePopup()
-      } else {
-        path.openPopup(centerBySlug.get(slug))
-      }
+      togglePopupFor(slug)
     })
   }
 
-  // Deep-link support: /neighborhoods#slug selects that neighborhood on load, so
-  // the "View on the neighborhood map" links (and any backlinks) highlight its
-  // boundary and frame it on the map. Otherwise frame the whole City of St. Louis.
+  // Deep-link support: /neighborhoods#slug selects + frames that neighborhood on
+  // load; otherwise frame the whole City of St. Louis.
   function frameInitialView(): void {
     const initialSlug = location.hash.slice(1)
-    if (initialSlug && pathBySlug.has(initialSlug)) {
+    if (initialSlug && slugToFeatureIds.has(initialSlug)) {
       activate(initialSlug)
-      const selectedBounds = (pathBySlug.get(initialSlug) as L.Polygon | undefined)?.getBounds()
+      const selectedBounds = boundsBySlug.get(initialSlug)
       if (selectedBounds) {
-        map.fitBounds(selectedBounds, { padding: [40, 40], animate: false, maxZoom: 13 })
+        // Instant on initial load — no fly-in.
+        map.fitBounds(selectedBounds, { padding: 40, maxZoom: 13, animate: false })
       }
     } else {
       // Frame the whole city, then zoom in half a level for a tighter default view.
-      map.fitBounds(bounds, { padding: [10, 10], animate: false })
-      map.setZoom(map.getZoom() + 0.5, { animate: false })
-      // Bias the view ~10% south: the far-north tip is a long, thin neighborhood we
-      // don't need centered, so drop it off the top and pull more of South City in.
-      const visibleLatSpan = map.getBounds().getNorth() - map.getBounds().getSouth()
+      // Instant on initial load — no fly-in. (setZoom/setCenter below are jumps.)
+      map.fitBounds(cityBounds, { padding: 10, animate: false })
+      map.setZoom(map.getZoom() + 0.5)
+
+      const visibleBounds = map.getBounds()
+      const visibleLatSpan = visibleBounds.getNorth() - visibleBounds.getSouth()
+      const visibleLngSpan = visibleBounds.getEast() - visibleBounds.getWest()
       const center = map.getCenter()
-      map.setView([center.lat - visibleLatSpan * 0.1, center.lng], map.getZoom(), { animate: false })
+
+      // Bias ~10% south: the far-north tip is a long, thin neighborhood we don't need
+      // centered, so drop it off the top and pull more of South City in.
+      const biasedLat = center.lat - visibleLatSpan * 0.1
+
+      // Pull the view west so the Mississippi (the city's east edge) sits ~6% from
+      // the right edge, rather than framing empty Illinois on a wide pane. Math.min
+      // means we only ever shift WEST — a narrow/mobile viewport that already fits
+      // the city tightly (little horizontal slack) is left centered as-is.
+      const riverEdge = cityBounds.getEast()
+      const westBiasedLng = riverEdge + visibleLngSpan * 0.06 - visibleLngSpan / 2
+      const biasedLng = Math.min(center.lng, westBiasedLng)
+
+      map.setCenter([biasedLng, biasedLat])
     }
   }
 
-  // On mobile the page now opens on the reading pane, so the map starts hidden and
-  // Leaflet would measure a zero-size container. Only frame once it actually has a
-  // size; if it's hidden at load, wait for the first switch to the map pane, then
-  // re-measure and frame. Desktop (both panes always visible) frames immediately.
+  // On mobile the page opens on the reading pane, so the map starts hidden and
+  // would measure a zero-size container. Only frame once it actually has a size; if
+  // it's hidden at load, wait for the first switch to the map pane, then re-measure.
   let framed = false
   function frameWhenSized(): void {
     if (framed || element.clientHeight === 0) {
@@ -372,11 +479,34 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       if (split.getAttribute('data-view') !== 'map') {
         return
       }
-      map.invalidateSize()
+      map.resize()
       frameWhenSized()
     })
     observer.observe(split, { attributes: true, attributeFilter: ['data-view'] })
   }
 
-  frameWhenSized()
+  map.on('load', () => {
+    addBoundaryLayers()
+    addBoundaryInteractions()
+    addExploredMarkers()
+    // A theme swap carries the boundary source/layers onto the new style via
+    // transformStyle (see basemap.ts); once it lands, recolor the boundaries + pins
+    // from the new theme's CSS map-color tokens (the paint/SVG had the old values).
+    watchThemeChanges(map, () => {
+      regionColors = readRegionColors()
+      if (map.getLayer(FILL_LAYER)) {
+        map.setPaintProperty(FILL_LAYER, 'fill-color', regionColorExpression())
+      }
+      if (map.getLayer(LINE_LAYER)) {
+        map.setPaintProperty(LINE_LAYER, 'line-color', regionColorExpression())
+      }
+      for (const [slug, pinBody] of pinBodyBySlug) {
+        const region = regionKeyBySlug.get(slug)
+        if (region) {
+          pinBody.setAttribute('fill', regionColors[region])
+        }
+      }
+    })
+    frameWhenSized()
+  })
 }

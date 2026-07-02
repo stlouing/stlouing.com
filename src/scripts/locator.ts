@@ -1,80 +1,48 @@
-import 'leaflet/dist/leaflet.css'
-import * as L from 'leaflet'
-import { addThemedTiles } from './tiles'
+import maplibregl from 'maplibre-gl'
+import { createBasemapMap, watchThemeChanges } from './basemap'
 
-// A filled accent map-pin (Lucide's outline pin, solid). CSS variables resolve
-// against :root once it's in the DOM, so it themes with dark mode for free.
+// The same teardrop pin the neighborhood map uses (shared .marker-pin styles for
+// the ring + dot + shadow), but the body is accent. The fill goes in a `style`
+// attribute (not the `fill` presentation attribute) because var() only resolves in
+// a CSS context — so it themes with dark mode and never falls back to invisible.
 const PIN_SVG =
-  '<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">' +
-  '<path fill="var(--color-accent)" d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>' +
-  '<circle fill="var(--color-background)" cx="12" cy="10" r="3"/></svg>'
+  '<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true">' +
+  '<path class="marker-pin-body" style="fill:var(--color-accent)" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" />' +
+  '<circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>'
 
 // Turn a placeholder box into a small "where is it" map: the themed basemap
-// centered on one pin. Page-scroll zoom is off so it never hijacks scrolling; the
-// full filterable map lives at /food. Skips silently without valid coords.
+// centered on one pin. The full filterable map lives at /food. Skips silently
+// without valid coords.
 export function initLocator(el: HTMLElement): void {
+  // Rows store "lat,lng" (Leaflet's order); MapLibre wants [lng, lat].
   const [lat, lng] = (el.dataset.coords ?? '').split(',').map(Number)
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
     return
   }
 
-  // Pannable/zoomable so a reader can get their bearings, but with page-scroll
-  // zoom off so hovering it never hijacks the page scroll. The full filterable
-  // map lives at /food.
-  const map = L.map(el, {
-    center: [lat, lng],
-    zoom: 15,
+  const map = createBasemapMap(el, {
+    center: [lng, lat],
+    // Zoomed out enough to place the spot in its surroundings, not just a few
+    // blocks (a "where is it" view, not a street close-up).
+    zoom: 12,
     minZoom: 11,
     maxZoom: 17,
-    scrollWheelZoom: false,
+    // A plain scroll or one-finger drag moves the PAGE, not the map; two fingers
+    // (or ⌘/ctrl + scroll) pan/zoom it, with a hint overlay. MapLibre's built-in
+    // replacement for the old hand-rolled two-finger gesture gating, so a locator
+    // sitting inline in a scrolling page never traps the reader.
+    cooperativeGestures: true,
+    // Small map: collapse the required OSM/Protomaps credit to the "ⓘ" toggle
+    // rather than a wide line across the bottom.
+    attributionControl: { compact: true },
   })
-  // Keep the required OSM/Protomaps credit + zoom control clear of the top-left
-  // neighborhood tag: credit along the bottom, zoom moved to the top-right.
-  map.attributionControl.setPosition('bottomleft')
-  map.zoomControl.setPosition('topright')
-  addThemedTiles(map)
+  watchThemeChanges(map)
 
-  const icon = L.divIcon({
-    className: 'locator-pin',
-    html: PIN_SVG,
-    iconSize: [28, 28],
-    iconAnchor: [14, 26],
-  })
-  L.marker([lat, lng], { icon, interactive: false, keyboard: false }).addTo(map)
-
-  // On touch devices the locator sits inline in a scrolling page, so a one-finger
-  // drag should scroll the page past the map — not get trapped panning it. Gate
-  // dragging behind a two-finger gesture (pinch-zoom already needs two fingers),
-  // and flash a hint when a single finger lands on the map.
-  if (L.Browser.mobile) {
-    map.dragging.disable()
-
-    const hint = document.createElement('div')
-    hint.className = 'map-gesture-hint'
-    hint.textContent = 'Use two fingers to move the map'
-    el.appendChild(hint)
-
-    el.addEventListener(
-      'touchstart',
-      (event) => {
-        if (event.touches.length >= 2) {
-          map.dragging.enable()
-          el.classList.remove('is-gesture-hint')
-        } else {
-          map.dragging.disable()
-          el.classList.add('is-gesture-hint')
-        }
-      },
-      { passive: true },
-    )
-
-    el.addEventListener('touchend', (event) => {
-      if (event.touches.length < 2) {
-        map.dragging.disable()
-      }
-      if (event.touches.length === 0) {
-        el.classList.remove('is-gesture-hint')
-      }
-    })
-  }
+  // Non-interactive accent pin at the spot (pointer-events off so it never eats a
+  // gesture meant for the map).
+  const element = document.createElement('div')
+  element.className = 'locator-pin'
+  element.style.pointerEvents = 'none'
+  element.innerHTML = PIN_SVG
+  new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map)
 }

@@ -33,7 +33,9 @@ This site is the source of truth, and I'll automatically publish to these other 
 - **GitHub** - [stlouing](https://github.com/stlouing)
 - [**RSS**](/rss.xml)
 
-## Ideas and Brainstorming
+## Ideas
+
+Just some thoughts I'm mulling on.
 
 - Things to do in St. Louis
 - Like and Dislikes of STL
@@ -49,8 +51,8 @@ A few open-source projects this site relies on.
 
 - **Host** - [Github Pages](https://docs.github.com/en/pages)
 - **Web Framework** - [Astro](https://astro.build)
-- **Maps** - [Leaflet](https://leafletjs.com) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
-  - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) object hosting to prevent relying on third-party CDNs.
+- **Maps** - [MapLibre GL](https://maplibre.org) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
+  - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) to prevent relying on third-party CDNs.
 - **Icons** - [Lucide](https://lucide.dev/icons)
 - **Forms** - [Formspree](https://formspree.io)
 - **Analytics** - [GoatCounter](https://www.goatcounter.com)

@@ -140,7 +140,7 @@ const metaDescription = entry?.body
 const tagline = entry?.data.description
 let seoTitle: string | undefined
 if (info) {
-  const cityLeaf = `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis neighborhood'}`
+  const cityLeaf = `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis Neighborhood'}`
   seoTitle = tagline ? `${cityLeaf} - ${tagline}` : cityLeaf
 }
 

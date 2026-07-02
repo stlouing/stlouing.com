@@ -1,8 +1,7 @@
 ---
 // An inline locator map for a food page. Renders a server-side placeholder box;
-// the Leaflet + tiles chunk (~78 KB) is imported only when the box nears the
-// viewport, so a cold landing that never scrolls to it pays nothing. Renders
-// nothing without coordinates.
+// the MapLibre chunk is imported only when the box nears the viewport, so a cold
+// landing that never scrolls to it pays nothing. Renders nothing without coords.
 interface Props {
   coords?: [number, number]
   label?: string
@@ -50,9 +49,9 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
     overflow: hidden;
   }
 
-  /* The neighborhood tag, above Leaflet's panes and out of its container so
-     initializing the map doesn't disturb it. Top-left, clear of the bottom
-     attribution bar (the zoom control is moved to the top-right to match). */
+  /* The neighborhood tag, above the map's controls and out of its container so
+     initializing the map doesn't disturb it. Top-left, clear of the bottom credit
+     (the zoom control is moved to the top-right to match). */
   .food-locator-tag {
     position: absolute;
     z-index: 500;
@@ -70,16 +69,35 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
 </style>
 
 <script>
-  // The locator is pinned at the top of the sidebar, so it's always in view —
-  // no need to defer on scroll. Just load the map chunk and upgrade each
-  // placeholder. It stays a dynamic import so Leaflet + tiles are kept out of
-  // the page's main bundle.
-  const boxes = document.querySelectorAll<HTMLElement>('[data-food-locator]')
+  // Upgrade each placeholder into a map. MapLibre is a heavy dependency, so defer
+  // the dynamic import until the locator nears the viewport (and keep it out of the
+  // page's main bundle). It's a dynamic import so it never lands in the main chunk.
+  const boxes = [...document.querySelectorAll<HTMLElement>('[data-food-locator]')]
+
   if (boxes.length) {
-    import('../scripts/locator').then(({ initLocator }) => {
+    const upgrade = (box: HTMLElement) => {
+      import('../scripts/locator').then(({ initLocator }) => initLocator(box))
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              obs.unobserve(entry.target)
+              upgrade(entry.target as HTMLElement)
+            }
+          }
+        },
+        { rootMargin: '200px' },
+      )
       for (const box of boxes) {
-        initLocator(box)
+        observer.observe(box)
       }
-    })
+    } else {
+      for (const box of boxes) {
+        upgrade(box)
+      }
+    }
   }
 </script>

@@ -30,6 +30,12 @@ import IconHeart from '../assets/IconHeart.astro'
     font-weight: 500;
   }
 
+  /* The heart in accent (the global `.icon` rule colors it muted otherwise; the
+     icon sets its own color, so target it directly). */
+  .footer-tagline :global(.icon) {
+    color: var(--color-accent);
+  }
+
   .footer-inner {
     display: flex;
     flex-wrap: wrap;

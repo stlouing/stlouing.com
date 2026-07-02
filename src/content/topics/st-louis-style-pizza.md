@@ -98,7 +98,7 @@ Loosely based on a recipe posted on reddit by [HouseofProvel](https://www.reddit
 
 I thought it came out pretty good, though I'd make some changes if I do it again. I made the crust with butter because I like butter, but shortening would be better for a crispier, lighter crust. I'd add slightly more sweetness to the sauce, and I'd use a little more yeast in the crust.
 
-## My ratings
+## My Ratings
 
 <figure class="figure right">
 
@@ -122,7 +122,7 @@ Here's a subjective rated list of the places I've tried. I would say the top thr
 
 So I've tried a variety of fan favorites around the city, but I'm always open to new suggestions. A few I have yet to try are Affton Pizza Company, Angelo's, Kevin's Place, and plenty more.
 
-## What do I Think?
+## What Do I Think?
 
 <figure class="figure left">
 

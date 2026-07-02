@@ -17,10 +17,8 @@ pick:
   emoji: 🍖
 ---
 
-This is our go-to spot for Middle Eastern food. Specifically, the beef kefta kabob is flavorful, tender, juicy, and just fantastic. Everything else is good, too - the saffron rice garnished with pomegranite, the spiced lentil soup topped with cracked black pepper, and especially the baba ganoush, my favoreite in the city.
+This is our go-to spot for Middle Eastern food. Specifically, the beef kefta kabob is flavorful, tender, juicy, and just fantastic. Everything else is good, too - the saffron rice garnished with pomegranite, the spiced lentil soup topped with cracked black pepper, and especially the baba ganoush, my favorite in the city.
 
-Water, tea, and beverages are served in traditional Turkish style cups and caraffes, which adds a nice touch. The ambiance is great and the place has been full every time I've visited, and the food has been incredibly fresh.
-
-They also have a mint lemonade that is the perfect balance of mint, lemon, and sweetness.
+Water, tea, and beverages are served in traditional Turkish style cups and caraffes, which adds a nice touch. The ambiance is great and the place has been full every time I've visited, and the food has been incredibly fresh. They also have a mint lemonade that is the perfect balance of mint, lemon, and sweetness.
 
 This is one of my absolute top spots in the city, it has been consistently amazing on every visit.
