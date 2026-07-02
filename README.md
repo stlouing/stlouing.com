@@ -1,6 +1,6 @@
 # St. Louing
 
-- [stlouing.com](https://stlouing.com)
+[stlouing.com](https://stlouing.com)
 
 A personal website documenting the food, neighborhoods, and culture of St. Louis.
 
