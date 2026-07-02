@@ -5,12 +5,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
-import { resolveVerdict } from '../lib/verdict'
 import { formatDateShort } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
 import TopicIcon from '../components/TopicIcon.astro'
+import FleurDeLis from '../assets/FleurDeLis.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconUtensils from '../assets/IconUtensils.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
@@ -57,28 +57,26 @@ const countByPath: Record<string, string> = {
   '/neighborhoods': `${neighborhoodCount} explored`,
 }
 
-// "By the numbers" stats (right of "Start here").
-const lovedCount = allFood.filter((place) => resolveVerdict(place.data) === 'loved').length
-const topicCount = allTopics.length
-const stats = [
-  { value: foodCount, label: 'food spots mapped' },
-  { value: topicCount, label: 'topics written' },
-  { value: lovedCount, label: 'spots loved' },
-]
-
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
 
 <BaseLayout jsonLd={website}>
   <header class="h-card index-header">
     <h1 class="page-title">St. Louing <span>since 2023</span></h1>
-    <p class="tagline p-note">{tagline}</p>
-    <p class="introduction">
-      {intro}
-      <a class="more inline" href={href('/about')} aria-label="Read more about St. Louing">
-        Read more <IconArrowRight />
-      </a>
-    </p>
+    <div class="index-body">
+      <div class="index-intro">
+        <p class="tagline p-note">{tagline}</p>
+        <p class="introduction">
+          {intro}
+          <a class="more inline" href={href('/about')} aria-label="Read more about St. Louing">
+            Read more <IconArrowRight />
+          </a>
+        </p>
+      </div>
+      <div class="index-crest">
+        <FleurDeLis class="index-crest-img" />
+      </div>
+    </div>
     {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
     <span class="p-name" hidden>St. Louing</span>
     <a class="u-url" href={href('/')} hidden>stlouing.com</a>
@@ -186,6 +184,42 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-bottom: var(--spacing-xl);
   }
 
+  /* The title spans the full width on top; below it, the tagline + intro copy on
+     the left and the crest on the right, with the crest vertically centered
+     against that below-the-title block (not the title itself). */
+  .index-body {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-xl);
+  }
+
+  .index-intro {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* A right-hand column wider than the crest so the crest sits centered within
+     it rather than hugging the edge. The flag's yellow and blue are fixed brand
+     colors, so the crest stays as-is in dark mode. */
+  .index-crest {
+    flex-shrink: 0;
+    justify-self: center;
+    width: clamp(80px, 12vw, 80px);
+    margin: 0 var(--spacing-lg);
+  }
+
+  .index-crest-img {
+    width: clamp(48px, 10vw, 60px);
+    height: auto;
+  }
+
+  /* Hidden on narrow screens — there's no right-hand column to sit in. */
+  @media (max-width: 34rem) {
+    .index-crest {
+      display: none;
+    }
+  }
+
   .tagline {
     margin-block: var(--spacing-xs) 0;
     font-size: var(--font-size-lg);
@@ -241,107 +275,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   /* Keep the arrow the same accent color as the link text. */
   .group-header .all :global(.icon) {
     color: inherit;
-  }
-
-  .intro-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: var(--spacing-lg);
-    margin-block: 0 var(--spacing-xl);
-  }
-
-  /* A wayfinding callout for first-time visitors landing from search: the accent
-     left edge + accent mono label match the site's other callouts (TOC, quotes). */
-  .start-here {
-    /* Hug the content rather than stretching across the full column, which left a
-       lot of dead space to the right of the short list. */
-    width: fit-content;
-    max-width: 100%;
-    padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md) var(--spacing-base);
-    border: 1px solid var(--color-line);
-    border-inline-start: 3px solid var(--color-accent);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-  }
-
-  .start-here-title {
-    margin: 0 0 var(--spacing-md);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
-  }
-
-  .start-here-steps {
-    margin: 0;
-    padding-inline-start: 1.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    font-size: var(--font-size-md);
-    line-height: 1.3;
-  }
-
-  /* Drop the global `li + li` spacing so the rows sit closer; the small flex gap
-     is the only space between them. */
-  .start-here-steps li {
-    margin: 0;
-  }
-
-  .start-here-steps li::marker {
-    color: var(--color-accent);
-    font-family: var(--font-mono);
-    font-weight: 700;
-  }
-
-  /* Each step is a row: emoji, label, then an arrow that slides in on hover. The
-     whole row tints with a faint accent wash and nudges right on hover. */
-  .start-here-steps a {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    margin-inline-start: calc(-1 * var(--spacing-sm));
-    border-radius: var(--radius);
-    color: var(--color-text);
-    text-decoration: none;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease;
-  }
-
-  /* Arrow pinned to the row's end, hidden until hover, then fades + slides in.
-     Its slot is reserved (opacity/transform only), so the label never shifts. */
-  .start-here-steps a :global(.icon) {
-    width: 1rem;
-    height: 1rem;
-    margin-inline-start: auto;
-    color: var(--color-accent);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition:
-      opacity 0.15s ease,
-      transform 0.15s ease;
-  }
-
-  .start-here-steps a:hover {
-    color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
-  }
-
-  .start-here-steps a:hover :global(.icon) {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .start-here-steps a,
-    .start-here-steps a :global(.icon) {
-      transition: none;
-    }
   }
 
   .directory {

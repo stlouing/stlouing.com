@@ -1,6 +1,6 @@
 ---
-title: The Great Divorce of St. Louis
-description: The city-county split that divides the region
+title: The Great Divorce
+description: The city-county split that divides St. Louis
 created: 2026-06-29
 updated: 2026-06-29
 ---

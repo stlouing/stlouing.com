@@ -1,6 +1,6 @@
 ---
 title: St. Louis Field Notes
-description: What I've learned about the Gateway to the West so far
+description: What I've learned about the Gateway to the West
 created: 2026-05-28
 updated: 2026-06-29
 ---
@@ -27,7 +27,7 @@ There is no "East County", as that would be St. Louis City. However, the area ea
 
 ## Brick and architecture
 
-One thing to get used to in St. Louis is how red everything is. St. Louis was once the [largest brick producer in the world](https://blog.stlouisbank.com/the-bricks-that-built-st-louis/), due to innovations in brickmaking combined with the abundance of clay in the region, and that legacy really shows all throughout the city.
+One thing to get used to in St. Louis is how red everything is. St. Louis was once the [largest brick producer in the world](https://blog.stlouisbank.com/the-bricks-that-built-st-louis/), due to innovations in brickmaking combined with the abundance of clay in the region, and that legacy really shows all throughout the city. The site [Built St. Louis](https://www.builtstlouis.net/) is an incredible resource for everything architecture and history related.
 
 Many homes throughout the city are early 20th century brick-built homes, and entire historic neighborhoods are preserved in this style, such as Shaw and Lafayette Square.
 
