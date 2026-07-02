@@ -1,8 +1,4 @@
 // Shared builder for the two map popups (food markers + neighborhood boundaries).
-// Both render the same card — a linked title, a chip row, an optional address,
-// a writeup teaser, a ruled "View more", and a row of outlined source buttons —
-// using the site's shared `.chip` / `.btn` classes. The markup is injected via
-// Leaflet's popup `innerHTML`, so all text is escaped here.
 
 // Escape text before it goes into a popup's innerHTML.
 export function escapeHtml(value: string): string {

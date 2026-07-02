@@ -13,8 +13,6 @@ import type { MapApi } from './map'
  *   is built lazily the first time it's shown, so mobile never loads it just to
  *   swap back to the list.
  *
- * In every case the map is created lazily the first time the map is shown (so
- * Leaflet measures a visible container) and re-synced on later switches.
  */
 const VIEW_STORAGE_KEY = 'list-map-view'
 const DESKTOP_QUERY = '(min-width: 701px)'

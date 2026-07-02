@@ -204,9 +204,6 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     writeUrl()
   })
 
-  // Controls that set a facet value when clicked — a cuisine pill or neighborhood
-  // label on the list, or the chip/pin inside a map popup. Delegated on the root
-  // (not bound per element) so it also catches popup chips Leaflet inserts later.
   root.addEventListener('click', (event) => {
     const setter = (event.target as HTMLElement).closest<HTMLElement>('[data-filter-set]')
     if (!setter) {

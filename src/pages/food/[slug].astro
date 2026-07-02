@@ -307,9 +307,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    /* Contain the map's high Leaflet z-indexes in their own stacking context so
-       the sticky sidebar scrolls behind the site header (z-index 100), not over
-       it. */
     isolation: isolate;
   }
 

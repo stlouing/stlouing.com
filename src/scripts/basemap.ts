@@ -66,9 +66,6 @@ export function buildBasemapStyle(dark = isDarkTheme()): StyleSpecification {
   }
 }
 
-// Create the map with the shared basemap and site-appropriate defaults (north-up,
-// no rotation/pitch — a flat map like the old Leaflet one). Callers pass zoom
-// bounds and any container-specific options.
 export function createBasemapMap(
   container: HTMLElement,
   options: Partial<MapOptions> = {},
