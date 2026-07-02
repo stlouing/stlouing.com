@@ -49,6 +49,10 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
 
   let viewInitialized = false
   let activeItem: HTMLElement | null = null
+  // Set when a list click pans the map before opening: the keep-in-view nudge must
+  // then wait for that pan to finish (running it mid-pan fights the animation and
+  // lands wrong — the flaky "click twice"). Cleared when the nudge is scheduled.
+  let deferKeepInView = false
 
   // The open popup is the single source of truth for selection: the popup's
   // open/close events mirror that state onto the list row (and the marker's accent
@@ -164,8 +168,15 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       }
       activate(item)
       // Keep the whole popup on-screen (below the sticky chrome, clear of the map
-      // edges); MapLibre popups don't auto-pan.
-      keepPopupInView(map, () => popup.getElement() ?? undefined)
+      // edges); MapLibre popups don't auto-pan. If a list click is panning the map
+      // to this marker, wait for that pan to end so the nudge doesn't fight it.
+      const getPopupEl = () => popup.getElement() ?? undefined
+      if (deferKeepInView) {
+        deferKeepInView = false
+        map.once('moveend', () => keepPopupInView(map, getPopupEl))
+      } else {
+        keepPopupInView(map, getPopupEl)
+      }
     })
     popup.on('close', () => deactivate(item))
 
@@ -226,7 +237,19 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // Open/close a place's popup on demand (the shared list-title click handler in
   // views.ts calls this in map view). togglePopup mirrors the marker's own click.
   function togglePopup(item: HTMLElement): void {
-    markers.get(item)?.togglePopup()
+    const marker = markers.get(item)
+    if (!marker) {
+      return
+    }
+    // Opening from the list: always center the marker (MapLibre, unlike Leaflet,
+    // won't auto-pan to the popup). Centering every time — not just when it's fully
+    // off-screen — also keeps a marker near an edge or under the sticky header from
+    // opening its popup hidden. The keep-in-view nudge is deferred to after the pan.
+    if (activeItem !== item) {
+      deferKeepInView = true
+      map.easeTo({ center: marker.getLngLat() })
+    }
+    marker.togglePopup()
   }
 
   function deselect(): void {

@@ -254,22 +254,40 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
   })
 
-  function openPopupFor(slug: string): void {
+  function openPopupFor(slug: string, deferKeepInView = false): void {
     const center = centerBySlug.get(slug)
     if (!center) {
       return
     }
     popup.setLngLat(center).setHTML(popupHtmlFor(slug)).addTo(map)
     activate(slug)
-    // Keep the popup clear of the sticky chrome + map edges (see map-shared).
-    keepPopupInView(map, () => popup.getElement() ?? undefined)
+    // Keep the popup clear of the sticky chrome + map edges (see map-shared). When a
+    // list click is panning to this neighborhood, wait for the pan to end so the
+    // nudge doesn't fight the animation.
+    const getPopupEl = () => popup.getElement() ?? undefined
+    if (deferKeepInView) {
+      map.once('moveend', () => keepPopupInView(map, getPopupEl))
+    } else {
+      keepPopupInView(map, getPopupEl)
+    }
   }
 
   function togglePopupFor(slug: string): void {
     if (selectedSlug === slug) {
       popup.remove()
     } else {
-      openPopupFor(slug)
+      // Opening from the list: always center the neighborhood (MapLibre won't
+      // auto-pan to the popup like Leaflet did). Centering every time — not just
+      // when it's fully off-screen — also keeps one near an edge or under the
+      // sticky header from opening its popup hidden. The keep-in-view nudge is
+      // deferred to after the pan so the two don't fight (the flaky "click twice").
+      const center = centerBySlug.get(slug)
+      if (center) {
+        map.easeTo({ center })
+        openPopupFor(slug, true)
+      } else {
+        openPopupFor(slug)
+      }
     }
   }
 

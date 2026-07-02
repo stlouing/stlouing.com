@@ -892,7 +892,7 @@ body:has(.map-split) main > .wrap,
 @media screen and (min-width: 1000px) {
   [data-view='map'] .results,
   .map-split .results {
-    grid-template-columns: 450px 1fr;
+    grid-template-columns: 480px 1fr;
   }
 }
 
