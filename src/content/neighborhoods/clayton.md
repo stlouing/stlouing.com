@@ -20,7 +20,7 @@ attractions:
   - name: Oak Knoll Park
     description: A quiet park known for its native post oaks and historic stone mansions.
   - name: County Seat & Business District
-    description: A high-rise downtown that houses St. Louis County government and much of the region's business.
+    description: A high-rise downtown that houses St. Louis County government.
 ---
 
 Clayton is the second downtown region of St. Louis.

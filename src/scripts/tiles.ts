@@ -52,6 +52,21 @@ export function addThemedTiles(map: L.Map): void {
       maxDataZoom: protomapsMaxDataZoom,
       attribution: protomapsAttribution,
       devicePixelRatio: renderDevicePixelRatio,
+      // Every zoom step re-rasterizes the vector basemap onto GPU-accelerated
+      // canvases; a burst of zooming stacks those up until a high-refresh /
+      // large-display / flaky-driver machine's GPU process dies (freezing the
+      // tab across Chrome, Firefox, and Edge alike). These two GridLayer options
+      // — leafletLayer extends L.GridLayer, so they pass straight through — cut
+      // that churn for everyone, with no visitor setting to change:
+      //   updateWhenZooming:false — during a zoom the existing tiles are just
+      //     transform-scaled and the expensive re-render runs once at zoom-END,
+      //     not on every intermediate level (tiles sharpen a beat after settling).
+      //   keepBuffer:1 (default 2) — retain fewer off-screen tile canvases, so a
+      //     rapid pan/zoom holds less GPU-canvas memory at once.
+      // (If needed, `updateInterval` can be raised from its 200ms default to
+      // batch grid updates further.)
+      updateWhenZooming: false,
+      keepBuffer: 1,
     }) as unknown as L.GridLayer
   }
 

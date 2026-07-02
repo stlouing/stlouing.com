@@ -37,4 +37,4 @@ I'm hopeful about these projects that are being implemented to help stimulate th
 
 ### Impressions
 
-Midtown does not feel very walkable - the food hall is surrounded on all sides by highways, so it's not as easy to get to as other food halls that are located right in a downtown walkable area like in Nashville or Chicago. There's a large Ikea and some large office buildings and a lot of space dedicated to parking lots.
+Midtown does not feel very walkable - the food hall is surrounded on all sides by highways, so it's not as easy to get to as other food halls that are located right in a downtown walkable area like in Nashville. There's a large Ikea and some large office buildings and a lot of space dedicated to parking lots.

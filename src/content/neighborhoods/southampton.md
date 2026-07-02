@@ -17,7 +17,7 @@ attractions:
     description: The commercial corridor along the neighborhood's western edge.
 ---
 
-Southampton is a charming neighborhood close to many bars and restaurants all along Hampton Ave, such as Mom's Deli, J.J. Twig's, Salvage Yard, and Salt & Smoke BBQ. The area is affectionately known as "SOHA". The brick-built homes in Southampton have a lot of character.
+Southampton is a charming neighborhood close to many bars and restaurants all along Hampton Ave, such as Mom's Deli, J.J. Twig's, Salvage Yard, and Salt & Smoke BBQ. The area is affectionately known as "SOHA". There are many styles of brick-built homes in Southampton have a lot of character.
 
 ### Impressions
 

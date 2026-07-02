@@ -34,4 +34,4 @@ Note that this whole highlighted neighborhood is actually called Skinker DeBaliv
 
 ### Impressions
 
-The Delmar Loop is right along the Delmar Divide, and seems to be still recovering from store closures during the Covid era. I've seen some strange and unpleasant activity along the strip at night when the restaurants are closed but people are all indoors for the concerts, so I hope restaurants like Kishimoto Mendo keep opening up along the strip and it continues to be more lively.
+The Delmar Loop is right along the Delmar Divide, and is still recovering from store closures during the Covid era. I've seen some strange and unpleasant activity along the strip at night when the restaurants are closed but people are all indoors for the concerts, so I hope restaurants like Kishimoto Mendo keep opening up along the strip and it continues to be more lively.

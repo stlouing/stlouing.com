@@ -1900,14 +1900,18 @@ body:has([data-filter-root]) .site-header {
   margin-block-start: var(--spacing-sm);
 }
 
-/* The shared .btn outline (Phase 1), stretched to share the row evenly. The
-   color is re-asserted here because Leaflet's `.leaflet-container a` (0,1,1)
+/* The shared .btn outline (Phase 1), sharing the row when they fit and wrapping
+   to the next line when they don't. `flex-basis: auto` (not the 0 that `flex: 1`
+   implies) makes each button's ideal width its real content + padding, so three
+   that can't fit wrap instead of squashing onto one line with their padding
+   crushed; `flex-shrink: 0` keeps that padding intact rather than letting a
+   too-tight row eat it; `flex-grow: 1` still stretches them to fill each line.
+   The color is re-asserted here because Leaflet's `.leaflet-container a` (0,1,1)
    would otherwise tint the link buttons its default blue. */
 .leaflet-popup.food-popup .popup-actions .btn {
-  flex: 1;
+  flex: 1 0 auto;
   justify-content: center;
   color: var(--color-text);
-  flex-shrink: 0;
 }
 
 .leaflet-popup.food-popup .popup-actions .btn:hover {

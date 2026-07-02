@@ -23,4 +23,4 @@ Dogtown is an unofficial neighborhood made up of four city neighborhoods: Chelte
 
 ### Impressions
 
-I haven't spent much time in Dogtown yet, but I've been to a few restaurants, like Hi-Pointe, [[failonis|Failoni's]], Seamus McDaniels, and Mac's Local Eats. My impression was that it's a place with a tight-knit working class neighborhood feel and a few local bars and restaurants. It's also close to Forest Park, so I can see that being a big benefit for the locals.
+I haven't spent much time in Dogtown yet, but I've been to a few restaurants, like Hi-Pointe, [[failonis|Failoni's]], Seamus McDaniels, and Mac's Local Eats. My impression was that it's a place with a tight-knit working class neighborhood feel and a few local bars and restaurants. It's also close to Forest Park, which would be a big pro if you lived in this area.

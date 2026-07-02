@@ -22,4 +22,4 @@ The Bosnians who came to St. Louis helped shape the neighborhood into what it is
 
 ### Impressions
 
-I haven't spent too much time exploring this neighborhood yet, but it seems like a few bars and restaurants are popping up in addition to the long standing Balkan stores. I have noticed that as you drive down the strip, the stores are interspersed with some boarded-up and closed-down storefronts which doesn't give it the safest or most lively vibe.
+I haven't spent too much time exploring this neighborhood yet, but it seems like a few bars and restaurants are popping up in addition to the long standing Balkan stores. I have noticed that as you drive down the strip, some of the stores are interspersed with boarded-up and closed-down storefronts which doesn't give it the most lively vibe.

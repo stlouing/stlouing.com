@@ -25,10 +25,10 @@ attractions:
     description: The 1,300-acre park bordering the neighborhood's west side.
 ---
 
-Central West End is an upscale urban neighborhood in St. Louis city. It sits right along Forest Park and has a walkable downtown vibe. It's the biggest and most populated neighborhood in the city. This area is often recommended for new transplants to move to since it's among the most walkable and urban feeling.
+Central West End is an upscale urban neighborhood in St. Louis city. It sits right along Forest Park and has a walkable downtown vibe. It's the biggest and most populated neighborhood in the city, and is often recommended for new transplants.
 
 It's also home to Up-Down Arcade, an arcade full of retro games, craft beers, and a pizza window.
 
 ### Impressions
 
-Of all the neighborhoods I've explored, Central West End has the most vibrant energy with people walking around and sitting at outdoor cafes and restaurants, or visiting the various book stores and boutique stores. I think Central West End is competing with Downtown as "the place to be" for tourists, transplants, and residents, and is doing a pretty good job of it.
+Of all the neighborhoods I've explored, Central West End has the most vibrant energy. You'll see people walking around and sitting at outdoor cafes and restaurants, or visiting the various book stores and boutique stores. I think Central West End is competing with Downtown as "the place to be" for tourists, transplants, and residents.

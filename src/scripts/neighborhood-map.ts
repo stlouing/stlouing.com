@@ -70,8 +70,13 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     scrollWheelZoom: true,
     touchZoom: true,
     minZoom: 10,
-    maxZoom: 16,
-    zoomSnap: 0.5,
+    // Fewer zoom levels = fewer basemap re-render passes per gesture, which is
+    // what accumulates into the GPU-canvas crash on heavy zooming. zoomSnap:1
+    // snaps to whole levels (half as many render levels as 0.5); maxZoom:15
+    // keeps one overzoom level past the z14 data for street detail while trimming
+    // the extra level. See the churn note in tiles.ts.
+    maxZoom: 15,
+    zoomSnap: 1,
   })
   addThemedTiles(map)
 
