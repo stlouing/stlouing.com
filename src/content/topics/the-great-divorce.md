@@ -7,7 +7,7 @@ updated: 2026-06-29
 
 There was a time when St. Louis was the [4th biggest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870). The city was on an upswing all throughout the 19th century, seeing a massive boom in population and industry. St. Louis's rise continued well into the early 20th century, when the city hosted both the Olympics and the World's Fair.
 
-A series of factors such as white flight, highway development, redlining, and the economy shifting away from the river left the city in continuous decline since then, but one of the most significant issues for the region was the City-County split known as "The Great Divorce".
+White flight, highway development, redlining, and the economy shifting away from the river have all contributed to the city's decline in the following decades, from almost a million residents in the '50s to less than 300,000 now. One persistent structural issue underlying these events is city-county split known as "The Great Divorce".
 
 ### The City-County Split
 

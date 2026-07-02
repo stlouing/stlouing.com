@@ -514,7 +514,7 @@ a.wikipedia-link {
   box-shadow: var(--box-shadow-floating);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.12s ease;
+  transition: opacity 0.15s ease;
 }
 
 .wikilink-card.is-visible {
@@ -710,7 +710,7 @@ button.chip:hover {
   color: var(--color-text-muted);
   text-decoration: none;
   opacity: 0;
-  transition: opacity 0.1s ease;
+  transition: opacity 0.15s ease;
 
   &:hover {
     color: var(--color-accent);
@@ -983,7 +983,7 @@ body:has(.map-split) main > .wrap,
   display: block;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
   transform-origin: 50% 100%;
-  transition: transform 0.12s ease;
+  transition: transform 0.15s ease;
 }
 
 /* The ring + center dot use --color-surface so they invert with the theme
@@ -1013,10 +1013,9 @@ body:has(.map-split) main > .wrap,
     user-select: none;
   }
 
-  ul.list > li {
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
-  }
+  /* Row padding (incl. the right-side reserve for `.list-arrow`) is set once on
+     the shared `.map-list .list > li` rule — don't duplicate it here, or the
+     higher-specificity `padding-right` would clobber that reserve. */
 
   /* The title becomes click-to-open-popup in map view (neighborhood-map.ts). */
   .is-clickable {
@@ -1111,12 +1110,6 @@ body:has(.map-split) main > .wrap,
   margin-block-start: var(--spacing-sm);
 }
 
-/* Space the full-width "View more" CTA (a `.btn.btn-filled.btn-block`) from the
-   row's preview above it. */
-.map-list .list-description .btn-block {
-  margin-block-start: var(--spacing-md);
-}
-
 /* The decorative river border eats vertical space under the full-height map
    layouts, so hide it on the map pages (Food + Neighborhoods) — keyed off each
    page's map container so no per-page wiring is needed. */
@@ -1135,9 +1128,16 @@ body:has([data-neighborhood-map]) .river-border {
   list-style: none;
 }
 
+/* The whole row is one click target: the title link is stretched to cover the
+   <li> via `.list-title::after` below, so `position: relative` scopes that
+   overlay to this row. */
 .map-list .list > li {
+  position: relative;
   margin: 0;
   padding: var(--spacing-md);
+  /* Reserve room on the right for the absolutely-positioned `.list-arrow` so row
+     content never runs under it. */
+  padding-inline-end: calc(var(--spacing-md) + 2rem);
   border-block-end: 1px solid var(--color-line);
 }
 
@@ -1185,6 +1185,33 @@ body:has([data-neighborhood-map]) .river-border {
 
 .map-list .list-dot {
   color: var(--color-text-muted);
+}
+
+/* Trailing affordance: a right-pointing arrow that signals the whole row is a
+   link to the detail page. Vertically centered against the full row height and
+   decorative — `pointer-events: none` lets clicks fall through to the stretched
+   `.list-title::after` that handles navigation (and map-view popups). */
+.map-list .list-arrow {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: var(--spacing-md);
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* The SVG carries its own muted color (the global `.icon` rule sets it directly,
+   and the stroke is `currentColor`), so the accent-on-hover has to target the
+   icon itself — inheriting from `.list-arrow` wouldn't reach it. */
+.map-list .list-arrow .icon {
+  width: 14px;
+  height: 14px;
+  transition: color 0.12s ease;
+}
+
+.map-list .list > li:hover .list-arrow .icon {
+  color: var(--color-accent);
 }
 
 /* Row 2: the address (and any other muted second-line meta). */
@@ -1253,6 +1280,26 @@ body:has([data-neighborhood-map]) .river-border {
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color-accent);
   text-underline-offset: 2px;
+}
+
+/* Stretch the title link over the entire <li> so the whole row (headline,
+   tagline, preview, arrow) is one click target — no wrapper anchor needed, and
+   in map view the existing `.list-title` click handler still fires from anywhere
+   on the row to open the popup instead of navigating. */
+.map-list a.list-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* The food filter chips are the one exception to the whole-row link: they must
+   stay independently clickable (they filter, not navigate), so lift them above
+   the stretched overlay. Only the interactive <button> chips are raised — the
+   neighborhood region chip is a plain <span>, so it stays part of the row link. */
+.map-list button.chip {
+  position: relative;
+  z-index: 1;
 }
 
 .map-list button.list-meta-filter {

@@ -21,7 +21,7 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 I'd love to hear from you!
 
 - Fill out the [contact form](/feedback)
-- Email me at [hello@stlouing.com](mailto:hello@stlouing.com).
+- Email me at [hello@stlouing.com](mailto:hello@stlouing.com)
 
 This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).
 

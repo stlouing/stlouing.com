@@ -142,11 +142,6 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
               )}
               {place.data.description && <div class="food-tagline">{place.data.description}</div>}
               {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
-              {hasBody(place) && (
-                <a class="btn btn-filled btn-block" href={href(`/food/${place.id}`)}>
-                  Read more <IconArrowRight />
-                </a>
-              )}
             </MapRow>
           ))
         }

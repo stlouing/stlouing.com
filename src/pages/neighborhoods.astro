@@ -4,11 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import MapRow from '../components/MapRow.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
-import { href } from '../lib/url'
 import { published, excerpt, hasBody } from '../lib/content'
 import { neighborhoodResourceLinks, neighborhoodGeneratedSummary } from '../lib/neighborhoods'
 import IconMapPin from '../assets/IconMapPin.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
 // the rest, in their numbered order). Written rows render their writeup expanded;
@@ -185,13 +183,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       <div class="neighborhood-preview">
                         <Content />
                       </div>
-                    )}
-                    {written && (
-                      <a
-                        class="btn btn-filled btn-block"
-                        href={href(`/neighborhoods/${neighborhood.slug}`)}>
-                        Read more <IconArrowRight />
-                      </a>
                     )}
                   </MapRow>
                 </Fragment>
