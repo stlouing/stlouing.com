@@ -77,7 +77,7 @@ export const sections: Section[] = [
     path: '/about/',
     group: 'site',
     primary: true,
-    description: 'Why I made this city exploration digital garden.',
+    description: 'Why I made this city exploration website.',
   },
   { label: 'Tags', path: '/tags/', group: 'site', description: 'Browse everything by topic.' },
   {

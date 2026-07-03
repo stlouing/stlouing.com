@@ -41,26 +41,35 @@ const isActive = (path: string) => {
       color: var(--color-text);
       text-decoration: underline;
       text-decoration-style: dotted;
-      text-decoration-color: var(--color-text-muted);
+      text-decoration-color: var(--color-muted);
       text-decoration-thickness: 2px;
-      text-underline-offset: 3px;
+      text-underline-offset: 4px;
       font-weight: 500;
 
       &:hover {
         color: var(--color-text);
         text-decoration-style: solid;
-        text-decoration-thickness: 2px;
         text-decoration-color: var(--color-accent);
-        text-underline-offset: 3px;
       }
 
       &[aria-current='page'] {
         color: var(--color-accent);
-        font-weight: 700;
+        font-weight: 600;
         text-decoration-style: solid;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
         text-decoration-color: var(--color-accent);
+      }
+    }
+  }
+
+  /* Mobile: drop the dotted underline (cramped on a phone) for a clean, compact
+     text menu — muted labels with the active section in accent. */
+  @media (max-width: 700px) {
+    .site-nav a {
+      color: var(--color-muted-2);
+      text-decoration: none;
+
+      &[aria-current='page'] {
+        color: var(--color-accent);
       }
     }
   }

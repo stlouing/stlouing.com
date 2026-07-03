@@ -12,11 +12,12 @@
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
-  --color-text-muted: #6f6b61;
-  --color-text-muted-2: #58554d;
+  --color-muted: #6f6b61;
+  --color-muted-2: #58554d;
   --color-line: #ddd2bd;
   --color-line-input: #bdb9ab;
   --color-accent: #9c3b2e;
+  --color-accent-2: #a54e42;
   --color-map-accent: #6a47a6;
   /* City regions (north→south): yellow, red, violet; county blue; parks green. */
   --color-map-north: #b8860b;
@@ -32,7 +33,7 @@
   --color-verdict-notforme: #74727c;
 
   /* Fonts */
-  --font-body: 'Gelasio', Georgia, 'Times New Roman', serif;
+  --font-body: Georgia, 'Times New Roman', serif;
   --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxs: 0.7rem;
@@ -44,7 +45,7 @@
   --font-size-xl: 1.4rem;
 
   /* Type scale + rhythm */
-  --text: clamp(0.95rem, 0.92rem + 0.15vw, 1rem);
+  --text: 1rem;
 
   /* Space + measure */
   --measure: 880px;
@@ -74,12 +75,13 @@
   --color-surface: #17171b;
   --color-text-heading: #f3f1f7;
   --color-text: #e9e8ec;
-  --color-text-article: #cfcdd3;
-  --color-text-muted: #9b9aa3;
-  --color-text-muted-2: #afaeb5;
+  --color-text-article: #e0dfe3;
+  --color-muted: #9b9aa3;
+  --color-muted-2: #afaeb5;
   --color-line: #343339;
   --color-line-input: #45444b;
   --color-accent: #f18194;
+  --color-accent-2: #f39aa9;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
   --color-map-central: #e6877a;
@@ -155,7 +157,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: var(--text);
-  line-height: 1.45;
+  line-height: 1.55;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -220,7 +222,7 @@ blockquote {
   margin-inline: 0;
   border-inline-start: 3px solid var(--color-accent);
   padding-inline-start: var(--spacing-md);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-style: italic;
   font-size: var(--font-size-lg);
 }
@@ -243,7 +245,7 @@ cite {
   padding-inline-start: calc(var(--spacing-md) + 3px);
   font-size: var(--font-size-md);
   font-style: normal;
-  color: var(--color-text-muted-2);
+  color: var(--color-muted-2);
 }
 
 hr {
@@ -334,7 +336,7 @@ tbody tr:last-child td {
 .table-caption {
   margin-block: -0.5rem var(--spacing-lg);
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 /* In-article table of contents (e.g. Regional Foods): a compact boxed index that
@@ -357,7 +359,7 @@ tbody tr:last-child td {
   margin-block: var(--spacing-xs) var(--spacing-sm);
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   color: var(--color-accent);
@@ -423,7 +425,7 @@ a {
   text-decoration-line: none;
   text-decoration-thickness: 2px;
   text-decoration-style: solid;
-  text-decoration-color: var(--color-text-muted);
+  text-decoration-color: var(--color-muted);
   text-underline-offset: 3px;
   font-weight: 500;
 
@@ -489,7 +491,7 @@ a.more {
 a.wikipedia-link {
   font-size: var(--font-size-xs);
   font-family: var(--font-mono);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   text-underline-offset: 3px;
 
   &:hover {
@@ -498,7 +500,7 @@ a.wikipedia-link {
 }
 
 .wikilink-broken {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 /* Desktop hover preview for wikilinks (positioned + toggled by
@@ -506,7 +508,7 @@ a.wikipedia-link {
 .wikilink-card {
   position: absolute;
   z-index: 50;
-  max-width: 300px;
+  max-width: 320px;
   padding: var(--spacing-md);
   background: var(--color-surface);
   border: 1px solid var(--color-line);
@@ -524,7 +526,7 @@ a.wikipedia-link {
 
 .wikilink-card-title {
   font-family: var(--font-mono);
-  font-weight: 700;
+  font-weight: 600;
   font-size: var(--font-size-label);
   color: var(--color-text);
   margin-block-end: var(--spacing-sm);
@@ -534,7 +536,7 @@ a.wikipedia-link {
 .wikilink-card-excerpt {
   margin: 0;
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted-2);
+  color: var(--color-muted-2);
   line-height: 1.4;
 }
 
@@ -567,12 +569,12 @@ a.wikipedia-link {
 .wikilink-card-neighborhood {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-weight: 500;
 }
 
 .icon {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   flex-shrink: 0;
 
   &.icon-accent {
@@ -589,7 +591,7 @@ a.wikipedia-link {
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--chip-border, var(--color-line-input));
   border-radius: 20px;
@@ -597,7 +599,7 @@ a.wikipedia-link {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 500;
-  color: var(--chip-color, var(--color-text-muted-2));
+  color: var(--chip-color, var(--color-muted-2));
   text-decoration: none;
   white-space: nowrap;
   margin-block-start: 0;
@@ -705,7 +707,7 @@ button.chip:hover {
    revealed on hover/focus of the heading. */
 .heading-anchor {
   margin-inline-start: var(--spacing-sm);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   text-decoration: none;
   opacity: 0;
   transition: opacity 0.15s ease;
@@ -790,7 +792,7 @@ main {
 }
 
 label {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
@@ -1065,7 +1067,7 @@ body:has(.map-split) main > .wrap,
 
 /* The number prefix (when shown) sits quiet ahead of the neighborhood name. */
 .map-list.section-list .number {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 .map-list.section-list .neighborhood-preview {
@@ -1178,7 +1180,7 @@ body:has([data-neighborhood-map]) .river-border {
 }
 
 .map-list .list-dot {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 /* Trailing affordance: a right-pointing arrow that signals the whole row is a
@@ -1214,7 +1216,7 @@ body:has([data-neighborhood-map]) .river-border {
   align-items: center;
   flex-wrap: wrap;
   gap: var(--spacing-sm);
-  color: var(--color-text-muted-2);
+  color: var(--color-muted-2);
   font-size: var(--font-size-sm);
   font-weight: 500;
   font-family: var(--font-mono);
@@ -1225,11 +1227,11 @@ body:has([data-neighborhood-map]) .river-border {
    list and the food list. */
 .map-list .list-tagline {
   font-family: var(--font-body);
-  font-weight: 600;
-  color: var(--color-accent);
-  font-size: var(--font-size-md);
-  line-height: 1.2;
-  margin-block-end: var(--spacing-sm);
+  font-weight: 500;
+  color: var(--color-accent-2);
+  font-size: var(--font-size-label);
+  line-height: 1.3;
+  margin-block-end: var(--spacing-xs);
 }
 
 .map-list .chips {
@@ -1242,7 +1244,7 @@ body:has([data-neighborhood-map]) .river-border {
 .map-list .list-meta {
   font-family: var(--font-body);
   font-size: var(--font-size-md);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 /* Shared list row title for the food/neighborhood map lists. Reads like a
@@ -1255,7 +1257,7 @@ body:has([data-neighborhood-map]) .river-border {
   border: 0;
   background: none;
   text-align: start;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-text-heading);
   text-decoration: none;
   font-size: var(--font-size-md);
@@ -1486,14 +1488,14 @@ body:has([data-neighborhood-map]) .river-border {
   margin: 0;
   font-family: var(--font-mono);
   font-size: var(--font-size-md);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-text);
 }
 
 .list-pane-header .pane-count {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-weight: 500;
 }
 
@@ -1519,12 +1521,12 @@ body:has([data-neighborhood-map]) .river-border {
   width: 8px;
   height: 8px;
   border-radius: 2px;
-  background: var(--verdict-color, var(--color-text-muted));
+  background: var(--verdict-color, var(--color-muted));
   flex-shrink: 0;
 }
 
 .food-grouped li.group-header .group-label {
-  color: var(--verdict-color, var(--color-text-muted));
+  color: var(--verdict-color, var(--color-muted));
   letter-spacing: 0;
 }
 
@@ -1545,7 +1547,7 @@ body:has([data-neighborhood-map]) .river-border {
 .food-grouped li.group-header .group-count {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-weight: 500;
 }
 
@@ -1655,7 +1657,7 @@ body:has([data-filter-root]) .site-header {
 
 .active-filters .active-label {
   font-family: var(--font-mono);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   font-weight: 500;
@@ -1677,7 +1679,7 @@ body:has([data-filter-root]) .site-header {
   margin-block: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-xs);
   font-weight: 500;
-  color: var(--color-text-muted-2);
+  color: var(--color-muted-2);
   white-space: nowrap;
   line-height: 1.3;
 }
@@ -1695,7 +1697,7 @@ body:has([data-filter-root]) .site-header {
   height: 36px;
   font-size: 24px;
   line-height: 1;
-  border: 1px solid var(--color-text-muted);
+  border: 1px solid var(--color-muted);
   border-radius: 50%;
   background: var(--color-background);
   box-shadow: var(--box-shadow);
@@ -1710,7 +1712,7 @@ body:has([data-filter-root]) .site-header {
 /* Attribution (required OSM/Protomaps credit), themed. */
 .maplibregl-ctrl-attrib {
   background-color: var(--color-background) !important;
-  color: var(--color-text-muted) !important;
+  color: var(--color-muted) !important;
 }
 
 .maplibregl-ctrl-attrib a {
@@ -1764,7 +1766,7 @@ body:has([data-filter-root]) .site-header {
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 a {
   font-family: var(--font-mono);
   letter-spacing: -0.02rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-text);
   text-decoration: none;
 }
@@ -1780,13 +1782,13 @@ body:has([data-filter-root]) .site-header {
 .maplibregl-popup.food-popup .popup-tagline {
   margin-block: var(--spacing-xs) 0;
   font-family: var(--font-body);
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 500;
+  line-height: 1.3;
   color: var(--color-accent);
 }
 
 .maplibregl-popup.food-popup .tip-excerpt {
-  margin-block: var(--spacing-sm) 0;
+  margin-block: var(--spacing-xs) 0;
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
   font-weight: 400;
@@ -1861,7 +1863,7 @@ body:has([data-filter-root]) .site-header {
   padding: 0 var(--spacing-xs);
   font-size: var(--font-size-lg);
   line-height: 1;
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   background: none;
 }
 
@@ -1885,7 +1887,7 @@ body:has([data-filter-root]) .site-header {
   margin-block: var(--spacing-xs) var(--spacing-md);
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 /* Italic accent lede under an entry title (topics, neighborhoods). */
@@ -1912,7 +1914,7 @@ body:has([data-filter-root]) .site-header {
     margin-block: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    color: var(--color-muted);
     font-weight: 500;
     white-space: pre-line; /* render each address line on its own row */
   }
@@ -1948,7 +1950,7 @@ body:has([data-filter-root]) .site-header {
   border-radius: var(--radius);
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
@@ -1998,7 +2000,7 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-color: var(--color-text-muted);
+  text-decoration-color: var(--color-muted);
   text-underline-offset: 3px;
   flex-shrink: 0;
 }
@@ -2016,10 +2018,10 @@ body:has([data-filter-root]) .site-header {
   gap: var(--spacing-xs);
   padding: 0;
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-color: var(--color-text-muted);
+  text-decoration-color: var(--color-muted);
   text-underline-offset: 3px;
   flex-shrink: 0;
 }
@@ -2069,7 +2071,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .collection {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 /* A mono uppercase section heading, used over a List on the Best of page. */
@@ -2081,7 +2083,7 @@ body:has([data-filter-root]) .site-header {
   margin-block-end: 0;
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   color: var(--color-accent);
@@ -2098,7 +2100,7 @@ body:has([data-filter-root]) .site-header {
 /* "No matches" state under a filtered list. */
 .empty {
   margin-block-start: var(--spacing-md);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-style: italic;
 }
 
@@ -2119,7 +2121,7 @@ body:has([data-filter-root]) .site-header {
   margin: 0;
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-weight: 500;
 }
 
@@ -2176,7 +2178,7 @@ body:has([data-filter-root]) .site-header {
   figcaption {
     margin-block-start: var(--spacing-sm);
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    color: var(--color-muted);
     text-align: center;
   }
 }

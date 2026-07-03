@@ -3,7 +3,7 @@ title: Bono's Pizzeria
 date: 2026-06-28
 rating: 9
 cuisine: ['pizza']
-description: Deep dish and STL-style in a friendly neighborhood spot
+description: Deep dish and St. Louis-style in harmony
 neighborhood: Southampton
 address:
   - 4500 Hampton Ave

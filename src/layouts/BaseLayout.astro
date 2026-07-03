@@ -1,10 +1,5 @@
 ---
 import '../styles/global.css'
-import '@fontsource/gelasio/400.css'
-import '@fontsource/gelasio/500.css'
-import '@fontsource/gelasio/600.css'
-import '@fontsource/gelasio/700.css'
-import '@fontsource/gelasio/400-italic.css'
 
 import '@fontsource/google-sans-code/400.css'
 import '@fontsource/google-sans-code/500.css'
@@ -135,8 +130,8 @@ const analyticsUrl = analyticsBase
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     {
-      /* Body serif (Gelasio) is now self-hosted via @fontsource (imported above),
-       so there's no Google Fonts stylesheet/preconnect here anymore. */
+      /* Body serif is Georgia, a system font (with Times New Roman / generic
+       serif fallbacks), so no webfont is loaded for body copy. */
     }
 
     {pmtilesOrigin && <link rel="preconnect" href={pmtilesOrigin} crossorigin />}

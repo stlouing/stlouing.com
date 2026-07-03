@@ -115,7 +115,7 @@ const hasCard = hasNumbers || hasVibe
     margin: 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
-    color: var(--color-text-muted);
+    color: var(--color-muted);
   }
 
   .vibe-chips {
@@ -155,16 +155,6 @@ const hasCard = hasNumbers || hasVibe
       gap: 2px;
     }
 
-    .fact:first-child {
-      padding-inline-end: var(--spacing-md);
-    }
-
-    /* The divider + its breathing room sit on the second stat, and only when
-       there are two — a lone stat stays flush-left without a stray rule. */
-    .fact:last-child:not(:first-child) {
-      padding-inline-start: var(--spacing-md);
-      border-inline-start: 1px solid var(--color-line);
-    }
 
     /* Labels read as compact mono captions under each big value. */
     .fact dt {
@@ -174,7 +164,7 @@ const hasCard = hasNumbers || hasVibe
       letter-spacing: var(--letter-spacing);
       line-height: 1.2;
       font-weight: 500;
-      color: var(--color-text-muted)
+      color: var(--color-muted)
     }
 
     .fact dd {
