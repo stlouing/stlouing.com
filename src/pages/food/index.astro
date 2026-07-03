@@ -125,7 +125,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                       data-filter-set="cuisine"
                       data-filter-value={cuisine}>
                       <span>{cuisineEmoji(place.data.cuisine)}</span>
-                      <span>{cuisineLabel(cuisine)}</span>
+                      <span>{cuisine}</span>
                     </button>
                   ))}
                   {place.data.neighborhood && (
@@ -160,8 +160,8 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
   .food-preview {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     overflow: hidden;
     line-height: 1.4;
   }

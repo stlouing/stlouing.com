@@ -16,7 +16,7 @@ pick:
   note: House Smoked Pastrami, Swiss and Sauerkraut, 1000 Island Dressing
 ---
 
-Blues City Deli is an absolute gem of a spot. Expect to see a line when you go to visit, because the people know what's up.
+Blues City Deli is an absolute gem of a spot. You can expect to see a line when you go to visit, but you'll get to check out all the Blues memorabilia, portraits, and concert posters while you wait.
 
 So far, I've tried the roast beef and the reuben sandwiches. The reuben is made with house-smoked pastrami, and is the best I've had so far. I'd rate Blues City Deli as one of the best restaurants in the entire St. Louis area. It even topped the list in 2023 in one of the [Yelp Top 100](https://www.yelp.com/article/top-100-places-eat-in-the-midwest-2023) lists.
 
