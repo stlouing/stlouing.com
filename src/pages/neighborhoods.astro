@@ -154,7 +154,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
                   <MapRow
                     id={neighborhood.slug}
                     title={neighborhood.name}
-                    detailHref={`/neighborhoods/${neighborhood.slug}`}
+                    detailHref={`/neighborhoods/${neighborhood.slug}/`}
                     readMore={false}
                     filterable={false}
                     class={written ? 'is-written' : undefined}
@@ -178,7 +178,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
                         </span>
                       </div>
                     )}
-                    {popup.tagline && <div class="neighborhood-tagline">{popup.tagline}</div>}
+                    {popup.tagline && <div class="list-tagline">{popup.tagline}</div>}
                     {written && Content && (
                       <div class="neighborhood-preview">
                         <Content />
@@ -216,9 +216,4 @@ function sectionOf(area: { group?: string; type?: string }): string {
     font-weight: 500;
   }
 
-  /* The tagline sits in the open row body (under the region chip), directly above
-     the writeup preview, so give it room before the preview below. */
-  .neighborhood-tagline {
-    margin-block-end: var(--spacing-xs);
-  }
 </style>

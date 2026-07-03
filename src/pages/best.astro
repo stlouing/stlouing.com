@@ -53,9 +53,9 @@ const description = "The best of the St. Louis food I've tried, by category."
     </header>
 
     <p>
-      To see all food I've explored so far, visit the <a href={href('/food')}>Food Map</a>. To see
+      To see all food I've explored so far, visit the <a href={href('/food/')}>Food Map</a>. To see
       all the places I have yet to try or rate, visit
-      <a href={href('/food/on-the-list')}>the list</a> of places I want to try.
+      <a href={href('/food/on-the-list/')}>the list</a> of places I want to try.
     </p>
 
     {
@@ -65,7 +65,7 @@ const description = "The best of the St. Louis food I've tried, by category."
           <p class="description">My favorite individual items throughout the St. Louis area.</p>
           <div class="favorites-grid">
             {favorites.map((award) => (
-              <a class="favorite" href={href(`/food/${award.place!.id}`)}>
+              <a class="favorite" href={href(`/food/${award.place!.id}/`)}>
                 <span class="favorite-emoji" aria-hidden="true">
                   {cuisineEmoji(award.place!.data.cuisine)}
                 </span>
@@ -89,7 +89,7 @@ const description = "The best of the St. Louis food I've tried, by category."
         {
           cuisineWinners.map(([cuisine, place]) => (
             <RelatedCard
-              href={href(`/food/${place.id}`)}
+              href={href(`/food/${place.id}/`)}
               title={place.data.title}
               meta={cuisine}
               emoji={cuisineEmoji([cuisine])}

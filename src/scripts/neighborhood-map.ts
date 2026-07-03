@@ -216,7 +216,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     if (area) {
       chips.push({ label: area, section: region })
     }
-    const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}`
+    const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}/`
     const sources = [
       row?.dataset.wikipedia && { label: 'Wikipedia', href: row.dataset.wikipedia },
       row?.dataset.mytownview && { label: 'MyTownView', href: row.dataset.mytownview },

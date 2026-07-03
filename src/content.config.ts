@@ -116,6 +116,9 @@ const topics = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    // Leading-icon keyword for the topic lists (homepage + /topics). Resolved
+    // by src/components/Icon.astro; falls back to a book when unset or unknown.
+    icon: z.string().optional(),
     // Root-relative path to a 1200x630 social-share image in public/ (the
     // link-preview card). Falls back to the site flag when unset.
     ogImage: z.string().optional(),

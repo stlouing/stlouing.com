@@ -75,8 +75,8 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
           <span class="pane-count"><span data-filter-count>{count}</span></span>
         </span>
         <div class="pane-links">
-          <a class="btn btn-outline btn-compact" href={href('/best')}><IconAward />Favorites</a>
-          <a class="btn btn-outline btn-compact" href={href('/food/on-the-list')}>
+          <a class="btn btn-outline btn-compact" href={href('/best/')}><IconAward />Favorites</a>
+          <a class="btn btn-outline btn-compact" href={href('/food/on-the-list/')}>
             On the List <IconArrowRight />
           </a>
         </div>
@@ -87,7 +87,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
             <MapRow
               id={place.id}
               title={place.data.title}
-              detailHref={`/food/${place.id}`}
+              detailHref={`/food/${place.id}/`}
               readMore={false}
               marker={cuisineEmoji(place.data.cuisine)}
               coords={place.data.coords?.join(',') ?? ''}
@@ -140,7 +140,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
                   )}
                 </div>
               )}
-              {place.data.description && <div class="food-tagline">{place.data.description}</div>}
+              {place.data.description && <div class="list-tagline">{place.data.description}</div>}
               {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
             </MapRow>
           ))
@@ -157,12 +157,6 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
 </script>
 
 <style>
-  /* The tagline sits in the open row body (under the chips), directly above the
-     excerpt, so give it room before the teaser below. */
-  .food-tagline {
-    margin-block-end: var(--spacing-xs);
-  }
-
   .food-preview {
     display: -webkit-box;
     -webkit-box-orient: vertical;

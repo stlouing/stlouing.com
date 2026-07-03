@@ -1,5 +1,6 @@
 ---
 title: St. Louis-style Pizza
+icon: pizza
 description: The most polarizing regional pizza style
 ogImage: /og/st-louis-style-pizza.png
 created: 2026-05-31

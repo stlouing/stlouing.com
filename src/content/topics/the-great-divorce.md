@@ -1,5 +1,6 @@
 ---
 title: The Great Divorce
+icon: heart-crack
 description: The city-county split that divides St. Louis
 created: 2026-06-29
 updated: 2026-06-29

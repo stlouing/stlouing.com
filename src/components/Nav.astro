@@ -5,10 +5,12 @@ import { href } from '../lib/url'
 const items = sections.filter((section) => section.primary)
 const current = Astro.url.pathname
 
+// `target` already ends in a trailing slash (all section paths do), so a bare
+// startsWith cleanly matches both the section index and its child pages.
 const isActive = (path: string) => {
   const target = href(path)
 
-  return current === target || current.startsWith(`${target}/`)
+  return current === target || current.startsWith(target)
 }
 ---
 
@@ -43,7 +45,6 @@ const isActive = (path: string) => {
       text-decoration-thickness: 2px;
       text-underline-offset: 3px;
       font-weight: 500;
-      letter-spacing: var(--letter-spacing-tight);
 
       &:hover {
         color: var(--color-text);

@@ -21,14 +21,14 @@ export const groups: { id: Group; label?: string }[] = [
 export const sections: Section[] = [
   {
     label: 'Food',
-    path: '/food',
+    path: '/food/',
     group: 'explore',
     primary: true,
     description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective, based on my taste and experiences.`,
   },
   {
     label: 'Neighborhoods',
-    path: '/neighborhoods',
+    path: '/neighborhoods/',
     group: 'explore',
     primary: true,
     description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, plus a few additional points of interest in the county.`,
@@ -42,7 +42,7 @@ export const sections: Section[] = [
 
   {
     label: 'Topics',
-    path: '/topics',
+    path: '/topics/',
     group: 'topics',
     primary: true,
     description: "Field notes and deep dives on what I've learned.",
@@ -53,36 +53,36 @@ export const sections: Section[] = [
   // Food on the /food page — none of them are top-level groups anymore.)
   {
     label: 'Best of St. Louis Food',
-    path: '/best',
+    path: '/best/',
     group: 'lists',
     description: 'My favorite restaurants and cafes so far!',
   },
   {
     label: 'On the List',
-    path: '/food/on-the-list',
+    path: '/food/on-the-list/',
     group: 'lists',
     description: "Places I haven't tried or rated yet.",
   },
   {
     label: 'Sitemap',
-    path: '/sitemap',
+    path: '/sitemap/',
     group: 'lists',
     description: 'An index of every page on the site.',
   },
   // Hidden until it has posts (omitted from `groups` above and not `primary`).
-  { label: 'Notes', path: '/notes', group: 'notes' },
+  { label: 'Notes', path: '/notes/', group: 'notes' },
 
   {
     label: 'About',
-    path: '/about',
+    path: '/about/',
     group: 'site',
     primary: true,
     description: 'Why I made this city exploration digital garden.',
   },
-  { label: 'Tags', path: '/tags', group: 'site', description: 'Browse everything by topic.' },
+  { label: 'Tags', path: '/tags/', group: 'site', description: 'Browse everything by topic.' },
   {
     label: 'Feedback',
-    path: '/feedback',
+    path: '/feedback/',
     group: 'site',
     description: 'Let me know your thoughts!',
   },

@@ -147,8 +147,8 @@ if (info) {
 // Breadcrumb stops at the region (the neighborhood name is already the page H1).
 const region = info ? regionOf(info) : undefined
 const trail = [
-  { label: 'Neighborhoods', href: '/neighborhoods' },
-  ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}` }] : []),
+  { label: 'Neighborhoods', href: '/neighborhoods/' },
+  ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}/` }] : []),
 ]
 ---
 
@@ -187,7 +187,7 @@ const trail = [
             </figure>
           )
         }
-        <a class="btn btn-quiet neighborhood-back-link" href={href('/neighborhoods')}>
+        <a class="btn btn-quiet neighborhood-back-link" href={href('/neighborhoods/')}>
           Back to the Neighborhoods Map <IconArrowRight />
         </a>
       </aside>
@@ -200,7 +200,7 @@ const trail = [
               <p>I haven't written about {title} yet.</p>
               <p>
                 Is there something you want to suggest here? Let me know in the{' '}
-                <a href={href('/feedback')}>feedback form</a>!
+                <a href={href('/feedback/')}>feedback form</a>!
               </p>
             </div>
           )
@@ -211,7 +211,7 @@ const trail = [
             <RelatedList title="Food">
               {places.map((place) => (
                 <RelatedCard
-                  href={href(`/food/${place.id}`)}
+                  href={href(`/food/${place.id}/`)}
                   title={place.data.title}
                   meta={place.data.cuisine[0]}
                   emoji={cuisineEmoji([place.data.cuisine[0]])}
@@ -261,7 +261,7 @@ const trail = [
                 const neighborMeta = neighborMetaBySlug.get(neighbor.slug)
                 return (
                   <RelatedCard
-                    href={href(`/neighborhoods/${neighbor.slug}`)}
+                    href={href(`/neighborhoods/${neighbor.slug}/`)}
                     title={neighbor.name}
                     meta={neighbor.group}
                     metaType="neighborhood"

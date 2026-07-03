@@ -53,7 +53,7 @@ export async function neighborhoodHref(name: string | undefined): Promise<string
 
   const slugs = await neighborhoodPageSlugs()
 
-  return slugs.has(slug) ? `/neighborhoods/${slug}` : `/neighborhoods/${slug}`
+  return slugs.has(slug) ? `/neighborhoods/${slug}/` : `/neighborhoods/${slug}/`
 }
 
 export interface NeighborhoodInfo {

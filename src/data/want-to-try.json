@@ -26,5 +26,11 @@
   { "name": "Tiger88", "cuisine": ["vietnamese"] },
   { "name": "Zlatno Zitos", "cuisine": ["balkan"] },
   { "name": "Songbird", "cuisine": ["breakfast"] },
-  { "name": "Sasha's", "cuisine": ["wine"] }
+  { "name": "Sasha's", "cuisine": ["wine"] },
+  { "name": "Bevo Caffe Lounge", "cuisine": ["balkan"] },
+  { "name": "King Burrito", "cuisine": ["mexican"] },
+  { "name": "Berix", "cuisine": ["balkan"] },
+  { "name": "Napoli", "cuisine": ["italian"] },
+  { "name": "Little Fox", "cuisine": ["american"] },
+  { "name": "Brasserie", "cuisine": ["american"] }
 ]

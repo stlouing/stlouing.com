@@ -1,5 +1,6 @@
 ---
 title: St. Louis Field Notes
+icon: notebook
 description: What I've learned about the Gateway to the West
 created: 2026-05-28
 updated: 2026-06-29
@@ -9,7 +10,7 @@ St. Louis is a little city with a lot of regional culture. This page is a little
 
 ## Food
 
-[The Food Map](/food) is my number one way of exploring the city. I also put together a (subjective) list of the [Best Food in St. Louis](/best) and [all the spots I haven't written about yet](/food/on-the-list).
+[The Food Map](/food/) is my number one way of exploring the city. I also put together a (subjective) list of the [Best Food in St. Louis](/best/) and [all the spots I haven't written about yet](/food/on-the-list/).
 
 ### Regional food
 

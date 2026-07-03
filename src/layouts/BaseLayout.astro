@@ -1,19 +1,15 @@
 ---
 import '../styles/global.css'
-import '@fontsource/ibm-plex-mono/400.css'
-import '@fontsource/ibm-plex-mono/500.css'
-import '@fontsource/ibm-plex-mono/600.css'
-import '@fontsource/ibm-plex-mono/700.css'
-// Body serif (Gelasio), self-hosted via fontsource instead of Google Fonts — no
-// third-party request/privacy leak. Normal + italic at the four weights the UI uses.
 import '@fontsource/gelasio/400.css'
 import '@fontsource/gelasio/500.css'
 import '@fontsource/gelasio/600.css'
 import '@fontsource/gelasio/700.css'
 import '@fontsource/gelasio/400-italic.css'
-import '@fontsource/gelasio/500-italic.css'
-import '@fontsource/gelasio/600-italic.css'
-import '@fontsource/gelasio/700-italic.css'
+
+import '@fontsource/google-sans-code/400.css'
+import '@fontsource/google-sans-code/500.css'
+import '@fontsource/google-sans-code/600.css'
+import '@fontsource/google-sans-code/700.css'
 
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
@@ -41,8 +37,16 @@ interface Props {
 }
 
 const SITE_NAME = 'St. Louing'
-const { crumb, title, description, ogType = 'website', publishedTime, tags = [], jsonLd, ogImage } =
-  Astro.props
+const {
+  crumb,
+  title,
+  description,
+  ogType = 'website',
+  publishedTime,
+  tags = [],
+  jsonLd,
+  ogImage,
+} = Astro.props
 
 const base = import.meta.env.BASE_URL
 let path = Astro.url.pathname
@@ -130,8 +134,10 @@ const analyticsUrl = analyticsBase
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    {/* Body serif (Gelasio) is now self-hosted via @fontsource (imported above),
-       so there's no Google Fonts stylesheet/preconnect here anymore. */}
+    {
+      /* Body serif (Gelasio) is now self-hosted via @fontsource (imported above),
+       so there's no Google Fonts stylesheet/preconnect here anymore. */
+    }
 
     {pmtilesOrigin && <link rel="preconnect" href={pmtilesOrigin} crossorigin />}
 

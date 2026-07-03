@@ -24,7 +24,7 @@ const notes = published(await getCollection('notes')).sort(
         notes.map((note) => (
           <ListItem
             title={note.data.title}
-            href={href(`/notes/${note.id}`)}
+            href={href(`/notes/${note.id}/`)}
             description={note.data.description ?? excerpt(note.body)}>
             <time slot="meta" class="list-meta" datetime={note.data.date.toISOString()}>
               {formatDateShort(note.data.date)}

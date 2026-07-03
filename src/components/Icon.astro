@@ -1,0 +1,59 @@
+---
+// Central keyword -> icon registry. Content pages (e.g. topics) declare an
+// `icon:` keyword in their frontmatter and this resolves it to the matching
+// Lucide asset, so the whole icon vocabulary lives in one place instead of a
+// brittle per-id lookup. An unknown or missing keyword falls back to the book.
+import IconBook from '../assets/IconBook.astro'
+import IconNotebookPen from '../assets/IconNotebookPen.astro'
+import IconPizza from '../assets/IconPizza.astro'
+import IconUtensils from '../assets/IconUtensils.astro'
+import IconHeart from '../assets/IconHeart.astro'
+import IconHeartCrack from '../assets/IconHeartCrack.astro'
+import IconLandmark from '../assets/IconLandmark.astro'
+import IconMountain from '../assets/IconMountain.astro'
+import IconMap from '../assets/IconMap.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
+import IconCompass from '../assets/IconCompass.astro'
+import IconFlag from '../assets/IconFlag.astro'
+import IconStar from '../assets/IconStar.astro'
+import IconAward from '../assets/IconAward.astro'
+import IconCalendar from '../assets/IconCalendar.astro'
+import IconChart from '../assets/IconChart.astro'
+import IconTags from '../assets/IconTags.astro'
+import IconListChecks from '../assets/IconListChecks.astro'
+import IconInfo from '../assets/IconInfo.astro'
+
+interface Props {
+  // A keyword from the registry below. Unknown / undefined -> book.
+  name?: string
+}
+
+// The icon vocabulary. Add a keyword here (and import its asset above) to make
+// it available to any `icon:` frontmatter field.
+const iconByKeyword: Record<string, typeof IconBook> = {
+  book: IconBook,
+  notebook: IconNotebookPen,
+  pizza: IconPizza,
+  utensils: IconUtensils,
+  heart: IconHeart,
+  'heart-crack': IconHeartCrack,
+  landmark: IconLandmark,
+  mountain: IconMountain,
+  map: IconMap,
+  'map-pin': IconMapPin,
+  compass: IconCompass,
+  flag: IconFlag,
+  star: IconStar,
+  award: IconAward,
+  calendar: IconCalendar,
+  chart: IconChart,
+  tags: IconTags,
+  'list-checks': IconListChecks,
+  info: IconInfo,
+}
+
+const { name } = Astro.props
+const ResolvedIcon = (name && iconByKeyword[name]) || IconBook
+---
+
+<ResolvedIcon />

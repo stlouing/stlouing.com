@@ -43,7 +43,7 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
           <MapRow
             id={hike.id}
             title={hike.data.title}
-            detailHref={`/hikes/${hike.id}`}
+            detailHref={`/hikes/${hike.id}/`}
             marker="🥾"
             coords={hike.data.coords?.join(',') ?? ''}
             url={hike.data.url ?? ''}

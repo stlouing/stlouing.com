@@ -50,7 +50,7 @@ const count = members.length
 const seoTitle = region.label.includes('St. Louis') ? region.label : `${region.label} of St. Louis`
 const metaDescription = `Every neighborhood in ${region.label}, St. Louis — ${count} in all.`
 // Breadcrumb stops at the index — the region name is already the page H1 + tab.
-const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }]
+const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 ---
 
 <BaseLayout crumb={region.label} title={seoTitle} description={metaDescription}>
@@ -70,7 +70,7 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }]
               {other.label}
             </span>
           ) : (
-            <a href={href(`/neighborhoods/${other.slug}`)}>{other.label}</a>
+            <a href={href(`/neighborhoods/${other.slug}/`)}>{other.label}</a>
           ),
         )
       }
@@ -82,7 +82,7 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }]
 
           return (
             <RelatedCard
-              href={href(`/neighborhoods/${neighborhood.slug}`)}
+              href={href(`/neighborhoods/${neighborhood.slug}/`)}
               title={neighborhood.name}
               description={meta?.description ?? ''}
               tags={meta?.tags ?? []}>
@@ -123,7 +123,6 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods' }]
     border-block-end: 2px solid transparent;
     color: var(--color-text-muted);
     text-decoration: none;
-    letter-spacing: var(--letter-spacing-tight);
   }
 
   .region-nav a:hover {

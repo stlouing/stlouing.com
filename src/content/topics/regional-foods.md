@@ -1,5 +1,6 @@
 ---
 title: Regional Foods of St. Louis
+icon: utensils
 description: From gooey butter cake to gooey Provel
 created: 2026-06-03
 updated: 2026-05-31

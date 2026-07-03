@@ -33,7 +33,7 @@
 
   /* Fonts */
   --font-body: 'Gelasio', Georgia, 'Times New Roman', serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxs: 0.7rem;
   --font-size-xs: 0.8rem;
@@ -528,23 +528,22 @@ a.wikipedia-link {
   font-size: var(--font-size-label);
   color: var(--color-text);
   margin-block-end: var(--spacing-sm);
-  letter-spacing: var(--letter-spacing-tight);
   line-height: 1.2;
 }
 
 .wikilink-card-excerpt {
   margin: 0;
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-text-muted-2);
   line-height: 1.4;
 }
 
 /* Topic-only tagline in the hovercard (the entry's `description`). */
 .wikilink-card-description {
   margin-block: 0 var(--spacing-xs);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   color: var(--color-accent);
-  line-height: 1.3;
+  line-height: 1.2;
   font-weight: 500;
 }
 
@@ -598,7 +597,6 @@ a.wikipedia-link {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-weight: 500;
-  line-height: 1;
   color: var(--chip-color, var(--color-text-muted-2));
   text-decoration: none;
   white-space: nowrap;
@@ -1225,13 +1223,13 @@ body:has([data-neighborhood-map]) .river-border {
 /* A tagline (the entry's description) under the name, in accent — the body
    serif, not the mono of the surrounding sub line. Shared by the neighborhood
    list and the food list. */
-.map-list .neighborhood-tagline,
-.map-list .food-tagline {
+.map-list .list-tagline {
   font-family: var(--font-body);
   font-weight: 600;
   color: var(--color-accent);
   font-size: var(--font-size-md);
   line-height: 1.2;
+  margin-block-end: var(--spacing-sm);
 }
 
 .map-list .chips {
@@ -1262,7 +1260,6 @@ body:has([data-neighborhood-map]) .river-border {
   text-decoration: none;
   font-size: var(--font-size-md);
   font-family: var(--font-mono);
-  letter-spacing: var(--letter-spacing-tight);
   line-height: 1.2;
 }
 
@@ -1908,7 +1905,7 @@ body:has([data-filter-root]) .site-header {
   border-block-end: 1px solid var(--color-line);
 
   h1 {
-    margin: 0;
+    margin-block: 0 var(--spacing-xs);
   }
 
   .address {
@@ -1928,7 +1925,6 @@ body:has([data-filter-root]) .site-header {
   justify-content: space-between;
   gap: var(--spacing-md);
   margin-block-start: var(--spacing-sm);
-  margin-block-end: var(--spacing-xs);
   width: 100%;
 
   .meta {
@@ -2002,10 +1998,8 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 3px;
-  letter-spacing: var(--letter-spacing-tight);
   flex-shrink: 0;
 }
 
@@ -2025,10 +2019,8 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-text-muted);
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
   text-decoration-color: var(--color-text-muted);
   text-underline-offset: 3px;
-  letter-spacing: var(--letter-spacing-tight);
   flex-shrink: 0;
 }
 

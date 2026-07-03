@@ -10,12 +10,12 @@
  *
  * @param {string} collection - the content collection name
  * @param {string} id - the entry id (its slug within the collection)
- * @returns {string} root-relative URL path, e.g. "/food/louie" or "/overview"
+ * @returns {string} root-relative URL path, e.g. "/food/louie/" or "/overview/"
  */
 export function entryUrl(collection, id) {
   if (collection === 'topics') {
-    return `/${id}`
+    return `/${id}/`
   }
 
-  return `/${collection}/${id}`
+  return `/${collection}/${id}/`
 }

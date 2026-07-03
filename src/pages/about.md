@@ -7,7 +7,7 @@ description: 'St. Louing is an independent guide to the food and neighborhoods o
 
 St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
 
-I've been on a quest to find [the best food in St. Louis](/food), and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
+I've been on a quest to find [the best food in St. Louis](/food/), and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
 
 The site is not meant to be a definitive source of information about the STL food scene or neighborhoods - just my own little field guide. There is a heavy focus on food as that's my primary way of exploring the city and culture.
 
@@ -21,7 +21,7 @@ That's the experience I'm trying to recreate here. I have nothing to sell. I don
 
 I'd love to hear from you!
 
-- Fill out the [contact form](/feedback)
+- Fill out the [contact form](/feedback/)
 - Email me at [hello@stlouing.com](mailto:hello@stlouing.com)
 
 This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).

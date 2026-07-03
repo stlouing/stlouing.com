@@ -49,7 +49,7 @@ const schema = restaurantSchema({
 // Breadcrumb: Food / <neighborhood> (the neighborhood links to its page when one
 // exists, otherwise it's a plain crumb).
 const trail = [
-  { label: 'Food', href: '/food' },
+  { label: 'Food', href: '/food/' },
   ...(data.neighborhood ? [{ label: data.neighborhood, href: neighborhoodLink ?? undefined }] : []),
 ]
 
@@ -121,7 +121,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
             {verdict && <Verdict verdict={verdict} icon filled />}
             {
               data.cuisine.map((cuisine) => (
-                <Chip href={href(`/food?cuisine=${cuisine}`)}>
+                <Chip href={href(`/food/?cuisine=${cuisine}`)}>
                   <span>{cuisineEmoji(data.cuisine)}</span>
                   <span>{cuisineLabel(cuisine)}</span>
                 </Chip>
@@ -152,7 +152,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
               <RelatedList title={`More in ${data.neighborhood}`}>
                 {relatedNeighborhood.map(({ place, verdict }) => (
                   <RelatedCard
-                    href={href(`/food/${place.id}`)}
+                    href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={place.data.cuisine[0]}
                     emoji={cuisineEmoji([place.data.cuisine[0]])}
@@ -167,7 +167,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
               <RelatedList title={`More ${cuisineLabel(primaryCuisine)}`}>
                 {relatedCuisine.map(({ place, verdict }) => (
                   <RelatedCard
-                    href={href(`/food/${place.id}`)}
+                    href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={place.data.neighborhood}
                     metaType="neighborhood"
@@ -197,7 +197,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
                 </div>
               )
             }
-            <a class="btn btn-quiet food-back-link" href={href('/food')}>
+            <a class="btn btn-quiet food-back-link" href={href('/food/')}>
               Back to the Food Map <IconArrowRight />
             </a>
             {

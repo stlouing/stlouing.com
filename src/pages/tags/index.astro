@@ -12,7 +12,7 @@ const tags = await allTags()
     {
       tags.map(({ tag, count }) => (
         <li>
-          <a href={href(`/tags/${tag}`)}>#{tag}</a>
+          <a href={href(`/tags/${tag}/`)}>#{tag}</a>
           <span class="tag-count">{count}</span>
         </li>
       ))

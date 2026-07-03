@@ -20,5 +20,11 @@
   { "name": "Comet Coffee", "cuisine": ["cafe"] },
   { "name": "Damn Fine Hand Pies", "cuisine": ["cafe"] },
   { "name": "Sugarfire", "cuisine": ["bbq"] },
-  { "name": "Salt & Smoke", "cuisine": ["bbq"] }
+  { "name": "Salt & Smoke", "cuisine": ["bbq"] },
+  { "name": "The Drip Community Coffee House", "cuisine": ["cafe"] },
+  { "name": "Shortwave Coffee", "cuisine": ["cafe"] },
+  { "name": "Himalayan Hut", "cuisine": ["indian"] },
+  { "name": "Rozana Mediterranean", "cuisine": ["middle eastern"] },
+  { "name": "Pirrone's", "cuisine": ["pizza"] },
+  { "name": "Layali Halab Mediterranean", "cuisine": ["middle eastern"] }
 ]

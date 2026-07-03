@@ -41,31 +41,31 @@ const groups: SitemapGroup[] = [
   {
     label: 'Pages',
     items: [
-      { title: 'About', path: '/about' },
-      { title: 'Best of St. Louis Food', path: '/best' },
-      { title: 'On the List', path: '/food/on-the-list' },
-      { title: 'Tags', path: '/tags' },
-      { title: 'Feedback', path: '/feedback' },
+      { title: 'About', path: '/about/' },
+      { title: 'Best of St. Louis Food', path: '/best/' },
+      { title: 'On the List', path: '/food/on-the-list/' },
+      { title: 'Tags', path: '/tags/' },
+      { title: 'Feedback', path: '/feedback/' },
     ],
   },
   {
     label: 'Topics',
-    path: '/topics',
-    items: topics.map((topic) => ({ title: topic.data.title, path: `/${topic.id}` })),
+    path: '/topics/',
+    items: topics.map((topic) => ({ title: topic.data.title, path: `/${topic.id}/` })),
   },
   {
     label: 'Food',
-    path: '/food',
+    path: '/food/',
     featured: true,
-    items: food.map((place) => ({ title: place.data.title, path: `/food/${place.id}` })),
+    items: food.map((place) => ({ title: place.data.title, path: `/food/${place.id}/` })),
   },
   {
     label: 'Neighborhoods',
-    path: '/neighborhoods',
+    path: '/neighborhoods/',
     featured: true,
     items: hoods.map((neighborhood) => ({
       title: neighborhood.name,
-      path: `/neighborhoods/${neighborhood.slug}`,
+      path: `/neighborhoods/${neighborhood.slug}/`,
     })),
   },
 
@@ -73,8 +73,8 @@ const groups: SitemapGroup[] = [
     ? [
         {
           label: 'Notes',
-          path: '/notes',
-          items: notes.map((note) => ({ title: note.data.title, path: `/notes/${note.id}` })),
+          path: '/notes/',
+          items: notes.map((note) => ({ title: note.data.title, path: `/notes/${note.id}/` })),
         },
       ]
     : []),
@@ -82,8 +82,8 @@ const groups: SitemapGroup[] = [
     ? [
         {
           label: 'Hikes',
-          path: '/hikes',
-          items: hikes.map((hike) => ({ title: hike.data.title, path: `/hikes/${hike.id}` })),
+          path: '/hikes/',
+          items: hikes.map((hike) => ({ title: hike.data.title, path: `/hikes/${hike.id}/` })),
         },
       ]
     : []),

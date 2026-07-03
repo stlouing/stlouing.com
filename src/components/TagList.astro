@@ -12,7 +12,7 @@ const { tags } = Astro.props
   tags.length > 0 && (
     <p class="tags">
       {tags.map((tag) => (
-        <a class="tag p-category" href={href(`/tags/${tag}`)}>
+        <a class="tag p-category" href={href(`/tags/${tag}/`)}>
           #{tag}
         </a>
       ))}

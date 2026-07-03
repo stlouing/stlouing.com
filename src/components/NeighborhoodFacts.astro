@@ -49,7 +49,7 @@ const hasCard = hasNumbers || hasVibe
           <h2 class="side-card-label section-label">Vibe</h2>
           <div class="vibe-chips">
             {tags.map((tag) => (
-              <Chip href={href(`/tags/${tag}`)}>
+              <Chip href={href(`/tags/${tag}/`)}>
                 <TagIcon tag={tag} />
                 <span>{tag}</span>
               </Chip>
