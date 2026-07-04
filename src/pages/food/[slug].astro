@@ -22,6 +22,8 @@ import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
+import IconAward from '../../assets/IconAward.astro'
+import IconListChecks from '../../assets/IconListChecks.astro'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -179,6 +181,18 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
             )
           }
         </section>
+        <nav class="food-more-cta" aria-label="More food from St. Louing">
+          <a class="food-cta-card" href={href('/best/')}>
+            <span class="food-cta-lead"><IconAward /></span>
+            <span class="food-cta-title">My best of St. Louis food list</span>
+            <span class="food-cta-arrow"><IconArrowRight /></span>
+          </a>
+          <a class="food-cta-card" href={href('/food/on-the-list/')}>
+            <span class="food-cta-lead"><IconListChecks /></span>
+            <span class="food-cta-title">Places I haven't tried yet</span>
+            <span class="food-cta-arrow"><IconArrowRight /></span>
+          </a>
+        </nav>
       </div>
       <aside class="food-aside">
         <h2 class="food-aside-title section-label">Location</h2>
@@ -257,6 +271,78 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
      width so its text wraps). */
   .food-back-link {
     align-self: flex-start;
+  }
+
+  /* "Keep exploring" cards at the foot of the writeup: two engaging links out to
+     the Best-of list and the On-the-List backlog. Two-up on desktop, stacked on
+     mobile; an accent lead icon, the label, and a trailing arrow that lights up
+     on hover. */
+  .food-more-cta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-block-start: var(--spacing-xl);
+  }
+
+  @media (max-width: 40rem) {
+    .food-more-cta {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .food-cta-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .food-cta-card:hover {
+    border-color: var(--color-accent);
+    background: var(--color-background);
+  }
+
+  .food-cta-lead {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  .food-cta-lead :global(.icon) {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--color-accent);
+  }
+
+  .food-cta-title {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-text-heading);
+  }
+
+  .food-cta-card:hover .food-cta-title {
+    color: var(--color-accent);
+  }
+
+  .food-cta-arrow {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--color-muted);
+  }
+
+  .food-cta-card:hover .food-cta-arrow :global(.icon) {
+    color: var(--color-accent);
   }
 
   /* Hairline between the back link and the pick; the body's gap spaces it. */
