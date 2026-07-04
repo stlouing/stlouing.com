@@ -12,9 +12,13 @@ const isActive = (path: string) => {
 
   return current === target || current.startsWith(target)
 }
+
+// Home matches only the root exactly (not startsWith, which every path passes).
+const homeActive = current === href('/')
 ---
 
 <nav class="site-nav" aria-label="Primary">
+  <a class="nav-home" href={href('/')} aria-current={homeActive ? 'page' : undefined}>Home</a>
   {
     items.map((section) => (
       <a
@@ -35,6 +39,11 @@ const isActive = (path: string) => {
     row-gap: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
+
+    /* Desktop reaches Home via the site-name logo, so the nav link is mobile-only. */
+    .nav-home {
+      display: none;
+    }
 
     a {
       display: block;
@@ -64,12 +73,24 @@ const isActive = (path: string) => {
   /* Mobile: drop the dotted underline (cramped on a phone) for a clean, compact
      text menu — muted labels with the active section in accent. */
   @media (max-width: 700px) {
+    .site-nav .nav-home {
+      display: block;
+    }
+
     .site-nav a {
-      color: var(--color-muted-2);
       text-decoration: none;
+      font-size: var(--font-size-xs);
+
+      &:hover {
+        color: var(--color-accent);
+      }
 
       &[aria-current='page'] {
-        color: var(--color-accent);
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+        text-decoration-style: solid;
+        text-decoration-color: var(--color-accent);
       }
     }
   }

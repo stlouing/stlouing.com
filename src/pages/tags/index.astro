@@ -1,42 +1,109 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import TagIcon from '../../components/TagIcon.astro'
 import { href } from '../../lib/url'
-import { allTags } from '../../lib/tags'
+import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
+import { tagGroups } from '../../lib/tags'
 
-const tags = await allTags()
+const { cuisines, vibes, topics } = await tagGroups()
+
+// One shape per section so each renders identically. `kind` picks the leading
+// glyph (cuisine emoji vs. vibe icon) and how the label is cased.
+const groups = [
+  { label: 'Cuisines', kind: 'cuisine', tags: cuisines },
+  { label: 'Neighborhood vibes', kind: 'vibe', tags: vibes },
+  { label: 'Topics', kind: 'topic', tags: topics },
+].filter((group) => group.tags.length > 0)
 ---
 
 <BaseLayout>
-  <h1>Tags</h1>
-  <ul class="tag-cloud">
-    {
-      tags.map(({ tag, count }) => (
-        <li>
-          <a href={href(`/tags/${tag}/`)}>#{tag}</a>
-          <span class="tag-count">{count}</span>
-        </li>
-      ))
-    }
-  </ul>
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Tags</h1>
+      </div>
+      <p class="entry-summary">Browse everything by cuisine, neighborhood vibe, or topic.</p>
+    </header>
+
+    <div class="tag-groups">
+      {
+        groups.map((group) => (
+          <section>
+            <h2 class="section-label">{group.label}</h2>
+            <ul class="tag-row">
+              {group.tags.map(({ tag, count }) => (
+                <li>
+                  <a class="tag-chip" href={href(`/tags/${tag}/`)}>
+                    {group.kind === 'cuisine' && (
+                      <span class="tag-emoji">{cuisineEmoji([tag])}</span>
+                    )}
+                    {group.kind === 'vibe' && <TagIcon tag={tag} />}
+                    <span>{group.kind === 'cuisine' ? cuisineLabel(tag) : tag}</span>
+                    {count > 1 && <span class="tag-n">{count}</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </article>
 </BaseLayout>
 
 <style>
-  .tag-cloud {
-    list-style: none;
-    margin: var(--spacing-lg) 0 0;
-    padding: 0;
+  .tag-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-block-start: var(--spacing-lg);
+  }
+
+  .tag-row {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-md);
-    font-family: var(--font-mono);
+    gap: var(--spacing-sm);
+    margin-block: var(--spacing-sm) 0;
+    padding: 0;
+    list-style: none;
 
     li {
       margin: 0;
     }
+  }
 
-    .tag-count {
-      color: var(--color-muted);
-      font-size: var(--font-size-xs);
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-line-input);
+    border-radius: 20px;
+    background: var(--color-surface);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    line-height: 1.2;
+
+    &:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
     }
+  }
+
+  .tag-emoji {
+    font-size: var(--font-size-sm);
+    line-height: 1;
+  }
+
+  .tag-chip :global(.icon) {
+    width: 14px;
+    height: 14px;
+  }
+
+  .tag-n {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
   }
 </style>

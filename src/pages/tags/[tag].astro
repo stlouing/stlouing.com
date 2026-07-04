@@ -8,6 +8,7 @@ import { allTags, collectTagged } from '../../lib/tags'
 export async function getStaticPaths() {
   const tags = await allTags()
   const items = await collectTagged()
+
   return tags.map(({ tag }) => ({
     params: { tag },
     props: { tag, items: items.filter((item) => item.tags.includes(tag)) },
@@ -15,6 +16,25 @@ export async function getStaticPaths() {
 }
 
 const { tag, items } = Astro.props
+
+// Group the matches by collection so a tag page reads as sections (Food,
+// Neighborhoods, …) rather than one undifferentiated list. `collection` values
+// come from collectTagged in mixed case, so map them to display names + an order.
+const COLLECTION_LABEL: Record<string, string> = {
+  food: 'Food',
+  Neighborhoods: 'Neighborhoods',
+  Topics: 'Topics',
+  Hikes: 'Hikes',
+  Notes: 'Notes',
+}
+const grouped = ['food', 'Neighborhoods', 'Topics', 'Hikes', 'Notes']
+  .map((collection) => ({
+    label: COLLECTION_LABEL[collection] ?? collection,
+    items: items.filter((item) => item.collection === collection),
+  }))
+  .filter((group) => group.items.length > 0)
+
+const countLabel = `${items.length} ${items.length === 1 ? 'entry' : 'entries'}`
 ---
 
 <BaseLayout crumb={`#${tag}`}>
@@ -23,15 +43,26 @@ const { tag, items } = Astro.props
       <div class="entry-bar">
         <h1>{`#${tag}`}</h1>
       </div>
+      <p class="entry-summary">{countLabel}</p>
     </header>
-    <List>
-      {
-        items.map((item) => (
-          <ListItem title={item.title} href={href(item.url)}>
-            <span class="collection">{item.collection}</span>
-          </ListItem>
-        ))
-      }
-    </List>
+
+    {
+      grouped.map((group) => (
+        <section class="tag-section">
+          <h2 class="section-label">{group.label}</h2>
+          <List>
+            {group.items.map((item) => (
+              <ListItem title={item.title} href={href(item.url)} />
+            ))}
+          </List>
+        </section>
+      ))
+    }
   </article>
 </BaseLayout>
+
+<style>
+  .tag-section {
+    margin-block-start: var(--spacing-lg);
+  }
+</style>
