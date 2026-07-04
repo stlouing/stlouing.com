@@ -32,6 +32,9 @@ export interface PopupConfig {
   // Title text + the shared target for the title link and "View more".
   title: string
   link: string
+  // Food only: a color-coded verdict pill (Loved / Liked / …) leading the chip
+  // row, matching the list rows. `key` picks the `.verdict-<key>` color token.
+  verdict?: { key: string; label: string }
   // Chip row under the title (cuisine + neighborhood pin, or a single area chip).
   chips?: PopupChip[]
   // Food only: address lines, rendered under the title.
@@ -88,10 +91,26 @@ const SOURCE_ICON: Record<string, string> = {
   ),
 }
 
+// Lucide icon per verdict (heart / thumbs-up / circle-minus / heart-off), matching
+// Verdict.astro, so the popup pill carries the same glyph as the list rows.
+const VERDICT_ICON: Record<string, string> = {
+  loved: sourceIcon(
+    '<path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>',
+  ),
+  liked: sourceIcon(
+    '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>',
+  ),
+  neutral: sourceIcon('<circle cx="12" cy="12" r="10"/><path d="M8 12h8"/>'),
+  'not-for-me': sourceIcon(
+    '<path d="M10.5 4.893a5.5 5.5 0 0 1 1.091.931.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 1.872-1.002 3.356-2.187 4.655"/><path d="m16.967 16.967-3.459 3.346a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5a5.5 5.5 0 0 1 2.747-4.761"/><path d="m2 2 20 20"/>',
+  ),
+}
+
 export function buildPopupHtml(config: PopupConfig): string {
   const {
     title,
     link,
+    verdict,
     chips = [],
     addressLines = [],
     tagline = '',
@@ -102,9 +121,12 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   const titleHtml = `<h2><a href="${link}">${escapeHtml(title)}</a></h2>`
 
-  const metaHtml = chips.length
-    ? `<div class="popup-meta">${chips.map(chipHtml).join('')}</div>`
+  const verdictHtml = verdict
+    ? `<span class="verdict-chip chip verdict-${verdict.key} is-filled">${VERDICT_ICON[verdict.key] ?? ''}<span>${escapeHtml(verdict.label)}</span></span>`
     : ''
+
+  const metaInner = `${chips.map(chipHtml).join('')}`
+  const metaHtml = metaInner ? `<div class="popup-meta">${metaInner}</div>` : ''
 
   const addressHtml = addressLines.length
     ? `<span class="tip-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
@@ -127,5 +149,5 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   // Order mirrors the list rows: title, then the chips, then the tagline
   // (description), with the address (Food) and excerpt below.
-  return `${titleHtml}${metaHtml}${taglineHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+  return `${verdictHtml}${titleHtml}${metaHtml}${taglineHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
 }

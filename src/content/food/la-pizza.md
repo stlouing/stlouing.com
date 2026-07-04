@@ -13,7 +13,7 @@ url: http://www.lapizzamenu.com
 instagram: https://www.instagram.com/la_pizza_inc
 ---
 
-La Pizza is one of the only places in St. Louis where you can get an authentic New York-style pizza. It's a small shop, mostly set up for takeout with a few small tables for dining in.
+La Pizza is one of the only places in St. Louis where you can get an authentic New York-style pizza. It's a small shop that is mostly set up for takeout with a few small tables for dining in.
 
 The atmosphere is very much a friendly neighborhood joint and the vibes are truly 10/10. We showed up one night when they were busy with take out orders for the rest of the night, and they managed to fit us in and make us a fresh pizza and wings. We got a sausage and pepperoni pizza.
 

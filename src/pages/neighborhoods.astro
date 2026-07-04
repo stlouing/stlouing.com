@@ -5,7 +5,13 @@ import MapRow from '../components/MapRow.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { published, excerpt, hasBody } from '../lib/content'
-import { neighborhoodResourceLinks, neighborhoodGeneratedSummary } from '../lib/neighborhoods'
+import {
+  neighborhoodResourceLinks,
+  neighborhoodGeneratedSummary,
+  neighborhoodPopulation,
+  foodByNeighborhood,
+  normalizeName,
+} from '../lib/neighborhoods'
 import IconMapPin from '../assets/IconMapPin.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
@@ -13,6 +19,8 @@ import IconMapPin from '../assets/IconMapPin.astro'
 // the map highlights + scrolls to a given one (see neighborhood-map.ts).
 const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
+// Food spots per neighborhood (keyed by normalized name), for the map hover card.
+const foodByHood = await foodByNeighborhood()
 type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
 const rendered = new Map<string, RenderedContent>()
 
@@ -46,6 +54,10 @@ function popupData(slug: string, name: string, group: string) {
 
   return {
     area: group,
+    // Quick facts for the map hover card: residents + how many food spots I've
+    // mapped here (0 when none yet).
+    population: neighborhoodPopulation(slug),
+    spots: foodByHood.get(normalizeName(name))?.length ?? 0,
     official: hrefFor('Website'),
     wikipedia: hrefFor('Wikipedia'),
     city: hrefFor('St. Louis City'),
@@ -169,6 +181,8 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-type': section === 'park' ? 'park' : '',
                       'data-tagline': popup.tagline ?? '',
                       'data-excerpt': popup.excerpt ?? '',
+                      'data-population': popup.population ? String(popup.population) : '',
+                      'data-spots': String(popup.spots),
                     }}>
                     {neighborhood.group && (
                       <div class="chips" slot="sub">

@@ -9,7 +9,7 @@ import { published, hasBody, excerpt } from '../../lib/content'
 import { cuisineEmoji } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
-import { resolveVerdict, type Verdict } from '../../lib/verdict'
+import { resolveVerdict, verdictLabels, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconAward from '../../assets/IconAward.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
@@ -47,10 +47,16 @@ const neighborhoods = [
   ...new Set(rated.map((entry) => entry.place.data.neighborhood).filter(Boolean)),
 ].sort() as string[]
 const hasCoords = rated.some((entry) => entry.place.data.coords)
+
+// Verdict facet options (matched against each row's data-verdict), best-first and
+// only the verdicts actually present; labels come from verdictLabels ("Loved", …).
+const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[])
+  .filter((value) => rated.some((entry) => entry.verdict === value))
+  .map((value) => ({ value, label: verdictLabels[value] }))
 ---
 
 <BaseLayout
-  description="An interactive map of the restaurants I've checked out across the St. Louis metro, filterable by cuisine and neighborhood. Every rating is my own.">
+  description="An interactive map of the St. Louis restaurants, filterable by cuisine and neighborhood. Every rating is my own.">
   <FilterMapPage
     class="food"
     floating
@@ -58,6 +64,7 @@ const hasCoords = rated.some((entry) => entry.place.data.coords)
     count={count}
     searchPlaceholder="name, cuisine..."
     facets={[
+      { label: 'Rating', facet: 'verdict', options: verdictOptions },
       { label: 'Cuisine', facet: 'cuisine', options: cuisines },
       { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
     ]}

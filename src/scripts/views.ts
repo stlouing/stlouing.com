@@ -31,8 +31,9 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
   const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-view-set]')]
   const floatingToggle = root.querySelector<HTMLButtonElement>('[data-map-split-toggle]')
 
-  // The title is a link to the detail page. In list view we let it navigate; in
-  // map view we intercept the click to open/close that place's popup instead.
+  // The title is a link to the detail page. Food (floating) always navigates
+  // there. Toggle-mode pages (Hikes) intercept the click in map view to open/close
+  // that place's popup instead (the map is the one-pane-at-a-time focus there).
   const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')]
 
   let mapApi: MapApi | null = null
@@ -86,7 +87,7 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
       continue
     }
     title.addEventListener('click', (event) => {
-      if (root.dataset.view === 'map' && mapApi) {
+      if (!isFloating && root.dataset.view === 'map' && mapApi) {
         event.preventDefault()
         mapApi.togglePopup(item)
       }

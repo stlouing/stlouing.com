@@ -49,7 +49,6 @@ const description =
     <header class="entry-header">
       <div class="entry-bar">
         <h1>On the List</h1>
-        <span class="count">{wishlist.length}</span>
       </div>
       <p class="entry-summary">The running list of places I still need to get to.</p>
     </header>
@@ -57,7 +56,9 @@ const description =
     {
       wishlist.length > 0 ? (
         <section>
-          <h2>Haven't tried yet</h2>
+          <h2>
+            Haven't tried yet <span class="section-count">{wishlist.length}</span>
+          </h2>
           <p class="description">
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
@@ -81,7 +82,9 @@ const description =
     {
       triedList.length > 0 && (
         <section>
-          <h2>Tried, not yet rated</h2>
+          <h2>
+            Tried, not yet rated <span class="section-count">{triedList.length}</span>
+          </h2>
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
@@ -103,7 +106,9 @@ const description =
     {
       inMemoriam.length > 0 && (
         <section>
-          <h2>RIP</h2>
+          <h2>
+            RIP <span class="section-count">{inMemoriam.length}</span>
+          </h2>
           <p class="description">
             Restaurants I've visited that have closed down and no longer exist.
           </p>
@@ -125,9 +130,12 @@ const description =
 </BaseLayout>
 
 <style>
-  .count {
+  /* A muted count beside each section heading. */
+  .section-count {
+    margin-inline-start: var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-md);
+    font-weight: 400;
     color: var(--color-muted);
   }
 

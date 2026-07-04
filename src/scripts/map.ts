@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
 import { keepPopupInView } from './map-shared'
+import { verdictLabels, type Verdict } from '../lib/verdict'
 
 export interface MapApi {
   // Fix the map's sizing after the container becomes visible.
@@ -33,9 +34,48 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   const scope: Element | Document = el.closest('[data-filter-root]') ?? document
 
   const map = createBasemapMap(el, { minZoom: 10, maxZoom: 15 })
-  // Marker-only map: DOM markers survive a style swap, so there's nothing to
-  // re-add when the theme (and thus the basemap flavor) changes.
-  watchThemeChanges(map)
+
+  // Faint neighborhood outlines under the emoji markers, so each spot reads with
+  // some geographic context. One geojson source (fetched by MapLibre from the URL)
+  // + a thin line layer; the color comes from the hairline token, which differs
+  // light/dark. transformStyle (see basemap.ts) carries both across a theme swap.
+  const BOUNDARY_SOURCE = 'nbhd-boundaries'
+  const BOUNDARY_LINE = 'nbhd-boundaries-line'
+  // A muted gray (not the pale hairline token, which vanishes on the light
+  // basemap); differs light/dark, so recolor on a theme swap.
+  const boundaryColor = () =>
+    getComputedStyle(document.documentElement).getPropertyValue('--color-muted').trim() || '#6f6b61'
+  function addBoundaryLayer(): void {
+    if (!map.getSource(BOUNDARY_SOURCE)) {
+      map.addSource(BOUNDARY_SOURCE, {
+        type: 'geojson',
+        data: `${import.meta.env.BASE_URL}stl-neighborhoods.geojson`,
+      })
+    }
+    if (!map.getLayer(BOUNDARY_LINE)) {
+      map.addLayer({
+        id: BOUNDARY_LINE,
+        type: 'line',
+        source: BOUNDARY_SOURCE,
+        paint: { 'line-color': boundaryColor(), 'line-width': 1, 'line-opacity': 0.6 },
+      })
+    }
+  }
+  // Add now if the style's already up, else on load (the listener would miss a
+  // load that already fired).
+  if (map.isStyleLoaded()) {
+    addBoundaryLayer()
+  } else {
+    map.on('load', addBoundaryLayer)
+  }
+
+  // DOM markers survive a style swap; the boundary layer is carried over by
+  // transformStyle, so on a theme change just recolor its line from the new token.
+  watchThemeChanges(map, () => {
+    if (map.getLayer(BOUNDARY_LINE)) {
+      map.setPaintProperty(BOUNDARY_LINE, 'line-color', boundaryColor())
+    }
+  })
 
   const items = [...scope.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const markers = new Map<HTMLElement, maplibregl.Marker>()
@@ -129,10 +169,16 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     ].filter(Boolean) as PopupSource[]
 
     const excerptText = item.dataset.excerpt ?? ''
+    const verdictKey = item.dataset.verdict as Verdict | undefined
+    const verdict =
+      verdictKey && verdictKey in verdictLabels
+        ? { key: verdictKey, label: verdictLabels[verdictKey] }
+        : undefined
     const popupHtml = buildPopupHtml({
       title: item.dataset.title ?? '',
       link: `/food/${item.id}/`,
       tagline: item.dataset.tagline ?? '',
+      verdict,
       chips,
       addressLines: (item.dataset.address ?? '').split('\n').filter(Boolean),
       excerpt: excerptText,

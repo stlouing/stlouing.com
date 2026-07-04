@@ -162,6 +162,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
 
   const map = createBasemapMap(element, { minZoom: 10, maxZoom: 15 })
 
+  // Touch devices synthesize hover (mouseenter/mousemove) events on tap, which
+  // makes the hover card flicker and fights tap-to-open. Gate every hover behavior
+  // on a genuinely hover-capable pointer (a mouse), so mobile is tap-only.
+  const canHover = window.matchMedia('(hover: hover)').matches
+
   let selectedSlug: string | null = null
   let hoveredId: number | null = null
 
@@ -254,11 +259,72 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
   })
 
+  // A lightweight hover card (name + region + population + food count) so the map
+  // reads without clicking each boundary. Its own popup instance, pointer-events
+  // off (CSS), and suppressed for the neighborhood whose full popup is already open.
+  const hoverTip = new maplibregl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+    className: 'map-hover-tip',
+    anchor: 'bottom',
+    // Clear the explored-neighborhood pin (~34px tall) so the card sits above it
+    // rather than overlapping — matches the full popup's offset.
+    offset: 38,
+    // Let the no-wrap fact lines size the card instead of the default 240px cap.
+    maxWidth: 'none',
+    focusAfterOpen: false,
+  })
+
+  // Anchored to the neighborhood's center (not the cursor) and guarded by slug, so
+  // moving within a boundary doesn't rebuild/re-jitter the tip every frame.
+  let hoverTipSlug: string | null = null
+  function hideHoverTip(): void {
+    hoverTip.remove()
+    hoverTipSlug = null
+  }
+
+  function showHoverTip(slug: string): void {
+    if (!canHover || !slug || slug === selectedSlug) {
+      hideHoverTip()
+      return
+    }
+    if (slug === hoverTipSlug) {
+      return
+    }
+    const name = nameBySlug.get(slug)
+    const center = centerBySlug.get(slug)
+    if (!name || !center) {
+      hideHoverTip()
+      return
+    }
+    const row = rowFor(slug)
+    const population = Number(row?.dataset.population ?? '')
+    const spots = Number(row?.dataset.spots ?? '')
+    const facts = [
+      row?.dataset.area ?? '',
+      Number.isFinite(population) && population > 0 ? `${population.toLocaleString()} residents` : '',
+      Number.isFinite(spots) && spots > 0
+        ? `${spots} food ${spots === 1 ? 'spot' : 'spots'} mapped`
+        : '',
+    ].filter(Boolean)
+    // Each data point on its own no-wrap line (see the .hover-tip-fact CSS).
+    const factsHtml = facts
+      .map((fact) => `<span class="hover-tip-fact">${escapeHtml(fact)}</span>`)
+      .join('')
+    hoverTip
+      .setLngLat(center)
+      .setHTML(`<span class="hover-tip-name">${escapeHtml(name)}</span>${factsHtml}`)
+      .addTo(map)
+    hoverTipSlug = slug
+  }
+
   function openPopupFor(slug: string, deferKeepInView = false): void {
     const center = centerBySlug.get(slug)
     if (!center) {
       return
     }
+    // The full popup supersedes the hover card.
+    hideHoverTip()
     popup.setLngLat(center).setHTML(popupHtmlFor(slug)).addTo(map)
     activate(slug)
     // Keep the popup clear of the sticky chrome + map edges (see map-shared). When a
@@ -269,25 +335,6 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       map.once('moveend', () => keepPopupInView(map, getPopupEl))
     } else {
       keepPopupInView(map, getPopupEl)
-    }
-  }
-
-  function togglePopupFor(slug: string): void {
-    if (selectedSlug === slug) {
-      popup.remove()
-    } else {
-      // Opening from the list: always center the neighborhood (MapLibre won't
-      // auto-pan to the popup like Leaflet did). Centering every time — not just
-      // when it's fully off-screen — also keeps one near an edge or under the
-      // sticky header from opening its popup hidden. The keep-in-view nudge is
-      // deferred to after the pan so the two don't fight (the flaky "click twice").
-      const center = centerBySlug.get(slug)
-      if (center) {
-        map.easeTo({ center })
-        openPopupFor(slug, true)
-      } else {
-        openPopupFor(slug)
-      }
     }
   }
 
@@ -379,12 +426,20 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       })
       // Hovering the marker previews its boundary, like hovering the polygon.
       element.addEventListener('mouseenter', () => {
+        if (!canHover) {
+          return
+        }
         if (slug !== selectedSlug) {
           setSlugState(slug, { hover: true })
         }
+        showHoverTip(slug)
       })
       element.addEventListener('mouseleave', () => {
+        if (!canHover) {
+          return
+        }
         setSlugState(slug, { hover: false })
+        hideHoverTip()
       })
     }
   }
@@ -393,6 +448,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   // the boundary under the pointer or, on empty space, closes the popup.
   function addBoundaryInteractions(): void {
     map.on('mousemove', FILL_LAYER, (event) => {
+      if (!canHover) {
+        return
+      }
       const feature = event.features?.[0]
       if (feature?.id === undefined) {
         return
@@ -406,6 +464,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       if (slug !== selectedSlug) {
         map.setFeatureState({ source: SOURCE_ID, id }, { hover: true })
       }
+      showHoverTip(slug)
       map.getCanvas().style.cursor = 'pointer'
     })
     map.on('mouseleave', FILL_LAYER, () => {
@@ -413,9 +472,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         map.setFeatureState({ source: SOURCE_ID, id: hoveredId }, { hover: false })
       }
       hoveredId = null
+      hideHoverTip()
       map.getCanvas().style.cursor = ''
     })
     map.on('click', (event) => {
+      hideHoverTip()
       const hits = map.queryRenderedFeatures(event.point, { layers: [FILL_LAYER] })
       const slug = hits.length ? String(hits[0].properties?.slug ?? '') : ''
       if (slug) {
@@ -426,24 +487,10 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     })
   }
 
-  // The row title links to the neighborhood's page. In map view we intercept the
-  // click to open/close that neighborhood's popup instead of navigating.
+  // The row title is a plain link to the neighborhood's detail page (like the Food
+  // list), so clicking one in the list navigates there; the map's own polygons and
+  // pins still open the in-place popup. `split` drives the map-pane observer below.
   const split = document.querySelector('[data-map-split]')
-  for (const row of rows) {
-    const slug = row.dataset.section
-    if (!slug) {
-      continue
-    }
-    const title = row.querySelector<HTMLElement>('.list-title') ?? row
-    title.classList.add('is-clickable')
-    title.addEventListener('click', (event) => {
-      if (split?.getAttribute('data-view') !== 'map') {
-        return
-      }
-      event.preventDefault()
-      togglePopupFor(slug)
-    })
-  }
 
   // Deep-link support: /neighborhoods#slug selects + frames that neighborhood on
   // load; otherwise frame the whole City of St. Louis.

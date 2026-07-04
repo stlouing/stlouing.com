@@ -16,7 +16,7 @@ import ClearFilters from './ClearFilters.astro'
 interface Facet {
   label: string
   facet: string
-  options: string[]
+  options: (string | { value: string; label: string })[]
 }
 
 interface SortOption {
