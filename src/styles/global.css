@@ -1004,15 +1004,6 @@ body:has(.map-split) main > .wrap,
     z-index: 4;
     user-select: none;
   }
-
-  /* Row padding (incl. the right-side reserve for `.list-arrow`) is set once on
-     the shared `.map-list .list > li` rule — don't duplicate it here, or the
-     higher-specificity `padding-right` would clobber that reserve. */
-
-  /* The title becomes click-to-open-popup in map view (neighborhood-map.ts). */
-  .is-clickable {
-    cursor: pointer;
-  }
 }
 
 /* Shared Food/Hikes list-item layout + controls (markup in MapRow; the

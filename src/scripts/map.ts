@@ -44,7 +44,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // A muted gray (not the pale hairline token, which vanishes on the light
   // basemap); differs light/dark, so recolor on a theme swap.
   const boundaryColor = () =>
-    getComputedStyle(document.documentElement).getPropertyValue('--color-muted').trim() || '#6f6b61'
+    getComputedStyle(document.documentElement).getPropertyValue('--color-muted-2').trim() || '#6f6b61'
   function addBoundaryLayer(): void {
     if (!map.getSource(BOUNDARY_SOURCE)) {
       map.addSource(BOUNDARY_SOURCE, {
@@ -57,7 +57,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         id: BOUNDARY_LINE,
         type: 'line',
         source: BOUNDARY_SOURCE,
-        paint: { 'line-color': boundaryColor(), 'line-width': 1, 'line-opacity': 0.6 },
+        paint: { 'line-color': boundaryColor(), 'line-width': 1, 'line-opacity': 0.7 },
       })
     }
   }
