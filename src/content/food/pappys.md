@@ -10,7 +10,7 @@ address:
 coords: [38.6357, -90.2246]
 url: https://www.pappyssmokehouse.com
 instagram: https://www.instagram.com/pappyssmokehouse
-rating: 9
+rating: 7.5
 pick:
   name: Ribs
   note: Dry-rubbed and slow smoked over apple and cherry wood, served with two sides
