@@ -559,7 +559,7 @@ a.wikipedia-link {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-sm);
-  margin-block-end: var(--spacing-md);
+  margin-block: var(--spacing-sm) var(--spacing-md);
 }
 
 .wikilink-card-meta:last-child {
@@ -1765,7 +1765,6 @@ body:has([data-filter-root]) .site-header {
 
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 a {
   font-family: var(--font-mono);
-  letter-spacing: -0.02rem;
   font-weight: 600;
   color: var(--color-text);
   text-decoration: none;

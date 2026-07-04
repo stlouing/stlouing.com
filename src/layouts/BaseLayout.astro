@@ -57,13 +57,17 @@ interface Crumb {
 
 const trail: Crumb[] = [{ label: SITE_NAME, href: '/' }]
 if (segments.length >= 1) {
-  const sectionPath = `/${segments[0]}`
-  const sectionLabel =
-    sections.find((section) => section.path === sectionPath)?.label ?? segments[0]
+  // Match the section by its slug, tolerant of the trailing slash on sections.ts
+  // paths (`/food/`), and reuse the matched section's own path for the crumb href
+  // so it carries the correct trailing slash rather than a redirecting `/food`.
+  const sectionKey = `/${segments[0]}`
+  const section = sections.find((entry) => entry.path.replace(/\/$/, '') === sectionKey)
+  const sectionLabel = section?.label ?? segments[0]
+  const sectionHref = section?.path ?? `${sectionKey}/`
   if (segments.length === 1) {
     trail.push({ label: crumb ?? sectionLabel })
   } else {
-    trail.push({ label: sectionLabel, href: sectionPath })
+    trail.push({ label: sectionLabel, href: sectionHref })
     trail.push({ label: crumb ?? segments[segments.length - 1] })
   }
 }
@@ -145,7 +149,7 @@ const analyticsUrl = analyticsBase
       document.documentElement.dataset.theme = theme
     </script>
 
-    <link rel="icon" type="image/png" href={href('/favicon.png')} />
+    <link rel="icon" type="image/png" href={href('/pixel-flag-2.png')} />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonical} />
