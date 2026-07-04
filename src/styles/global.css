@@ -388,7 +388,7 @@ tbody tr:last-child td {
 
 .toc a {
   color: var(--color-text);
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
 }
 

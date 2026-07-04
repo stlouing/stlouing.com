@@ -6,6 +6,7 @@ tags:
   - walkable
   - dining
   - arts
+  - upscale
 neighbors:
   - university-city
   - forest-park
@@ -23,4 +24,4 @@ attractions:
     description: A high-rise downtown that houses St. Louis County government.
 ---
 
-Clayton is the second downtown region of St. Louis.
+Clayton is one of the commercial and financial districts of St. Louis, and contains its own bustling downtown. It's located immediately to the west of Forest Park, and is centrally located relative to most things to do between St. Louis and the County. It's an upscale and highly sought after suburb with abundant green space that is studded with grandiose mansions all throughout.

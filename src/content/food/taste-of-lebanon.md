@@ -1,6 +1,6 @@
 ---
 title: Taste of Lebanon
-description: Excellent hummus, baba ganoush, and falafel
+description: Hookah and Lebanese food
 date: 2026-06-23
 rating: 8.5
 cuisine: ['middle eastern']

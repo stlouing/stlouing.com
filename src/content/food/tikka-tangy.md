@@ -4,7 +4,7 @@ date: 2026-06-27
 rating: 8.5
 cuisine: ['indian']
 neighborhood: Central West End
-description: Casual Indian and Middle Eastern fusion
+description: Indian and Middle Eastern fusion
 address:
   - 90 N Euclid Ave
   - St. Louis, MO 63108

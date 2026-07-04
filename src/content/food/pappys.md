@@ -1,6 +1,6 @@
 ---
 title: Pappy's Smokehouse
-description: Come for the ribs at this popular BBQ spot
+description: It's all about the ribs here
 date: 2026-06-23
 cuisine: ['bbq']
 neighborhood: Midtown

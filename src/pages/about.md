@@ -37,13 +37,13 @@ This site is the source of truth, and I'll automatically publish to these other 
 
 Just some thoughts I'm mulling on.
 
-- Things to do in St. Louis
-- Like and Dislikes of STL
+- A case for St. Louis
 - Does the arch control the weather?
 - Walkability of neighborhoods
-- Chicago and St. Louis guide
-- Nearby hiking
-- A case for St. Louis
+- Nearby hiking spots
+- Things to do in St. Louis
+- Like and Dislikes of STL
+- Chicago and St. Louis comparison
 
 ## Uses
 
