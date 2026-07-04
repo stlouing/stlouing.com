@@ -20,6 +20,7 @@ import IconFolderTree from '../assets/IconFolderTree.astro'
 import IconInfo from '../assets/IconInfo.astro'
 import IconTags from '../assets/IconTags.astro'
 import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
+import IconDice from '../assets/IconDice.astro'
 
 // A Lucide icon per directory section, keyed by path. Topic icons come from the
 // shared <Icon> component, resolved from each topic's `icon:` frontmatter (so
@@ -51,12 +52,22 @@ const latestTopics = allTopics.slice(0, 4)
 
 // Item counts shown next to the guide sections in the directory.
 const allFood = published(await getCollection('food'))
+const allNeighborhoods = published(await getCollection('neighborhoods'))
 const foodCount = allFood.length
-const neighborhoodCount = published(await getCollection('neighborhoods')).length
+const neighborhoodCount = allNeighborhoods.length
 const countByPath: Record<string, string> = {
   '/food/': `${foodCount} writeups`,
   '/neighborhoods/': `${neighborhoodCount} explored`,
 }
+
+// The "random page" CTA pool: every explorable entry page (topics, food,
+// neighborhoods). It's a <button> (not a link) so the destination — a fresh
+// random pick per click — never shows in the browser's hover status bar.
+const randomPool = [
+  ...allTopics.map((topic) => href(`/${topic.id}/`)),
+  ...allFood.map((place) => href(`/food/${place.id}/`)),
+  ...allNeighborhoods.map((neighborhood) => href(`/neighborhoods/${neighborhood.id}/`)),
+]
 
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
@@ -73,6 +84,14 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             Read more <IconArrowRight />
           </a>
         </p>
+        <div class="index-ctas">
+          <button type="button" class="btn btn-outline" id="random-cta">
+            <IconDice /> Go to random page
+          </button>
+          <a class="btn btn-outline" href={href('/feedback/')}>
+            <IconMessageCircleHeart /> Leave feedback
+          </a>
+        </div>
       </div>
       <div class="index-crest">
         <FleurDeLis class="index-crest-img" />
@@ -164,6 +183,16 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       })
     }
   </div>
+
+  <script is:inline define:vars={{ randomPool }}>
+    // Pick a fresh random destination on each click.
+    document.getElementById('random-cta')?.addEventListener('click', () => {
+      const target = randomPool[Math.floor(Math.random() * randomPool.length)]
+      if (target) {
+        window.location.href = target
+      }
+    })
+  </script>
 </BaseLayout>
 
 <style>
@@ -236,6 +265,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-size: var(--font-size-md);
     margin-block: var(--spacing-md);
     color: var(--color-text);
+  }
+
+  .index-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-block-start: var(--spacing-md);
   }
 
   /* Section header: label on the left, optional "all →" on the right, with a

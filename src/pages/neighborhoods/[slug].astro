@@ -183,11 +183,13 @@ const trail = [
           hasNeighborhoodShape(slug) && (
             <figure class="locator-figure">
               <NeighborhoodLocator slug={slug} name={title} />
-              <figcaption>{title} relative to St. Louis</figcaption>
+              <figcaption>{title} in St. Louis</figcaption>
             </figure>
           )
         }
-        <a class="btn btn-quiet neighborhood-back-link" href={href('/neighborhoods/')}>
+        <a
+          class="btn btn-quiet neighborhood-back-link neighborhood-back-link--desktop"
+          href={href('/neighborhoods/')}>
           Back to the Neighborhoods Map <IconArrowRight />
         </a>
       </aside>
@@ -205,6 +207,12 @@ const trail = [
             </div>
           )
         }
+
+        <a
+          class="btn btn-quiet neighborhood-back-link neighborhood-back-link--mobile"
+          href={href('/neighborhoods/')}>
+          Back to the Neighborhoods Map <IconArrowRight />
+        </a>
 
         {
           places.length > 0 && (
@@ -299,6 +307,18 @@ const trail = [
     align-self: flex-start;
   }
 
+  /* The link lives in the aside (right column on desktop), but the aside stacks
+     before the writeup on mobile — which would put the link above the content.
+     So the aside copy is desktop-only and a duplicate after the writeup shows on
+     mobile instead (facts → writeup → back link → food/spots/nearby). */
+  .neighborhood-back-link--desktop {
+    display: none;
+  }
+
+  .neighborhood-back-link--mobile {
+    margin-block: var(--spacing-md);
+  }
+
   @media screen and (min-width: 900px) {
     .neighborhood-layout {
       grid-template-columns: minmax(0, 1fr) 250px;
@@ -319,6 +339,15 @@ const trail = [
       position: sticky;
       top: calc(var(--header-height, 4rem) + var(--spacing-md));
     }
+
+    /* Desktop: the aside copy is back in the right column; hide the mobile one. */
+    .neighborhood-back-link--desktop {
+      display: inline-flex;
+    }
+
+    .neighborhood-back-link--mobile {
+      display: none;
+    }
   }
 
   @media (max-width: 700px) {
@@ -331,13 +360,13 @@ const trail = [
     display: none;
     width: 100%;
     margin: 0 auto;
-  }
-
-  .locator-figure :global(svg) {
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
     background: var(--color-surface);
     padding: var(--spacing-sm);
+  }
+
+  .locator-figure :global(svg) {
   }
 
   .locator-figure figcaption {

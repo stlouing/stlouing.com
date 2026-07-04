@@ -8,6 +8,7 @@ import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconExternalLink from '../assets/IconExternalLink.astro'
 import IconStar from '../assets/IconStar.astro'
 import VerdictChip from './Verdict.astro'
+import TagIcon from './TagIcon.astro'
 import { cuisineLabel } from '../lib/emoji'
 import type { Verdict } from '../lib/verdict'
 
@@ -90,7 +91,10 @@ const linkAttributes = href
       tags.length > 0 && (
         <span class="related-tags" aria-hidden="true">
           {tags.map((tag) => (
-            <span class="related-tag">{tag}</span>
+            <span class="related-tag">
+              <TagIcon tag={tag} />
+              {tag}
+            </span>
           ))}
         </span>
       )
@@ -211,6 +215,9 @@ const linkAttributes = href
   }
 
   .related-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     font-weight: 500;
@@ -220,6 +227,11 @@ const linkAttributes = href
     padding: 1px var(--spacing-sm);
     line-height: 1.4;
     background: var(--color-surface);
+  }
+
+  .related-tag :global(.icon) {
+    width: 0.9em;
+    height: 0.9em;
   }
 
   .related-arrow {
