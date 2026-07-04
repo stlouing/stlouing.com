@@ -1,7 +1,7 @@
 ---
 title: Webster Groves
 url: https://www.webstergrovesmo.gov/
-description: A charming, upscale suburb with restaurants, cafes, and boutique stores
+description: An upscale suburb with restaurants, cafes, and boutiques
 tags:
   - historic
   - walkable

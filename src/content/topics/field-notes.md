@@ -34,7 +34,9 @@ Many homes throughout the city are early 20th century brick-built homes, and ent
 
 ## Free Attractions
 
-St. Louis actually has an impressive amount of free amenities, especially relative to other mid-sized cities. The St. Louis Zoo is the most obvious example of this: a world-class zoo that holds its own against any other free or paid zoo. The Art Museum, Missouri History Museum, and Science Center are all free _any_ day of the week, not just once a month on a Tuesday. It's cool that there are so many things to do and they're not price prohibitive.
+St. Louis actually has an impressive amount of free amenities, especially relative to other mid-sized cities.
+
+The St. Louis Zoo is the most apparent example of this: a world-class zoo that holds its own against any other free or paid zoo. The Art Museum, Missouri History Museum, and Science Center are all free _any_ day of the week, not just once a month on a Tuesday. It's cool that there are so many things to do and they're not price prohibitive.
 
 ### Parks
 

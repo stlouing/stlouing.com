@@ -1,7 +1,7 @@
 ---
 title: Carondelet
 url: https://www.stlouis-mo.gov/live-work/community/neighborhoods/carondelet/
-description: A historic riverside neighborhood with one of the city's biggest parks
+description: A historic riverside neighborhood near a park
 tags:
   - historic
   - green

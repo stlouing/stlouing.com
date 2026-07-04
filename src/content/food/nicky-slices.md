@@ -1,6 +1,6 @@
 ---
 title: Nicky Slices Pizza Club
-description: Amazing Detroit-style pie
+description: A perfect Detroit-style pie
 date: 2026-06-23
 rating: 10
 cuisine: ['pizza']

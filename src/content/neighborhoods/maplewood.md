@@ -1,7 +1,7 @@
 ---
 title: Maplewood
 url: https://www.maplewoodmo.gov/
-description: A walkable inner-ring suburb with a main street and craft breweries
+description: A revived main street of shops, bars, and local breweries
 tags:
   - walkable
   - dining

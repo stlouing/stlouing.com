@@ -1784,7 +1784,7 @@ body:has([data-filter-root]) .site-header {
   font-family: var(--font-body);
   font-weight: 500;
   line-height: 1.3;
-  color: var(--color-accent);
+  color: var(--color-accent-2);
 }
 
 .maplibregl-popup.food-popup .tip-excerpt {
@@ -1893,7 +1893,7 @@ body:has([data-filter-root]) .site-header {
 /* Italic accent lede under an entry title (topics, neighborhoods). */
 .entry-summary {
   font-size: var(--font-size-lg);
-  color: var(--color-accent);
+  color: var(--color-accent-2);
   font-weight: 500;
   margin: 0;
   line-height: 1.2;

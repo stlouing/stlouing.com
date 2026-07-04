@@ -1,7 +1,7 @@
 ---
 title: Tower Grove South
 url: https://www.tgsna.org
-description: International dining alongside a beautiful city park
+description: International dining alongside parks and walkable streets
 tags:
   - walkable
   - dining
