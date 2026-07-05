@@ -133,6 +133,10 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   const nameBySlug = new Map<string, string>()
   const regionKeyBySlug = new Map<string, RegionKey>()
   const pinBodyBySlug = new Map<string, Element>()
+  // Bounds used to frame the default view — St. Louis City only. The St. Louis
+  // County municipalities (Chesterfield, Clayton, Kirkwood, …) still render, but
+  // they sit far west/south and must NOT drive the fit, or the city shrinks to a
+  // corner. Chesterfield especially is way out west; it just exists on the map.
   const cityBounds = new maplibregl.LngLatBounds()
 
   geojson.features.forEach((feature: Feature, index: number) => {
@@ -144,11 +148,16 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     const region = regionKeyForArea(entry)
     feature.properties = { ...feature.properties, region, slug, name }
 
+    const isCounty = entry?.group === 'St. Louis County'
     const featureBounds = new maplibregl.LngLatBounds()
     forEachPosition(feature.geometry, (position) => {
       const lngLat: [number, number] = [position[0], position[1]]
       featureBounds.extend(lngLat)
-      cityBounds.extend(lngLat)
+
+      // County municipalities render but don't count toward the city framing.
+      if (!isCounty) {
+        cityBounds.extend(lngLat)
+      }
     })
 
     if (slug) {
@@ -508,8 +517,8 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     } else {
       // Frame the whole city, then zoom in half a level for a tighter default view.
       // Instant on initial load — no fly-in. (setZoom/setCenter below are jumps.)
-      map.fitBounds(cityBounds, { padding: 10, animate: false })
-      map.setZoom(map.getZoom() + 0.5)
+      map.fitBounds(cityBounds, { padding: 40, animate: false })
+      // map.setZoom(map.getZoom())
 
       const visibleBounds = map.getBounds()
       const visibleLatSpan = visibleBounds.getNorth() - visibleBounds.getSouth()
@@ -537,7 +546,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   // it's hidden at load, wait for the first switch to the map pane, then re-measure.
   let framed = false
   function frameWhenSized(): void {
-    if (framed || element.clientHeight === 0) {
+    if (framed || element?.clientHeight === 0) {
       return
     }
     framed = true

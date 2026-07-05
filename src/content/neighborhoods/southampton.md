@@ -1,5 +1,6 @@
 ---
 title: Southampton
+created: 2026-07-05
 description: A tight-knit residential square mile
 url: https://www.southamptonstl.org/
 wikipedia: https://en.wikipedia.org/wiki/Southampton,_St._Louis

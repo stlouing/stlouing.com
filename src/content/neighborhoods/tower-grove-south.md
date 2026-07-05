@@ -1,5 +1,6 @@
 ---
 title: Tower Grove South
+created: 2026-07-05
 url: https://www.tgsna.org
 description: International dining alongside parks and walkable streets
 tags:

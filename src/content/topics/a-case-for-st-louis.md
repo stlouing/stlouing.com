@@ -1,5 +1,6 @@
 ---
 title: A Case for St. Louis
+created: 2026-07-05
 icon: landmark
 updated: 2026-06-24
 draft: true

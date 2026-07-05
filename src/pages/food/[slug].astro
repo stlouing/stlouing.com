@@ -37,6 +37,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data } = entry
 const verdict = resolveVerdict(data)
+// The footer timestamp: the last revision when set, otherwise the created date.
+const lastUpdated = data.updated ?? data.created
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 const neighborhoodLink = await neighborhoodHref(data.neighborhood)
@@ -112,8 +114,13 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} backlinks={mentionedIn}>
     {
-      data.updated && (
-        <Fragment slot="footer-meta">Updated {formatDate(data.updated)}</Fragment>
+      lastUpdated && (
+        <Fragment slot="footer-meta">
+          Last updated on{' '}
+          <time class="dt-updated" datetime={lastUpdated.toISOString()}>
+            {formatDate(lastUpdated)}
+          </time>
+        </Fragment>
       )
     }
     {

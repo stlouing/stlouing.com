@@ -1,5 +1,6 @@
 ---
 title: Shaw
+created: 2026-07-05
 url: https://shawstlouis.org
 description: Historic, charming homes by the Botanical Garden
 tags:

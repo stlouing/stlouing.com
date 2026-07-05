@@ -1,5 +1,6 @@
 ---
 title: Maplewood
+created: 2026-07-05
 url: https://www.maplewoodmo.gov/
 description: A main street of shops, bars, and local breweries
 tags:

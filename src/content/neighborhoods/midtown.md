@@ -1,5 +1,6 @@
 ---
 title: Midtown
+created: 2026-07-05
 description: The arts and innovation core of the city
 url: https://www.grandcenter.org/
 tags:

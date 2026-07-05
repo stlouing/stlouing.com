@@ -1,5 +1,6 @@
 ---
 title: Webster Groves
+created: 2026-07-05
 url: https://www.webstergrovesmo.gov/
 description: An upscale suburb with restaurants, cafes, and boutiques
 tags:

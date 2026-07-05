@@ -1,5 +1,6 @@
 ---
 title: Clayton
+created: 2026-07-05
 url: https://www.claytonmo.gov/
 description: The upscale business district and seat of St. Louis County
 tags:

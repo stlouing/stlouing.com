@@ -19,3 +19,5 @@ attractions:
     url: https://www.magichouse.org/
     description: The St. Louis Children's Museum, a longtime family favorite.
 ---
+
+Kirkwood is an affluent suburb with a walkable downtown area. You'll find a Clementine's, the local ice cream chain, A 4Hands brewery, and Citizen Kane's, a popular local steakhouse. There's also a local Lego resale shop called The Minifig Shop, along with other small shops and boutiques.
