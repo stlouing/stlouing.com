@@ -1,6 +1,6 @@
 ---
 title: The Hill
-date: 2026-06-28
+created: 2026-06-28
 url: https://www.hillstl.org
 description: Little Italy in the heart of St. Louis
 tags:

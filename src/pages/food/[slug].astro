@@ -1,5 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
+import { Image } from 'astro:assets'
+import { formatDate } from '../../lib/dates'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
@@ -110,6 +112,11 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} backlinks={mentionedIn}>
     {
+      data.updated && (
+        <Fragment slot="footer-meta">Updated {formatDate(data.updated)}</Fragment>
+      )
+    }
+    {
       data.description && (
         <p class="entry-summary" slot="lede">
           {data.description}
@@ -147,6 +154,17 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
 
     <div class="food-layout">
       <div class="food-main">
+        {
+          data.photo && (
+            <Image
+              class="food-photo"
+              src={data.photo}
+              alt={`Photo of ${data.title}`}
+              widths={[400, 800]}
+              sizes="(min-width: 900px) 600px, 100vw"
+            />
+          )
+        }
         <Content />
         <section class="more-food">
           {
@@ -230,6 +248,17 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
 </BaseLayout>
 
 <style>
+  /* A photo of the place, leading the writeup: full-width, rounded, hairline
+     border. Astro's <Image> emits width/height so it never causes layout shift. */
+  .food-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    margin-block-end: var(--spacing-lg);
+  }
+
   /* The sidebar map, address, "back to the map" link, and the pick all live in one
      bordered card: the map sits flush at the top (its own corners clipped by the
      card), and the rest is a left-aligned, padded body below it. */

@@ -1,6 +1,6 @@
 ---
 title: Kirkwood
-date: 2026-07-05
+created: 2026-07-05
 description: An affluent suburb with a charming downtown
 tags:
   - walkable

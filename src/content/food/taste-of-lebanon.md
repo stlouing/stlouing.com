@@ -1,7 +1,7 @@
 ---
 title: Taste of Lebanon
 description: Hookah and Lebanese food
-date: 2026-06-23
+created: 2026-06-23
 rating: 8.5
 cuisine: ['middle eastern']
 neighborhood: Central West End

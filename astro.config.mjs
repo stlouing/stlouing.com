@@ -81,7 +81,7 @@ function buildLastmod() {
     }
   }
 
-  add('notes', 'date', (id) => `/notes/${id}`)
+  add('notes', 'created', (id) => `/notes/${id}`)
   add('topics', 'updated', (id) => `/${id}`)
 
   return map

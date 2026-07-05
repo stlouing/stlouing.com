@@ -1,7 +1,7 @@
 ---
 title: La Tejana Taqueria
 description: A hyped taqueria that fell flat for me
-date: 2026-06-23
+created: 2026-06-23
 rating: 2
 cuisine: ['mexican']
 address:

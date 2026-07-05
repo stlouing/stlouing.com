@@ -1,7 +1,8 @@
 ---
 title: Sultan
-description: The go-to spot for Middle Eastern
-date: 2026-06-27
+description: Our go-to spot for Middle Eastern
+photo: ../images/food/sultan.jpeg
+created: 2026-06-27
 rating: 9.5
 cuisine: ['middle eastern']
 neighborhood: The Grove

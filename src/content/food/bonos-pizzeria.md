@@ -1,6 +1,6 @@
 ---
 title: Bono's Pizzeria
-date: 2026-06-28
+created: 2026-06-28
 rating: 9
 cuisine: ['pizza']
 description: Deep dish and St. Louis-style pizza

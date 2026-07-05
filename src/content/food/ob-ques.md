@@ -1,7 +1,7 @@
 ---
 title: O'B'Que's
 description: Texas-style brisket at a gas station
-date: 2026-06-23
+created: 2026-06-23
 rating: 9
 cuisine: ['bbq']
 neighborhood: Chesterfield

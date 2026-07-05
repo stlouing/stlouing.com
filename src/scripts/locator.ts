@@ -24,8 +24,8 @@ export function initLocator(el: HTMLElement): void {
     center: [lng, lat],
     // Zoomed out enough to place the spot in its surroundings, not just a few
     // blocks (a "where is it" view, not a street close-up).
-    zoom: 12,
-    minZoom: 11,
+    zoom: 11,
+    minZoom: 10,
     maxZoom: 17,
     // A plain scroll or one-finger drag moves the PAGE, not the map; two fingers
     // (or ⌘/ctrl + scroll) pan/zoom it, with a hint overlay. MapLibre's built-in

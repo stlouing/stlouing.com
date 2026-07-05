@@ -1,6 +1,6 @@
 ---
 title: St. Louis Hills
-date: 2026-07-05
+created: 2026-07-05
 description: Charming, family-friendly neighborhood
 tags:
   - residential
@@ -16,4 +16,4 @@ attractions:
     description: A 100-acre park on the neighborhood's southern edge with lakes, trails, and a dog park.
 ---
 
-The tagline for St. Louis Hills was "Country living in the City" when it was up-and-coming in the 1930s.
+The tagline for St. Louis Hills was "Country living in the City" when the neighborhood was first developed.

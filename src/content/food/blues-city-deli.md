@@ -1,6 +1,6 @@
 ---
 title: Blues City Deli
-date: 2026-06-23
+created: 2026-06-23
 description: An iconic Blues-themed sandwich shop
 rating: 10
 cuisine: ['sandwiches']

@@ -1,6 +1,6 @@
 ---
 title: Tikka Tangy
-date: 2026-06-27
+created: 2026-06-27
 rating: 8.5
 cuisine: ['indian']
 neighborhood: Central West End

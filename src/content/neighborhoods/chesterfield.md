@@ -1,5 +1,7 @@
 ---
 title: Chesterfield
+description: A large suburb with an entertainment district
+created: 2026-07-05
 tags:
   - shopping
   - dining
@@ -17,3 +19,5 @@ attractions:
   - name: Sophia M. Sachs Butterfly House
     description: A Missouri Botanical Garden division in Faust Park with butterflies in free flight.
 ---
+
+Chesterfield is peak suburbia,

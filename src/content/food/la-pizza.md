@@ -1,7 +1,7 @@
 ---
 title: La Pizza
 description: An authentic New York slice
-date: 2026-06-23
+created: 2026-06-23
 rating: 7.5
 cuisine: ['pizza']
 neighborhood: University City

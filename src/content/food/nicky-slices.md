@@ -1,7 +1,7 @@
 ---
 title: Nicky Slices Pizza Club
 description: A perfect Detroit-style pie
-date: 2026-06-23
+created: 2026-06-23
 rating: 10
 cuisine: ['pizza']
 neighborhood: The Hill

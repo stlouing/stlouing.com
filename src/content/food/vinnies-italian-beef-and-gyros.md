@@ -1,7 +1,7 @@
 ---
 title: Vinnie's Italian Beef & Gyros
 description: A solid gyro and an okay beef
-date: 2026-06-23
+created: 2026-06-23
 rating: 6.5
 cuisine: ['sandwiches']
 neighborhood: Lindenwood Park

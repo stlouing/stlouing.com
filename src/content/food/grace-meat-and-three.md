@@ -1,7 +1,7 @@
 ---
 title: Grace Meat & Three
 description: Comfort-food fried chicken and sides
-date: 2026-06-23
+created: 2026-06-23
 rating: 8.5
 cuisine: ['chicken']
 neighborhood: The Grove

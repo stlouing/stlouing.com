@@ -1,6 +1,6 @@
 ---
 title: Central West End
-date: 2026-06-28
+created: 2026-06-28
 url: https://cwescene.com
 description: An upscale urban neighborhood near Forest Park
 tags:

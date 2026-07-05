@@ -1,7 +1,7 @@
 ---
 title: Woofies Hot Dogs
 description: A perfect Chicago dog and smash burger
-date: 2026-06-23
+created: 2026-06-23
 rating: 9
 cuisine: ['hot dogs']
 neighborhood: Overland

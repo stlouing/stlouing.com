@@ -8,7 +8,7 @@ import { published, excerpt } from '../../lib/content'
 import { formatDateShort } from '../../lib/dates'
 
 const notes = published(await getCollection('notes')).sort(
-  (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
+  (left, right) => right.data.created.valueOf() - left.data.created.valueOf(),
 )
 ---
 
@@ -26,8 +26,8 @@ const notes = published(await getCollection('notes')).sort(
             title={note.data.title}
             href={href(`/notes/${note.id}/`)}
             description={note.data.description ?? excerpt(note.body)}>
-            <time slot="meta" class="list-meta" datetime={note.data.date.toISOString()}>
-              {formatDateShort(note.data.date)}
+            <time slot="meta" class="list-meta" datetime={note.data.created.toISOString()}>
+              {formatDateShort(note.data.created)}
             </time>
           </ListItem>
         ))

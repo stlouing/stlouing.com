@@ -10,13 +10,19 @@ const md = (folder: string) => glob({ pattern: '**/*.md', base: `./src/content/$
 
 const food = defineCollection({
   loader: md('food'),
-  schema: z.object({
+  schema: ({ image }) =>
+    z.object({
     title: z.string(),
     // A one-line tagline shown under the title (detail page) and on the food
     // list row, in accent. Mirrors the neighborhood `description`.
     description: z.string().optional(),
-    // Publish date. When set, the entry joins the RSS feed (newest first).
-    date: z.coerce.date().optional(),
+    // A photo of the place, resolved + optimized from a path relative to the
+    // markdown file (e.g. ../images/food/sultan.jpeg). Shown atop the writeup.
+    photo: image().optional(),
+    // Created / publish date. When set, the entry joins the RSS feed (newest first).
+    created: z.coerce.date().optional(),
+    // Last meaningful revision — shown as an "Updated <date>" line when set.
+    updated: z.coerce.date().optional(),
     rating: z.number().min(0).max(10).optional(),
     // Shown in place of the number. Set explicitly, or derived from `rating`
     // (9–10 loved, 7–8 liked, the rest neutral) by src/lib/verdict.ts.
@@ -49,6 +55,10 @@ const hikes = defineCollection({
   loader: md('hikes'),
   schema: z.object({
     title: z.string(),
+    // Optional created / last-revised dates, consistent with the other
+    // collections (hikes don't join the feed, but carry them for uniformity).
+    created: z.coerce.date().optional(),
+    updated: z.coerce.date().optional(),
     area: z.string().optional(),
     distanceMiles: z.number().optional(),
     difficulty: z.enum(['easy', 'moderate', 'hard']).optional(),
@@ -63,7 +73,10 @@ const notes = defineCollection({
   loader: md('notes'),
   schema: z.object({
     title: z.string(),
-    date: z.coerce.date(),
+    // Post date (required — notes are chronological). Feeds the RSS + list order.
+    created: z.coerce.date(),
+    // Last meaningful revision — shown as an "Updated <date>" line when set.
+    updated: z.coerce.date().optional(),
     description: z.string().optional(),
     ...taggable,
   }),
@@ -73,9 +86,11 @@ const neighborhoods = defineCollection({
   loader: md('neighborhoods'),
   schema: z.object({
     title: z.string(),
-    // Publish date. When set, the neighborhood joins the RSS feed (newest
-    // first), the same way a dated Food review does.
-    date: z.coerce.date().optional(),
+    // Created / publish date. When set, the neighborhood joins the RSS feed
+    // (newest first), the same way a dated Food review does.
+    created: z.coerce.date().optional(),
+    // Last meaningful revision — shown as an "Updated <date>" line when set.
+    updated: z.coerce.date().optional(),
     // An optional summary shown under the title (and used as the meta
     // description for a data-only neighborhood). Without one, the page falls
     // back to the generated "Neighborhood #X" line.

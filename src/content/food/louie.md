@@ -1,7 +1,7 @@
 ---
 title: Louie
 description: An upscale Italian restaurant
-date: 2026-06-23
+created: 2026-06-23
 rating: 9.5
 cuisine: ['italian']
 neighborhood: Clayton

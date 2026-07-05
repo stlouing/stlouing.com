@@ -1,7 +1,7 @@
 ---
 title: Stacked STL
 description: A build-your-own burger in Carondelet
-date: 2026-06-23
+created: 2026-06-23
 rating: 7.5
 cuisine: ['burgers']
 neighborhood: Carondelet

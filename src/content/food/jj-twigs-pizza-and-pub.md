@@ -1,7 +1,7 @@
 ---
 title: JJ Twig's Pizza & Pub
 description: A Chicago thin-crust pizza spot
-date: 2026-06-23
+created: 2026-06-23
 rating: 8
 cuisine: ['pizza']
 neighborhood: Southampton

@@ -68,11 +68,32 @@ function drawPolygon(el: HTMLElement, features: Feature[]): void {
   const SOURCE_ID = 'locator-neighborhood'
   const FILL_LAYER = 'locator-neighborhood-fill'
   const LINE_LAYER = 'locator-neighborhood-line'
-  const accentColor = () =>
-    getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#9c3b2e'
+  const CITY_SOURCE = 'locator-city'
+  const CITY_LINE = 'locator-city-line'
+  const readColor = (token: string, fallback: string) =>
+    getComputedStyle(document.documentElement).getPropertyValue(token).trim() || fallback
+  const accentColor = () => readColor('--color-accent', '#9c3b2e')
+  // A faint gray St. Louis City context outline under the neighborhood, matching
+  // the Food map's boundaries (all neighborhood outlines from the same geojson).
+  const cityColor = () => readColor('--color-muted-2', '#58554d')
 
   function addLayers(): void {
     const collection: FeatureCollection = { type: 'FeatureCollection', features }
+    // The faint city context goes on first, so the accent neighborhood draws over it.
+    if (!map.getSource(CITY_SOURCE)) {
+      map.addSource(CITY_SOURCE, {
+        type: 'geojson',
+        data: `${import.meta.env.BASE_URL}stl-neighborhoods.geojson`,
+      })
+    }
+    if (!map.getLayer(CITY_LINE)) {
+      map.addLayer({
+        id: CITY_LINE,
+        type: 'line',
+        source: CITY_SOURCE,
+        paint: { 'line-color': cityColor(), 'line-width': 1, 'line-opacity': 0.6 },
+      })
+    }
     if (!map.getSource(SOURCE_ID)) {
       map.addSource(SOURCE_ID, { type: 'geojson', data: collection })
     }
@@ -93,7 +114,8 @@ function drawPolygon(el: HTMLElement, features: Feature[]): void {
       })
     }
     map.fitBounds(bounds, { padding: 22, maxZoom: 14, animate: false })
-    map.setZoom(map.getZoom() - 1)
+    // Back off a couple zoom levels so the neighborhood sits in more of its context.
+    map.setZoom(map.getZoom() - 2)
   }
 
   if (map.isStyleLoaded()) {
@@ -105,6 +127,9 @@ function drawPolygon(el: HTMLElement, features: Feature[]): void {
   // The boundary color reads from a CSS token that differs light/dark; recolor it
   // after a theme swap (transformStyle carries the source + layers over).
   watchThemeChanges(map, () => {
+    if (map.getLayer(CITY_LINE)) {
+      map.setPaintProperty(CITY_LINE, 'line-color', cityColor())
+    }
     if (map.getLayer(FILL_LAYER)) {
       map.setPaintProperty(FILL_LAYER, 'fill-color', accentColor())
     }

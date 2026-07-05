@@ -9,6 +9,7 @@ import RelatedCard from '../../components/RelatedCard.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import { href } from '../../lib/url'
 import { resolveVerdict } from '../../lib/verdict'
+import { formatDate } from '../../lib/dates'
 import { published, excerpt } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -155,6 +156,11 @@ const trail = [
 <BaseLayout crumb={title} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
   <Entry title={title} backlinks={backlinks}>
+    {
+      entry?.data.updated && (
+        <Fragment slot="footer-meta">Updated {formatDate(entry.data.updated)}</Fragment>
+      )
+    }
     {
       summary && (
         <p class="entry-summary" slot="lede">

@@ -1,7 +1,7 @@
 ---
 title: Telva at the Ridge
 description: A Balkan-inspired cafe with a cozy chai
-date: 2026-06-23
+created: 2026-06-23
 rating: 9.5
 cuisine: ['cafe']
 neighborhood: Webster Groves

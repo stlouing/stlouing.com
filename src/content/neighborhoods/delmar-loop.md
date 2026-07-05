@@ -1,6 +1,6 @@
 ---
 title: Delmar Loop
-date: 2026-06-28
+created: 2026-06-28
 url: https://visittheloop.com/
 wikipedia: https://en.wikipedia.org/wiki/Delmar_Loop
 description: A walkable strip of music venues and restaurants

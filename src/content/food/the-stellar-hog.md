@@ -1,7 +1,7 @@
 ---
 title: The Stellar Hog
 description: Intergalactic BBQ vibes and a big patio
-date: 2026-06-23
+created: 2026-06-23
 rating: 7.5
 cuisine: ['bbq']
 neighborhood: Holly Hills

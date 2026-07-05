@@ -40,7 +40,7 @@ const tagline = 'An independent guide to the food, neighborhoods, and culture of
 const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore the city with me!`
 
 const allNotes = published(await getCollection('notes')).sort(
-  (left, right) => right.data.date.valueOf() - left.data.date.valueOf(),
+  (left, right) => right.data.created.valueOf() - left.data.created.valueOf(),
 )
 const allTopics = published(await getCollection('topics')).sort(
   (left, right) => right.data.updated.valueOf() - left.data.updated.valueOf(),
@@ -120,7 +120,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                   <ListItem
                     title={note.data.title}
                     href={href(`/notes/${note.id}/`)}
-                    meta={formatDateShort(note.data.date)}
+                    meta={formatDateShort(note.data.created)}
                   />
                 ))}
               </List>

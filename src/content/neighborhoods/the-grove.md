@@ -1,6 +1,6 @@
 ---
 title: The Grove
-date: 2026-06-28
+created: 2026-06-28
 url: https://www.thegrovestl.com
 description: St. Louis's LGBTQ nightlife strip
 tags:

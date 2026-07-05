@@ -1,6 +1,6 @@
 ---
 title: Southwest Garden
-date: 2026-07-05
+created: 2026-07-05
 tags:
   - green
   - historic

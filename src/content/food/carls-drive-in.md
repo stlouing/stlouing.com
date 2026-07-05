@@ -1,7 +1,7 @@
 ---
 title: Carl's Drive-In
 description: No-frills Route 66 diner
-date: 2026-06-23
+created: 2026-06-23
 rating: 7.5
 cuisine: ['burgers']
 neighborhood: Brentwood

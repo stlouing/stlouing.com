@@ -33,7 +33,7 @@ export async function GET(context: APIContext) {
 
       return {
         title: note.data.title,
-        pubDate: note.data.date,
+        pubDate: note.data.created,
         description: note.data.description ?? excerpt(note.body),
         content: absolutize(await container.renderToString(Content), link),
         link,
@@ -57,7 +57,7 @@ export async function GET(context: APIContext) {
   )
 
   // Food reviews only join the feed once dated (the feed is chronological).
-  const food = published(await getCollection('food')).filter((place) => place.data.date)
+  const food = published(await getCollection('food')).filter((place) => place.data.created)
   const foodItems = await Promise.all(
     food.map(async (place) => {
       const { Content } = await render(place)
@@ -65,7 +65,7 @@ export async function GET(context: APIContext) {
 
       return {
         title: place.data.title,
-        pubDate: place.data.date as Date,
+        pubDate: place.data.created as Date,
         description: excerpt(place.body),
         content: absolutize(await container.renderToString(Content), link),
         link,
@@ -77,7 +77,7 @@ export async function GET(context: APIContext) {
   // falls back to the authored `description` (which data-only entries carry)
   // before a body excerpt.
   const neighborhoods = published(await getCollection('neighborhoods')).filter(
-    (neighborhood) => neighborhood.data.date,
+    (neighborhood) => neighborhood.data.created,
   )
   const neighborhoodItems = await Promise.all(
     neighborhoods.map(async (neighborhood) => {
@@ -86,7 +86,7 @@ export async function GET(context: APIContext) {
 
       return {
         title: neighborhood.data.title,
-        pubDate: neighborhood.data.date as Date,
+        pubDate: neighborhood.data.created as Date,
         description: neighborhood.data.description ?? excerpt(neighborhood.body),
         content: absolutize(await container.renderToString(Content), link),
         link,

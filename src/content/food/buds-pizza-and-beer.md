@@ -1,7 +1,7 @@
 ---
 title: Bud's Pizza & Beer
 description: Cozy pizza joint with my favorite t-ravs
-date: 2026-06-23
+created: 2026-06-23
 rating: 8.5
 cuisine: ['pizza']
 neighborhood: 'North Hampton'
