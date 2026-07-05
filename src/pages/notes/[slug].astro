@@ -24,7 +24,7 @@ const schema = articleSchema(
     title: data.title,
     url: permalink,
     description: data.description,
-    published: data.date.toISOString(),
+    published: data.created.toISOString(),
     tags: data.tags,
   },
   siteOrigin,
@@ -35,7 +35,7 @@ const schema = articleSchema(
   crumb={data.title}
   description={data.description}
   ogType="article"
-  publishedTime={data.date.toISOString()}
+  publishedTime={data.created.toISOString()}
   tags={data.tags}
   jsonLd={schema}>
   <Entry
@@ -43,8 +43,8 @@ const schema = articleSchema(
     tags={data.tags}
     backlinks={backlinks}
     permalink={permalink}>
-    <time slot="meta" class="dt-published" datetime={data.date.toISOString()}>
-      {formatDate(data.date)}
+    <time slot="meta" class="dt-published" datetime={data.created.toISOString()}>
+      {formatDate(data.created)}
     </time>
     <Content />
   </Entry>
