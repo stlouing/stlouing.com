@@ -302,7 +302,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     const spots = Number(row?.dataset.spots ?? '')
     const facts = [
       row?.dataset.area ?? '',
-      Number.isFinite(population) && population > 0 ? `${population.toLocaleString()} residents` : '',
+      Number.isFinite(population) && population > 0
+        ? `${population.toLocaleString()} residents`
+        : '',
       Number.isFinite(spots) && spots > 0
         ? `${spots} food ${spots === 1 ? 'spot' : 'spots'} mapped`
         : '',

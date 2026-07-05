@@ -26,5 +26,6 @@
   { "name": "Himalayan Hut", "cuisine": ["indian"] },
   { "name": "Rozana Mediterranean", "cuisine": ["middle eastern"] },
   { "name": "Pirrone's", "cuisine": ["pizza"] },
-  { "name": "Layali Halab Mediterranean", "cuisine": ["middle eastern"] }
+  { "name": "Layali Halab Mediterranean", "cuisine": ["middle eastern"] },
+  { "name": "Hi-Pointe", "cuisine": ["burgers"] }
 ]

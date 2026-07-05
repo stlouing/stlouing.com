@@ -32,5 +32,9 @@
   { "name": "Berix", "cuisine": ["balkan"] },
   { "name": "Napoli", "cuisine": ["italian"] },
   { "name": "Little Fox", "cuisine": ["american"] },
-  { "name": "Brasserie", "cuisine": ["american"] }
+  { "name": "Brasserie", "cuisine": ["american"] },
+  { "name": "El Morelia Supermercado", "cuisine": ["mexican"] },
+  { "name": "TeeRak Thai", "cuisine": ["thai"] },
+  { "name": "Locoz Tacoz", "cuisine": ["mexican"] },
+  { "name": "Tacos Wey", "cuisine": ["mexican"] }
 ]

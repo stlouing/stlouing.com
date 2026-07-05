@@ -63,6 +63,8 @@ A few open-source projects this site relies on.
   - A website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
 - [**St. Louis City Talk**](https://www.stlouiscitytalk.com/)
   - Many thoughts and pictures about St. Louis neighborhoods.
+- [**Next STL**](https://nextstl.com/)
+  - A website covering civic engagement and development in St. Louis.
 - [**St. Louis Magazine**](https://www.stlmag.com/)
   - STL-based magazine with news and events.
 - [**St. Louis Public Radio**](https://www.stlpr.org/)

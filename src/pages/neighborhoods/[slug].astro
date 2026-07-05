@@ -178,15 +178,17 @@ const trail = [
     }
     <div class="neighborhood-layout">
       <aside class="neighborhood-aside">
-        <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
         {
-          hasNeighborhoodShape(slug) && (
+          (hasNeighborhoodShape(slug) || info?.coords) && (
             <figure class="locator-figure">
-              <NeighborhoodLocator slug={slug} name={title} />
-              <figcaption>{title} in St. Louis</figcaption>
+              <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
+              <figcaption>
+                {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
+              </figcaption>
             </figure>
           )
         }
+        <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
         <a
           class="btn btn-quiet neighborhood-back-link neighborhood-back-link--desktop"
           href={href('/neighborhoods/')}>
@@ -357,20 +359,16 @@ const trail = [
   }
 
   .locator-figure {
-    display: none;
     width: 100%;
     margin: 0 auto;
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
+    overflow: hidden;
     background: var(--color-surface);
-    padding: var(--spacing-sm);
-  }
-
-  .locator-figure :global(svg) {
   }
 
   .locator-figure figcaption {
-    margin-block-start: var(--spacing-sm);
+    padding: var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--color-muted);
@@ -393,12 +391,5 @@ const trail = [
 
   .not-explored p + p {
     margin-block-start: var(--spacing-sm);
-  }
-
-  /* The tall locator SVG reads poorly stacked on mobile; the facts card stays. */
-  @media screen and (min-width: 900px) {
-    .locator-figure {
-      display: block;
-    }
   }
 </style>

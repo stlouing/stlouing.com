@@ -217,41 +217,55 @@
     "name": "Clayton",
     "slug": "clayton",
     "group": "St. Louis County",
-    "type": "city"
+    "type": "city",
+    "coords": [38.6448, -90.3337]
   },
   {
     "number": 91,
     "name": "University City",
     "slug": "university-city",
     "group": "St. Louis County",
-    "type": "city"
+    "type": "city",
+    "coords": [38.6559, -90.3053]
   },
   {
     "number": 92,
     "name": "Maplewood",
     "slug": "maplewood",
     "group": "St. Louis County",
-    "type": "city"
+    "type": "city",
+    "coords": [38.6123, -90.3243]
   },
   {
     "number": 93,
     "name": "Kirkwood",
     "slug": "kirkwood",
     "group": "St. Louis County",
-    "type": "city"
+    "type": "city",
+    "coords": [38.5834, -90.4068]
   },
   {
     "number": 94,
     "name": "Webster Groves",
     "slug": "webster-groves",
     "group": "St. Louis County",
-    "type": "city"
+    "type": "city",
+    "coords": [38.5926, -90.3573]
   },
   {
     "number": 95,
     "name": "Affton",
     "slug": "affton",
     "group": "St. Louis County",
-    "type": "community"
+    "type": "community",
+    "coords": [38.5501, -90.3298]
+  },
+  {
+    "number": 96,
+    "name": "Chesterfield",
+    "slug": "chesterfield",
+    "group": "St. Louis County",
+    "type": "city",
+    "coords": [38.6631, -90.5771]
   }
 ]

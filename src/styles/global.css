@@ -214,8 +214,7 @@ ul li > ol {
 code {
   font-size: var(--font-size-sm);
   color: var(--color-text);
-  background: var(--color-surface);
-  padding: 2px;
+  font-weight: 500;
 }
 
 blockquote {
@@ -1850,7 +1849,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .maplibregl-popup.food-popup .chip {
-  gap: var(--spacing-xs);
+  gap: 6px;
   padding: var(--spacing-xs) var(--spacing-sm);
 }
 

@@ -65,6 +65,9 @@ export interface NeighborhoodInfo {
   // Non-neighborhood areas: 'park' (city green spaces) or 'city' (St. Louis County
   // municipalities). Standard numbered city neighborhoods have no type.
   type?: string
+  // Center [lat, lng] for entries with no city-boundary polygon (county
+  // municipalities), so the locator can fall back to a center-pinned map.
+  coords?: [number, number]
 }
 
 // The real (non-`ignored`) neighborhoods, keyed by slug. Drops the rows that are

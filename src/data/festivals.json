@@ -40,5 +40,11 @@
     "neighborhood": "the-grove",
     "when": "Early October",
     "blurb": "A street festival and community celebration along Manchester Avenue in The Grove."
+  },
+  {
+    "name": "LindFest",
+    "neighborhood": "lindenwood-park",
+    "when": "October (biennial)",
+    "blurb": "A neighborhood festival held every other October in Lindenwood Park, with local vendors, food, and kids' craft booths."
   }
 ]

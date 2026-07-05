@@ -1,55 +1,82 @@
 ---
-import geo from '../data/neighborhood-geo.json'
-
+// An inline locator map for a neighborhood page: the themed basemap framed to this
+// one neighborhood, its boundary drawn as a single accent polygon. Renders a
+// server-side placeholder box; the MapLibre chunk is imported only when the box
+// nears the viewport (so a cold landing that never scrolls to it pays nothing).
 interface Props {
   slug: string
   name?: string
+  // Center [lat, lng] fallback for entries with no city-boundary polygon (county
+  // municipalities): the locator draws a center pin instead of a polygon.
+  coords?: [number, number]
   class?: string
 }
 
-const { slug, name, class: className } = Astro.props
-const shapes = geo.shapes as Record<string, string>
-const activePath = shapes[slug]
-
-// The whole city as one solid silhouette (every neighborhood's path concatenated)
-// — no internal borders to read as noise at thumbnail size. The active
-// neighborhood is then drawn on top.
-const cityPath = Object.values(shapes).join('')
-
-const label = name ? `${name} relative to St. Louis` : 'Location within St. Louis'
+const { slug, name, coords, class: className } = Astro.props
+const label = name ? `Map of ${name} within St. Louis` : 'Neighborhood location within St. Louis'
 ---
 
-{
-  activePath && (
-    <svg
-      class:list={['locator', className]}
-      viewBox={geo.viewBox}
-      role="img"
-      aria-label={label}
-      xmlns="http://www.w3.org/2000/svg">
-      <path class="locator-city" d={cityPath} />
-      <path class="locator-active" d={activePath} />
-    </svg>
-  )
-}
+<div
+  class:list={['neighborhood-locator', className]}
+  data-neighborhood-locator
+  data-slug={slug}
+  data-coords={coords ? coords.join(',') : undefined}
+  role="img"
+  aria-label={label}
+>
+</div>
 
 <style>
-  .locator {
-    width: 100%;
-    height: auto;
-  }
-
-  /* The whole city as one faint, solid shape. */
-  .locator-city {
-    fill: var(--color-line);
-  }
-
-  /* The neighborhood this page is about, outlined in the page background so it
-     reads cleanly against the silhouette even when it's a small area. */
-  .locator-active {
-    fill: var(--color-accent);
-    /* stroke: var(--color-accent); */
-    /* stroke-width: 3; */
-    stroke-linejoin: round;
+  /* The placeholder before the map loads: a faint diagonal hatch that reads as a
+     map while the chunk fetches (matches the food locator). The figure wrapper
+     supplies the border/rounded frame; this just fills it. */
+  .neighborhood-locator {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent 0 11px,
+        color-mix(in srgb, var(--color-line-input) 28%, transparent) 11px 12px
+      ),
+      var(--color-background);
   }
 </style>
+
+<script>
+  // Upgrade each placeholder into a map. MapLibre is heavy, so defer the dynamic
+  // import until the locator nears the viewport (and keep it out of the main
+  // bundle). Hidden boxes (the locator is desktop-only) never intersect, so mobile
+  // pays nothing.
+  const boxes = [...document.querySelectorAll<HTMLElement>('[data-neighborhood-locator]')]
+
+  if (boxes.length) {
+    const upgrade = (box: HTMLElement) => {
+      import('../scripts/neighborhood-locator').then(({ initNeighborhoodLocator }) =>
+        initNeighborhoodLocator(box),
+      )
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              obs.unobserve(entry.target)
+              upgrade(entry.target as HTMLElement)
+            }
+          }
+        },
+        { rootMargin: '200px' },
+      )
+      for (const box of boxes) {
+        observer.observe(box)
+      }
+    } else {
+      for (const box of boxes) {
+        upgrade(box)
+      }
+    }
+  }
+</script>

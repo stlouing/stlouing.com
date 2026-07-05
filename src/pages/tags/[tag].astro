@@ -52,7 +52,7 @@ const countLabel = `${items.length} ${items.length === 1 ? 'entry' : 'entries'}`
           <h2 class="section-label">{group.label}</h2>
           <List>
             {group.items.map((item) => (
-              <ListItem title={item.title} href={href(item.url)} />
+              <ListItem title={item.title} href={href(item.url)} description={item.description} />
             ))}
           </List>
         </section>

@@ -3,7 +3,7 @@ title: La Tejana Taqueria
 description: A hyped taqueria that fell flat for me
 date: 2026-06-23
 rating: 2
-cuisine: ['tacos']
+cuisine: ['mexican']
 address:
   - 3149 N Lindbergh Blvd
   - St Ann, MO 63074

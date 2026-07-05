@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content'
-import { published } from './content'
+import { published, hasBody, excerpt } from './content'
 import { entryUrl } from './entry-url.mjs'
 
 export interface TaggedItem {
@@ -7,6 +7,18 @@ export interface TaggedItem {
   url: string // root-relative; pass through href() before use
   collection: string
   tags: string[]
+  // A short line for the tag page: the entry's tagline, else a body excerpt.
+  description?: string
+}
+
+// The one-line summary shown under a result on a tag page: prefer the authored
+// tagline (`description`), else a trimmed excerpt of the writeup.
+function summarize(entry: { data: { description?: string }; body?: string }): string | undefined {
+  if (entry.data.description) {
+    return entry.data.description
+  }
+
+  return hasBody(entry) ? excerpt(entry.body ?? '', 120) : undefined
 }
 
 export async function collectTagged(): Promise<TaggedItem[]> {
@@ -19,6 +31,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       tags: [...new Set([...entry.data.cuisine, ...entry.data.tags])],
       collection: 'food',
       url: entryUrl('food', entry.id),
+      description: summarize(entry),
     })
   }
 
@@ -28,6 +41,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       tags: entry.data.tags,
       collection: 'Hikes',
       url: entryUrl('hikes', entry.id),
+      description: entry.data.area,
     })
   }
 
@@ -37,6 +51,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       tags: entry.data.tags,
       collection: 'Notes',
       url: entryUrl('notes', entry.id),
+      description: summarize(entry),
     })
   }
 
@@ -46,6 +61,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       tags: entry.data.tags,
       collection: 'Neighborhoods',
       url: entryUrl('neighborhoods', entry.id),
+      description: summarize(entry),
     })
   }
 
@@ -55,6 +71,7 @@ export async function collectTagged(): Promise<TaggedItem[]> {
       tags: entry.data.tags,
       collection: 'Topics',
       url: entryUrl('topics', entry.id),
+      description: summarize(entry),
     })
   }
 

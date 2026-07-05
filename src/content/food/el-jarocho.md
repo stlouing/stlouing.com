@@ -3,7 +3,7 @@ title: El Jarocho
 description: Authentic street tacos in St. Louis
 date: 2026-06-23
 rating: 9
-cuisine: ['tacos']
+cuisine: ['mexican']
 neighborhood: Twin Oaks
 address:
   - 25 Stonegate Center
