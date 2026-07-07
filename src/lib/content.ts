@@ -6,6 +6,25 @@ export function published<
   return entries.filter((entry) => !entry.data.draft)
 }
 
+// Topics list order, shared by /topics and the homepage column: "St. Louis Field
+// Notes" is pinned to the top as the section's living index, then everything else
+// by most-recently-updated — so it stays first even when another topic is newer.
+const PINNED_TOPIC_ID = 'field-notes'
+export function sortTopics<Entry extends { id: string; data: { updated: Date } }>(
+  entries: Entry[],
+): Entry[] {
+  return [...entries].sort((left, right) => {
+    if (left.id === PINNED_TOPIC_ID) {
+      return -1
+    }
+    if (right.id === PINNED_TOPIC_ID) {
+      return 1
+    }
+
+    return right.data.updated.valueOf() - left.data.updated.valueOf()
+  })
+}
+
 // True when an entry has real body content (HTML comments ignored).
 export function hasBody(entry: { body?: string }): boolean {
   const text = (entry.body ?? '').replace(/<!--[\s\S]*?-->/g, '').trim()

@@ -27,5 +27,6 @@
   { "name": "Rozana Mediterranean", "cuisine": ["middle eastern"] },
   { "name": "Pirrone's", "cuisine": ["pizza"] },
   { "name": "Layali Halab Mediterranean", "cuisine": ["middle eastern"] },
-  { "name": "Hi-Pointe", "cuisine": ["burgers"] }
+  { "name": "Hi-Pointe", "cuisine": ["burgers"] },
+  { "name": "Dalie's Smokehouse", "cuisine": ["bbq"] }
 ]

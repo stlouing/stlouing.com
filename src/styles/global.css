@@ -426,7 +426,6 @@ a {
   text-decoration-style: solid;
   text-decoration-color: var(--color-muted);
   text-underline-offset: 3px;
-  font-weight: 500;
 
   &:hover {
     color: var(--color-link-hover);

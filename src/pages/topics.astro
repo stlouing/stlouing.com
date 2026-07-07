@@ -5,19 +5,9 @@ import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
 import Icon from '../components/Icon.astro'
 import { href } from '../lib/url'
-import { published, excerpt } from '../lib/content'
+import { published, excerpt, sortTopics } from '../lib/content'
 
-const pinnedId = 'field-notes'
-const topics = published(await getCollection('topics')).sort((left, right) => {
-  if (left.id === pinnedId) {
-    return -1
-  }
-  if (right.id === pinnedId) {
-    return 1
-  }
-
-  return right.data.updated.valueOf() - left.data.updated.valueOf()
-})
+const topics = sortTopics(published(await getCollection('topics')))
 ---
 
 <BaseLayout

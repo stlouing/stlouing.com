@@ -5,7 +5,6 @@
   { "name": "Cate Zone", "cuisine": ["chinese"] },
   { "name": "ChiliSpot", "cuisine": ["chinese"] },
   { "name": "Corner 17", "cuisine": ["chinese"] },
-  { "name": "Dalie's Smokehouse", "cuisine": ["bbq"] },
   { "name": "Ehsani's Hot Kabob", "cuisine": ["middle eastern"] },
   { "name": "El Torito", "cuisine": ["mexican"] },
   { "name": "Fonda La Poblanita", "cuisine": ["mexican"] },
@@ -36,5 +35,6 @@
   { "name": "El Morelia Supermercado", "cuisine": ["mexican"] },
   { "name": "TeeRak Thai", "cuisine": ["thai"] },
   { "name": "Locoz Tacoz", "cuisine": ["mexican"] },
-  { "name": "Tacos Wey", "cuisine": ["mexican"] }
+  { "name": "Tacos Wey", "cuisine": ["mexican"] },
+  { "name": "Lefty's Fried Rice", "cuisine": ["chinese"] }
 ]

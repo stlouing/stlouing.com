@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
-import { published } from '../lib/content'
+import { published, sortTopics } from '../lib/content'
 import { formatDateShort } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
@@ -42,9 +42,7 @@ const intro = `St. Louing is a personal project I created to document my experie
 const allNotes = published(await getCollection('notes')).sort(
   (left, right) => right.data.created.valueOf() - left.data.created.valueOf(),
 )
-const allTopics = published(await getCollection('topics')).sort(
-  (left, right) => right.data.updated.valueOf() - left.data.updated.valueOf(),
-)
+const allTopics = sortTopics(published(await getCollection('topics')))
 
 // Latest few of each for the homepage columns.
 const latestNotes = allNotes.slice(0, 5)
