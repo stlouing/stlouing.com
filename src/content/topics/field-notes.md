@@ -99,3 +99,7 @@ People drive golf carts all around the St. Louis area. According to The Hill nei
 It's common to see cars driving around with expired license plates or temp plates. The Missouri DMV is run by privately owned offices, and requires significantly more steps than many other states (emissions testing, car safety testing, personal property confirmation, etc.).
 
 Since Missouri requires personal property taxes to be paid every year on cars registered in the state, car ownership is a lot more expensive here, which may help explain why there are so many expired temp plates in the wild. It's also not heavily enforced.
+
+### Candy Cane Lane
+
+A street in [[st-louis-hills|St. Louis Hills]] that goes all out during Christmas.

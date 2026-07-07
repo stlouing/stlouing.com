@@ -36,12 +36,12 @@
   --font-body: Georgia, 'Times New Roman', serif;
   --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  --font-size-xxs: 0.7rem;
-  --font-size-xs: 0.8rem;
-  --font-size-sm: 0.9rem;
+  --font-size-xxs: 0.8rem;
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 0.9375rem;
   --font-size-md: 1rem;
-  --font-size-label: 1.1rem;
-  --font-size-lg: 1.2rem;
+  --font-size-label: 1.125rem;
+  --font-size-lg: 1.25rem;
   --font-size-xl: 1.4rem;
 
   /* Type scale + rhythm */
@@ -595,7 +595,7 @@ a.wikipedia-link {
   border-radius: 20px;
   background: var(--color-surface);
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   font-weight: 500;
   color: var(--chip-color, var(--color-muted-2));
   text-decoration: none;
@@ -652,7 +652,6 @@ button.chip:hover {
 .chip-region {
   gap: 6px;
   padding-block: 3px;
-  font-size: var(--font-size-xs);
 }
 
 .chip-region::before {
@@ -791,7 +790,7 @@ main {
 
 label {
   color: var(--color-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   font-family: var(--font-mono);
@@ -807,6 +806,8 @@ select {
   border: 1px solid var(--color-line-input);
   border-radius: var(--radius);
   font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
 
   &:focus {
     outline: none;
@@ -1010,6 +1011,7 @@ body:has(.map-split) main > .wrap,
 /* Indent the open panel past the rating badge so it lines up with the row's
    text content instead of starting under the badge. */
 .map-list .list-description {
+  font-size: var(--font-size-sm);
   margin-left: calc(var(--spacing-md) + 56px);
   margin-top: var(--spacing-md);
 
@@ -1065,7 +1067,7 @@ body:has(.map-split) main > .wrap,
   -webkit-line-clamp: 5;
   line-clamp: 5;
   overflow: hidden;
-  line-height: 1.4;
+  line-height: 1.5;
 
   ul {
     list-style: disc;
@@ -1621,15 +1623,6 @@ body:has([data-filter-root]) .site-header {
   position: static;
 }
 
-/* An applied facet dropdown is accented so it's obvious which filters are on. */
-.filters select.is-active {
-  /* border-color: var(--color-accent);
-  color: var(--color-accent);
-  font-weight: 600;
-  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)); */
-  font-weight: 600;
-}
-
 /* Second row of the sticky toolbar: the active-filter chip tray + clear-all.
    Overrides the toolbar `.wrap` (which scrolls horizontally) so chips wrap. */
 .secondary-header .wrap.active-filters {
@@ -1988,7 +1981,7 @@ body:has([data-filter-root]) .site-header {
   border: 1px solid transparent;
   border-radius: var(--radius);
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
@@ -2097,7 +2090,7 @@ body:has([data-filter-root]) .site-header {
    each usage keeps its own margin via its own class. */
 .section-label {
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);

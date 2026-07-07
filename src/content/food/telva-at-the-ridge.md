@@ -3,7 +3,7 @@ title: Telva at the Ridge
 description: A Balkan-inspired cafe with a cozy chai
 created: 2026-06-23
 rating: 9.5
-cuisine: ['cafe']
+cuisine: ['coffee']
 neighborhood: Webster Groves
 address:
   - 60 N Gore Ave

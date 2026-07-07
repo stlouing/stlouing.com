@@ -10,5 +10,6 @@ address:
 coords: [38.6143767, -90.2778436]
 url: https://www.anthoninos.com/
 instagram: https://www.instagram.com/anthoninos_taverna
-draft: true
 ---
+
+Anthonino's Taverna is an Italian and Greek restaurant on the Hill. It was once featued on Diners, Drive-Ins and Dives with Guy Fieri, particularly for the toasted ravioli.

@@ -1,5 +1,9 @@
 [
-  { "name": "Classic Red Hots Albasha", "cuisine": ["middle eastern"] },
+  {
+    "name": "Classic Red Hots Albasha",
+    "cuisine": ["middle eastern"],
+    "note": "It was a family owned Chicago/Lebanese spot."
+  },
   {
     "name": "Dinar Restaurant",
     "cuisine": ["middle eastern"],
@@ -11,8 +15,16 @@
     "cuisine": ["pizza"],
     "note": "The first St. Louis-style pizza I tried."
   },
-  { "name": "Minerva Indian Cuisine", "cuisine": ["indian"] },
+  {
+    "name": "Minerva Indian Cuisine",
+    "cuisine": ["indian"],
+    "note": "It was a good hole-in-the-wall spot."
+  },
   { "name": "Pie Guy", "cuisine": ["pizza"], "note": "It was my favorite NY-style pizza." },
-  { "name": "Southern", "cuisine": ["chicken"] },
-  { "name": "The Shaved Duck", "cuisine": ["bbq"] }
+  { "name": "Southern", "cuisine": ["chicken"], "note": "One of the few good fried chicken spots" },
+  {
+    "name": "The Shaved Duck",
+    "cuisine": ["bbq"],
+    "note": "Tried everything on the menu, but it was not my favorite."
+  }
 ]
