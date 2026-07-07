@@ -1414,6 +1414,117 @@ body:has([data-neighborhood-map]) .river-border {
   --chip-color: var(--color-verdict-notforme);
 }
 
+/* Rating pill (Verdict.astro `card`, food detail hero; also the map popup): a
+   solid verdict-colored icon disc, then the word in the body serif (an optional
+   "MY RATING" eyebrow above it). Bordered in the verdict color over a low-opacity
+   tint of it. --verdict-color is set per verdict below; the three --verdict-*-size
+   vars drive the scale, so the compact + mobile variants only flip those. */
+.verdict-card {
+  --verdict-disc-size: 2.25rem;
+  --verdict-glyph-size: 1.1rem;
+  --verdict-value-size: var(--font-size-lg);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--spacing-xs);
+  border: 1px solid color-mix(in srgb, var(--verdict-color) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--verdict-color) 12%, var(--color-surface));
+}
+
+.verdict-card.verdict-loved {
+  --verdict-color: var(--color-verdict-loved);
+}
+
+.verdict-card.verdict-liked {
+  --verdict-color: var(--color-verdict-liked);
+}
+
+.verdict-card.verdict-neutral {
+  --verdict-color: var(--color-verdict-neutral);
+}
+
+.verdict-card.verdict-not-for-me {
+  --verdict-color: var(--color-verdict-notforme);
+}
+
+/* Solid disc holding the verdict icon, glyph in the surface color for contrast. */
+.verdict-card .verdict-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--verdict-disc-size);
+  height: var(--verdict-disc-size);
+  border-radius: 50%;
+  background: var(--verdict-color);
+
+  /* The glyph reads as the surface color for contrast on the disc — override the
+     global `.icon` rule, which otherwise pins it muted. */
+  .icon {
+    width: var(--verdict-glyph-size);
+    height: var(--verdict-glyph-size);
+    color: var(--color-surface);
+  }
+}
+
+.verdict-card .verdict-card-text {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.verdict-card .verdict-card-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--verdict-color) 70%, var(--color-text));
+}
+
+.verdict-card .verdict-card-value {
+  font-family: var(--font-body);
+  font-size: var(--verdict-value-size);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--verdict-color);
+}
+
+/* Compact pill — the map popup, and mobile (where it sits above the title). Just
+   a smaller scale + tighter padding; the color treatment is unchanged. */
+.verdict-card.is-compact {
+  --verdict-disc-size: 1.5rem;
+  --verdict-glyph-size: 0.9rem;
+  --verdict-value-size: var(--font-size-md);
+
+  gap: var(--spacing-sm);
+  padding: 3px var(--spacing-sm);
+  padding-left:  var(--spacing-xs);
+}
+
+/* The "My Rating" eyebrow only rides along at full size — dropped on the compact
+   pill (map popup) and on mobile, where the word alone reads cleaner. */
+.verdict-card.is-compact .verdict-card-label {
+  display: none;
+}
+
+@media screen and (max-width: 700px) {
+  .verdict-card {
+    --verdict-disc-size: 1.5rem;
+    --verdict-glyph-size: 0.9rem;
+    --verdict-value-size: var(--font-size-md);
+
+    gap: var(--spacing-sm);
+    padding: 3px var(--spacing-sm);
+  }
+
+  .verdict-card .verdict-card-label {
+    display: none;
+  }
+}
+
 /* A filled verdict pill (food detail pages): the verdict color becomes the
    background, with the surface color for contrast in both themes. `!important`
    (like .chip.round below) wins the specificity tie with Chip's scoped base
@@ -1422,7 +1533,7 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-surface) !important;
   background: var(--chip-color, var(--color-accent)) !important;
   border-color: var(--chip-color, var(--color-accent)) !important;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .chip.is-filled .icon {

@@ -8,6 +8,7 @@ tags:
   - historic
   - dining
   - upscale
+url: https://www.kirkwoodmo.org/
 attractions:
   - name: Downtown Kirkwood
     description: A walkable historic downtown of shops, restaurants, and cafes.

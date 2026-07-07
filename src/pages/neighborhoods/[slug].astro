@@ -232,22 +232,6 @@ const trail = [
         </a>
 
         {
-          places.length > 0 && (
-            <RelatedList title="Food">
-              {places.map((place) => (
-                <RelatedCard
-                  href={href(`/food/${place.id}/`)}
-                  title={place.data.title}
-                  meta={place.data.cuisine[0]}
-                  emoji={cuisineEmoji([place.data.cuisine[0]])}
-                  verdict={resolveVerdict(place.data)}
-                />
-              ))}
-            </RelatedList>
-          )
-        }
-
-        {
           attractions.length > 0 && (
             <RelatedList title="Notable spots">
               {attractions.map((spot) => (
@@ -258,6 +242,22 @@ const trail = [
                   external>
                   <IconLandmark slot="icon" />
                 </RelatedCard>
+              ))}
+            </RelatedList>
+          )
+        }
+
+        {
+          places.length > 0 && (
+            <RelatedList title="Nearby Food">
+              {places.map((place) => (
+                <RelatedCard
+                  href={href(`/food/${place.id}/`)}
+                  title={place.data.title}
+                  meta={place.data.cuisine[0]}
+                  emoji={cuisineEmoji([place.data.cuisine[0]])}
+                  verdict={resolveVerdict(place.data)}
+                />
               ))}
             </RelatedList>
           )
@@ -338,7 +338,7 @@ const trail = [
 
   @media screen and (min-width: 900px) {
     .neighborhood-layout {
-      grid-template-columns: minmax(0, 1fr) 250px;
+      grid-template-columns: minmax(0, 1fr) 260px;
       align-items: start;
       gap: 2.5rem;
     }

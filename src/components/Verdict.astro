@@ -32,6 +32,11 @@ interface Props {
   // Fill the pill with the verdict color (off by default — used on detail pages).
   filled?: boolean
   narrow?: boolean
+  // Render as a rating pill (icon disc + the word, with a "My Rating" eyebrow at
+  // full size), bordered + tinted to the verdict.
+  card?: boolean
+  // Compact `card`: smaller scale and no eyebrow — for inline meta rows.
+  compact?: boolean
 }
 
 const {
@@ -41,14 +46,32 @@ const {
   round = false,
   filled = false,
   narrow = false,
+  card = false,
+  compact = false,
 } = Astro.props
 const Icon = verdictIcons[verdict]
 ---
 
-<Chip
-  class:list={[`verdict-${verdict}`, { 'is-filled': filled, 'is-narrow': narrow }]}
-  round={round}
-  aria-label={label ? undefined : verdictLabels[verdict]}>
-  {icon && <Icon />}
-  {label && <span>{verdictLabels[verdict]}</span>}
-</Chip>
+{
+  card ? (
+    // "Rating" is the front-end word for a verdict — we only ever say "verdict"
+    // in code.
+    <div class:list={['verdict-card', `verdict-${verdict}`, { 'is-compact': compact }]}>
+      <span class="verdict-card-icon">
+        <Icon />
+      </span>
+      <span class="verdict-card-text">
+        <span class="verdict-card-label">My Rating</span>
+        <span class="verdict-card-value">{verdictLabels[verdict]}</span>
+      </span>
+    </div>
+  ) : (
+    <Chip
+      class:list={[`verdict-${verdict}`, { 'is-filled': filled, 'is-narrow': narrow }]}
+      round={round}
+      aria-label={label ? undefined : verdictLabels[verdict]}>
+      {icon && <Icon />}
+      {label && <span>{verdictLabels[verdict]}</span>}
+    </Chip>
+  )
+}

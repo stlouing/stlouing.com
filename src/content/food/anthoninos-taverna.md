@@ -1,6 +1,7 @@
 ---
 title: Anthonino's Taverna
 created: 2026-06-23
+updated: 2026-07-07
 rating: 7
 cuisine: ['italian']
 neighborhood: The Hill

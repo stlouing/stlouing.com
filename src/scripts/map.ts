@@ -3,6 +3,7 @@ import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
 import { keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
+import { cuisineLabel } from '../lib/emoji'
 
 export interface MapApi {
   // Fix the map's sizing after the container becomes visible.
@@ -145,7 +146,8 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     const cuisines = (item.dataset.cuisine ?? '').split('|').filter(Boolean)
     const neighborhood = item.dataset.neighborhood ?? ''
     const chips: PopupChip[] = cuisines.map((cuisine) => ({
-      label: cuisine,
+      // Show the display label ("St. Louis-style"), but filter on the raw value.
+      label: cuisineLabel(cuisine),
       leadingHtml: markerEmoji,
       filterSet: 'cuisine',
       filterValue: cuisine,

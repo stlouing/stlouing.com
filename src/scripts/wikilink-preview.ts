@@ -1,6 +1,9 @@
 // Wikipedia-style hovercards for resolved `[[wikilinks]]` (marked `a.wikilink`
 // with a `data-wikilink` id by remark-wikilink). Desktop only: on hover/focus
 // for ~1s, fetch the shared preview map once and show a small title + excerpt
+
+import { cuisineLabel } from "../lib/emoji"
+
 // card near the link. Touch / coarse-pointer devices just follow the link.
 interface Preview {
   title: string
@@ -88,8 +91,9 @@ export function initWikilinkPreviews(): void {
       meta.className = 'wikilink-card-meta'
       preview.cuisine?.forEach((cuisine, index) => {
         const chip = document.createElement('span')
+        const cuisinePresentable = cuisineLabel(cuisine)
         chip.className = 'chip'
-        chip.textContent = index === 0 && preview.emoji ? `${preview.emoji} ${cuisine}` : cuisine
+        chip.textContent = index === 0 && preview.emoji ? `${preview.emoji} ${cuisinePresentable}` : cuisinePresentable
         meta.appendChild(chip)
       })
       if (preview.neighborhood) {

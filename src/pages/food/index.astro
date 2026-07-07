@@ -6,7 +6,7 @@ import FilterMapPage from '../../components/FilterMapPage.astro'
 import MapRow from '../../components/MapRow.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt } from '../../lib/content'
-import { cuisineEmoji } from '../../lib/emoji'
+import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
 import { resolveVerdict, verdictLabels, type Verdict } from '../../lib/verdict'
@@ -132,7 +132,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                       data-filter-set="cuisine"
                       data-filter-value={cuisine}>
                       <span>{cuisineEmoji(place.data.cuisine)}</span>
-                      <span>{cuisine}</span>
+                      <span>{cuisineLabel(cuisine)}</span>
                     </button>
                   ))}
                   {place.data.neighborhood && (

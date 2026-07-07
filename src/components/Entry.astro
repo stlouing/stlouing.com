@@ -4,9 +4,11 @@
 // footer. Passing `permalink` marks it up as an IndieWeb h-entry
 // (notes/topics); without it, it's a plain directory entry (food/hikes).
 //
-// Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
-// the meta row, e.g. an address), `footer-meta` (a quiet line at the foot of the
-// article, e.g. a last-updated timestamp), and the default slot (the body).
+// Slots: `lede` (under the title), `header-aside` (a badge floated to the right
+// of the title + lede, e.g. the food rating card), `meta` (the meta row),
+// `header-extra` (after the meta row, e.g. an address), `footer-meta` (a quiet
+// line at the foot of the article, e.g. a last-updated timestamp), and the
+// default slot (the body).
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
 import ShareButton from './ShareButton.astro'
@@ -25,12 +27,26 @@ interface Props {
 
 const { title, tags = [], backlinks = [], permalink } = Astro.props
 const isArticle = Boolean(permalink)
+// A `header-aside` badge (e.g. the food rating card) rides to the right of the
+// title + lede; without one the headline is a plain block, unchanged.
+const hasHeaderAside = Astro.slots.has('header-aside')
 ---
 
 <article class:list={['entry', { 'h-entry': isArticle }]}>
   <header class="entry-header">
-    <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
-    <slot name="lede" />
+    <div class:list={['entry-headline', { 'has-aside': hasHeaderAside }]}>
+      <div class="entry-headline-main">
+        <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
+        <slot name="lede" />
+      </div>
+      {
+        hasHeaderAside && (
+          <div class="entry-headline-aside">
+            <slot name="header-aside" />
+          </div>
+        )
+      }
+    </div>
 
     {
       (Astro.slots.has('meta') || tags.length > 0) && (
@@ -63,6 +79,7 @@ const isArticle = Boolean(permalink)
   </div>
 
   <footer>
+    <Backlinks links={backlinks} />
     {
       Astro.slots.has('footer-meta') && (
         <p class="entry-footer-meta">
@@ -70,11 +87,13 @@ const isArticle = Boolean(permalink)
         </p>
       )
     }
-    <Backlinks links={backlinks} />
     <section class="entry-end">
       <div class="share-bar">
         <ShareButton title={title} label="Share this page" class="share-footer" />
-        <Button href={href('/feedback/')}><IconPencil />Leave Feedback</Button>
+        <Button href={href('/feedback/')}>
+          <IconPencil />
+          Leave Feedback
+        </Button>
       </div>
       <NewsletterSignup compact />
     </section>
@@ -82,6 +101,30 @@ const isArticle = Boolean(permalink)
 </article>
 
 <style>
+  /* Title + lede on the left, an optional badge (the food rating card) aligned
+     to the right and centered against the text block. Only the `has-aside`
+     variant is a flex row — the plain headline stays a block, so entry pages
+     without a badge are laid out exactly as before. */
+  .entry-headline.has-aside {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+  }
+
+  .entry-headline-aside {
+    flex-shrink: 0;
+  }
+
+  /* Stack on narrow screens with the badge above the title (column-reverse, since
+     the badge is the last child in source order). */
+  @media screen and (max-width: 700px) {
+    .entry-headline.has-aside {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+  }
+
   /* Footer end-band: one hairline divides the page actions + newsletter from the
      content, and the newsletter (with its river endcap) closes the page. */
   /* No top border here — the global site footer provides the one divider, so the
@@ -90,7 +133,7 @@ const isArticle = Boolean(permalink)
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    margin-block-start: var(--spacing-lg);
+    margin-block-start: var(--spacing-sm);
   }
 
   .share-bar {
@@ -101,9 +144,9 @@ const isArticle = Boolean(permalink)
 
   /* A quiet last-updated line closing the article, well below the title. */
   .entry-footer-meta {
-    margin: 0 0 var(--spacing-lg);
+    margin: var(--spacing-lg) 0 var(--spacing-sm);
     font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-xxs);
     color: var(--color-muted);
   }
 </style>

@@ -134,7 +134,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
       <div class="food-meta">
         <div class="food-sub-meta">
           <div class="food-sub-meta-section">
-            {verdict && <Verdict verdict={verdict} icon filled />}
+            {verdict && <Verdict verdict={verdict} card compact />}
             {
               data.cuisine.map((cuisine) => (
                 <Chip href={href(`/food/?cuisine=${cuisine}`)}>
@@ -173,6 +173,18 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           )
         }
         <Content />
+        <!-- <nav class="food-more-cta" aria-label="More food from St. Louing">
+          <a class="food-cta-card" href={href('/best/')}>
+            <span class="food-cta-lead"><IconAward /></span>
+            <span class="food-cta-title">Best food of St. Louis</span>
+            <span class="food-cta-arrow"><IconArrowRight /></span>
+          </a>
+          <a class="food-cta-card" href={href('/food/on-the-list/')}>
+            <span class="food-cta-lead"><IconListChecks /></span>
+            <span class="food-cta-title">Restaurants I want to try</span>
+            <span class="food-cta-arrow"><IconArrowRight /></span>
+          </a>
+        </nav> -->
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (
@@ -206,18 +218,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
             )
           }
         </section>
-        <nav class="food-more-cta" aria-label="More food from St. Louing">
-          <a class="food-cta-card" href={href('/best/')}>
-            <span class="food-cta-lead"><IconAward /></span>
-            <span class="food-cta-title">My best food of St. Louis list</span>
-            <span class="food-cta-arrow"><IconArrowRight /></span>
-          </a>
-          <a class="food-cta-card" href={href('/food/on-the-list/')}>
-            <span class="food-cta-lead"><IconListChecks /></span>
-            <span class="food-cta-title">Restaurants I have yet to try</span>
-            <span class="food-cta-arrow"><IconArrowRight /></span>
-          </a>
-        </nav>
       </div>
       <aside class="food-aside">
         <h2 class="food-aside-title section-label">Location</h2>
@@ -348,7 +348,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
     background: var(--color-surface);
@@ -430,6 +430,19 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     flex-wrap: wrap;
   }
 
+  /* In this header row the cuisine chips grow to the compact verdict pill's
+     height, so the pill and chips read as one row of equal-height tokens.
+     Stretch matches whatever the pill measures (no hard-coded height); dropping
+     the chip's max-height lets it grow past its usual 22px cap. */
+  .food-sub-meta-section:not(.food-links) {
+    align-items: stretch;
+  }
+
+  .food-sub-meta-section:not(.food-links) :global(.chip) {
+    max-height: none;
+    font-size: var(--font-size-sm);
+  }
+
   /* The source links sit to the right of the verdict + cuisine, and wrap toward
      the right edge when the row is tight. */
   .food-links {
@@ -486,10 +499,10 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
 
   /* "More food" footer — related places + a link back to the full list, so a
      page ends on a path forward instead of just cutting off. */
-  .more-food {
+  /* .more-food {
     padding-block-start: var(--spacing-xs);
     margin-block-start: var(--spacing-lg);
-  }
+  } */
 
   @media screen and (max-width: 700px) {
     /* Stack the two meta groups, each filling the row: verdict + cuisine on top,

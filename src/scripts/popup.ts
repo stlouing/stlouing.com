@@ -121,8 +121,10 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   const titleHtml = `<h2><a href="${link}">${escapeHtml(title)}</a></h2>`
 
+  // The rating pill, matching Verdict.astro's `card` at the compact size (icon
+  // disc + the word); `verdict-chip` just carries the margin below it.
   const verdictHtml = verdict
-    ? `<span class="verdict-chip chip verdict-${verdict.key} is-filled">${VERDICT_ICON[verdict.key] ?? ''}<span>${escapeHtml(verdict.label)}</span></span>`
+    ? `<div class="verdict-card verdict-chip is-compact verdict-${verdict.key}"><span class="verdict-card-icon">${VERDICT_ICON[verdict.key] ?? ''}</span><span class="verdict-card-text"><span class="verdict-card-value">${escapeHtml(verdict.label)}</span></span></div>`
     : ''
 
   const metaInner = `${chips.map(chipHtml).join('')}`
