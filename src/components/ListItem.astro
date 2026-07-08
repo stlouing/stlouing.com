@@ -45,8 +45,21 @@ const hasIcon = Astro.slots.has('icon')
   .list-item {
     display: block;
     padding-block: var(--spacing-sm);
+    /* Horizontal padding pulled back out with a matching negative margin so the
+       hover highlight extends past the text while the text stays aligned with
+       the row dividers. */
+    padding-inline: var(--spacing-sm);
+    margin-inline: calc(-1 * var(--spacing-sm));
+    border-radius: var(--radius);
     color: inherit;
     text-decoration: none;
+    transition: background-color 0.12s ease;
+  }
+
+  /* Whole-row highlight: a soft accent tint over the page background, so it
+     picks up the brand color in both themes. */
+  a.list-item:hover {
+    background: color-mix(in srgb, var(--color-accent) 7%, var(--color-background));
   }
 
   /* With a leading icon the row becomes an icon + body flex pair, aligned the same

@@ -36,7 +36,7 @@
   /* Fonts */
   --font-body: Georgia, 'Times New Roman', serif;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxs: 0.8rem;
   --font-size-xs: 0.875rem;
@@ -50,14 +50,14 @@
   --text: 1rem;
 
   /* Space + measure */
-  --measure: 880px;
+  --measure: 900px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-base: 1.25rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  --radius: 6px;
+  --radius: 0;
 
   /* Misc */
   --letter-spacing: 0.04rem;
@@ -170,7 +170,7 @@ h2,
 h3,
 h4 {
   line-height: 1.2;
-  font-weight: 700;
+  font-weight: 500;
   text-wrap: balance;
   color: var(--color-text-heading);
 }
@@ -180,14 +180,14 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.3rem, 1.3rem + 0.6vw, 2rem);
+  font-size: clamp(1.6rem, 1.4rem + 1vw, 2.5rem);
   margin-bottom: 1.2rem;
 }
 
 h3 {
-  font-size: clamp(1.1rem, 1.1rem + 0.6vw, 1.5rem);
+  font-size: clamp(1.3rem, 1.2rem + 0.7vw, 1.8rem);
   margin-bottom: var(--spacing-md);
-  color: var(--color-accent);
+  color: var(--color-accent-2);
 }
 
 p,
@@ -778,7 +778,7 @@ main {
   margin-block-end: var(--spacing-lg);
 
   h2:not(:first-child) {
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 }
 
@@ -1073,8 +1073,8 @@ body:has(.map-split) main > .wrap,
 .map-list.section-list .neighborhood-preview {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  line-clamp: 5;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   line-height: 1.5;
 
@@ -1135,10 +1135,17 @@ body:has([data-neighborhood-map]) .river-border {
      content never runs under it. */
   padding-inline-end: calc(var(--spacing-md) + 2rem);
   border-block-end: 1px solid var(--color-line);
+  transition: background-color 0.12s ease;
 }
 
 .map-list .list > li:last-child {
   border-block-end: 0;
+}
+
+/* Whole-row hover highlight, matching the directory ListItem rows. Excludes the
+   non-link header rows (Food's `.group-header`, Neighborhoods' `.section-head`). */
+.map-list .list > li:not(.group-header):not(.section-head):hover {
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-background));
 }
 
 /* A row is a rating badge (left) beside the place details (right). */
@@ -1250,19 +1257,28 @@ body:has([data-neighborhood-map]) .river-border {
 /* Shared list row title for the food/neighborhood map lists. Reads like a
    heading, not a button or link (in map view it's also clickable to open the
    place's popup). */
+/* Shared list/card title: the mono heading used by the directory list (ListItem,
+   List.astro), the map-backed Food/Neighborhood lists (MapRow), and RelatedCard
+   rows. The per-component styles now only add what's unique to each. */
+.list-title,
+.related-title {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-heading);
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+/* Map rows render the title as an <a> acting as a heading — strip the link chrome. */
 .map-list .list-title,
 .map-list a.list-title {
-  display: block;
   padding: 0;
   border: 0;
   background: none;
   text-align: start;
-  font-weight: 600;
-  color: var(--color-text-heading);
-  text-decoration: none;
-  font-size: var(--font-size-md);
-  font-family: var(--font-mono);
-  line-height: 1.2;
+  font-size: var(--font-size-label);
 }
 
 .map-list a.list-title {
@@ -1486,11 +1502,12 @@ body:has([data-neighborhood-map]) .river-border {
 
 .verdict-card .verdict-card-label {
   font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 500;
   letter-spacing: var(--letter-spacing);
   text-transform: uppercase;
   color: color-mix(in srgb, var(--verdict-color) 70%, var(--color-text));
+  line-height: 1;
 }
 
 .verdict-card .verdict-card-value {
@@ -1534,14 +1551,23 @@ body:has([data-neighborhood-map]) .river-border {
   }
 }
 
-/* A filled verdict pill (food detail pages): the verdict color becomes the
-   background, with the surface color for contrast in both themes. `!important`
-   (like .chip.round below) wins the specificity tie with Chip's scoped base
-   rule, which is otherwise a cascade-order coin-flip. */
+/* A filled verdict pill (food detail pages), matching the .verdict-card
+   treatment: a low-opacity tint of the chip color, a same-color border, and the
+   color itself as text (rather than a solid fill). `!important` (like .chip.round
+   below) wins the specificity tie with Chip's scoped base rule, which is
+   otherwise a cascade-order coin-flip. */
 .chip.is-filled {
-  color: var(--color-surface) !important;
-  background: var(--chip-color, var(--color-accent)) !important;
-  border-color: var(--chip-color, var(--color-accent)) !important;
+  color: var(--chip-color, var(--color-accent)) !important;
+  background: color-mix(
+    in srgb,
+    var(--chip-color, var(--color-accent)) 12%,
+    var(--color-surface)
+  ) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--chip-color, var(--color-accent)) 60%,
+    transparent
+  ) !important;
   font-weight: 500;
 }
 
@@ -1624,8 +1650,10 @@ body:has([data-neighborhood-map]) .river-border {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
   border: 0;
+  border-block-start: 1px solid var(--color-line);
+  border-block-end: 1px solid var(--color-line);
 }
 
 .food-grouped .group-dot {
@@ -1641,18 +1669,40 @@ body:has([data-neighborhood-map]) .river-border {
   letter-spacing: 0;
 }
 
+/* Verdict groups: a full-width 2px bottom border in the verdict color across the
+   whole header row (instead of a rule between the label and the count). */
+/* .food-grouped li.group-header[data-verdict] {
+  border-block-end: 2px solid var(--verdict-color, var(--color-muted));
+} */
+
+/* Desktop: each entry row in a verdict group carries a 3px left border in its
+   verdict color (the header keeps its bottom border). Targeting the filterable
+   rows (data-filter-item) skips the header and outranks the list-only padding
+   reset so the content keeps its inset off the bar. */
+@media (min-width: 700px) {
+  .food-grouped .list > li[data-filter-item][data-verdict] {
+    border-inline-start: 3px solid var(--verdict-color, var(--color-muted));
+    padding-inline-start: var(--spacing-md);
+  }
+}
+
 /* Alphabetical mode: the letter dividers (no [data-verdict]) read bigger + accent. */
 .food-grouped li.group-header:not([data-verdict]) .group-label {
   font-size: var(--font-size-xl);
   color: var(--color-accent);
 }
 
-/* Every group header carries a rule line that fills the row and pushes the count
-   to the end (verdict + alphabetical alike). */
+/* The rule keeps the count pushed to the end of the row. Alphabetical headers show
+   it as a hairline across; verdict headers hide it (the full-width bottom border
+   stands in for it) but keep the spacer. */
 .food-grouped .group-rule {
   flex: 1;
   height: 1px;
   background: var(--color-line);
+}
+
+.food-grouped li.group-header[data-verdict] .group-rule {
+  background: none;
 }
 
 .food-grouped li.group-header .group-count {
@@ -1688,6 +1738,14 @@ body:has([data-neighborhood-map]) .river-border {
    list, which keeps its reserve in every view). */
 [data-filter-root]:not([data-view='map']) .food-grouped .list > li {
   padding-inline: 0 calc(var(--spacing-md) + 2rem);
+}
+
+/* Mobile: the group header has no trailing arrow, so it doesn't need the row's
+   right-side reserve — drop it back to the normal inline padding. */
+@media (max-width: 700px) {
+  [data-filter-root]:not([data-view='map']) .food-grouped .list > li.group-header {
+    padding-inline-end: var(--spacing-md);
+  }
 }
 
 /* Sticky filter toolbar on directory pages (Food/Hikes). */
@@ -1822,7 +1880,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .maplibregl-ctrl-attrib {
-  background-color: var(--color-background) !important;
+  background-color: var(--color-surface) !important;
   color: var(--color-muted) !important;
 }
 
@@ -1947,8 +2005,8 @@ body:has([data-filter-root]) .site-header {
   line-height: 1.4;
   color: var(--color-text-article);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2103,7 +2161,7 @@ body:has([data-filter-root]) .site-header {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: var(--spacing-sm);
   border: 1px solid transparent;
   border-radius: var(--radius);
   font-family: var(--font-mono);
@@ -2151,6 +2209,33 @@ body:has([data-filter-root]) .site-header {
   opacity: 0.92;
 }
 
+/* Solid black on the light theme, but the quiet bordered `.btn-outline` look on
+   the dark theme (a solid black button reads too heavy against the dark surface). */
+.btn-dark {
+  color: var(--color-surface);
+  background: var(--color-text-heading);
+  border-color: var(--color-text-heading);
+  flex-shrink: 0;
+}
+
+.btn-dark:hover {
+  color: var(--color-surface);
+  background: color-mix(in srgb, var(--color-text-heading) 85%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-text-heading) 85%, var(--color-surface));
+}
+
+:root[data-theme='dark'] .btn-dark {
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-color: var(--color-line-input);
+}
+
+:root[data-theme='dark'] .btn-dark:hover {
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+}
+
 /* Borderless accent text link ("Read more →"). */
 .btn-quiet {
   gap: var(--spacing-xs);
@@ -2193,7 +2278,7 @@ body:has([data-filter-root]) .site-header {
 
 /* Tighter vertical padding for inline rows (source links, resource bars). */
 .btn-compact {
-  padding-block: 2px;
+  padding-block: var(--spacing-xs);
 }
 
 .btn-small {

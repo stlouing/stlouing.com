@@ -124,6 +124,7 @@ const linkAttributes = href
      + trailing affordance sit on either side of the flex:1 body; rows with a
      description top-align so the lead lines up with the name's first line. */
   .related-card {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
@@ -131,6 +132,25 @@ const linkAttributes = href
     border-block-end: 1px solid var(--color-line);
     text-decoration: none;
     color: var(--color-text);
+  }
+
+  /* Whole-row hover wash (matching the directory + map-list rows). A pseudo-element
+     behind the content so the resting layout and the full-width divider stay put,
+     while the highlight extends slightly past the text with rounded corners. */
+  a.related-card::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset-block: 0;
+    inset-inline: calc(-1 * var(--spacing-sm));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-background));
+    opacity: 0;
+    transition: opacity 0.12s ease;
+  }
+
+  a.related-card:hover::before {
+    opacity: 1;
   }
 
   .related-card.has-description {
@@ -172,7 +192,7 @@ const linkAttributes = href
     flex: 1;
     flex-direction: column;
     min-width: 0;
-    gap: var(--spacing-xs);
+    gap: 2px;
   }
 
   /* The meta as a muted mono kicker above the name. */
@@ -182,19 +202,16 @@ const linkAttributes = href
     gap: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing);
     color: var(--color-muted);
     line-height: 1.2;
   }
 
+  /* Shared title styling lives in global.css (`.list-title, .related-title`);
+     only the hover-underline offset is related-card-specific. */
   .related-title {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-md);
-    font-weight: 600;
-    color: var(--color-text-heading);
-    line-height: 1.2;
     text-underline-offset: 2px;
   }
 
@@ -219,7 +236,7 @@ const linkAttributes = href
     align-items: center;
     gap: var(--spacing-sm);
     font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-xxs);
     font-weight: 500;
     color: var(--color-muted-2);
     border: 1px solid var(--color-line);

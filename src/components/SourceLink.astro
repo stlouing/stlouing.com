@@ -10,7 +10,7 @@ import { hostLabel } from '../lib/links'
 interface Props {
   href?: string
   label?: string
-  variant?: 'outline' | 'muted'
+  variant?: 'outline' | 'muted' | 'dark' | 'filled'
 }
 
 const { href: linkHref, label, variant = 'outline' } = Astro.props

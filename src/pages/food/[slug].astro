@@ -10,6 +10,7 @@ import Verdict from '../../components/Verdict.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
+import Rating from '../../components/Rating.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import { href } from '../../lib/url'
@@ -134,7 +135,13 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
       <div class="food-meta">
         <div class="food-sub-meta">
           <div class="food-sub-meta-section">
-            {verdict && <Verdict verdict={verdict} card compact />}
+            {
+              verdict && (
+                <span class="food-meta-rating">
+                  <Rating verdict={verdict} />
+                </span>
+              )
+            }
             {
               data.cuisine.map((cuisine) => (
                 <Chip href={href(`/food/?cuisine=${cuisine}`)}>
@@ -145,13 +152,13 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
             }
           </div>
           <div class="food-sub-meta-section food-links">
-            <SourceLink href={data.url} label="Website">
+            <SourceLink href={data.url} label="Website" variant="filled">
               <IconExternalLink slot="icon" />
             </SourceLink>
-            <SourceLink href={data.instagram} label="Instagram">
+            <SourceLink href={data.instagram} label="Instagram" variant="filled">
               <IconInstagram slot="icon" />
             </SourceLink>
-            <SourceLink href={googleMapsHref(data)} label="Google Maps">
+            <SourceLink href={googleMapsHref(data)} label="Google Maps" variant="filled">
               <IconMapPin slot="icon" />
             </SourceLink>
           </div>
@@ -173,6 +180,13 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           )
         }
         <Content />
+        {
+          verdict && (
+            <div class="food-rating-block">
+              <Verdict verdict={verdict} card />
+            </div>
+          )
+        }
         <!-- <nav class="food-more-cta" aria-label="More food from St. Louing">
           <a class="food-cta-card" href={href('/best/')}>
             <span class="food-cta-lead"><IconAward /></span>
@@ -435,17 +449,29 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     flex-wrap: wrap;
   }
 
-  /* In this header row the cuisine chips grow to the compact verdict pill's
-     height, so the pill and chips read as one row of equal-height tokens.
-     Stretch matches whatever the pill measures (no hard-coded height); dropping
-     the chip's max-height lets it grow past its usual 22px cap. */
+  /* The header row now holds the fleur rating + cuisine chips — center them. */
   .food-sub-meta-section:not(.food-links) {
-    align-items: stretch;
+    align-items: center;
   }
 
   .food-sub-meta-section:not(.food-links) :global(.chip) {
-    max-height: none;
     font-size: var(--font-size-sm);
+  }
+
+  /* The fleur rating in the header meta row: larger than the in-list glyphs (its
+     em-based size scales with this font-size). */
+  .food-meta-rating {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--font-size-lg);
+  }
+
+  /* The "My Rating" verdict card closes the writeup (a spot to grow into user
+     ratings later), set off from the prose by a hairline. */
+  .food-rating-block {
+    margin-block-start: var(--spacing-lg);
+    padding-block-start: var(--spacing-md);
+    border-block-start: 1px solid var(--color-line);
   }
 
   /* The source links sit to the right of the verdict + cuisine, and wrap toward

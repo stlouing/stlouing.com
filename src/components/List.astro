@@ -71,18 +71,10 @@ const { class: className, ...rest } = Astro.props
       }
     }
 
-    .list-title {
-      display: block;
-      font-weight: 600;
-      color: var(--color-text-heading);
-      text-decoration: none;
-      font-size: var(--font-size-md);
-      font-family: var(--font-mono);
-      line-height: 1.2;
-
-      + .list-description {
-        margin-block-start: 0;
-      }
+    /* Shared title styling lives in global.css (`.list-title, .related-title`);
+       only the adjacency tweak is list-specific. */
+    .list-title + .list-description {
+      margin-block-start: 0;
     }
 
     .list-details {

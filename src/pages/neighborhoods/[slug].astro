@@ -183,7 +183,7 @@ const trail = [
           {resourceLinks.map((link) => {
             const Icon = resourceIcons[link.label]
             return (
-              <SourceLink href={link.href} label={link.label}>
+              <SourceLink href={link.href} label={link.label} variant="filled">
                 {Icon && <Icon slot="icon" />}
               </SourceLink>
             )
@@ -200,15 +200,16 @@ const trail = [
               <figcaption>
                 {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
               </figcaption>
+              <hr class="locator-divider" />
+              <a
+                class="btn btn-quiet neighborhood-back-link neighborhood-back-link--desktop"
+                href={href('/neighborhoods/')}>
+                Back to the Neighborhood Map <IconArrowRight />
+              </a>
             </figure>
           )
         }
         <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
-        <a
-          class="btn btn-quiet neighborhood-back-link neighborhood-back-link--desktop"
-          href={href('/neighborhoods/')}>
-          Back to the Neighborhoods Map <IconArrowRight />
-        </a>
       </aside>
       <div class="neighborhood-main">
         {
@@ -228,7 +229,7 @@ const trail = [
         <a
           class="btn btn-quiet neighborhood-back-link neighborhood-back-link--mobile"
           href={href('/neighborhoods/')}>
-          Back to the Neighborhoods Map <IconArrowRight />
+          Back to the Neighborhood Map <IconArrowRight />
         </a>
 
         {
@@ -319,21 +320,40 @@ const trail = [
     gap: var(--spacing-md);
   }
 
-  /* Content-width "back to the map" link (mirrors the food page's). */
+  /* Content-width "back to the map" link (mirrors the food page's). Overrides the
+     btn-quiet dotted underline with a 2px solid one. */
   .neighborhood-back-link {
     align-self: flex-start;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 3px;
   }
 
   /* The link lives in the aside (right column on desktop), but the aside stacks
      before the writeup on mobile — which would put the link above the content.
      So the aside copy is desktop-only and a duplicate after the writeup shows on
      mobile instead (facts → writeup → back link → food/spots/nearby). */
+  /* Desktop copy now lives inside the locator card (below the caption), so it
+     gets the card's body padding. */
   .neighborhood-back-link--desktop {
     display: none;
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
   }
 
   .neighborhood-back-link--mobile {
     margin-block: var(--spacing-md);
+  }
+
+  /* Hairline between the caption and the back link (mirrors the food card's
+     divider). Inset by the same body padding as food so it doesn't run edge to
+     edge. Desktop-only, since the link it precedes is desktop-only. */
+  .locator-divider {
+    display: none;
+    margin: 0 var(--spacing-md);
+    border: 0;
+    border-block-start: 1px solid var(--color-line);
   }
 
   @media screen and (min-width: 900px) {
@@ -360,6 +380,10 @@ const trail = [
     /* Desktop: the aside copy is back in the right column; hide the mobile one. */
     .neighborhood-back-link--desktop {
       display: inline-flex;
+    }
+
+    .locator-divider {
+      display: block;
     }
 
     .neighborhood-back-link--mobile {

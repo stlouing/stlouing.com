@@ -9,6 +9,7 @@ import { formatDateShort } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
+import NewsletterSignup from '../components/NewsletterSignup.astro'
 import Icon from '../components/Icon.astro'
 import FleurDeLis from '../assets/FleurDeLis.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
@@ -72,9 +73,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
 <BaseLayout jsonLd={website}>
   <header class="h-card index-header">
-    <h1 class="page-title">St. Louing</h1>
     <div class="index-body">
       <div class="index-intro">
+        <h1 class="page-title">St. Louing</h1>
         <p class="tagline p-note">{tagline}</p>
         <p class="introduction">
           {intro}
@@ -83,12 +84,12 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           </a>
         </p>
         <div class="index-ctas">
-          <button type="button" class="btn btn-filled" id="random-cta">
+          <a class="btn btn-filled" href={href('/food/')}>
+            <IconUtensils /> Explore the food map
+          </a>
+          <button type="button" class="btn btn-outline" id="random-cta">
             <IconDice /> Roll the dice
           </button>
-          <a class="btn btn-outline" href={href('/feedback/')}>
-            <IconMessageCircleHeart /> Leave feedback
-          </a>
         </div>
       </div>
       <div class="index-crest">
@@ -188,6 +189,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     }
   </div>
 
+  <div class="newsletter-section">
+    <NewsletterSignup />
+  </div>
+
   <script is:inline define:vars={{ randomPool }}>
     // Pick a fresh random destination on each click.
     document.getElementById('random-cta')?.addEventListener('click', () => {
@@ -228,6 +233,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      against that below-the-title block (not the title itself). */
   .index-body {
     display: grid;
+    align-items: center;
     grid-template-columns: 2fr 1fr;
     gap: var(--spacing-xl);
     padding-bottom: var(--spacing-md);
@@ -242,15 +248,34 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      it rather than hugging the edge. The flag's yellow and blue are fixed brand
      colors, so the crest stays as-is in dark mode. */
   .index-crest {
+    display: grid;
+    place-items: center;
     flex-shrink: 0;
     justify-self: center;
     width: clamp(80px, 12vw, 100px);
     margin: 0 var(--spacing-lg);
+    margin-top: var(--spacing-lg);
   }
 
-  .index-crest-img {
-    width: clamp(48px, 10vw, 60px);
+  /* :global() because Astro's scope doesn't reach the child component's root
+     <svg>; without it the reset (svg { max-width: 100% }) lets the fleur grow to
+     fill the container instead of holding this fixed size. */
+  .index-crest :global(.index-crest-img) {
+    width: clamp(48px, 12vw, 90px);
     height: auto;
+  }
+
+  /* Desktop only: turn the crest column into a larger red disc behind the SVG.
+     A container background always paints behind its children, so the SVG (its
+     own disc + fleur) sits on top; sharing the accent color, the container disc
+     and the SVG disc read as one bigger circle while the fleur keeps its size. */
+  @media (min-width: 48rem) {
+    .index-crest {
+      width: clamp(104px, 18vw, 150px);
+      aspect-ratio: 1;
+      background: var(--color-accent);
+      border-radius: 50%;
+    }
   }
 
   /* Hidden on narrow screens — there's no right-hand column to sit in. Collapse
@@ -287,7 +312,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     gap: var(--spacing-sm);
     margin-block-start: var(--spacing-md);
   }
-
 
   /* Section header: label on the left, optional "all →" on the right, with a
      dotted rule under both (matches the list-item separators below it). */
@@ -353,12 +377,16 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: start;
-    margin-block-end: 3rem;
+    margin-block-end: var(--spacing-lg);
   }
 
   @media (max-width: 34rem) {
     .directory {
       grid-template-columns: 1fr;
     }
+  }
+
+  .newsletter-section {
+    margin-block-end: var(--spacing-lg);
   }
 </style>

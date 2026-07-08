@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import MapRow from '../../components/MapRow.astro'
+import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt } from '../../lib/content'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
@@ -123,6 +124,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 'data-tagline': place.data.description ?? '',
                 'data-excerpt': hasBody(place) ? excerpt(place.body, 150) : '',
               }}>
+              <Rating verdict={verdict as Verdict} slot="title-after" />
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
                 <div class="chips" slot="sub">
                   {place.data.cuisine.map((cuisine) => (
@@ -167,8 +169,8 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
   .food-preview {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
     line-height: 1.5;
   }

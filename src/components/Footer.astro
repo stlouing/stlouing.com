@@ -6,7 +6,9 @@ import IconHeart from '../assets/IconHeart.astro'
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <span class="footer-tagline"><IconHeart /> Made in STL</span>
+    <span class="footer-tagline"
+      ><IconHeart /> <span class="footer-tagline-text">Made in STL</span></span
+    >
     <nav class="footer-nav" aria-label="Footer">
       <a href="https://www.instagram.com/st.louing" target="_blank">@st.louing</a>
       <a href={NEWSLETTER_URL} target="_blank">Newsletter</a>
@@ -72,7 +74,7 @@ import IconHeart from '../assets/IconHeart.astro'
   }
 
   @media (max-width: 700px) {
-    .footer-tagline {
+    .footer-tagline-text {
       display: none;
     }
 

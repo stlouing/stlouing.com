@@ -1,0 +1,53 @@
+---
+// A place's rating as four fleur-de-lis, filled from its verdict: not-for-me = 1,
+// neutral = 2, liked = 3, loved = 4 (of 4). Filled fleur are gold; the rest faded.
+// Used inline in the Food list rows (see food/index.astro).
+import FleurGlyph from '../assets/FleurGlyph.astro'
+import { verdictLabels, type Verdict } from '../lib/verdict'
+
+interface Props {
+  verdict: Verdict
+}
+
+const { verdict } = Astro.props
+
+// Filled count per verdict, out of the four levels.
+const filledByVerdict: Record<Verdict, number> = {
+  'not-for-me': 1,
+  neutral: 2,
+  liked: 3,
+  loved: 4,
+}
+const total = 4
+const filled = filledByVerdict[verdict]
+---
+
+<span class="rating" role="img" aria-label={`Rating: ${verdictLabels[verdict]}, ${filled} of ${total}`}>
+  {
+    Array.from({ length: total }, (_, index) => (
+      <FleurGlyph class:list={['rating-fleur', { 'is-filled': index < filled }]} />
+    ))
+  }
+</span>
+
+<style>
+  .rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    /* Sit the glyph row on the text baseline of the title beside it. */
+    vertical-align: -0.1em;
+  }
+
+  /* :global() because the scoped class can't reach the child <svg>'s root. Color
+     rides in via `color` (the glyph fills with currentColor, which is inherited). */
+  .rating :global(.rating-fleur) {
+    width: 0.85em;
+    height: 0.85em;
+    color: color-mix(in srgb, var(--color-map-north) 26%, transparent);
+  }
+
+  .rating :global(.rating-fleur.is-filled) {
+    color: var(--color-map-north);
+  }
+</style>
