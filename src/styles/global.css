@@ -1692,17 +1692,10 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-accent);
 }
 
-/* The rule keeps the count pushed to the end of the row. Alphabetical headers show
-   it as a hairline across; verdict headers hide it (the full-width bottom border
-   stands in for it) but keep the spacer. */
+/* The rule is just a flex spacer that pushes the count to the end of the row — no
+   visible line in either mode (verdict headers carry a bottom border instead). */
 .food-grouped .group-rule {
   flex: 1;
-  height: 1px;
-  background: var(--color-line);
-}
-
-.food-grouped li.group-header[data-verdict] .group-rule {
-  background: none;
 }
 
 .food-grouped li.group-header .group-count {
