@@ -7,15 +7,16 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #faf6ec;
-  --color-surface: #fffdf7;
+  --color-background: #eee8d9;
+  --color-surface: #faf6ec;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
-  --color-muted: #6f6b61;
+  --color-muted: #69655b;
   --color-muted-2: #58554d;
-  --color-line: #ddd2bd;
+  --color-line: #d2c6af;
   --color-line-input: #bdb9ab;
+  --color-line-contrast: #1b1a17;
   --color-accent: #9c3b2e;
   --color-accent-2: #a54e42;
   --color-map-accent: #6a47a6;
@@ -34,6 +35,7 @@
 
   /* Fonts */
   --font-body: Georgia, 'Times New Roman', serif;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxs: 0.8rem;
@@ -71,8 +73,8 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --color-background: #201f25;
-  --color-surface: #17171b;
+  --color-background: #17171b;
+  --color-surface: #201f25;
   --color-text-heading: #f3f1f7;
   --color-text: #e9e8ec;
   --color-text-article: #e0dfe3;
@@ -80,21 +82,22 @@
   --color-muted-2: #afaeb5;
   --color-line: #343339;
   --color-line-input: #45444b;
-  --color-accent: #f18194;
-  --color-accent-2: #f39aa9;
+  --color-line-contrast: #45444b;
+  --color-accent: #f08a78;
+  --color-accent-2: rgb(245, 167, 150);
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
   --color-map-central: #e6877a;
   --color-map-south: #b59ae0;
   --color-map-county: #84b0e6;
   --color-map-park: #7ec98a;
-  --color-link: #9aaaf8;
-  --color-link-hover: #b1bcf5;
+  --color-link: #6db1ff;
+  --color-link-hover: #a7d0ff;
 
-  --color-verdict-loved: #f18194;
+  --color-verdict-loved: #f08a78;
   --color-verdict-liked: #d6a35a;
-  --color-verdict-neutral: #9b9aa3;
-  --color-verdict-notforme: #86848f;
+  --color-verdict-neutral: #a89c86;
+  --color-verdict-notforme: #8f8574;
 
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
   --box-shadow-floating:
@@ -464,6 +467,9 @@ a.more {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  color: var(--color-accent-2);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
 
   &.inline {
     display: inline-flex;
@@ -808,6 +814,9 @@ select {
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
   font-weight: 400;
+  /* Pin line-height so <input> and <select> resolve to the same height (their
+     UA defaults differ); with border-box + equal padding they now match. */
+  line-height: 1.4;
 
   &:focus {
     outline: none;
@@ -1501,7 +1510,7 @@ body:has([data-neighborhood-map]) .river-border {
 
   gap: var(--spacing-sm);
   padding: 3px var(--spacing-sm);
-  padding-left:  var(--spacing-xs);
+  padding-left: var(--spacing-xs);
 }
 
 /* The "My Rating" eyebrow only rides along at full size — dropped on the compact
@@ -1576,7 +1585,7 @@ body:has([data-neighborhood-map]) .river-border {
   justify-content: space-between;
   gap: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-surface);
+  background: var(--color-background);
   border-block-end: 1px solid var(--color-line);
 }
 
@@ -1688,7 +1697,7 @@ body:has([data-neighborhood-map]) .river-border {
   z-index: 1;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  background: var(--color-surface);
+  background: var(--color-background);
   border-block-end: 1px solid var(--color-line);
   transform: translateZ(0);
 
@@ -2040,6 +2049,7 @@ body:has([data-filter-root]) .site-header {
   font-weight: 500;
   margin: 0;
   line-height: 1.2;
+  margin-block-end: var(--spacing-xs);
 }
 
 /* An organized header bar holding the meta and the edit link, divided from the
@@ -2051,6 +2061,11 @@ body:has([data-filter-root]) .site-header {
 
   h1 {
     margin-block: 0 var(--spacing-xs);
+    /* Match the homepage wordmark: the display serif only ships a 400 weight. */
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    font-size: clamp(2.75rem, 2.1rem + 2.6vw, 4.5rem);
   }
 
   .address {
@@ -2132,7 +2147,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 .btn-filled:hover {
-  color: white;
+  color: var(--color-background);
   opacity: 0.92;
 }
 
@@ -2185,6 +2200,17 @@ body:has([data-filter-root]) .site-header {
   padding-block: var(--spacing-xs);
 }
 
+.btn-filled-contrast {
+  color: var(--color-surface);
+  background: var(--color-text-heading);
+  border-color: var(--color-text-heading);
+}
+
+.btn-filled-contrast:hover {
+  color: var(--color-surface);
+  opacity: 0.9;
+}
+
 .back {
   margin-block: var(--spacing-md) 0;
   font-family: var(--font-mono);
@@ -2225,7 +2251,7 @@ body:has([data-filter-root]) .site-header {
 .group-label {
   margin-block-end: 0;
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);

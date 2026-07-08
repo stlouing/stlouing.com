@@ -22,6 +22,19 @@ interface Props {
   </div>
 </header>
 
+{/* Masthead strip: the rules run full-bleed edge-to-edge, while the caption
+   stays in the 880px `.wrap` so it lines up with the nav above. */}
+<div class="masthead">
+  <div class="masthead-rule"></div>
+  <div class="wrap">
+    <div class="masthead-line">
+      <span class="masthead-left">An Independent Guide to St. Louis</span>
+      <span class="masthead-right">est. 2026</span>
+    </div>
+  </div>
+  <div class="masthead-rule-thin"></div>
+</div>
+
 <script>
   // Publish the sticky header's height so in-page anchors (:target) can offset
   // by it. Tracks wrapping/resize so the offset stays correct across breakpoints.
@@ -35,15 +48,41 @@ interface Props {
 </script>
 
 <style>
+  /* Thick line stacked over a thin line: the element's own top border is thick,
+     its bottom border thin, and its height opens the gap between them. */
+  .masthead-rule {
+    height: 2px;
+    border-block-start: 1px solid var(--color-line-contrast);
+    border-block-end: 1px solid var(--color-line-contrast);
+  }
+  .masthead-rule-thin {
+    height: 1px;
+    border-block-end: 1px solid var(--color-line-contrast);
+  }
+
+  .masthead-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding-block: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
   .site-header {
     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    border-block-end: 1px solid var(--color-line);
+    border-block-end: 1px solid var(--color-line-contrast);
     padding-block: var(--spacing-md);
-    background: var(--color-surface);
+    background: var(--color-background);
     transform: translateZ(0);
     isolation: isolate;
   }
@@ -84,6 +123,11 @@ interface Props {
   /* Mobile: name + theme toggle on the top row, nav stacked below as an even
      three-column grid. Desktop (above) is unchanged. */
   @media (max-width: 700px) {
+    /* The masthead caption is too cramped to read on a phone — drop it. */
+    .masthead {
+      display: none;
+    }
+
     .site-header {
       padding-block: var(--spacing-sm);
     }

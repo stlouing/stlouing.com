@@ -11,11 +11,13 @@ export interface Section {
 // Homepage groups, in display order. 'notes' is intentionally omitted for now —
 // it has no content yet, so the section stays defined (its page + feed work) but
 // isn't surfaced on the homepage or in the nav until there are posts.
-export const groups: { id: Group; label?: string }[] = [
-  { id: 'explore', label: 'Explore' },
-  { id: 'topics', label: 'Topics' },
-  { id: 'lists', label: 'Lists' },
-  { id: 'site', label: 'Site' },
+// `numeral` prefixes the section label (I, II, III…); `kicker` is the
+// right-justified caption shown opposite the label in the homepage directory.
+export const groups: { id: Group; label?: string; numeral?: string; kicker?: string }[] = [
+  { id: 'explore', label: 'Explore', numeral: 'I', kicker: 'Maps' },
+  { id: 'topics', label: 'Topics', numeral: 'II', kicker: 'Reading' },
+  { id: 'lists', label: 'Lists', numeral: 'III', kicker: 'Collections' },
+  { id: 'site', label: 'Site', numeral: 'IV', kicker: 'Meta' },
 ]
 
 export const sections: Section[] = [

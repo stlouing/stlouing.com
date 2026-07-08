@@ -36,8 +36,8 @@ const iconByPath: Record<string, typeof IconInfo> = {
   '/feedback/': IconMessageCircleHeart,
 }
 
-const tagline = 'An independent guide to the food, neighborhoods, and culture of St. Louis.'
-const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it. Come explore the city with me!`
+const tagline = 'Mapping the food, neighborhoods, and culture of St. Louis.'
+const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.`
 
 const allNotes = published(await getCollection('notes')).sort(
   (left, right) => right.data.created.valueOf() - left.data.created.valueOf(),
@@ -72,7 +72,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
 <BaseLayout jsonLd={website}>
   <header class="h-card index-header">
-    <h1 class="page-title">St. Louing <span>since 2023</span></h1>
+    <h1 class="page-title">St. Louing</h1>
     <div class="index-body">
       <div class="index-intro">
         <p class="tagline p-note">{tagline}</p>
@@ -83,8 +83,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           </a>
         </p>
         <div class="index-ctas">
-          <button type="button" class="btn btn-outline" id="random-cta">
-            <IconDice /> Go to random page
+          <button type="button" class="btn btn-filled" id="random-cta">
+            <IconDice /> Roll the dice
           </button>
           <a class="btn btn-outline" href={href('/feedback/')}>
             <IconMessageCircleHeart /> Leave feedback
@@ -130,7 +130,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           return (
             <section class="group">
               <div class="group-header">
-                <h2 class="group-label">{group.label}</h2>
+                <h2 class="group-label">
+                  <span class="group-numeral">{group.numeral}.</span> {group.label}
+                </h2>
+                {group.kicker && <span class="group-kicker">{group.kicker}</span>}
               </div>
               <List>
                 {latestTopics.map((topic) => (
@@ -159,7 +162,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         return (
           <section class="group">
             <div class="group-header">
-              <h2 class="group-label">{group.label}</h2>
+              <h2 class="group-label">
+                <span class="group-numeral">{group.numeral}.</span> {group.label}
+              </h2>
+              {group.kicker && <span class="group-kicker">{group.kicker}</span>}
             </div>
 
             <List>
@@ -197,10 +203,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   h1.page-title {
     display: flex;
     align-items: baseline;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     margin-top: var(--spacing-xl);
     margin-bottom: 0;
-    font-size: clamp(2rem, 1.4rem + 1vw, 2.5rem);
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+    font-size: clamp(3.5rem, 2rem + 8vw, 6.5rem);
 
     span {
       font-size: var(--font-size-xs);
@@ -218,9 +227,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      the left and the crest on the right, with the crest vertically centered
      against that below-the-title block (not the title itself). */
   .index-body {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
   }
 
   .index-intro {
@@ -234,7 +244,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .index-crest {
     flex-shrink: 0;
     justify-self: center;
-    width: clamp(80px, 12vw, 80px);
+    width: clamp(80px, 12vw, 100px);
     margin: 0 var(--spacing-lg);
   }
 
@@ -243,8 +253,14 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     height: auto;
   }
 
-  /* Hidden on narrow screens — there's no right-hand column to sit in. */
+  /* Hidden on narrow screens — there's no right-hand column to sit in. Collapse
+     the grid to one column too, so the intro spans the full width instead of
+     staying pinned to the 2fr track with an empty column beside it. */
   @media (max-width: 34rem) {
+    .index-body {
+      grid-template-columns: 1fr;
+    }
+
     .index-crest {
       display: none;
     }
@@ -272,6 +288,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-start: var(--spacing-md);
   }
 
+
   /* Section header: label on the left, optional "all →" on the right, with a
      dotted rule under both (matches the list-item separators below it). */
   .group-header {
@@ -279,13 +296,30 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     align-items: baseline;
     justify-content: space-between;
     gap: var(--spacing-sm);
-    border-block-end: 1px solid var(--color-muted);
+    border-block-end: 2px solid var(--color-line-contrast);
     padding-block-end: var(--spacing-xs);
     margin-block-end: var(--spacing-xs);
   }
 
   .group-header .group-label {
     margin: 0;
+  }
+
+  /* Roman numeral prefix (I. II. …) set apart from the section label. */
+  .group-numeral {
+    color: var(--color-accent);
+  }
+
+  /* Right-justified section caption (Maps / Reading / …). */
+  .group-kicker {
+    display: none;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
   }
 
   .group-header .all {

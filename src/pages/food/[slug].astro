@@ -239,6 +239,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
                 </div>
               )
             }
+            <hr class="food-card-divider" />
             <a class="btn btn-quiet food-back-link" href={href('/food/')}>
               Back to the Food Map <IconArrowRight />
             </a>
@@ -309,11 +310,15 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   /* A content-width "back to the map" link (the rest of the body stretches full
      width so its text wraps). */
   .food-back-link {
+    text-decoration-style: solid;
     align-self: flex-start;
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
   }
 
   .btn-directions {
-    margin-top: 2px;
+    margin-top: var(--spacing-xs);
     display: flex;
     align-items: center;
     font-family: var(--font-mono);
