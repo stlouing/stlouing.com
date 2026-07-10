@@ -50,7 +50,7 @@
   --text: 1rem;
 
   /* Space + measure */
-  --measure: 900px;
+  --measure: 920px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -348,93 +348,6 @@ tbody tr:last-child td {
   margin-block: -0.5rem var(--spacing-lg);
   font-size: var(--font-size-sm);
   color: var(--color-muted);
-}
-
-/* In-article table of contents (e.g. Regional Foods): a compact boxed index that
-   breaks into two columns on wider screens so a long anchor list stays scannable
-   instead of running down the page. */
-.toc {
-  margin-block: 0 var(--spacing-lg);
-  padding: var(--spacing-sm) var(--spacing-base) var(--spacing-md);
-  border: 1px solid var(--color-line);
-  /* An accent left edge ties the box to the site's blockquote/callout language. */
-  border-inline-start: 3px solid var(--color-accent);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-}
-
-/* The "In this article" heading reads as an accent mono label here (matching the
-   site's section labels), not a section heading — and it doesn't need its
-   appended permalink anchor. */
-.toc h4 {
-  margin-block: var(--spacing-xs) var(--spacing-sm);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-  color: var(--color-accent);
-}
-
-.toc h4 .heading-anchor {
-  display: none;
-}
-
-.toc ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-  columns: 3;
-  column-gap: var(--spacing-lg);
-}
-
-.toc li {
-  margin: 0;
-  break-inside: avoid;
-  line-height: 1.2;
-  padding-block: 2px;
-}
-
-.toc a {
-  color: var(--color-text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.toc a:hover {
-  color: var(--color-accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-/* Opt-in roman-numeral prefixes (i. ii. iii. …) via a CSS counter — used only on
-   the regional foods post's TOC (`.toc-numbered`). */
-.toc-numbered ul {
-  counter-reset: toc;
-}
-
-.toc-numbered li {
-  counter-increment: toc;
-}
-
-.toc-numbered li a::before {
-  content: counter(toc, lower-roman) '. ';
-  color: var(--color-muted);
-  font-weight: 500;
-}
-
-@media (max-width: 800px) {
-  .toc ul {
-    columns: 2;
-  }
-}
-
-@media (max-width: 500px) {
-  .toc ul {
-    columns: 1;
-  }
 }
 
 /* Jumping to an in-page anchor (a heading permalink, a /food#id link) should

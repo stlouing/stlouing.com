@@ -10,7 +10,9 @@ St. Louis is a little city with a lot of regional culture. This page is a little
 
 ## Food
 
-[The Food Map](/food/) is my number one way of exploring the city. I also put together a (subjective) list of the [Best Food in St. Louis](/best/) and [all the spots I haven't written about yet](/food/on-the-list/).
+- [The Food Map](/food/) is my number one way of exploring the city.
+
+I also put together a (subjective) list of the [Best Food in St. Louis](/best/) and [all the spots I haven't written about yet](/food/on-the-list/).
 
 ### Regional food
 
@@ -26,7 +28,7 @@ As a further note, people will also refer to "West County", "South County", and 
 
 There is no "East County", as that would be St. Louis City. However, the area east of the Mississippi River is also part of the Greater St. Louis region, and commonly referred to as ["Metro East"](https://en.wikipedia.org/wiki/Metro_East). This includes East St. Louis, Belleville, O'Fallon, and a few others.
 
-## Brick and architecture
+## Brick and Architecture
 
 One thing to get used to in St. Louis is how red everything is. St. Louis was once the [largest brick producer in the world](https://blog.stlouisbank.com/the-bricks-that-built-st-louis/), due to innovations in brickmaking combined with the abundance of clay in the region, and that legacy really shows all throughout the city. The site [Built St. Louis](https://www.builtstlouis.net/) is an incredible resource for everything architecture and history related.
 

@@ -8,25 +8,6 @@ updated: 2026-05-31
 
 Most cities are lucky to have one local food speciality they can lay claim to, but St. Louis has an abundance of them. I've been interested to discover the food items that either originated in St. Louis or can only be found here. So here's what I've discovered so far.
 
-<nav class="toc toc-numbered" aria-label="In this article">
-
-#### In this article
-
-- [Toasted Ravioli](#toasted-ravioli)
-- [St. Louis-style Pizza](#st-louis-style-pizza)
-- [Provel cheese](#provel-cheese)
-- [Gooey Butter Cake](#gooey-butter-cake)
-- [St. Louis-style BBQ](#st-louis-style-bbq)
-- [Pork Steak](#pork-steak)
-- [Trashed Wings](#trashed-wings)
-- [Slinger](#slinger)
-- [St. Louis Salad](#st-louis-salad)
-- [St. Paul Sandwich](#st-paul-sandwich)
-- [Frozen Custard Concrete](#frozen-custard-concrete)
-- [Red Hot Riplets](#red-hot-riplets)
-
-</nav>
-
 ## Toasted Ravioli
 
 You'd be hard pressed to find a bar or restaurant in the entire St. Louis metro area that doesn't serve toasted ravioli, also known as t-ravs. It's the default appetizer of choice throughout the region. They're little beef-filled ravioli that are deep fried, sprinkled with parmesan, and served with marinara sauce for dipping.
