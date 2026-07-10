@@ -35,6 +35,9 @@ interface Props {
   emptyText: string
   class?: string
   floating?: boolean
+  // Opt into marker clustering on the map (Food only) — emits data-map-cluster,
+  // which map.ts reads to gate its clustering codepath.
+  cluster?: boolean
 }
 
 const {
@@ -48,6 +51,7 @@ const {
   emptyText,
   class: className,
   floating = false,
+  cluster = false,
 } = Astro.props
 ---
 
@@ -113,7 +117,11 @@ const {
 
   <div class="results">
     <slot />
-    {hasCoords && <div class="map" data-map aria-label={mapLabel} />}
+    {
+      hasCoords && (
+        <div class="map" data-map data-map-cluster={cluster ? '' : undefined} aria-label={mapLabel} />
+      )
+    }
     {
       hasCoords && floating && (
         <button type="button" class="map-split-toggle" data-map-split-toggle>

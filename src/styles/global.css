@@ -190,6 +190,15 @@ h3 {
   color: var(--color-accent-2);
 }
 
+h4 {
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-accent-2);
+  font-weight: 600;
+}
+
 p,
 ul,
 ol,
@@ -385,7 +394,7 @@ tbody tr:last-child td {
   margin: 0;
   break-inside: avoid;
   line-height: 1.2;
-  padding-block: var(--spacing-xs);
+  padding-block: 2px;
 }
 
 .toc a {
@@ -398,6 +407,22 @@ tbody tr:last-child td {
   color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* Opt-in roman-numeral prefixes (i. ii. iii. …) via a CSS counter — used only on
+   the regional foods post's TOC (`.toc-numbered`). */
+.toc-numbered ul {
+  counter-reset: toc;
+}
+
+.toc-numbered li {
+  counter-increment: toc;
+}
+
+.toc-numbered li a::before {
+  content: counter(toc, lower-roman) '. ';
+  color: var(--color-muted);
+  font-weight: 500;
 }
 
 @media (max-width: 800px) {
@@ -531,7 +556,7 @@ a.wikipedia-link {
 .wikilink-card-title {
   font-family: var(--font-mono);
   font-weight: 600;
-  font-size: var(--font-size-label);
+  font-size: var(--font-size-md);
   color: var(--color-text);
   margin-block-end: var(--spacing-sm);
   line-height: 1.2;
@@ -633,7 +658,7 @@ button.chip:hover {
 
 .chip-filter .chip-label {
   display: none;
-  font-size: var(--font-size-xxs);
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
 }
@@ -1236,7 +1261,7 @@ body:has([data-neighborhood-map]) .river-border {
   font-family: var(--font-body);
   font-weight: 500;
   color: var(--color-accent-2);
-  font-size: var(--font-size-label);
+  font-size: var(--font-size-md);
   line-height: 1.3;
   margin-block-end: var(--spacing-xs);
 }
@@ -1278,7 +1303,6 @@ body:has([data-neighborhood-map]) .river-border {
   border: 0;
   background: none;
   text-align: start;
-  font-size: var(--font-size-label);
 }
 
 .map-list a.list-title {
@@ -1447,15 +1471,15 @@ body:has([data-neighborhood-map]) .river-border {
 .verdict-card {
   --verdict-disc-size: 2.25rem;
   --verdict-glyph-size: 1.1rem;
-  --verdict-value-size: var(--font-size-lg);
+  --verdict-value-size: 1.75rem;
 
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--spacing-xs);
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid color-mix(in srgb, var(--verdict-color) 60%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--verdict-color) 12%, var(--color-surface));
+  background: var(--color-surface);
 }
 
 .verdict-card.verdict-loved {
@@ -1502,8 +1526,8 @@ body:has([data-neighborhood-map]) .river-border {
 
 .verdict-card .verdict-card-label {
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
+  font-size: var(--font-size-xxs);
+  font-weight: 400;
   letter-spacing: var(--letter-spacing);
   text-transform: uppercase;
   color: color-mix(in srgb, var(--verdict-color) 70%, var(--color-text));
@@ -1516,39 +1540,6 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 700;
   line-height: 1;
   color: var(--verdict-color);
-}
-
-/* Compact pill — the map popup, and mobile (where it sits above the title). Just
-   a smaller scale + tighter padding; the color treatment is unchanged. */
-.verdict-card.is-compact {
-  --verdict-disc-size: 1.5rem;
-  --verdict-glyph-size: 0.9rem;
-  --verdict-value-size: var(--font-size-md);
-
-  gap: var(--spacing-sm);
-  padding: 3px var(--spacing-sm);
-  padding-left: var(--spacing-xs);
-}
-
-/* The "My Rating" eyebrow only rides along at full size — dropped on the compact
-   pill (map popup) and on mobile, where the word alone reads cleaner. */
-.verdict-card.is-compact .verdict-card-label {
-  display: none;
-}
-
-@media screen and (max-width: 700px) {
-  .verdict-card {
-    --verdict-disc-size: 1.5rem;
-    --verdict-glyph-size: 0.9rem;
-    --verdict-value-size: var(--font-size-md);
-
-    gap: var(--spacing-sm);
-    padding: 3px var(--spacing-sm);
-  }
-
-  .verdict-card .verdict-card-label {
-    display: none;
-  }
 }
 
 /* A filled verdict pill (food detail pages), matching the .verdict-card
@@ -1842,7 +1833,13 @@ body:has([data-filter-root]) .site-header {
    =========================================================================== */
 
 /* Emoji place marker — our own element handed to maplibregl.Marker. */
+/* The marker element is a bare positioning wrapper (MapLibre sets its transform);
+   the visible disc + hover-scale live on the inner element so they don't fight it. */
 .emoji-marker {
+  cursor: pointer;
+}
+
+.emoji-marker-inner {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1852,20 +1849,79 @@ body:has([data-filter-root]) .site-header {
   line-height: 1;
   border: 1px solid var(--color-muted);
   border-radius: 50%;
-  background: var(--color-background);
+  background: var(--color-surface);
   box-shadow: var(--box-shadow);
-  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+/* Grow slightly on hover, matching the neighborhood pins. */
+.emoji-marker:hover .emoji-marker-inner {
+  transform: scale(1.12);
 }
 
 /* Selected place (from the list or the map): accent the marker's ring. */
-.emoji-marker.is-selected {
+.emoji-marker.is-selected .emoji-marker-inner {
   border-color: var(--color-accent);
+}
+
+/* A cluster count bubble (Food map only): a place-count in a solid accent pill,
+   sized up for bigger clusters via the data-size bucket set in map.ts. The
+   box-shadow layers a concentric ring of the accent at lower opacity around the
+   pill, over the usual depth shadow. */
+.cluster-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding-inline: var(--spacing-xs);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-surface);
+  background: var(--color-accent);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 6px color-mix(in srgb, var(--color-accent) 28%, transparent),
+    var(--box-shadow);
+  cursor: pointer;
+
+  &[data-size='md'] {
+    min-width: 42px;
+    height: 42px;
+    font-size: 1.05rem;
+  }
+
+  &[data-size='lg'] {
+    min-width: 50px;
+    height: 50px;
+    font-size: 1.15rem;
+  }
 }
 
 /* Attribution (required OSM/Protomaps credit), themed. */
 
 .verdict-chip {
   margin-bottom: var(--spacing-sm);
+}
+
+/* The fleur-de-lis rating leading a food popup, mirroring the Rating component in
+   the list rows: four glyphs, gold when filled, faded otherwise. (Rating.astro's
+   own styles are scoped, so the popup's raw HTML needs its own rules here.) */
+.maplibregl-popup.food-popup .rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.maplibregl-popup.food-popup .rating-fleur {
+  width: 1em;
+  height: 1em;
+  color: color-mix(in srgb, var(--color-map-north) 26%, transparent);
+}
+
+.maplibregl-popup.food-popup .rating-fleur.is-filled {
+  color: var(--color-map-north);
 }
 
 .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
@@ -1963,7 +2019,7 @@ body:has([data-filter-root]) .site-header {
      long title like "Vinnie's Italian Beef & Gyros" WRAP into that available width
      rather than running one line under the X (nowrap overflowed past the padding). */
   padding-inline-end: var(--spacing-lg);
-  font-size: var(--font-size-label);
+  font-size: var(--font-size-md);
   white-space: normal;
 }
 
@@ -2197,9 +2253,13 @@ body:has([data-filter-root]) .site-header {
   flex-shrink: 0;
 }
 
+/* Lighten the fill toward white on hover (mixing explicitly rather than dropping
+   opacity, which only reads as "lighter" over the light theme — over the dark
+   surface a lower opacity just muddied the color). */
 .btn-filled:hover {
   color: var(--color-background);
-  opacity: 0.92;
+  background: color-mix(in srgb, var(--color-accent), white 14%);
+  border-color: color-mix(in srgb, var(--color-accent), white 14%);
 }
 
 /* Solid black on the light theme, but the quiet bordered `.btn-outline` look on
@@ -2329,7 +2389,7 @@ body:has([data-filter-root]) .site-header {
 .group-label {
   margin-block-end: 0;
   font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
+  font-size: var(--font-size-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);

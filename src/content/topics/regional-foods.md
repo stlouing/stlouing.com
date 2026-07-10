@@ -8,7 +8,7 @@ updated: 2026-05-31
 
 Most cities are lucky to have one local food speciality they can lay claim to, but St. Louis has an abundance of them. I've been interested to discover the food items that either originated in St. Louis or can only be found here. So here's what I've discovered so far.
 
-<nav class="toc" aria-label="In this article">
+<nav class="toc toc-numbered" aria-label="In this article">
 
 #### In this article
 

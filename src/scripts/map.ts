@@ -1,9 +1,15 @@
 import maplibregl from 'maplibre-gl'
+import Supercluster from 'supercluster'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
 import { keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import { cuisineLabel } from '../lib/emoji'
+
+// Each clustered point carries the index of its `<li>` in the `items` array — a
+// stable, serializable back-reference (Supercluster clones feature properties, so
+// we can't stash the HTMLElement itself). `items[itemIndex]` recovers the row.
+type LeafProps = { itemIndex: number }
 
 export interface MapApi {
   // Fix the map's sizing after the container becomes visible.
@@ -33,6 +39,11 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   }
 
   const scope: Element | Document = el.closest('[data-filter-root]') ?? document
+
+  // Marker clustering is opt-in per page (Food sets data-map-cluster; Hikes doesn't),
+  // so every clustering codepath below is gated on this flag — when false the map
+  // behaves exactly as it did before clustering existed.
+  const clusterEnabled = el.dataset.mapCluster !== undefined
 
   const map = createBasemapMap(el, { minZoom: 10, maxZoom: 15 })
 
@@ -81,6 +92,16 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   const items = [...scope.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const markers = new Map<HTMLElement, maplibregl.Marker>()
   const popups = new Map<HTMLElement, maplibregl.Popup>()
+
+  // Clustering state (only used when clusterEnabled). `index` is rebuilt from the
+  // visible set on every filter change; `shownLeaves` tracks which emoji markers are
+  // currently on the map (so the render loop can diff instead of rebuilding);
+  // `clusterBubbles` are the count-bubble markers; `pendingOpenItem` is a list-row
+  // click waiting for its marker to emerge from a cluster.
+  let index: Supercluster<LeafProps> | null = null
+  const shownLeaves = new Set<HTMLElement>()
+  let clusterBubbles: maplibregl.Marker[] = []
+  let pendingOpenItem: HTMLElement | null = null
 
   // Coordinates of every item (ignoring the current filter), so the map can be
   // given a view even when a filter matches nothing.
@@ -138,9 +159,15 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // card the list row shows: cuisine/neighborhood chips (which filter), a tagline,
   // an address, a writeup teaser, and external source buttons.
   function buildMarker(item: HTMLElement, lngLat: [number, number]): maplibregl.Marker {
+    // The emoji lives in an inner element so hover can scale it without touching
+    // the marker element's transform (MapLibre owns that for positioning — same
+    // reason the neighborhood pins scale their inner .marker-pin, not the marker).
     const element = document.createElement('div')
     element.className = 'emoji-marker'
-    element.textContent = item.dataset.marker ?? '📍'
+    const glyph = document.createElement('span')
+    glyph.className = 'emoji-marker-inner'
+    glyph.textContent = item.dataset.marker ?? '📍'
+    element.appendChild(glyph)
 
     const markerEmoji = item.dataset.marker ?? ''
     const cuisines = (item.dataset.cuisine ?? '').split('|').filter(Boolean)
@@ -234,6 +261,116 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     return marker
   }
 
+  // Rebuild the spatial index from the currently-visible places. Called on every
+  // filter change so clusters always reflect what the list is showing.
+  function buildIndex(): void {
+    const features: Supercluster.PointFeature<LeafProps>[] = []
+    items.forEach((item, itemIndex) => {
+      if (item.hidden) {
+        return
+      }
+      const lngLat = lngLatFromItem(item)
+      if (!lngLat) {
+        return
+      }
+      features.push({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: lngLat },
+        properties: { itemIndex },
+      })
+    })
+
+    // radius is in screen pixels; minZoom/maxZoom bracket the map's own 10..15 so
+    // points are fully separated into leaves by the time the user is zoomed in.
+    // A smaller radius clusters less eagerly (points separate at lower zoom).
+    index = new Supercluster<LeafProps>({ radius: 38, minZoom: 10, maxZoom: 16 }).load(features)
+  }
+
+  // A count bubble for a cluster feature. Clicking it zooms to the level where the
+  // cluster splits (capped at the map's maxZoom), and the ensuing moveend re-renders.
+  function buildClusterMarker(
+    feature: Supercluster.ClusterFeature<Supercluster.AnyProps>,
+  ): maplibregl.Marker {
+    const [lng, lat] = feature.geometry.coordinates
+    const count = feature.properties.point_count
+    const clusterId = feature.properties.cluster_id
+
+    const element = document.createElement('div')
+    element.className = 'cluster-marker'
+    element.textContent = String(feature.properties.point_count_abbreviated)
+    // Size bucket for CSS — bigger bubble for a bigger cluster.
+    element.dataset.size = count < 10 ? 'sm' : count < 50 ? 'md' : 'lg'
+    element.addEventListener('click', () => {
+      const expansionZoom = index?.getClusterExpansionZoom(clusterId) ?? map.getZoom() + 2
+      map.easeTo({ center: [lng, lat], zoom: Math.min(expansionZoom, 15) })
+    })
+
+    return new maplibregl.Marker({ element, anchor: 'center' }).setLngLat([lng, lat]).addTo(map)
+  }
+
+  // Reconcile the map with the index for the current viewport: show the existing
+  // emoji marker for each leaf, a count bubble for each cluster. Leaves are diffed
+  // (added/removed, never rebuilt) so an open popup / selected row survives; bubbles
+  // are stateless (their ids aren't stable across zoom) so they're cleared + rebuilt.
+  function renderClusters(): void {
+    if (!index) {
+      return
+    }
+
+    const viewport = map.getBounds()
+    const bbox: [number, number, number, number] = [
+      viewport.getWest(),
+      viewport.getSouth(),
+      viewport.getEast(),
+      viewport.getNorth(),
+    ]
+    const features = index.getClusters(bbox, Math.floor(map.getZoom()))
+
+    const desiredLeaves = new Set<HTMLElement>()
+    const clusterFeatures: Supercluster.ClusterFeature<Supercluster.AnyProps>[] = []
+    for (const feature of features) {
+      if (feature.properties && 'cluster' in feature.properties) {
+        clusterFeatures.push(feature as Supercluster.ClusterFeature<Supercluster.AnyProps>)
+      } else {
+        const item = items[(feature.properties as LeafProps).itemIndex]
+        if (item) {
+          desiredLeaves.add(item)
+        }
+      }
+    }
+
+    // Leaf diff.
+    for (const item of desiredLeaves) {
+      if (!shownLeaves.has(item)) {
+        const lngLat = lngLatFromItem(item)
+        if (!lngLat) {
+          continue
+        }
+        ;(markers.get(item) ?? buildMarker(item, lngLat)).addTo(map)
+        shownLeaves.add(item)
+      }
+    }
+    for (const item of [...shownLeaves]) {
+      if (!desiredLeaves.has(item)) {
+        markers.get(item)?.remove()
+        shownLeaves.delete(item)
+      }
+    }
+
+    // Cluster bubbles: clear + rebuild.
+    for (const bubble of clusterBubbles) {
+      bubble.remove()
+    }
+    clusterBubbles = clusterFeatures.map(buildClusterMarker)
+
+    // A list-row click on a place that was clustered waits until its leaf appears,
+    // then opens the popup (see togglePopup).
+    if (pendingOpenItem && shownLeaves.has(pendingOpenItem)) {
+      markers.get(pendingOpenItem)?.togglePopup()
+      pendingOpenItem = null
+    }
+  }
+
   // `animate` is false for the first fit (instant initial framing on load) and
   // true for later filter changes (a smooth re-fit as the visible set narrows).
   function sync(animate: boolean): void {
@@ -250,6 +387,16 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         continue
       }
 
+      if (clusterEnabled) {
+        // Markers are placed by the cluster render, not here — just measure the
+        // visible set so the fit-to-bounds below still frames it.
+        if (!item.hidden) {
+          bounds.extend(lngLat)
+          anyVisible = true
+        }
+        continue
+      }
+
       let marker = markers.get(item)
       if (!marker) {
         marker = buildMarker(item, lngLat)
@@ -262,6 +409,20 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         bounds.extend(lngLat)
         anyVisible = true
       }
+    }
+
+    if (clusterEnabled) {
+      // Drop leaves that just became hidden, rebuild the index for the new visible
+      // set, and render once now (fitBounds may not move the camera, so its moveend
+      // isn't guaranteed). The fitBounds moveend re-runs renderClusters idempotently.
+      for (const item of [...shownLeaves]) {
+        if (item.hidden) {
+          markers.get(item)?.remove()
+          shownLeaves.delete(item)
+        }
+      }
+      buildIndex()
+      renderClusters()
     }
 
     if (anyVisible) {
@@ -285,6 +446,21 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // Open/close a place's popup on demand (the shared list-title click handler in
   // views.ts calls this in map view). togglePopup mirrors the marker's own click.
   function togglePopup(item: HTMLElement): void {
+    // Clustered place: zoom in to break it out of the cluster, then let the ensuing
+    // renderClusters open the popup on the revealed leaf (via pendingOpenItem). No
+    // deferKeepInView — the popup opens after the move settles, so keep-in-view can
+    // run immediately.
+    if (clusterEnabled && !shownLeaves.has(item)) {
+      const lngLat = lngLatFromItem(item)
+      if (!lngLat) {
+        return
+      }
+      pendingOpenItem = item
+      deferKeepInView = false
+      map.easeTo({ center: lngLat, zoom: Math.min(15, Math.max(Math.floor(map.getZoom()) + 2, 14)) })
+      return
+    }
+
     const marker = markers.get(item)
     if (!marker) {
       return
@@ -306,6 +482,13 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
 
   // Clicking empty map space closes the open popup (→ popupclose → deactivate).
   map.on('click', () => deselect())
+
+  // Re-cluster after any camera change (pan, zoom, or programmatic fit/ease). One
+  // listener covers them all. Only registered when clustering is on, so the Hikes
+  // path adds nothing new.
+  if (clusterEnabled) {
+    map.on('moveend', renderClusters)
+  }
 
   // Initial framing is instant; filter re-fits animate.
   sync(false)

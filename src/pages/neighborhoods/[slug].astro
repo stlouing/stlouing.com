@@ -183,7 +183,7 @@ const trail = [
           {resourceLinks.map((link) => {
             const Icon = resourceIcons[link.label]
             return (
-              <SourceLink href={link.href} label={link.label} variant="filled">
+              <SourceLink href={link.href} label={link.label} variant="outline">
                 {Icon && <Icon slot="icon" />}
               </SourceLink>
             )
