@@ -36,11 +36,16 @@ function setupWidget(root: HTMLElement): void {
     return
   }
 
+  const buttonsWrap = root.querySelector<HTMLElement>('.rv-buttons')
+  const votedMessage = root.querySelector<HTMLElement>('[data-voted]')
   const likeButton = root.querySelector<HTMLButtonElement>('[data-vote="like"]')
   const dislikeButton = root.querySelector<HTMLButtonElement>('[data-vote="dislike"]')
   const likeCount = root.querySelector<HTMLElement>('[data-count-like]')
   const dislikeCount = root.querySelector<HTMLElement>('[data-count-dislike]')
   const barFill = root.querySelector<HTMLElement>('[data-bar-fill]')
+  const question = root.querySelector<HTMLElement>('.vb-question')
+  const defaultQuestion = question?.textContent?.trim() ?? ''
+  const votedQuestion = question?.dataset.votedQuestion ?? ''
   const summary = root.querySelector<HTMLElement>('[data-summary]')
   const note = root.querySelector<HTMLElement>('[data-note]')
   const voteStatus = root.querySelector<HTMLElement>('[data-vote-status]')
@@ -86,18 +91,34 @@ function setupWidget(root: HTMLElement): void {
     likeButton.setAttribute('aria-pressed', String(choice === 'like'))
     dislikeButton.setAttribute('aria-pressed', String(choice === 'dislike'))
 
+    let segments: string[]
     if (!loaded) {
-      summary.textContent = `Readers' Review`
+      segments = [`Readers' Review`]
     } else if (total === 0) {
-      summary.textContent = `Readers' Review · be the first to vote`
+      segments = [`Readers' Review`, 'be the first to vote']
     } else {
       const votes = total === 1 ? '1 vote' : `${total} votes`
-      summary.textContent = `Readers Review · ${likePercent}% liked it · ${votes}`
+      segments = [`Readers Review`, `${likePercent}% liked it`, votes]
     }
+
+    // Each ·-part is its own span so flex-wrap on the container keeps parts whole.
+    summary.replaceChildren(
+      ...segments.map((segment, index) => {
+        const span = document.createElement('span')
+        span.textContent = index === 0 ? segment : `· ${segment}`
+
+        return span
+      }),
+    )
 
     // Keep the top-of-page teaser CTA in step with the vote state.
     if (teaserCta) {
       teaserCta.textContent = choice ? (teaserCta.dataset.votedText ?? teaserDefaultCta) : teaserDefaultCta
+    }
+
+    // The question becomes a statement once they've answered it.
+    if (question && votedQuestion) {
+      question.textContent = choice ? votedQuestion : defaultQuestion
     }
   }
 
@@ -186,14 +207,20 @@ function setupWidget(root: HTMLElement): void {
     }
   }
 
-  // Once a note is saved, swap the form out for the thank-you (and keep it that way on
-  // reload — see the wire-up below).
+  // Once a note is saved the reader is done: swap the form for the thank-you, and swap
+  // the (locked) buttons for a plain statement so they don't read as still-clickable.
+  // Called on submit and on reload for a returning voter who already noted.
   const showNoteThanks = (): void => {
     if (noteForm) {
       noteForm.hidden = true
     }
     if (noteThanks) {
       noteThanks.hidden = false
+    }
+    if (choice && buttonsWrap && votedMessage) {
+      votedMessage.textContent = choice === 'like' ? 'You liked it. Thanks for voting!' : "You didn't like it. Thanks for voting!"
+      votedMessage.hidden = false
+      buttonsWrap.hidden = true
     }
   }
 

@@ -176,7 +176,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
       <div class="food-main">
         {
           verdict && readersEnabled && (
-            <a class:list={['verdict-teaser', `verdict-${verdict}`]} href="#readers-verdict">
+            <a class:list={['verdict-teaser', `verdict-${verdict}`]} href="#readers-rating">
               <span>
                 My review: <strong>{verdictStatements[verdict]}.</strong>
               </span>
@@ -200,18 +200,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
         }
         <Content />
         <ReadersVerdict slug={entry.id} title={data.title} verdict={verdict} />
-        <!-- <nav class="food-more-cta" aria-label="More food from St. Louing">
-          <a class="food-cta-card" href={href('/best/')}>
-            <span class="food-cta-lead"><IconAward /></span>
-            <span class="food-cta-title">Best food of St. Louis</span>
-            <span class="food-cta-arrow"><IconArrowRight /></span>
-          </a>
-          <a class="food-cta-card" href={href('/food/on-the-list/')}>
-            <span class="food-cta-lead"><IconListChecks /></span>
-            <span class="food-cta-title">Restaurants I want to try</span>
-            <span class="food-cta-arrow"><IconArrowRight /></span>
-          </a>
-        </nav> -->
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (
@@ -292,7 +280,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
 
 <style>
   /* A one-line lead-in at the top of the writeup (so mobile readers see the verdict and
-     that voting exists without scrolling to the block below). Jumps to #readers-verdict.
+     that voting exists without scrolling to the block below). Jumps to #readers-rating.
      The verdict word takes its color; the CTA is the accent. */
   .verdict-teaser {
     display: flex;

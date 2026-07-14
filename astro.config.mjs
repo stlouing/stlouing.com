@@ -108,9 +108,9 @@ export default defineConfig({
   // Directory builds on GitHub Pages are served at a trailing-slash URL and 301
   // the slashless form, so keep every route + internal link on the slash form.
   trailingSlash: 'always',
-  // The "On the List" page used to live at /food/want-to-try; keep old links alive.
+  // The "Backlog" page used to live at /food/want-to-try; keep old links alive.
   redirects: {
-    '/food/want-to-try/': '/food/on-the-list/',
+    '/food/want-to-try/': '/food/backlog/',
   },
   integrations: [
     sitemap({

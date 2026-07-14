@@ -60,8 +60,8 @@ export const sections: Section[] = [
     description: 'My favorite restaurants and cafes so far!',
   },
   {
-    label: 'On the List',
-    path: '/food/on-the-list/',
+    label: 'Backlog',
+    path: '/food/backlog/',
     group: 'lists',
     description: "Places I haven't tried or rated yet.",
   },

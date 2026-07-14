@@ -41,7 +41,7 @@ const questionId = `rv-q-${slug}`
 {
   (verdict || readersEnabled) && (
     <section
-      id="readers-verdict"
+      id="readers-rating"
       class="verdict-block"
       data-readers-verdict={readersEnabled ? '' : undefined}
       data-slug={slug}>
@@ -62,7 +62,7 @@ const questionId = `rv-q-${slug}`
           <p class="vb-readers-label section-label" data-summary>
             Readers' Review
           </p>
-          <h2 class="vb-question" id={questionId}>
+          <h2 class="vb-question" id={questionId} data-voted-question={`You've been to ${title}`}>
             Been to {title}?
           </h2>
 
@@ -83,6 +83,10 @@ const questionId = `rv-q-${slug}`
               <span class="rv-count" data-count-dislike />
             </button>
           </div>
+
+          {/* Replaces the buttons once the reader has voted AND left a note, so the
+              locked buttons don't read as still-clickable. */}
+          <p class="rv-voted" data-voted hidden />
 
           <div class="rv-bar" role="presentation">
             <span class="rv-bar-fill" data-bar-fill />
@@ -129,7 +133,7 @@ const questionId = `rv-q-${slug}`
               </div>
             </form>
             <p class="rv-note-thanks" data-note-thanks role="status" hidden>
-              Thanks! Your note is saved.
+              Your note is saved.
             </p>
           </div>
         </div>
@@ -229,6 +233,15 @@ const questionId = `rv-q-${slug}`
      set by the script; .section-label supplies the mono uppercase accent styling. */
   .vb-readers-label {
     margin: 0 0 var(--spacing-sm);
+    /* Each ·-part is a span; flex-wrap keeps whole parts together, wrapping only
+       between them (never mid-phrase). */
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.4em;
+
+    span {
+      white-space: nowrap;
+    }
   }
 
   .vb-question {
@@ -245,6 +258,20 @@ const questionId = `rv-q-${slug}`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
+  }
+
+  /* [hidden] must win over display: grid once the buttons are swapped for the message. */
+  .rv-buttons[hidden] {
+    display: none;
+  }
+
+  /* The "You liked it" line that stands in for the buttons after voting + commenting. */
+  .rv-voted {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-muted);
   }
 
   /* Same shape language as the global .btn (mono, weight 500). Inactive reads like
