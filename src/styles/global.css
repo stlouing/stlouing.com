@@ -2403,6 +2403,28 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
+/* A full-width photo that spans the whole article column (vs. the small floated .figure),
+   with a centered caption below — for standalone/feature shots. The .figure img/figcaption
+   rules above still apply. */
+.figure.full {
+  width: 100%;
+  float: none;
+  margin-block: var(--spacing-lg);
+  margin-inline: 0;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* Drop the top margin when the full-width figure leads the article or sits directly
+   under a heading — the heading/article start already provides the space above. */
+.figure.full:first-child,
+:is(h1, h2, h3, h4, h5, h6) + .figure.full {
+  margin-block-start: 0;
+}
+
 @media screen and (max-width: 700px) {
   .image-grid {
     p {

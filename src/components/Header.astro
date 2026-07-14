@@ -36,6 +36,7 @@ interface Props {
     </div>
   </div>
   <div class="masthead-rule-thin"></div>
+  <div class="masthead-rule-thin"></div>
 </div>
 
 <script>
@@ -61,6 +62,10 @@ interface Props {
   .masthead-rule-thin {
     height: 1px;
     border-block-end: 1px solid var(--color-line-contrast);
+
+    &:last-of-type {
+      margin-top: 2px;
+    }
   }
 
   .masthead-line {

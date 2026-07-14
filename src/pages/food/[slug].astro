@@ -6,7 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Chip from '../../components/Chip.astro'
-import Verdict from '../../components/Verdict.astro'
+import ReadersVerdict from '../../components/ReadersVerdict.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
@@ -17,11 +17,12 @@ import { href } from '../../lib/url'
 import { published, excerpt, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
-import { resolveVerdict } from '../../lib/verdict'
+import { resolveVerdict, verdictStatements } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
+import IconArrowDown from '../../assets/IconArrowDown.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
@@ -38,6 +39,11 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data } = entry
 const verdict = resolveVerdict(data)
+// The readers' poll only renders when Supabase is configured; the top-of-page teaser that
+// points down to it should appear on the same condition.
+const readersEnabled = Boolean(
+  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+)
 // The footer timestamp: the last revision when set, otherwise the created date.
 const lastUpdated = data.updated ?? data.created
 const { Content } = await render(entry)
@@ -169,6 +175,19 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     <div class="food-layout">
       <div class="food-main">
         {
+          verdict && readersEnabled && (
+            <a class:list={['verdict-teaser', `verdict-${verdict}`]} href="#readers-verdict">
+              <span>
+                My review: <strong>{verdictStatements[verdict]}.</strong>
+              </span>
+              <span class="verdict-teaser-cta">
+                <span data-teaser-cta data-voted-text="See the results">Been here? Vote below</span>
+                <IconArrowDown />
+              </span>
+            </a>
+          )
+        }
+        {
           data.photo && (
             <Image
               class="food-photo"
@@ -180,13 +199,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           )
         }
         <Content />
-        {
-          verdict && (
-            <div class="food-rating-block">
-              <Verdict verdict={verdict} card />
-            </div>
-          )
-        }
+        <ReadersVerdict slug={entry.id} title={data.title} verdict={verdict} />
         <!-- <nav class="food-more-cta" aria-label="More food from St. Louing">
           <a class="food-cta-card" href={href('/best/')}>
             <span class="food-cta-lead"><IconAward /></span>
@@ -272,7 +285,69 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   </Entry>
 </BaseLayout>
 
+<script>
+  import { initReadersVerdict } from '../../scripts/readers-verdict'
+  initReadersVerdict()
+</script>
+
 <style>
+  /* A one-line lead-in at the top of the writeup (so mobile readers see the verdict and
+     that voting exists without scrolling to the block below). Jumps to #readers-verdict.
+     The verdict word takes its color; the CTA is the accent. */
+  .verdict-teaser {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--spacing-xs) var(--spacing-sm);
+    margin-block-end: var(--spacing-lg);
+    padding-block-end: var(--spacing-md);
+    border-block-end: 1px solid var(--color-line);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    line-height: 1.4;
+  }
+
+  .verdict-teaser.verdict-loved {
+    --teaser-color: var(--color-verdict-loved);
+  }
+  .verdict-teaser.verdict-liked {
+    --teaser-color: var(--color-verdict-liked);
+  }
+  .verdict-teaser.verdict-neutral {
+    --teaser-color: var(--color-verdict-neutral);
+  }
+  .verdict-teaser.verdict-not-for-me {
+    --teaser-color: var(--color-verdict-notforme);
+  }
+
+  .verdict-teaser strong {
+    color: var(--teaser-color);
+    font-weight: 700;
+  }
+
+  .verdict-teaser-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  /* The arrow follows the CTA's accent color (override the global muted .icon) and scales
+     with the text. */
+  .verdict-teaser-cta :global(.icon) {
+    color: inherit;
+    width: 1em;
+    height: 1em;
+  }
+
+  .verdict-teaser:hover .verdict-teaser-cta {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   /* A photo of the place, leading the writeup: full-width, rounded, hairline
      border. Astro's <Image> emits width/height so it never causes layout shift. */
   .food-photo {
@@ -464,14 +539,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     display: inline-flex;
     align-items: center;
     font-size: var(--font-size-lg);
-  }
-
-  /* The "My Rating" verdict card closes the writeup (a spot to grow into user
-     ratings later), set off from the prose by a hairline. */
-  .food-rating-block {
-    margin-block-start: var(--spacing-lg);
-    padding-block-start: var(--spacing-md);
-    border-block-start: 1px solid var(--color-line);
   }
 
   /* The source links sit to the right of the verdict + cuisine, and wrap toward

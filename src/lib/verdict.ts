@@ -36,6 +36,15 @@ export const verdictLabels: Record<Verdict, string> = {
   'not-for-me': 'Not for me',
 }
 
+// Full-sentence phrasing of the writer's stance (vs. the plain chip nouns above). Shared
+// by the food page's verdict card and the top-of-page "My review" teaser so they match.
+export const verdictStatements: Record<Verdict, string> = {
+  loved: 'Loved it',
+  liked: 'Liked it',
+  neutral: 'It was fine',
+  'not-for-me': 'Not for me',
+}
+
 // A representative 0–10 value so verdict-only places (no numeric rating) still
 // sort sensibly next to rated ones.
 export const verdictSortValue: Record<Verdict, number> = {

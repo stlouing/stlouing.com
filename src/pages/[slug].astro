@@ -97,23 +97,25 @@ const schema = articleSchema(
         <div class="topic-layout">
           <aside class="topic-toc">
             <nav class="topic-toc-nav" aria-label="In this article">
-              <h2 class="topic-toc-title section-label">In this article</h2>
-              <ol class="topic-toc-list">
-                {tocSections.map((section) => (
-                  <li>
-                    <a href={`#${section.slug}`}>{section.text}</a>
-                    {section.children.length > 0 && (
-                      <ol class="topic-toc-sublist">
-                        {section.children.map((child) => (
-                          <li>
-                            <a href={`#${child.slug}`}>{child.text}</a>
-                          </li>
-                        ))}
-                      </ol>
-                    )}
-                  </li>
-                ))}
-              </ol>
+              <details class="topic-toc-details" open>
+                <summary class="topic-toc-title section-label">In this article</summary>
+                <ol class="topic-toc-list">
+                  {tocSections.map((section) => (
+                    <li>
+                      <a href={`#${section.slug}`}>{section.text}</a>
+                      {section.children.length > 0 && (
+                        <ol class="topic-toc-sublist">
+                          {section.children.map((child) => (
+                            <li>
+                              <a href={`#${child.slug}`}>{child.text}</a>
+                            </li>
+                          ))}
+                        </ol>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </details>
             </nav>
           </aside>
           <div class:list={['topic-main', { 'topic-list': data.display === 'list' }]}>
@@ -129,6 +131,26 @@ const schema = articleSchema(
   </Entry>
 </BaseLayout>
 
+{
+  showToc && (
+    <script>
+      const details = document.querySelector<HTMLDetailsElement>('.topic-toc-details')
+
+      if (details) {
+        const desktop = window.matchMedia('(min-width: 900px)')
+        const forceOpenOnDesktop = () => {
+          if (desktop.matches) {
+            details.open = true
+          }
+        }
+
+        forceOpenOnDesktop()
+        desktop.addEventListener('change', forceOpenOnDesktop)
+      }
+    </script>
+  )
+}
+
 <style>
   /* One column by default; a main + sticky right-rail TOC at desktop widths, mirroring
      the food/neighborhood slug asides. DOM order is aside-then-main so the TOC leads on
@@ -142,7 +164,45 @@ const schema = articleSchema(
   .topic-toc-nav {
     background: var(--color-surface);
     border: 1px solid var(--color-line);
-    padding: var(--spacing-md) var(--spacing-base) var(--spacing-base);;
+  }
+
+  /* Summary doubles as the "In this article" heading and the mobile toggle. Its own
+     padding spans the full width of the box so the WHOLE bar is the tap target, not just
+     the text/chevron. Strip the default disclosure marker so we can draw our own chevron. */
+  .topic-toc-title {
+    margin: 0;
+    padding: var(--spacing-md) var(--spacing-base);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    list-style: none;
+  }
+
+  .topic-toc-title::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Chevron rotates from pointing-down (collapsed) to up (expanded). */
+  .topic-toc-title::after {
+    content: '';
+    inline-size: 0.5em;
+    block-size: 0.5em;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.15s ease;
+  }
+
+  .topic-toc-details[open] .topic-toc-title::after {
+    transform: rotate(-135deg);
+  }
+
+  /* The summary's bottom padding is trimmed when open so the gap to the list isn't
+     doubled up with the list's own top spacing. */
+  .topic-toc-details[open] .topic-toc-title {
+    padding-block-end: var(--spacing-md);
   }
 
   @media (min-width: 900px) {
@@ -163,16 +223,24 @@ const schema = articleSchema(
       position: sticky;
       top: calc(var(--header-height, 4rem) + var(--spacing-md));
     }
+
+    /* On desktop the rail is always open (the script keeps it so): the summary reverts
+       to a plain heading — no pointer affordance, no chevron. */
+    .topic-toc-title {
+      cursor: default;
+      padding-block-end: var(--spacing-sm);
+    }
+
+    .topic-toc-title::after {
+      display: none;
+    }
   }
 
-  .topic-toc-title {
-    margin: 0 0 var(--spacing-md);
-  }
-
-  /* Numbered top-level sections (lower-roman, continuing the post's prior look). */
+  /* Numbered top-level sections (lower-roman, continuing the post's prior look). The box's
+     horizontal padding lives here now that the summary owns the top bar's padding. */
   .topic-toc-list {
     margin: 0;
-    padding: 0;
+    padding: 0 var(--spacing-base) var(--spacing-base);
     list-style: none;
     counter-reset: toc;
   }

@@ -108,6 +108,10 @@ A popular St. Louis tradition is to get Ted Drewes during Christmastime then wal
 
 Red Hot Riplets are a brand of ridged chips with a unique sweet BBQ and cayenne flavor. In addition to just being a chip, you'll find Red Hot Riplet flavor and spice blend used often. Imo's tosses their fried wings in Red Hot Riplet seasoning as a dry rub. I'm generally not a fan of BBQ chips, but I do enjoy the Riplet rub on wings.
 
+## Tzitzel Bagel
+
+A cornmeal-coated bagel, which originated in Pratzel's Bakery in the early 1900s. You can still find this at Lefty's Bagels and Baked & Boiled.
+
 ## Flavor Profile
 
 One thing I've noticed across the board is that the main flavor profile across the board in St. Louis is "sweet". The signature BBQ sauce is sweet, the pizza sauce is sweet, the salad dressing is sweet, and the desserts are doubly sweet. You won't really find vinegary, sour, or bitter flavors.

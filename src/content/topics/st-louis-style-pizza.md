@@ -7,7 +7,7 @@ created: 2026-05-31
 updated: 2026-07-06
 ---
 
-<figure class="figure left">
+<figure class="figure full">
 
 ![St. Louis-style pizza from Imo's](../images/stl-pizza/imos.png)
 
@@ -58,7 +58,7 @@ You'll see all the standard toppings on a STL-style. It's important that the sau
 
 ## Tavern-style Controversy
 
-<figure class="figure right">
+<figure class="figure full">
 
 ![Chicago-style pizza from Pizz'amici](../images/stl-pizza/pizzamici.png)
 
@@ -99,14 +99,14 @@ Loosely based on a recipe posted on reddit by [HouseofProvel](https://www.reddit
 
 I thought it came out pretty good, though I'd make some changes if I do it again. I made the crust with butter because I like butter, but shortening would be better for a crispier, lighter crust. I'd add slightly more sweetness to the sauce, and I'd use a little more yeast in the crust.
 
-## My Ratings
+<figure class="figure full">
 
-<figure class="figure right">
+![Homemade STL-style pizza](../images/stl-pizza/homemadepizza7.png)
 
-![Pepperoni and sausage from Faraci Pizza](../images/stl-pizza/faraci.png)
-
-<figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
+<figcaption>Our attempt at homemade STL-style pizza</figcaption>
 </figure>
+
+## My Ratings
 
 Here's a subjective rated list of the places I've tried. I would say the top three are all vying for first place at the moment.
 
@@ -121,18 +121,25 @@ Here's a subjective rated list of the places I've tried. I would say the top thr
 1. **Cecil Whittaker's** - This was one of my least favorite St. Louis-style pizzas I've tried. It's like an Imo's clone with lower quality ingredients.
 1. **Elicia's Pizza** - The first St. Louis-style pizza I ever tried was from Elicia's. It was completely burnt and inedible, and unfortunately they're no longer in business for me to know whether or not that was a fluke.
 
+<figure class="figure full">
+
+![Pepperoni and sausage from Faraci Pizza](../images/stl-pizza/faraci.png)
+
+<figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
+</figure>
+
 So I've tried a variety of fan favorites around the city, but I'm always open to new suggestions. A few I have yet to try are Affton Pizza Company, Angelo's, Kevin's Place, and plenty more.
 
 ## What Do I Think?
 
-<figure class="figure left">
+I like pizza. I think (almost) all pizza is good. I love trying new things, especially regional food that you can't get everywhere. My personal favorite styles of pizza are thick, bready styles, like Sicilian, Detroit-style and pan pizza. I'm also a fan of fresh, high-quality ingredients, like the fresh basil and mozzarella found on a Neapolitan margherita pizza.
+
+<figure class="figure full">
 
 ![Delivery from Cecil Whittaker's](../images/stl-pizza/cecil.png)
 
 <figcaption>Delivery from Cecil Whittaker's</figcaption>
 </figure>
-
-I like pizza. I think (almost) all pizza is good. I love trying new things, especially regional food that you can't get everywhere. My personal favorite styles of pizza are thick, bready styles, like Sicilian, Detroit-style and pan pizza. I'm also a fan of fresh, high-quality ingredients, like the fresh basil and mozzarella found on a Neapolitan margherita pizza.
 
 So personally, St. Louis-style or even Chicago thin-crust are just never going to be on the top of my list, because I'm here for the dough. Nonetheless, I still like it and have acquired the taste since moving here, and I'm still excited to try all the spots and decide which one is my favorite. Sometimes I specifically crave a St. Louis-style pizza, and I'd miss it if I no longer lived here.
 

@@ -10,9 +10,11 @@ St. Louis is a little city with a lot of regional culture. This page is a little
 
 ## Food
 
-- [The Food Map](/food/) is my number one way of exploring the city.
+All my food opinions are located on these pages:
 
-I also put together a (subjective) list of the [Best Food in St. Louis](/best/) and [all the spots I haven't written about yet](/food/on-the-list/).
+- [The Food Map](/food/) is my number one way of exploring the city.
+- [The Best Food in St. Louis](/best/) is my subjective list of favorites.
+- [The List](/food/on-the-list/) is all the spots I haven't visited or written about yet.
 
 ### Regional food
 
