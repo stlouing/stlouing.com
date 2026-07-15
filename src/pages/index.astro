@@ -55,7 +55,7 @@ const allNeighborhoods = published(await getCollection('neighborhoods'))
 const foodCount = allFood.length
 const neighborhoodCount = allNeighborhoods.length
 const countByPath: Record<string, string> = {
-  '/food/': `${foodCount} writeups`,
+  '/food/': `${foodCount} spots`,
   '/neighborhoods/': `${neighborhoodCount} explored`,
 }
 

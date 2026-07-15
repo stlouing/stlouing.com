@@ -12,15 +12,20 @@ import IconThumbsUp from '../assets/IconThumbsUp.astro'
 import IconThumbsDown from '../assets/IconThumbsDown.astro'
 import IconCircleMinus from '../assets/IconCircleMinus.astro'
 import IconHeartOff from '../assets/IconHeartOff.astro'
-import { verdictStatements, type Verdict } from '../lib/verdict'
+import IconMapPin from '../assets/IconMapPin.astro'
+import IconNotebookPen from '../assets/IconNotebookPen.astro'
+import { type Verdict, type WriterState } from '../lib/verdict'
 
 interface Props {
   slug: string
   title: string
-  verdict?: Verdict
+  // The writer's stance for the "My Review" slot — a rated verdict, or an
+  // unrated placeholder ("Haven't visited yet" / "Haven't reviewed yet").
+  // Resolved by resolveWriterState so a stub place still shows a line.
+  writerState?: WriterState
 }
 
-const { slug, title, verdict } = Astro.props
+const { slug, title, writerState } = Astro.props
 
 // Same icon-per-verdict mapping the Verdict chip/card uses, so the writer's verdict
 // reads consistently across the app.
@@ -31,7 +36,19 @@ const verdictIcons = {
   'not-for-me': IconHeartOff,
 } satisfies Record<Verdict, unknown>
 
-const WriterIcon = verdict ? verdictIcons[verdict] : null
+// The muted icon for an unrated place: a notebook when the writeup is pending,
+// a map pin when it hasn't been visited yet.
+const stateIcons = { pending: IconNotebookPen, unvisited: IconMapPin } satisfies Record<
+  NonNullable<WriterState['kind']>,
+  unknown
+>
+
+// A rated place takes its per-verdict icon; an unrated one takes the muted state icon.
+const WriterIcon = writerState?.verdict
+  ? verdictIcons[writerState.verdict]
+  : writerState?.kind
+    ? stateIcons[writerState.kind]
+    : null
 const readersEnabled = Boolean(
   import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
 )
@@ -39,20 +56,24 @@ const questionId = `rv-q-${slug}`
 ---
 
 {
-  (verdict || readersEnabled) && (
+  (writerState || readersEnabled) && (
     <section
       id="readers-rating"
       class="verdict-block"
       data-readers-verdict={readersEnabled ? '' : undefined}
       data-slug={slug}>
-      {verdict && WriterIcon && (
-        <div class:list={['vb-writer', `verdict-${verdict}`]}>
+      {writerState && WriterIcon && (
+        <div
+          class:list={[
+            'vb-writer',
+            writerState.verdict ? `verdict-${writerState.verdict}` : 'vb-writer-muted',
+          ]}>
           <span class="vb-writer-disc">
             <WriterIcon />
           </span>
           <span class="vb-writer-text">
             <span class="vb-writer-label">My Review</span>
-            <span class="vb-writer-value">{verdictStatements[verdict]}</span>
+            <span class="vb-writer-value">{writerState.statement}</span>
           </span>
         </div>
       )}
@@ -161,7 +182,7 @@ const questionId = `rv-q-${slug}`
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: var(--spacing-md);
   }
 
   .verdict-block:has(.vb-readers) .vb-writer {
@@ -179,6 +200,19 @@ const questionId = `rv-q-${slug}`
   }
   .vb-writer.verdict-not-for-me {
     --vb-color: var(--color-verdict-notforme);
+  }
+
+  /* Unrated place (want-to-try / suggested / tried-not-reviewed): a quiet, verdict-
+     less line so it reads as a placeholder rather than a rating. */
+  .vb-writer.vb-writer-muted {
+    --vb-color: var(--color-muted);
+  }
+
+  /* The placeholder phrase ("Haven't visited yet") is longer than a verdict word,
+     so it rides smaller than the 3rem verdict value and in the muted ink. */
+  .vb-writer-muted .vb-writer-value {
+    font-size: 2rem;
+    color: var(--color-muted-2);
   }
 
   /* Solid disc; the glyph reads in the surface color for contrast (overrides the
@@ -218,7 +252,7 @@ const questionId = `rv-q-${slug}`
 
   .vb-writer-value {
     font-family: var(--font-display);
-    font-size: 3rem;
+    font-size: 2.25rem;
     font-weight: 400;
     line-height: 1.1;
     color: var(--vb-color);
@@ -226,22 +260,38 @@ const questionId = `rv-q-${slug}`
 
   /* --- Readers' poll (bottom) --- */
   .vb-readers {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
   }
 
-  /* The eyebrow doubles as the live tally line ("Readers · 90% liked it · 142 votes"),
-     set by the script; .section-label supplies the mono uppercase accent styling. */
+  /* The eyebrow is the live tally line, set by the script: an accent label
+     ("Readers' Review"), a hairline rule that fills the row, then the muted tally
+     ("90% liked it | 142 votes") pushed to the end. .section-label supplies the
+     mono uppercase accent; the tally overrides the color to muted. */
   .vb-readers-label {
     margin: 0 0 var(--spacing-sm);
-    /* Each ·-part is a span; flex-wrap keeps whole parts together, wrapping only
-       between them (never mid-phrase). */
     display: flex;
-    flex-wrap: wrap;
-    column-gap: 0.4em;
+    align-items: center;
+    gap: 0.75em;
+  }
 
-    span {
-      white-space: nowrap;
-    }
+  /* The label + rule + tally spans are created by readers-verdict.ts at runtime, so
+     they don't carry Astro's scope attribute — reach them with :global(). The label
+     keeps the accent from .section-label; the tally overrides it to muted. */
+  .vb-readers-label :global(.rv-summary-label) {
+    white-space: nowrap;
+  }
+
+  /* Fills the gap between the accent label and the muted tally. */
+  .vb-readers-label :global(.rv-summary-rule) {
+    flex: 1;
+    min-width: 1em;
+    border-block-start: 1px solid var(--color-line);
+  }
+
+  /* The tally reads muted, set off from the accent label. */
+  .vb-readers-label :global(.rv-summary-stats) {
+    color: var(--color-muted);
+    white-space: nowrap;
   }
 
   .vb-question {
@@ -258,6 +308,7 @@ const questionId = `rv-q-${slug}`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
   }
 
   /* [hidden] must win over display: grid once the buttons are swapped for the message. */
@@ -269,7 +320,7 @@ const questionId = `rv-q-${slug}`
   .rv-voted {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     font-weight: 500;
     color: var(--color-muted);
   }
@@ -340,7 +391,7 @@ const questionId = `rv-q-${slug}`
   }
 
   .rv-bar {
-    margin-block-start: var(--spacing-md);
+    margin-block-start: var(--spacing-sm);
     height: 6px;
     border-radius: var(--radius);
     background: var(--color-line);
@@ -370,7 +421,7 @@ const questionId = `rv-q-${slug}`
   /* Optional note: quiet by default, expands to a small form. */
   .rv-note {
     margin-block-start: var(--spacing-md);
-    padding-block-start: var(--spacing-md);
+    padding-block-start: var(--spacing-sm);
     border-block-start: 1px solid var(--color-line);
   }
 

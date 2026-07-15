@@ -44,10 +44,10 @@ The suburbs have rapidly expanded over this time period, but the city has stagna
 
 St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) among mid-sized cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its Metro area - in stark contrast to the nearly 30% that Chicago represents, as a comparison.
 
-| City          | Metro population | City population | City share of metro |
-| :------------ | ---------------: | --------------: | ------------------: |
-| Chicago       |        9,618,502 |       2,746,388 |             **28%** |
-| **St. Louis** |    **2,820,253** |     **301,578** |             **10%** |
+| City          |    Metro pop. |   City pop. | Share of metro |
+| :------------ | ------------: | ----------: | -------------: |
+| Chicago       |     9,618,502 |   2,746,388 |        **28%** |
+| **St. Louis** | **2,820,253** | **301,578** |        **10%** |
 
 <p class="table-caption">City population as a share of its metro, 2020</p>
 

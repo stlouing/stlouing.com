@@ -1,14 +1,16 @@
 ---
+import { getCollection } from 'astro:content'
+
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
-import wantToTry from '../../data/want-to-try.json'
-import tried from '../../data/tried.json'
 import rip from '../../data/rip.json'
+import { published } from '../../lib/content'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
+import { href } from '../../lib/url'
 
-// All three lists are plain data (src/data/*.json), not collection entries — so a
-// place can sit here with zero ceremony and get promoted to a real /food entry
-// (with a verdict + writeup) one at a time, only when it's earned it.
+// The wishlist + tried lists are now first-class food entries carrying a `status`
+// (each has its own /food/<slug> page + map pin); this page just reads them back
+// out by status. RIP stays a plain data file — a closed place needs no page.
 interface FoodNote {
   name: string
   cuisine?: string[]
@@ -16,13 +18,20 @@ interface FoodNote {
   note?: string
 }
 
+// The card shape shared by a food entry's data and a plain RIP note.
+type CardData = { cuisine?: string[]; neighborhood?: string }
+
+const allFood = published(await getCollection('food'))
+const byTitle = (left: { data: { title: string } }, right: { data: { title: string } }) =>
+  left.data.title.localeCompare(right.data.title)
+const wishlist = allFood.filter((place) => place.data.status === 'want-to-try').sort(byTitle)
+const triedList = allFood.filter((place) => place.data.status === 'tried').sort(byTitle)
+
 const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(right.name)
-const wishlist = (wantToTry as FoodNote[]).slice().sort(byName)
-const triedList = (tried as FoodNote[]).slice().sort(byName)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
 
 // The leading cuisine emoji for a row, when the item has a cuisine.
-const cardEmoji = (item: FoodNote) => {
+const cardEmoji = (item: CardData) => {
   if (item.cuisine && item.cuisine.length > 0) {
     return cuisineEmoji(item.cuisine)
   }
@@ -31,7 +40,7 @@ const cardEmoji = (item: FoodNote) => {
 }
 
 // The kicker line: the cuisine label and neighborhood, whichever are present.
-const cardMeta = (item: FoodNote) => {
+const cardMeta = (item: CardData) => {
   const parts = [
     item.cuisine && item.cuisine.length > 0 ? cuisineLabel(item.cuisine[0]) : null,
     item.neighborhood ?? null,
@@ -63,13 +72,14 @@ const description =
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
           <div class="card-list">
-            {wishlist.map((item) => (
+            {wishlist.map((place) => (
               <RelatedCard
-                title={item.name}
-                emoji={cardEmoji(item)}
-                meta={cardMeta(item)}
+                href={href(`/food/${place.id}/`)}
+                title={place.data.title}
+                emoji={cardEmoji(place.data)}
+                meta={cardMeta(place.data)}
                 metaType="neighborhood"
-                description={item.note}
+                description={place.data.description}
               />
             ))}
           </div>
@@ -89,13 +99,14 @@ const description =
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
           <div class="card-list">
-            {triedList.map((item) => (
+            {triedList.map((place) => (
               <RelatedCard
-                title={item.name}
-                emoji={cardEmoji(item)}
-                meta={cardMeta(item)}
+                href={href(`/food/${place.id}/`)}
+                title={place.data.title}
+                emoji={cardEmoji(place.data)}
+                meta={cardMeta(place.data)}
                 metaType="neighborhood"
-                description={item.note}
+                description={place.data.description}
               />
             ))}
           </div>
@@ -154,7 +165,7 @@ const description =
   @media screen and (min-width: 700px) {
     .card-list {
       grid-template-columns: 1fr 1fr;
-      column-gap: var(--spacing-lg);
+      column-gap: 4rem;
     }
 
     /* Two columns: keep every row's divider, including the last card, so the two

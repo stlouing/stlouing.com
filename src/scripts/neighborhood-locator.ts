@@ -60,7 +60,7 @@ function drawPolygon(el: HTMLElement, features: Feature[]): void {
 
   const map = createBasemapMap(el, {
     minZoom: 10,
-    maxZoom: 16,
+    maxZoom: 14,
     cooperativeGestures: true,
     attributionControl: { compact: true },
   })

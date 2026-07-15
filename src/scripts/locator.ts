@@ -26,7 +26,7 @@ export function initLocator(el: HTMLElement): void {
     // blocks (a "where is it" view, not a street close-up).
     zoom: 11,
     minZoom: 10,
-    maxZoom: 17,
+    maxZoom: 15,
     // A plain scroll or one-finger drag moves the PAGE, not the map; two fingers
     // (or ⌘/ctrl + scroll) pan/zoom it, with a hint overlay. MapLibre's built-in
     // replacement for the old hand-rolled two-finger gesture gating, so a locator

@@ -151,7 +151,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<div class="popup-actions">${sources
         .map((source) => {
           const icon = SOURCE_ICON[source.label] ?? ''
-          return `<a class="btn btn-outline" href="${source.href}" target="_blank" rel="noopener">${icon}${escapeHtml(source.label)}</a>`
+          return `<a class="btn btn-outline btn-compact" href="${source.href}" target="_blank" rel="noopener">${icon}${escapeHtml(source.label)}</a>`
         })
         .join('')}</div>`
     : ''

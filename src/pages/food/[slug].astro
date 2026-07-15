@@ -17,7 +17,7 @@ import { href } from '../../lib/url'
 import { published, excerpt, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
-import { resolveVerdict, verdictStatements } from '../../lib/verdict'
+import { resolveVerdict, resolveWriterState } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
@@ -39,6 +39,17 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data } = entry
 const verdict = resolveVerdict(data)
+// The "My Review" stance: the verdict when rated, else a status-driven placeholder
+// ("Haven't reviewed yet" for a tried spot, "Haven't visited yet" otherwise). Drives
+// both the top-of-page teaser and the ReadersVerdict card.
+const writerState = resolveWriterState(data)
+// A friendly one-liner shown in a dashed note in place of the (empty) writeup on a
+// body-less stub — mirroring the "not explored yet" treatment on neighborhood pages.
+// Tried-but-unrated reads differently from never-visited.
+const stubNote =
+  writerState.kind === 'pending'
+    ? `I've been to ${data.title}, but I haven't written up a review yet.`
+    : `I haven't made it to ${data.title} yet, but it's on my list to try.`
 // The readers' poll only renders when Supabase is configured; the top-of-page teaser that
 // points down to it should appear on the same condition.
 const readersEnabled = Boolean(
@@ -174,11 +185,19 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
 
     <div class="food-layout">
       <div class="food-main">
-        {
-          verdict && readersEnabled && (
-            <a class:list={['verdict-teaser', `verdict-${verdict}`]} href="#readers-rating">
+        <!-- {
+          /* The jump-to-vote teaser is only useful when a writeup pushes the poll
+             below the fold. On a body-less stub the poll is already right here, so the
+             teaser is redundant — show it only when there's real writeup content. */
+          readersEnabled && hasBody(entry) && (
+            <a
+              class:list={[
+                'verdict-teaser',
+                writerState.verdict ? `verdict-${writerState.verdict}` : 'verdict-teaser-muted',
+              ]}
+              href="#readers-rating">
               <span>
-                My review: <strong>{verdictStatements[verdict]}.</strong>
+                My review: <strong>{writerState.statement}.</strong>
               </span>
               <span class="verdict-teaser-cta">
                 <span data-teaser-cta data-voted-text="See the results">Been here? Vote below</span>
@@ -186,7 +205,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
               </span>
             </a>
           )
-        }
+        } -->
         {
           data.photo && (
             <Image
@@ -199,7 +218,14 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           )
         }
         <Content />
-        <ReadersVerdict slug={entry.id} title={data.title} verdict={verdict} />
+        {
+          !hasBody(entry) && (
+            <div class="not-explored">
+              <p>{stubNote}</p>
+            </div>
+          )
+        }
+        <ReadersVerdict slug={entry.id} title={data.title} writerState={writerState} />
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (
@@ -308,6 +334,25 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   }
   .verdict-teaser.verdict-not-for-me {
     --teaser-color: var(--color-verdict-notforme);
+  }
+  /* Unrated place: the "Haven't visited yet" teaser rides in muted ink, no verdict color. */
+  .verdict-teaser.verdict-teaser-muted {
+    --teaser-color: var(--color-muted-2);
+  }
+
+  /* Stub treatment for a place without a writeup: a dashed note in place of the
+     (empty) prose, so the page reads as "intentionally unfinished" rather than
+     broken. Mirrors the neighborhood page's .not-explored block. */
+  .not-explored {
+    margin-block-end: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 1px dashed var(--color-line-input);
+    border-radius: var(--radius);
+    color: var(--color-muted);
+  }
+
+  .not-explored p {
+    margin: 0;
   }
 
   .verdict-teaser strong {

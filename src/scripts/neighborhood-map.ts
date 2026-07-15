@@ -169,7 +169,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
   })
 
-  const map = createBasemapMap(element, { minZoom: 10, maxZoom: 15 })
+  const map = createBasemapMap(element, { minZoom: 10, maxZoom: 13 })
 
   // Touch devices synthesize hover (mouseenter/mousemove) events on tap, which
   // makes the hover card flicker and fights tap-to-open. Gate every hover behavior

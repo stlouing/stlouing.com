@@ -91,25 +91,35 @@ function setupWidget(root: HTMLElement): void {
     likeButton.setAttribute('aria-pressed', String(choice === 'like'))
     dislikeButton.setAttribute('aria-pressed', String(choice === 'dislike'))
 
-    let segments: string[]
-    if (!loaded) {
-      segments = [`Readers' Review`]
-    } else if (total === 0) {
-      segments = [`Readers' Review`, 'be the first to vote']
-    } else {
+    // The eyebrow reads as: an accent label, a hairline rule that fills the row, then
+    // the muted tally pushed to the end. The label + rule are always present; the tally
+    // is added once counts have loaded (or a "be the first" nudge when there are none).
+    const labelSpan = document.createElement('span')
+    labelSpan.className = 'rv-summary-label'
+    labelSpan.textContent = `Readers' Review`
+
+    const rule = document.createElement('span')
+    rule.className = 'rv-summary-rule'
+    rule.setAttribute('aria-hidden', 'true')
+
+    const parts: HTMLElement[] = [labelSpan, rule]
+
+    let tally = ''
+    if (loaded && total === 0) {
+      tally = 'be the first to vote'
+    } else if (loaded) {
       const votes = total === 1 ? '1 vote' : `${total} votes`
-      segments = [`Readers Review`, `${likePercent}% liked it`, votes]
+      tally = `${likePercent}% liked it | ${votes}`
     }
 
-    // Each ·-part is its own span so flex-wrap on the container keeps parts whole.
-    summary.replaceChildren(
-      ...segments.map((segment, index) => {
-        const span = document.createElement('span')
-        span.textContent = index === 0 ? segment : `· ${segment}`
+    if (tally) {
+      const tallySpan = document.createElement('span')
+      tallySpan.className = 'rv-summary-stats'
+      tallySpan.textContent = tally
+      parts.push(tallySpan)
+    }
 
-        return span
-      }),
-    )
+    summary.replaceChildren(...parts)
 
     // Keep the top-of-page teaser CTA in step with the vote state.
     if (teaserCta) {

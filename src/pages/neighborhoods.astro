@@ -7,7 +7,6 @@ import neighborhoods from '../data/neighborhoods.json'
 import { published, excerpt, hasBody } from '../lib/content'
 import {
   neighborhoodResourceLinks,
-  neighborhoodGeneratedSummary,
   neighborhoodPopulation,
   foodByNeighborhood,
   normalizeName,
@@ -47,6 +46,10 @@ const restCount = listed.length - writtenCount
 // data attributes on each row so the client map can read them without re-deriving.
 // Resources come from the shared helper so the popup matches the detail page +
 // list (deduped Website, plus the City of St. Louis link the popup used to omit).
+// Default preview line for a neighborhood without a writeup, so an un-explored row
+// (and its map popup) reads as intentional rather than unfinished.
+const NOT_EXPLORED_EXCERPT = "I haven't explored this neighborhood yet."
+
 function popupData(slug: string, name: string, group: string) {
   const entry = entryBySlug.get(slug)
   const links = neighborhoodResourceLinks(slug, name, entry?.data.url, entry?.data.wikipedia)
@@ -65,15 +68,12 @@ function popupData(slug: string, name: string, group: string) {
     // The accent tagline (the manual description), shown in the popup + list row
     // when one is set.
     tagline: entry?.data.description,
-    // Popup teaser: the writeup excerpt when there is one; otherwise the generated
-    // "Neighborhood #X" line, but only when there's no description to lead with
-    // (the accent tagline already covers that case).
+    // Popup teaser: the writeup excerpt when there is one; otherwise a default
+    // "not explored yet" line so the card never reads as empty/unfinished.
     excerpt:
       entry?.body !== undefined && entry.body.length > 0
         ? excerpt(entry.body, 150)
-        : entry?.data.description
-          ? ''
-          : neighborhoodGeneratedSummary(slug),
+        : NOT_EXPLORED_EXCERPT,
   }
 }
 
@@ -159,7 +159,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
                 <Fragment>
                   {showHeader && (
                     <li class="section-head">
-                      <span class="section-label">{written ? 'Explored' : 'The rest'}</span>
+                      <span class="section-label">{written ? 'Explored' : 'Not Explored'}</span>
                       <span class="section-count">{written ? writtenCount : restCount}</span>
                     </li>
                   )}
@@ -193,9 +193,13 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       </div>
                     )}
                     {popup.tagline && <div class="list-tagline">{popup.tagline}</div>}
-                    {written && Content && (
+                    {written && Content ? (
                       <div class="neighborhood-preview">
                         <Content />
+                      </div>
+                    ) : (
+                      <div class="neighborhood-preview neighborhood-preview-stub">
+                        {NOT_EXPLORED_EXCERPT}
                       </div>
                     )}
                   </MapRow>
@@ -211,16 +215,11 @@ function sectionOf(area: { group?: string; type?: string }): string {
 </BaseLayout>
 
 <style>
-  /* Section header above each group (Explored / The rest): a quiet label with its
-     count flush right — no rule line, to keep the list from feeling line-heavy.
-     (The row chrome + writeup panel are shared `.map-list` rules in global.css.) */
-  .section-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md) !important;
-    border: 0;
+
+  /* The "not explored yet" default preview reads as a quiet placeholder, distinct
+     from a real writeup teaser. */
+  .neighborhood-preview-stub {
+    color: var(--color-muted);
   }
 
   .section-count {
@@ -229,5 +228,4 @@ function sectionOf(area: { group?: string; type?: string }): string {
     color: var(--color-muted);
     font-weight: 500;
   }
-
 </style>

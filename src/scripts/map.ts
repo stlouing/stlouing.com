@@ -45,7 +45,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // behaves exactly as it did before clustering existed.
   const clusterEnabled = el.dataset.mapCluster !== undefined
 
-  const map = createBasemapMap(el, { minZoom: 10, maxZoom: 15 })
+  const map = createBasemapMap(el, { minZoom: 10, maxZoom: 16 })
 
   // Faint neighborhood outlines under the emoji markers, so each spot reads with
   // some geographic context. One geojson source (fetched by MapLibre from the URL)
@@ -164,6 +164,11 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     // reason the neighborhood pins scale their inner .marker-pin, not the marker).
     const element = document.createElement('div')
     element.className = 'emoji-marker'
+    // A place I haven't visited yet (want-to-try / suggested) rides grayed on the
+    // map so it reads as "not explored yet" against the full-color explored pins.
+    if (item.dataset.explored === 'false') {
+      element.classList.add('is-unexplored')
+    }
     const glyph = document.createElement('span')
     glyph.className = 'emoji-marker-inner'
     glyph.textContent = item.dataset.marker ?? '📍'
@@ -280,10 +285,22 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       })
     })
 
-    // radius is in screen pixels; minZoom/maxZoom bracket the map's own 10..15 so
-    // points are fully separated into leaves by the time the user is zoomed in.
-    // A smaller radius clusters less eagerly (points separate at lower zoom).
-    index = new Supercluster<LeafProps>({ radius: 38, minZoom: 10, maxZoom: 16 }).load(features)
+    // Deliberately light clustering — favor showing individual emoji markers over
+    // count bubbles:
+    //   minPoints 2 (default) — a close pair merges into a "2" bubble on purpose:
+    //     two nearly-stacked pins can't be clicked apart, so the cluster gives you
+    //     a target that zooms in and separates them.
+    //   radius 16   — the (screen-pixel) merge distance; smaller = less eager, so
+    //     only genuinely close spots cluster (far fewer bubbles than the old 38).
+    //   maxZoom 13  — the last zoom clustering is computed at, one under the map's
+    //     own max (14), so clicking a cluster (or reaching zoom 14) always splits
+    //     it into individual leaves.
+    index = new Supercluster<LeafProps>({
+      radius: 16,
+      minPoints: 2,
+      minZoom: 10,
+      maxZoom: 13,
+    }).load(features)
   }
 
   // A count bubble for a cluster feature. Clicking it zooms to the level where the
@@ -302,7 +319,14 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     element.dataset.size = count < 10 ? 'sm' : count < 50 ? 'md' : 'lg'
     element.addEventListener('click', () => {
       const expansionZoom = index?.getClusterExpansionZoom(clusterId) ?? map.getZoom() + 2
-      map.easeTo({ center: [lng, lat], zoom: Math.min(expansionZoom, 15) })
+      // Zoom to where the cluster splits, advancing at least a couple levels so it
+      // makes real progress. Capped at the map's max zoom (14), by which point
+      // clustering is off entirely and every spot is its own pin.
+      const target = Math.min(
+        map.getMaxZoom(),
+        Math.max(expansionZoom, Math.floor(map.getZoom()) + 2),
+      )
+      map.easeTo({ center: [lng, lat], zoom: target })
     })
 
     return new maplibregl.Marker({ element, anchor: 'center' }).setLngLat([lng, lat]).addTo(map)
@@ -368,6 +392,15 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     if (pendingOpenItem && shownLeaves.has(pendingOpenItem)) {
       markers.get(pendingOpenItem)?.togglePopup()
       pendingOpenItem = null
+    } else if (pendingOpenItem && !pendingOpenItem.hidden && map.getZoom() < map.getMaxZoom()) {
+      // Still clustered after the last ease — keep zooming toward it until its leaf
+      // emerges (or we hit max zoom). This is what lets a click on one of two nearly
+      // co-located spots (e.g. the two on Delmar) actually break them apart, instead
+      // of stalling at a zoom where they're still merged into one bubble.
+      const lngLat = lngLatFromItem(pendingOpenItem)
+      if (lngLat) {
+        map.easeTo({ center: lngLat, zoom: Math.min(map.getMaxZoom(), Math.floor(map.getZoom()) + 2) })
+      }
     }
   }
 
@@ -378,8 +411,24 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     // when the filter changes. popupclose → deactivate clears the row.
     closeActivePopup()
 
+    // `bounds` frames the default view and deliberately skips spots tagged
+    // data-exclude-fit (far-flung outliers like the Illinois spots that would
+    // otherwise zoom the whole map out). `fallbackBounds` includes everything and
+    // is used only when the visible set is *entirely* excluded spots (e.g. a filter
+    // that matches just one of them), so the map still frames something.
     const bounds = new maplibregl.LngLatBounds()
+    const fallbackBounds = new maplibregl.LngLatBounds()
     let anyVisible = false
+    let anyFitPoint = false
+
+    const measure = (item: HTMLElement, lngLat: [number, number]): void => {
+      anyVisible = true
+      fallbackBounds.extend(lngLat)
+      if (item.dataset.excludeFit === undefined) {
+        bounds.extend(lngLat)
+        anyFitPoint = true
+      }
+    }
 
     for (const item of items) {
       const lngLat = lngLatFromItem(item)
@@ -391,8 +440,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         // Markers are placed by the cluster render, not here — just measure the
         // visible set so the fit-to-bounds below still frames it.
         if (!item.hidden) {
-          bounds.extend(lngLat)
-          anyVisible = true
+          measure(item, lngLat)
         }
         continue
       }
@@ -406,8 +454,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         marker.remove()
       } else {
         marker.addTo(map)
-        bounds.extend(lngLat)
-        anyVisible = true
+        measure(item, lngLat)
       }
     }
 
@@ -426,7 +473,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
 
     if (anyVisible) {
-      map.fitBounds(bounds, { padding: 30, maxZoom: 12, animate })
+      map.fitBounds(anyFitPoint ? bounds : fallbackBounds, { padding: 30, maxZoom: 12, animate })
       viewInitialized = true
     } else if (!viewInitialized) {
       // A deep-linked filter matched nothing: still give the map a view.
@@ -457,7 +504,10 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       }
       pendingOpenItem = item
       deferKeepInView = false
-      map.easeTo({ center: lngLat, zoom: Math.min(15, Math.max(Math.floor(map.getZoom()) + 2, 14)) })
+      map.easeTo({
+        center: lngLat,
+        zoom: Math.min(map.getMaxZoom(), Math.max(Math.floor(map.getZoom()) + 2, 14)),
+      })
       return
     }
 

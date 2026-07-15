@@ -10,50 +10,72 @@ import { published, hasBody, excerpt } from '../../lib/content'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
-import { resolveVerdict, verdictLabels, type Verdict } from '../../lib/verdict'
+import { resolveVerdict, verdictLabels, isExplored, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconAward from '../../assets/IconAward.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
 // alphabetically (A / B / C) via the sort control — the grouping itself is built
-// client-side by food-groups.ts. Only places with a verdict appear; unrated spots
-// stay off the list + map until they earn one.
-const verdictRank: Record<Verdict, number> = { loved: 0, liked: 1, neutral: 2, 'not-for-me': 3 }
+// client-side by food-groups.ts. Every place appears now: rated spots keep their
+// verdict group + color; un-rated spots (tried / want-to-try / suggested) group
+// under their status below the rated ones and read grayed on the map.
 const verdictRankLetter: Record<Verdict, string> = {
   loved: 'a',
   liked: 'b',
   neutral: 'c',
   'not-for-me': 'd',
 }
+// Un-rated groups sort after every rated verdict, in pipeline order.
+const statusRankLetter: Record<'tried' | 'want-to-try' | 'suggested', string> = {
+  tried: 'e',
+  'want-to-try': 'f',
+  suggested: 'g',
+}
 
 const all = published(await getCollection('food'))
 
-// Default DOM order is verdict-grouped then alphabetical (so the no-JS view reads
+// Default DOM order is group-ordered then alphabetical (so the no-JS view reads
 // sensibly); filter.ts re-sorts on the client from the data-sort-* keys. Cards
 // render a plain-text excerpt (not the full writeup) so the route stays light —
 // the full prose lives on each /food/<slug> page.
-const rated = all
-  .map((place) => ({ place, verdict: resolveVerdict(place.data) }))
-  .filter((entry) => entry.verdict)
+const rows = all
+  .map((place) => {
+    const verdict = resolveVerdict(place.data)
+    // The grouping/sort key: the verdict for a rated place, else its status.
+    const groupKey = verdict ?? place.data.status
+    const rankLetter = verdict
+      ? verdictRankLetter[verdict]
+      : (statusRankLetter[place.data.status as keyof typeof statusRankLetter] ?? 'h')
+
+    return { place, verdict, groupKey, rankLetter, explored: isExplored(place.data.status) }
+  })
   .sort(
     (left, right) =>
-      verdictRank[left.verdict as Verdict] - verdictRank[right.verdict as Verdict] ||
+      left.rankLetter.localeCompare(right.rankLetter) ||
       left.place.data.title.localeCompare(right.place.data.title),
   )
 
-const count = rated.length
-const cuisines = [...new Set(rated.flatMap((entry) => entry.place.data.cuisine))].sort()
+const count = rows.length
+const cuisines = [...new Set(rows.flatMap((entry) => entry.place.data.cuisine))].sort()
 const neighborhoods = [
-  ...new Set(rated.map((entry) => entry.place.data.neighborhood).filter(Boolean)),
+  ...new Set(rows.map((entry) => entry.place.data.neighborhood).filter(Boolean)),
 ].sort() as string[]
-const hasCoords = rated.some((entry) => entry.place.data.coords)
+const hasCoords = rows.some((entry) => entry.place.data.coords)
 
 // Verdict facet options (matched against each row's data-verdict), best-first and
 // only the verdicts actually present; labels come from verdictLabels ("Loved", …).
 const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[])
-  .filter((value) => rated.some((entry) => entry.verdict === value))
+  .filter((value) => rows.some((entry) => entry.verdict === value))
   .map((value) => ({ value, label: verdictLabels[value] }))
+
+// Default preview line for a place without a writeup, so an un-written stub row
+// (and its map popup) reads as intentional rather than unfinished. Keyed off status:
+// a tried spot is awaiting a review, the rest are still to visit.
+const stubExcerpt = (status: string): string =>
+  status === 'tried'
+    ? "I've been here, but haven't written up a review yet."
+    : "I haven't made it here yet, but it's on my list."
 ---
 
 <BaseLayout
@@ -92,7 +114,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
       </div>
       <ul class="list" data-food-rows>
         {
-          rated.map(({ place, verdict }) => (
+          rows.map(({ place, verdict, groupKey, rankLetter, explored }) => (
             <MapRow
               id={place.id}
               title={place.data.title}
@@ -117,15 +139,24 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 'data-cuisine': place.data.cuisine[0],
                 'data-neighborhood': place.data.neighborhood ?? '',
                 'data-address': (place.data.address ?? []).join('\n'),
-                'data-verdict': verdict as Verdict,
+                // data-verdict drives the Rating facet + group color, so it's set
+                // only for rated places; data-group is the grouping key for all.
+                ...(verdict ? { 'data-verdict': verdict } : {}),
+                // Far-flung spots opt out of the map's default framing (still pinned).
+                ...(place.data.excludeFromMapFit ? { 'data-exclude-fit': '' } : {}),
+                'data-group': groupKey,
+                // Grayed marker on the map for places I haven't visited yet.
+                'data-explored': String(explored),
                 'data-sort-name': place.data.title.toLowerCase(),
-                'data-sort-verdict': `${verdictRankLetter[verdict as Verdict]}|${place.data.title.toLowerCase()}`,
+                'data-sort-verdict': `${rankLetter}|${place.data.title.toLowerCase()}`,
                 'data-google': googleMapsHref(place.data),
                 'data-instagram': place.data.instagram ?? '',
                 'data-tagline': place.data.description ?? '',
-                'data-excerpt': hasBody(place) ? excerpt(place.body, 150) : '',
+                'data-excerpt': hasBody(place)
+                  ? excerpt(place.body, 150)
+                  : stubExcerpt(place.data.status),
               }}>
-              <Rating verdict={verdict as Verdict} slot="title-after" />
+              {verdict && <Rating verdict={verdict} slot="title-after" />}
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
                 <div class="chips" slot="sub">
                   {place.data.cuisine.map((cuisine) => (
@@ -151,7 +182,11 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 </div>
               )}
               {place.data.description && <div class="list-tagline">{place.data.description}</div>}
-              {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
+              {hasBody(place) ? (
+                <div class="food-preview">{excerpt(place.body, 200)}</div>
+              ) : (
+                <div class="food-preview food-preview-stub">{stubExcerpt(place.data.status)}</div>
+              )}
             </MapRow>
           ))
         }
@@ -174,6 +209,12 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
     line-clamp: 2;
     overflow: hidden;
     line-height: 1.5;
+  }
+
+  /* The "not visited yet" default preview reads as a quiet placeholder, distinct
+     from a real writeup teaser. */
+  .food-preview-stub {
+    color: var(--color-muted);
   }
 
   .pane-links {

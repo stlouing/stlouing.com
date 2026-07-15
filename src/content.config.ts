@@ -27,6 +27,21 @@ const food = defineCollection({
     // Shown in place of the number. Set explicitly, or derived from `rating`
     // (9–10 loved, 7–8 liked, the rest neutral) by src/lib/verdict.ts.
     verdict: z.enum(['loved', 'liked', 'neutral', 'not-for-me']).optional(),
+    // Where the place sits in the pipeline, independent of whether it has a
+    // writeup yet. Drives the "My Review" line and the map marker treatment:
+    //   written     — a full entry (rating + writeup). The default, so every
+    //                 existing file stays a `written` place with no change.
+    //   tried       — I've been, no rating/writeup yet ("Haven't reviewed yet",
+    //                 full-color pin).
+    //   want-to-try — on my list, not visited ("Haven't visited yet", grayed pin).
+    //   suggested   — a reader/community spot I haven't visited; votable, grayed
+    //                 pin. Same treatment as want-to-try, different provenance.
+    // A place is "explored by me" when written or tried; grayed on the map otherwise.
+    status: z.enum(['written', 'tried', 'want-to-try', 'suggested']).default('written'),
+    // Keep this spot off the map's default framing (it still shows as a pin). For
+    // far-flung outliers — e.g. the Illinois spots across the river — that would
+    // otherwise force the initial fit to zoom way out to include them.
+    excludeFromMapFit: z.boolean().default(false),
     cuisine: z.array(z.string()).default([]),
     neighborhood: z.string().optional(),
     // A single line, or an array of lines (e.g. street, then city/state/zip).
