@@ -33,4 +33,10 @@ const { title } = Astro.props
     border-radius: 999px;
     padding: var(--spacing-xs) var(--spacing-md);
   }
+
+  @media screen and (max-width: 700px) {
+    .share-actions :global(.btn) {
+      padding: 2px var(--spacing-sm);
+    }
+  }
 </style>

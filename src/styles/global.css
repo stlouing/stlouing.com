@@ -1537,7 +1537,7 @@ body:has([data-neighborhood-map]) .river-border {
   position: sticky;
   top: 45px;
   z-index: 2;
-  background: var(--color-surface-2);
+  background: var(--color-surface);
 }
 
 /* Mobile: the Food list scrolls with the page under a taller, wrapping filter

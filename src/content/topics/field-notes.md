@@ -6,7 +6,7 @@ created: 2026-05-28
 updated: 2026-06-29
 ---
 
-St. Louis is a little city with a lot of regional culture. This page is a little index for me to document what I've discovered after living here for a while.
+St. Louis is a little city with a lot of regional culture. This page is an index for me to document what I've discovered after living here for a while.
 
 ## Food
 
