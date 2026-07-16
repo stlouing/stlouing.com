@@ -222,13 +222,12 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     }
     const row = rowFor(slug)
     const area = row?.dataset.area ?? ''
-    const region = row?.dataset.region ?? ''
     const chips: PopupChip[] = []
     if (row?.dataset.type === 'park') {
-      chips.push({ label: 'Park', section: 'park' })
+      chips.push({ label: 'Park' })
     }
     if (area) {
-      chips.push({ label: area, section: region })
+      chips.push({ label: area })
     }
     const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}/`
     const sources = [

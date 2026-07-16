@@ -3,11 +3,12 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
+import Share from '../../components/Share.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
-import { href } from '../../lib/url'
+import { href, displayUrl } from '../../lib/url'
 import { resolveVerdict } from '../../lib/verdict'
 import { formatDate } from '../../lib/dates'
 import { published, excerpt } from '../../lib/content'
@@ -159,17 +160,7 @@ const trail = [
 
 <BaseLayout crumb={title} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
-  <Entry title={title} backlinks={backlinks}>
-    {
-      lastUpdated && (
-        <Fragment slot="footer-meta">
-          Last updated on{' '}
-          <time class="dt-updated" datetime={lastUpdated.toISOString()}>
-            {formatDate(lastUpdated)}
-          </time>
-        </Fragment>
-      )
-    }
+  <Entry title={title} backlinks={backlinks} share={false}>
     {
       summary && (
         <p class="entry-summary" slot="lede">
@@ -177,41 +168,8 @@ const trail = [
         </p>
       )
     }
-    {
-      resourceLinks.length > 0 && (
-        <div class="resource-bar" slot="header-extra">
-          {resourceLinks.map((link) => {
-            const Icon = resourceIcons[link.label]
-            return (
-              <SourceLink href={link.href} label={link.label} variant="outline">
-                {Icon && <Icon slot="icon" />}
-              </SourceLink>
-            )
-          })}
-        </div>
-      )
-    }
-    <div class="neighborhood-layout">
-      <aside class="neighborhood-aside">
-        {
-          (hasNeighborhoodShape(slug) || info?.coords) && (
-            <figure class="locator-figure">
-              <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
-              <figcaption>
-                {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
-              </figcaption>
-              <hr class="locator-divider" />
-              <a
-                class="btn btn-quiet neighborhood-back-link neighborhood-back-link--desktop"
-                href={href('/neighborhoods/')}>
-                Back to the Neighborhood Map <IconArrowRight />
-              </a>
-            </figure>
-          )
-        }
-        <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
-      </aside>
-      <div class="neighborhood-main">
+    <div class="detail-layout">
+      <div class="detail-main">
         {
           hasWriteup && Content ? (
             <Content />
@@ -226,11 +184,18 @@ const trail = [
           )
         }
 
-        <a
-          class="btn btn-quiet neighborhood-back-link neighborhood-back-link--mobile"
-          href={href('/neighborhoods/')}>
-          Back to the Neighborhood Map <IconArrowRight />
-        </a>
+        <Share title={title}>
+          {
+            lastUpdated && (
+              <Fragment slot="footer-meta">
+                Last updated{' '}
+                <time class="dt-updated" datetime={lastUpdated.toISOString()}>
+                  {formatDate(lastUpdated)}
+                </time>
+              </Fragment>
+            )
+          }
+        </Share>
 
         {
           attractions.length > 0 && (
@@ -301,134 +266,69 @@ const trail = [
           )
         }
       </div>
+      <aside class="detail-aside">
+        {
+          (hasNeighborhoodShape(slug) || info?.coords) && (
+            <figure class="neighborhood-locator-figure">
+              <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
+              <figcaption>
+                {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
+              </figcaption>
+            </figure>
+          )
+        }
+        {
+          resourceLinks.length > 0 && (
+            <>
+              <hr class="detail-divider" />
+              <div class="detail-links-section">
+                <h2 class="section-label detail-section-label">Links</h2>
+                <div class="detail-links">
+                  {resourceLinks.map((link) => {
+                    const Icon = resourceIcons[link.label]
+                    // The Website link shows its bare host (no scheme/www), like
+                    // the Food page; the named resources keep their labels.
+                    const label = link.label === 'Website' ? displayUrl(link.href) : link.label
+
+                    return (
+                      <SourceLink
+                        href={link.href}
+                        label={label}
+                        variant="muted"
+                        compact={false}
+                        class="btn-inline">
+                        {Icon && <Icon slot="icon" />}
+                      </SourceLink>
+                    )
+                  })}
+                </div>
+              </div>
+            </>
+          )
+        }
+        <hr class="detail-divider" />
+        <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
+        <hr class="detail-divider" />
+        <a class="btn btn-quiet detail-back-link" href={href('/neighborhoods/')}>
+          Back to the Neighborhood Map <IconArrowRight />
+        </a>
+      </aside>
     </div>
   </Entry>
 </BaseLayout>
 
 <style>
-  /* Writeup + sidebar (locator map + facts), mirroring the Food detail page. One
-     column until there's room for the aside alongside. */
-  .neighborhood-layout {
-    display: grid;
-    gap: var(--spacing-lg);
-    margin-block-start: var(--spacing-md);
+  /* The locator map + its caption at the top of the shared sidebar. The map carries
+     its own frame (NeighborhoodLocator); the caption is a quiet mono line under it. */
+  .neighborhood-locator-figure {
+    margin: 0;
   }
 
-  .neighborhood-aside {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-
-  /* Content-width "back to the map" link (mirrors the food page's). Overrides the
-     btn-quiet dotted underline with a 2px solid one. */
-  .neighborhood-back-link {
-    align-self: flex-start;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-thickness: 2px;
-    text-decoration-color: var(--color-accent);
-    text-underline-offset: 3px;
-  }
-
-  /* The link lives in the aside (right column on desktop), but the aside stacks
-     before the writeup on mobile — which would put the link above the content.
-     So the aside copy is desktop-only and a duplicate after the writeup shows on
-     mobile instead (facts → writeup → back link → food/spots/nearby). */
-  /* Desktop copy now lives inside the locator card (below the caption), so it
-     gets the card's body padding. */
-  .neighborhood-back-link--desktop {
-    display: none;
-    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
-  }
-
-  .neighborhood-back-link--mobile {
-    margin-block: var(--spacing-md);
-  }
-
-  /* Hairline between the caption and the back link (mirrors the food card's
-     divider). Inset by the same body padding as food so it doesn't run edge to
-     edge. Desktop-only, since the link it precedes is desktop-only. */
-  .locator-divider {
-    display: none;
-    margin: 0 var(--spacing-md);
-    border: 0;
-    border-block-start: 1px solid var(--color-line);
-  }
-
-  @media screen and (min-width: 900px) {
-    .neighborhood-layout {
-      grid-template-columns: minmax(0, 1fr) 260px;
-      align-items: start;
-      gap: 2.5rem;
-    }
-
-    /* DOM order is aside-then-main so the locator + facts lead on mobile; on
-       desktop they're placed back into the right column. */
-    .neighborhood-main {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    .neighborhood-aside {
-      grid-column: 2;
-      grid-row: 1;
-      position: sticky;
-      top: calc(var(--header-height, 4rem) + var(--spacing-md));
-    }
-
-    /* Desktop: the aside copy is back in the right column; hide the mobile one. */
-    .neighborhood-back-link--desktop {
-      display: inline-flex;
-    }
-
-    .locator-divider {
-      display: block;
-    }
-
-    .neighborhood-back-link--mobile {
-      display: none;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .side-card {
-      padding: var(--spacing-sm);
-    }
-  }
-
-  .locator-figure {
-    width: 100%;
-    margin: 0 auto;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: var(--color-surface);
-  }
-
-  .locator-figure figcaption {
-    padding: var(--spacing-sm);
+  .neighborhood-locator-figure figcaption {
+    margin-block-start: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
     color: var(--color-muted);
     text-align: center;
-  }
-
-  /* Explicit stub treatment for a neighborhood without a writeup: a dashed note
-     reads as "intentionally unfinished" rather than a sparse, broken page. */
-  .not-explored {
-    margin-block-end: var(--spacing-lg);
-    padding: var(--spacing-md);
-    border: 1px dashed var(--color-line-input);
-    border-radius: var(--radius);
-    color: var(--color-muted);
-  }
-
-  .not-explored p {
-    margin: 0;
-  }
-
-  .not-explored p + p {
-    margin-block-start: var(--spacing-sm);
   }
 </style>

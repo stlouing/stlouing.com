@@ -11,21 +11,23 @@
 // default slot (the body).
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
-import ShareButton from './ShareButton.astro'
-import Button from './Button.astro'
 import NewsletterSignup from './NewsletterSignup.astro'
+import Share from './Share.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
-import IconPencil from '../assets/IconPencil.astro'
 
 interface Props {
   title: string
   tags?: string[]
   backlinks?: Backlink[]
   permalink?: string
+  // Whether Entry renders the Share row (last-updated + share/feedback) itself,
+  // after the body. Pages whose body holds trailing sections (e.g. food/neighborhood
+  // "More in…" lists) pass `share={false}` and render <Share> at the right spot.
+  share?: boolean
 }
 
-const { title, tags = [], backlinks = [], permalink } = Astro.props
+const { title, tags = [], backlinks = [], permalink, share = true } = Astro.props
 const isArticle = Boolean(permalink)
 // A `header-aside` badge (e.g. the food rating card) rides to the right of the
 // title + lede; without one the headline is a plain block, unchanged.
@@ -78,27 +80,28 @@ const hasHeaderAside = Astro.slots.has('header-aside')
     <slot />
   </div>
 
+  {
+    share && (
+      <Share title={title}>
+        {Astro.slots.has('footer-meta') && (
+          <Fragment slot="footer-meta">
+            <slot name="footer-meta" />
+          </Fragment>
+        )}
+      </Share>
+    )
+  }
+
   <footer>
     <Backlinks links={backlinks} />
-    {
-      Astro.slots.has('footer-meta') && (
-        <p class="entry-footer-meta">
-          <slot name="footer-meta" />
-        </p>
-      )
-    }
-    <section class="entry-end">
-      <div class="share-bar">
-        <ShareButton title={title} label="Share this page" class="share-footer" />
-        <Button href={href('/feedback/')}>
-          <IconPencil />
-          Leave Feedback
-        </Button>
-      </div>
-      <NewsletterSignup compact />
-    </section>
   </footer>
 </article>
+
+{/* Full-width newsletter band: the flag "river" spans edge to edge, the signup
+    stays wrap-width, and the real site footer follows below. */}
+<section class="entry-newsletter">
+  <NewsletterSignup compact />
+</section>
 
 <style>
   /* Title + lede on the left, an optional badge (the food rating card) aligned
@@ -125,28 +128,11 @@ const hasHeaderAside = Astro.slots.has('header-aside')
     }
   }
 
-  /* Footer end-band: one hairline divides the page actions + newsletter from the
-     content, and the newsletter (with its river endcap) closes the page. */
-  /* No top border here — the global site footer provides the one divider, so the
-     band relies on spacing alone (avoids a doubled rule near the footer). */
-  .entry-end {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    margin-block-start: var(--spacing-sm);
-  }
-
-  .share-bar {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
-
-  /* A quiet last-updated line closing the article, well below the title. */
-  .entry-footer-meta {
-    margin: var(--spacing-lg) 0 var(--spacing-sm);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    color: var(--color-muted);
+  /* Break the newsletter band out of the centered .wrap so its river runs edge to
+     edge; the signup inside re-constrains to the measure. */
+  .entry-newsletter {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-block-start: var(--spacing-xl);
   }
 </style>

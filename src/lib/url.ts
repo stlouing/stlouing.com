@@ -12,3 +12,15 @@ export function href(path: string): string {
   const clean = path.replace(/^\/+/, '')
   return BASE.endsWith('/') ? BASE + clean : `${BASE}/${clean}`
 }
+
+/**
+ * Human-readable label for an external URL: strips the `https://`/`http://`
+ * scheme, a leading `www.`, and any trailing slash (e.g.
+ * "https://www.bluescitydeli.com/" becomes "bluescitydeli.com").
+ */
+export function displayUrl(url: string): string {
+  return url
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '')
+    .replace(/\/$/, '')
+}

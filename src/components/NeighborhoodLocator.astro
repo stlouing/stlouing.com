@@ -28,12 +28,14 @@ const label = name ? `Map of ${name} within St. Louis` : 'Neighborhood location 
 
 <style>
   /* The placeholder before the map loads: a faint diagonal hatch that reads as a
-     map while the chunk fetches (matches the food locator). The figure wrapper
-     supplies the border/rounded frame; this just fills it. */
+     map while the chunk fetches (matches the food locator). Its own hairline frame,
+     since it now sits at the top of the border-left sidebar. */
   .neighborhood-locator {
     position: relative;
     height: 200px;
     overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
     background:
       repeating-linear-gradient(
         45deg,

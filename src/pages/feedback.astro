@@ -26,7 +26,14 @@ const description = 'Send a note, a correction, or a recommendation.'
 
           <label class="field">
             <span class="field-label">
-              Email <span class="optional">(optional, only if you want a reply)</span>
+              Name <span class="optional">(optional)</span>
+            </span>
+            <input type="text" name="name" autocomplete="name" />
+          </label>
+
+          <label class="field">
+            <span class="field-label">
+              Email <span class="optional">(optional)</span>
             </span>
             <input type="email" name="email" autocomplete="email" />
           </label>
@@ -95,7 +102,8 @@ const description = 'Send a note, a correction, or a recommendation.'
     box-shadow: 0 0 0 1px var(--color-accent);
   }
 
-  input[name='email'] {
+  input[name='email'],
+  input[name='name'] {
     max-width: 22rem;
   }
 
@@ -134,11 +142,6 @@ const description = 'Send a note, a correction, or a recommendation.'
   .form-status,
   .feedback-alt {
     color: var(--color-muted);
-
-    a {
-      font-family: var(--font-mono);
-      font-size: var(--font-size-sm);
-    }
   }
 
   .feedback-alt {

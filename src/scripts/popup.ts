@@ -5,22 +5,13 @@ export function escapeHtml(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-// Lucide map-pin, inlined for a popup's neighborhood pin chip.
-export const PIN_SVG =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'
-
 export interface PopupChip {
   // Visible label; escaped before insertion.
   label: string
-  // Raw leading emoji or SVG markup (NOT escaped) — a cuisine emoji or PIN_SVG.
-  leadingHtml?: string
   // When set, the chip is an interactive filter <button> (data-filter-set/value);
   // otherwise it's a static <span> (e.g. the neighborhood popup's area chip).
   filterSet?: string
   filterValue?: string
-  // Section key (north/central/south/county/park) — adds a colored dot before the
-  // label via `.chip-region .region-<section>`. Used by the neighborhood popup.
-  section?: string
 }
 
 export interface PopupSource {
@@ -52,17 +43,17 @@ export interface PopupConfig {
   showMore?: boolean
 }
 
+// The cuisine / neighborhood / region meta, styled like the list rows'
+// `.list-headline .list-meta` — plain uppercase mono text, no emoji, no pill. A
+// filterable value stays an interactive <button> (data-filter-set/value).
 function chipHtml(chip: PopupChip): string {
-  const leading = chip.leadingHtml ? `${chip.leadingHtml} ` : ''
-  const inner = `${leading}${escapeHtml(chip.label)}`
-  // A section adds the colored dot (`.chip-region` + `.region-<section>`).
-  const cls = chip.section ? `chip chip-region region-${chip.section}` : 'chip'
+  const inner = escapeHtml(chip.label)
   if (chip.filterSet) {
     const value = escapeHtml(chip.filterValue ?? chip.label)
-    return `<button type="button" class="${cls}" data-filter-set="${escapeHtml(chip.filterSet)}" data-filter-value="${value}">${inner}</button>`
+    return `<button type="button" class="list-meta" data-filter-set="${escapeHtml(chip.filterSet)}" data-filter-value="${value}">${inner}</button>`
   }
 
-  return `<span class="${cls}">${inner}</span>`
+  return `<span class="list-meta">${inner}</span>`
 }
 
 // Inline 14×14 source icons (Lucide), matching the labeled links on the detail
@@ -134,7 +125,8 @@ export function buildPopupHtml(config: PopupConfig): string {
       ).join('')}</span>`
     : ''
 
-  const metaInner = `${chips.map(chipHtml).join('')}`
+  // Joined with a slashed separator, matching the list rows' `CUISINE / NEIGHBORHOOD`.
+  const metaInner = chips.map(chipHtml).join('<span class="popup-meta-sep">/</span>')
   const metaHtml = metaInner ? `<div class="popup-meta">${metaInner}</div>` : ''
 
   const addressHtml = addressLines.length

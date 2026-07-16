@@ -58,7 +58,9 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
       labelSpan.textContent = `${facetLabel}:`
       const valueSpan = document.createElement('span')
       valueSpan.className = 'chip-value'
-      valueSpan.textContent = facet.value
+      // Show the selected option's label ("Not for me"), not its raw value
+      // ("not-for-me"); they differ for the verdict facet.
+      valueSpan.textContent = facet.selectedOptions[0]?.text ?? facet.value
       const removeMark = document.createElement('span')
       removeMark.className = 'chip-x'
       removeMark.setAttribute('aria-hidden', 'true')

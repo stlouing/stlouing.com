@@ -66,7 +66,16 @@ export function initFoodGroups(rootSelector = '[data-filter-root]'): void {
     // the count to the end (verdict headers also keep their leading dot).
     const rule = document.createElement('span')
     rule.className = 'group-rule'
-    header.append(label, rule, countEl)
+
+    // Verdict headers carry the matching fleur rating after the label — cloned from
+    // the hidden per-verdict templates the page renders (the Astro Rating component
+    // can't run in this client script).
+    const fleur =
+      mode === 'verdict' && verdictKeys.has(key)
+        ? document.querySelector(`[data-fleur="${key}"] .rating`)?.cloneNode(true)
+        : null
+
+    header.append(label, ...(fleur ? [fleur] : []), rule, countEl)
 
     return header
   }

@@ -62,11 +62,10 @@ const hasCard = hasNumbers || hasVibe
 }
 
 <style>
+  /* No box of its own — it sits as a plain labeled section in the shared
+     border-left sidebar, set off from the section above by the aside's divider. */
   .side-card {
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    padding: var(--spacing-md);
-    background: var(--color-surface);
+    padding: 0;
   }
 
   /* A second section (Vibe under By the numbers) gets a hairline rule above it. */

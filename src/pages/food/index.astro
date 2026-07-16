@@ -13,7 +13,6 @@ import { href } from '../../lib/url'
 import { resolveVerdict, verdictLabels, isExplored, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconAward from '../../assets/IconAward.astro'
-import IconMapPin from '../../assets/IconMapPin.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
 // alphabetically (A / B / C) via the sort control — the grouping itself is built
@@ -86,7 +85,7 @@ const stubExcerpt = (status: string): string =>
     cluster
     label="places"
     count={count}
-    searchPlaceholder="name, cuisine..."
+    searchPlaceholder="name, cuisine"
     facets={[
       { label: 'Rating', facet: 'verdict', options: verdictOptions },
       { label: 'Cuisine', facet: 'cuisine', options: cuisines },
@@ -156,41 +155,30 @@ const stubExcerpt = (status: string): string =>
                   ? excerpt(place.body, 150)
                   : stubExcerpt(place.data.status),
               }}>
-              {verdict && <Rating verdict={verdict} slot="title-after" />}
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
-                <div class="chips" slot="sub">
-                  {place.data.cuisine.map((cuisine) => (
-                    <button
-                      type="button"
-                      class="chip"
-                      data-filter-set="cuisine"
-                      data-filter-value={cuisine}>
-                      <span>{cuisineEmoji(place.data.cuisine)}</span>
-                      <span>{cuisineLabel(cuisine)}</span>
-                    </button>
-                  ))}
-                  {place.data.neighborhood && (
-                    <button
-                      type="button"
-                      class="chip"
-                      data-filter-set="neighborhood"
-                      data-filter-value={place.data.neighborhood}>
-                      <IconMapPin />
-                      <span>{place.data.neighborhood}</span>
-                    </button>
-                  )}
-                </div>
+                <span class="list-meta" slot="title-after">
+                  {[
+                    ...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)),
+                    place.data.neighborhood,
+                  ]
+                    .filter(Boolean)
+                    .join(' / ')}
+                </span>
               )}
               {place.data.description && <div class="list-tagline">{place.data.description}</div>}
-              {hasBody(place) ? (
-                <div class="food-preview">{excerpt(place.body, 200)}</div>
-              ) : (
-                <div class="food-preview food-preview-stub">{stubExcerpt(place.data.status)}</div>
-              )}
+              {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
             </MapRow>
           ))
         }
       </ul>
+      {/* Hidden fleur ratings, one per verdict, cloned into each verdict group
+          header by food-groups.ts (which builds the headers client-side). */}
+      <div class="fleur-templates" hidden>
+        <span data-fleur="loved"><Rating verdict="loved" /></span>
+        <span data-fleur="liked"><Rating verdict="liked" /></span>
+        <span data-fleur="neutral"><Rating verdict="neutral" /></span>
+        <span data-fleur="not-for-me"><Rating verdict="not-for-me" /></span>
+      </div>
     </div>
   </FilterMapPage>
 </BaseLayout>

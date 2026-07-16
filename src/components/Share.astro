@@ -1,0 +1,86 @@
+---
+// The end-of-article action row: a quiet italic "— St. Louing, last …" signature
+// (from the optional `footer-meta` slot, prefixed with a gold fleur) on the left,
+// and the Share + Feedback pill buttons on the right. Rendered by Entry (or the
+// food/neighborhood pages) after the body and before the backlinks.
+import ShareButton from './ShareButton.astro'
+import Button from './Button.astro'
+import IconPencil from '../assets/IconPencil.astro'
+import FleurGlyph from '../assets/FleurGlyph.astro'
+import { href } from '../lib/url'
+import { SITE_TITLE } from '../lib/site'
+
+interface Props {
+  title?: string
+}
+
+const { title } = Astro.props
+---
+
+<div class="entry-actions">
+  {
+    Astro.slots.has('footer-meta') && (
+      <p class="entry-footer-meta">
+        <span class="entry-footer-fleur">
+          <FleurGlyph />
+        </span>
+        <span>
+          <slot name="footer-meta" />
+        </span>
+      </p>
+    )
+  }
+  <div class="share-bar">
+    <ShareButton title={title} label="Share" class="share-pill" />
+    <Button href={href('/feedback/')} variant="outline" class="share-pill">
+      <IconPencil />
+      Feedback
+    </Button>
+  </div>
+</div>
+
+<style>
+  .entry-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm) var(--spacing-md);
+    margin-block-start: var(--spacing-lg);
+  }
+
+  /* The signature line: a gold fleur + "— St. Louing, last …" in a quiet italic serif. */
+  .entry-footer-meta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    margin: 0;
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: var(--font-size-md);
+    color: var(--color-muted-2);
+  }
+
+  .entry-footer-fleur {
+    display: inline-flex;
+    align-self: center;
+    color: var(--color-map-north);
+  }
+
+  .entry-footer-fleur :global(svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .share-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  /* Outlined pill buttons (Share / Feedback): the shared .btn-outline, rounded. */
+  .share-bar :global(.btn) {
+    border-radius: 999px;
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+</style>

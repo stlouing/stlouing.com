@@ -11,7 +11,6 @@ import {
   foodByNeighborhood,
   normalizeName,
 } from '../lib/neighborhoods'
-import IconMapPin from '../assets/IconMapPin.astro'
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
 // the rest, in their numbered order). Written rows render their writeup expanded;
@@ -185,21 +184,14 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-spots': String(popup.spots),
                     }}>
                     {neighborhood.group && (
-                      <div class="chips" slot="sub">
-                        <span class:list={['chip', 'chip-region', `region-${section}`]}>
-                          <IconMapPin />
-                          <span>{section === 'park' ? 'Park' : neighborhood.group}</span>
-                        </span>
-                      </div>
+                      <span class="list-meta" slot="title-after">
+                        {section === 'park' ? 'Park' : neighborhood.group}
+                      </span>
                     )}
                     {popup.tagline && <div class="list-tagline">{popup.tagline}</div>}
-                    {written && Content ? (
+                    {written && Content && (
                       <div class="neighborhood-preview">
                         <Content />
-                      </div>
-                    ) : (
-                      <div class="neighborhood-preview neighborhood-preview-stub">
-                        {NOT_EXPLORED_EXCERPT}
                       </div>
                     )}
                   </MapRow>

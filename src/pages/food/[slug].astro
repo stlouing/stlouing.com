@@ -5,15 +5,14 @@ import { formatDate } from '../../lib/dates'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
-import Chip from '../../components/Chip.astro'
 import ReadersVerdict from '../../components/ReadersVerdict.astro'
+import Share from '../../components/Share.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
-import Rating from '../../components/Rating.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
-import { href } from '../../lib/url'
+import { href, displayUrl } from '../../lib/url'
 import { published, excerpt, hasBody } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
@@ -22,12 +21,9 @@ import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
-import IconArrowDown from '../../assets/IconArrowDown.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
-import IconAward from '../../assets/IconAward.astro'
-import IconListChecks from '../../assets/IconListChecks.astro'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -38,10 +34,9 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { data } = entry
-const verdict = resolveVerdict(data)
 // The "My Review" stance: the verdict when rated, else a status-driven placeholder
 // ("Haven't reviewed yet" for a tried spot, "Haven't visited yet" otherwise). Drives
-// both the top-of-page teaser and the ReadersVerdict card.
+// the "My Review" half of the top-of-page review bar.
 const writerState = resolveWriterState(data)
 // A friendly one-liner shown in a dashed note in place of the (empty) writeup on a
 // body-less stub — mirroring the "not explored yet" treatment on neighborhood pages.
@@ -50,11 +45,6 @@ const stubNote =
   writerState.kind === 'pending'
     ? `I've been to ${data.title}, but I haven't written up a review yet.`
     : `I haven't made it to ${data.title} yet, but it's on my list to try.`
-// The readers' poll only renders when Supabase is configured; the top-of-page teaser that
-// points down to it should appear on the same condition.
-const readersEnabled = Boolean(
-  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-)
 // The footer timestamp: the last revision when set, otherwise the created date.
 const lastUpdated = data.updated ?? data.created
 const { Content } = await render(entry)
@@ -70,11 +60,14 @@ const schema = restaurantSchema({
   rating: data.rating,
 })
 
-// Breadcrumb: Food / <neighborhood> (the neighborhood links to its page when one
-// exists, otherwise it's a plain crumb).
+// Breadcrumb: Food / <neighborhood> / <cuisine>. The neighborhood links to its
+// page when one exists; the cuisine links to the filtered food list.
 const trail = [
   { label: 'Food', href: '/food/' },
   ...(data.neighborhood ? [{ label: data.neighborhood, href: neighborhoodLink ?? undefined }] : []),
+  ...(data.cuisine[0]
+    ? [{ label: cuisineLabel(data.cuisine[0]), href: `/food/?cuisine=${data.cuisine[0]}` }]
+    : []),
 ]
 
 // Related places for the "more food" footer: others in the same neighborhood, and
@@ -130,17 +123,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
   ogImage={data.ogImage}
   jsonLd={schema}>
   <Breadcrumbs trail={trail} />
-  <Entry title={data.title} tags={data.tags} backlinks={mentionedIn}>
-    {
-      lastUpdated && (
-        <Fragment slot="footer-meta">
-          Last updated on{' '}
-          <time class="dt-updated" datetime={lastUpdated.toISOString()}>
-            {formatDate(lastUpdated)}
-          </time>
-        </Fragment>
-      )
-    }
+  <Entry title={data.title} tags={data.tags} backlinks={mentionedIn} share={false}>
     {
       data.description && (
         <p class="entry-summary" slot="lede">
@@ -148,64 +131,8 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
         </p>
       )
     }
-    <Fragment slot="meta">
-      <div class="food-meta">
-        <div class="food-sub-meta">
-          <div class="food-sub-meta-section">
-            {
-              verdict && (
-                <span class="food-meta-rating">
-                  <Rating verdict={verdict} />
-                </span>
-              )
-            }
-            {
-              data.cuisine.map((cuisine) => (
-                <Chip href={href(`/food/?cuisine=${cuisine}`)}>
-                  <span>{cuisineEmoji(data.cuisine)}</span>
-                  <span>{cuisineLabel(cuisine)}</span>
-                </Chip>
-              ))
-            }
-          </div>
-          <div class="food-sub-meta-section food-links">
-            <SourceLink href={data.url} label="Website" variant="outline">
-              <IconExternalLink slot="icon" />
-            </SourceLink>
-            <SourceLink href={data.instagram} label="Instagram" variant="outline">
-              <IconInstagram slot="icon" />
-            </SourceLink>
-            <SourceLink href={googleMapsHref(data)} label="Google Maps" variant="outline">
-              <IconMapPin slot="icon" />
-            </SourceLink>
-          </div>
-        </div>
-      </div>
-    </Fragment>
-
-    <div class="food-layout">
-      <div class="food-main">
-        <!-- {
-          /* The jump-to-vote teaser is only useful when a writeup pushes the poll
-             below the fold. On a body-less stub the poll is already right here, so the
-             teaser is redundant — show it only when there's real writeup content. */
-          readersEnabled && hasBody(entry) && (
-            <a
-              class:list={[
-                'verdict-teaser',
-                writerState.verdict ? `verdict-${writerState.verdict}` : 'verdict-teaser-muted',
-              ]}
-              href="#readers-rating">
-              <span>
-                My review: <strong>{writerState.statement}.</strong>
-              </span>
-              <span class="verdict-teaser-cta">
-                <span data-teaser-cta data-voted-text="See the results">Been here? Vote below</span>
-                <IconArrowDown />
-              </span>
-            </a>
-          )
-        } -->
+    <div class="detail-layout">
+      <div class="detail-main">
         {
           data.photo && (
             <Image
@@ -226,6 +153,19 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           )
         }
         <ReadersVerdict slug={entry.id} title={data.title} writerState={writerState} />
+        <Share title={data.title}>
+          {
+            lastUpdated && (
+              <Fragment slot="footer-meta">
+                Last updated{' '}
+                <time class="dt-updated" datetime={lastUpdated.toISOString()}>
+                  {formatDate(lastUpdated)}
+                </time>
+              </Fragment>
+            )
+          }
+        </Share>
+        
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (
@@ -260,40 +200,68 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           }
         </section>
       </div>
-      <aside class="food-aside">
-        <h2 class="food-aside-title section-label">Location</h2>
-        <div class="food-card">
-          <FoodLocator coords={data.coords} label={data.neighborhood} />
-          <div class="food-card-body">
-            {
-              data.address && data.address.length > 0 && (
-                <div class="food-address-block">
-                  <h2 class="section-label food-address-label">Address</h2>
-                  <address class="food-address">
-                    {data.address.map((line) => (
-                      <span>{line}</span>
-                    ))}
-                  </address>
-                  <a href={googleMapsHref(data)} class="btn-directions btn-muted">
-                    <span>View Directions</span> <IconExternalLink />
-                  </a>
+      <aside class="detail-aside">
+        <FoodLocator coords={data.coords} label={data.neighborhood} />
+        {
+          data.address && data.address.length > 0 && (
+            <div class="food-address-block">
+              <h2 class="section-label detail-section-label">Address</h2>
+              <address class="food-address">
+                {data.address.map((line) => (
+                  <span>{line}</span>
+                ))}
+              </address>
+            </div>
+          )
+        }
+        {
+          (data.url || data.instagram || googleMapsHref(data)) && (
+            <>
+              <hr class="detail-divider" />
+              <div class="detail-links-section">
+                <h2 class="section-label detail-section-label">Links</h2>
+                <div class="detail-links">
+                  <SourceLink
+                    href={data.url}
+                    label={data.url ? displayUrl(data.url) : ''}
+                    variant="muted"
+                    compact={false}
+                    class="btn-inline">
+                    <IconExternalLink slot="icon" />
+                  </SourceLink>
+                  <SourceLink
+                    href={data.instagram}
+                    label="Instagram"
+                    variant="muted"
+                    compact={false}
+                    class="btn-inline">
+                    <IconInstagram slot="icon" />
+                  </SourceLink>
+                  <SourceLink
+                    href={googleMapsHref(data)}
+                    label="Google Maps"
+                    variant="muted"
+                    compact={false}
+                    class="btn-inline">
+                    <IconMapPin slot="icon" />
+                  </SourceLink>
                 </div>
-              )
-            }
-            <hr class="food-card-divider" />
-            <a class="btn btn-quiet food-back-link" href={href('/food/')}>
-              Back to the Food Map <IconArrowRight />
-            </a>
-            {
-              data.pick && (
-                <>
-                  <hr class="food-card-divider" />
-                  <MyPick pick={data.pick} cuisine={data.cuisine} />
-                </>
-              )
-            }
-          </div>
-        </div>
+              </div>
+            </>
+          )
+        }
+        {
+          data.pick && (
+            <>
+              <hr class="detail-divider" />
+              <MyPick pick={data.pick} cuisine={data.cuisine} />
+            </>
+          )
+        }
+        <hr class="detail-divider" />
+        <a class="btn btn-quiet detail-back-link" href={href('/food/')}>
+          Back to the Food Map <IconArrowRight />
+        </a>
       </aside>
     </div>
   </Entry>
@@ -305,82 +273,6 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
 </script>
 
 <style>
-  /* A one-line lead-in at the top of the writeup (so mobile readers see the verdict and
-     that voting exists without scrolling to the block below). Jumps to #readers-rating.
-     The verdict word takes its color; the CTA is the accent. */
-  .verdict-teaser {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--spacing-xs) var(--spacing-sm);
-    margin-block-end: var(--spacing-lg);
-    padding-block-end: var(--spacing-md);
-    border-block-end: 1px solid var(--color-line);
-    font-family: var(--font-body);
-    font-size: var(--font-size-sm);
-    color: var(--color-text);
-    text-decoration: none;
-    line-height: 1.4;
-  }
-
-  .verdict-teaser.verdict-loved {
-    --teaser-color: var(--color-verdict-loved);
-  }
-  .verdict-teaser.verdict-liked {
-    --teaser-color: var(--color-verdict-liked);
-  }
-  .verdict-teaser.verdict-neutral {
-    --teaser-color: var(--color-verdict-neutral);
-  }
-  .verdict-teaser.verdict-not-for-me {
-    --teaser-color: var(--color-verdict-notforme);
-  }
-  /* Unrated place: the "Haven't visited yet" teaser rides in muted ink, no verdict color. */
-  .verdict-teaser.verdict-teaser-muted {
-    --teaser-color: var(--color-muted-2);
-  }
-
-  /* Stub treatment for a place without a writeup: a dashed note in place of the
-     (empty) prose, so the page reads as "intentionally unfinished" rather than
-     broken. Mirrors the neighborhood page's .not-explored block. */
-  .not-explored {
-    margin-block-end: var(--spacing-lg);
-    padding: var(--spacing-md);
-    border: 1px dashed var(--color-line-input);
-    border-radius: var(--radius);
-    color: var(--color-muted);
-  }
-
-  .not-explored p {
-    margin: 0;
-  }
-
-  .verdict-teaser strong {
-    color: var(--teaser-color);
-    font-weight: 700;
-  }
-
-  .verdict-teaser-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35em;
-    color: var(--color-accent);
-    white-space: nowrap;
-  }
-
-  /* The arrow follows the CTA's accent color (override the global muted .icon) and scales
-     with the text. */
-  .verdict-teaser-cta :global(.icon) {
-    color: inherit;
-    width: 1em;
-    height: 1em;
-  }
-
-  .verdict-teaser:hover .verdict-teaser-cta {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
   /* A photo of the place, leading the writeup: full-width, rounded, hairline
      border. Astro's <Image> emits width/height so it never causes layout shift. */
   .food-photo {
@@ -392,31 +284,8 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     margin-block-end: var(--spacing-lg);
   }
 
-  /* The sidebar map, address, "back to the map" link, and the pick all live in one
-     bordered card: the map sits flush at the top (its own corners clipped by the
-     card), and the rest is a left-aligned, padded body below it. */
-  .food-card {
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-    overflow: hidden;
-  }
-
-  .food-card-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-  }
-
-  /* "Address" label tucked tight above the lines (mirrors the "My pick" label:
-     shared `.section-label` font, small bottom margin). */
-  .food-address-label {
-    margin: 0 0 var(--spacing-xs);
-  }
-
   /* The postal address under the map (a quiet mono block, one line per address
-     line), left-aligned in the card body. */
+     line), left-aligned in the sidebar. */
   .food-address {
     display: flex;
     flex-direction: column;
@@ -427,229 +296,5 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     text-align: start;
     font-weight: 500;
     line-height: 1.4;
-  }
-
-  /* A content-width "back to the map" link (the rest of the body stretches full
-     width so its text wraps). */
-  .food-back-link {
-    text-decoration-style: solid;
-    align-self: flex-start;
-    text-decoration-color: var(--color-accent);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-  }
-
-  .btn-directions {
-    margin-top: var(--spacing-xs);
-    display: flex;
-    align-items: center;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    gap: var(--spacing-sm);
-
-    svg {
-      height: 12px;
-      width: 12px;
-    }
-  }
-
-  /* "Keep exploring" cards at the foot of the writeup: two engaging links out to
-     the Best-of list and the On-the-List backlog. Two-up on desktop, stacked on
-     mobile; an accent lead icon, the label, and a trailing arrow that lights up
-     on hover. */
-  .food-more-cta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
-    row-gap: var(--spacing-sm);
-    margin-block-start: var(--spacing-xl);
-  }
-
-  @media (max-width: 40rem) {
-    .food-more-cta {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .food-cta-card {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-    color: var(--color-text);
-    text-decoration: none;
-    transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease;
-  }
-
-  .food-cta-card:hover {
-    border-color: var(--color-accent);
-    background: var(--color-background);
-  }
-
-  .food-cta-lead {
-    display: inline-flex;
-    flex-shrink: 0;
-  }
-
-  .food-cta-lead :global(.icon) {
-    width: 18px;
-    height: 18px;
-    color: var(--color-accent);
-  }
-
-  .food-cta-title {
-    flex: 1;
-    min-width: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    line-height: 1.3;
-    color: var(--color-text-heading);
-  }
-
-  .food-cta-card:hover .food-cta-title {
-    color: var(--color-accent);
-  }
-
-  .food-cta-arrow {
-    display: inline-flex;
-    flex-shrink: 0;
-    color: var(--color-muted);
-  }
-
-  .food-cta-card:hover .food-cta-arrow :global(.icon) {
-    color: var(--color-accent);
-  }
-
-  /* Hairline between the back link and the pick; the body's gap spaces it. */
-  .food-card-divider {
-    margin: 0;
-    border: 0;
-    border-block-start: 1px solid var(--color-line);
-  }
-
-  .food-meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    width: 100%;
-  }
-
-  .food-sub-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-md);
-    row-gap: var(--spacing-xs);
-    flex-wrap: wrap;
-  }
-
-  .food-sub-meta-section {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    row-gap: var(--spacing-xs);
-    flex-wrap: wrap;
-  }
-
-  /* The header row now holds the fleur rating + cuisine chips — center them. */
-  .food-sub-meta-section:not(.food-links) {
-    align-items: center;
-  }
-
-  .food-sub-meta-section:not(.food-links) :global(.chip) {
-    font-size: var(--font-size-sm);
-  }
-
-  /* The fleur rating in the header meta row: larger than the in-list glyphs (its
-     em-based size scales with this font-size). */
-  .food-meta-rating {
-    display: inline-flex;
-    align-items: center;
-    font-size: var(--font-size-lg);
-  }
-
-  /* The source links sit to the right of the verdict + cuisine, and wrap toward
-     the right edge when the row is tight. */
-  .food-links {
-    justify-content: flex-end;
-  }
-
-  /* Writeup + sidebar. One column until there's room for the aside alongside. */
-  .food-layout {
-    display: grid;
-    gap: var(--spacing-lg);
-    margin-block-start: var(--spacing-lg);
-  }
-
-  .food-aside {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    isolation: isolate;
-  }
-
-  /* On mobile the aside stacks under the writeup, so the map gets a heading
-     (the shared global `.section-label`) instead of appearing out of nowhere.
-     Hidden on desktop, where the sticky sidebar already reads as its own column. */
-  .food-aside-title {
-    margin: 0;
-  }
-
-  @media screen and (min-width: 900px) {
-    .food-layout {
-      grid-template-columns: minmax(0, 1fr) 290px;
-      align-items: start;
-      gap: 2.5rem;
-    }
-
-    .food-aside-title {
-      display: none;
-    }
-
-    /* DOM order is main-then-aside so the writeup leads on mobile (the map + pick
-       follow it); on desktop the aside is placed back into the right column. */
-    .food-main {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    .food-aside {
-      grid-column: 2;
-      grid-row: 1;
-      position: sticky;
-      top: calc(var(--header-height, 4rem) + var(--spacing-md));
-      gap: var(--spacing-sm);
-    }
-  }
-
-  /* "More food" footer — related places + a link back to the full list, so a
-     page ends on a path forward instead of just cutting off. */
-  /* .more-food {
-    padding-block-start: var(--spacing-xs);
-    margin-block-start: var(--spacing-lg);
-  } */
-
-  @media screen and (max-width: 700px) {
-    /* Stack the two meta groups, each filling the row: verdict + cuisine on top,
-       the source links spread across their own row below. */
-    .food-sub-meta {
-      align-items: stretch;
-      flex-direction: column;
-      row-gap: var(--spacing-md);
-
-      .chip {
-        width: fit-content;
-      }
-    }
-
-    .food-links {
-      justify-content: flex-start;
-    }
   }
 </style>

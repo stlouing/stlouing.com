@@ -8,12 +8,18 @@ interface Props {
   title?: string
   label?: string
   class?: string
+  variant?: 'outline' | 'filled' | 'quiet' | 'muted' | 'dark'
 }
 
-const { title, label = 'Share', class: className } = Astro.props
+const { title, label = 'Share', class: className, variant = 'outline' } = Astro.props
 ---
 
-<Button class={className} data-share data-share-title={title} aria-label="Share this page">
+<Button
+  class={className}
+  variant={variant}
+  data-share
+  data-share-title={title}
+  aria-label="Share this page">
   <IconShare />
-  <span class="share-label">{label}</span>
+  {label}
 </Button>

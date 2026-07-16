@@ -1,11 +1,12 @@
 ---
 // Shared row for the map-backed directory lists — Food/Hikes (filterable) and
-// Neighborhoods (section list). Renders the common chrome: an optional lead
-// column, the title link (with an optional `number.` prefix), inline + trailing
-// slots, an optional sub line, and the always-open `.list-description` panel.
-// Styling lives in global.css (`.map-list …`) so it reaches the slotted bits.
+// Neighborhoods (section list). Renders the common chrome: the title link, a
+// `title-after` slot inline beside it, an optional `sub` line, and the always-open
+// `.list-description` panel. Styling lives in global.css (`.map-list …`) so it
+// reaches the slotted bits.
 //
-// Slots: lead, title-after, row-end, sub, and the default slot (the panel body).
+// Slots: title-after (inline after the title), sub (a second line), and the
+// default slot (the panel body).
 //
 // Filterable rows (Food/Hikes) carry the data-* attributes the filter + map
 // scripts read off each <li> (data-filter-item, coords, marker, search, …); the
@@ -18,8 +19,6 @@ interface Props {
   title: string
   // Canonical detail page; the "Read more" target inside the panel.
   detailHref: string
-  // Optional numeric prefix shown before the title (the Neighborhoods list).
-  number?: string | number
   // Show the built-in "Read more" deep link in the panel.
   readMore?: boolean
   // Filter rows only — emit the values the filter/map scripts read off the <li>.
@@ -38,7 +37,6 @@ const {
   id,
   title,
   detailHref,
-  number,
   readMore = true,
   filterable = true,
   marker = '',
@@ -69,31 +67,17 @@ const showPanel = slotHtml.length > 0 || readMore
 ---
 
 <li id={id} class:list={[className]} {...filterAttrs} {...attrs}>
-  <div class="list-details">
-    {
-      Astro.slots.has('lead') && (
-        <div class="list-lead">
-          <slot name="lead" />
-        </div>
-      )
-    }
-    <div class="list-main">
-      <div class="list-row">
-        <div class="list-headline">
-          <a class="list-title" href={href(detailHref)}>{title}</a>
-          <slot name="title-after" />
-        </div>
-        <slot name="row-end" />
-      </div>
-      {
-        Astro.slots.has('sub') && (
-          <div class="list-sub">
-            <slot name="sub" />
-          </div>
-        )
-      }
-    </div>
+  <div class="list-headline">
+    <a class="list-title" href={href(detailHref)}>{title}</a>
+    <slot name="title-after" />
   </div>
+  {
+    Astro.slots.has('sub') && (
+      <div class="list-sub">
+        <slot name="sub" />
+      </div>
+    )
+  }
   {
     showPanel && (
       <div class="list-description">

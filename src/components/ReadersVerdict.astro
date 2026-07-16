@@ -1,20 +1,19 @@
 ---
-// Verdict block for a food page: the writer's verdict (always shown) stacked over a
-// readers' 👍/👎 poll (shown only when Supabase is configured). One bordered card,
-// divided. src/scripts/readers-verdict.ts loads live counts, records votes, and reveals
-// the optional (private) note.
+// The combined review bar for a food page: the writer's verdict (fleur rating +
+// statement, always shown) and the readers' 👍/👎 poll (shown only when Supabase is
+// configured) sit side by side in one bar at the top of the page. A vote reveals an
+// optional (private) note below it. src/scripts/readers-verdict.ts loads live counts,
+// records votes, and reveals the note.
 //
-// Type system follows the rest of the app: mono uppercase for labels/meta (the shared
-// .section-label idiom), Georgia for the question + verdict value + inputs. Icons, never
-// emoji — the writer disc reuses the app's per-verdict icon; the poll buttons use thumbs.
-import IconHeart from '../assets/IconHeart.astro'
+// Type system follows the rest of the app: mono uppercase for labels/meta, Georgia +
+// the display serif for the verdict value. Icons, never emoji — the "Liked it" side
+// carries the app's heart; the tally rides muted to the right.
+import Rating from './Rating.astro'
 import IconThumbsUp from '../assets/IconThumbsUp.astro'
 import IconThumbsDown from '../assets/IconThumbsDown.astro'
-import IconCircleMinus from '../assets/IconCircleMinus.astro'
-import IconHeartOff from '../assets/IconHeartOff.astro'
-import IconMapPin from '../assets/IconMapPin.astro'
-import IconNotebookPen from '../assets/IconNotebookPen.astro'
-import { type Verdict, type WriterState } from '../lib/verdict'
+import IconPencil from '../assets/IconPencil.astro'
+import IconX from '../assets/IconX.astro'
+import { type WriterState } from '../lib/verdict'
 
 interface Props {
   slug: string
@@ -27,116 +26,110 @@ interface Props {
 
 const { slug, title, writerState } = Astro.props
 
-// Same icon-per-verdict mapping the Verdict chip/card uses, so the writer's verdict
-// reads consistently across the app.
-const verdictIcons = {
-  loved: IconHeart,
-  liked: IconThumbsUp,
-  neutral: IconCircleMinus,
-  'not-for-me': IconHeartOff,
-} satisfies Record<Verdict, unknown>
-
-// The muted icon for an unrated place: a notebook when the writeup is pending,
-// a map pin when it hasn't been visited yet.
-const stateIcons = { pending: IconNotebookPen, unvisited: IconMapPin } satisfies Record<
-  NonNullable<WriterState['kind']>,
-  unknown
->
-
-// A rated place takes its per-verdict icon; an unrated one takes the muted state icon.
-const WriterIcon = writerState?.verdict
-  ? verdictIcons[writerState.verdict]
-  : writerState?.kind
-    ? stateIcons[writerState.kind]
-    : null
 const readersEnabled = Boolean(
   import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
 )
-const questionId = `rv-q-${slug}`
 ---
 
 {
   (writerState || readersEnabled) && (
     <section
-      id="readers-rating"
-      class="verdict-block"
+      class="verdict-bar"
       data-readers-verdict={readersEnabled ? '' : undefined}
-      data-slug={slug}>
-      {writerState && WriterIcon && (
-        <div
-          class:list={[
-            'vb-writer',
-            writerState.verdict ? `verdict-${writerState.verdict}` : 'vb-writer-muted',
-          ]}>
-          <span class="vb-writer-disc">
-            <WriterIcon />
-          </span>
-          <span class="vb-writer-text">
-            <span class="vb-writer-label">My Review</span>
-            <span class="vb-writer-value">{writerState.statement}</span>
-          </span>
-        </div>
-      )}
+      data-slug={slug}
+      aria-label={`Review of ${title}`}>
+      <div class="vb-row">
+        {writerState && (
+          <div
+            class:list={[
+              'vb-mine',
+              writerState.verdict ? `verdict-${writerState.verdict}` : 'vb-mine-muted',
+            ]}>
+            <span class="vb-label">My Rating</span>
+            <div class="vb-mine-row">
+              <span class="vb-mine-value">{writerState.statement}</span>
+              {writerState.verdict && <Rating verdict={writerState.verdict} />}
+            </div>
+          </div>
+        )}
+
+        {readersEnabled && (
+          <div class="vb-take">
+            <span class="vb-label">Readers' Rating</span>
+            {/* Pre-vote nudge; hidden once this browser has voted (text set by the script). */}
+            <p class="rv-cta" data-cta>
+              Been here? What did you think?
+            </p>
+            <div class="rv-pill">
+              <button
+                type="button"
+                class="rv-choice"
+                data-vote="like"
+                aria-pressed="false"
+                aria-label="I liked it"
+                disabled>
+                <IconThumbsUp />
+                Liked
+                <span class="rv-count" data-count-like />
+              </button>
+              <button
+                type="button"
+                class="rv-choice"
+                data-vote="dislike"
+                aria-pressed="false"
+                aria-label="Not for me"
+                disabled>
+                <IconThumbsDown />
+                Nope
+                <span class="rv-count" data-count-dislike />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {readersEnabled && (
-        <div class="vb-readers">
-          <p class="vb-readers-label section-label" data-summary>
-            Readers' Review
-          </p>
-          <h2 class="vb-question" id={questionId} data-voted-question={`You've been to ${title}`}>
-            Been to {title}?
-          </h2>
-
-          <div class="rv-buttons">
-            <button type="button" class="rv-choice" data-vote="like" aria-pressed="false" disabled>
-              <IconThumbsUp />
-              <span class="rv-text">I liked it</span>
-              <span class="rv-count" data-count-like />
-            </button>
-            <button
-              type="button"
-              class="rv-choice"
-              data-vote="dislike"
-              aria-pressed="false"
-              disabled>
-              <IconThumbsDown />
-              <span class="rv-text">Not for me</span>
-              <span class="rv-count" data-count-dislike />
-            </button>
-          </div>
-
-          {/* Replaces the buttons once the reader has voted AND left a note, so the
-              locked buttons don't read as still-clickable. */}
-          <p class="rv-voted" data-voted hidden />
-
-          <div class="rv-bar" role="presentation">
-            <span class="rv-bar-fill" data-bar-fill />
-          </div>
-
+        <>
           <p class="rv-vote-status" data-vote-status role="status" aria-live="polite" />
 
           <div class="rv-note" data-note hidden>
+            {/* Collapsed state: a quiet trigger that reopens the form. The reader's
+                collapse choice is remembered in localStorage (see readers-verdict.ts). */}
+            <button type="button" class="rv-note-trigger" data-note-trigger hidden>
+              <IconPencil />
+              Leave a comment
+            </button>
             <form class="rv-note-form" data-note-form>
+              <div class="rv-note-head">
+                <span class="rv-note-trigger">Leave a comment</span>
+                <button
+                  type="button"
+                  class="rv-note-close"
+                  data-note-close
+                  aria-label="Collapse the comment form">
+                  <IconX />
+                </button>
+              </div>
               <label class="rv-field">
                 <span class="rv-field-label">
-                  Comment <span class="rv-field-note">(optional)</span>
+                  Name <span class="rv-field-note">(optional)</span>
                 </span>
-                <textarea
-                  class="rv-input"
-                  data-note-comment
-                  rows="3"
-                  maxlength="2000"
-                  placeholder="What did you think?"
-                />
-              </label>
-              <label class="rv-field">
-                <span class="rv-field-label">Name</span>
                 <input
                   class="rv-input"
                   type="text"
                   data-note-name
                   maxlength="80"
                   autocomplete="name"
+                />
+              </label>
+              <label class="rv-field">
+                <span class="rv-field-label">Note</span>
+                <textarea
+                  class="rv-input rv-note-textarea"
+                  data-note-comment
+                  rows="3"
+                  maxlength="2000"
+                  placeholder="What did you order? How was it?"
                 />
               </label>
               {/* Honeypot — hidden from people, tempting to bots. Filled == silently dropped. */}
@@ -146,269 +139,191 @@ const questionId = `rv-q-${slug}`
                   <input type="text" data-note-hp tabindex="-1" autocomplete="off" />
                 </label>
               </div>
-              <div class="rv-note-actions">
-                <button type="submit" class="rv-note-submit">
-                  Submit
-                </button>
-                <span class="rv-note-status" data-note-status role="status" aria-live="polite" />
-              </div>
+              <button type="submit" class="rv-note-submit">
+                Submit
+              </button>
             </form>
-            <p class="rv-note-thanks" data-note-thanks role="status" hidden>
-              Your note is saved.
-            </p>
+            <p class="rv-note-status" data-note-status role="status" aria-live="polite" />
           </div>
-        </div>
+        </>
       )}
     </section>
   )
 }
 
 <style>
-  /* One bordered card, set off from the writeup above, holding both verdicts split by
-     a hairline. Square corners to match the rest of the app. */
-  .verdict-block {
-    margin-block-start: var(--spacing-lg);
-    border: 1px solid var(--color-line);
+  /* One bordered bar at the top of the writeup: My Review on the left, a divided
+     Your Take poll in the middle, the live tally pushed to the right. The top row
+     rides on the surface; the note area below it takes the (darker) page
+     background, so padding lives on the children, not the bar. Square corners to
+     match the rest of the app. */
+  .verdict-bar {
+    margin-block: var(--spacing-lg);
+    border: 1px solid var(--color-line-contrast);
     border-radius: var(--radius);
     background: var(--color-surface);
     overflow: hidden;
-    /* Anchor target for the top-of-page teaser — clear the sticky header on jump. */
-    scroll-margin-top: calc(var(--header-height, 4rem) + var(--spacing-md));
   }
 
-  /* --- Writer's verdict (top) --- disc icon + mono label + colored serif value.
-     Per-verdict color drives the disc + value. */
-  .vb-writer {
+  .vb-row {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm) var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 
-  .verdict-block:has(.vb-readers) .vb-writer {
-    border-block-end: 1px solid var(--color-line);
-  }
-
-  .vb-writer.verdict-loved {
-    --vb-color: var(--color-verdict-loved);
-  }
-  .vb-writer.verdict-liked {
-    --vb-color: var(--color-verdict-liked);
-  }
-  .vb-writer.verdict-neutral {
-    --vb-color: var(--color-verdict-neutral);
-  }
-  .vb-writer.verdict-not-for-me {
-    --vb-color: var(--color-verdict-notforme);
-  }
-
-  /* Unrated place (want-to-try / suggested / tried-not-reviewed): a quiet, verdict-
-     less line so it reads as a placeholder rather than a rating. */
-  .vb-writer.vb-writer-muted {
-    --vb-color: var(--color-muted);
-  }
-
-  /* The placeholder phrase ("Haven't visited yet") is longer than a verdict word,
-     so it rides smaller than the 3rem verdict value and in the muted ink. */
-  .vb-writer-muted .vb-writer-value {
-    font-size: 2rem;
-    color: var(--color-muted-2);
-  }
-
-  /* Solid disc; the glyph reads in the surface color for contrast (overrides the
-     global .icon muted rule via :global — the icon comes from a child component). */
-  .vb-writer-disc {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: var(--vb-color);
-  }
-
-  .vb-writer-disc :global(.icon) {
-    width: 1.4rem;
-    height: 1.4rem;
-    color: var(--color-surface);
-  }
-
-  .vb-writer-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .vb-writer-label {
+  /* The two mono uppercase eyebrows ("My Review" / "Your Take") ride muted, not
+     the accent that .section-label uses. */
+  .vb-label {
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
+    font-weight: 500;
     letter-spacing: var(--letter-spacing);
     text-transform: uppercase;
     color: var(--color-muted);
-    line-height: 1.2;
-    font-weight: 500;
+    white-space: nowrap;
   }
 
-  .vb-writer-value {
-    font-family: var(--font-display);
-    font-size: 2.25rem;
+  /* --- My Review (fleur rating + colored verdict value) --- the eyebrow rides on
+     top, the fleur + statement on the row below it. */
+  .vb-mine {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .vb-mine-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .vb-mine.verdict-loved {
+    --vb-color: var(--color-verdict-loved);
+  }
+  .vb-mine.verdict-liked {
+    --vb-color: var(--color-verdict-liked);
+  }
+  .vb-mine.verdict-neutral {
+    --vb-color: var(--color-verdict-neutral);
+  }
+  .vb-mine.verdict-not-for-me {
+    --vb-color: var(--color-verdict-notforme);
+  }
+
+  /* Unrated place: a quiet, verdict-less line ("Haven't visited yet"). */
+  .vb-mine.vb-mine-muted {
+    --vb-color: var(--color-muted-2);
+  }
+
+  .vb-mine-value {
+    font-family: var(--font-body);
+    font-size: var(--font-size-lg);
     font-weight: 400;
-    line-height: 1.1;
+    line-height: 1;
     color: var(--vb-color);
   }
 
-  /* --- Readers' poll (bottom) --- */
-  .vb-readers {
-    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  /* The placeholder phrase is longer than a verdict word, so it rides a touch
+     smaller and in muted ink. */
+  .vb-mine-muted .vb-mine-value {
+    font-size: var(--font-size-lg);
+    color: var(--color-muted-2);
   }
 
-  /* The eyebrow is the live tally line, set by the script: an accent label
-     ("Readers' Review"), a hairline rule that fills the row, then the muted tally
-     ("90% liked it | 142 votes") pushed to the end. .section-label supplies the
-     mono uppercase accent; the tally overrides the color to muted. */
-  .vb-readers-label {
-    margin: 0 0 var(--spacing-sm);
+  /* --- Readers' Rating (poll) --- an eyebrow over the two thumb buttons, mirroring
+     the My Rating column and divided from it by a hairline. */
+  .vb-take {
     display: flex;
-    align-items: center;
-    gap: 0.75em;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    border-inline-start: 1px solid var(--color-line);
+    padding-inline-start: var(--spacing-lg);
   }
 
-  /* The label + rule + tally spans are created by readers-verdict.ts at runtime, so
-     they don't carry Astro's scope attribute — reach them with :global(). The label
-     keeps the accent from .section-label; the tally overrides it to muted. */
-  .vb-readers-label :global(.rv-summary-label) {
-    white-space: nowrap;
-  }
-
-  /* Fills the gap between the accent label and the muted tally. */
-  .vb-readers-label :global(.rv-summary-rule) {
-    flex: 1;
-    min-width: 1em;
-    border-block-start: 1px solid var(--color-line);
-  }
-
-  /* The tally reads muted, set off from the accent label. */
-  .vb-readers-label :global(.rv-summary-stats) {
-    color: var(--color-muted);
-    white-space: nowrap;
-  }
-
-  .vb-question {
-    margin: 0 0 var(--spacing-md) !important;
+  /* Pre-vote nudge over the pill: a quiet italic serif line. */
+  .rv-cta {
+    margin: 0;
     font-family: var(--font-body);
-    font-size: var(--font-size-xl);
-    font-weight: 400;
-    line-height: 1.2;
-    color: var(--color-text-heading);
+    font-style: italic;
+    font-size: var(--font-size-md);
+    color: var(--color-muted);
   }
 
-  /* Two side-by-side vote buttons; they stack when the card gets narrow. */
-  .rv-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-sm);
-    padding-bottom: var(--spacing-xs);
-  }
-
-  /* [hidden] must win over display: grid once the buttons are swapped for the message. */
-  .rv-buttons[hidden] {
+  .rv-cta[hidden] {
     display: none;
   }
 
-  /* The "You liked it" line that stands in for the buttons after voting + commenting. */
-  .rv-voted {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--color-muted);
+  /* The 👍 / 👎 poll as one rounded pill: two segments split by a hairline. Outlined
+     until you vote; the chosen side then fills with the accent. */
+  .rv-pill {
+    display: inline-flex;
+    border: 1px solid var(--color-muted);
+    border-radius: 999px;
+    background: var(--color-surface);
+    overflow: hidden;
   }
 
-  /* Same shape language as the global .btn (mono, weight 500). Inactive reads like
-     .btn-outline; the chosen side fills with the accent like .btn-filled. */
   .rv-choice {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--color-muted);
-    border-radius: var(--radius);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border: 0;
     background: transparent;
     color: var(--color-text);
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     font-weight: 500;
     cursor: pointer;
+    line-height: 1.3;
     transition:
-      border-color 0.15s ease,
       background-color 0.15s ease,
       color 0.15s ease;
-
-    /* Accent outline that fills on hover, like the "Clear filters" pill. */
-    &:hover:not(:disabled) {
-      border: 1px solid var(--color-accent);
-      background: var(--color-accent);
-      color: var(--color-background);
-    }
 
     &:disabled {
       cursor: default;
     }
 
-    /* Once voted, the poll is locked — dim the side you didn't pick. */
-    &:disabled:not(.is-active) {
-      opacity: 0.55;
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
     }
 
+    /* The side you voted fills with the accent. */
     &.is-active {
       background: var(--color-accent);
-      border-color: var(--color-accent);
       color: var(--color-background);
     }
   }
 
-  /* Thumb icons follow the button's text color (override the global muted .icon). */
-  .rv-choice :global(.icon) {
-    color: inherit;
+  /* The hairline splitting the two pill segments. */
+  .rv-choice + .rv-choice {
+    border-inline-start: 1px solid var(--color-muted);
   }
 
-  /* The tally rides after the label as a quieter mono figure. */
+  /* Icons follow the segment's text color (override the global muted .icon). */
+  .rv-choice :global(.icon) {
+    color: inherit;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* The live count after the thumb — hidden when zero (the script leaves it empty). */
   .rv-count {
-    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
 
     &:empty {
       display: none;
     }
   }
 
-  /* On the accent fill (chosen or hovered) the tally rides the button's text color. */
-  .rv-choice.is-active .rv-count,
-  .rv-choice:hover:not(:disabled) .rv-count {
-    color: inherit;
-    opacity: 0.85;
-  }
-
-  .rv-bar {
-    margin-block-start: var(--spacing-sm);
-    height: 6px;
-    border-radius: var(--radius);
-    background: var(--color-line);
-    overflow: hidden;
-  }
-
-  .rv-bar-fill {
-    display: block;
-    width: 0;
-    height: 100%;
-    background: var(--color-accent);
-    transition: width 0.35s ease;
-  }
-
   /* Shown only if a vote fails to record (then the buttons re-enable for a retry). */
   .rv-vote-status {
-    margin: var(--spacing-sm) 0 0;
+    margin: 0;
+    padding: 0 var(--spacing-md) var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
     color: var(--color-accent);
@@ -418,29 +333,97 @@ const questionId = `rv-q-${slug}`
     }
   }
 
-  /* Optional note: quiet by default, expands to a small form. */
+  /* Optional note, revealed after a vote: stacked Name + Note fields, spanning the
+     full width and split from the rating row above by a dashed rule. */
   .rv-note {
-    margin-block-start: var(--spacing-md);
-    padding-block-start: var(--spacing-sm);
-    border-block-start: 1px solid var(--color-line);
+    padding: var(--spacing-md);
+    border-block-start: 1px dashed var(--color-line);
   }
 
   .rv-note-form {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: var(--spacing-sm);
-    margin-block-start: var(--spacing-md);
   }
 
-  /* The [hidden] attribute (set after a note is saved) must win over display:flex. */
+  /* The [hidden] attribute (set after a note is saved, or when collapsed) must win
+     over display:flex. */
   .rv-note-form[hidden] {
     display: none;
   }
 
+  /* The form's header row: a label paired with the collapse (×) control. */
+  .rv-note-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    width: 100%;
+  }
+
+  /* The small × that collapses the form back down to the "Leave a comment" trigger. */
+  .rv-note-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xs);
+    margin: calc(-1 * var(--spacing-xs));
+    border: 0;
+    background: none;
+    color: var(--color-muted);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+
+    :global(.icon) {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  /* Collapsed state: a quiet mono link-button (pencil + "Leave a comment") standing
+     in for the whole form. Reopens it on click. */
+  .rv-note-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-muted-2);
+    /* font-family: var(--font-mono); */
+    /* font-size: var(--font-size-xs); */
+    font-weight: 500;
+
+    &[hidden] {
+      display: none;
+    }
+
+    :global(.icon) {
+      width: 15px;
+      height: 15px;
+      color: inherit;
+    }
+  }
+
+  button.rv-note-trigger {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  /* A labeled field: the mono eyebrow over its input, each spanning the row. */
   .rv-field {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
+    width: 100%;
+    min-width: 0;
   }
 
   .rv-field-label {
@@ -464,14 +447,14 @@ const questionId = `rv-q-${slug}`
     padding: var(--spacing-sm);
     border: 1px solid var(--color-line-input);
     border-radius: var(--radius);
-    background: var(--color-background);
+    background: var(--color-surface);
     color: var(--color-text);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     font-weight: 500;
+    min-width: 0;
 
-    /* Match the app's global input focus: accent border + 1px ring, no outline
-       (and so no outline-offset gap). */
+    /* Match the app's global input focus: accent border + 1px ring, no outline. */
     &:focus {
       outline: none;
       border-color: var(--color-accent);
@@ -479,8 +462,9 @@ const questionId = `rv-q-${slug}`
     }
   }
 
-  textarea.rv-input {
+  .rv-note-textarea {
     resize: vertical;
+    line-height: 1.4;
   }
 
   /* Off-screen honeypot — present for bots, invisible and unfocusable for people. */
@@ -492,47 +476,51 @@ const questionId = `rv-q-${slug}`
     overflow: hidden;
   }
 
-  .rv-note-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-
+  /* The dark "Submit" action, set off from the quiet inputs. */
   .rv-note-submit {
     padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--color-line-input);
+    border: 1px solid var(--color-text-heading);
     border-radius: var(--radius);
-    background: var(--color-surface);
-    color: var(--color-text);
+    background: var(--color-text-heading);
+    color: var(--color-surface);
     font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-xs);
     font-weight: 500;
     cursor: pointer;
 
     &:hover {
-      border-color: var(--color-accent);
-      color: var(--color-accent);
+      opacity: 0.9;
     }
   }
 
+  /* An inline error ("Couldn't save that") under the row; hidden while empty. */
   .rv-note-status {
+    margin: var(--spacing-sm) 0 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
-    color: var(--color-muted);
+    color: var(--color-accent);
+
+    &:empty {
+      display: none;
+    }
   }
 
-  /* Replaces the form once a note is saved. */
-  .rv-note-thanks {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    color: var(--color-text);
-    font-weight: 500;
-  }
+  /* Stack the bar's segments on a narrow screen. The vertical divider between them
+     becomes a horizontal rule above the readers' section, so My Rating and Readers'
+     Rating stay clearly separated. */
+  @media (max-width: 700px) {
+    .vb-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
 
-  @media (max-width: 34rem) {
-    .rv-buttons {
-      grid-template-columns: 1fr;
+    .vb-take {
+      margin-block-start: var(--spacing-sm);
+      padding-block-start: var(--spacing-sm);
+      border-block-start: 1px solid var(--color-line);
+      border-inline-start: 0;
+      padding-inline-start: 0;
     }
   }
 </style>

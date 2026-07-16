@@ -85,11 +85,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         </p>
         <div class="index-ctas">
           <a class="btn btn-filled" href={href('/food/')}>
-            <IconUtensils /> Explore the food map
+            Where should I eat tonight? <IconArrowRight />
           </a>
-          <button type="button" class="btn btn-outline" id="random-cta">
-            <IconDice /> Roll the dice
-          </button>
         </div>
       </div>
       <div class="index-crest">
@@ -132,7 +129,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             <section class="group">
               <div class="group-header">
                 <h2 class="group-label">
-                  <span class="group-numeral">{group.numeral}.</span> {group.label}
+                  {/* <span class="group-numeral">{group.numeral}.</span>  */}
+                  {group.label}
                 </h2>
                 {group.kicker && <span class="group-kicker">{group.kicker}</span>}
               </div>
@@ -164,7 +162,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           <section class="group">
             <div class="group-header">
               <h2 class="group-label">
-                <span class="group-numeral">{group.numeral}.</span> {group.label}
+                {/* <span class="group-numeral">{group.numeral}.</span>  */}
+                {group.label}
               </h2>
               {group.kicker && <span class="group-kicker">{group.kicker}</span>}
             </div>
@@ -386,7 +385,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     }
   }
 
+  /* Break the newsletter out of the centered .wrap so its river runs edge to edge,
+     like the entry pages; the signup inside re-constrains to the measure. */
   .newsletter-section {
-    margin-block-end: var(--spacing-lg);
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-block-start: var(--spacing-xl);
   }
 </style>

@@ -11,15 +11,25 @@ interface Props {
   href?: string
   label?: string
   variant?: 'outline' | 'muted' | 'dark' | 'filled'
+  // Tighter vertical padding for inline rows. On by default; pass `compact={false}`
+  // (with a `class` like "btn-inline") to strip the vertical padding entirely.
+  compact?: boolean
+  class?: string
 }
 
-const { href: linkHref, label, variant = 'outline' } = Astro.props
+const { href: linkHref, label, variant = 'outline', compact = true, class: className } = Astro.props
 const text = label ?? (linkHref ? hostLabel(linkHref) : '')
 ---
 
 {
   linkHref && (
-    <Button href={linkHref} variant={variant} compact target="_blank" rel="noopener">
+    <Button
+      href={linkHref}
+      variant={variant}
+      compact={compact}
+      class={className}
+      target="_blank"
+      rel="noopener">
       <slot name="icon" />
       {text}
     </Button>

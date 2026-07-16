@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl'
 import Supercluster from 'supercluster'
 import { createBasemapMap, watchThemeChanges } from './basemap'
-import { buildPopupHtml, PIN_SVG, type PopupChip, type PopupSource } from './popup'
+import { buildPopupHtml, type PopupChip, type PopupSource } from './popup'
 import { keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import { cuisineLabel } from '../lib/emoji'
@@ -174,20 +174,17 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     glyph.textContent = item.dataset.marker ?? '📍'
     element.appendChild(glyph)
 
-    const markerEmoji = item.dataset.marker ?? ''
     const cuisines = (item.dataset.cuisine ?? '').split('|').filter(Boolean)
     const neighborhood = item.dataset.neighborhood ?? ''
     const chips: PopupChip[] = cuisines.map((cuisine) => ({
       // Show the display label ("St. Louis-style"), but filter on the raw value.
       label: cuisineLabel(cuisine),
-      leadingHtml: markerEmoji,
       filterSet: 'cuisine',
       filterValue: cuisine,
     }))
     if (neighborhood) {
       chips.push({
         label: neighborhood,
-        leadingHtml: PIN_SVG,
         filterSet: 'neighborhood',
         filterValue: neighborhood,
       })

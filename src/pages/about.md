@@ -17,9 +17,7 @@ As the internet enshittifies, it becomes harder and harder to find quality conte
 
 That's the experience I'm trying to recreate here. I have nothing to sell. I don't want your data. I don't want to make money showing you ads or affiliate links. I just want to document my thoughts in a way that's fun for me and possibly interesting or useful to you.
 
-Generally following the principles of the [IndieWeb](https://indieweb.org/).
-
-![](/88x31.png)
+I'm generally following the principles of the [IndieWeb](https://indieweb.org/).
 
 ## Contact
 

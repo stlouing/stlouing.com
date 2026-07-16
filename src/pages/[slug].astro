@@ -80,7 +80,7 @@ const schema = articleSchema(
       )
     }
     <Fragment slot="footer-meta">
-      Last updated on
+      Last updated
       <time class="dt-updated" datetime={data.updated.toISOString()}>
         {formatDate(data.updated)}
       </time>
@@ -222,17 +222,31 @@ const schema = articleSchema(
       grid-row: 1;
       position: sticky;
       top: calc(var(--header-height, 4rem) + var(--spacing-md));
+      /* Shed the box for a plain border-left, like the food / neighborhood asides. */
+      border-inline-start: 1px solid var(--color-line);
+      padding-inline-start: var(--spacing-lg);
+    }
+
+    .topic-toc-nav {
+      background: none;
+      border: 0;
     }
 
     /* On desktop the rail is always open (the script keeps it so): the summary reverts
-       to a plain heading — no pointer affordance, no chevron. */
+       to a plain heading — no pointer affordance, no chevron. The box's inner padding
+       is dropped now that the column's border-left provides the inset. */
     .topic-toc-title {
       cursor: default;
-      padding-block-end: var(--spacing-sm);
+      padding-inline: 0;
+      padding-block: 0 var(--spacing-sm);
     }
 
     .topic-toc-title::after {
       display: none;
+    }
+
+    .topic-toc-list {
+      padding-inline: 0;
     }
   }
 
@@ -240,7 +254,6 @@ const schema = articleSchema(
      horizontal padding lives here now that the summary owns the top bar's padding. */
   .topic-toc-list {
     margin: 0;
-    padding: 0 var(--spacing-base) var(--spacing-base);
     list-style: none;
     counter-reset: toc;
   }

@@ -9,7 +9,7 @@
   /* Colors */
   --color-background: #eee8d9;
   --color-surface: #faf6ec;
-  --color-surface-2: #eee7d6;
+  --color-surface-2: #e6ddc8;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -54,7 +54,7 @@
   --measure: 900px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
-  --spacing-shmedium: 0.5rem;
+  --spacing-shmedium: 0.75rem;
   --spacing-md: 1rem;
   --spacing-base: 1.25rem;
   --spacing-lg: 1.5rem;
@@ -715,7 +715,7 @@ main {
 }
 
 .entry {
-  margin-block-end: 3rem;
+  margin-block-end: var(--spacing-xl);
 }
 
 .body {
@@ -967,7 +967,7 @@ body:has(.map-split) main > .wrap,
 .map-list .list-description {
   font-size: var(--font-size-sm);
   margin-left: calc(var(--spacing-md) + 56px);
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-shmedium);
 
   p {
     color: var(--color-text);
@@ -1040,13 +1040,6 @@ body:has(.map-split) main > .wrap,
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
    MyTownView links), used both at the top of a neighborhood detail page and in the
    expanded list row. */
-.resource-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  margin-block-start: var(--spacing-sm);
-}
-
 /* The decorative river border eats vertical space under the full-height map
    layouts, so hide it on the map pages (Food + Neighborhoods) — keyed off each
    page's map container so no per-page wiring is needed. */
@@ -1065,15 +1058,9 @@ body:has([data-neighborhood-map]) .river-border {
   list-style: none;
 }
 
-/* The whole row is one click target: the title link is stretched to cover the
-   <li> via `.list-title::after` below, so `position: relative` scopes that
-   overlay to this row. */
+/* `position: relative` anchors the absolutely-positioned `.list-arrow` to the row. */
 .map-list .list > li {
   position: relative;
-  /* Own stacking context so the chips' `z-index: 1` (which lifts them above the
-     stretched title overlay) stays contained to this row and can't bleed above
-     the sticky filter header on scroll. */
-  isolation: isolate;
   margin: 0;
   padding: var(--spacing-md);
   /* Reserve room on the right for the absolutely-positioned `.list-arrow` so row
@@ -1093,39 +1080,14 @@ body:has([data-neighborhood-map]) .river-border {
   background: color-mix(in srgb, var(--color-accent) 8%, var(--color-background));
 }
 
-/* A row is a rating badge (left) beside the place details (right). */
-.map-list .list-details {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.map-list .list-lead {
-  flex-shrink: 0;
-  width: 56px;
-}
-
-.map-list .list-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Row 1: headline (name + neighborhood) on the left, cuisine chips on the right. */
-.map-list .list-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
-  width: 100%;
-}
-
+/* The row title + its inline `title-after` meta (cuisine · neighborhood / region),
+   wrapping to a second line when tight. The <li> stacks this over the optional sub
+   line and the description panel. */
 .map-list .list-headline {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   row-gap: var(--spacing-xs);
   min-width: 0;
   line-height: 1.1;
@@ -1199,6 +1161,17 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-muted);
 }
 
+/* Cuisine · neighborhood (food) / region (neighborhood) sitting inline after the
+   row title: a quiet uppercase mono tag — no pill, no emoji, just text. */
+.map-list .list-headline .list-meta {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-muted);
+}
+
 /* Shared list row title for the food/neighborhood map lists. Reads like a
    heading, not a button or link (in map view it's also clickable to open the
    place's popup). */
@@ -1237,24 +1210,14 @@ body:has([data-neighborhood-map]) .river-border {
   text-underline-offset: 2px;
 }
 
-/* Stretch the title link over the entire <li> so the whole row (headline,
-   tagline, preview, arrow) is one click target — no wrapper anchor needed, and
-   in map view the existing `.list-title` click handler still fires from anywhere
-   on the row to open the popup instead of navigating. */
+/* Stretch the title link over the whole <li> so the entire row is one click target
+   (and, in map view, the `.list-title` click handler opens the popup from anywhere
+   on the row). No wrapper anchor — the row's own links (Read more, wikilinks) would
+   nest illegally inside one; there are no interactive sub-elements left to lift. */
 .map-list a.list-title::after {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
-}
-
-/* The food filter chips are the one exception to the whole-row link: they must
-   stay independently clickable (they filter, not navigate), so lift them above
-   the stretched overlay. Only the interactive <button> chips are raised — the
-   neighborhood region chip is a plain <span>, so it stays part of the row link. */
-.map-list button.chip {
-  position: relative;
-  z-index: 1;
 }
 
 .map-list button.list-meta-filter {
@@ -1574,7 +1537,7 @@ body:has([data-neighborhood-map]) .river-border {
   position: sticky;
   top: 45px;
   z-index: 2;
-  background: var(--color-surface);
+  background: var(--color-surface-2);
 }
 
 /* Mobile: the Food list scrolls with the page under a taller, wrapping filter
@@ -1596,6 +1559,13 @@ body:has([data-neighborhood-map]) .river-border {
   height: 8px;
   border-radius: 2px;
   background: var(--verdict-color, var(--color-muted));
+  flex-shrink: 0;
+}
+
+/* The verdict fleur cloned into each group header (food-groups.ts): sized to sit
+   beside the mono label, not the em-scale it uses inline in list rows. */
+.food-grouped li.group-header .rating {
+  font-size: var(--font-size-md);
   flex-shrink: 0;
 }
 
@@ -2033,22 +2003,38 @@ body:has([data-filter-root]) .site-header {
   overflow: hidden;
 }
 
+/* Cuisine / neighborhood / region meta, matching the list rows'
+   `.list-headline .list-meta`: quiet uppercase mono text, slash-separated — no
+   pill, no emoji. Filterable values stay clickable buttons. */
 .maplibregl-popup.food-popup .popup-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: var(--spacing-xs);
-  margin-block: var(--spacing-xs) var(--spacing-md);
+  margin-block: var(--spacing-sm) var(--spacing-md);
 }
 
-.maplibregl-popup.food-popup .chip {
-  gap: 6px;
-  padding: var(--spacing-xs) var(--spacing-sm);
+.maplibregl-popup.food-popup .list-meta,
+.maplibregl-popup.food-popup .popup-meta-sep {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-muted);
 }
 
-.maplibregl-popup.food-popup .chip svg {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
+.maplibregl-popup.food-popup button.list-meta {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.maplibregl-popup.food-popup button.list-meta:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .maplibregl-popup.food-popup .popup-actions {
@@ -2173,6 +2159,106 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Shared detail-page layout: writeup + sidebar, used by BOTH the Food and the
+   Neighborhood detail pages so the two stay structurally identical. One column
+   on mobile (the writeup leads, the aside stacks under it); a two-column grid
+   with a sticky, left-bordered sidebar once there's room.
+   --------------------------------------------------------------------------- */
+.detail-layout {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-block-start: var(--spacing-lg);
+}
+
+.detail-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  isolation: isolate;
+}
+
+@media screen and (min-width: 900px) {
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr) 290px;
+    align-items: start;
+    gap: 2.5rem;
+  }
+
+  /* DOM order is main-then-aside so the writeup leads on mobile (the map + the
+     rest of the sidebar follow it); on desktop the aside is placed back into
+     the right column. */
+  .detail-main {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* The sidebar is no longer a bordered box — a single hairline on its inner
+     edge divides it from the writeup, and its content sits in from that rule. */
+  .detail-aside {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--header-height, 4rem) + var(--spacing-md));
+    border-inline-start: 1px solid var(--color-line);
+    padding-inline-start: var(--spacing-lg);
+  }
+}
+
+/* Hairline between two sidebar sections (address / links / pick / facts); the
+   aside's column gap spaces it. */
+.detail-divider {
+  margin: 0;
+  border: 0;
+  border-block-start: 1px solid var(--color-line);
+}
+
+/* A content-width "back to the map" link at the foot of the sidebar. Overrides
+   the btn-quiet dotted underline with a 2px solid accent one. */
+.detail-back-link {
+  align-self: flex-start;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+/* A section label inside the detail sidebar (Address, Links, …): the shared
+   `.section-label` font tucked above its content. */
+.detail-section-label {
+  margin: 0 0 var(--spacing-sm);
+}
+
+/* The sidebar "Links" section: a stack of quiet dotted-underline source links
+   (Website / Instagram / … ), each led by a small icon. Left-aligned and
+   content-width, not full-bleed buttons. */
+.detail-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+/* Explicit stub treatment for an entry without a writeup: a dashed note that
+   reads as "intentionally unfinished" rather than a sparse, broken page. Shared
+   by both detail pages. */
+.not-explored {
+  margin-block-end: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px dashed var(--color-line-input);
+  border-radius: var(--radius);
+  color: var(--color-muted);
+}
+
+.not-explored p {
+  margin: 0;
+}
+
+.not-explored p + p {
+  margin-block-start: var(--spacing-sm);
+}
+
 /* Outlined button: mono label, line border, surface fill, accent on hover. The
    shared base for the share/feedback buttons (.share-button keeps its copy-link
    "is-copied" state) and the directory "View all / View map" links. */
@@ -2264,7 +2350,7 @@ body:has([data-filter-root]) .site-header {
 
 /* Borderless accent text link ("Read more →"). */
 .btn-quiet {
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   padding: 0;
   color: var(--color-accent);
   text-decoration: underline;
@@ -2272,6 +2358,7 @@ body:has([data-filter-root]) .site-header {
   text-decoration-color: var(--color-muted);
   text-underline-offset: 3px;
   flex-shrink: 0;
+  background: transparent;
 }
 
 .btn-quiet:hover {
@@ -2284,7 +2371,7 @@ body:has([data-filter-root]) .site-header {
 
 /* Borderless muted text w/ dotted underline (source links inside lists). */
 .btn-muted {
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   padding: 0;
   font-weight: 500;
   color: var(--color-muted);
@@ -2293,9 +2380,11 @@ body:has([data-filter-root]) .site-header {
   text-decoration-color: var(--color-muted);
   text-underline-offset: 3px;
   flex-shrink: 0;
+  background: transparent;
 }
 
-.btn-muted:hover {
+.btn-muted:hover,
+.btn-muted.is-copied {
   color: var(--color-accent);
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
@@ -2303,6 +2392,10 @@ body:has([data-filter-root]) .site-header {
 }
 
 /* Tighter vertical padding for inline rows (source links, resource bars). */
+.btn-inline {
+  padding-block: 0;
+}
+
 .btn-compact {
   padding-block: var(--spacing-xs);
 }

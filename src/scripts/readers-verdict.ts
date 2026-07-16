@@ -7,15 +7,28 @@
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
-// localStorage keys: one stable browser id, plus a remembered choice per slug (the FE's
-// only way to show "you voted" — there's no reliable server-side "is it you" without login).
-const VOTER_ID_KEY = 'stl_voter_id'
-const VOTE_CHOICE_PREFIX = 'stl_vote_'
-const NOTE_DONE_PREFIX = 'stl_noted_'
+// All reader state lives under ONE localStorage key: a stable browser id plus a
+// per-slug record (vote, whether a note was left, whether the note form was
+// collapsed). One object instead of three keys per place.
+const STORE_KEY = 'stl_reader'
 
 type Counts = { likes: number; dislikes: number }
 
 type Choice = 'like' | 'dislike'
+
+// One place's remembered state; absent fields mean "no". Purely a client-side
+// convenience (the vote also lives server-side under the voter id) — the collapse
+// flag never leaves the browser.
+type PlaceState = {
+  vote?: Choice
+  noted?: boolean
+  collapsed?: boolean
+}
+
+type ReaderStore = {
+  voterId?: string
+  places?: Record<string, PlaceState>
+}
 
 export function initReadersVerdict(): void {
   // Nothing to wire when the site was built without Supabase creds — the component
@@ -36,31 +49,22 @@ function setupWidget(root: HTMLElement): void {
     return
   }
 
-  const buttonsWrap = root.querySelector<HTMLElement>('.rv-buttons')
-  const votedMessage = root.querySelector<HTMLElement>('[data-voted]')
   const likeButton = root.querySelector<HTMLButtonElement>('[data-vote="like"]')
   const dislikeButton = root.querySelector<HTMLButtonElement>('[data-vote="dislike"]')
   const likeCount = root.querySelector<HTMLElement>('[data-count-like]')
   const dislikeCount = root.querySelector<HTMLElement>('[data-count-dislike]')
-  const barFill = root.querySelector<HTMLElement>('[data-bar-fill]')
-  const question = root.querySelector<HTMLElement>('.vb-question')
-  const defaultQuestion = question?.textContent?.trim() ?? ''
-  const votedQuestion = question?.dataset.votedQuestion ?? ''
-  const summary = root.querySelector<HTMLElement>('[data-summary]')
+  const cta = root.querySelector<HTMLElement>('[data-cta]')
   const note = root.querySelector<HTMLElement>('[data-note]')
   const voteStatus = root.querySelector<HTMLElement>('[data-vote-status]')
   const noteForm = root.querySelector<HTMLFormElement>('[data-note-form]')
+  const noteTrigger = root.querySelector<HTMLButtonElement>('[data-note-trigger]')
+  const noteClose = root.querySelector<HTMLButtonElement>('[data-note-close]')
   const nameInput = root.querySelector<HTMLInputElement>('[data-note-name]')
   const commentInput = root.querySelector<HTMLTextAreaElement>('[data-note-comment]')
   const honeypot = root.querySelector<HTMLInputElement>('[data-note-hp]')
   const noteStatus = root.querySelector<HTMLElement>('[data-note-status]')
-  const noteThanks = root.querySelector<HTMLElement>('[data-note-thanks]')
-  // The top-of-page teaser (a page-level element, outside this root). Its CTA invites a
-  // vote by default, but should point to the results once this browser has voted.
-  const teaserCta = document.querySelector<HTMLElement>('[data-teaser-cta]')
-  const teaserDefaultCta = teaserCta?.textContent?.trim() ?? ''
 
-  if (!likeButton || !dislikeButton || !barFill || !summary) {
+  if (!likeButton || !dislikeButton) {
     return
   }
 
@@ -72,63 +76,34 @@ function setupWidget(root: HTMLElement): void {
   let loaded = false
   let votedThisSession = false
 
-  // Paint the current numbers, bar, active button, and summary line.
+  // Paint the active side of the pill, the counts (never a bare "0"), and the pre-vote
+  // nudge. Counts stay blank (the `:empty` rule hides them) until a server read lands.
   const render = (): void => {
-    const total = counts.likes + counts.dislikes
-    const likePercent = total > 0 ? Math.round((counts.likes / total) * 100) : 0
-
-    if (likeCount) {
-      likeCount.textContent = String(counts.likes)
-    }
-
-    if (dislikeCount) {
-      dislikeCount.textContent = String(counts.dislikes)
-    }
-
-    barFill.style.width = `${likePercent}%`
     likeButton.classList.toggle('is-active', choice === 'like')
     dislikeButton.classList.toggle('is-active', choice === 'dislike')
     likeButton.setAttribute('aria-pressed', String(choice === 'like'))
     dislikeButton.setAttribute('aria-pressed', String(choice === 'dislike'))
 
-    // The eyebrow reads as: an accent label, a hairline rule that fills the row, then
-    // the muted tally pushed to the end. The label + rule are always present; the tally
-    // is added once counts have loaded (or a "be the first" nudge when there are none).
-    const labelSpan = document.createElement('span')
-    labelSpan.className = 'rv-summary-label'
-    labelSpan.textContent = `Readers' Review`
-
-    const rule = document.createElement('span')
-    rule.className = 'rv-summary-rule'
-    rule.setAttribute('aria-hidden', 'true')
-
-    const parts: HTMLElement[] = [labelSpan, rule]
-
-    let tally = ''
-    if (loaded && total === 0) {
-      tally = 'be the first to vote'
-    } else if (loaded) {
-      const votes = total === 1 ? '1 vote' : `${total} votes`
-      tally = `${likePercent}% liked it | ${votes}`
+    if (likeCount) {
+      likeCount.textContent = loaded && counts.likes > 0 ? String(counts.likes) : ''
+    }
+    if (dislikeCount) {
+      dislikeCount.textContent = loaded && counts.dislikes > 0 ? String(counts.dislikes) : ''
     }
 
-    if (tally) {
-      const tallySpan = document.createElement('span')
-      tallySpan.className = 'rv-summary-stats'
-      tallySpan.textContent = tally
-      parts.push(tallySpan)
-    }
-
-    summary.replaceChildren(...parts)
-
-    // Keep the top-of-page teaser CTA in step with the vote state.
-    if (teaserCta) {
-      teaserCta.textContent = choice ? (teaserCta.dataset.votedText ?? teaserDefaultCta) : teaserDefaultCta
-    }
-
-    // The question becomes a statement once they've answered it.
-    if (question && votedQuestion) {
-      question.textContent = choice ? votedQuestion : defaultQuestion
+    // The nudge is hidden once this browser has voted; otherwise it invites the first
+    // vote when the place has none yet, or asks for a take when it already has some.
+    if (cta) {
+      if (choice) {
+        cta.hidden = true
+      } else {
+        cta.hidden = false
+        const total = counts.likes + counts.dislikes
+        cta.textContent =
+          loaded && total === 0
+            ? 'Been here? Be the first to vote'
+            : 'Been here? What did you think?'
+      }
     }
   }
 
@@ -146,6 +121,8 @@ function setupWidget(root: HTMLElement): void {
     lockButtons()
     render()
     revealNote(note)
+    // A fresh vote opens the note expanded, inviting a comment.
+    setCollapsed(false)
 
     try {
       counts = await castVote({ slug, liked: next === 'like' })
@@ -176,10 +153,32 @@ function setupWidget(root: HTMLElement): void {
     void vote('dislike')
   })
 
+  // Toggle the note between its full form and the compact "Leave a comment" trigger.
+  // The collapsed choice is remembered in localStorage, so it sticks across reloads.
+  const setCollapsed = (collapsed: boolean): void => {
+    if (noteForm) {
+      noteForm.hidden = collapsed
+    }
+    if (noteTrigger) {
+      noteTrigger.hidden = !collapsed
+    }
+  }
+
   // The optional note appears after voting (revealNote).
   noteForm?.addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault()
     void submitNote()
+  })
+
+  noteClose?.addEventListener('click', () => {
+    writeCollapsed(slug)
+    setCollapsed(true)
+  })
+
+  noteTrigger?.addEventListener('click', () => {
+    clearCollapsed(slug)
+    setCollapsed(false)
+    commentInput?.focus()
   })
 
   const submitNote = async (): Promise<void> => {
@@ -193,63 +192,33 @@ function setupWidget(root: HTMLElement): void {
     const name = nameInput?.value.trim() ?? ''
     const comment = commentInput?.value.trim() ?? ''
 
-    // Name is required only when a comment is present (mirrors the server rule).
-    if (comment && !name) {
-      setStatus(noteStatus, 'Add your name to leave a comment.')
-      nameInput?.focus()
-
-      return
-    }
-
+    // Nothing typed — nothing to save.
     if (!name && !comment) {
       setStatus(noteStatus, '')
 
       return
     }
 
+    // The name is optional; an unnamed note is attributed to "Anonymous" (which
+    // also satisfies the server's name-required-with-comment rule). Once saved, the
+    // reader is done — the note area collapses away (no confirmation line).
     try {
-      await addNote({ slug, name: name || null, comment: comment || null })
+      await addNote({ slug, name: name || 'Anonymous', comment: comment || null })
       writeNoted(slug)
-      clearNoteForm()
-      showNoteThanks()
+      hideNote(note)
     } catch {
       setStatus(noteStatus, "Couldn't save that — try again.")
     }
   }
 
-  // Once a note is saved the reader is done: swap the form for the thank-you, and swap
-  // the (locked) buttons for a plain statement so they don't read as still-clickable.
-  // Called on submit and on reload for a returning voter who already noted.
-  const showNoteThanks = (): void => {
-    if (noteForm) {
-      noteForm.hidden = true
-    }
-    if (noteThanks) {
-      noteThanks.hidden = false
-    }
-    if (choice && buttonsWrap && votedMessage) {
-      votedMessage.textContent = choice === 'like' ? 'You liked it. Thanks for voting!' : "You didn't like it. Thanks for voting!"
-      votedMessage.hidden = false
-      buttonsWrap.hidden = true
-    }
-  }
-
-  const clearNoteForm = (): void => {
-    if (commentInput) {
-      commentInput.value = ''
-    }
-    if (nameInput) {
-      nameInput.value = ''
-    }
-    setStatus(noteStatus, '')
-  }
-
   // Wire up: enable the buttons only if this browser hasn't voted yet; a returning voter
-  // stays locked in. Then load live counts and restore the remembered state.
+  // stays locked in. The note form shows only for a voter who hasn't left one yet. Then
+  // load live counts.
   if (choice) {
-    revealNote(note)
-    if (readNoted(slug)) {
-      showNoteThanks()
+    if (!readNoted(slug)) {
+      revealNote(note)
+      // Honor the reader's remembered collapse choice for this place.
+      setCollapsed(readCollapsed(slug))
     }
   } else {
     likeButton.disabled = false
@@ -341,40 +310,107 @@ function toCounts(row: { likes: number | null; dislikes: number | null } | undef
   return { likes: Number(row?.likes ?? 0), dislikes: Number(row?.dislikes ?? 0) }
 }
 
+// --- The single-object store (STORE_KEY) --------------------------------------
+
+function loadStore(): ReaderStore {
+  const raw = safeGet(STORE_KEY)
+  if (!raw) {
+    return {}
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as ReaderStore
+
+    // Only a plain object is a valid store; anything else (null, array, scalar
+    // from external tampering) resets to empty so writes still persist.
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
+  } catch {
+    return {}
+  }
+}
+
+function saveStore(store: ReaderStore): void {
+  safeSet(STORE_KEY, JSON.stringify(store))
+}
+
+function readPlace(slug: string): PlaceState {
+  return loadStore().places?.[slug] ?? {}
+}
+
+// Merge a patch into one place's record. Falsy fields are pruned so the object
+// stays tidy, and a place that empties out is dropped entirely.
+function patchPlace(slug: string, patch: PlaceState): void {
+  const store = loadStore()
+  const places = store.places ?? {}
+  const next: PlaceState = { ...places[slug], ...patch }
+
+  if (!next.vote) {
+    delete next.vote
+  }
+  if (!next.noted) {
+    delete next.noted
+  }
+  if (!next.collapsed) {
+    delete next.collapsed
+  }
+
+  if (Object.keys(next).length > 0) {
+    places[slug] = next
+  } else {
+    delete places[slug]
+  }
+
+  store.places = places
+  saveStore(store)
+}
+
 // A stable per-browser id. Kept behind try/catch so private-mode storage denial can't
 // break voting outright (a fresh id per call just means the server treats it as new).
 function voterId(): string {
-  const existing = safeGet(VOTER_ID_KEY)
-  if (existing) {
-    return existing
+  const store = loadStore()
+  if (store.voterId) {
+    return store.voterId
   }
 
   const created = crypto.randomUUID()
-  safeSet(VOTER_ID_KEY, created)
+  store.voterId = created
+  saveStore(store)
 
   return created
 }
 
 function readChoice(slug: string): Choice | null {
-  const stored = safeGet(VOTE_CHOICE_PREFIX + slug)
+  const vote = readPlace(slug).vote
 
-  return stored === 'like' || stored === 'dislike' ? stored : null
+  return vote === 'like' || vote === 'dislike' ? vote : null
 }
 
 function writeChoice(slug: string, choice: Choice): void {
-  safeSet(VOTE_CHOICE_PREFIX + slug, choice)
+  patchPlace(slug, { vote: choice })
 }
 
 function clearChoice(slug: string): void {
-  safeRemove(VOTE_CHOICE_PREFIX + slug)
+  patchPlace(slug, { vote: undefined })
 }
 
 function readNoted(slug: string): boolean {
-  return safeGet(NOTE_DONE_PREFIX + slug) === '1'
+  return readPlace(slug).noted === true
 }
 
 function writeNoted(slug: string): void {
-  safeSet(NOTE_DONE_PREFIX + slug, '1')
+  patchPlace(slug, { noted: true })
+}
+
+function readCollapsed(slug: string): boolean {
+  return readPlace(slug).collapsed === true
+}
+
+function writeCollapsed(slug: string): void {
+  patchPlace(slug, { collapsed: true })
+}
+
+function clearCollapsed(slug: string): void {
+  patchPlace(slug, { collapsed: false })
 }
 
 function revealNote(note: HTMLElement | null): void {
@@ -411,10 +447,3 @@ function safeSet(key: string, value: string): void {
   }
 }
 
-function safeRemove(key: string): void {
-  try {
-    window.localStorage.removeItem(key)
-  } catch {
-    // Storage blocked — nothing to remove.
-  }
-}
