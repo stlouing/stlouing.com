@@ -6,7 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import ReadersVerdict from '../../components/ReadersVerdict.astro'
-import Share from '../../components/Share.astro'
+import Byline from '../../components/Byline.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
@@ -133,6 +133,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
     }
     <div class="detail-layout">
       <div class="detail-main">
+        <ReadersVerdict slug={entry.id} title={data.title} writerState={writerState} />
         {
           data.photo && (
             <Image
@@ -144,6 +145,7 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
             />
           )
         }
+
         <Content />
         {
           !hasBody(entry) && (
@@ -152,8 +154,8 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
             </div>
           )
         }
-        <ReadersVerdict slug={entry.id} title={data.title} writerState={writerState} />
-        <Share title={data.title}>
+
+        <Byline>
           {
             lastUpdated && (
               <Fragment slot="footer-meta">
@@ -164,8 +166,8 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
               </Fragment>
             )
           }
-        </Share>
-        
+        </Byline>
+
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (

@@ -101,7 +101,7 @@ function setupWidget(root: HTMLElement): void {
         const total = counts.likes + counts.dislikes
         cta.textContent =
           loaded && total === 0
-            ? 'Been here? Be the first to vote'
+            ? 'Been here? Be the first to vote!'
             : 'Been here? What did you think?'
       }
     }

@@ -4,15 +4,15 @@
 // footer. Passing `permalink` marks it up as an IndieWeb h-entry
 // (notes/topics); without it, it's a plain directory entry (food/hikes).
 //
-// Slots: `lede` (under the title), `header-aside` (a badge floated to the right
-// of the title + lede, e.g. the food rating card), `meta` (the meta row),
-// `header-extra` (after the meta row, e.g. an address), `footer-meta` (a quiet
-// line at the foot of the article, e.g. a last-updated timestamp), and the
-// default slot (the body).
+// Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
+// the meta row, e.g. an address), `footer-meta` (the quiet last-updated byline at
+// the foot of the article), and the default slot (the body). The Share + Feedback
+// buttons ride top-right of the header on every entry page.
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
 import NewsletterSignup from './NewsletterSignup.astro'
-import Share from './Share.astro'
+import ShareActions from './ShareActions.astro'
+import Byline from './Byline.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
 
@@ -21,33 +21,26 @@ interface Props {
   tags?: string[]
   backlinks?: Backlink[]
   permalink?: string
-  // Whether Entry renders the Share row (last-updated + share/feedback) itself,
-  // after the body. Pages whose body holds trailing sections (e.g. food/neighborhood
-  // "More in…" lists) pass `share={false}` and render <Share> at the right spot.
+  // Whether Entry renders the last-updated byline itself, after the body. Pages
+  // whose body holds trailing sections (e.g. food/neighborhood "More in…" lists)
+  // pass `share={false}` and render <Byline> at the right spot.
   share?: boolean
 }
 
 const { title, tags = [], backlinks = [], permalink, share = true } = Astro.props
 const isArticle = Boolean(permalink)
-// A `header-aside` badge (e.g. the food rating card) rides to the right of the
-// title + lede; without one the headline is a plain block, unchanged.
-const hasHeaderAside = Astro.slots.has('header-aside')
 ---
 
 <article class:list={['entry', { 'h-entry': isArticle }]}>
   <header class="entry-header">
-    <div class:list={['entry-headline', { 'has-aside': hasHeaderAside }]}>
+    <div class="entry-headline">
       <div class="entry-headline-main">
         <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
         <slot name="lede" />
       </div>
-      {
-        hasHeaderAside && (
-          <div class="entry-headline-aside">
-            <slot name="header-aside" />
-          </div>
-        )
-      }
+      <div class="entry-headline-actions">
+        <ShareActions title={title} />
+      </div>
     </div>
 
     {
@@ -82,13 +75,13 @@ const hasHeaderAside = Astro.slots.has('header-aside')
 
   {
     share && (
-      <Share title={title}>
+      <Byline>
         {Astro.slots.has('footer-meta') && (
           <Fragment slot="footer-meta">
             <slot name="footer-meta" />
           </Fragment>
         )}
-      </Share>
+      </Byline>
     )
   }
 
@@ -104,26 +97,27 @@ const hasHeaderAside = Astro.slots.has('header-aside')
 </section>
 
 <style>
-  /* Title + lede on the left, an optional badge (the food rating card) aligned
-     to the right and centered against the text block. Only the `has-aside`
-     variant is a flex row — the plain headline stays a block, so entry pages
-     without a badge are laid out exactly as before. */
-  .entry-headline.has-aside {
+  /* Title + lede on the left, the Share / Feedback buttons on the right, aligned
+     to the foot of the text block so they sit on the lede line. */
+  .entry-headline {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: var(--spacing-md);
   }
 
-  .entry-headline-aside {
+  .entry-headline-main {
+    min-width: 0;
+  }
+
+  .entry-headline-actions {
     flex-shrink: 0;
   }
 
-  /* Stack on narrow screens with the badge above the title (column-reverse, since
-     the badge is the last child in source order). */
+  /* Stack on narrow screens: buttons drop below the title + lede, left-aligned. */
   @media screen and (max-width: 700px) {
-    .entry-headline.has-aside {
-      flex-direction: column-reverse;
+    .entry-headline {
+      flex-direction: column;
       align-items: flex-start;
     }
   }

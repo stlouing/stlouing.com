@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
-import Share from '../../components/Share.astro'
+import Byline from '../../components/Byline.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
@@ -139,15 +139,20 @@ const metaDescription = entry?.body
   ? excerpt(entry.body, 155)
   : (entry?.data.description ?? generated)
 
-// SEO title: "<name>, a St. Louis neighborhood - <tagline>", so "St. Louis" is in
-// the title for search (the "St. Louing" site suffix doesn't count). Parks + county
-// municipalities (numbered 80+) use the plain city form; the tagline is appended
-// with a dash (BaseLayout adds the "| St. Louing" suffix, so the middle stays a dash).
-const tagline = entry?.data.description
+// SEO title: "<name> - <kind> in St. Louis", so "St. Louis" is in the title for
+// search. Parks read "Park in St. Louis"; county municipalities (type 'city') and
+// other typed areas read "<Type> in <region>" (e.g. "City in St. Louis County").
 let seoTitle: string | undefined
 if (info) {
-  const cityLeaf = `${title}, ${info.number >= 80 ? 'St. Louis' : 'a St. Louis Neighborhood'}`
-  seoTitle = tagline ? `${cityLeaf} - ${tagline}` : cityLeaf
+  let kind: string
+  if (info.type === 'park') {
+    kind = 'Park in St. Louis'
+  } else if (info.type) {
+    kind = `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} in ${info.group}`
+  } else {
+    kind = 'Neighborhood in St. Louis'
+  }
+  seoTitle = `${title} - ${kind}`
 }
 
 // Breadcrumb stops at the region (the neighborhood name is already the page H1).
@@ -184,7 +189,7 @@ const trail = [
           )
         }
 
-        <Share title={title}>
+        <Byline>
           {
             lastUpdated && (
               <Fragment slot="footer-meta">
@@ -195,7 +200,7 @@ const trail = [
               </Fragment>
             )
           }
-        </Share>
+        </Byline>
 
         {
           attractions.length > 0 && (

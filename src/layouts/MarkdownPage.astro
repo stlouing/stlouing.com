@@ -2,13 +2,18 @@
 import BaseLayout from './BaseLayout.astro'
 
 interface Props {
-  frontmatter: { title?: string; tagline?: string; description?: string }
+  // `title` is the visible H1 + breadcrumb; `seoTitle` overrides just the <title>
+  // tag when it should read differently (e.g. About's SEO title differs from "About").
+  frontmatter: { title?: string; seoTitle?: string; tagline?: string; description?: string }
 }
 
 const { frontmatter } = Astro.props
 ---
 
-<BaseLayout crumb={frontmatter.title} description={frontmatter.description}>
+<BaseLayout
+  crumb={frontmatter.title}
+  title={frontmatter.seoTitle}
+  description={frontmatter.description}>
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">

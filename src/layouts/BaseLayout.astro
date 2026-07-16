@@ -77,9 +77,9 @@ if (segments.length >= 1) {
 
 const leaf = trail.length > 1 ? trail[trail.length - 1].label : undefined
 const titleLeaf = title ?? leaf
-const pageTitle = titleLeaf
-  ? `${titleLeaf} - ${SITE_NAME}`
-  : `${SITE_NAME} - Food, Neighborhoods, and Culture of St. Louis`
+// Each page owns its full <title> — no "- St. Louing" site-name suffix. The
+// homepage (no leaf) falls back to the brand + tagline.
+const pageTitle = titleLeaf ?? `${SITE_NAME} - Food, Neighborhoods, and Culture of St. Louis`
 
 const metaDescription = description ?? SITE_DESCRIPTION
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href

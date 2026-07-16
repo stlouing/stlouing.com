@@ -1,0 +1,45 @@
+---
+// The quiet "— St. Louing, last updated <date>" byline: a gold fleur followed by
+// the footer-meta slot in an italic serif. Renders NOTHING when no footer-meta is
+// passed (i.e. the entry has no created/updated date), so the fleur never appears
+// on a dateless entry.
+import FleurGlyph from '../assets/FleurGlyph.astro'
+---
+
+{
+  Astro.slots.has('footer-meta') && (
+    <p class="entry-byline">
+      <span class="entry-byline-fleur">
+        <FleurGlyph />
+      </span>
+      <span>
+        <slot name="footer-meta" />
+      </span>
+    </p>
+  )
+}
+
+<style>
+  /* The signature line: a gold fleur + "— St. Louing, last …" in a quiet italic serif. */
+  .entry-byline {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    margin-block: var(--spacing-lg) 0;
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: var(--font-size-md);
+    color: var(--color-muted-2);
+  }
+
+  .entry-byline-fleur {
+    display: inline-flex;
+    align-self: center;
+    color: var(--color-map-north);
+  }
+
+  .entry-byline-fleur :global(svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+</style>

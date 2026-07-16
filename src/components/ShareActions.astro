@@ -1,0 +1,36 @@
+---
+// The Share + Feedback pill buttons, shown top-right of an entry header (aligned
+// with the title + lede). `title` seeds the native share payload.
+import ShareButton from './ShareButton.astro'
+import Button from './Button.astro'
+import IconPencil from '../assets/IconPencil.astro'
+import { href } from '../lib/url'
+
+interface Props {
+  title?: string
+}
+
+const { title } = Astro.props
+---
+
+<div class="share-actions">
+  <ShareButton title={title} label="Share" class="share-pill" />
+  <Button href={href('/feedback/')} variant="outline" class="share-pill">
+    <IconPencil />
+    Feedback
+  </Button>
+</div>
+
+<style>
+  .share-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  /* Outlined pill buttons (Share / Feedback): the shared .btn-outline, rounded. */
+  .share-actions :global(.btn) {
+    border-radius: 999px;
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+</style>
