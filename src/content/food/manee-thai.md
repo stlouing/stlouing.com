@@ -1,5 +1,6 @@
 ---
 title: Manee Thai
+created: 2026-07-16
 status: tried
 description: Strip mall Thai kitchen
 cuisine: ['thai']

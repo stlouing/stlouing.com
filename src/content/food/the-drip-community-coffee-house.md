@@ -1,5 +1,6 @@
 ---
 title: The Drip Community Coffee House
+created: 2026-07-16
 status: tried
 description: Community coffeehouse
 cuisine: ['cafe']

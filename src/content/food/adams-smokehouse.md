@@ -1,5 +1,6 @@
 ---
 title: Adam's Smokehouse
+created: 2026-07-16
 status: tried
 description: Slow-smoked barbecue and burnt ends
 cuisine: ['bbq']

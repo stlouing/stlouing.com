@@ -1,5 +1,6 @@
 ---
 title: Ehsani's Hot Kabob
+created: 2026-07-16
 status: want-to-try
 description: Persian kabobs cooked over fire
 cuisine: ['middle eastern']

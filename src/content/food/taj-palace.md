@@ -1,5 +1,6 @@
 ---
 title: Taj Palace
+created: 2026-07-16
 status: tried
 description: North Indian cooking
 cuisine: ['indian']

@@ -1,5 +1,6 @@
 ---
 title: Layali Halab Mediterranean
+created: 2026-07-16
 status: tried
 description: Authentic Syrian cooking
 cuisine: ['middle eastern']

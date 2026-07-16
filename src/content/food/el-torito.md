@@ -1,5 +1,6 @@
 ---
 title: El Torito
+created: 2026-07-16
 status: want-to-try
 description: Taqueria and supermercado on Cherokee
 cuisine: ['mexican']

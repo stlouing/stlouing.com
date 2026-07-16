@@ -1,5 +1,6 @@
 ---
 title: Michael's Bar and Grill
+created: 2026-07-16
 status: want-to-try
 description: Greek classics and American bar fare
 cuisine: ['greek']

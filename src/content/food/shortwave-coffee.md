@@ -1,5 +1,6 @@
 ---
 title: Shortwave Coffee
+created: 2026-07-16
 status: tried
 description: Specialty roaster and espresso bar
 cuisine: ['cafe']

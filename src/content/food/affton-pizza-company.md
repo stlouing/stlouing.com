@@ -1,5 +1,6 @@
 ---
 title: Affton Pizza Company
+created: 2026-07-16
 status: want-to-try
 description: St. Louis-style pizza and wings
 cuisine: ['pizza']

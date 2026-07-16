@@ -1,5 +1,6 @@
 ---
 title: Cate Zone
+created: 2026-07-16
 status: want-to-try
 description: Northeastern Chinese comfort food
 cuisine: ['chinese']

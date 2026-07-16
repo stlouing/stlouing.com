@@ -1,5 +1,6 @@
 ---
 title: The London Tea Room
+created: 2026-07-16
 status: want-to-try
 description: British teas and scones
 cuisine: ['cafe']

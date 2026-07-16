@@ -1,5 +1,6 @@
 ---
 title: Gioia's Deli
+created: 2026-07-16
 status: tried
 description: Famous Hot salami sandwiches
 cuisine: ['sandwich']

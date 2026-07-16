@@ -1,5 +1,6 @@
 ---
 title: Fonda La Poblanita
+created: 2026-07-16
 status: want-to-try
 description: Pueblan cemitas
 cuisine: ['mexican']

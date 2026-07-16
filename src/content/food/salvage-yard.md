@@ -1,5 +1,6 @@
 ---
 title: Salvage Yard
+created: 2026-07-16
 status: tried
 description: Chicago deep dish and St. Louis thin crust
 cuisine: ['pizza']

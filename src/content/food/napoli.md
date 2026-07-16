@@ -1,5 +1,6 @@
 ---
 title: Napoli
+created: 2026-07-16
 status: want-to-try
 description: Old-school Italian
 cuisine: ['italian']

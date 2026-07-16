@@ -1,5 +1,6 @@
 ---
 title: Zlatno Zito
+created: 2026-07-16
 status: want-to-try
 description: Bosnian bakery and deli
 cuisine: ['balkan']

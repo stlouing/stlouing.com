@@ -1,5 +1,6 @@
 ---
 title: Hi-Pointe
+created: 2026-07-16
 status: tried
 description: Griddled smash burgers and wild specials
 cuisine: ['burgers']

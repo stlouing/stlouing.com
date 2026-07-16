@@ -1,5 +1,6 @@
 ---
 title: King Burrito
+created: 2026-07-16
 status: want-to-try
 description: Homestyle Mexican and burritos
 cuisine: ['mexican']

@@ -1,5 +1,6 @@
 ---
 title: Dalie's Smokehouse
+created: 2026-07-16
 status: tried
 description: Barbecue from the Pappy's and Bogart's crew
 cuisine: ['bbq']

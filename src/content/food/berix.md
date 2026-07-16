@@ -1,5 +1,6 @@
 ---
 title: Berix
+created: 2026-07-16
 status: want-to-try
 description: Cevapi, doner, and Turkish coffee
 cuisine: ['balkan']
@@ -9,4 +10,5 @@ address:
   - St. Louis, MO 63125
 coords: [38.523592, -90.299332]
 url: https://berixcoffee.com
+instagram: https://www.instagram.com/berixrestaurant
 ---

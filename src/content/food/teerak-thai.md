@@ -1,5 +1,6 @@
 ---
 title: TeeRak Thai
+created: 2026-07-16
 status: want-to-try
 description: Regional Thai and khao soi
 cuisine: ['thai']

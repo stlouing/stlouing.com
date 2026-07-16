@@ -1,5 +1,6 @@
 ---
 title: Pirrone's
+created: 2026-07-16
 status: tried
 description: North side St. Louis-style pizzeria
 cuisine: ['pizza']

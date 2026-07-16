@@ -1,5 +1,6 @@
 ---
 title: Tiger88
+created: 2026-07-16
 status: want-to-try
 description: Banh mi and boba
 cuisine: ['vietnamese']

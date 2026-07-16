@@ -1,5 +1,6 @@
 ---
 title: Comet Coffee
+created: 2026-07-16
 status: tried
 description: Coffee bar
 cuisine: ['cafe']

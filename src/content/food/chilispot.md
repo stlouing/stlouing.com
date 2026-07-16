@@ -1,5 +1,6 @@
 ---
 title: ChiliSpot
+created: 2026-07-16
 status: want-to-try
 description: Fiery Sichuan cooking
 cuisine: ['chinese']
