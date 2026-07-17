@@ -277,7 +277,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      A container background always paints behind its children, so the SVG (its
      own disc + fleur) sits on top; sharing the accent color, the container disc
      and the SVG disc read as one bigger circle while the fleur keeps its size. */
-  @media (min-width: 48rem) {
+  @media (min-width: 700px) {
     .index-crest {
       width: clamp(104px, 18vw, 150px);
       aspect-ratio: 1;
@@ -289,7 +289,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   /* Hidden on narrow screens — there's no right-hand column to sit in. Collapse
      the grid to one column too, so the intro spans the full width instead of
      staying pinned to the 2fr track with an empty column beside it. */
-  @media (max-width: 34rem) {
+  @media (max-width: 700px) {
     .index-body {
       grid-template-columns: 1fr;
     }
@@ -416,7 +416,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   /* The rendered Markdown list, kept compact for the teaser. */
   .recent-changes {
-    font-size: var(--font-size-sm);
     color: var(--color-text);
     line-height: 1.4;
   }
@@ -449,13 +448,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   /* Stack the date over its summary on phones: collapse to one track, and let the
      row's two children flow into two auto rows. */
-  @media (max-width: 34rem) {
+  @media (max-width: 700px) {
     .recent-list {
       grid-template-columns: 1fr;
     }
 
     .recent-item {
-      row-gap: 2px;
+      row-gap: var(--spacing-xs);
     }
   }
 
@@ -467,7 +466,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-end: var(--spacing-lg);
   }
 
-  @media (max-width: 34rem) {
+  @media (max-width: 700px) {
     .directory {
       grid-template-columns: 1fr;
     }

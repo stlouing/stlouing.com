@@ -1485,7 +1485,7 @@ body:has([data-neighborhood-map]) .river-border {
   justify-content: space-between;
   gap: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-background);
+  background: var(--color-surface);
   height: 45px;
 }
 

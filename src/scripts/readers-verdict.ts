@@ -101,7 +101,7 @@ function setupWidget(root: HTMLElement): void {
         const total = counts.likes + counts.dislikes
         cta.textContent =
           loaded && total === 0
-            ? 'Been here? Be the first to vote!'
+            ? 'Been here? What did you think?'
             : 'Been here? What did you think?'
       }
     }
@@ -137,7 +137,7 @@ function setupWidget(root: HTMLElement): void {
       likeButton.disabled = false
       dislikeButton.disabled = false
       render()
-      setStatus(voteStatus, "Couldn't record your vote — try again.")
+      setStatus(voteStatus, "Couldn't record your vote, please try again.")
     }
   }
 
