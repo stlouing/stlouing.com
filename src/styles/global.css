@@ -2159,15 +2159,6 @@ body:has([data-filter-root]) .site-header {
   isolation: isolate;
 }
 
-/* On mobile the single column leads with the sidebar (map, address, links) above
-   the writeup. Desktop grid-places both columns explicitly, so `order` is inert
-   there and this only reorders the stacked mobile view. */
-@media screen and (max-width: 899px) {
-  .detail-aside {
-    order: -1;
-  }
-}
-
 @media screen and (min-width: 900px) {
   .detail-layout {
     grid-template-columns: minmax(0, 1fr) 290px;

@@ -54,7 +54,7 @@ export const sections: Section[] = [
   // reference, reached via the St. Louis Overview topic; Want to Try lives with
   // Food on the /food page — none of them are top-level groups anymore.)
   {
-    label: 'Best of St. Louis Food',
+    label: 'The Best Food in St. Louis',
     path: '/best/',
     group: 'lists',
     description: 'My favorite restaurants and cafes so far!',

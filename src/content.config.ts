@@ -161,4 +161,14 @@ const topics = defineCollection({
   }),
 })
 
-export const collections = { food, hikes, notes, neighborhoods, topics }
+// The site changelog: one Markdown file per update, named by date. Frontmatter
+// carries the date; the body is a plain Markdown list of what changed (so a new
+// update is just a small file with a date and a few bullets — no JSON to escape).
+const changelog = defineCollection({
+  loader: md('changelog'),
+  schema: z.object({
+    date: z.coerce.date(),
+  }),
+})
+
+export const collections = { food, hikes, notes, neighborhoods, topics, changelog }

@@ -8,49 +8,47 @@ draft: true
 
 ## The Bad
 
-### A City in Decline
+### A city in decline
 
 ### The Delmar Divide
 
-### Safety and Vacancy Rates
+### Safety and vacancy
 
-### Where Did You Go to High School?
+### Where did you go to high school?
 
-### Laws as Suggestions
+### Laws as suggestions
 
-### Downtown's Hollow Core
+### Downtown's hollow core
 
-### Built for Cars
+### Car-centric city
 
-### Blue City, Red State
+### Blue city in a red state
 
 ## The Good
 
-### The Food, and the People Who Make It
+### The food
 
-### Cost of Living
+### Affordability
 
-### Forest Park and Beyond
+### Forest Park and more
 
-### Free and World-Class Amenities
+### A City of neighborhoods
 
-### A City of Neighborhoods
+### Architecture
 
-### Architecture and the Brick
+### Fifteen minutes to anywhere
 
-### Fifteen Minutes to Anywhere
-
-### Proximity to Cities
+### Proximity to other cities
 
 Chicago, Nashville, Louisville, Kansas City, and Memphis for weekend trips.
 
-### Proximity to Nature
+### Proximity to nature
 
-### Four Seasons
+### Four seasons
 
 Summer and winter kinda suck, though.
 
-### Local Customs
+### Local customs
 
 Regional food, golf carts, Halloween jokes.
 

@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { render } from 'astro:content'
+import { getChangelog } from '../lib/changelog'
+import { formatDate } from '../lib/dates'
+
+const description = "What's new on St. Louing — the running log of updates, newest first."
+
+// Render each update's Markdown body up front, newest first.
+const entries = await getChangelog()
+const updates = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await render(entry)
+
+    return { date: entry.data.date, Content }
+  }),
+)
+---
+
+<BaseLayout crumb="Updates" title="Updates" description={description}>
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Updates</h1>
+      </div>
+      <p class="entry-summary">A running log of what I've added and changed</p>
+    </header>
+
+    <ol class="updates">
+      {
+        updates.map(({ date, Content }) => (
+          <li class="update">
+            <time class="update-date" datetime={date.toISOString()}>
+              {formatDate(date)}
+            </time>
+            <div class="update-changes">
+              <Content />
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </article>
+</BaseLayout>
+
+<style>
+  /* The list owns the two tracks — a date rail sized to the widest date, then the
+     changes — so every date aligns into one column no matter its length. Each row
+     is a subgrid spanning both tracks, which also keeps the per-row hairline. */
+  .updates {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    margin: var(--spacing-xl) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .update {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    column-gap: var(--spacing-lg);
+    padding-block: var(--spacing-lg);
+    border-block-start: 1px solid var(--color-line);
+  }
+
+  .update:first-child {
+    border-block-start: 0;
+    padding-block-start: 0;
+  }
+
+  .update-date {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-muted);
+    text-wrap: nowrap;
+    /* Nudge onto the first line of the changes list beside it. */
+    padding-block-start: 2px;
+  }
+
+  /* The rendered Markdown list. Keep the bullets, just reset spacing. */
+  .update-changes {
+    color: var(--color-text);
+    line-height: 1.45;
+  }
+
+  .update-changes :global(ul) {
+    margin: 0;
+    padding-inline-start: var(--spacing-lg);
+  }
+
+  .update-changes :global(li) {
+    margin-block: 0;
+  }
+
+  /* Reset the first paragraph's top margin so it lines up with the date, and give
+     any following paragraphs reading spacing. */
+  .update-changes :global(p) {
+    margin-block: 0;
+  }
+
+  .update-changes :global(p + p) {
+    margin-block-start: var(--spacing-sm);
+  }
+
+  /* Match the prose convention: links gain a solid underline on hover (the base
+     `a` rule already sets the thickness/color; this block sits outside `.body`,
+     so it needs its own hover-underline rule). */
+  .update-changes :global(a:hover) {
+    text-decoration-line: underline;
+  }
+
+  /* Stack the date over its changes on phones: collapse to one track, let the
+     row's two children flow into two auto rows. */
+  @media (max-width: 34rem) {
+    .updates {
+      grid-template-columns: 1fr;
+    }
+
+    .update {
+      row-gap: var(--spacing-sm);
+      padding-block: var(--spacing-md);
+    }
+  }
+</style>
