@@ -32,6 +32,13 @@ export function hasBody(entry: { body?: string }): boolean {
   return text.length > 0
 }
 
+// Excerpt lengths, so the two intents are set in one place rather than as magic
+// numbers across pages. PREVIEW is the shorter, on-screen teaser (list rows, map
+// popups, card previews); META is tuned for the SEO <meta name="description">,
+// where Google renders ~150–160 characters.
+export const PREVIEW_EXCERPT_CHARS = 120
+export const META_DESCRIPTION_CHARS = 150
+
 // A plain-text excerpt of a Markdown body: strips code, wikilinks, markdown
 // syntax, and HTML, then truncates on a word boundary. Used as the fallback for
 // feed/list descriptions when an entry has no authored `description`.

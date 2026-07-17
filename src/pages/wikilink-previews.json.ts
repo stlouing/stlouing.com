@@ -1,14 +1,13 @@
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
-import { published, excerpt } from '../lib/content'
+import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import { cuisineEmoji } from '../lib/emoji'
 
 // Small map of `id -> { title, excerpt, ... }` for every linkable (published)
 // entry, fetched once by the wikilink hovercard script
-// (src/scripts/wikilink-preview.ts) and cached. Keep the excerpt short — it's a
-// hover preview, not the page. Food entries also carry cuisine + neighborhood so
-// the card can show them, which is especially useful for places with no writeup.
-const EXCERPT_CHARS = 200
+// (src/scripts/wikilink-preview.ts) and cached. The hover preview reuses the
+// shared on-screen preview length. Food entries also carry cuisine + neighborhood
+// so the card can show them, which is especially useful for places with no writeup.
 
 interface Preview {
   title: string
@@ -28,14 +27,14 @@ export const GET: APIRoute = async () => {
     entries: T[],
   ): void {
     for (const entry of published(entries)) {
-      previews[entry.id] = { title: entry.data.title, excerpt: excerpt(entry.body, EXCERPT_CHARS) }
+      previews[entry.id] = { title: entry.data.title, excerpt: excerpt(entry.body, PREVIEW_EXCERPT_CHARS) }
     }
   }
 
   for (const place of published(await getCollection('food'))) {
     previews[place.id] = {
       title: place.data?.title,
-      excerpt: excerpt(place.body, EXCERPT_CHARS),
+      excerpt: excerpt(place.body, PREVIEW_EXCERPT_CHARS),
       cuisine: place.data?.cuisine,
       emoji: cuisineEmoji(place.data?.cuisine),
       neighborhood: place.data?.neighborhood,
@@ -45,7 +44,7 @@ export const GET: APIRoute = async () => {
   for (const topic of published(await getCollection('topics'))) {
     previews[topic.id] = {
       title: topic.data?.title,
-      excerpt: excerpt(topic.body, EXCERPT_CHARS),
+      excerpt: excerpt(topic.body, PREVIEW_EXCERPT_CHARS),
       description: topic.data?.description,
     }
   }
@@ -56,7 +55,7 @@ export const GET: APIRoute = async () => {
   for (const neighborhood of published(await getCollection('neighborhoods'))) {
     previews[neighborhood.id] = {
       title: neighborhood.data.title,
-      excerpt: excerpt(neighborhood.body, EXCERPT_CHARS),
+      excerpt: excerpt(neighborhood.body, PREVIEW_EXCERPT_CHARS),
       description: neighborhood.data.description,
     }
   }

@@ -114,6 +114,10 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
+      // Tag/aggregation pages are noindex (see BaseLayout `noindex`), so keep them
+      // out of the sitemap too — a sitemap entry says "index this", which would
+      // contradict the page's own noindex signal.
+      filter: (page) => !page.includes('/tags/'),
       serialize(item) {
         const pathname = new URL(item.url).pathname.replace(/\/$/, '') || '/'
         const lastmod = lastmodByPath.get(pathname)

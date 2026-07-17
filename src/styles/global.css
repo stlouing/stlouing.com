@@ -1007,34 +1007,23 @@ body:has(.map-split) main > .wrap,
 }
 
 /* Neighborhoods list (a section list, no lead badge): the title reads as a body
-   heading (like the Food title), the number sits quiet ahead of it, and the
-   open panel holds a clamped render of the writeup with accent list markers. */
+   heading (like the Food title), the number sits quiet ahead of it, and the row
+   holds a clamped plain-text excerpt of the writeup. */
 
 /* The number prefix (when shown) sits quiet ahead of the neighborhood name. */
 .map-list.section-list .number {
   color: var(--color-muted);
 }
 
-.map-list.section-list .neighborhood-preview {
+/* The clamped plain-text writeup teaser on a map-list row — shared by both the
+   Food and Neighborhoods lists. */
+.map-list .map-preview {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
   line-height: 1.5;
-
-  ul {
-    list-style: disc;
-  }
-
-  p,
-  p:first-child {
-    margin-block-start: 0 !important;
-  }
-
-  ::marker {
-    color: var(--color-accent);
-  }
 }
 
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
@@ -1540,17 +1529,14 @@ body:has([data-neighborhood-map]) .river-border {
   background: var(--color-surface);
 }
 
-/* Mobile: the Food list scrolls with the page under a taller, wrapping filter
-   toolbar, so a sticky group header at top:45px pins *behind* the filters instead
-   of below them. Drop the sticky/absolute positioning and let the headers scroll
-   inline. Only the Food group headers need this — the Neighborhoods section heads
-   scroll inside their own pane and stay sticky. */
+/* Mobile: the Food list scrolls with the page, and the only element pinned to the
+   top is the filter toolbar (the site + pane headers scroll away). It wraps to a
+   variable height, so pin the group headers just beneath its live height (published
+   as --filter-toolbar-height by views.ts) rather than the desktop pane's 45px.
+   Only Food needs this — the Neighborhoods section heads have no filter toolbar. */
 @media (max-width: 700px) {
   .map-list .list > li.group-header {
-    position: static;
-    top: auto;
-    margin-block-start: 0;
-    background: transparent;
+    top: var(--filter-toolbar-height, 65px);
   }
 }
 
@@ -1656,6 +1642,10 @@ body:has([data-neighborhood-map]) .river-border {
 @media (max-width: 700px) {
   [data-filter-root]:not([data-view='map']) .food-grouped .list > li.group-header {
     padding-inline-end: var(--spacing-md);
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
@@ -2577,5 +2567,5 @@ body:has([data-filter-root]) .site-header {
    so repeat-x doesn't round and leak a 1px red seam between tiles. */
 .river-border {
   height: 24px;
-  background: #c70f2e url('/river-border.svg') repeat-x center / auto 100%;
+  background: transparent url('/river-border2.svg') repeat-x center / auto 100%;
 }

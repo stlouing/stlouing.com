@@ -172,7 +172,9 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     }
   }
 
-  function writeUrl(): void {
+  // The normalized active filter/sort state as querystring params (empty facets
+  // and the default sort omitted).
+  function buildParams(): URLSearchParams {
     const params = new URLSearchParams()
     const query = (search?.value ?? '').trim()
     if (query) {
@@ -187,7 +189,33 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     if (sort && sort.value && sort.value !== sort.options[0]?.value) {
       params.set('sort', sort.value)
     }
+
+    return params
+  }
+
+  // A filtered/searched view (any active querystring) is a thin, duplicative slice
+  // of the base list — and the same static HTML the bare page serves — so mark it
+  // noindex,follow: search engines keep crawling out to the linked reviews but
+  // drop the parameterized URL. The unfiltered page carries no querystring, so the
+  // meta is removed and it stays indexable.
+  function syncRobots(hasFilters: boolean): void {
+    const id = 'robots-filtered'
+    const existing = document.getElementById(id)
+    if (hasFilters && !existing) {
+      const meta = document.createElement('meta')
+      meta.id = id
+      meta.name = 'robots'
+      meta.content = 'noindex, follow'
+      document.head.appendChild(meta)
+    } else if (!hasFilters && existing) {
+      existing.remove()
+    }
+  }
+
+  function writeUrl(): void {
+    const params = buildParams()
     const queryString = params.toString()
+    syncRobots(queryString.length > 0)
     const url = queryString ? `${location.pathname}?${queryString}` : location.pathname
     history.replaceState(null, '', url)
   }
@@ -257,4 +285,7 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   readUrl()
   applySort()
   apply()
+  // Honor a shared/bookmarked filtered URL on first load: noindex it if it arrived
+  // with active filters (the controls were just hydrated from the querystring).
+  syncRobots(buildParams().toString().length > 0)
 }

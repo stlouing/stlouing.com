@@ -19,7 +19,7 @@ const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 ---
 
-<BaseLayout crumb={data.title}>
+<BaseLayout crumb={data.title} ogType="article">
   <Entry title={data.title} tags={data.tags} backlinks={backlinks}>
     <Fragment slot="meta">
       {data.area && <span>{data.area}</span>}

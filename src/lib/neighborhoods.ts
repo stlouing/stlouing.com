@@ -172,6 +172,100 @@ export function festivalsIn(slug: string): Festival[] {
   return (festivals as Festival[]).filter((festival) => festival.neighborhood === slug)
 }
 
+// Every annual event across all neighborhoods, for the site-wide calendar.
+export function allFestivals(): Festival[] {
+  return festivals as Festival[]
+}
+
+// Calendar months, January-first, for ordering + grouping events by month.
+export const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+] as const
+
+// Holiday/seasonal anchors that imply a month when an event's `when` names no
+// month directly (e.g. "Labor Day weekend" -> September).
+const monthAnchors: Record<string, number> = {
+  'new year': 0,
+  'mardi gras': 1,
+  'st. patrick': 2,
+  'st patrick': 2,
+  'memorial day': 4,
+  juneteenth: 5,
+  'independence day': 6,
+  'fourth of july': 6,
+  'labor day': 8,
+  halloween: 9,
+  thanksgiving: 10,
+  christmas: 11,
+}
+
+// The month an event falls in, as a 0-based index (January = 0). Reads a month
+// name from the free-text `when`, else a known holiday anchor; returns 12 when
+// neither resolves, so undated events sort into a trailing bucket.
+export function festivalMonthIndex(when: string): number {
+  const lower = when.toLowerCase()
+  const named = MONTHS.findIndex((month) => lower.includes(month.toLowerCase()))
+  if (named !== -1) {
+    return named
+  }
+
+  for (const [anchor, index] of Object.entries(monthAnchors)) {
+    if (lower.includes(anchor)) {
+      return index
+    }
+  }
+
+  return 12
+}
+
+// A coarse within-month order for a `when`: an explicit day number wins, else an
+// early/mid/late modifier, else the middle of the month.
+export function festivalDayRank(when: string): number {
+  const lower = when.toLowerCase()
+  const day = lower.match(/\b(\d{1,2})\b/)
+  if (day) {
+    return Number(day[1])
+  }
+  if (lower.includes('early')) {
+    return 5
+  }
+  if (lower.includes('mid')) {
+    return 15
+  }
+  if (lower.includes('late')) {
+    return 25
+  }
+
+  return 15
+}
+
+// Display name for a neighborhood slug (from the neighborhood data), skipping the
+// `ignored` rows folded into a merged neighborhood.
+const nameBySlug = new Map(
+  neighborhoods
+    .filter((neighborhood) => !('ignored' in neighborhood))
+    .map((neighborhood) => [neighborhood.slug, neighborhood.name]),
+)
+
+export function neighborhoodName(slug: string | null): string | undefined {
+  if (!slug) {
+    return undefined
+  }
+
+  return nameBySlug.get(slug)
+}
+
 export interface ResourceLink {
   label: string
   href: string

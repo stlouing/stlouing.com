@@ -1,6 +1,4 @@
 ---
-import IconFlag from '../assets/IconFlag.astro'
-
 import Nav from './Nav.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import { href } from '../lib/url'
@@ -13,7 +11,10 @@ interface Props {
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="site-name" href={href('/')}>
-      <IconFlag alt="St. Louis flag" /> St. Louing
+      {/* Referenced (not inlined) so the ~22KB flag is cached once, not re-shipped
+        in every page's HTML. Decorative: the "St. Louing" text names the link. */}
+      <img class="stlouis-flag" src={href('/flag.svg')} alt="" width="48" height="30" /> St.
+      Louing
     </a>
     <div class="header-actions">
       <Nav />

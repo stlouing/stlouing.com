@@ -5,8 +5,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
 import { published, sortTopics } from '../lib/content'
+import { isExplored } from '../lib/verdict'
 import { getChangelog } from '../lib/changelog'
-import { formatDateShort } from '../lib/dates'
+import { formatDateShort, formatDate } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
@@ -22,6 +23,7 @@ import IconFolderTree from '../assets/IconFolderTree.astro'
 import IconInfo from '../assets/IconInfo.astro'
 import IconTags from '../assets/IconTags.astro'
 import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
+import IconCalendar from '../assets/IconCalendar.astro'
 
 // A Lucide icon per directory section, keyed by path. Topic icons come from the
 // shared <Icon> component, resolved from each topic's `icon:` frontmatter (so
@@ -31,6 +33,7 @@ const iconByPath: Record<string, typeof IconInfo> = {
   '/neighborhoods/': IconMapPin,
   '/best/': IconAward,
   '/food/backlog/': IconListChecks,
+  '/events/': IconCalendar,
   '/sitemap/': IconFolderTree,
   '/about/': IconInfo,
   '/tags/': IconTags,
@@ -65,6 +68,10 @@ const allFood = published(await getCollection('food'))
 const allNeighborhoods = published(await getCollection('neighborhoods'))
 const foodCount = allFood.length
 const neighborhoodCount = allNeighborhoods.length
+// Progress report tallies: restaurants actually visited (written-up or tried, not
+// the want-to-try backlog); neighborhoods wandered mirrors the "explored" count.
+const visitedCount = allFood.filter((place) => isExplored(place.data.status)).length
+const wanderedCount = neighborhoodCount
 const countByPath: Record<string, string> = {
   '/food/': `${foodCount} spots`,
   '/neighborhoods/': `${neighborhoodCount} explored`,
@@ -79,11 +86,17 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       <div class="index-intro">
         <h1 class="page-title">St. Louing</h1>
         <p class="tagline p-note">{tagline}</p>
+
         <p class="introduction">
           {intro}
           <a class="more inline" href={href('/about/')} aria-label="Read more about St. Louing">
             Read more <IconArrowRight />
           </a>
+        </p>
+        <p class="progress-report">
+          <!-- <span class="stat-title">So far:</span> -->
+          I've explored <span class="stat">{wanderedCount}</span> neighborhoods and visited{' '}
+          <span class="stat">{visitedCount}</span> restaurants.
         </p>
       </div>
       <div class="index-crest">
@@ -108,7 +121,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         latestUpdates.map(({ date, Content }) => (
           <li class="recent-item">
             <time class="recent-date" datetime={date.toISOString()}>
-              {formatDateShort(date)}
+              {formatDate(date)}
             </time>
             <div class="recent-changes">
               <Content />
@@ -307,6 +320,25 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     line-height: 1.2;
   }
 
+  /* A running tally under the tagline; the counts ride in accent, the label quiet. */
+  .progress-report {
+    margin-block: var(--spacing-sm) 0;
+    /* font-family: var(--font-mono); */
+    font-size: var(--font-size-lg);
+    color: var(--color-muted);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .progress-report .stat {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .progress-report .stat-title {
+    color: var(--color-text);
+  }
+
   .introduction {
     max-width: 65ch;
     font-size: var(--font-size-md);
@@ -318,7 +350,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      dotted rule under both (matches the list-item separators below it). */
   .group-header {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     justify-content: space-between;
     gap: var(--spacing-sm);
     border-block-end: 2px solid var(--color-line-contrast);
@@ -380,23 +412,19 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-end: 3rem;
   }
 
-  /* The list owns the two tracks — a date rail sized to the widest date, then the
-     summary. Each row is a subgrid spanning both, so every date aligns into one
-     column without hardcoding its width. */
+  /* Each entry stacks its date over the summary (see .recent-item); the list is a
+     plain vertical stack of those rows. */
   .recent-list {
-    display: grid;
-    grid-template-columns: max-content 1fr;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  /* Date stacked over its summary, top to bottom. */
   .recent-item {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-    align-items: start;
-    column-gap: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
     padding-block: var(--spacing-sm);
   }
 
@@ -410,8 +438,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-weight: 500;
     color: var(--color-muted);
     text-wrap: nowrap;
-    /* Nudge onto the first line of the changes list beside it. */
-    padding-block-start: 2px;
   }
 
   /* The rendered Markdown list, kept compact for the teaser. */
@@ -444,18 +470,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      so it needs its own hover-underline rule). */
   .recent-changes :global(a:hover) {
     text-decoration-line: underline;
-  }
-
-  /* Stack the date over its summary on phones: collapse to one track, and let the
-     row's two children flow into two auto rows. */
-  @media (max-width: 700px) {
-    .recent-list {
-      grid-template-columns: 1fr;
-    }
-
-    .recent-item {
-      row-gap: var(--spacing-xs);
-    }
   }
 
   .directory {

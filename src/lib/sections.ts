@@ -66,9 +66,15 @@ export const sections: Section[] = [
     description: "Places I haven't tried or rated yet.",
   },
   {
+    label: 'Annual Events',
+    path: '/events/',
+    group: 'lists',
+    description: 'A calendar of festivals and events across the city.',
+  },
+  {
     label: 'Sitemap',
     path: '/sitemap/',
-    group: 'lists',
+    group: 'site',
     description: 'An index of every page on the site.',
   },
   // Hidden until it has posts (omitted from `groups` above and not `primary`).

@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import RelatedList from '../components/RelatedList.astro'
+import RelatedCard from '../components/RelatedCard.astro'
+import IconCalendar from '../assets/IconCalendar.astro'
+import { href } from '../lib/url'
+import {
+  allFestivals,
+  festivalMonthIndex,
+  festivalDayRank,
+  neighborhoodName,
+  MONTHS,
+} from '../lib/neighborhoods'
+
+// Assemble the per-neighborhood event data into one month-by-month calendar.
+// Each event is placed by the month its `when` names (or implies), then ordered
+// within the month by day / early-mid-late; anything unplaceable falls into a
+// trailing "Year-round & varies" bucket.
+const events = allFestivals()
+  .map((festival) => ({
+    ...festival,
+    monthIndex: festivalMonthIndex(festival.when),
+    dayRank: festivalDayRank(festival.when),
+    place: neighborhoodName(festival.neighborhood),
+  }))
+  .sort(
+    (left, right) =>
+      left.monthIndex - right.monthIndex ||
+      left.dayRank - right.dayRank ||
+      left.name.localeCompare(right.name),
+  )
+
+interface MonthGroup {
+  label: string
+  events: typeof events
+}
+
+// Group into the months that actually have events, in calendar order (the events
+// are already month-sorted, so same-month rows are contiguous). Index 12 collects
+// anything without a resolvable month.
+const byMonth: MonthGroup[] = []
+for (const event of events) {
+  const label = event.monthIndex < MONTHS.length ? MONTHS[event.monthIndex] : 'Year-round & varies'
+  const current = byMonth.at(-1)
+  if (current && current.label === label) {
+    current.events.push(event)
+  } else {
+    byMonth.push({ label, events: [event] })
+  }
+}
+
+const description =
+  'A month-by-month calendar of annual festivals, parades, and celebrations across St. Louis neighborhoods.'
+---
+
+<BaseLayout crumb="Annual Events" title="St. Louis Events by Month" description={description}>
+  <article class="page">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Annual Events in St. Louis</h1>
+      </div>
+      <p class="entry-summary">{description}</p>
+    </header>
+
+    {
+      byMonth.map((month) => (
+        <RelatedList title={month.label}>
+          {month.events.map((event) => {
+            const link = event.neighborhood
+              ? href(`/neighborhoods/${event.neighborhood}/`)
+              : undefined
+            // Kicker pairs the specific timing with the neighborhood (the month is
+            // already the section header), e.g. "Late June · Downtown".
+            const kicker = event.place ? `${event.when} · ${event.place}` : event.when
+
+            return (
+              <RelatedCard
+                href={link}
+                title={event.name}
+                meta={kicker}
+                metaType="date"
+                description={event.blurb}>
+                <IconCalendar slot="icon" />
+              </RelatedCard>
+            )
+          })}
+        </RelatedList>
+      ))
+    }
+  </article>
+</BaseLayout>

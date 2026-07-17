@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content'
-import { published, hasBody, excerpt } from './content'
+import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from './content'
 import { entryUrl } from './entry-url.mjs'
 
 export interface TaggedItem {
@@ -18,7 +18,7 @@ function summarize(entry: { data: { description?: string }; body?: string }): st
     return entry.data.description
   }
 
-  return hasBody(entry) ? excerpt(entry.body ?? '', 120) : undefined
+  return hasBody(entry) ? excerpt(entry.body ?? '', PREVIEW_EXCERPT_CHARS) : undefined
 }
 
 export async function collectTagged(): Promise<TaggedItem[]> {

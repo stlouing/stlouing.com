@@ -1,45 +1,198 @@
 ---
+import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { sections } from '../lib/sections'
+import RelatedList from '../components/RelatedList.astro'
+import RelatedCard from '../components/RelatedCard.astro'
+import Icon from '../components/Icon.astro'
+import IconMapPin from '../assets/IconMapPin.astro'
 import { href } from '../lib/url'
+import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
+import { cuisineEmoji, cuisineLabel } from '../lib/emoji'
+
+// Featured reading: the pizza deep-dive (leads with its photo) + regional foods.
+const topics = published(await getCollection('topics'))
+const pizza = topics.find((topic) => topic.id === 'st-louis-style-pizza')
+const regional = topics.find((topic) => topic.id === 'regional-foods')
+const field = topics.find((topic) => topic.id === 'field-notes')
+
+// Surface the most-written restaurants + neighborhoods, so a lost visitor lands on
+// pages with real content rather than stubs. "Most written" = longest writeup body.
+const byBodyLength = (left: { body?: string }, right: { body?: string }) =>
+  (right.body?.length ?? 0) - (left.body?.length ?? 0)
+const restaurants = published(await getCollection('food'))
+  .filter(hasBody)
+  .sort(byBodyLength)
+  .slice(0, 2)
+const neighborhoods = published(await getCollection('neighborhoods'))
+  .filter(hasBody)
+  .sort(byBodyLength)
+  .slice(0, 2)
 ---
 
-<BaseLayout crumb="Not found">
-  <h1>Page not found</h1>
-  <p>That page doesn't exist (or it moved). Try one of these:</p>
+<BaseLayout crumb="Not found" title="Page Not Found">
+  <article class="page notfound">
+    <header class="entry-header">
+      <div class="entry-bar">
+        <h1>Page Not Found</h1>
+      </div>
+      <p class="entry-summary">
+        That page doesn't exist (or it moved). Here's a good place to start:
+      </p>
+    </header>
 
-  <ul class="links">
-    <li><a href={href('/')}>Home</a></li>
     {
-      sections.map((section) => (
-        <li>
-          <a href={href(section.path)}>{section.label}</a>
-        </li>
-      ))
+      pizza && (
+        <a class="feature" href={href(`/${pizza.id}/`)}>
+          {pizza.data.ogImage && (
+            <img
+              class="feature-img"
+              src={href(pizza.data.ogImage)}
+              alt={pizza.data.title}
+              width="1200"
+              height="630"
+              loading="lazy"
+            />
+          )}
+          <span class="feature-body">
+            <span class="feature-kicker">Featured</span>
+            <span class="feature-title">{pizza.data.title}</span>
+            {pizza.data.description && <span class="feature-desc">{pizza.data.description}</span>}
+          </span>
+        </a>
+      )
     }
-  </ul>
+
+    {
+      regional && field && (
+        <RelatedList title="More reading">
+          <RelatedCard
+            href={href(`/${field.id}/`)}
+            title={field.data.title}
+            meta="Article"
+            metaType="text"
+            description={field.data.description}>
+            <Icon name={field.data.icon} slot="icon" />
+          </RelatedCard>
+          <RelatedCard
+            href={href(`/${regional.id}/`)}
+            title={regional.data.title}
+            meta="Article"
+            metaType="text"
+            description={regional.data.description}>
+            <Icon name={regional.data.icon} slot="icon" />
+          </RelatedCard>
+        </RelatedList>
+      )
+    }
+
+    {
+      restaurants.length > 0 && (
+        <RelatedList title="Restaurants">
+          {restaurants.map((place) => (
+            <RelatedCard
+              href={href(`/food/${place.id}/`)}
+              title={place.data.title}
+              meta={[cuisineLabel(place.data.cuisine[0]), place.data.neighborhood]
+                .filter(Boolean)
+                .join(' / ')}
+              metaType="text"
+              emoji={cuisineEmoji(place.data.cuisine)}
+              description={place.data.description ?? excerpt(place.body, PREVIEW_EXCERPT_CHARS)}
+            />
+          ))}
+        </RelatedList>
+      )
+    }
+
+    {
+      neighborhoods.length > 0 && (
+        <RelatedList title="Neighborhoods">
+          {neighborhoods.map((hood) => (
+            <RelatedCard
+              href={href(`/neighborhoods/${hood.id}/`)}
+              title={hood.data.title}
+              meta="Neighborhood"
+              metaType="text"
+              description={hood.data.description ?? excerpt(hood.body, PREVIEW_EXCERPT_CHARS)}>
+              <IconMapPin slot="icon" />
+            </RelatedCard>
+          ))}
+        </RelatedList>
+      )
+    }
+
+    <p class="home-link">
+      <a href={href('/')}>Back home</a>
+    </p>
+  </article>
 
   <style>
-    .links {
-      list-style: none;
-      margin: var(--spacing-lg) 0 0;
-      padding: 0;
-      font-family: var(--font-mono);
-      font-weight: 600;
-    }
-
-    .links li {
-      margin: 0;
-      padding-block: var(--spacing-xs);
-      border-block-end: 1px solid var(--color-line);
-    }
-
-    .links a {
-      color: var(--color-text);
+    /* The featured article: its photo beside title + blurb, the whole card a link.
+       Stacks image-over-text on narrow screens. */
+    .feature {
+      display: grid;
+      grid-template-columns: minmax(0, 340px) 1fr;
+      gap: var(--spacing-lg);
+      align-items: center;
+      margin-block: var(--spacing-lg);
+      padding: var(--spacing-md);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      background: var(--color-surface);
       text-decoration: none;
+      color: var(--color-text);
+    }
 
-      &:hover {
-        color: var(--color-accent);
+    .feature:hover .feature-title {
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+    }
+
+    .feature-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1200 / 630;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    .feature-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      min-width: 0;
+    }
+
+    .feature-kicker {
+      font-family: var(--font-mono);
+      font-size: var(--font-size-xxs);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing);
+      color: var(--color-accent);
+    }
+
+    .feature-title {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .feature-desc {
+      color: var(--color-muted);
+      line-height: 1.4;
+    }
+
+    .home-link {
+      margin-block-start: var(--spacing-xl);
+    }
+
+    @media (max-width: 600px) {
+      .feature {
+        grid-template-columns: 1fr;
       }
     }
   </style>

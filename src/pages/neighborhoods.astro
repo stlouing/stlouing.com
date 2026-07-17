@@ -1,10 +1,10 @@
 ---
-import { getCollection, render } from 'astro:content'
+import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import MapRow from '../components/MapRow.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
-import { published, excerpt, hasBody } from '../lib/content'
+import { published, excerpt, hasBody, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import {
   neighborhoodResourceLinks,
   neighborhoodPopulation,
@@ -19,13 +19,6 @@ const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
 // Food spots per neighborhood (keyed by normalized name), for the map hover card.
 const foodByHood = await foodByNeighborhood()
-type RenderedContent = Awaited<ReturnType<typeof render>>['Content']
-const rendered = new Map<string, RenderedContent>()
-
-for (const entry of entries) {
-  const { Content } = await render(entry)
-  rendered.set(entry.id, Content)
-}
 
 // "Written" means a real writeup body — not just that a markdown file exists. A
 // frontmatter-only entry (e.g. the Delmar Loop, which carries only its links)
@@ -71,7 +64,7 @@ function popupData(slug: string, name: string, group: string) {
     // "not explored yet" line so the card never reads as empty/unfinished.
     excerpt:
       entry?.body !== undefined && entry.body.length > 0
-        ? excerpt(entry.body, 150)
+        ? excerpt(entry.body, PREVIEW_EXCERPT_CHARS)
         : NOT_EXPLORED_EXCERPT,
   }
 }
@@ -125,7 +118,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
         <ul class="list">
           {
             listed.map((neighborhood, index) => {
-              const Content = rendered.get(neighborhood.slug)
               const written = isWritten(neighborhood.slug)
               const numberLabel = neighborhood?.numberLabel
                 ? neighborhood.numberLabel
@@ -190,10 +182,8 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       </span>
                     )}
                     {popup.tagline && <div class="list-tagline">{popup.tagline}</div>}
-                    {written && Content && (
-                      <div class="neighborhood-preview">
-                        <Content />
-                      </div>
+                    {written && entry && (
+                      <div class="map-preview">{excerpt(entry.body, PREVIEW_EXCERPT_CHARS)}</div>
                     )}
                   </MapRow>
                 </Fragment>
@@ -208,13 +198,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
 </BaseLayout>
 
 <style>
-
-  /* The "not explored yet" default preview reads as a quiet placeholder, distinct
-     from a real writeup teaser. */
-  .neighborhood-preview-stub {
-    color: var(--color-muted);
-  }
-
   .section-count {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);

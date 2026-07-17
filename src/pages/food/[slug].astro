@@ -13,7 +13,7 @@ import MyPick from '../../components/MyPick.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import { href, displayUrl } from '../../lib/url'
-import { published, excerpt, hasBody } from '../../lib/content'
+import { published, excerpt, hasBody, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
 import { resolveVerdict, resolveWriterState } from '../../lib/verdict'
@@ -113,13 +113,14 @@ const mentionedIn = backlinks.filter(
 const seoTitle = primaryCuisine
   ? `${data.title} - ${cuisineLabel(primaryCuisine)} in St. Louis`
   : `${data.title} in St. Louis`
-const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.description
+const seoDescription = hasBody(entry) ? excerpt(entry.body, META_DESCRIPTION_CHARS) : data.description
 ---
 
 <BaseLayout
   crumb={data.title}
   title={seoTitle}
   description={seoDescription}
+  ogType="article"
   ogImage={data.ogImage}
   jsonLd={schema}>
   <Breadcrumbs trail={trail} />

@@ -11,7 +11,7 @@ import IconMapPin from '../../assets/IconMapPin.astro'
 import { href, displayUrl } from '../../lib/url'
 import { resolveVerdict } from '../../lib/verdict'
 import { formatDate } from '../../lib/dates'
-import { published, excerpt } from '../../lib/content'
+import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
   foodByNeighborhood,
@@ -136,7 +136,7 @@ const lastUpdated = entry ? (entry.data.updated ?? entry.data.created) : undefin
 // SEO meta description: the writeup excerpt when there is one (a fuller sentence
 // than the short tagline), else the authored `description`, else the generated line.
 const metaDescription = entry?.body
-  ? excerpt(entry.body, 155)
+  ? excerpt(entry.body, META_DESCRIPTION_CHARS)
   : (entry?.data.description ?? generated)
 
 // SEO title: "<name> - <kind> in St. Louis", so "St. Louis" is in the title for
@@ -163,7 +163,7 @@ const trail = [
 ]
 ---
 
-<BaseLayout crumb={title} title={seoTitle} description={metaDescription}>
+<BaseLayout crumb={title} title={seoTitle} description={metaDescription} ogType="article">
   <Breadcrumbs trail={trail} />
   <Entry title={title} backlinks={backlinks} share={false}>
     {

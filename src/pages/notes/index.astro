@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import List from '../../components/List.astro'
 import ListItem from '../../components/ListItem.astro'
 import { href } from '../../lib/url'
-import { published, excerpt } from '../../lib/content'
+import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/content'
 import { formatDateShort } from '../../lib/dates'
 
 const notes = published(await getCollection('notes')).sort(
@@ -25,7 +25,7 @@ const notes = published(await getCollection('notes')).sort(
           <ListItem
             title={note.data.title}
             href={href(`/notes/${note.id}/`)}
-            description={note.data.description ?? excerpt(note.body)}>
+            description={note.data.description ?? excerpt(note.body, PREVIEW_EXCERPT_CHARS)}>
             <time slot="meta" class="list-meta" datetime={note.data.created.toISOString()}>
               {formatDateShort(note.data.created)}
             </time>

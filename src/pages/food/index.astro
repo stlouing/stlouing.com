@@ -6,7 +6,7 @@ import FilterMapPage from '../../components/FilterMapPage.astro'
 import MapRow from '../../components/MapRow.astro'
 import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
-import { published, hasBody, excerpt } from '../../lib/content'
+import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/content'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
@@ -79,7 +79,7 @@ const stubExcerpt = (status: string): string =>
 
 <BaseLayout
   title="The St. Louis Food Map"
-  description="An interactive map of the St. Louis restaurants, filterable by cuisine and neighborhood. Every rating is my own.">
+  description="An interactive map of the St. Louis restaurants, filterable by cuisine and neighborhood. Each restaurant is rated by me and reviewed by the community.">
   <FilterMapPage
     class="food"
     floating
@@ -131,7 +131,7 @@ const stubExcerpt = (status: string): string =>
                 ...place.data.tags,
                 // The excerpt (writeup opening), not the full body — keeps the
                 // route's payload light while still searching the prose lead-in.
-                hasBody(place) ? excerpt(place.body, 160) : '',
+                hasBody(place) ? excerpt(place.body, 120) : '',
               ]
                 .filter(Boolean)
                 .join(' ')}
@@ -153,7 +153,7 @@ const stubExcerpt = (status: string): string =>
                 'data-instagram': place.data.instagram ?? '',
                 'data-tagline': place.data.description ?? '',
                 'data-excerpt': hasBody(place)
-                  ? excerpt(place.body, 150)
+                  ? excerpt(place.body, PREVIEW_EXCERPT_CHARS)
                   : stubExcerpt(place.data.status),
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
@@ -167,7 +167,9 @@ const stubExcerpt = (status: string): string =>
                 </span>
               )}
               {place.data.description && <div class="list-tagline">{place.data.description}</div>}
-              {hasBody(place) && <div class="food-preview">{excerpt(place.body, 200)}</div>}
+              {hasBody(place) && (
+                <div class="map-preview">{excerpt(place.body, PREVIEW_EXCERPT_CHARS)}</div>
+              )}
             </MapRow>
           ))
         }
@@ -193,21 +195,6 @@ const stubExcerpt = (status: string): string =>
 </script>
 
 <style>
-  .food-preview {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-    line-height: 1.5;
-  }
-
-  /* The "not visited yet" default preview reads as a quiet placeholder, distinct
-     from a real writeup teaser. */
-  .food-preview-stub {
-    color: var(--color-muted);
-  }
-
   .pane-links {
     display: flex;
     align-items: center;

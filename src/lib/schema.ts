@@ -72,8 +72,10 @@ interface RestaurantInput {
 }
 
 export function restaurantSchema(input: RestaurantInput) {
-  return {
-    '@context': CONTEXT,
+  // The reviewed entity. No rating is embedded here: an AggregateRating built from
+  // the site's single own score is self-serving and violates Google's structured
+  // data guidelines (aggregates are meant to summarize many collected ratings).
+  const restaurant = {
     '@type': 'Restaurant',
     name: input.name,
     url: input.url,
@@ -83,17 +85,27 @@ export function restaurantSchema(input: RestaurantInput) {
       ? { '@type': 'GeoCoordinates', latitude: input.coords[0], longitude: input.coords[1] }
       : undefined,
     servesCuisine: input.cuisine?.length ? input.cuisine : undefined,
-    // The owner's personal score, surfaced as a 0–10 aggregate so search engines
-    // can show stars. ratingCount is 1 (a single author rating).
-    aggregateRating:
-      typeof input.rating === 'number'
-        ? {
-            '@type': 'AggregateRating',
-            ratingValue: input.rating,
-            bestRating: 10,
-            worstRating: 0,
-            ratingCount: 1,
-          }
-        : undefined,
+  }
+
+  // An unrated place is just the Restaurant node (still useful for name, address,
+  // and cuisine).
+  if (typeof input.rating !== 'number') {
+    return { '@context': CONTEXT, ...restaurant }
+  }
+
+  // A rated place is the author's single Review of that restaurant — the shape
+  // Google prescribes for a review site (Review with the place as itemReviewed),
+  // so the 0–10 score reads as one authored opinion, not a crowd aggregate.
+  return {
+    '@context': CONTEXT,
+    '@type': 'Review',
+    itemReviewed: restaurant,
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: input.rating,
+      bestRating: 10,
+      worstRating: 0,
+    },
+    author: { '@type': 'Person', name: SITE_TITLE },
   }
 }

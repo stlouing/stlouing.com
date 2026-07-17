@@ -32,6 +32,10 @@ interface Props {
   // A per-page social-share image (root-relative path to a 1200x630 file in
   // public/, e.g. "/og/st-louis-style-pizza.png"). Falls back to the site flag.
   ogImage?: string
+  // Keep the page out of the search index while still crawling its links
+  // (noindex, follow) — for aggregation/facet pages (tags) that duplicate content
+  // reachable elsewhere. These are also excluded from the XML sitemap.
+  noindex?: boolean
 }
 
 const SITE_NAME = 'St. Louing'
@@ -44,6 +48,7 @@ const {
   tags = [],
   jsonLd,
   ogImage,
+  noindex = false,
 } = Astro.props
 
 const base = import.meta.env.BASE_URL
@@ -156,6 +161,7 @@ const analyticsUrl = analyticsBase
     <link rel="icon" type="image/png" href={href('/pixel-flag-2.png')} />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href={href('/rss.xml')} />
 

@@ -41,7 +41,7 @@ const { compact = false } = Astro.props
 
 <style>
   .newsletter.compact {
-    background: var(--color-surface);
+    /* background: var(--color-surface); */
   }
 
   .newsletter-inner {
@@ -50,7 +50,7 @@ const { compact = false } = Astro.props
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-sm) var(--spacing-md);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg);
     border-top: 1px solid var(--color-line);
   }
 
