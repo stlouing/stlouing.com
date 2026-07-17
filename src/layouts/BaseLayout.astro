@@ -185,6 +185,9 @@ const analyticsUrl = analyticsBase
     {ogType === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={socialImage} />
+    {/* X/Twitter reads og:title/description but not og:image:alt, so the alt is
+        repeated in its own namespace. */}
+    <meta name="twitter:image:alt" content={socialImageAlt} />
 
     <meta name="generator" content={Astro.generator} />
 
