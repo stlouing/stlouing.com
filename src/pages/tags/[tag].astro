@@ -3,14 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import List from '../../components/List.astro'
 import ListItem from '../../components/ListItem.astro'
 import { href } from '../../lib/url'
-import { allTags, collectTagged } from '../../lib/tags'
+import { allTags, collectTagged, tagSlug } from '../../lib/tags'
 
 export async function getStaticPaths() {
   const tags = await allTags()
   const items = await collectTagged()
 
+  // The route param is the hyphenated slug; the raw tag rides along as a prop
+  // for display and matching.
   return tags.map(({ tag }) => ({
-    params: { tag },
+    params: { tag: tagSlug(tag) },
     props: { tag, items: items.filter((item) => item.tags.includes(tag)) },
   }))
 }

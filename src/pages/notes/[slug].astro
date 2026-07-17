@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
-import { published } from '../../lib/content'
+import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { formatDate } from '../../lib/dates'
 import { articleSchema } from '../../lib/schema'
@@ -19,11 +19,14 @@ const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
 const permalink = new URL(`/notes/${entry.id}/`, siteOrigin).href
+// Meta description: the authored one, else an excerpt of the note itself — so a
+// note without a `description` never falls back to the site-wide default.
+const seoDescription = data.description ?? excerpt(entry.body, META_DESCRIPTION_CHARS)
 const schema = articleSchema(
   {
     title: data.title,
     url: permalink,
-    description: data.description,
+    description: seoDescription,
     published: data.created.toISOString(),
     tags: data.tags,
   },
@@ -33,7 +36,7 @@ const schema = articleSchema(
 
 <BaseLayout
   crumb={data.title}
-  description={data.description}
+  description={seoDescription}
   ogType="article"
   publishedTime={data.created.toISOString()}
   tags={data.tags}

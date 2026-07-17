@@ -113,7 +113,18 @@ const mentionedIn = backlinks.filter(
 const seoTitle = primaryCuisine
   ? `${data.title} - ${cuisineLabel(primaryCuisine)} in St. Louis`
   : `${data.title} in St. Louis`
-const seoDescription = hasBody(entry) ? excerpt(entry.body, META_DESCRIPTION_CHARS) : data.description
+// For a body-less stub, the authored tagline alone ("Coffee bar") is too thin a
+// search snippet, so it's padded out with the cuisine + neighborhood.
+const locality = data.neighborhood ? `${data.neighborhood}, St. Louis` : 'St. Louis'
+const stubDescription = [
+  data.description,
+  primaryCuisine ? `${cuisineLabel(primaryCuisine)} in ${locality}` : `${data.title} in ${locality}`,
+]
+  .filter(Boolean)
+  .join(' — ')
+const seoDescription = hasBody(entry)
+  ? excerpt(entry.body, META_DESCRIPTION_CHARS)
+  : stubDescription
 ---
 
 <BaseLayout

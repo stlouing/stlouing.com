@@ -141,10 +141,47 @@ export function neighborhoodGeneratedSummary(slug: string): string | undefined {
     return undefined
   }
   if (info.type) {
-    return `A ${info.type} in ${info.group}`
+    return `${info.name}, a ${info.type} in ${info.group}`
   }
 
   return `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
+}
+
+// "A, B, and C" (Oxford comma) for the meta-description border list.
+function joinNames(names: string[]): string {
+  if (names.length <= 1) {
+    return names[0] ?? ''
+  }
+  if (names.length === 2) {
+    return `${names[0]} and ${names[1]}`
+  }
+
+  return `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`
+}
+
+// A fuller generated meta description for a data-only page, so the dozens of
+// unwritten neighborhoods don't all share a near-identical 40-character search
+// snippet: the summary sentence padded with up to three bordering areas and the
+// count of reviewed food spots (both already shown on the page itself).
+export function neighborhoodMetaDescription(
+  slug: string,
+  neighbors: NeighborhoodInfo[],
+  foodCount: number,
+): string | undefined {
+  const info = infoBySlug.get(slug)
+  if (!info) {
+    return undefined
+  }
+
+  const opening = info.type
+    ? `${info.name} is a ${info.type} in ${info.group}`
+    : `${info.name} is neighborhood #${info.numberLabel ?? info.number} in St. Louis's ${info.group}`
+  const borderNames = neighbors.slice(0, 3).map((neighbor) => neighbor.name)
+  const borderClause = borderNames.length > 0 ? `, bordering ${joinNames(borderNames)}` : ''
+  const foodClause =
+    foodCount > 0 ? `, with ${foodCount} reviewed food spot${foodCount === 1 ? '' : 's'}` : ''
+
+  return `${opening}${borderClause}${foodClause}.`
 }
 
 // Neighborhoods that share a boundary with the given one, resolved from the

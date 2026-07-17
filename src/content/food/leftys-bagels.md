@@ -3,7 +3,7 @@ title: Lefty's Bagels
 created: 2026-07-16
 status: tried
 description: Hand-rolled bagels and breakfast sandwiches
-cuisine: ['sandwich']
+cuisine: ['sandwiches']
 neighborhood: Chesterfield
 address:
   - 13359 Olive Blvd

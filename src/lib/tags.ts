@@ -78,6 +78,12 @@ export async function collectTagged(): Promise<TaggedItem[]> {
   return items
 }
 
+// URL slug for a tag, so a multi-word tag ("hot dogs") links to /tags/hot-dogs/
+// rather than a URL with a literal space in it. Display keeps the raw tag.
+export function tagSlug(tag: string): string {
+  return tag.toLowerCase().replace(/\s+/g, '-')
+}
+
 // Unique tags with counts, alphabetically.
 export async function allTags(): Promise<{ tag: string; count: number }[]> {
   const counts = new Map<string, number>()

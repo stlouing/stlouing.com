@@ -89,6 +89,27 @@ function buildLastmod() {
 
 const lastmodByPath = buildLastmod()
 
+// True when a collection has at least one non-draft entry. An all-draft (or
+// empty) collection is an unpublished section, and its index page is kept out
+// of the sitemap below (the page itself also renders noindex).
+/** @param {string} collection */
+function hasPublishedEntries(collection) {
+  const dir = path.join(contentRoot, collection)
+  if (!fs.existsSync(dir)) {
+    return false
+  }
+
+  return fs
+    .readdirSync(dir)
+    .some(
+      (file) => file.endsWith('.md') && frontmatterField(path.join(dir, file), 'draft') !== 'true',
+    )
+}
+
+const unpublishedSections = ['hikes', 'notes'].filter(
+  (collection) => !hasPublishedEntries(collection),
+)
+
 // Resolve a wikilink target id to a base-prefixed URL, or null if unknown.
 function resolve(target) {
   const url = wikiMap.get(target)
@@ -116,8 +137,11 @@ export default defineConfig({
     sitemap({
       // Tag/aggregation pages are noindex (see BaseLayout `noindex`), so keep them
       // out of the sitemap too — a sitemap entry says "index this", which would
-      // contradict the page's own noindex signal.
-      filter: (page) => !page.includes('/tags/'),
+      // contradict the page's own noindex signal. Same for the index page of a
+      // section whose collection is all drafts (an unpublished section).
+      filter: (page) =>
+        !page.includes('/tags/') &&
+        !unpublishedSections.some((section) => page.includes(`/${section}/`)),
       serialize(item) {
         const pathname = new URL(item.url).pathname.replace(/\/$/, '') || '/'
         const lastmod = lastmodByPath.get(pathname)

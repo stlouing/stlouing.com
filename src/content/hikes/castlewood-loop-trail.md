@@ -1,5 +1,6 @@
 ---
 title: 'Castlewood Loop Trail'
+draft: true
 created: 2026-07-05
 area: 'Castlewood State Park'
 distanceMiles: 3.5

@@ -3,7 +3,7 @@ title: LeGrand's Market
 created: 2026-07-16
 status: tried
 description: Deli sandwiches and fresh-cut meats
-cuisine: ['sandwich']
+cuisine: ['sandwiches']
 neighborhood: St. Louis Hills
 address:
   - 4414 Donovan Ave

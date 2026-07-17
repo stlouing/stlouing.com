@@ -1,5 +1,6 @@
 ---
 title: I'm Not Giving Up on the Internet
+draft: true
 created: 2026-07-17
 tags: ['meta']
 ---

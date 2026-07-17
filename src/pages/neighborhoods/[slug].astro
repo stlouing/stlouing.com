@@ -20,6 +20,7 @@ import {
   hasNeighborhoodShape,
   neighborhoodPopulation,
   neighborhoodGeneratedSummary,
+  neighborhoodMetaDescription,
   neighborsOf,
   festivalsIn,
   neighborhoodResourceLinks,
@@ -134,10 +135,14 @@ const summary = entry?.data.description ?? generated
 const lastUpdated = entry ? (entry.data.updated ?? entry.data.created) : undefined
 
 // SEO meta description: the writeup excerpt when there is one (a fuller sentence
-// than the short tagline), else the authored `description`, else the generated line.
-const metaDescription = entry?.body
-  ? excerpt(entry.body, META_DESCRIPTION_CHARS)
-  : (entry?.data.description ?? generated)
+// than the short tagline); otherwise the generated line enriched with borders and
+// the reviewed-food count, prefixed by the authored tagline when one exists — so
+// data-only pages don't all share a near-identical short snippet.
+const metaDescription = hasWriteup
+  ? excerpt(entry?.body, META_DESCRIPTION_CHARS)
+  : [entry?.data.description, neighborhoodMetaDescription(slug, neighbors, places.length)]
+      .filter(Boolean)
+      .join('. ')
 
 // SEO title: "<name> - <kind> in St. Louis", so "St. Louis" is in the title for
 // search. Parks read "Park in St. Louis"; county municipalities (type 'city') and

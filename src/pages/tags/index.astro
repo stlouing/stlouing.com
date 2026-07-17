@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import TagIcon from '../../components/TagIcon.astro'
 import { href } from '../../lib/url'
 import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
-import { tagGroups } from '../../lib/tags'
+import { tagGroups, tagSlug } from '../../lib/tags'
 
 const { cuisines, vibes, topics } = await tagGroups()
 
@@ -33,7 +33,7 @@ const groups = [
             <ul class="tag-row">
               {group.tags.map(({ tag, count }) => (
                 <li>
-                  <a class="tag-chip" href={href(`/tags/${tag}/`)}>
+                  <a class="tag-chip" href={href(`/tags/${tagSlug(tag)}/`)}>
                     {group.kind === 'cuisine' && (
                       <span class="tag-emoji">{cuisineEmoji([tag])}</span>
                     )}
