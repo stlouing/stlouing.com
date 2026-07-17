@@ -31,12 +31,6 @@ const { title } = Astro.props
   /* Outlined pill buttons (Share / Feedback): the shared .btn-outline, rounded. */
   .share-actions :global(.btn) {
     border-radius: 999px;
-    padding: var(--spacing-xs) var(--spacing-md);
-  }
-
-  @media screen and (max-width: 700px) {
-    .share-actions :global(.btn) {
-      padding: 2px var(--spacing-sm);
-    }
+    padding: 2px var(--spacing-sm);
   }
 </style>

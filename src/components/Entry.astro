@@ -74,13 +74,11 @@ const isArticle = Boolean(permalink)
   </div>
 
   {
-    share && (
+    share && Astro.slots.has('footer-meta') && (
       <Byline>
-        {Astro.slots.has('footer-meta') && (
-          <Fragment slot="footer-meta">
-            <slot name="footer-meta" />
-          </Fragment>
-        )}
+        <Fragment slot="footer-meta">
+          <slot name="footer-meta" />
+        </Fragment>
       </Byline>
     )
   }

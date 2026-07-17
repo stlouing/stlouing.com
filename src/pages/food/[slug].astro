@@ -155,18 +155,18 @@ const seoDescription = hasBody(entry) ? excerpt(entry.body, 155) : data.descript
           )
         }
 
-        <Byline>
-          {
-            lastUpdated && (
+        {
+          lastUpdated && (
+            <Byline>
               <Fragment slot="footer-meta">
                 Last updated{' '}
                 <time class="dt-updated" datetime={lastUpdated.toISOString()}>
                   {formatDate(lastUpdated)}
                 </time>
               </Fragment>
-            )
-          }
-        </Byline>
+            </Byline>
+          )
+        }
 
         <section class="more-food">
           {

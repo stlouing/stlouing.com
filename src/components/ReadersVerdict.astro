@@ -48,7 +48,7 @@ const readersEnabled = Boolean(
             <span class="vb-label">My Rating</span>
             <div class="vb-mine-row">
               <span class="vb-mine-value">{writerState.statement}</span>
-              {writerState.verdict && <Rating verdict={writerState.verdict} />}
+              <Rating verdict={writerState.verdict} />
             </div>
           </div>
         )}
@@ -80,7 +80,7 @@ const readersEnabled = Boolean(
                 aria-label="Not for me"
                 disabled>
                 <IconThumbsDown />
-                Nope
+                Not for me
                 <span class="rv-count" data-count-dislike />
               </button>
             </div>
@@ -306,9 +306,13 @@ const readersEnabled = Boolean(
 
   /* Icons follow the segment's text color (override the global muted .icon). */
   .rv-choice :global(.icon) {
-    color: inherit;
+    color: var(--color-accent-2);
     width: 16px;
     height: 16px;
+  }
+
+  .rv-choice.is-active :global(.icon) {
+    color: var(--color-background);
   }
 
   /* The live count after the thumb — hidden when zero (the script leaves it empty). */
@@ -395,7 +399,7 @@ const readersEnabled = Boolean(
     background: none;
     color: var(--color-muted-2);
     /* font-family: var(--font-mono); */
-    /* font-size: var(--font-size-xs); */
+    font-size: var(--font-size-lg);
     font-weight: 500;
 
     &[hidden] {

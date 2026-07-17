@@ -85,10 +85,10 @@ export function resolveWriterState(data: {
   }
 
   if (data.status === 'tried') {
-    return { statement: "Haven't reviewed yet", kind: 'pending' }
+    return { statement: "Pending", kind: 'pending' }
   }
 
-  return { statement: "Haven't visited yet", kind: 'unvisited' }
+  return { statement: "Pending", kind: 'unvisited' }
 }
 
 // Whether a place is "explored by me" — full-color on the map. Written + tried

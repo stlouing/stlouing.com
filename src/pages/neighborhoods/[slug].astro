@@ -189,18 +189,18 @@ const trail = [
           )
         }
 
-        <Byline>
-          {
-            lastUpdated && (
+        {
+          lastUpdated && (
+            <Byline>
               <Fragment slot="footer-meta">
                 Last updated{' '}
                 <time class="dt-updated" datetime={lastUpdated.toISOString()}>
                   {formatDate(lastUpdated)}
                 </time>
               </Fragment>
-            )
-          }
-        </Byline>
+            </Byline>
+          )
+        }
 
         {
           attractions.length > 0 && (

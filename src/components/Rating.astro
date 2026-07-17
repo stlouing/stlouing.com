@@ -1,12 +1,13 @@
 ---
 // A place's rating as four fleur-de-lis, filled from its verdict: not-for-me = 1,
 // neutral = 2, liked = 3, loved = 4 (of 4). Filled fleur are gold; the rest faded.
-// Used inline in the Food list rows (see food/index.astro).
+// With no verdict (not yet rated) all four render empty. Used inline in the Food
+// list rows (see food/index.astro) and the review bar's "My Rating".
 import FleurGlyph from '../assets/FleurGlyph.astro'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 
 interface Props {
-  verdict: Verdict
+  verdict?: Verdict
 }
 
 const { verdict } = Astro.props
@@ -19,10 +20,11 @@ const filledByVerdict: Record<Verdict, number> = {
   loved: 4,
 }
 const total = 4
-const filled = filledByVerdict[verdict]
+const filled = verdict ? filledByVerdict[verdict] : 0
+const label = verdict ? `Rating: ${verdictLabels[verdict]}, ${filled} of ${total}` : 'Not yet rated'
 ---
 
-<span class="rating" role="img" aria-label={`Rating: ${verdictLabels[verdict]}, ${filled} of ${total}`}>
+<span class="rating" role="img" aria-label={label}>
   {
     Array.from({ length: total }, (_, index) => (
       <FleurGlyph class:list={['rating-fleur', { 'is-filled': index < filled }]} />

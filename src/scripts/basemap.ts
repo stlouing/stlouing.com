@@ -90,9 +90,8 @@ export function createBasemapMap(
   // Keep it a flat, north-up map: no touch two-finger rotate.
   map.touchZoomRotate.disableRotation()
 
-  // Zoom in/out buttons, top-right — no compass (the map is always north-up). The
-  // mobile map-split toggle lives at the bottom, so top-right stays clear.
-  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
+  // No on-screen zoom buttons — they crowd the small maps. Scroll / pinch / double-tap
+  // still zoom.
 
   return map
 }

@@ -1795,7 +1795,7 @@ body:has([data-filter-root]) .site-header {
    emoji and quiet the ring, so it reads as "not explored yet" against the
    full-color explored pins. Hover/selection still bring it forward. */
 .emoji-marker.is-unexplored .emoji-marker-inner {
-  filter: grayscale(1);
+  /* filter: grayscale(1); */
   opacity: 0.8;
   border-style: dashed;
   border-color: var(--color-muted-2);
@@ -1879,25 +1879,6 @@ body:has([data-filter-root]) .site-header {
 .maplibregl-ctrl-attrib a {
   color: var(--color-link) !important;
   text-decoration: none;
-}
-
-/* Zoom control buttons, themed to match. */
-.maplibregl-ctrl-group {
-  background: var(--color-surface) !important;
-  border: 1px solid var(--color-line-input) !important;
-}
-
-.maplibregl-ctrl-group button {
-  background: var(--color-surface) !important;
-}
-
-.maplibregl-ctrl-group button + button {
-  border-top-color: var(--color-line) !important;
-}
-
-/* The control glyphs are dark bitmaps; invert them for the dark theme. */
-:root[data-theme='dark'] .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
-  filter: invert(1);
 }
 
 .maplibregl-popup.food-popup .maplibregl-popup-content {
@@ -2178,6 +2159,15 @@ body:has([data-filter-root]) .site-header {
   isolation: isolate;
 }
 
+/* On mobile the single column leads with the sidebar (map, address, links) above
+   the writeup. Desktop grid-places both columns explicitly, so `order` is inert
+   there and this only reorders the stacked mobile view. */
+@media screen and (max-width: 899px) {
+  .detail-aside {
+    order: -1;
+  }
+}
+
 @media screen and (min-width: 900px) {
   .detail-layout {
     grid-template-columns: minmax(0, 1fr) 290px;
@@ -2244,11 +2234,7 @@ body:has([data-filter-root]) .site-header {
    reads as "intentionally unfinished" rather than a sparse, broken page. Shared
    by both detail pages. */
 .not-explored {
-  margin-block-end: var(--spacing-lg);
-  padding: var(--spacing-md);
-  border: 1px dashed var(--color-line-input);
-  border-radius: var(--radius);
-  color: var(--color-muted);
+  /* color: var(--color-muted); */
 }
 
 .not-explored p {

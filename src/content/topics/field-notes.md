@@ -1,7 +1,7 @@
 ---
 title: St. Louis Field Notes
 icon: notebook
-description: What I've learned about the Gateway to the West
+description: Collection of random STL knowledge
 created: 2026-05-28
 updated: 2026-06-29
 ---

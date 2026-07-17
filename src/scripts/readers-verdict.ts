@@ -178,7 +178,7 @@ function setupWidget(root: HTMLElement): void {
   noteTrigger?.addEventListener('click', () => {
     clearCollapsed(slug)
     setCollapsed(false)
-    commentInput?.focus()
+    nameInput?.focus()
   })
 
   const submitNote = async (): Promise<void> => {
