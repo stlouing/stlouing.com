@@ -157,6 +157,10 @@ const schema = articleSchema(
      mobile (where it stacks above the article), like the neighborhood page. */
   .topic-layout {
     display: grid;
+    /* minmax(0, …) lets the column shrink below its content's min width — without it,
+       a wide table (nowrap cells) inflates the grid item past the viewport on mobile
+       and the table's own overflow-x: auto never engages. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-lg);
     margin-block-start: var(--spacing-md);
   }
