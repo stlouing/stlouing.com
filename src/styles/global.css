@@ -1480,7 +1480,7 @@ body:has([data-neighborhood-map]) .river-border {
 
 .list-pane-header .pane-left {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--spacing-sm);
 }
 
@@ -1587,7 +1587,7 @@ body:has([data-neighborhood-map]) .river-border {
    rather than the quiet muted label the base rule gives them. */
 .food-grouped li.group-header.group-header-status .group-label {
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   font-weight: 600;
   color: var(--color-muted-2);
   text-transform: none;
@@ -2422,7 +2422,7 @@ body:has([data-filter-root]) .site-header {
 .group-label {
   margin-block-end: 0;
   font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xxs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
