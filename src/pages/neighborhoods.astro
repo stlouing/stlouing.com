@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
+import { getImage } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import MapRow from '../components/MapRow.astro'
 import NeighborhoodMap from '../components/NeighborhoodMap.astro'
@@ -17,6 +18,16 @@ import {
 // the map highlights + scrolls to a given one (see neighborhood-map.ts).
 const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
+
+// List-row thumbnails for neighborhoods that carry a photo (480px wide covers
+// the ~33%-of-pane box on 2x displays).
+const thumbBySlug = new Map<string, string>()
+for (const [slug, entry] of entryBySlug) {
+  if (entry.data.photo) {
+    const thumb = await getImage({ src: entry.data.photo, width: 480, format: 'webp' })
+    thumbBySlug.set(slug, thumb.src)
+  }
+}
 // Food spots per neighborhood (keyed by normalized name), for the map hover card.
 const foodByHood = await foodByNeighborhood()
 
@@ -172,6 +183,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-region': regionKey,
                       'data-type': section === 'park' ? 'park' : '',
                       'data-tagline': popup.tagline ?? '',
+                      'data-photo': thumbBySlug.get(neighborhood.slug) ?? '',
                       'data-excerpt': popup.excerpt ?? '',
                       'data-population': popup.population ? String(popup.population) : '',
                       'data-spots': String(popup.spots),
@@ -180,6 +192,13 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       <span class="list-meta" slot="title-after">
                         {section === 'park' ? 'Park' : neighborhood.group}
                       </span>
+                    )}
+                    {thumbBySlug.has(neighborhood.slug) && (
+                      <div
+                        class="list-photo"
+                        style={`background-image: url(${thumbBySlug.get(neighborhood.slug)})`}
+                        aria-hidden="true"
+                      />
                     )}
                     {popup.tagline && <div class="list-tagline">{popup.tagline}</div>}
                     {written && entry && (

@@ -1,6 +1,7 @@
 ---
 title: Kishimoto Mendo
 description: Rich, comforting Tonkotsu ramen
+photo: ../images/food/kishimoto-mendo.jpeg
 created: 2026-06-23
 rating: 10
 cuisine: ['ramen']
@@ -22,3 +23,5 @@ We ended up going to Kishimoto Mendo during opening weekend, and I have to say -
 The pork broth is rich, flavorful, and comforting. The ramen shop vibes in the restaurant are great, and I love that it has twice as much seating as Menya Rui. I highly recommend stopping by and getting the classic Tonkotsu ramen.
 
 I would put Kishimoto Mendo on my list of "must try" restaurants in St. Louis.
+
+![](../images/food/kishimoto-mendo2.jpeg)

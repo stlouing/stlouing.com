@@ -61,6 +61,12 @@
   --spacing-xl: 2rem;
   --radius: 0;
 
+  /* Entry-photo boxes: the list-row thumbnail, the hovercard banner, and the
+     map-popup banner. */
+  --list-photo-width: 33%;
+  --card-photo-height: 9rem;
+  --popup-photo-height: 150px;
+
   /* Misc */
   --letter-spacing: 0.04rem;
   --letter-spacing-tight: -0.01rem;
@@ -471,6 +477,22 @@ a.wikipedia-link {
 .wikilink-card.is-visible {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Entry photo atop the hovercard. The card gets a fixed width and the photo a
+   fixed height so nothing reflows when the image finishes loading. */
+.wikilink-card:has(.wikilink-card-photo) {
+  width: 320px;
+}
+
+.wikilink-card-photo {
+  display: block;
+  width: 100%;
+  height: var(--card-photo-height);
+  object-fit: cover;
+  margin-block-end: var(--spacing-sm);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
 }
 
 .wikilink-card-title {
@@ -968,10 +990,27 @@ body:has(.map-split) main > .wrap,
   font-size: var(--font-size-sm);
   margin-left: calc(var(--spacing-md) + 56px);
   margin-top: var(--spacing-shmedium);
+  /* Contain the floated row thumbnail so it can't spill into the next row. */
+  display: flow-root;
 
   p {
     color: var(--color-text);
   }
+}
+
+/* Thumbnail on a list row (a place/neighborhood with a photo): a centered
+   cover background floated right of the tagline + teaser text. */
+.map-list .list-photo {
+  float: right;
+  width: var(--list-photo-width);
+  aspect-ratio: 3 / 2;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin-left: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
 }
 
 /* Food + Neighborhoods show the teaser inline on every row (no lead badge), so
@@ -1587,7 +1626,7 @@ body:has([data-neighborhood-map]) .river-border {
    rather than the quiet muted label the base rule gives them. */
 .food-grouped li.group-header.group-header-status .group-label {
   font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-muted-2);
   text-transform: none;
@@ -1882,6 +1921,17 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1.2;
+}
+
+/* Photo banner atop a popup (an entry with a picture): full width — negative
+   margins bleed it through the content padding to the popup's border — as a
+   centered cover background at a fixed height. */
+.maplibregl-popup.food-popup .popup-photo {
+  height: var(--popup-photo-height);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md)) var(--spacing-md);
 }
 
 /* Neighborhood map hover card: a small, non-interactive quick-facts tip (name +
@@ -2319,7 +2369,7 @@ body:has([data-filter-root]) .site-header {
 .btn-quiet {
   gap: var(--spacing-sm);
   padding: 0;
-  color: var(--color-accent);
+  color: var(--color-link);
   text-decoration: underline;
   text-decoration-style: dotted;
   text-decoration-color: var(--color-muted);
@@ -2329,10 +2379,10 @@ body:has([data-filter-root]) .site-header {
 }
 
 .btn-quiet:hover {
-  color: var(--color-accent);
+  color: var(--color-link-hover);
   text-decoration: underline;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent);
+  text-decoration-color: var(--color-link-hover);
   text-underline-offset: 3px;
 }
 
@@ -2422,7 +2472,7 @@ body:has([data-filter-root]) .site-header {
 .group-label {
   margin-block-end: 0;
   font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
+  font-size: var(--font-size-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);

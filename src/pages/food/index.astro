@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
+import { getImage } from 'astro:assets'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
@@ -38,17 +39,25 @@ const all = published(await getCollection('food'))
 // sensibly); filter.ts re-sorts on the client from the data-sort-* keys. Cards
 // render a plain-text excerpt (not the full writeup) so the route stays light —
 // the full prose lives on each /food/<slug> page.
-const rows = all
-  .map((place) => {
-    const verdict = resolveVerdict(place.data)
-    // The grouping/sort key: the verdict for a rated place, else its status.
-    const groupKey = verdict ?? place.data.status
-    const rankLetter = verdict
-      ? verdictRankLetter[verdict]
-      : (statusRankLetter[place.data.status as keyof typeof statusRankLetter] ?? 'h')
+const rows = (
+  await Promise.all(
+    all.map(async (place) => {
+      const verdict = resolveVerdict(place.data)
+      // The grouping/sort key: the verdict for a rated place, else its status.
+      const groupKey = verdict ?? place.data.status
+      const rankLetter = verdict
+        ? verdictRankLetter[verdict]
+        : (statusRankLetter[place.data.status as keyof typeof statusRankLetter] ?? 'h')
+      // A list-row thumbnail when the place has a photo (480px wide covers the
+      // ~33%-of-pane box on 2x displays).
+      const thumb = place.data.photo
+        ? await getImage({ src: place.data.photo, width: 480, format: 'webp' })
+        : undefined
 
-    return { place, verdict, groupKey, rankLetter, explored: isExplored(place.data.status) }
-  })
+      return { place, verdict, groupKey, rankLetter, thumb, explored: isExplored(place.data.status) }
+    }),
+  )
+)
   .sort(
     (left, right) =>
       left.rankLetter.localeCompare(right.rankLetter) ||
@@ -114,7 +123,7 @@ const stubExcerpt = (status: string): string =>
       </div>
       <ul class="list" data-food-rows>
         {
-          rows.map(({ place, verdict, groupKey, rankLetter, explored }) => (
+          rows.map(({ place, verdict, groupKey, rankLetter, thumb, explored }) => (
             <MapRow
               id={place.id}
               title={place.data.title}
@@ -150,6 +159,7 @@ const stubExcerpt = (status: string): string =>
                 'data-sort-name': place.data.title.toLowerCase(),
                 'data-sort-verdict': `${rankLetter}|${place.data.title.toLowerCase()}`,
                 'data-google': googleMapsHref(place.data),
+                'data-photo': thumb?.src ?? '',
                 'data-instagram': place.data.instagram ?? '',
                 'data-tagline': place.data.description ?? '',
                 'data-excerpt': hasBody(place)
@@ -165,6 +175,13 @@ const stubExcerpt = (status: string): string =>
                     .filter(Boolean)
                     .join(' / ')}
                 </span>
+              )}
+              {thumb && (
+                <div
+                  class="list-photo"
+                  style={`background-image: url(${thumb.src})`}
+                  aria-hidden="true"
+                />
               )}
               {place.data.description && <div class="list-tagline">{place.data.description}</div>}
               {hasBody(place) && (

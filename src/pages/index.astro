@@ -89,14 +89,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
         <p class="introduction">
           {intro}
+          So far, I've explored <span class="stat">{wanderedCount}</span> neighborhoods and visited{
+            ' '
+          }
+          <span class="stat">{visitedCount}</span> restaurants!
           <a class="more inline" href={href('/about/')} aria-label="Read more about St. Louing">
             Read more <IconArrowRight />
           </a>
-        </p>
-        <p class="progress-report">
-          <!-- <span class="stat-title">So far:</span> -->
-          I've explored <span class="stat">{wanderedCount}</span> neighborhoods and visited{' '}
-          <span class="stat">{visitedCount}</span> restaurants.
         </p>
       </div>
       <div class="index-crest">
@@ -330,12 +329,12 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     line-height: 1.2;
   }
 
-  .progress-report .stat {
+  .stat {
     color: var(--color-accent);
     font-weight: 700;
   }
 
-  .progress-report .stat-title {
+  .stat-title {
     color: var(--color-text);
   }
 
@@ -435,8 +434,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .recent-date {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--color-muted);
+    font-weight: 700;
+    color: var(--color-text);
     text-wrap: nowrap;
   }
 

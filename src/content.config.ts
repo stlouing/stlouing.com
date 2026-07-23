@@ -99,8 +99,12 @@ const notes = defineCollection({
 
 const neighborhoods = defineCollection({
   loader: md('neighborhoods'),
-  schema: z.object({
+  schema: ({ image }) =>
+    z.object({
     title: z.string(),
+    // A photo of the neighborhood, resolved + optimized from a path relative
+    // to the markdown file. Currently used as the social-share image only.
+    photo: image().optional(),
     // Created / publish date. When set, the neighborhood joins the RSS feed
     // (newest first), the same way a dated Food review does.
     created: z.coerce.date().optional(),
@@ -145,6 +149,9 @@ const topics = defineCollection({
   loader: md('topics'),
   schema: z.object({
     title: z.string(),
+    // An SEO-tuned <title> used when it should differ from the (shorter)
+    // visible title — e.g. "The Great Divorce of St. Louis City and County".
+    seoTitle: z.string().optional(),
     description: z.string().optional(),
     // Leading-icon keyword for the topic lists (homepage + /topics). Resolved
     // by src/components/Icon.astro; falls back to a book when unset or unknown.

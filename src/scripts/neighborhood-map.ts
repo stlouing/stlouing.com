@@ -240,6 +240,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     return buildPopupHtml({
       title: name,
       link,
+      photo: row?.dataset.photo ?? '',
       chips,
       tagline: row?.dataset.tagline ?? '',
       excerpt: row?.dataset.excerpt ?? '',

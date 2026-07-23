@@ -1,0 +1,46 @@
+---
+// The byline timestamp: "Written <created> and updated on <updated>" when the
+// entry was revised after it was written, a single "Last updated <date>"
+// otherwise. When the created date exists but isn't shown, it still renders as
+// a hidden dt-published <time> so microformat parsers keep the publish date.
+import { formatDate } from '../lib/dates'
+
+interface Props {
+  created?: Date
+  updated?: Date
+}
+
+const { created, updated } = Astro.props
+const revisedAfterWriting =
+  created && updated && created.valueOf() !== updated.valueOf() ? { created, updated } : undefined
+const single = updated ?? created
+---
+
+{
+  revisedAfterWriting ? (
+    <Fragment>
+      Written{' '}
+      <time class="dt-published" datetime={revisedAfterWriting.created.toISOString()}>
+        {formatDate(revisedAfterWriting.created)}
+      </time>{' '}
+      and updated on{' '}
+      <time class="dt-updated" datetime={revisedAfterWriting.updated.toISOString()}>
+        {formatDate(revisedAfterWriting.updated)}
+      </time>
+    </Fragment>
+  ) : (
+    single && (
+      <Fragment>
+        Last updated{' '}
+        <time class="dt-updated" datetime={single.toISOString()}>
+          {formatDate(single)}
+        </time>
+        {created && updated && (
+          <time class="dt-published" datetime={created.toISOString()} hidden>
+            {formatDate(created)}
+          </time>
+        )}
+      </Fragment>
+    )
+  )
+}

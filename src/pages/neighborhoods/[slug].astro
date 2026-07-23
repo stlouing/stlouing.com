@@ -1,16 +1,17 @@
 ---
 import { getCollection, render } from 'astro:content'
+import { getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Byline from '../../components/Byline.astro'
+import EntryDates from '../../components/EntryDates.astro'
 import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
-import { href, displayUrl } from '../../lib/url'
+import { href, displayUrl, rootRelative } from '../../lib/url'
 import { resolveVerdict } from '../../lib/verdict'
-import { formatDate } from '../../lib/dates'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -70,6 +71,13 @@ const title = info?.name ?? slug
 // neighborhood. Otherwise the page shows an explicit "not yet explored" stub.
 const rendered = entry ? await render(entry) : null
 const Content = rendered?.Content
+
+// Social-share image: the neighborhood photo when one is set (resized to the
+// ~1200px social-card width, as JPEG since share crawlers don't all take
+// webp); data-only pages fall back to the site flag.
+const sharePhoto = entry?.data.photo
+  ? await getImage({ src: entry.data.photo, width: 1200, format: 'jpeg' })
+  : undefined
 const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
 // The neighborhood's tags double as the aside "Vibe" chips, so they're shown there
@@ -146,18 +154,19 @@ const metaDescription = hasWriteup
 
 // SEO title: "<name> - <kind> in St. Louis", so "St. Louis" is in the title for
 // search. Parks read "Park in St. Louis"; county municipalities (type 'city') and
-// other typed areas read "<Type> in <region>" (e.g. "City in St. Louis County").
+// other typed areas read "<name>, Missouri - <Type> in <region>" (e.g.
+// "Kirkwood, Missouri - City in St. Louis County") since county place names
+// aren't self-locating the way city neighborhoods are.
 let seoTitle: string | undefined
 if (info) {
-  let kind: string
   if (info.type === 'park') {
-    kind = 'Park in St. Louis'
+    seoTitle = `${title} - Park in St. Louis`
   } else if (info.type) {
-    kind = `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} in ${info.group}`
+    const kind = `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} in ${info.group}`
+    seoTitle = `${title}, Missouri - ${kind}`
   } else {
-    kind = 'Neighborhood in St. Louis'
+    seoTitle = `${title} - Neighborhood in St. Louis`
   }
-  seoTitle = `${title} - ${kind}`
 }
 
 // Breadcrumb stops at the region (the neighborhood name is already the page H1).
@@ -168,7 +177,14 @@ const trail = [
 ]
 ---
 
-<BaseLayout crumb={title} title={seoTitle} description={metaDescription} ogType="article">
+<BaseLayout
+  crumb={title}
+  title={seoTitle}
+  description={metaDescription}
+  ogType="article"
+  ogImage={sharePhoto ? rootRelative(sharePhoto.src) : undefined}
+  ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
+  ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}>
   <Breadcrumbs trail={trail} />
   <Entry title={title} backlinks={backlinks} share={false}>
     {
@@ -198,10 +214,7 @@ const trail = [
           lastUpdated && (
             <Byline>
               <Fragment slot="footer-meta">
-                Last updated{' '}
-                <time class="dt-updated" datetime={lastUpdated.toISOString()}>
-                  {formatDate(lastUpdated)}
-                </time>
+                <EntryDates created={entry?.data.created} updated={entry?.data.updated} />
               </Fragment>
             </Byline>
           )

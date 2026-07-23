@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
+import EntryDates from '../../components/EntryDates.astro'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { formatDate } from '../../lib/dates'
@@ -46,9 +47,17 @@ const schema = articleSchema(
     tags={data.tags}
     backlinks={backlinks}
     permalink={permalink}>
-    <time slot="meta" class="dt-published" datetime={data.created.toISOString()}>
-      {formatDate(data.created)}
-    </time>
+    {
+      data.updated && data.updated.valueOf() !== data.created.valueOf() ? (
+        <span slot="meta">
+          <EntryDates created={data.created} updated={data.updated} />
+        </span>
+      ) : (
+        <time slot="meta" class="dt-published" datetime={data.created.toISOString()}>
+          {formatDate(data.created)}
+        </time>
+      )
+    }
     <Content />
   </Entry>
 </BaseLayout>

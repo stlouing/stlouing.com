@@ -14,7 +14,7 @@ const notes = published(await getCollection('notes')).sort(
 
 {/* While the section has no published notes it's unlinked and shouldn't be
     indexed (the sitemap filter in astro.config.mjs mirrors this). */}
-<BaseLayout noindex={notes.length === 0}>
+<BaseLayout title="Notes - St. Louing" noindex={notes.length === 0}>
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">

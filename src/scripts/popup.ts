@@ -23,6 +23,9 @@ export interface PopupConfig {
   // Title text + the shared target for the title link and "View more".
   title: string
   link: string
+  // A photo banner atop the popup (an entry with a picture): rendered as a
+  // centered cover background, full width, fixed height (--popup-photo-height).
+  photo?: string
   // Food only: the place's rating, shown as four fleur-de-lis leading the chip
   // row, matching the list rows. `key` is the verdict (not-for-me/neutral/liked/
   // loved) that sets how many of the four glyphs are filled; `label` is its word,
@@ -104,6 +107,7 @@ export function buildPopupHtml(config: PopupConfig): string {
   const {
     title,
     link,
+    photo = '',
     verdict,
     chips = [],
     addressLines = [],
@@ -112,6 +116,10 @@ export function buildPopupHtml(config: PopupConfig): string {
     sources = [],
     showMore = true,
   } = config
+
+  const photoHtml = photo
+    ? `<div class="popup-photo" style="background-image: url('${escapeHtml(photo)}')" aria-hidden="true"></div>`
+    : ''
 
   const titleHtml = `<h2><a href="${link}">${escapeHtml(title)}</a></h2>`
 
@@ -148,7 +156,7 @@ export function buildPopupHtml(config: PopupConfig): string {
         .join('')}</div>`
     : ''
 
-  // Order mirrors the list rows: title, then the chips, then the tagline
-  // (description), with the address (Food) and excerpt below.
-  return `${ratingHtml}${titleHtml}${metaHtml}${taglineHtml}${excerptHtml}${moreHtml}${sourcesHtml}`
+  // Order mirrors the list rows: the photo banner, title, then the chips, then
+  // the tagline (description), with the address (Food) and excerpt below.
+  return `${photoHtml}${ratingHtml}${titleHtml}${metaHtml}${taglineHtml}${excerptHtml}${moreHtml}`
 }

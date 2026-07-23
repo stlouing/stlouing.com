@@ -2,9 +2,9 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Entry from '../components/Entry.astro'
+import EntryDates from '../components/EntryDates.astro'
 import { published } from '../lib/content'
 import { getBacklinks } from '../lib/backlinks'
-import { formatDate } from '../lib/dates'
 import { articleSchema } from '../lib/schema'
 import { href } from '../lib/url'
 
@@ -65,6 +65,7 @@ const schema = articleSchema(
 
 <BaseLayout
   crumb={data.title}
+  title={data.seoTitle}
   description={data.description}
   ogImage={data.ogImage}
   ogType="article"
@@ -80,17 +81,7 @@ const schema = articleSchema(
       )
     }
     <Fragment slot="footer-meta">
-      Last updated
-      <time class="dt-updated" datetime={data.updated.toISOString()}>
-        {formatDate(data.updated)}
-      </time>
-      {
-        data.created && (
-          <time class="dt-published" datetime={data.created.toISOString()} hidden>
-            {formatDate(data.created)}
-          </time>
-        )
-      }
+      <EntryDates created={data.created} updated={data.updated} />
     </Fragment>
     {
       showToc ? (

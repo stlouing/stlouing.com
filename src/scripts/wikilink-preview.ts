@@ -14,6 +14,8 @@ interface Preview {
   neighborhood?: string
   // Food, topics + neighborhoods: the curated tagline, shown in the accent color.
   description?: string
+  // Entries with a photo: a card-sized rendition shown atop the card.
+  photo?: string
 }
 
 const HOVER_DELAY = 500
@@ -72,6 +74,17 @@ export function initWikilinkPreviews(): void {
       return
     }
     card.textContent = ''
+
+    // Entry photo atop the card. The box height is fixed in CSS, so the card
+    // doesn't reflow when the image finishes loading.
+    if (preview.photo) {
+      const photo = document.createElement('img')
+      photo.className = 'wikilink-card-photo'
+      photo.src = preview.photo
+      photo.alt = ''
+      card.appendChild(photo)
+    }
+
     const title = document.createElement('div')
     title.className = 'wikilink-card-title'
     title.textContent = preview.title

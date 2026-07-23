@@ -1,5 +1,6 @@
 ---
 title: The Great Divorce
+seoTitle: The Great Divorce of St. Louis City and County
 icon: heart-crack
 description: The city-county split that divides St. Louis
 created: 2026-06-29

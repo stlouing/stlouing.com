@@ -1,7 +1,9 @@
 ---
 title: Blues City Deli
-created: 2026-06-23
 description: An iconic Blues-themed sandwich shop
+created: 2026-06-23
+updated: 2026-07-22
+photo: ../images/food/blues-city-deli.jpeg
 rating: 10
 cuisine: ['sandwiches']
 neighborhood: Benton Park

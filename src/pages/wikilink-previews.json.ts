@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
+import { getImage } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import { cuisineEmoji } from '../lib/emoji'
 
@@ -18,6 +20,19 @@ interface Preview {
   neighborhood?: string
   // Food, topics + neighborhoods: the curated tagline.
   description?: string
+  // Entries with a photo: a card-sized rendition shown atop the hovercard.
+  photo?: string
+}
+
+// Card-sized rendition of an entry photo (640px wide covers the 320px card on
+// 2x displays); webp is fine since the hovercard is display-only.
+async function cardPhoto(photo: ImageMetadata | undefined): Promise<string | undefined> {
+  if (!photo) {
+    return undefined
+  }
+  const rendered = await getImage({ src: photo, width: 640, format: 'webp' })
+
+  return rendered.src
 }
 
 export const GET: APIRoute = async () => {
@@ -39,6 +54,7 @@ export const GET: APIRoute = async () => {
       emoji: cuisineEmoji(place.data?.cuisine),
       neighborhood: place.data?.neighborhood,
       description: place.data?.description,
+      photo: await cardPhoto(place.data?.photo),
     }
   }
   for (const topic of published(await getCollection('topics'))) {
@@ -57,6 +73,7 @@ export const GET: APIRoute = async () => {
       title: neighborhood.data.title,
       excerpt: excerpt(neighborhood.body, PREVIEW_EXCERPT_CHARS),
       description: neighborhood.data.description,
+      photo: await cardPhoto(neighborhood.data.photo),
     }
   }
 

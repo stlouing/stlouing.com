@@ -45,14 +45,14 @@ const CUISINE_EMOJI: Record<string, string> = {
 }
 
 // Casings title-case can't derive from the lowercase tag.
-const CUISINE_LABEL_OVERRIDE: Record<string, string> = { bbq: 'BBQ' }
+const LABEL_OVERRIDES: Record<string, string> = { bbq: 'BBQ', lgbtq: 'LGBTQ' }
 
 // Display label for a cuisine tag (stored lowercase): "ramen" → "Ramen",
 // "hot dogs" → "Hot Dogs", "bbq" → "BBQ".
 export function cuisineLabel(cuisine: string): string {
   const key = cuisine.trim().toLowerCase()
 
-  return CUISINE_LABEL_OVERRIDE[key] ?? key.replace(/\b\w/g, (char) => char.toUpperCase())
+  return LABEL_OVERRIDES[key] ?? key.replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
 export function cuisineEmoji(cuisines: string[]): string {

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import List from '../../components/List.astro'
 import ListItem from '../../components/ListItem.astro'
 import { href } from '../../lib/url'
+import { cuisineLabel } from '../../lib/emoji'
 import { allTags, collectTagged, tagSlug } from '../../lib/tags'
 
 export async function getStaticPaths() {
@@ -39,7 +40,7 @@ const grouped = ['food', 'Neighborhoods', 'Topics', 'Hikes', 'Notes']
 const countLabel = `${items.length} ${items.length === 1 ? 'entry' : 'entries'}`
 ---
 
-<BaseLayout crumb={`#${tag}`} noindex>
+<BaseLayout crumb={`#${tag}`} title={`Tags: ${cuisineLabel(tag)} - St. Louing`} noindex>
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">

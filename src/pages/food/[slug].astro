@@ -1,18 +1,18 @@
 ---
 import { getCollection, render } from 'astro:content'
-import { Image } from 'astro:assets'
-import { formatDate } from '../../lib/dates'
+import { Image, getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import ReadersVerdict from '../../components/ReadersVerdict.astro'
 import Byline from '../../components/Byline.astro'
+import EntryDates from '../../components/EntryDates.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
-import { href, displayUrl } from '../../lib/url'
+import { href, displayUrl, rootRelative } from '../../lib/url'
 import { published, excerpt, hasBody, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
@@ -50,10 +50,19 @@ const lastUpdated = data.updated ?? data.created
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 const neighborhoodLink = await neighborhoodHref(data.neighborhood)
+
+// Social-share image: the place photo when there is one (resized to the
+// ~1200px social-card width, as JPEG since share crawlers don't all take
+// webp), else the per-entry ogImage override, else the site flag.
+const sharePhoto = data.photo
+  ? await getImage({ src: data.photo, width: 1200, format: 'jpeg' })
+  : undefined
+const shareImage = sharePhoto ? rootRelative(sharePhoto.src) : data.ogImage
+
 const schema = restaurantSchema({
   name: data.title,
   url: new URL(`/food/${entry.id}/`, Astro.site ?? Astro.url.origin).href,
-  image: new URL(href(data.ogImage ?? '/og.png'), Astro.site ?? Astro.url.origin).href,
+  image: new URL(href(shareImage ?? '/og.png'), Astro.site ?? Astro.url.origin).href,
   address: data.address,
   coords: data.coords,
   cuisine: data.cuisine,
@@ -132,7 +141,9 @@ const seoDescription = hasBody(entry)
   title={seoTitle}
   description={seoDescription}
   ogType="article"
-  ogImage={data.ogImage}
+  ogImage={shareImage}
+  ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
+  ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}
   jsonLd={schema}>
   <Breadcrumbs trail={trail} />
   <Entry title={data.title} tags={data.tags} backlinks={mentionedIn} share={false}>
@@ -171,10 +182,7 @@ const seoDescription = hasBody(entry)
           lastUpdated && (
             <Byline>
               <Fragment slot="footer-meta">
-                Last updated{' '}
-                <time class="dt-updated" datetime={lastUpdated.toISOString()}>
-                  {formatDate(lastUpdated)}
-                </time>
+                <EntryDates created={data.created} updated={data.updated} />
               </Fragment>
             </Byline>
           )
@@ -238,7 +246,7 @@ const seoDescription = hasBody(entry)
                   <SourceLink
                     href={data.url}
                     label={data.url ? displayUrl(data.url) : ''}
-                    variant="muted"
+                    variant="quiet"
                     compact={false}
                     class="btn-inline">
                     <IconExternalLink slot="icon" />
@@ -246,7 +254,7 @@ const seoDescription = hasBody(entry)
                   <SourceLink
                     href={data.instagram}
                     label="Instagram"
-                    variant="muted"
+                    variant="quiet"
                     compact={false}
                     class="btn-inline">
                     <IconInstagram slot="icon" />
@@ -254,7 +262,7 @@ const seoDescription = hasBody(entry)
                   <SourceLink
                     href={googleMapsHref(data)}
                     label="Google Maps"
-                    variant="muted"
+                    variant="quiet"
                     compact={false}
                     class="btn-inline">
                     <IconMapPin slot="icon" />
