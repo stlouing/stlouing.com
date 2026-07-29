@@ -17,7 +17,7 @@ The City of St. Louis voted to separate from St. Louis County in 1876, becoming 
 
 ### Frozen borders
 
-Most other cities have continued to grow and expand over the last two hundred years - using Chicago as an example again, the city had [dozens of annexations](https://chicagology.com/population/annexation/) of its surrounding towns and villages between 1880 and now, during which it expanded from 36 square miles to 234 today. St. Louis remained at 66 square miles during that time.
+Most other cities have continued to grow and expand over the last two hundred years - Chicago, for example, had [dozens of annexations](https://chicagology.com/population/annexation/) of its surrounding towns and villages between 1880 and now, during which it expanded from 36 square miles to 234 today. St. Louis remained at 66 square miles during that time.
 
 | City          |  Area in 1880 |  Area in 2020 |
 | :------------ | ------------: | ------------: |
@@ -56,7 +56,7 @@ The suburbs have rapidly expanded over this time period, but the city has stagna
 
 ## The Most Dangerous City?
 
-St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of the 24 cities in this annual national comparison. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
+St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of U.S. cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
 
 | City          |    Metro pop. |   City pop. | Share of metro |
 | :------------ | ------------: | ----------: | -------------: |
