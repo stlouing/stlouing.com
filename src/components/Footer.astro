@@ -58,20 +58,16 @@ import IconHeart from '../assets/IconHeart.astro'
       display: flex;
       gap: var(--spacing-sm);
       color: var(--color-muted-2);
-      text-decoration: underline;
-      text-decoration-style: dotted;
+      text-decoration-line: none;
       text-underline-offset: 3px;
       font-weight: 500;
 
       &:hover {
         color: var(--color-accent);
-        text-decoration-style: solid;
+        text-decoration-line: underline;
+        text-decoration-color: var(--color-accent);
         text-decoration-thickness: 2px;
         text-underline-offset: 2px;
-      }
-
-      &:hover {
-        color: var(--color-accent);
       }
     }
   }

@@ -7,16 +7,16 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #eee8d9;
-  --color-surface: #faf6ec;
+  --color-background: #f3efe7;
+  --color-surface: #fcf9f3;
   --color-surface-2: #fefcf6;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
   --color-muted: #69655b;
   --color-muted-2: #58554d;
-  --color-line: #d2c6af;
-  --color-line-input: #bdb9ab;
+  --color-line: #cec3b0;
+  --color-line-input: #c3c0b6;
   --color-line-contrast: #1b1a17;
   --color-accent: #9c3b2e;
   --color-accent-2: #a54e42;
@@ -43,6 +43,7 @@
   --font-size-xs: 0.875rem;
   --font-size-sm: 0.9375rem;
   --font-size-md: 1rem;
+  --font-size-article: 1.0625rem;
   --font-size-label: 1.125rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.4rem;
@@ -81,27 +82,27 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --color-background: #17171b;
-  --color-surface: #201f25;
+  --color-background: #22242a;
+  --color-surface: #1a1c21;
   --color-surface-2: #25242a;
   --color-text-heading: #f3f1f7;
   --color-text: #e9e8ec;
-  --color-text-article: #e0dfe3;
+  --color-text-article: #d4d3d8;
   --color-muted: #9b9aa3;
   --color-muted-2: #afaeb5;
   --color-line: #343339;
   --color-line-input: #45444b;
   --color-line-contrast: #45444b;
   --color-accent: #f08a78;
-  --color-accent-2: rgb(245, 167, 150);
+  --color-accent-2: #fd9c8b;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
   --color-map-central: #e6877a;
   --color-map-south: #b59ae0;
   --color-map-county: #84b0e6;
   --color-map-park: #7ec98a;
-  --color-link: #6db1ff;
-  --color-link-hover: #a7d0ff;
+  --color-link: #99c3ff;
+  --color-link-hover: #b5d4ff;
 
   --color-verdict-loved: #f08a78;
   --color-verdict-liked: #d6a35a;
@@ -113,6 +114,18 @@
     rgba(0, 0, 0, 0.4) 0px 20px 25px -5px, rgba(0, 0, 0, 0.2) 0px 10px 10px -5px;
   --box-shadow-flag: rgba(0, 0, 0, 0.85) 0px 3px 3px 0px;
 }
+
+/* Light-on-dark serif text halates: bright strokes bloom into the dark surround
+   and smear Georgia's thin serifs. Grayscale antialiasing (macOS) and a hair of
+   tracking counter it; the dimmer dark-mode article ink above does the rest. */
+:root[data-theme='dark'] body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* :root[data-theme='dark'] .body {
+  letter-spacing: 0.007em;
+} */
 
 /* ===========================================================================
    Reset
@@ -408,17 +421,14 @@ a {
   text-decoration-line: underline;
 }
 
-/* The dotted underline is the wiki-style affordance — reserved for internal
-   [[wikilinks]] and Wikipedia references, which carry it at rest (regular links
-   show no underline until hover). It firms to a solid underline on hover, and
-   works anywhere since wikilinks only appear in content. */
+/* Wikilinks and Wikipedia references behave like regular links (no underline
+   until hover); their distinct color/typography carries the affordance. */
 a.wikilink,
 a.wikipedia-link {
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
+  text-decoration-line: none;
 
   &:hover {
-    text-decoration-style: solid;
+    text-decoration-line: underline;
   }
 }
 
@@ -427,8 +437,7 @@ a.more {
   align-items: center;
   gap: var(--spacing-sm);
   color: var(--color-accent-2);
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
+  text-decoration-line: none;
 
   &.inline {
     display: inline-flex;
@@ -751,6 +760,8 @@ main {
 .body {
   color: var(--color-text-article);
   margin-block-end: var(--spacing-lg);
+  font-size: var(--font-size-article);
+  line-height: 1.6;
 
   h2:not(:first-child) {
     margin-top: 3rem;
@@ -1070,7 +1081,7 @@ body:has(.map-split) main > .wrap,
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
@@ -1180,8 +1191,8 @@ body:has([data-neighborhood-map]) .river-border {
   font-weight: 500;
   color: var(--color-accent-2);
   font-size: var(--font-size-md);
-  line-height: 1.3;
-  margin-block-end: 0;
+  line-height: 1.2;
+  margin-block-end: var(--spacing-xs);
 }
 
 .map-list .chips {
@@ -2243,7 +2254,7 @@ body:has([data-filter-root]) .site-header {
 }
 
 /* A content-width "back to the map" link at the foot of the sidebar. Overrides
-   the btn-quiet dotted underline with a 2px solid accent one. */
+   the btn-quiet hover-only underline with an always-on 2px solid accent one. */
 .detail-back-link {
   align-self: flex-start;
   text-decoration-line: underline;
@@ -2259,9 +2270,9 @@ body:has([data-filter-root]) .site-header {
   margin: 0 0 var(--spacing-sm);
 }
 
-/* The sidebar "Links" section: a stack of quiet dotted-underline source links
-   (Website / Instagram / … ), each led by a small icon. Left-aligned and
-   content-width, not full-bleed buttons. */
+/* The sidebar "Links" section: a stack of quiet source links (Website /
+   Instagram / … ), each led by a small icon. Left-aligned and content-width,
+   not full-bleed buttons. */
 .detail-links {
   display: flex;
   flex-direction: column;
@@ -2378,9 +2389,7 @@ body:has([data-filter-root]) .site-header {
   gap: var(--spacing-sm);
   padding: 0;
   color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--color-muted);
+  text-decoration: none;
   text-underline-offset: 3px;
   flex-shrink: 0;
   background: transparent;
@@ -2394,15 +2403,13 @@ body:has([data-filter-root]) .site-header {
   text-underline-offset: 3px;
 }
 
-/* Borderless muted text w/ dotted underline (source links inside lists). */
+/* Borderless muted text link (source links inside lists); underlines on hover. */
 .btn-muted {
   gap: var(--spacing-sm);
   padding: 0;
   font-weight: 500;
   color: var(--color-muted);
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--color-muted);
+  text-decoration: none;
   text-underline-offset: 3px;
   flex-shrink: 0;
   background: transparent;
@@ -2411,7 +2418,7 @@ body:has([data-filter-root]) .site-header {
 .btn-muted:hover,
 .btn-muted.is-copied {
   color: var(--color-accent);
-  text-decoration-style: solid;
+  text-decoration-line: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color-accent);
 }

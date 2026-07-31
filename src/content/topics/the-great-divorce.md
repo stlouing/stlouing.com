@@ -98,12 +98,12 @@ Being honest though, this hypothetical city covers 570 square miles, which would
 
 St. Loutopia would also be the [9th largest city in the 2020 census](https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population), about the same size in population as Dallas while covering roughly 230 more square miles of land.
 
-| Rank  | City                        | 2020 population |
-| :---- | :-------------------------- | --------------: |
-| 7     | San Antonio                 |       1,434,625 |
-| 8     | San Diego                   |       1,386,932 |
-| **9** | **St. Louis City + County** |   **1,305,703** |
-| 10    | Dallas                      |       1,304,379 |
+| Rank  | City                        | 2020 population |      Land area |
+| :---- | :-------------------------- | --------------: | -------------: |
+| 7     | San Antonio                 |       1,434,625 |     499 sq. mi |
+| 8     | San Diego                   |       1,386,932 |     326 sq. mi |
+| **9** | **St. Louis City + County** |   **1,305,703** | **570 sq. mi** |
+| 10    | Dallas                      |       1,304,379 |     340 sq. mi |
 
 <p class="table-caption">Where a combined St. Louis would rank among U.S. cities by population, 2020</p>
 
@@ -117,14 +117,14 @@ Reunification has been [attempted several times](https://www.stlmag.com/news/pol
 
 An actual merger has not happened in 150 years (as of this writing), it does not seem likely that it will ever happen. There are legitimate concerns from both sides about such an event, and the city and county finding a way to work together would not immediately fix all problems from the last 150 years, but I believe anything that could improve the city's reputation would be a win. A more unified region could also potentially work together better to solve these issues.
 
-St. Louis will probably not ever be the 4th largest city in the U.S. again, but if it wasn't on the top of every "most dangerous city" list, I believe people would be more likely to visit and move here.
+St. Louis will probably not ever be the 4th largest city in the U.S. again, (St. Loutopia might!) but if it wasn't on the top of every "most dangerous city" list, I believe people would be more likely to visit and move here.
 
 ## TL;DR
 
 - St. Louis City voted to separate from St. Louis County in 1876, freezing its borders at 66 square miles - "The Great Divorce".
 - The city peaked at 856,796 residents in 1950 and has shrunk every decade since, down to 301,578 in 2020, while the county grew past a million.
 - Crime is measured by city boundary, so the stats cover only the urban core: St. Louis had the highest 2020 murder rate (87 per 100k) of the 296 large cities reporting to the FBI.
-- If the city and county were one city, it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would fall to 28 - around 15th place, still high.
+- If the city and county were one city, it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would fall to 28 - around 15th place, still in the top 20.
 - Reunification attempts failed in 1926, 1959, 1962, and 2019.
 
 #### Sources
@@ -132,9 +132,9 @@ St. Louis will probably not ever be the 4th largest city in the U.S. again, but 
 Every homicide count on this page comes from a single dataset for a single year: the FBI's official 2020 "murder and nonnegligent manslaughter" figures. Rates are those counts divided by 2020 census populations.
 
 - [Crime in the U.S. 2020: Offenses Known to Law Enforcement](https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/downloads) - FBI Crime Data Explorer — murder counts for every reporting agency (Table 8 by city, Table 10 by county agency), from the Crime in the United States Annual Reports download for 2020
-- [QuickFacts: St. Louis city and St. Louis County](https://www.census.gov/quickfacts/fact/table/stlouiscitymissouri,stlouiscountymissouri/PST045224) - U.S. Census Bureau — 2020 populations
+- [QuickFacts: St. Louis city and St. Louis County](https://www.census.gov/quickfacts/fact/table/stlouiscitymissouri,stlouiscountymissouri/PST045224) - U.S. Census Bureau, 2020 populations
 - [2020 U.S. Gazetteer Files](https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.2020.html) - U.S. Census Bureau — land areas
-- [Demographics of St. Louis](https://en.wikipedia.org/wiki/Demographics_of_St._Louis) and [St. Louis County, Missouri](https://en.wikipedia.org/wiki/St._Louis_County,_Missouri) - decennial census counts for the population-by-decade table
+- [Demographics of St. Louis](https://en.wikipedia.org/wiki/Demographics_of_St._Louis) and [St. Louis County, Missouri](https://en.wikipedia.org/wiki/St._Louis_County,_Missouri) - census counts for the population-by-decade table
 
 <small>The St. Louis County total (104) is the St. Louis County Police Department (43) plus the 44 municipal police departments that reported to the FBI (61 combined). A handful of departments - Berkeley, Maryland Heights, and Webster Groves among them - did not report 2020 data, so the county figure is likely a slight undercount.</small>
 

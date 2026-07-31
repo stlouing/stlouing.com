@@ -48,24 +48,21 @@ const homeActive = current === href('/')
     a {
       display: block;
       color: var(--color-text);
-      text-decoration: underline;
-      text-decoration-style: dotted;
-      text-decoration-color: var(--color-muted);
+      text-decoration-line: none;
+      text-decoration-color: var(--color-accent);
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
       font-weight: 500;
 
       &:hover {
         color: var(--color-text);
-        text-decoration-style: solid;
-        text-decoration-color: var(--color-accent);
+        text-decoration-line: underline;
       }
 
       &[aria-current='page'] {
         color: var(--color-accent);
         font-weight: 600;
-        text-decoration-style: solid;
-        text-decoration-color: var(--color-accent);
+        text-decoration-line: underline;
       }
     }
   }

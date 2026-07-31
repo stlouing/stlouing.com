@@ -45,10 +45,9 @@ const { trail } = Astro.props
       gap: var(--spacing-md);
       color: var(--color-muted);
       font-weight: 500;
-      text-decoration: underline;
-      text-decoration-style: dotted;
+      text-decoration-line: none;
       text-decoration-thickness: 2px;
-      text-decoration-color: var(--color-muted);
+      text-decoration-color: var(--color-accent);
       text-underline-offset: 4px;
 
       /* Same as the rest of the crumbs, just in the heading color. */
@@ -59,8 +58,7 @@ const { trail } = Astro.props
 
       &:hover {
         color: var(--color-accent);
-        text-decoration-style: solid;
-        text-decoration-color: var(--color-accent);
+        text-decoration-line: underline;
       }
     }
 
