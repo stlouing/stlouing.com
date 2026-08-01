@@ -1,0 +1,12 @@
+---
+// The Great Divorce city/county boundary figure. The article's markdown supplies
+// the placeholder (`<div class="boundary-map" data-boundary-map></div>`) so the
+// figure sits mid-article; this component only ships the script that mounts the
+// map into it. [slug].astro includes it when the topic's body contains the
+// placeholder, so other topics never load MapLibre.
+---
+
+<script>
+  import { initBoundaryMap } from '../scripts/boundary-map'
+  initBoundaryMap()
+</script>

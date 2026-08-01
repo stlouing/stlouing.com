@@ -1,5 +1,6 @@
 ---
 title: A Case for St. Louis
+description: An honest accounting what's broken, what's underrated, and why it's worth it
 created: 2026-07-05
 icon: landmark
 updated: 2026-06-24

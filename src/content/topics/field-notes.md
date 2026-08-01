@@ -1,7 +1,7 @@
 ---
 title: St. Louis Field Notes
 icon: notebook
-description: Collection of random STL knowledge
+description: A little city with a lot of regional culture
 created: 2026-05-28
 updated: 2026-06-29
 ---

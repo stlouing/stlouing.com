@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import BoundaryMap from '../components/BoundaryMap.astro'
 import Entry from '../components/Entry.astro'
 import EntryDates from '../components/EntryDates.astro'
 import { published } from '../lib/content'
@@ -21,6 +22,10 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content, headings } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
+
+// Topics opt into the city/county boundary figure by carrying its placeholder
+// in their markdown; only those pages load MapLibre.
+const hasBoundaryMap = (entry.body ?? '').includes('data-boundary-map')
 
 // Table of contents, built from the post's own headings (rehype-slug gives each a
 // stable id that the `#slug` links resolve to). Sections are the `##` headings with
@@ -72,6 +77,7 @@ const schema = articleSchema(
   publishedTime={(data.created ?? data.updated).toISOString()}
   tags={data.tags}
   jsonLd={schema}>
+  {hasBoundaryMap && <BoundaryMap />}
   <Entry title={data.title} tags={data.tags} backlinks={backlinks} permalink={permalink}>
     {
       data.description && (

@@ -2,18 +2,24 @@
 title: The Great Divorce
 seoTitle: The Great Divorce of St. Louis City and County
 icon: heart-crack
-description: The city-county split that divides St. Louis
+description: How the St. Louis City-County split skews its crime stats
 created: 2026-06-29
-updated: 2026-07-28
+updated: 2026-07-31
 ---
 
-Did you know at one point St. Louis nearly became the capital of the U.S.? There was a time when St. Louis was the [4th largest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870) and was seeing a massive boom in population and industry that continued well into the early 20th century, when the city hosted both the Olympics and the World's Fair.
+Did you know St. Louis was almost the capital of the U.S.? At its peak, it was the [4th largest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870), booming in population and industry, and big enough that by 1904 it hosted the Olympics and the World's Fair in the same year.
 
-However, many factors have contributed to the city's decline over the following decades - white flight, highway development, redlining, and the economy shifting away from the river - from more than 850,000 residents in the 1950s to less than 300,000 now. One persistent structural issue underlying these events is the city-county split known as "The Great Divorce".
+Many factors have contributed to the city's decline over the following decades - white flight, highway development, redlining, and the economy shifting away from the river - from more than 850,000 residents in the 1950s to less than 300,000 now. One persistent structural issue underlying these events is the city-county split known as "The Great Divorce".
 
 ## A City Divided
 
 The City of St. Louis voted to separate from St. Louis County in 1876, becoming one of the few [independent cities](<https://en.wikipedia.org/wiki/Independent_city_(United_States)>) in America. Most other cities sit inside a county, like Chicago within Cook County, but St. Louis City and County are completely separate entities. This separation permanently froze the boundaries of St. Louis at 66 square miles\*\*, which resulted in unforeseen consequences for the city.
+
+<figure class="boundary-map-figure">
+  <div class="boundary-map" data-boundary-map></div>
+</figure>
+
+<p class="table-caption">St. Louis City and St. Louis County</p>
 
 ### Frozen borders
 
@@ -121,19 +127,20 @@ St. Louis will probably not ever be the 4th largest city in the U.S. again, (St.
 
 ## TL;DR
 
-- St. Louis City voted to separate from St. Louis County in 1876, freezing its borders at 66 square miles - "The Great Divorce".
-- The city peaked at 856,796 residents in 1950 and has shrunk every decade since, down to 301,578 in 2020, while the county grew past a million.
-- Crime is measured by city boundary, so the stats cover only the urban core: St. Louis had the highest 2020 murder rate (87 per 100k) of the 296 large cities reporting to the FBI.
-- If the city and county were one city, it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would fall to 28 - around 15th place, still in the top 20.
+- St. Louis City voted to separate from St. Louis County in 1876, freezing its borders at 66 square miles.
+- The city peaked at 856,796 residents in 1950 and has shrunk every decade since, down to 301,578 in 2020. The county grew past a million during that time period.
+- Crime is measured by city boundary, so the stats cover only the urban core. St. Louis (city) had the highest 2020 murder rate (87 per 100k) of the 296 large cities reporting to the FBI. The county was estimated around 10 per 100k.
+- If the city and county were one merged city (St. Loutopia), it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would be 28, around 15th place. This doesn't necessarily paint the best picture, because the city would need contain a massive amount of sprawl to bring down the statistics.
 - Reunification attempts failed in 1926, 1959, 1962, and 2019.
 
 #### Sources
 
 Every homicide count on this page comes from a single dataset for a single year: the FBI's official 2020 "murder and nonnegligent manslaughter" figures. Rates are those counts divided by 2020 census populations.
 
-- [Crime in the U.S. 2020: Offenses Known to Law Enforcement](https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/downloads) - FBI Crime Data Explorer — murder counts for every reporting agency (Table 8 by city, Table 10 by county agency), from the Crime in the United States Annual Reports download for 2020
+- [Crime in the U.S. 2020: Offenses Known to Law Enforcement](https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/downloads) - FBI Crime Data Explorer — murder counts for every reporting agency
 - [QuickFacts: St. Louis city and St. Louis County](https://www.census.gov/quickfacts/fact/table/stlouiscitymissouri,stlouiscountymissouri/PST045224) - U.S. Census Bureau, 2020 populations
 - [2020 U.S. Gazetteer Files](https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.2020.html) - U.S. Census Bureau — land areas
+- [TIGERweb](https://tigerweb.geo.census.gov/tigerweb/) - U.S. Census Bureau — the map's city and county boundary outlines
 - [Demographics of St. Louis](https://en.wikipedia.org/wiki/Demographics_of_St._Louis) and [St. Louis County, Missouri](https://en.wikipedia.org/wiki/St._Louis_County,_Missouri) - census counts for the population-by-decade table
 
 <small>The St. Louis County total (104) is the St. Louis County Police Department (43) plus the 44 municipal police departments that reported to the FBI (61 combined). A handful of departments - Berkeley, Maryland Heights, and Webster Groves among them - did not report 2020 data, so the county figure is likely a slight undercount.</small>

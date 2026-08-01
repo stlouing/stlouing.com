@@ -245,8 +245,13 @@ ul li > ol {
   margin-block-end: 0;
 }
 
+small {
+  display: block;
+  line-height: 1.4;
+}
+
 code {
-  font-size: var(--font-size-sm);
+  
   color: var(--color-text);
   font-weight: 500;
 }
@@ -384,6 +389,25 @@ tbody tr:last-child td {
   color: var(--color-muted);
 }
 
+/* The Great Divorce city/county boundary figure: a fixed-height inline map.
+   The placeholder div lives in the article markdown; BoundaryMap.astro mounts
+   the MapLibre basemap into it on page load. */
+.boundary-map-figure {
+  margin: var(--spacing-lg) 0;
+}
+
+.boundary-map {
+  height: 420px;
+  border: 1px solid var(--color-line-contrast);
+  background: var(--color-surface-2);
+}
+
+@media (max-width: 700px) {
+  .boundary-map {
+    height: 320px;
+  }
+}
+
 /* Jumping to an in-page anchor (a heading permalink, a /food#id link) should
    land below the sticky header, not behind it. --header-height is measured in
    Header.astro; the fallback covers the no-JS / pre-hydration case. */
@@ -436,7 +460,6 @@ a.more {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: var(--color-accent-2);
   text-decoration-line: none;
 
   &.inline {
@@ -761,10 +784,18 @@ main {
   color: var(--color-text-article);
   margin-block-end: var(--spacing-lg);
   font-size: var(--font-size-article);
-  line-height: 1.6;
+  line-height: 1.55;
 
   h2:not(:first-child) {
     margin-top: 3rem;
+  }
+}
+
+/* The bumped article size is a wide-measure comfort; on a phone's short lines
+   it just costs words per line, so drop back to the base size. */
+@media (max-width: 700px) {
+  .body {
+    font-size: var(--font-size-md);
   }
 }
 
