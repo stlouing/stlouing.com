@@ -180,7 +180,7 @@ function readCorridorColors(): { line: string; halo: string } {
 
   return {
     line: readColor('--color-map-corridor', '#c0392b'),
-    halo: readColor('--color-bg', '#ffffff'),
+    halo: readColor('--color-background', '#f3efe7'),
   }
 }
 
@@ -447,7 +447,7 @@ function applyOverviewLayers(
     styles.getPropertyValue(token).trim() || fallback
   const lineColor = readColor('--color-map-corridor', '#c0392b')
   const polygonColor = readColor('--color-map-accent', '#6a47a6')
-  const haloColor = readColor('--color-bg', '#ffffff')
+  const haloColor = readColor('--color-background', '#f3efe7')
 
   if (!map.getSource(SOURCE_ID)) {
     map.addSource(OVERVIEW_BOUNDARIES_SOURCE_ID, {

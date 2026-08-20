@@ -468,8 +468,11 @@ tbody tr:last-child td {
    neighborhood map, with the name as a hover/focus tooltip (always-visible
    labels overlapped when spots cluster), linking to the spot's page when it
    has one. The pin lift on hover comes from the shared .marker-pin rules. */
+/* NOTE: no position/top/left here — MapLibre's .maplibregl-marker positions
+   the element (absolute + transform); overriding it breaks marker placement
+   (and the two stylesheets' order differs between dev and prod bundles). The
+   marker element is already the tooltip's positioned ancestor. */
 .corridor-spot {
-  position: relative;
   display: block;
 }
 
@@ -2311,7 +2314,7 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent-2);
   font-weight: 500;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.3;
   margin-block-end: var(--spacing-xs);
 }
 
