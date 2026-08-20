@@ -181,6 +181,7 @@ function readCorridorColors(): { line: string; halo: string } {
   return {
     line: readColor('--color-map-corridor', '#c0392b'),
     halo: readColor('--color-background', '#f3efe7'),
+    label: readColor('--color-text', '#1b1a17'),
   }
 }
 
@@ -239,7 +240,7 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
     map.setPaintProperty(ENDPOINTS_LAYER_ID, 'circle-color', colors.line)
     map.setPaintProperty(ENDPOINTS_LAYER_ID, 'circle-stroke-color', colors.halo)
     if (map.getLayer(LABELS_LAYER_ID)) {
-      map.setPaintProperty(LABELS_LAYER_ID, 'text-color', colors.line)
+      map.setPaintProperty(LABELS_LAYER_ID, 'text-color', colors.label)
       map.setPaintProperty(LABELS_LAYER_ID, 'text-halo-color', colors.halo)
     }
 
@@ -284,7 +285,7 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
         'text-offset': [0, -0.6],
       },
       paint: {
-        'text-color': colors.line,
+        'text-color': colors.label,
         'text-halo-color': colors.halo,
         'text-halo-width': 1.5,
       },
@@ -365,11 +366,11 @@ function mountCorridorMap(element: HTMLElement, group: Corridor[]): MountedMap {
 
   map.on('load', () => {
     applyCorridorLayers(map, group)
-    // One zoom level looser than a tight fit, so the strip sits in enough
-    // surrounding street grid to read as a place, not a line in a void.
+    // Half a zoom level looser than a tight fit — the frame already includes
+    // the section's pins, so it only needs a little extra street-grid context.
     const camera = map.cameraForBounds(figureBounds(group), { padding: 36 })
     if (camera) {
-      map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 14) - 1 })
+      map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 14) - 0.25 })
     }
   })
 
@@ -448,6 +449,7 @@ function applyOverviewLayers(
   const lineColor = readColor('--color-map-corridor', '#c0392b')
   const polygonColor = readColor('--color-map-accent', '#6a47a6')
   const haloColor = readColor('--color-background', '#f3efe7')
+  const labelColor = readColor('--color-text', '#1b1a17')
 
   if (!map.getSource(SOURCE_ID)) {
     map.addSource(OVERVIEW_BOUNDARIES_SOURCE_ID, {
@@ -498,7 +500,7 @@ function applyOverviewLayers(
     map.setPaintProperty(LINE_LAYER_ID, 'line-color', lineColor)
     map.setPaintProperty(OVERVIEW_FILL_LAYER_ID, 'fill-color', polygonColor)
     map.setPaintProperty(OVERVIEW_OUTLINE_LAYER_ID, 'line-color', polygonColor)
-    map.setPaintProperty(LABELS_LAYER_ID, 'text-color', lineColor)
+    map.setPaintProperty(LABELS_LAYER_ID, 'text-color', labelColor)
     map.setPaintProperty(LABELS_LAYER_ID, 'text-halo-color', haloColor)
 
     return
@@ -547,7 +549,7 @@ function applyOverviewLayers(
       'text-offset': [0, -0.4],
     },
     paint: {
-      'text-color': lineColor,
+      'text-color': labelColor,
       'text-halo-color': haloColor,
       'text-halo-width': 1.5,
     },

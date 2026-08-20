@@ -76,7 +76,7 @@ Euclid is just a few short blocks from Forest Park, the proximity of which is a 
 
 | Street                                                                | Neighborhoods                                                          | Vibe                        | Website                                             |
 | :-------------------------------------------------------------------- | :--------------------------------------------------------------------- | :-------------------------- | :-------------------------------------------------- |
-| <span class="nowrap">**Washington Avenue**</span><br>From 9th to 18th | [[downtown\|Downtown]], [Downtown West](/neighborhoods/downtown-west/) | Urban, historic, industrial | [washaveretail.com](https://www.washaveretail.com/) |
+| <span class="nowrap">**Washington Avenue**</span><br>From 6th to 18th | [[downtown\|Downtown]], [Downtown West](/neighborhoods/downtown-west/) | Urban, historic, industrial | [washaveretail.com](https://www.washaveretail.com/) |
 
 <figure class="corridor-map-figure">
   <div class="corridor-map" data-corridor-map="washington-avenue"></div>

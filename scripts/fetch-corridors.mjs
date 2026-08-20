@@ -292,7 +292,7 @@ const corridors = [
     name: 'Washington Avenue',
     street: 'Washington Avenue',
     streetNames: ['Washington Avenue'],
-    from: { label: '9th', names: ['North 9th Street', 'North 10th Street'] },
+    from: { label: '6th', names: ['North 6th Street', '6th Street'] },
     to: { label: '18th', names: ['North 18th Street', '18th Street'] },
     center: [38.631, -90.197],
     anchor: 'washington-avenue',
