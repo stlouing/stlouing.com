@@ -34,12 +34,14 @@ const isArticle = Boolean(permalink)
 <article class:list={['entry', { 'h-entry': isArticle }]}>
   <header class="entry-header">
     <div class="entry-headline">
-      <div class="entry-headline-main">
-        <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
-        <slot name="lede" />
-      </div>
-      <div class="entry-headline-actions">
-        <ShareActions title={title} />
+      <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
+      <div class="entry-headline-sub">
+        <div class="entry-headline-lede">
+          <slot name="lede" />
+        </div>
+        <div class="entry-headline-actions">
+          <ShareActions title={title} />
+        </div>
       </div>
     </div>
 
@@ -95,29 +97,35 @@ const isArticle = Boolean(permalink)
 </section>
 
 <style>
-  /* Title + lede on the left, the Share / Feedback buttons on the right, aligned
-     to the foot of the text block so they sit on the lede line. */
-  .entry-headline {
+  /* The title owns the full measure (long titles were wrapping early when it
+     shared a row with the buttons); the lede and the Share / Feedback buttons
+     share the row beneath it, buttons right-aligned on the lede line. */
+  .entry-headline-sub {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: var(--spacing-md);
   }
 
-  .entry-headline-main {
+  .entry-headline-lede {
     min-width: 0;
   }
 
   .entry-headline-actions {
     flex-shrink: 0;
+    margin-inline-start: auto;
   }
 
-  /* Stack on narrow screens: buttons drop below the title + lede, left-aligned. */
+  /* Stack on narrow screens: buttons drop below the lede, left-aligned. */
   @media screen and (max-width: 700px) {
-    .entry-headline {
+    .entry-headline-sub {
       flex-direction: column;
       align-items: flex-start;
       gap: var(--spacing-sm);
+    }
+
+    .entry-headline-actions {
+      margin-inline-start: 0;
     }
   }
 

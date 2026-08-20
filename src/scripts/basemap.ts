@@ -102,10 +102,13 @@ export function createBasemapMap(
 // those custom sources/layers over onto the new base style in one atomic swap —
 // no manual re-add, and the style diff preserves their feature-state. DOM overlays
 // (Markers/Popups) survive regardless.
+// Returns a disposer — callers that tear their map down (the corridor figures)
+// must call it before map.remove(), or the observer would poke a dead map on
+// the next theme toggle.
 export function watchThemeChanges(
   map: maplibregl.Map,
   onThemeSwapped?: (dark: boolean) => void,
-): void {
+): () => void {
   let dark = isDarkTheme()
 
   const observer = new MutationObserver(() => {
@@ -145,4 +148,6 @@ export function watchThemeChanges(
   })
 
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+
+  return () => observer.disconnect()
 }

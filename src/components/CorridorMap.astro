@@ -1,0 +1,12 @@
+---
+// Walkable St. Louis corridor figures. The article's markdown supplies one
+// placeholder per strip (`<div class="corridor-map" data-corridor-map="<id>"></div>`);
+// this component only ships the script that mounts the maps into them.
+// [slug].astro includes it when the topic's body contains a placeholder, so
+// other topics never load MapLibre.
+---
+
+<script>
+  import { initCorridorMaps } from '../scripts/corridor-map'
+  initCorridorMaps()
+</script>

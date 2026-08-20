@@ -27,6 +27,8 @@
   --color-map-south: #6a47a6;
   --color-map-county: #2766ad;
   --color-map-park: #2e7d4a;
+  /* Walkable St. Louis corridor lines on the article mini-maps. */
+  --color-map-corridor: #c0392b;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
   --color-verdict-loved: #9c3b2e;
@@ -101,6 +103,7 @@
   --color-map-south: #b59ae0;
   --color-map-county: #84b0e6;
   --color-map-park: #7ec98a;
+  --color-map-corridor: #e6877a;
   --color-link: #99c3ff;
   --color-link-hover: #b5d4ff;
 
@@ -325,6 +328,7 @@ td {
   vertical-align: top;
   border-block-end: 1px solid var(--color-line);
   border-inline-end: 1px solid var(--color-line);
+  line-height: 1.4;
 }
 
 /* The outer frame is drawn by the table's own (darker) border; edge cells drop
@@ -406,6 +410,128 @@ tbody tr:last-child td {
   .boundary-map {
     height: 320px;
   }
+}
+
+/* Walkable St. Louis corridor figures: a small fixed-height inline map per strip.
+   The placeholder divs live in the article markdown; CorridorMap.astro mounts
+   the MapLibre basemaps into them as they scroll near. */
+.corridor-map-figure {
+  margin: var(--spacing-lg) 0;
+}
+
+.corridor-map {
+  height: 300px;
+  border: 1px solid var(--color-line-contrast);
+  background: var(--color-surface-2);
+}
+
+@media (max-width: 700px) {
+  .corridor-map {
+    height: 240px;
+  }
+}
+
+/* The lead overview map (every strip on one city-wide map) runs taller than
+   the per-strip figures. */
+.corridor-map.corridor-overview {
+  height: 460px;
+}
+
+@media (max-width: 700px) {
+  .corridor-map.corridor-overview {
+    height: 340px;
+  }
+}
+
+/* The generated list of a corridor map's pinned spots, as a quiet mono caption
+   under the figure (the visible counterpart of the pin tooltips). */
+.corridor-map-caption {
+  margin-block-start: var(--spacing-xs);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.corridor-map-caption a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.corridor-map-caption a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Hand-picked spots on the corridor maps: the same teardrop pin as the
+   neighborhood map, with the name as a hover/focus tooltip (always-visible
+   labels overlapped when spots cluster), linking to the spot's page when it
+   has one. The pin lift on hover comes from the shared .marker-pin rules. */
+.corridor-spot {
+  position: relative;
+  display: block;
+}
+
+/* Lift the hovered/focused pin above its neighbors, so its tooltip overlaps
+   them instead of being painted underneath (markers stack in DOM order). */
+.corridor-spot:hover,
+.corridor-spot:focus-visible {
+  z-index: 2;
+}
+
+a.corridor-spot {
+  cursor: pointer;
+}
+
+.corridor-spot:hover .marker-pin,
+.corridor-spot:focus-visible .marker-pin {
+  transform: scale(1.12);
+}
+
+/* On mostly north-south strips the upright pin body would cover the vertical
+   line; lie it on its side (rotated around the tip, which stays on the spot). */
+.corridor-spot.is-horizontal .marker-pin {
+  transform: rotate(90deg);
+}
+
+.corridor-spot.is-horizontal:hover .marker-pin,
+.corridor-spot.is-horizontal:focus-visible .marker-pin {
+  transform: rotate(90deg) scale(1.12);
+}
+
+.corridor-spot-name {
+  position: absolute;
+  bottom: calc(100% + var(--spacing-xs));
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 1px var(--spacing-xs);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.corridor-spot:hover .corridor-spot-name,
+.corridor-spot:focus-visible .corridor-spot-name {
+  visibility: visible;
+  opacity: 1;
+  z-index: 99999;
+}
+
+/* A sideways pin lies along the bottom half of its layout box (rotated around
+   the tip), so its tooltip anchors near the box middle, not its empty top. */
+.corridor-spot.is-horizontal .corridor-spot-name {
+  bottom: calc(50% + 2px);
 }
 
 /* Jumping to an in-page anchor (a heading permalink, a /food#id link) should
@@ -2202,7 +2328,7 @@ body:has([data-filter-root]) .site-header {
     font-family: var(--font-display);
     font-weight: 400;
     line-height: 1.05;
-    font-size: clamp(2.75rem, 2.1rem + 2.6vw, 4.5rem);
+    font-size: clamp(2.5rem, 2rem + 2.2vw, 4rem);
   }
 
   .address {
@@ -2664,4 +2790,8 @@ body:has([data-filter-root]) .site-header {
 .river-border {
   height: 24px;
   background: transparent url('/river-border2.svg') repeat-x center / auto 100%;
+}
+
+.nowrap {
+  text-wrap: nowrap;
 }

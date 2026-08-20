@@ -24,6 +24,7 @@ import {
   neighborhoodMetaDescription,
   neighborsOf,
   festivalsIn,
+  corridorsIn,
   neighborhoodResourceLinks,
   regionOf,
 } from '../../lib/neighborhoods'
@@ -99,6 +100,15 @@ const neighbors =
       })
     : neighborsOf(slug)
 const festivals = festivalsIn(slug)
+
+// Walkable strips through this neighborhood, each linking to its Walkable
+// St. Louis section — shown only once the article itself is published (drafts
+// count in dev).
+const walkableStLouisLive = published(await getCollection('topics')).some(
+  (topic) => topic.id === 'walkable-st-louis',
+)
+const corridors = walkableStLouisLive ? corridorsIn(slug) : []
+
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
@@ -220,6 +230,24 @@ const trail = [
           )
         }
 
+
+        {
+          corridors.length > 0 && (
+            <RelatedList title="Walkable streets">
+              {corridors.map((corridor) => (
+                <RelatedCard
+                  href={href(`/walkable-st-louis/#${corridor.anchor}`)}
+                  title={corridor.name}
+                  meta={corridor.street}
+                  metaType="text"
+                  description={`${corridor.from} to ${corridor.to}`}>
+                  <IconMapPin slot="icon" />
+                </RelatedCard>
+              ))}
+            </RelatedList>
+          )
+        }
+
         {
           attractions.length > 0 && (
             <RelatedList title="Notable spots">
@@ -235,6 +263,7 @@ const trail = [
             </RelatedList>
           )
         }
+
 
         {
           places.length > 0 && (

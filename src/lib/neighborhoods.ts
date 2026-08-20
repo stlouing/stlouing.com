@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 import neighborhoods from '../data/neighborhoods.json'
 import geo from '../data/neighborhood-geo.json'
 import festivals from '../data/festivals.json'
+import corridorData from '../data/corridors.json'
 import population from '../data/neighborhood-population.json'
 import { published } from './content'
 
@@ -195,6 +196,26 @@ export function neighborsOf(slug: string): NeighborhoodInfo[] {
     .map((neighbor) => infoBySlug.get(neighbor))
     .filter((neighbor): neighbor is NeighborhoodInfo => Boolean(neighbor))
     .sort((left, right) => left.name.localeCompare(right.name))
+}
+
+export interface Corridor {
+  id: string
+  name: string
+  street: string
+  from: string
+  to: string
+  // The Walkable St. Louis article section this strip links to (its heading's id).
+  anchor: string
+  neighborhoods: string[]
+}
+
+// Walkable street strips (from the Walkable St. Louis topic) that run through a
+// given neighborhood, for the "Walkable streets" cross-links on neighborhood
+// pages. Each entry also carries its map `line`, which isn't needed here.
+export function corridorsIn(slug: string): Corridor[] {
+  return (corridorData.corridors as Corridor[]).filter((corridor) =>
+    corridor.neighborhoods.includes(slug),
+  )
 }
 
 export interface Festival {

@@ -56,7 +56,7 @@ const latestTopics = allTopics.slice(0, 4)
 // the site is alive at a glance. The full log lives at /updates. The Markdown
 // body is rendered (same as /updates) so links + emphasis in a change show here too.
 const latestUpdates = await Promise.all(
-  (await getChangelog()).slice(0, 3).map(async (entry) => {
+  (await getChangelog()).slice(0, 2).map(async (entry) => {
     const { Content } = await render(entry)
 
     return { date: entry.data.date, Content }
