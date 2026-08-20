@@ -16,7 +16,9 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-const OVERPASS_URL = 'https://overpass-api.de/api/interpreter'
+// Override with OVERPASS_URL=… when the main instance rate-bans (mirrors:
+// overpass.kumi.systems, overpass.osm.ch).
+const OVERPASS_URL = process.env.OVERPASS_URL ?? 'https://overpass-api.de/api/interpreter'
 const OUTPUT_PATH = fileURLToPath(new URL('../src/data/corridors.json', import.meta.url))
 
 // `center` is an approximate corridor midpoint, only used to scope Overpass
@@ -159,10 +161,11 @@ const corridors = [
     streetNames: ['Delmar Boulevard'],
     // Trinity's OSM ways end just shy of Delmar's carriageways (no shared
     // node), so the junction is pinned by coordinate instead.
-    from: { label: 'Trinity', names: ['Trinity Avenue'], coord: [38.65652, -90.31105] },
+    from: { label: 'Leland', names: ['Leland Avenue'] },
     // East end trimmed to the block past the Pageant / Delmar Hall — the strip
     // effectively ends there, well before DeBaliviere.
-    to: { label: 'Des Peres', names: ['Des Peres Avenue', 'North Des Peres Avenue'] },
+    // Ends just past the Pageant / Delmar Hall block (mid-block; no cross street).
+    to: { label: 'the Pageant', coord: [38.65513, -90.2965] },
     center: [38.656, -90.304],
     anchor: 'the-delmar-loop',
     neighborhoods: ['university-city', 'delmar-loop'],
@@ -237,7 +240,7 @@ const corridors = [
     street: 'Kirkwood Road',
     streetNames: ['North Kirkwood Road', 'South Kirkwood Road', 'Kirkwood Road'],
     from: { label: 'Bodley', names: ['East Bodley Avenue', 'West Bodley Avenue'] },
-    to: { label: 'Woodbine', names: ['West Woodbine Avenue', 'East Woodbine Avenue', 'Woodbine Avenue'] },
+    to: { label: 'Monroe', names: ['West Monroe Avenue', 'East Monroe Avenue'] },
     center: [38.583, -90.4068],
     anchor: 'kirkwood',
     neighborhoods: ['kirkwood'],
@@ -286,6 +289,46 @@ const corridors = [
     website: 'https://www.soulard.org/',
   },
   {
+    // The Clayton & Tamm junction in Dogtown: Pat Connolly at the Oakland
+    // corner, Seamus McDaniel's mid-strip.
+    id: 'dogtown',
+    name: 'Dogtown',
+    street: 'Tamm Avenue',
+    streetNames: ['Tamm Avenue'],
+    from: { label: 'Oakland', names: ['Oakland Avenue'] },
+    to: { label: 'Mitchell', names: ['Mitchell Place', 'Mitchell Avenue'] },
+    center: [38.629, -90.2927],
+    anchor: 'dogtown',
+    neighborhoods: ['dogtown'],
+  },
+  {
+    // The east-west bar of the Dogtown cross, meeting Tamm at the Clayton &
+    // Tamm junction. No neighborhoods so it doesn't duplicate the cross-link.
+    id: 'dogtown-clayton',
+    name: 'Dogtown',
+    label: 'Clayton Ave',
+    street: 'Clayton Avenue',
+    streetNames: ['Clayton Avenue'],
+    from: { label: 'Childress', names: ['Childress Avenue'] },
+    to: { label: 'Graham', names: ['Graham Street', 'Graham Avenue'] },
+    center: [38.6286, -90.2922],
+    anchor: 'dogtown',
+    neighborhoods: [],
+  },
+  {
+    // Shaw's 39th Street node (TeeRak, Ices Plain & Fancy), running down to
+    // the park edge at Magnolia.
+    id: 'shaw',
+    name: 'Shaw',
+    street: 'South 39th Street',
+    streetNames: ['South 39th Street', '39th Street'],
+    from: { label: 'Shaw', names: ['Shaw Boulevard'] },
+    to: { label: 'Magnolia', names: ['Magnolia Avenue'] },
+    center: [38.61, -90.2459],
+    anchor: 'shaw',
+    neighborhoods: ['shaw'],
+  },
+  {
     // The downtown loft/nightlife strip; Tucker (12th) is the Downtown /
     // Downtown West line, so the extent spans both.
     id: 'washington-avenue',
@@ -318,7 +361,9 @@ const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, mil
 
 async function overpass(query) {
   for (let attempt = 1; attempt <= 3; attempt += 1) {
-    const response = await fetch(OVERPASS_URL, {
+    let response
+    try {
+      response = await fetch(OVERPASS_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -326,7 +371,12 @@ async function overpass(query) {
         'User-Agent': 'stlouing-corridors/1.0 (street extract for stlouing.com)',
       },
       body: `data=${encodeURIComponent(query)}`,
-    })
+      })
+    } catch (error) {
+      console.warn(`  network error (${error.message}), attempt ${attempt}/3`)
+      await sleep(10000 * attempt)
+      continue
+    }
 
     if (response.ok) {
       const result = await response.json()

@@ -374,9 +374,24 @@
         -90.293535,
         38.581452
       ]
+    },
+    {
+      "name": "Smoke N Bones BBQ",
+      "coords": [
+        -90.2936,
+        38.5768
+      ]
     }
   ],
   "the-hill": [
+    {
+      "name": "Sado",
+      "link": "/food/sado/",
+      "coords": [
+        -90.27258,
+        38.61809
+      ]
+    },
     {
       "name": "Charlie Gitto's",
       "link": "/food/charlie-gittos/",
@@ -742,6 +757,113 @@
       "coords": [
         -90.202805,
         38.610938
+      ]
+    }
+  ],
+  "dogtown": [
+    {
+      "name": "Pat Connolly Tavern",
+      "coords": [
+        -90.292583,
+        38.631359
+      ]
+    },
+    {
+      "name": "Seamus McDaniel's",
+      "coords": [
+        -90.292767,
+        38.628188
+      ]
+    },
+    {
+      "name": "Tamm Avenue Bar",
+      "coords": [
+        -90.293086,
+        38.627977
+      ]
+    }
+  ],
+  "shaw": [
+    {
+      "name": "Sasha's on Shaw",
+      "coords": [
+        -90.25036,
+        38.616382
+      ]
+    },
+    {
+      "name": "Damn Fine Hand Pies",
+      "coords": [
+        -90.24815,
+        38.615746
+      ]
+    },
+    {
+      "name": "Fiddlehead Fern Cafe",
+      "coords": [
+        -90.250716,
+        38.614262
+      ]
+    },
+    {
+      "name": "TeeRak Thai",
+      "link": "/food/teerak-thai/",
+      "coords": [
+        -90.245968,
+        38.611673
+      ]
+    },
+    {
+      "name": "Ices Plain & Fancy",
+      "coords": [
+        -90.245956,
+        38.610252
+      ]
+    }
+  ],
+  "macklind": [
+    {
+      "name": "Mortar & Pestle",
+      "coords": [
+        -90.28425,
+        38.5872
+      ]
+    },
+    {
+      "name": "Russell's on Macklind",
+      "coords": [
+        -90.284418,
+        38.586837
+      ]
+    },
+    {
+      "name": "Clementine's",
+      "coords": [
+        -90.28435,
+        38.5865
+      ]
+    }
+  ],
+  "dogtown-clayton": [
+    {
+      "name": "Heavy Riff Brewing",
+      "coords": [
+        -90.293399,
+        38.62893
+      ]
+    },
+    {
+      "name": "Byrd & Barrel",
+      "coords": [
+        -90.292417,
+        38.628608
+      ]
+    },
+    {
+      "name": "Hogtown Smokehouse",
+      "coords": [
+        -90.291438,
+        38.628713
       ]
     }
   ]

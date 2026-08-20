@@ -5,7 +5,7 @@ seoTitle: The Most Walkable Neighborhoods and Streets in St. Louis
 icon: map
 ogImage: /og/walkable-st-louis.png
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-08-20
 ---
 
 One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch, Ballpark Village, and the business district, but isn't the place most people spend their time.
@@ -42,9 +42,9 @@ The Grove is most famous for being the city's LGBTQ+ nightlife district. On one 
 
 ### The Delmar Loop
 
-| Street                                                                        | Neighborhoods                                                              | Vibe               | Website                                       |
-| :---------------------------------------------------------------------------- | :------------------------------------------------------------------------- | :----------------- | :-------------------------------------------- |
-| <span class="nowrap">**Delmar Boulevard**</span><br>From Trinity to Des Peres | [[university-city\|University City]], [[delmar-loop\|Skinker DeBaliviere]] | Music, Asian, neon | [visittheloop.com](https://visittheloop.com/) |
+| Street                                                                         | Neighborhoods                                                              | Vibe               | Website                                       |
+| :----------------------------------------------------------------------------- | :------------------------------------------------------------------------- | :----------------- | :-------------------------------------------- |
+| <span class="nowrap">**Delmar Boulevard**</span><br>From Leland to the Pageant | [[university-city\|University City]], [[delmar-loop\|Skinker DeBaliviere]] | Music, Asian, neon | [visittheloop.com](https://visittheloop.com/) |
 
 <figure class="corridor-map-figure">
   <div class="corridor-map" data-corridor-map="delmar-loop"></div>
@@ -90,6 +90,18 @@ I've mostly tried to keep common tourist items off this list like the Aquarium, 
 
 Being downtown, it's as walkable as it gets, and one of the areas most likely to have a lot of foot traffic during the day.
 
+### Dogtown
+
+| Street                                                                  | Neighborhood         | Vibe         |
+| :---------------------------------------------------------------------- | :------------------- | :----------- |
+| <span class="nowrap">**Tamm Avenue**</span><br>From Oakland to Mitchell | [[dogtown\|Dogtown]] | Irish, Local |
+
+<figure class="corridor-map-figure">
+  <div class="corridor-map" data-corridor-map="dogtown dogtown-clayton"></div>
+</figure>
+
+Around the Clayton and Tamm intersection in Dogtown (technically the Clayton-Tamm neighborhood) is St. Louis's historical Irish neighborhood, where a St. Patrick's Day parade takes place each year. There are several Irish bars in this spot, like Seamus McDaniel's and The Pat Connolly Tavern.
+
 ## South City
 
 ### Cherokee Street
@@ -124,6 +136,22 @@ South Grand is the international restaurant row of St. Louis. Along this strip, 
 The South Grand strip stops right at Tower Grove Park, which really adds to the walkability of this street, especially on a weekend during the farmers' market.
 
 There's also a smaller strip along Morganford with a few places of interest, such as Amsterdam Tavern, the soccer bar, and Songbird.
+
+### Shaw
+
+| Street                                                                     | Neighborhood   | Vibe                    |
+| :------------------------------------------------------------------------- | :------------- | :---------------------- |
+| <span class="nowrap">**South 39th Street**</span><br>From Shaw to Magnolia | [[shaw\|Shaw]] | Quaint, Charming, Quiet |
+
+<figure class="corridor-map-figure">
+  <div class="corridor-map" data-corridor-map="shaw"></div>
+</figure>
+
+Tucked between Tower Grove Park, the Missouri Botanical Garden, and Compton Hill Park is Shaw, a quiet tree-lined neighborhood full of historical Victorian homes. This is a great area to walk due to how quiet it is, and how much green space surrounds it.
+
+There is not exactly one main street to walk along, but several businesses dotted throughout the neighborhood. You can get pastries at Damn Fine Hand Pies, coffee at Fiddlehead Fern Cafe, and liquid-nitrogen ice cream at Ice's Plain and Fancy.
+
+Flora Place is a particularly pretty boulevard to walk along, showcasing many beautiful Victorian-era homes.
 
 ### Hampton Avenue
 
@@ -293,9 +321,9 @@ On the east end of Webster, there's another main retail area with Telva at the R
 
 ### Kirkwood
 
-| Street                                                                   | Neighborhood           | Vibe               | Website                                                                                                  |
-| :----------------------------------------------------------------------- | :--------------------- | :----------------- | :------------------------------------------------------------------------------------------------------- |
-| <span class="nowrap">**Kirkwood Road**</span><br>From Bodley to Woodbine | [[kirkwood\|Kirkwood]] | Suburban, charming | [downtownkirkwood.com](https://www.downtownkirkwood.com/), [kirkwoodmo.org](https://www.kirkwoodmo.org/) |
+| Street                                                                 | Neighborhood           | Vibe               | Website                                                                                                  |
+| :--------------------------------------------------------------------- | :--------------------- | :----------------- | :------------------------------------------------------------------------------------------------------- |
+| <span class="nowrap">**Kirkwood Road**</span><br>From Bodley to Monroe | [[kirkwood\|Kirkwood]] | Suburban, charming | [downtownkirkwood.com](https://www.downtownkirkwood.com/), [kirkwoodmo.org](https://www.kirkwoodmo.org/) |
 
 <figure class="corridor-map-figure">
   <div class="corridor-map" data-corridor-map="kirkwood"></div>
