@@ -155,24 +155,31 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
   }
 
-  // Build a place's emoji marker + popup once, lazily. The popup carries the same
+  // The teardrop pin (same shape as the neighborhood map's), colored by the
+  // row's verdict via CSS classes — `currentColor` fill, so theme swaps and
+  // verdict tokens apply without any JS recoloring.
+  const pinSvg =
+    '<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>'
+
+  // Build a place's pin marker + popup once, lazily. The popup carries the same
   // card the list row shows: cuisine/neighborhood chips (which filter), a tagline,
   // an address, a writeup teaser, and external source buttons.
   function buildMarker(item: HTMLElement, lngLat: [number, number]): maplibregl.Marker {
-    // The emoji lives in an inner element so hover can scale it without touching
+    // The pin lives in an inner element so hover can scale it without touching
     // the marker element's transform (MapLibre owns that for positioning — same
     // reason the neighborhood pins scale their inner .marker-pin, not the marker).
     const element = document.createElement('div')
-    element.className = 'emoji-marker'
+    element.className = 'food-marker'
+    const verdictClass = item.dataset.verdict
+    if (verdictClass) {
+      element.classList.add(`verdict-${verdictClass}`)
+    }
     // A place I haven't visited yet (want-to-try / suggested) rides grayed on the
     // map so it reads as "not explored yet" against the full-color explored pins.
     if (item.dataset.explored === 'false') {
       element.classList.add('is-unexplored')
     }
-    const glyph = document.createElement('span')
-    glyph.className = 'emoji-marker-inner'
-    glyph.textContent = item.dataset.marker ?? '📍'
-    element.appendChild(glyph)
+    element.innerHTML = pinSvg
 
     const cuisines = (item.dataset.cuisine ?? '').split('|').filter(Boolean)
     const neighborhood = item.dataset.neighborhood ?? ''
@@ -233,7 +240,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       focusAfterOpen: false,
     }).setHTML(popupHtml)
 
-    const marker = new maplibregl.Marker({ element, anchor: 'center' })
+    const marker = new maplibregl.Marker({ element, anchor: 'bottom' })
       .setLngLat(lngLat)
       .setPopup(popup)
 

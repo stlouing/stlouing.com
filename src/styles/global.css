@@ -7,19 +7,19 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #f3efe7;
-  --color-surface: #fcf9f3;
-  --color-surface-2: #fefcf6;
+  --color-background: #eceae6;
+  --color-surface: #f8f6f3;
+  --color-surface-2: #dedbd6;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
-  --color-muted: #69655b;
-  --color-muted-2: #58554d;
-  --color-line: #cec3b0;
-  --color-line-input: #c3c0b6;
+  --color-muted: #66635d;
+  --color-muted-2: #514e49;
+  --color-line: #c2bfb9;
+  --color-line-input: #a19e98;
   --color-line-contrast: #1b1a17;
-  --color-accent: #9c3b2e;
-  --color-accent-2: #a54e42;
+  --color-accent: #a90b26;
+  --color-accent-2: #c70f2e;
   --color-map-accent: #6a47a6;
   /* City regions (north→south): yellow, red, violet; county blue; parks green. */
   --color-map-north: #b8860b;
@@ -38,17 +38,19 @@
 
   /* Fonts */
   --font-body: Georgia, 'Times New Roman', serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  --font-size-xxs: 0.8rem;
-  --font-size-xs: 0.875rem;
-  --font-size-sm: 0.9375rem;
-  --font-size-md: 1rem;
-  --font-size-article: 1.0625rem;
-  --font-size-label: 1.125rem;
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 1.4rem;
+  --font-size-xxs: 0.8125rem; /* 13px */
+  --font-size-xs: 0.875rem; /* 14px */
+  --font-size-sm: 0.9375rem; /* 15px */
+  --font-size-md: 1rem; /* 16px */
+  --font-size-article: 1.0625rem; /* 17px */
+  --font-size-label: 1.125rem; /* 18px */
+  --font-size-lg: 1.25rem; /* 20px */
+  --font-size-xl: 1.375rem; /* 22px */
+  --font-size-xxl: 1.5rem; /* 24px */
 
   /* Type scale + rhythm */
   --text: 1rem;
@@ -95,8 +97,8 @@
   --color-line: #343339;
   --color-line-input: #45444b;
   --color-line-contrast: #45444b;
-  --color-accent: #f08a78;
-  --color-accent-2: #fd9c8b;
+  --color-accent: #ed818a;
+  --color-accent-2: #f28d95;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
   --color-map-central: #e6877a;
@@ -200,19 +202,27 @@ h4 {
   color: var(--color-text-heading);
 }
 
+/* Headings keep the serif — the Inter body font is for copy only. (h4 re-sets
+   itself to the mono below; the homepage title uses --font-display.) */
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+}
+
 h1 {
-  font-size: clamp(1.5rem, 1.4rem + 1vw, 2.5rem);
+  font-size: clamp(1.75rem, 1.4rem + 1vw, 3rem); /* 28px - 48px */
 }
 
 h2 {
-  font-size: clamp(1.6rem, 1.4rem + 1vw, 2.5rem);
+  font-size: clamp(1.625rem, 1.4rem + 1vw, 2.5rem); /* 26px - 40px */
   margin-bottom: 1.2rem;
 }
 
 h3 {
-  font-size: clamp(1.3rem, 1.2rem + 0.7vw, 1.8rem);
+  font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.75rem); /* 21px - 28px */
   margin-bottom: var(--spacing-md);
-  color: var(--color-accent-2);
+  color: var(--color-accent);
 }
 
 h4 {
@@ -220,7 +230,7 @@ h4 {
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
-  color: var(--color-accent-2);
+  color: var(--color-accent);
   font-weight: 600;
 }
 
@@ -254,7 +264,6 @@ small {
 }
 
 code {
-  
   color: var(--color-text);
   font-weight: 500;
 }
@@ -1051,14 +1060,13 @@ body:has(.map-split) main > .wrap,
 }
 
 /* Neighborhoods left pane: the writeups scroll while the map stays put. The
-   scroll-padding offsets the sticky .list-pane-header so a selected row lands just
-   below it (not hidden behind it) when scrolled to the top. The `.map-list` in the
-   selector keeps this 38px winning over the shared `[data-view='map'] .map-list`
-   default (40px, tuned for the slightly taller Food header). */
+   scroll-padding clears both sticky layers — the .list-pane-header and the
+   Explored / Not Explored section head pinned beneath it (top: 45px + its ~40px
+   height) — so a selected row lands just below them, not hidden behind them. */
 .map-split .content-pane.map-list {
   min-height: 0;
   overflow-y: auto;
-  scroll-padding-block-start: 38px;
+  scroll-padding-block-start: 85px;
 }
 
 /* The global :target margin is sized to the *site* header, which isn't the
@@ -1086,7 +1094,6 @@ body:has(.map-split) main > .wrap,
     z-index: 1100;
     padding: var(--spacing-sm) var(--spacing-lg);
     border: 1px solid var(--color-accent);
-    border-radius: 999px;
     background: var(--color-accent);
     color: var(--color-background);
     font-family: var(--font-mono);
@@ -1284,7 +1291,7 @@ body:has([data-neighborhood-map]) .river-border {
 /* Whole-row hover highlight, matching the directory ListItem rows. Excludes the
    non-link header rows (Food's `.group-header`, Neighborhoods' `.section-head`). */
 .map-list .list > li:not(.group-header):not(.section-head):hover {
-  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-background));
+  background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
 }
 
 /* The row title + its inline `title-after` meta (cuisine · neighborhood / region),
@@ -1349,7 +1356,7 @@ body:has([data-neighborhood-map]) .river-border {
 .map-list .list-tagline {
   font-family: var(--font-body);
   font-weight: 500;
-  color: var(--color-accent-2);
+  color: var(--color-accent);
   font-size: var(--font-size-md);
   line-height: 1.2;
   margin-block-end: var(--spacing-xs);
@@ -1449,9 +1456,10 @@ body:has([data-neighborhood-map]) .river-border {
 [data-view='map'] .map-list {
   min-height: 0;
   overflow-y: auto;
-  /* Offset the sticky .list-pane-header so a marker-selected row scrolls to just
-     below it instead of being tucked behind it (its name otherwise hidden). */
-  scroll-padding-block-start: 40px;
+  /* Offset BOTH sticky layers — the 45px .list-pane-header plus the 40px verdict
+     group header pinned beneath it (top: 45px) — so a marker-selected row scrolls
+     to just below the pinned chrome instead of hiding behind it. */
+  scroll-padding-block-start: 85px;
 
   /* Over the map, any title is clickable — it opens the place's popup. */
   .list-title {
@@ -1553,6 +1561,15 @@ body:has([data-neighborhood-map]) .river-border {
   --chip-color: var(--color-verdict-notforme);
 }
 
+/* Square the verdict chips — the old-internet badge look, matching the vibe
+   chips. */
+.chip.verdict-loved,
+.chip.verdict-liked,
+.chip.verdict-neutral,
+.chip.verdict-not-for-me {
+  border-radius: 0;
+}
+
 /* Rating pill (Verdict.astro `card`, food detail hero; also the map popup): a
    solid verdict-colored icon disc, then the word in the body serif (an optional
    "MY RATING" eyebrow above it). Bordered in the verdict color over a low-opacity
@@ -1568,7 +1585,6 @@ body:has([data-neighborhood-map]) .river-border {
   gap: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid color-mix(in srgb, var(--verdict-color) 60%, transparent);
-  border-radius: 999px;
   background: var(--color-surface);
 }
 
@@ -1969,49 +1985,35 @@ body:has([data-filter-root]) .site-header {
 
 /* Emoji place marker — our own element handed to maplibregl.Marker. */
 /* The marker element is a bare positioning wrapper (MapLibre sets its transform);
-   the visible disc + hover-scale live on the inner element so they don't fight it. */
-.emoji-marker {
+   the visible pin + hover-scale live on the inner .marker-pin so they don't fight
+   it. The pin body fills with currentColor, so the verdict classes below (and
+   theme swaps) color it with no script involvement. */
+.food-marker {
   cursor: pointer;
-}
-
-.emoji-marker-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  font-size: 22px;
-  line-height: 1;
-  border: 1px solid var(--color-muted);
-  border-radius: 50%;
-  background: var(--color-surface);
-  box-shadow: var(--box-shadow);
-  transition: transform 0.15s ease;
+  color: var(--color-accent);
 }
 
 /* Grow slightly on hover, matching the neighborhood pins. */
-.emoji-marker:hover .emoji-marker-inner {
+.food-marker:hover .marker-pin {
   transform: scale(1.12);
 }
 
-/* Selected place (from the list or the map): accent the marker's ring. */
-.emoji-marker.is-selected .emoji-marker-inner {
-  border-color: var(--color-accent);
+/* Selected place (from the list or the map): ring the pin in the text color —
+   the pins themselves are accent, so an accent ring would disappear. */
+.food-marker.is-selected .marker-pin-body {
+  stroke: var(--color-text);
 }
 
-/* A place I haven't visited yet (want-to-try / suggested): desaturate + fade the
-   emoji and quiet the ring, so it reads as "not explored yet" against the
-   full-color explored pins. Hover/selection still bring it forward. */
-.emoji-marker.is-unexplored .emoji-marker-inner {
-  /* filter: grayscale(1); */
-  opacity: 0.8;
-  border-style: dashed;
-  border-color: var(--color-muted-2);
+/* A place I haven't visited yet (want-to-try / suggested): faded gray pin, so it
+   reads as "not explored yet" against the accent explored pins. Hover and
+   selection still bring it forward. */
+.food-marker.is-unexplored {
+  color: var(--color-muted);
+  opacity: 0.7;
 }
 
-.emoji-marker.is-unexplored:hover .emoji-marker-inner,
-.emoji-marker.is-unexplored.is-selected .emoji-marker-inner {
-  filter: none;
+.food-marker.is-unexplored:hover,
+.food-marker.is-unexplored.is-selected {
   opacity: 1;
 }
 
@@ -2028,24 +2030,24 @@ body:has([data-filter-root]) .site-header {
   padding-inline: var(--spacing-xs);
   font-family: var(--font-mono);
   font-weight: 600;
-  color: var(--color-surface);
-  background: var(--color-accent);
+  color: var(--color-text);
+  background: var(--color-background);
   border-radius: 999px;
   box-shadow:
-    0 0 0 6px color-mix(in srgb, var(--color-accent) 28%, transparent),
+    0 0 0 6px color-mix(in srgb, var(--color-text) 18%, transparent),
     var(--box-shadow);
   cursor: pointer;
 
   &[data-size='md'] {
     min-width: 40px;
     height: 40px;
-    font-size: 1.05rem;
+    font-size: 1.0625rem; /* 17px */
   }
 
   &[data-size='lg'] {
     min-width: 48px;
     height: 48px;
-    font-size: 1.15rem;
+    font-size: 1.125rem; /* 18px */
   }
 }
 
@@ -2186,7 +2188,7 @@ body:has([data-filter-root]) .site-header {
   font-family: var(--font-body);
   font-weight: 500;
   line-height: 1.3;
-  color: var(--color-accent-2);
+  color: var(--color-accent);
 }
 
 .maplibregl-popup.food-popup .tip-excerpt {
@@ -2194,7 +2196,7 @@ body:has([data-filter-root]) .site-header {
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.2;
   color: var(--color-text-article);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2211,7 +2213,7 @@ body:has([data-filter-root]) .site-header {
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--spacing-xs);
-  margin-block: var(--spacing-sm) var(--spacing-md);
+  margin-block: var(--spacing-sm);
 }
 
 .maplibregl-popup.food-popup .list-meta,
@@ -2311,7 +2313,7 @@ body:has([data-filter-root]) .site-header {
 /* Italic accent lede under an entry title (topics, neighborhoods). */
 .entry-summary {
   font-size: var(--font-size-lg);
-  color: var(--color-accent-2);
+  color: var(--color-accent);
   font-weight: 500;
   margin: 0;
   line-height: 1.3;
@@ -2321,17 +2323,16 @@ body:has([data-filter-root]) .site-header {
 /* An organized header bar holding the meta and the edit link, divided from the
    body; tags + backlinks grouped in a footer. */
 .entry-header {
-  margin-block: var(--spacing-lg) var(--spacing-lg);
+  margin-block: var(--spacing-lg);
   padding-block-end: var(--spacing-md);
   border-block-end: 1px solid var(--color-line);
 
   h1 {
     margin-block: 0 var(--spacing-xs);
-    /* Match the homepage wordmark: the display serif only ships a 400 weight. */
-    font-family: var(--font-display);
-    font-weight: 400;
+    font-family: var(--font-serif);
+    font-weight: 600;
     line-height: 1.05;
-    font-size: clamp(2.5rem, 2rem + 2.2vw, 4rem);
+    font-size: clamp(2rem, 2rem + 2.2vw, 3rem);
   }
 
   .address {

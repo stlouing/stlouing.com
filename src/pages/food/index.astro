@@ -8,7 +8,7 @@ import MapRow from '../../components/MapRow.astro'
 import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/content'
-import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
+import { cuisineLabel } from '../../lib/emoji'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
 import { resolveVerdict, verdictLabels, isExplored, type Verdict } from '../../lib/verdict'
@@ -129,7 +129,6 @@ const stubExcerpt = (status: string): string =>
               title={place.data.title}
               detailHref={`/food/${place.id}/`}
               readMore={false}
-              marker={cuisineEmoji(place.data.cuisine)}
               coords={place.data.coords?.join(',') ?? ''}
               url={place.data.url ?? ''}
               search={[

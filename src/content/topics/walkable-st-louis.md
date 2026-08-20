@@ -2,7 +2,7 @@
 title: St. Louis's Most Walkable Streets
 description: Mapping the most interesting neighborhoods to explore in St. Louis
 seoTitle: The Most Walkable Neighborhoods and Streets in St. Louis
-icon: map
+icon: walk
 ogImage: /og/walkable-st-louis.png
 created: 2026-08-19
 updated: 2026-08-20
@@ -23,6 +23,8 @@ This is a map of all the walkable St. Louis streets you'll see throughout the ar
 <figure class="corridor-map-figure">
   <div class="corridor-map corridor-overview" data-corridor-overview></div>
 </figure>
+
+<small>The shaded areas denote the official neighborhoods, the lines are the highlighted streets.</small>
 
 ## Central Corridor
 
@@ -153,7 +155,7 @@ There is not exactly one main street to walk along, but several businesses dotte
 
 Flora Place is a particularly pretty boulevard to walk along, showcasing many beautiful Victorian-era homes.
 
-### Hampton Avenue
+### Hampton & Macklind
 
 | Street                                                                          | Neighborhoods                                                                                                             | Vibe  |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------ | :---- |
@@ -168,7 +170,7 @@ Hampton Avenue around St. Louis Hills and Southampton has a very local neighborh
 
 There is nothing otherwise particularly noteworthy or interesting about this street - a lot of every day places like dentist, nails, and insurance, but it was a noteworthy selection of good, local restaurants and I felt the need to include it.
 
-There's also another small strip nearby on Macklind with a Clementine's ice cream shop and a few bars and restaurants.
+There's also another small strip nearby on Macklind with a Clementine's ice cream shop and a few bars and restaurants. The neighborhood around the shops is also fun to walk through.
 
 ### The Hill
 

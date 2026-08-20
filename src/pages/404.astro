@@ -7,7 +7,7 @@ import Icon from '../components/Icon.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
 import { href } from '../lib/url'
 import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
-import { cuisineEmoji, cuisineLabel } from '../lib/emoji'
+import { cuisineLabel } from '../lib/emoji'
 
 // Featured reading: the pizza deep-dive (leads with its photo) + regional foods.
 const topics = published(await getCollection('topics'))
@@ -96,7 +96,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
                 .filter(Boolean)
                 .join(' / ')}
               metaType="text"
-              emoji={cuisineEmoji(place.data.cuisine)}
               description={place.data.description ?? excerpt(place.body, PREVIEW_EXCERPT_CHARS)}
             />
           ))}

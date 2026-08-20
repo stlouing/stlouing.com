@@ -28,7 +28,6 @@ import {
   neighborhoodResourceLinks,
   regionOf,
 } from '../../lib/neighborhoods'
-import { cuisineEmoji } from '../../lib/emoji'
 import neighborhoods from '../../data/neighborhoods.json'
 import SourceLink from '../../components/SourceLink.astro'
 import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
@@ -273,7 +272,6 @@ const trail = [
                   href={href(`/food/${place.id}/`)}
                   title={place.data.title}
                   meta={place.data.cuisine[0]}
-                  emoji={cuisineEmoji([place.data.cuisine[0]])}
                   verdict={resolveVerdict(place.data)}
                 />
               ))}

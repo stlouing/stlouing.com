@@ -57,7 +57,8 @@ A few open-source projects this site relies on.
 - **Web Framework** - [Astro](https://astro.build)
 - **Maps** - [MapLibre GL](https://maplibre.org) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) to prevent relying on third-party CDNs.
-- **Icons** - [Lucide](https://lucide.dev/icons)
+  - [**Icons** - [Pixel Art Icons](https://pixelarticons.com/)
+  - The pixel icon set used across this site, made by Gerrit Halfmann.
 - **Forms** - [Formspree](https://formspree.io)
 - **Analytics** - [GoatCounter](https://www.goatcounter.com)
 

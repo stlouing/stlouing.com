@@ -16,7 +16,6 @@ instagram: https://www.instagram.com/sultanmediterraneanrestaurant
 pick:
   name: Mixed Grill
   note: Tender beef keftah, chicken, and lamb kabob.
-  emoji: 🍖
 ---
 
 This is our go-to spot for Middle Eastern food. Specifically, the beef kefta kabob is flavorful, tender, juicy, and just fantastic. Everything else is good, too - the saffron rice garnished with pomegranite, the spiced lentil soup topped with cracked black pepper, and especially the baba ganoush, my favorite in the city.

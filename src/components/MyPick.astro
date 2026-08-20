@@ -1,24 +1,19 @@
 ---
 // A sidebar "My pick" card on a food page: the dish to order, with an optional
-// note. The emoji is the pick's own, falling back to the place's cuisine emoji.
-// Driven by the optional `pick` field in the food schema; renders nothing without
-// one (the writeup author fills it in per place).
-import { cuisineEmoji } from '../lib/emoji'
-
+// note. Driven by the optional `pick` field in the food schema; renders nothing
+// without one (the writeup author fills it in per place).
 interface Props {
-  pick: { name: string; note?: string; emoji?: string }
-  cuisine?: string[]
+  pick: { name: string; note?: string }
 }
 
-const { pick, cuisine = [] } = Astro.props
-const emoji = pick.emoji ?? cuisineEmoji(cuisine)
+const { pick } = Astro.props
 ---
 
 <div class="my-pick">
   <h2 class="my-pick-label section-label">My pick</h2>
   <div class="pick">
     <div class="pick-body">
-      <strong class="pick-name"><span>{pick.name}</span> <span>{emoji}</span></strong>
+      <strong class="pick-name">{pick.name}</strong>
       {pick.note && <p class="pick-note">{pick.note}</p>}
     </div>
   </div>
@@ -37,12 +32,8 @@ const emoji = pick.emoji ?? cuisineEmoji(cuisine)
     gap: var(--spacing-sm);
   }
 
-  /* The dish name reads as a serif heading (like the page title), with the emoji
-     trailing it. */
   .pick-name {
-    display: flex;
-    gap: var(--spacing-sm);
-    align-items: baseline;
+    display: block;
     font-family: var(--font-mono);
     font-size: var(--font-size-md);
     font-weight: 600;

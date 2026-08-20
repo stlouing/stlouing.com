@@ -59,7 +59,7 @@ const hasIcon = Astro.slots.has('icon')
   /* Whole-row highlight: a soft accent tint over the page background, so it
      picks up the brand color in both themes. */
   a.list-item:hover {
-    background: color-mix(in srgb, var(--color-accent) 7%, var(--color-background));
+    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
   }
 
   /* With a leading icon the row becomes an icon + body flex pair, aligned the same
@@ -68,7 +68,7 @@ const hasIcon = Astro.slots.has('icon')
   .list-item.has-icon {
     display: flex;
     align-items: flex-start;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
   }
 
   .list-item-body {

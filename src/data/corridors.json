@@ -548,7 +548,7 @@
       "street": "Hampton Avenue",
       "from": "Chippewa",
       "to": "Gravois",
-      "anchor": "hampton-avenue",
+      "anchor": "hampton--macklind",
       "neighborhoods": [
         "st-louis-hills",
         "southampton",
@@ -827,7 +827,7 @@
       "street": "Macklind Avenue",
       "from": "Lansdowne",
       "to": "Nottingham",
-      "anchor": "hampton-avenue",
+      "anchor": "hampton--macklind",
       "neighborhoods": [
         "southampton"
       ],

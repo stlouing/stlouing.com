@@ -6,7 +6,6 @@ import '@fontsource/ibm-plex-mono/500.css'
 import '@fontsource/ibm-plex-mono/600.css'
 import '@fontsource/ibm-plex-mono/700.css'
 
-// Display serif for the homepage wordmark (only ships a 400 weight).
 import '@fontsource/instrument-serif/400.css'
 
 import Header from '../components/Header.astro'
@@ -156,18 +155,18 @@ const analyticsUrl = analyticsBase
 
     {pmtilesOrigin && <link rel="preconnect" href={pmtilesOrigin} crossorigin />}
 
-    <!-- Set the theme before paint: stored choice wins, else follow the OS. -->
+    <!-- Set the theme before paint: stored choice wins, else light — the site
+         deliberately ignores the OS preference until the visitor toggles. -->
     <script is:inline>
       const storedTheme = localStorage.getItem('theme')
-      const theme =
-        storedTheme ??
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      document.documentElement.dataset.theme = theme
+      document.documentElement.dataset.theme = storedTheme ?? 'light'
     </script>
 
-    {/* favicon.ico (16/32/48, generated from favicon.png) is what favicon
+    {
+      /* favicon.ico (16/32/48, generated from favicon.png) is what favicon
         services (Google, DuckDuckGo) fetch at the root; the PNG is the
-        higher-res source modern browsers prefer. */}
+        higher-res source modern browsers prefer. */
+    }
     <link rel="icon" href={href('/favicon.ico')} sizes="48x48" />
     <link rel="icon" type="image/png" href={href('/favicon.png')} sizes="128x128" />
     <title>{pageTitle}</title>
@@ -196,8 +195,10 @@ const analyticsUrl = analyticsBase
     {ogType === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={socialImage} />
-    {/* X/Twitter reads og:title/description but not og:image:alt, so the alt is
-        repeated in its own namespace. */}
+    {
+      /* X/Twitter reads og:title/description but not og:image:alt, so the alt is
+        repeated in its own namespace. */
+    }
     <meta name="twitter:image:alt" content={socialImageAlt} />
 
     <meta name="generator" content={Astro.generator} />

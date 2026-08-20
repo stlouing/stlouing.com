@@ -1,8 +1,9 @@
 ---
 title: Fonda La Poblanita
 created: 2026-07-16
-status: want-to-try
-description: Pueblan cemitas
+rating: 8
+status: tried
+description: Pueblan-style cemitas
 cuisine: ['mexican']
 neighborhood: Bevo Mill
 address:

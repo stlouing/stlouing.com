@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import rip from '../../data/rip.json'
 import { published } from '../../lib/content'
-import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
+import { cuisineLabel } from '../../lib/emoji'
 import { href } from '../../lib/url'
 
 // The wishlist + tried lists are now first-class food entries carrying a `status`
@@ -29,15 +29,6 @@ const triedList = allFood.filter((place) => place.data.status === 'tried').sort(
 
 const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(right.name)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
-
-// The leading cuisine emoji for a row, when the item has a cuisine.
-const cardEmoji = (item: CardData) => {
-  if (item.cuisine && item.cuisine.length > 0) {
-    return cuisineEmoji(item.cuisine)
-  }
-
-  return undefined
-}
 
 // The kicker line: the cuisine label and neighborhood, whichever are present.
 const cardMeta = (item: CardData) => {
@@ -79,7 +70,6 @@ const description =
               <RelatedCard
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
-                emoji={cardEmoji(place.data)}
                 meta={cardMeta(place.data)}
                 metaType="neighborhood"
                 description={place.data.description}
@@ -106,7 +96,6 @@ const description =
               <RelatedCard
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
-                emoji={cardEmoji(place.data)}
                 meta={cardMeta(place.data)}
                 metaType="neighborhood"
                 description={place.data.description}
@@ -130,7 +119,6 @@ const description =
             {inMemoriam.map((item) => (
               <RelatedCard
                 title={item.name}
-                emoji={cardEmoji(item)}
                 meta={cardMeta(item)}
                 metaType="neighborhood"
                 description={item.note}

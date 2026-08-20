@@ -116,8 +116,14 @@ const isArticle = Boolean(permalink)
     margin-inline-start: auto;
   }
 
-  /* Stack on narrow screens: buttons drop below the lede, left-aligned. */
+  /* Stack on narrow screens: buttons drop below the lede, left-aligned. The
+     title also steps below the global h1 clamp's 28px floor, which crowds a
+     phone screen. */
   @media screen and (max-width: 700px) {
+    .entry-headline h1 {
+      font-size: var(--font-size-xxl); /* 24px */
+    }
+
     .entry-headline-sub {
       flex-direction: column;
       align-items: flex-start;

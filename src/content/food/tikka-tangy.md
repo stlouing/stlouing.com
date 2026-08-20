@@ -14,7 +14,6 @@ instagram: https://www.instagram.com/tikka_tangy/
 pick:
   name: Butter chicken
   note: Boneless marinade tandoori chicken made in butter, fresh tomatoes and house special spices
-  emoji: 🥘
 ---
 
 Tikka Tangy is great for when you want a cozy night in with samosas and Butter Chicken or Chicken Tikka Masala. The curry is flavorful, rich, and consistently good.

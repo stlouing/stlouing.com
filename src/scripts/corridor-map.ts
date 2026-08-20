@@ -306,7 +306,7 @@ function appendSpotCaption(element: HTMLElement, group: Corridor[]): void {
   caption.className = 'corridor-map-caption'
   spots.forEach((spot, index) => {
     if (index > 0) {
-      caption.append(' · ')
+      caption.append(' | ')
     }
     if (spot.link) {
       const anchor = document.createElement('a')

@@ -70,11 +70,11 @@ const { compact = false } = Astro.props
     gap: var(--spacing-sm);
     margin: 0;
     /* Scales down on narrow screens so the headline never crowds the form. */
-    font-size: clamp(1.6rem, 1rem + 2.6vw, 2.5rem);
+    font-size: clamp(1.625rem, 1rem + 2.6vw, 2rem); /* 26px - 32px */
     font-weight: 700;
     color: var(--color-text);
     line-height: 1.2;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
   }
 
   /* The mail glyph follows the title color (the global .icon rule pins it muted). */

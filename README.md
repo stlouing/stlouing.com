@@ -11,7 +11,7 @@ A personal website documenting the food, neighborhoods, and culture of St. Louis
 - **[GitHub Pages](https://docs.github.com/en/pages)**
 - **[GoatCounter](https://www.goatcounter.com)**
 - **[Formspree](https://formspree.io)**
-- **[Lucide Icons](https://lucide.dev/)**
+- **[Pixelarticons](https://pixelarticons.com)** by Gerrit Halfmann ([MIT](https://github.com/halfmage/pixelarticons/blob/master/LICENSE))
 
 ## Develop
 

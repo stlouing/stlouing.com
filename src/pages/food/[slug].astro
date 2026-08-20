@@ -19,7 +19,7 @@ import { neighborhoodHref } from '../../lib/neighborhoods'
 import { resolveVerdict, resolveWriterState } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
-import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
+import { cuisineLabel } from '../../lib/emoji'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
@@ -197,7 +197,6 @@ const seoDescription = hasBody(entry)
                     href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={place.data.cuisine[0]}
-                    emoji={cuisineEmoji([place.data.cuisine[0]])}
                     verdict={verdict}
                   />
                 ))}
@@ -213,7 +212,6 @@ const seoDescription = hasBody(entry)
                     title={place.data.title}
                     meta={place.data.neighborhood}
                     metaType="neighborhood"
-                    emoji={cuisineEmoji([primaryCuisine])}
                     verdict={verdict}
                   />
                 ))}
@@ -276,7 +274,7 @@ const seoDescription = hasBody(entry)
           data.pick && (
             <>
               <hr class="detail-divider" />
-              <MyPick pick={data.pick} cuisine={data.cuisine} />
+              <MyPick pick={data.pick} />
             </>
           )
         }

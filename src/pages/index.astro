@@ -56,7 +56,7 @@ const latestTopics = allTopics.slice(0, 4)
 // the site is alive at a glance. The full log lives at /updates. The Markdown
 // body is rendered (same as /updates) so links + emphasis in a change show here too.
 const latestUpdates = await Promise.all(
-  (await getChangelog()).slice(0, 2).map(async (entry) => {
+  (await getChangelog()).slice(0, 1).map(async (entry) => {
     const { Content } = await render(entry)
 
     return { date: entry.data.date, Content }
@@ -98,38 +98,37 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           </a>
         </p>
       </div>
-      <div class="index-crest">
+      <!-- <div class="index-crest">
         <FleurDeLis class="index-crest-img" />
-      </div>
+      </div> -->
+      <section class="group recently">
+        <div class="group-header">
+          <h2 class="group-label">What's New</h2>
+          <a class="all" href={href('/updates/')}>
+            All <IconArrowRight />
+          </a>
+        </div>
+        <ul class="recent-list">
+          {
+            latestUpdates.map(({ date, Content }) => (
+              <li class="recent-item">
+                <time class="recent-date" datetime={date.toISOString()}>
+                  {formatDate(date)}
+                </time>
+                <div class="recent-changes">
+                  <Content />
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </div>
     {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
     <span class="p-name" hidden>St. Louing</span>
     <a class="u-url" href={href('/')} hidden>stlouing.com</a>
     <img class="u-photo" src={href('/og.png')} alt="" hidden />
   </header>
-
-  <section class="group recently">
-    <div class="group-header">
-      <h2 class="group-label">What's New</h2>
-      <a class="all" href={href('/updates/')}>
-        All <IconArrowRight />
-      </a>
-    </div>
-    <ul class="recent-list">
-      {
-        latestUpdates.map(({ date, Content }) => (
-          <li class="recent-item">
-            <time class="recent-date" datetime={date.toISOString()}>
-              {formatDate(date)}
-            </time>
-            <div class="recent-changes">
-              <Content />
-            </div>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
 
   <div class="directory">
     {
@@ -233,9 +232,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-top: var(--spacing-xl);
     margin-bottom: 0;
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 700;
     line-height: 1.1;
-    font-size: clamp(3.5rem, 2rem + 8vw, 6.5rem);
+    font-size: clamp(3rem, 2rem + 8vw, 6rem);
 
     span {
       font-size: var(--font-size-xs);
@@ -293,7 +292,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     .index-crest {
       width: clamp(104px, 18vw, 150px);
       aspect-ratio: 1;
-      background: var(--color-accent);
+      background: #c70f2e;
       border-radius: 50%;
     }
   }
@@ -304,6 +303,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   @media (max-width: 700px) {
     .index-body {
       grid-template-columns: 1fr;
+      gap: 0;
     }
 
     .index-crest {
@@ -314,7 +314,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .tagline {
     margin-block: var(--spacing-xs) 0;
     font-size: var(--font-size-lg);
-    color: var(--color-accent-2);
+    color: var(--color-accent);
     font-weight: 500;
     line-height: 1.2;
   }
@@ -386,16 +386,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-size: var(--font-size-sm);
     color: var(--color-muted);
     font-weight: 500;
-    /* text-decoration: underline;
-    text-decoration-style: dotted;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px; */
   }
 
   .group-header .all:hover {
-    /* text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-decoration-style: solid; */
     text-decoration-color: var(--color-accent);
   }
 
@@ -407,42 +400,76 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   /* The "Recently updated" block sits above the directory so a returning visitor
      sees the site is alive right away. Each row: a mono date in a left rail, the
      update's title + one-line summary beside it. */
+  /* What's New rides the header grid's right column as a boxed card, top-aligned
+     with the title. The grid's 700px collapse stacks it under the intro. */
   .recently {
-    margin-block-end: 3rem;
+    margin-block-start: var(--spacing-lg);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    padding: var(--spacing-md) var(--spacing-lg);
+    min-width: 0;
   }
 
-  /* Each entry stacks its date over the summary (see .recent-item); the list is a
-     plain vertical stack of those rows. */
+  /* The box's column is too narrow for the /updates two-track date rail; stack
+     the date over its changes instead — the same collapse /updates uses on
+     phones — and tighten the row rhythm to fit the card. */
+  .recently .recent-list {
+    grid-template-columns: 1fr;
+  }
+
+  .recently .recent-item {
+    row-gap: var(--spacing-xs);
+    padding-block: var(--spacing-md);
+  }
+
+  .recently .recent-item:first-child {
+    padding-block-start: 0;
+  }
+
+  .recently .recent-item:last-child {
+    padding-block-end: 0;
+  }
+
+  /* Same layout as the What's New page (/updates): the list owns two tracks — a
+     date rail sized to the widest date, then the changes — and each row is a
+     subgrid spanning both, which also carries the per-row hairline. */
   .recent-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  /* Date stacked over its summary, top to bottom. */
   .recent-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    padding-block: var(--spacing-sm);
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    column-gap: var(--spacing-lg);
+    padding-block: var(--spacing-lg);
+    border-block-start: 1px solid var(--color-line);
   }
 
-  .recent-item + .recent-item {
-    border-block-start: 1px dotted var(--color-line);
+  .recent-item:first-child {
+    border-block-start: 0;
+    padding-block-start: 0;
   }
 
   .recent-date {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    font-weight: 700;
-    color: var(--color-text);
+    font-weight: 500;
+    color: var(--color-muted);
     text-wrap: nowrap;
+    /* Nudge onto the first line of the changes list beside it. */
+    padding-block-start: 2px;
   }
 
-  /* The rendered Markdown list, kept compact for the teaser. */
+  /* The rendered Markdown list. Keep the bullets, just reset spacing. */
   .recent-changes {
     color: var(--color-text);
-    line-height: 1.5;
+    line-height: 1.45;
+    font-size: var(--font-size-sm);
   }
 
   .recent-changes :global(ul) {
@@ -454,21 +481,35 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block: 0;
   }
 
-  /* Reset the first paragraph's top margin so it lines up with the date, and give
-     any following paragraphs a small gap. */
   .recent-changes :global(p) {
-    margin: 0;
+    margin-block: 0;
   }
 
   .recent-changes :global(p + p) {
-    margin-block-start: var(--spacing-md);
+    margin-block-start: var(--spacing-sm);
   }
 
-  /* Match the prose convention: links gain a solid underline on hover (the base
-     `a` rule already sets the thickness/color; this block sits outside `.body`,
-     so it needs its own hover-underline rule). */
+  /* Match the prose convention: links gain a solid underline on hover. */
   .recent-changes :global(a:hover) {
     text-decoration-line: underline;
+  }
+
+  /* Stack the date over its changes on phones, like /updates does. The box
+     also drops its top offset there — stacked under the intro, the grid row
+     provides the separation. */
+  @media (max-width: 700px) {
+    .recently {
+      margin-block-start: 0;
+    }
+
+    .recent-list {
+      grid-template-columns: 1fr;
+    }
+
+    .recent-item {
+      row-gap: var(--spacing-sm);
+      padding-block: var(--spacing-md);
+    }
   }
 
   .directory {
