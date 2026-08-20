@@ -4,8 +4,8 @@ description: Mapping the most interesting neighborhoods to explore in St. Louis
 seoTitle: The Most Walkable Neighborhoods and Streets in St. Louis
 icon: map
 ogImage: /og/walkable-st-louis.png
-created: 2026-08-18
-updated: 2026-08-18
+created: 2026-08-19
+updated: 2026-08-19
 ---
 
 One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch, Ballpark Village, and the business district, but isn't the place most people spend their time.
@@ -84,7 +84,7 @@ Euclid is just a few short blocks from Forest Park, the proximity of which is a 
 
 Washington Avenue, often referred to as Wash Ave by locals, is one of the main streets of interest in Downtown. There are a number of restaurants close to the street that serve the business district during lunch hours, such as Sugarfire BBQ and Sauce on the Side, and even the Washington Ave Food Hall.
 
-I've mostly tried to keep common tourist items off this list like the Aquarium, Ballpark village, etc. - but it's worth mentioning City Museum, one of the most unique and interesting attractions in all of St. Louis, which is right along Wash Ave.
+I've mostly tried to keep common tourist items off this list like the Aquarium, Ballpark Village, etc. - but it's worth mentioning City Museum, one of the most unique and interesting attractions in all of St. Louis, which is right along Wash Ave.
 
 Being downtown, it's as walkable as it gets, and one of the areas most likely to have a lot of foot traffic during the day.
 
@@ -115,11 +115,13 @@ The eastern wing of Cherokee St. is the [antique row](https://cherokeeantiquerow
   <div class="corridor-map" data-corridor-map="south-grand morganford"></div>
 </figure>
 
-South Grand along the eastern edge of Shaw is the international restaurant row of St. Louis. Along this strip, you'll find a concentration of Vietnamese, Thai, Ethiopian, Persian, Lebanese, Indian, BBQ, and other varieties of food. Jay International Foods is also the spot to go for ingredients of the world. [MoKaBe's Coffeehouse](https://www.mokabescoffeehouse.com/) is a popular spot for coffee.
+South Grand is the international restaurant row of St. Louis. Along this strip, you'll find a concentration of Vietnamese, Thai, Ethiopian, Persian, Lebanese, Indian, BBQ, and other varieties of food. Jay International Foods is also the spot to go for ingredients of the world. [MoKaBe's Coffeehouse](https://www.mokabescoffeehouse.com/) is a popular spot for coffee.
 
 [Dunaway Books](https://www.dunawaybooks.com/) is a used book store with two floors that's really fun to browse.
 
 The South Grand strip stops right at Tower Grove Park, which really adds to the walkability of this street, especially on a weekend during the farmers' market.
+
+There's also a smaller strip along Morganford with a few places of interest, such as Amsterdam Tavern, the soccer bar, and Songbird.
 
 ### Hampton Avenue
 
@@ -148,7 +150,7 @@ There's also another small strip nearby on Macklind with a Clementine's ice crea
   <div class="corridor-map" data-corridor-map="the-hill"></div>
 </figure>
 
-The Hill is one of the most well-known neighborhoods of St. Louis. It was documented in [America's Last Little Italy: The Hill](https://www.youtube.com/watch?v=jvWa4euR-AA&t=1s) as one of the last Little Italys still around in America, and is the birthplace of the toasted ravioli, one of St. Louis most sacred [[regional-foods|regional foods]].
+The Hill is one of the most well-known neighborhoods of St. Louis. It was documented in [America's Last Little Italy: The Hill](https://www.youtube.com/watch?v=jvWa4euR-AA&t=1s) as one of the last Little Italys still around in America, and is the birthplace of the toasted ravioli, one of St. Louis's most sacred [[regional-foods|regional foods]].
 
 St. Ambrose Church on Marconi is the heart of the neighborhood. All throughout the area, you'll see fire hydrants and crosswalks painted in the colors of the Italian flag. You can walk around and get Italian food, sandwiches, pizza, gelato, and more.
 
@@ -283,9 +285,9 @@ Maplewood is a streetcar suburb with Metrolink access to the city, making it one
   <div class="corridor-map" data-corridor-map="big-bend old-webster gore"></div>
 </figure>
 
-There are two main strips in Webster Groves. The Old Orchard district tincludes the famous James Beard award winning restaurant Balkan Treat Box and bookstore the Novel Neighbor.
+There are two main strips in Webster Groves. The Old Orchard district includes the famous James Beard award winning restaurant Balkan Treat Box and bookstore the Novel Neighbor.
 
-On the north end east of Webster, there's another main retail area with Telva at the Ridge (a cafe by the owners of Balkan Treat Box), Olive + Oak, and the Webster Groves Bookshop.
+On the east end of Webster, there's another main retail area with Telva at the Ridge (a cafe by the owners of Balkan Treat Box), Olive + Oak, and the Webster Groves Bookshop.
 
 ### Kirkwood
 
@@ -297,7 +299,7 @@ On the north end east of Webster, there's another main retail area with Telva at
   <div class="corridor-map" data-corridor-map="kirkwood"></div>
 </figure>
 
-Downtown Kirkwood is a walkable area in Kirkwood, a wealthy suburb in the county of St. Louis. There's an Amtrak stop along the station, making it more connected than most suburbs.
+Downtown Kirkwood is a walkable area in Kirkwood, a wealthy suburb in the county of St. Louis. There's an Amtrak station in Kirkwood, making it more connected than most suburbs.
 
 There are some restaurants along the main strip, like Napoli Kirkwood, Honey Bee's Biscuits, and Billy G's. There's also a Strange Donuts and Clementine's ice cream here, and notably there's The Minifig Shop, a Lego resale store.
 
