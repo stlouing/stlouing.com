@@ -1,6 +1,7 @@
 ---
 title: Pizzeria da Gloria
 created: 2026-08-19
+photo: ../images/food/pizzeriadagloria.jpeg
 status: tried
 rating: 9.5
 description: Wood-fired Neapolitan-style pizza
