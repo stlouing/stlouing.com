@@ -12,7 +12,9 @@ One of the first things you learn about St. Louis is there is no single main str
 
 St. Louis is a city of many neighborhoods, and you'll find interesting clusters of shops and hidden gems all over the place, but it isn't always obvious to newcomers where to look.
 
-I've been on a mission to discover all these [walkable\*](#walkable-note) spots around the city and surrounding area. A few of them are obvious - The Grove and Cherokee Street are often mentioned by name - but some I just happened to stumble upon and slowly discover over time.
+I've been on a mission to discover all these walkable\* spots around the city and surrounding area. A few of them are obvious - The Grove and Cherokee Street are often mentioned by name - but some I just happened to stumble upon and slowly discover over time.
+
+<small id="walkable-note">\*Walkable in this article refers to the ease exploring cafes, restaurants, book stores, and shops by foot within a single street, not access to bus/train routes, grocery stores, and other amenities that would make an area walkable for day-to-day life.</small>
 
 ## Overview
 
@@ -168,9 +170,9 @@ My two favorites are [[nicky-slices|Nicky Slices]] for Detroit-style pizza, and 
 
 In the '90s, St. Louis took in many refugees from the Bosnian War, and they settled in the neighborhood of Bevo Mill. This area became known as Little Bosnia, and Gravois became the main street. For many years, Bevo had the largest Bosnian population outside of Bosnia.
 
-Although it has been thirty years since the Bosnian refugees settled in Bevo, there are still many signs of the population that built up the area. The Sebilj fountain replica stands as a monument for the region.
+As far as restaurants in the area, Das Bevo is a biergarten in the Bevo windmill, which the landmark of the neighborhood built by the Busch family back in the day. [[bevo-caffe-lounge|Bevo Caffe Lounge]] and [[zlatno-zito|Zlatno Zito]] are two spots serving traditional, authentic Balkan fare.
 
-Das Bevo is a biergarten in the Bevo windmill, the landmark of the neighborhood built by the Busch family to be a stop between the brewery and Grant's Farm. [[bevo-caffe-lounge|Bevo Caffe Lounge]] and [[zlatno-zito|Zlatno Zito]] are two spots serving traditional, authentic fare from the region.
+Although it has been thirty years since the Bosnian refugees settled in Bevo, there are still many signs of the population that built up the area. The Sebilj fountain replica stands as a monument for the region. Nowawdays, much of [the Bosnian population has moved to South County areas like Affton](https://www.stlmag.com/The-Bosnian-Boom-in-South-County-St-Louis/).
 
 ### Southtown
 
@@ -186,7 +188,7 @@ Das Bevo is a biergarten in the Bevo windmill, the landmark of the neighborhood 
 
 It seems there used to be a Southtown Famous-Barr department store at Kingshighway & Chippewa that was demolished in the '90s that gave the area its name.
 
-Now, there are new restaurants and bars filling up the space, such as the Golden Hoosier and Himalayan Yeti. It's honestly not the most walkable area of the city due to Kingshighway being such a busy street, but I can see the area getting more and more built up.
+Now, there are new restaurants and bars filling up the space, such as the Golden Hoosier and Himalayan Yeti. It's honestly not the most walkable area of the city due to Kingshighway being such a busy street, but I can see the area getting more and more built up [as Garcia Properties is working on revializing it](https://www.stlmag.com/business/garcia-properties-south-kingshighway/).
 
 ### Soulard
 
@@ -308,5 +310,3 @@ And of course - you guessed it - Kirkwood has a farmers market.
 ## Conclusion
 
 Did I miss a few spots? [Let me know](/feedback/)! I'm still learning and exploring so there's bound to be some areas I missed.
-
-<small id="walkable-note">\*Walkable in this article refers to the ease exploring cafes, restaurants, book stores, and shops by foot within a single street, not access to bus/train routes, grocery stores, and other amenities that would make an area walkable for day-to-day life.</small>
