@@ -9,7 +9,7 @@
   /* Colors */
   --color-background: #eceae6;
   --color-surface: #f8f6f3;
-  --color-surface-2: #dedbd6;
+  --color-surface-2: #e1ddd7;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -2749,19 +2749,22 @@ body:has([data-filter-root]) .site-header {
   font-weight: 500;
 }
 
+/* The header mark: the square pixel-art flag tile, kept hard-edged when scaled
+   (its raised bevel is baked into the art, so no CSS chrome on top). */
 .stlouis-flag {
-  height: 30px;
-  width: 48px;
-  border-radius: 4px;
+  height: 32px;
+  width: 32px;
+  image-rendering: pixelated;
   flex-shrink: 0;
-  /* box-shadow: var(--box-shadow-flag); */
+  /* Hard offset shadow, no blur — the flat sticker look. */
+  box-shadow: 2px 2px 0 var(--color-line-contrast);
 }
 
 /* Shrink the flag on mobile so it doesn't crowd the header. */
 @media (max-width: 700px) {
   .stlouis-flag {
     height: 26px;
-    width: 42px;
+    width: 26px;
   }
 }
 

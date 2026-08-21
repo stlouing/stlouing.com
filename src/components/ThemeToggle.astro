@@ -15,35 +15,27 @@ import Button from './Button.astro'
   data-theme-toggle
   aria-label="Toggle dark mode"
   aria-pressed="false">
+  {/* Pixelarticons sun + moon (same set as the site's other icons). */}
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
     viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    fill="currentColor"
     class="icon icon-sun"
-    ><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path
-      d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"
-    ></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path
-      d="m19.07 4.93-1.41 1.41"></path></svg
+    ><path
+      d="M13 22h-2v-3h2v3Zm-6-3H5v-2h2v2Zm12 0h-2v-2h2v2Zm-4-2H9v-2h6v2Zm-6-2H7V9h2v6Zm8 0h-2V9h2v6ZM5 13H2v-2h3v2Zm17 0h-3v-2h3v2Zm-7-4H9V7h6v2ZM7 7H5V5h2v2Zm12 0h-2V5h2v2Zm-6-2h-2V2h2v3Z"
+    ></path></svg
   >
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
     viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    fill="currentColor"
     class="icon icon-moon"
     ><path
-      d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+      d="M18 22H8v-2h10v2ZM8 20H6v-2h2v2Zm12 0h-2v-2h2v2ZM6 18H4v-2h2v2Zm16 0h-2v-4h-2v-2h2v-2h2v8ZM4 16H2V6h2v10Zm14 0h-6v-2h6v2Zm-6-2h-2v-2h2v2Zm-2-2H8V6h2v6ZM6 6H4V4h2v2Zm8-2h-2v2h-2V4H6V2h8v2Z"
     ></path></svg
   >
 </Button>
@@ -54,11 +46,17 @@ import Button from './Button.astro'
      :active padding recreates the retro press-in nudge relative to the zeroed
      padding (the shared .btn-retro:active rule assumes the default 2px). */
   :global(.theme-toggle.btn-retro) {
-    width: 2rem;
-    height: 2rem;
+    /* Sized to visually match the 32px flag tile + its offset shadow. */
+    width: 2.25rem;
+    height: 2.25rem;
     padding: 0;
     justify-content: center;
     flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   :global(.theme-toggle.btn-retro:active) {

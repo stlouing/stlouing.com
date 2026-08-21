@@ -2,7 +2,7 @@
 title: St. Louis's Most Walkable Streets
 description: Mapping the most interesting neighborhoods to explore in St. Louis
 seoTitle: The Most Walkable Neighborhoods and Streets in St. Louis
-icon: walk
+icon: map
 ogImage: /og/walkable-st-louis.png
 created: 2026-08-19
 updated: 2026-08-20
