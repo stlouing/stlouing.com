@@ -4,14 +4,15 @@
 // the button's text color via the global `.btn .icon` rule.
 //
 // variant:
-//   outline (default) — bordered surface button (Share, source links, CTAs)
+//   outline (default) — bordered surface button (source links, CTAs)
 //   filled            — solid accent
 //   quiet             — borderless accent text link ("Read more →")
 //   muted             — borderless muted text w/ dotted underline (list sources)
+//   retro             — Windows 98 bevel chrome (Share / Feedback, theme toggle)
 // compact: tighter vertical padding for inline rows.
 interface Props {
   href?: string
-  variant?: 'outline' | 'filled' | 'quiet' | 'muted' | 'dark'
+  variant?: 'outline' | 'filled' | 'quiet' | 'muted' | 'dark' | 'retro'
   compact?: boolean
   class?: string
   [key: string]: unknown

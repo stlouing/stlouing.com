@@ -1,5 +1,5 @@
 ---
-// The Share + Feedback pill buttons, shown top-right of an entry header (aligned
+// The Share + Feedback buttons, shown top-right of an entry header (aligned
 // with the title + lede). `title` seeds the native share payload.
 import ShareButton from './ShareButton.astro'
 import Button from './Button.astro'
@@ -14,8 +14,8 @@ const { title } = Astro.props
 ---
 
 <div class="share-actions">
-  <ShareButton title={title} label="Share" class="share-pill" />
-  <Button href={href('/feedback/')} variant="outline" class="share-pill">
+  <ShareButton title={title} label="Share" variant="retro" class="share-pill" />
+  <Button href={href('/feedback/')} variant="retro" class="share-pill">
     <IconPencil />
     Feedback
   </Button>
@@ -26,55 +26,5 @@ const { title } = Astro.props
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-  }
-
-  /* Windows 98 chrome for the Share / Feedback buttons: a raised double bevel
-     (light top/left, dark bottom/right) on a silver face, squared corners, and
-     the classic press-in on :active. Face/bevel tones are warm-tinted to sit in
-     the site palette, with a dark-theme variant. */
-  .share-actions {
-    --w98-face: #cbcbcb;
-    --w98-light: #ffffff;
-    --w98-mid: #979797;
-    --w98-dark: #4f4f4f;
-  }
-
-  :global([data-theme='dark']) .share-actions {
-    --w98-face: #40434b;
-    --w98-light: #6a6e78;
-    --w98-mid: #26282d;
-    --w98-dark: #101114;
-  }
-
-  .share-actions :global(.btn) {
-    border-radius: 0;
-    padding: 2px var(--spacing-sm);
-    background: var(--w98-face);
-    border: 1px solid;
-    border-color: var(--w98-light) var(--w98-dark) var(--w98-dark) var(--w98-light);
-    box-shadow:
-      inset 1px 1px 0 var(--w98-light),
-      inset -1px -1px 0 var(--w98-mid);
-    color: var(--color-text);
-
-    svg {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  /* Win98 buttons don't glow on hover; keep the face steady. */
-  .share-actions :global(.btn:hover) {
-    background: var(--w98-face);
-    border-color: var(--w98-light) var(--w98-dark) var(--w98-dark) var(--w98-light);
-  }
-
-  /* Pressed: the bevel inverts and the content nudges down-right a pixel. */
-  .share-actions :global(.btn:active) {
-    border-color: var(--w98-dark) var(--w98-light) var(--w98-light) var(--w98-dark);
-    box-shadow:
-      inset 1px 1px 0 var(--w98-mid),
-      inset -1px -1px 0 var(--w98-light);
-    padding: 3px calc(var(--spacing-sm) - 1px) 1px calc(var(--spacing-sm) + 1px);
   }
 </style>

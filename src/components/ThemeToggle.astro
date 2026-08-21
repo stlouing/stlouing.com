@@ -2,12 +2,15 @@
 // Light/dark switch. The theme attribute on <html> is set pre-paint by the
 // inline script in BaseLayout (so there's no flash); this button flips it and
 // persists the choice. The sun shows in dark mode (tap to go light), the moon
-// in light mode. SVGs are inlined so the scoped show/hide styles below apply
-// (Astro scoping doesn't reach into child-component output).
+// in light mode. It wears the shared Windows 98 chrome (Button's `retro`
+// variant), matching the Share / Feedback buttons. SVGs are inlined so the
+// scoped show/hide styles below apply (Astro scoping doesn't reach into child
+// component output).
+import Button from './Button.astro'
 ---
 
-<button
-  type="button"
+<Button
+  variant="retro"
   class="theme-toggle"
   data-theme-toggle
   aria-label="Toggle dark mode"
@@ -43,34 +46,23 @@
       d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
     ></path></svg
   >
-</button>
+</Button>
 
 <style>
-  .theme-toggle {
-    display: inline-grid;
-    place-items: center;
+  /* A square Win98 button: fixed equal sides, icon centered. :global because
+     the <button> is rendered by the Button child, outside this scope. The
+     :active padding recreates the retro press-in nudge relative to the zeroed
+     padding (the shared .btn-retro:active rule assumes the default 2px). */
+  :global(.theme-toggle.btn-retro) {
     width: 2rem;
     height: 2rem;
     padding: 0;
-    border: none;
-    border-radius: var(--radius);
-    background: var(--color-background);
-    color: var(--color-muted);
-    cursor: pointer;
+    justify-content: center;
     flex-shrink: 0;
+  }
 
-    &:hover {
-      background: var(--color-background);
-
-      svg {
-        color: var(--color-accent);
-      }
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 2px;
-    }
+  :global(.theme-toggle.btn-retro:active) {
+    padding: 2px 0 0 2px;
   }
 
   /* Light mode shows the moon; dark mode swaps to the sun. */

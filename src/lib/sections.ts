@@ -6,6 +6,9 @@ export interface Section {
   group: Group
   primary?: boolean
   description?: string
+  // Icon keyword from the shared <Icon> registry, shown beside the label in the
+  // primary nav.
+  icon?: string
 }
 
 // Homepage groups, in display order. 'notes' is intentionally omitted for now —
@@ -26,6 +29,7 @@ export const sections: Section[] = [
     path: '/food/',
     group: 'explore',
     primary: true,
+    icon: 'utensils',
     description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective, based on my taste and experiences.`,
   },
   {
@@ -33,6 +37,7 @@ export const sections: Section[] = [
     path: '/neighborhoods/',
     group: 'explore',
     primary: true,
+    icon: 'map-pin',
     description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, plus a few additional points of interest in the county.`,
   },
   // {
@@ -47,6 +52,7 @@ export const sections: Section[] = [
     path: '/topics/',
     group: 'topics',
     primary: true,
+    icon: 'book',
     description: "Field notes and deep dives on what I've learned.",
   },
 
@@ -85,6 +91,7 @@ export const sections: Section[] = [
     path: '/about/',
     group: 'site',
     primary: true,
+    icon: 'info',
     description: 'Why I made this city exploration website.',
   },
   { label: 'Tags', path: '/tags/', group: 'site', description: 'Browse everything by topic.' },

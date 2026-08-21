@@ -90,7 +90,7 @@ interface Props {
     width: 100%;
     z-index: 100;
     border-block-end: 1px solid var(--color-line-contrast);
-    padding-block: var(--spacing-md);
+    padding-block: var(--spacing-sm);
     background: var(--color-background);
     transform: translateZ(0);
     isolation: isolate;
@@ -137,8 +137,10 @@ interface Props {
       display: none;
     }
 
+    /* No bottom padding — the nav toolbar sits flush on the header's bottom
+       border, so its cell dividers connect top line to bottom line. */
     .site-header {
-      padding-block: var(--spacing-sm);
+      padding-block: var(--spacing-sm) 0;
     }
 
     .header-inner {
@@ -171,8 +173,15 @@ interface Props {
       grid-area: nav;
       display: flex;
       justify-content: start;
-      column-gap: var(--spacing-md);
+      /* No column gap — the nav's toolbar cells pad themselves off their
+         dividers. Negative margins cancel the .wrap inline padding so the
+         toolbar runs edge to edge. */
+      column-gap: 0;
       row-gap: var(--spacing-xs);
+      margin-inline: calc(-1 * var(--spacing-md));
+      width: calc(100% + 2 * var(--spacing-md));
+      /* The rule separating the name row above from the toolbar. */
+      border-block-start: 1px solid var(--color-line);
     }
   }
 </style>

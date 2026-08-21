@@ -1,6 +1,7 @@
 ---
 import { sections } from '../lib/sections'
 import { href } from '../lib/url'
+import Icon from './Icon.astro'
 
 const items = sections.filter((section) => section.primary)
 const current = Astro.url.pathname
@@ -18,13 +19,17 @@ const homeActive = current === href('/')
 ---
 
 <nav class="site-nav" aria-label="Primary">
-  <a class="nav-home" href={href('/')} aria-current={homeActive ? 'page' : undefined}>Home</a>
+  <a class="nav-home" href={href('/')} aria-current={homeActive ? 'page' : undefined}>
+    <Icon name="flag" />
+    Home
+  </a>
   {
     items.map((section) => (
       <a
         href={href(section.path)}
         class={`nav-section-${section.label.toLowerCase()}`}
         aria-current={isActive(section.path) ? 'page' : undefined}>
+        {section.icon && <Icon name={section.icon} />}
         {section.label}
       </a>
     ))
@@ -35,7 +40,8 @@ const homeActive = current === href('/')
   .site-nav {
     display: flex;
     flex-wrap: wrap;
-    column-gap: var(--spacing-base);
+    /* No column gap — each cell's inline padding spaces it off the divider. */
+    column-gap: 0;
     row-gap: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
@@ -45,50 +51,65 @@ const homeActive = current === href('/')
       display: none;
     }
 
+    /* Toolbar cells: the icon centered above its label, a hairline divider
+       between items (border-inline-end on all but the last — the hidden Home
+       link's border never shows, so the first visible item stays clean). Hover
+       and the active section turn the whole cell (icon included, via
+       currentColor) accent. */
     a {
-      display: block;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding-inline: var(--spacing-base);
       color: var(--color-text);
-      text-decoration-line: none;
-      text-decoration-color: var(--color-accent);
-      text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
+      text-decoration: none;
       font-weight: 500;
+      border-inline-end: 1px solid var(--color-line);
+
+      &:last-child {
+        border-inline-end: 0;
+      }
+
+      /* Icons follow the link color (the global .icon rule would otherwise
+         pin them muted). */
+      :global(svg) {
+        width: 20px;
+        height: 20px;
+        color: inherit;
+      }
 
       &:hover {
-        color: var(--color-text);
-        text-decoration-line: underline;
+        color: var(--color-accent);
       }
 
       &[aria-current='page'] {
         color: var(--color-accent);
         font-weight: 600;
-        text-decoration-line: underline;
       }
     }
   }
 
-  /* Mobile: drop the dotted underline (cramped on a phone) for a clean, compact
-     text menu — muted labels with the active section in accent. */
+  /* Mobile: one full-width bar, never wrapping — smaller type and tighter
+     padding so all five cells (Neighborhoods included) fit a phone, with the
+     leftover width shared out by flex-grow. */
   @media (max-width: 700px) {
+    .site-nav {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
     .site-nav .nav-home {
-      display: block;
+      display: inline-flex;
     }
 
     .site-nav a {
-      text-decoration: none;
-      font-size: var(--font-size-xs);
-
-      &:hover {
-        color: var(--color-accent);
-      }
-
-      &[aria-current='page'] {
-        text-decoration: underline;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 4px;
-        text-decoration-style: solid;
-        text-decoration-color: var(--color-accent);
-      }
+      flex: 1 1 auto;
+      min-width: 0;
+      padding-block: var(--spacing-sm);
+      padding-inline: var(--spacing-xs);
+      font-size: var(--font-size-xxs);
     }
   }
 </style>

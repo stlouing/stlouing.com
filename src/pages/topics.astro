@@ -1,11 +1,14 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import List from '../components/List.astro'
-import ListItem from '../components/ListItem.astro'
 import Icon from '../components/Icon.astro'
+import IconArrowRight from '../assets/IconArrowRight.astro'
 import { href } from '../lib/url'
-import { published, excerpt, sortTopics, PREVIEW_EXCERPT_CHARS } from '../lib/content'
+import { published, excerpt, sortTopics } from '../lib/content'
+
+// A paragraph-length teaser from the top of each article (the shorter
+// PREVIEW_EXCERPT_CHARS is tuned for one-line list rows, not cards).
+const TOPIC_EXCERPT_CHARS = 300
 
 const topics = sortTopics(published(await getCollection('topics')))
 ---
@@ -20,21 +23,109 @@ const topics = sortTopics(published(await getCollection('topics')))
       </div>
       <p class="entry-summary">Deep-dives into St. Louis food and culture</p>
     </header>
-    <List>
+    <div class="topic-list">
       {
         topics.map((topic) => (
-          <ListItem
-            title={topic.data.title}
-            href={href(`/${topic.id}/`)}
-            description={
-              topic.data.description
-                ? `${topic.data.description}.`
-                : excerpt(topic.body, PREVIEW_EXCERPT_CHARS)
-            }>
-            <Icon name={topic.data.icon} slot="icon" />
-          </ListItem>
+          <a class="topic-card" href={href(`/${topic.id}/`)}>
+            <div class="topic-main">
+              <h2 class="topic-title">
+                <span class="topic-icon">
+                  <Icon name={topic.data.icon} />
+                </span>
+                {topic.data.title}
+              </h2>
+              {topic.data.description && (
+                <p class="topic-description">{topic.data.description}.</p>
+              )}
+              <p class="topic-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
+            </div>
+            <span class="topic-arrow">
+              <IconArrowRight />
+            </span>
+          </a>
         ))
       }
-    </List>
+    </div>
   </article>
 </BaseLayout>
+
+<style>
+  .topic-list {
+    margin-block-start: var(--spacing-md);
+  }
+
+  /* Each card is one whole-row link — content left, an arrow on the right —
+     divided on hairlines (the site's list idiom, not boxes). */
+  .topic-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-block: var(--spacing-lg);
+    border-block-end: 1px solid var(--color-line);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .topic-card:last-child {
+    border-block-end: 0;
+  }
+
+  .topic-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-block: 0 var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text-heading);
+  }
+
+  .topic-card:hover .topic-title {
+    color: var(--color-accent);
+  }
+
+  .topic-icon {
+    display: inline-flex;
+    color: var(--color-accent);
+
+    :global(svg) {
+      width: 20px;
+      height: 20px;
+      color: inherit;
+    }
+  }
+
+  /* The subtitle: the body serif in accent, like the map lists' taglines. */
+  .topic-description {
+    margin-block: var(--spacing-xs) 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    color: var(--color-accent);
+    line-height: 1.2;
+  }
+
+  .topic-excerpt {
+    margin-block: var(--spacing-sm) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  .topic-arrow {
+    display: inline-flex;
+    color: var(--color-muted);
+
+    :global(svg) {
+      width: 20px;
+      height: 20px;
+      color: inherit;
+    }
+  }
+
+  .topic-card:hover .topic-arrow {
+    color: var(--color-accent);
+  }
+</style>
