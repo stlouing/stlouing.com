@@ -59,6 +59,19 @@ import Button from './Button.astro'
     }
   }
 
+  /* Mobile: track the flag tile's smaller 26px size (+ shadow), like desktop. */
+  @media (max-width: 700px) {
+    :global(.theme-toggle.btn-retro) {
+      width: 30px;
+      height: 30px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
   :global(.theme-toggle.btn-retro:active) {
     padding: 2px 0 0 2px;
   }

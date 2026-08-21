@@ -23,6 +23,7 @@ import IconTags from '../assets/IconTags.astro'
 import IconListChecks from '../assets/IconListChecks.astro'
 import IconInfo from '../assets/IconInfo.astro'
 import IconWalk from '../assets/IconWalk.astro'
+import IconHome from '../assets/IconHome.astro'
 
 interface Props {
   // A keyword from the registry below. Unknown / undefined -> book.
@@ -52,6 +53,7 @@ const iconByKeyword: Record<string, typeof IconBook> = {
   'list-checks': IconListChecks,
   info: IconInfo,
   walk: IconWalk,
+  home: IconHome,
 }
 
 const { name } = Astro.props

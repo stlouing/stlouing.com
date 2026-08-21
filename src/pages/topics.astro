@@ -84,6 +84,9 @@ const topics = sortTopics(published(await getCollection('topics')))
 
   .topic-card:hover .topic-title {
     color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 3px;
   }
 
   .topic-icon {
