@@ -8,7 +8,13 @@
 // Type system follows the rest of the app: mono uppercase for labels/meta, Georgia +
 // the display serif for the verdict value. Icons, never emoji — the "Liked it" side
 // carries the app's heart; the tally rides muted to the right.
+//
+// The bar wears the shared Win98 dialog chrome (.win98-* in global.css): title bar,
+// beveled vote/submit buttons, sunken inputs. The chrome re-themes itself for dark
+// mode; the interior styles only through the --win98-* tokens and goes monochrome
+// (see the .verdict-bar comment below).
 import Rating from './Rating.astro'
+import { href } from '../lib/url'
 import IconThumbsUp from '../assets/IconThumbsUp.astro'
 import IconThumbsDown from '../assets/IconThumbsDown.astro'
 import IconPencil from '../assets/IconPencil.astro'
@@ -34,10 +40,16 @@ const readersEnabled = Boolean(
 {
   (writerState || readersEnabled) && (
     <section
-      class="verdict-bar"
+      class="verdict-bar win98-window"
       data-readers-verdict={readersEnabled ? '' : undefined}
       data-slug={slug}
       aria-label={`Review of ${title}`}>
+      <div class="win98-titlebar">
+        <span class="win98-caption">
+          <img class="win98-titlebar-icon" src={href('/stlflag.png')} alt="" width="16" height="16" />
+          {readersEnabled ? 'Rate this restaurant' : 'Ratings'}
+        </span>
+      </div>
       <div class="vb-row">
         {writerState && (
           <div
@@ -63,7 +75,7 @@ const readersEnabled = Boolean(
             <div class="rv-pill">
               <button
                 type="button"
-                class="rv-choice"
+                class="rv-choice win98-button"
                 data-vote="like"
                 aria-pressed="false"
                 aria-label="I liked it"
@@ -74,7 +86,7 @@ const readersEnabled = Boolean(
               </button>
               <button
                 type="button"
-                class="rv-choice"
+                class="rv-choice win98-button"
                 data-vote="dislike"
                 aria-pressed="false"
                 aria-label="Not for me"
@@ -115,7 +127,7 @@ const readersEnabled = Boolean(
                   Name <span class="rv-field-note">(optional)</span>
                 </span>
                 <input
-                  class="rv-input"
+                  class="rv-input win98-field"
                   type="text"
                   data-note-name
                   maxlength="80"
@@ -125,7 +137,7 @@ const readersEnabled = Boolean(
               <label class="rv-field">
                 <span class="rv-field-label">Note</span>
                 <textarea
-                  class="rv-input rv-note-textarea"
+                  class="rv-input rv-note-textarea win98-field"
                   data-note-comment
                   rows="3"
                   maxlength="2000"
@@ -139,7 +151,7 @@ const readersEnabled = Boolean(
                   <input type="text" data-note-hp tabindex="-1" autocomplete="off" />
                 </label>
               </div>
-              <button type="submit" class="rv-note-submit">
+              <button type="submit" class="rv-note-submit win98-button">
                 Submit
               </button>
             </form>
@@ -152,17 +164,18 @@ const readersEnabled = Boolean(
 }
 
 <style>
-  /* One bordered bar at the top of the writeup: My Review on the left, a divided
-     Your Take poll in the middle, the live tally pushed to the right. The top row
-     rides on the surface; the note area below it takes the (darker) page
-     background, so padding lives on the children, not the bar. Square corners to
-     match the rest of the app. */
+  /* One Win98 window at the top of the writeup: title bar, then My Rating on
+     the left and the Readers' Rating poll beside it on the gray face, the note
+     form below. The chrome comes from .win98-window. The site's colored inks
+     (verdict colors, fleur gold, accent ledes) read low-contrast on the gray
+     face, so the interior goes monochrome — statement and fleurs in the
+     window's text ink, muted secondary text — with the window accent kept
+     only for small touches (thumbs, statuses). The Rating fleurs fill with
+     --color-map-north via currentColor; remapping it here recolors them. */
   .verdict-bar {
+    --color-map-north: var(--win98-text);
+
     margin-block-end: var(--spacing-lg);
-    border: 1px solid var(--color-line-contrast);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-    overflow: hidden;
   }
 
   .vb-row {
@@ -181,7 +194,7 @@ const readersEnabled = Boolean(
     font-weight: 500;
     letter-spacing: var(--letter-spacing);
     text-transform: uppercase;
-    color: var(--color-text);
+    color: var(--win98-text);
     white-space: nowrap;
   }
 
@@ -200,37 +213,19 @@ const readersEnabled = Boolean(
     gap: var(--spacing-md);
   }
 
-  .vb-mine.verdict-loved {
-    --vb-color: var(--color-verdict-loved);
-  }
-  .vb-mine.verdict-liked {
-    --vb-color: var(--color-verdict-liked);
-  }
-  .vb-mine.verdict-neutral {
-    --vb-color: var(--color-verdict-neutral);
-  }
-  .vb-mine.verdict-not-for-me {
-    --vb-color: var(--color-verdict-notforme);
-  }
-
-  /* Unrated place: a quiet, verdict-less line ("Haven't visited yet"). */
-  .vb-mine.vb-mine-muted {
-    --vb-color: var(--color-muted-2);
-  }
-
+  /* The statement rides plain black on the gray face (the verdict still shows
+     in the fleur count beside it). */
   .vb-mine-value {
     font-family: var(--font-body);
     font-size: var(--font-size-lg);
     font-weight: 400;
     line-height: 1;
-    color: var(--vb-color);
+    color: var(--win98-text);
   }
 
-  /* The placeholder phrase is longer than a verdict word, so it rides a touch
-     smaller and in muted ink. */
+  /* Unrated place: a quiet, verdict-less line ("Haven't visited yet"). */
   .vb-mine-muted .vb-mine-value {
-    font-size: var(--font-size-lg);
-    color: var(--color-muted-2);
+    color: var(--win98-muted);
   }
 
   /* --- Readers' Rating (poll) --- an eyebrow over the two thumb buttons, mirroring
@@ -239,8 +234,10 @@ const readersEnabled = Boolean(
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-xs);
-    border-inline-start: 1px solid var(--color-line);
+    gap: var(--spacing-sm);
+    /* An etched groove divider: shadow line with the highlight just inside it. */
+    border-inline-start: 1px solid var(--win98-shadow);
+    box-shadow: inset 1px 0 0 var(--win98-highlight);
     padding-inline-start: var(--spacing-lg);
   }
 
@@ -250,68 +247,38 @@ const readersEnabled = Boolean(
     font-family: var(--font-body);
     font-style: italic;
     font-size: var(--font-size-md);
-    color: var(--color-accent-2);
+    color: var(--win98-muted);
   }
 
   .rv-cta[hidden] {
     display: none;
   }
 
-  /* The 👍 / 👎 poll as one rounded pill: two segments split by a hairline. Outlined
-     until you vote; the chosen side then fills with the accent. */
+  /* The 👍 / 👎 poll as two Win98 push buttons; the voted side holds the
+     pressed-in state (.is-active, handled by .win98-button). */
   .rv-pill {
     display: inline-flex;
-    border: 1px solid var(--color-muted);
-    background: var(--color-surface);
-    overflow: hidden;
+    gap: var(--spacing-sm);
   }
 
+  /* Roomier than the stock .win98-button, but the bevels come from it. */
   .rv-choice {
-    display: inline-flex;
-    align-items: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-md);
-    border: 0;
-    background: transparent;
-    color: var(--color-text);
-    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     font-weight: 500;
-    cursor: pointer;
     line-height: 1.3;
-    transition:
-      background-color 0.15s ease,
-      color 0.15s ease;
 
     &:disabled {
       cursor: default;
     }
-
-    &:hover:not(:disabled) {
-      background: color-mix(in srgb, var(--color-text) 5%, var(--color-surface));
-    }
-
-    /* The side you voted fills with the accent. */
-    &.is-active {
-      background: var(--color-accent);
-      color: var(--color-background);
-    }
   }
 
-  /* The hairline splitting the two pill segments. */
-  .rv-choice + .rv-choice {
-    border-inline-start: 1px solid var(--color-muted);
-  }
-
-  /* Icons follow the segment's text color (override the global muted .icon). */
+  /* The thumbs ride in the pinned accent (override the global muted .icon). */
   .rv-choice :global(.icon) {
-    color: var(--color-accent-2);
+    color: var(--win98-accent-2);
     width: 16px;
     height: 16px;
-  }
-
-  .rv-choice.is-active :global(.icon) {
-    color: var(--color-background);
   }
 
   /* The live count after the thumb — hidden when zero (the script leaves it empty). */
@@ -329,18 +296,19 @@ const readersEnabled = Boolean(
     padding: 0 var(--spacing-md) var(--spacing-sm);
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
-    color: var(--color-accent);
+    color: var(--win98-accent);
 
     &:empty {
       display: none;
     }
   }
 
-  /* Optional note, revealed after a vote: stacked Name + Note fields, spanning the
-     full width and split from the rating row above by a dashed rule. */
+  /* Optional note, revealed after a vote: stacked Name + Note fields, spanning
+     the full width, split from the rating row above by an etched groove. */
   .rv-note {
     padding: var(--spacing-md);
-    border-block-start: 1px dashed var(--color-line);
+    border-block-start: 1px solid var(--win98-shadow);
+    box-shadow: inset 0 1px 0 var(--win98-highlight);
   }
 
   .rv-note-form {
@@ -374,11 +342,11 @@ const readersEnabled = Boolean(
     margin: calc(-1 * var(--spacing-xs));
     border: 0;
     background: none;
-    color: var(--color-muted);
+    color: var(--win98-muted);
     cursor: pointer;
 
     &:hover {
-      color: var(--color-accent);
+      color: var(--win98-accent);
     }
 
     :global(.icon) {
@@ -396,7 +364,7 @@ const readersEnabled = Boolean(
     padding: 0;
     border: 0;
     background: none;
-    color: var(--color-muted-2);
+    color: var(--win98-muted);
     /* font-family: var(--font-mono); */
     font-size: var(--font-size-md);
     font-weight: 500;
@@ -416,7 +384,7 @@ const readersEnabled = Boolean(
     cursor: pointer;
 
     &:hover {
-      color: var(--color-accent);
+      color: var(--win98-accent);
     }
   }
 
@@ -435,7 +403,7 @@ const readersEnabled = Boolean(
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing);
-    color: var(--color-text);
+    color: var(--win98-text);
     line-height: 1.5;
   }
 
@@ -443,25 +411,24 @@ const readersEnabled = Boolean(
     font-weight: 400;
     text-transform: none;
     letter-spacing: 0;
-    color: var(--color-muted);
+    color: var(--win98-muted);
   }
 
+  /* Sunken .win98-field wells; the bevel replaces the input border, so focus
+     moves to an outline (the bevel lives in box-shadow and must survive). */
   .rv-input {
     padding: var(--spacing-sm);
-    border: 1px solid var(--color-line-input);
+    border: 0;
     border-radius: var(--radius);
-    background: var(--color-surface);
-    color: var(--color-text);
+    color: var(--win98-text);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     font-weight: 400;
     min-width: 0;
 
-    /* Match the app's global input focus: accent border + 1px ring, no outline. */
     &:focus {
-      outline: none;
-      border-color: var(--color-accent);
-      box-shadow: 0 0 0 1px var(--color-accent);
+      outline: 2px solid var(--win98-accent);
+      outline-offset: 1px;
     }
   }
 
@@ -479,21 +446,11 @@ const readersEnabled = Boolean(
     overflow: hidden;
   }
 
-  /* The dark "Submit" action, set off from the quiet inputs. */
+  /* The Submit action: a stock Win98 push button at dialog-button size. */
   .rv-note-submit {
     padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--color-text-heading);
-    border-radius: var(--radius);
-    background: var(--color-text-heading);
-    color: var(--color-surface);
-    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     font-weight: 500;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.9;
-    }
   }
 
   /* An inline error ("Couldn't save that") under the row; hidden while empty. */
@@ -501,7 +458,7 @@ const readersEnabled = Boolean(
     margin: var(--spacing-sm) 0 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
-    color: var(--color-accent);
+    color: var(--win98-accent);
 
     &:empty {
       display: none;
@@ -521,7 +478,9 @@ const readersEnabled = Boolean(
     .vb-take {
       margin-block-start: var(--spacing-sm);
       padding-block-start: var(--spacing-sm);
-      border-block-start: 1px solid var(--color-line);
+      /* The groove divider rotates horizontal when the columns stack. */
+      border-block-start: 1px solid var(--win98-shadow);
+      box-shadow: inset 0 1px 0 var(--win98-highlight);
       border-inline-start: 0;
       padding-inline-start: 0;
     }

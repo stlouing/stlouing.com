@@ -27,13 +27,11 @@ const topics = sortTopics(published(await getCollection('topics')))
       {
         topics.map((topic) => (
           <a class="topic-card" href={href(`/${topic.id}/`)}>
+            <span class="topic-icon">
+              <Icon name={topic.data.icon} />
+            </span>
             <div class="topic-main">
-              <h2 class="topic-title">
-                <span class="topic-icon">
-                  <Icon name={topic.data.icon} />
-                </span>
-                {topic.data.title}
-              </h2>
+              <h2 class="topic-title">{topic.data.title}</h2>
               {topic.data.description && (
                 <p class="topic-description">{topic.data.description}.</p>
               )}
@@ -55,42 +53,72 @@ const topics = sortTopics(published(await getCollection('topics')))
   }
 
   /* Each card is one whole-row link — content left, an arrow on the right —
-     divided on hairlines (the site's list idiom, not boxes). */
+     divided on hairlines (the site's list idiom, not boxes). Like the list
+     items, the card pulls itself a step wider than the text column so the
+     hover highlight extends past the text while the text stays aligned. */
   .topic-card {
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: var(--spacing-md);
     padding-block: var(--spacing-lg);
-    border-block-end: 1px solid var(--color-line);
+    padding-inline: var(--spacing-sm);
+    margin-inline: calc(-1 * var(--spacing-sm));
+    border-radius: var(--radius);
     color: inherit;
     text-decoration: none;
+    transition: background-color 0.12s ease;
   }
 
-  .topic-card:last-child {
-    border-block-end: 0;
+  /* The same whole-row highlight the list items use: a soft text-over-
+     background tint that works in both themes. */
+  .topic-card:hover {
+    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
   }
 
+  /* The hairline divider, drawn inset back to the text column — a border on
+     the pulled-wide card would overhang the rules above and below it. */
+  .topic-card::after {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: var(--spacing-sm);
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .topic-card:last-child::after {
+    content: none;
+  }
+
+  /* The site's serif heading voice, at heading size — mono is for labels and
+     turns clumsy at display sizes, and the serif is what separates the title
+     from the lede and excerpt below it. */
   .topic-title {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
     margin-block: 0 var(--spacing-sm);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-lg);
-    font-weight: 600;
+    font-family: var(--font-serif);
+    /* ~23px on phones up to the full xxxl on wide screens, on the same clamp
+       idiom as the global heading scale. */
+    font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
+    font-weight: 500;
     color: var(--color-text-heading);
   }
 
   .topic-card:hover .topic-title {
     color: var(--color-accent);
     text-decoration: underline;
-    text-decoration-thickness: 3px;
+    text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
 
+  /* The icon rides its own left column, top-aligned and nudged to sit
+     optically against the title's first line (24px serif on a ~29px line box)
+     while the title, lede, and excerpt share one text edge. */
   .topic-icon {
     display: inline-flex;
+    align-self: start;
+    margin-block-start: 4px;
     color: var(--color-accent);
 
     :global(svg) {
@@ -104,7 +132,7 @@ const topics = sortTopics(published(await getCollection('topics')))
   .topic-description {
     margin-block: var(--spacing-xs) 0;
     font-family: var(--font-body);
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
     font-weight: 500;
     color: var(--color-accent);
     line-height: 1.2;

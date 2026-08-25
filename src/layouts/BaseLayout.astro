@@ -162,13 +162,8 @@ const analyticsUrl = analyticsBase
       document.documentElement.dataset.theme = storedTheme ?? 'light'
     </script>
 
-    {
-      /* favicon.ico (16/32/48, generated from favicon.png) is what favicon
-        services (Google, DuckDuckGo) fetch at the root; the PNG is the
-        higher-res source modern browsers prefer. */
-    }
     <link rel="icon" href={href('/favicon.ico')} sizes="48x48" />
-    <link rel="icon" type="image/png" href={href('/favicon.png')} sizes="128x128" />
+    <link rel="icon" type="image/png" href={href('/favicon.png')} sizes="144x144" />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
     {noindex && <meta name="robots" content="noindex, follow" />}

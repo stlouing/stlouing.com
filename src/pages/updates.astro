@@ -69,11 +69,15 @@ const updates = await Promise.all(
     padding-block-start: 0;
   }
 
+  /* The date as a red uppercase eyebrow — highlighted without the background
+     bar (which competed with the What's New box's title bar). */
   .update-date {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--color-muted);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-accent);
     text-wrap: nowrap;
     /* Nudge onto the first line of the changes list beside it. */
     padding-block-start: 2px;

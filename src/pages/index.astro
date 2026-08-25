@@ -101,14 +101,18 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       <!-- <div class="index-crest">
         <FleurDeLis class="index-crest-img" />
       </div> -->
-      <section class="group recently">
-        <div class="group-header">
-          <h2 class="group-label">What's New</h2>
-          <a class="all" href={href('/updates/')}>
+      <section class="group recently win98-window">
+        <div class="win98-titlebar">
+          <h2 class="win98-caption">
+            {/* The window icon: the same pixel flag as the header mark. */}
+            <img class="win98-titlebar-icon" src={href('/stlflag.png')} alt="" width="16" height="16" />
+            What's New
+          </h2>
+          <a class="win98-button" href={href('/updates/')}>
             All <IconArrowRight />
           </a>
         </div>
-        <ul class="recent-list">
+        <ul class="recent-list win98-field">
           {
             latestUpdates.map(({ date, Content }) => (
               <li class="recent-item">
@@ -397,29 +401,58 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     color: inherit;
   }
 
-  /* The "Recently updated" block sits above the directory so a returning visitor
-     sees the site is alive right away. Each row: a mono date in a left rail, the
-     update's title + one-line summary beside it. */
-  /* What's New rides the header grid's right column as a boxed card, top-aligned
-     with the title. The grid's 700px collapse stacks it under the intro. */
+  /* What's New rides the header grid's right column, top-aligned with the
+     title; the grid's 700px collapse stacks it under the intro. The Win98
+     dressing (window, title bar, sunken field, button) is the shared .win98-*
+     chrome in global.css; only this page's layout and pinned interior inks
+     live here. */
   .recently {
     margin-block-start: var(--spacing-lg);
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    padding: var(--spacing-md) var(--spacing-lg);
     min-width: 0;
+  }
+
+  /* Interior text styles only through the --win98-* tokens (light-palette
+     inks on the light face, theme inks once dark mode re-themes the window).
+     The date rides as a red uppercase eyebrow (same treatment as /updates)
+     so it stands out without competing with the title bar. */
+  .recently .recent-date {
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing);
+    text-transform: uppercase;
+    color: var(--win98-accent);
+    font-size: var(--font-size-xs);
+  }
+
+  .recently .recent-changes {
+    color: var(--win98-text);
+  }
+
+  .recently .recent-changes :global(a) {
+    color: var(--win98-link);
+    text-decoration-color: var(--win98-link);
+  }
+
+  .recently .recent-changes :global(a:hover) {
+    color: var(--win98-link-hover);
+    text-decoration-color: var(--win98-link-hover);
   }
 
   /* The box's column is too narrow for the /updates two-track date rail; stack
      the date over its changes instead — the same collapse /updates uses on
-     phones — and tighten the row rhythm to fit the card. */
+     phones — and tighten the row rhythm to fit the card. The list itself is a
+     sunken .win98-field; it only needs its own padding. */
   .recently .recent-list {
     grid-template-columns: 1fr;
+    /* A gray inset so the face shows around the sunken well, separating it
+       from the title bar — the classic dialog client margin. */
+    margin: var(--spacing-xs);
+    padding: var(--spacing-md) var(--spacing-lg);
   }
 
   .recently .recent-item {
-    row-gap: var(--spacing-xs);
+    row-gap: var(--spacing-sm);
     padding-block: var(--spacing-md);
+    border-color: var(--win98-light);
   }
 
   .recently .recent-item:first-child {

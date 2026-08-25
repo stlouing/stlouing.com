@@ -51,6 +51,7 @@
   --font-size-lg: 1.25rem; /* 20px */
   --font-size-xl: 1.375rem; /* 22px */
   --font-size-xxl: 1.5rem; /* 24px */
+  --font-size-xxxl: 1.75rem; /* 28px */
 
   /* Type scale + rhythm */
   --text: 1rem;
@@ -2749,11 +2750,9 @@ body:has([data-filter-root]) .site-header {
   font-weight: 500;
 }
 
-/* The header mark: the square pixel-art flag tile, kept hard-edged when scaled
-   (its raised bevel is baked into the art, so no CSS chrome on top). */
 .stlouis-flag {
-  height: 32px;
-  width: 32px;
+  height: 36px;
+  width: 36px;
   image-rendering: pixelated;
   flex-shrink: 0;
   /* Hard offset shadow, no blur — the flat sticker look. */
@@ -2859,4 +2858,153 @@ body:has([data-filter-root]) .site-header {
 
 .nowrap {
   text-wrap: nowrap;
+}
+
+/* ===========================================================================
+   Win98 dialog chrome
+   =========================================================================== */
+
+/* The retro window dressing shared by the homepage What's New box and the food
+   pages' rating dialog: raised gray window, gradient title bar, sunken
+   fields, beveled buttons. In light mode the chrome is the classic fixed
+   Win98 gray with light-palette inks; interiors must use the --win98-* tokens
+   (never the theme inks directly) so the dark override below re-themes them
+   in one place. The title bar tracks the theme in both modes: the accent
+   pushed toward black sweeping to accent-2 pushed toward white, as intense as
+   the classic navy→blue gradient. */
+.win98-window {
+  --win98-face: #c0c0c0;
+  --win98-highlight: #ffffff;
+  --win98-light: #dfdfdf;
+  --win98-shadow: #808080;
+  --win98-frame: #0a0a0a;
+  --win98-text: #000000;
+  --win98-muted: #555555;
+  --win98-accent: #a90b26;
+  --win98-accent-2: #c70f2e;
+  --win98-link: #225aa9;
+  --win98-link-hover: #17488d;
+  /* The caption and sunken-field ground are white in light mode but must not
+     follow the bevel highlight when dark mode dims it — hence own tokens. */
+  --win98-title-text: #ffffff;
+  --win98-field-bg: #ffffff;
+  --win98-title-dark: color-mix(in srgb, var(--color-accent), #000 55%);
+  --win98-title-bright: color-mix(in srgb, var(--color-accent-2), #fff 15%);
+
+  background: var(--win98-face);
+  padding: 3px;
+  /* The raised window bevel: two stacked inset rings, light catching the
+     top-left edges and shadow falling to the bottom-right. */
+  box-shadow:
+    inset -1px -1px var(--win98-frame),
+    inset 1px 1px var(--win98-light),
+    inset -2px -2px var(--win98-shadow),
+    inset 2px 2px var(--win98-highlight);
+}
+
+/* Dark theme: the window dims to the same chrome as the .btn-retro buttons
+   (Share / Feedback, theme toggle) — face #40434b with their bevel grays
+   (keep the two palettes in sync). Same bevel logic — the light still lands
+   on the top-left edges — while the interior inks hand over to the theme
+   tokens, so text, links, and accents flip with the theme. The caption stays
+   white: it sits on the gradient's dark end in both modes. */
+:root[data-theme='dark'] .win98-window {
+  --win98-face: #40434b;
+  --win98-highlight: #6a6e78;
+  --win98-light: #565a63;
+  --win98-shadow: #26282d;
+  --win98-frame: #101114;
+  --win98-text: var(--color-text);
+  --win98-muted: var(--color-muted);
+  --win98-accent: var(--color-accent);
+  --win98-accent-2: var(--color-accent-2);
+  --win98-link: var(--color-link);
+  --win98-link-hover: var(--color-link-hover);
+  --win98-field-bg: var(--color-surface);
+}
+
+.win98-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: 3px 3px 3px var(--spacing-sm);
+  background: linear-gradient(90deg, var(--win98-title-dark), var(--win98-title-bright));
+}
+
+/* The caption: white mixed-case mono; works on a heading or a span. */
+.win98-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--win98-title-text);
+}
+
+/* The 16px window icon (the pixel flag), with a hair of the header flag's
+   sticker shadow so the red field doesn't dissolve into the accent bar. */
+.win98-titlebar-icon {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  box-shadow: 1px 1px 0 var(--win98-frame);
+}
+
+/* A raised push button (works on <a> and <button>): :active inverts the bevel
+   so the face reads pushed in, and .is-active holds that pressed state for
+   toggles (the voted side of the rating poll). */
+.win98-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px var(--spacing-sm);
+  border: 0;
+  background: var(--win98-face);
+  color: var(--win98-text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  font-weight: 600;
+  text-decoration-line: none;
+  cursor: pointer;
+  box-shadow:
+    inset -1px -1px var(--win98-frame),
+    inset 1px 1px var(--win98-highlight),
+    inset -2px -2px var(--win98-shadow),
+    inset 2px 2px var(--win98-light);
+
+  &:hover {
+    color: var(--win98-text);
+  }
+
+  &:active,
+  &.is-active {
+    box-shadow:
+      inset -1px -1px var(--win98-highlight),
+      inset 1px 1px var(--win98-frame),
+      inset -2px -2px var(--win98-light),
+      inset 2px 2px var(--win98-shadow);
+  }
+
+  &.is-active {
+    background: var(--win98-light);
+  }
+}
+
+.win98-button .icon {
+  color: inherit;
+}
+
+/* A sunken field: text wells and inputs (white in light, surface in dark). */
+.win98-field {
+  background: var(--win98-field-bg);
+  box-shadow:
+    inset -1px -1px var(--win98-highlight),
+    inset 1px 1px var(--win98-shadow),
+    inset -2px -2px var(--win98-light),
+    inset 2px 2px var(--win98-frame);
 }
