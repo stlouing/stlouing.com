@@ -56,3 +56,24 @@ Regional food, golf carts, Halloween jokes.
 ## The Soul of St. Louis
 
 ## Conclusion
+
+
+- so much local love and pride and local restaurants
+- so many events
+- has the infrastructure to hold a larger population
+- almost no traffic, parking cheap
+- homes are incredibly cheap
+- many city parks
+- free amenities for families
+- proximity to other cities
+- interesting architecture
+- clusters of neighborhoods
+
+some downsides...
+
+safety
+the vacancy
+the north side
+bad driving
+hollow downtown
+need to drive between neighborhoods

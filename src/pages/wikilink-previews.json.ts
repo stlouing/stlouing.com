@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content'
 import { getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
-import { cuisineEmoji } from '../lib/emoji'
 
 // Small map of `id -> { title, excerpt, ... }` for every linkable (published)
 // entry, fetched once by the wikilink hovercard script
@@ -16,7 +15,6 @@ interface Preview {
   excerpt: string
   // Food only.
   cuisine?: string[]
-  emoji?: string
   neighborhood?: string
   // Food, topics + neighborhoods: the curated tagline.
   description?: string

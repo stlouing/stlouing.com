@@ -4,7 +4,7 @@ import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, type PopupChip, type PopupSource } from './popup'
 import { keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
-import { cuisineLabel } from '../lib/emoji'
+import { cuisineLabel } from '../lib/cuisine'
 
 // Each clustered point carries the index of its `<li>` in the `items` array — a
 // stable, serializable back-reference (Supercluster clones feature properties, so
@@ -47,7 +47,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
 
   const map = createBasemapMap(el, { minZoom: 10, maxZoom: 16 })
 
-  // Faint neighborhood outlines under the emoji markers, so each spot reads with
+  // Faint neighborhood outlines under the pin markers, so each spot reads with
   // some geographic context. One geojson source (fetched by MapLibre from the URL)
   // + a thin line layer; the color comes from the hairline token, which differs
   // light/dark. transformStyle (see basemap.ts) carries both across a theme swap.
@@ -94,7 +94,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   const popups = new Map<HTMLElement, maplibregl.Popup>()
 
   // Clustering state (only used when clusterEnabled). `index` is rebuilt from the
-  // visible set on every filter change; `shownLeaves` tracks which emoji markers are
+  // visible set on every filter change; `shownLeaves` tracks which pin markers are
   // currently on the map (so the render loop can diff instead of rebuilding);
   // `clusterBubbles` are the count-bubble markers; `pendingOpenItem` is a list-row
   // click waiting for its marker to emerge from a cluster.
@@ -290,7 +290,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       })
     })
 
-    // Deliberately light clustering — favor showing individual emoji markers over
+    // Deliberately light clustering — favor showing individual pin markers over
     // count bubbles:
     //   minPoints 2 (default) — a close pair merges into a "2" bubble on purpose:
     //     two nearly-stacked pins can't be clicked apart, so the cluster gives you

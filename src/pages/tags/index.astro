@@ -2,13 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import TagIcon from '../../components/TagIcon.astro'
 import { href } from '../../lib/url'
-import { cuisineEmoji, cuisineLabel } from '../../lib/emoji'
+import { cuisineLabel } from '../../lib/cuisine'
 import { tagGroups, tagSlug } from '../../lib/tags'
 
 const { cuisines, vibes, topics } = await tagGroups()
 
-// One shape per section so each renders identically. `kind` picks the leading
-// glyph (cuisine emoji vs. vibe icon) and how the label is cased.
+// One shape per section so each renders identically. `kind` picks whether a
+// leading vibe icon shows and how the label is cased.
 const groups = [
   { label: 'Cuisines', kind: 'cuisine', tags: cuisines },
   { label: 'Neighborhood vibes', kind: 'vibe', tags: vibes },
@@ -34,9 +34,6 @@ const groups = [
               {group.tags.map(({ tag, count }) => (
                 <li>
                   <a class="tag-chip" href={href(`/tags/${tagSlug(tag)}/`)}>
-                    {group.kind === 'cuisine' && (
-                      <span class="tag-emoji">{cuisineEmoji([tag])}</span>
-                    )}
                     {group.kind === 'vibe' && <TagIcon tag={tag} />}
                     <span>{group.kind === 'cuisine' ? cuisineLabel(tag) : tag}</span>
                     {count > 1 && <span class="tag-n">{count}</span>}
@@ -91,11 +88,6 @@ const groups = [
       border-color: var(--color-accent);
       color: var(--color-accent);
     }
-  }
-
-  .tag-emoji {
-    font-size: var(--font-size-sm);
-    line-height: 1;
   }
 
   .tag-chip :global(.icon) {

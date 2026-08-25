@@ -3,9 +3,9 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
-import { cuisineEmoji } from '../lib/emoji'
-import RelatedList from '../components/RelatedList.astro'
-import RelatedCard from '../components/RelatedCard.astro'
+import { cuisineLabel } from '../lib/cuisine'
+import IconAward from '../assets/IconAward.astro'
+import IconStar from '../assets/IconStar.astro'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
@@ -52,6 +52,38 @@ const description = "The best of the St. Louis food I've tried, by category."
       <p class="entry-summary">My favorite restaurants, bars, and cafes so far!</p>
     </header>
 
+    <section class="fact-section">
+      <h2>Best by Cuisine</h2>
+      <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
+      <table class="best-table">
+        <thead>
+          <tr>
+            <th>Cuisine</th>
+            <th>Place</th>
+            <th align="right">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            cuisineWinners.map(([cuisine, place]) => (
+              <tr>
+                <td class="best-cuisine">{cuisineLabel(cuisine)}</td>
+                <td>
+                  <a href={href(`/food/${place.id}/`)}>{place.data.title}</a>
+                </td>
+                <td align="right">
+                  <span class="best-rating">
+                    <IconStar />
+                    {place.data.rating}
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </section>
+
     {
       favorites.length > 0 && (
         <section class="fact-section">
@@ -60,8 +92,8 @@ const description = "The best of the St. Louis food I've tried, by category."
           <div class="favorites-grid">
             {favorites.map((award) => (
               <a class="favorite" href={href(`/food/${award.place!.id}/`)}>
-                <span class="favorite-emoji" aria-hidden="true">
-                  {cuisineEmoji(award.place!.data.cuisine)}
+                <span class="favorite-icon" aria-hidden="true">
+                  <IconAward />
                 </span>
                 <span class="favorite-text">
                   <span class="favorite-label">{award.label}</span>
@@ -73,27 +105,6 @@ const description = "The best of the St. Louis food I've tried, by category."
         </section>
       )
     }
-
-    <hr />
-
-    <section class="fact-section">
-      <h2>Best by Cuisine</h2>
-      <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
-      <div class="cuisine-winners">
-        {
-          cuisineWinners.map(([cuisine, place]) => (
-            <RelatedCard
-              href={href(`/food/${place.id}/`)}
-              title={place.data.title}
-              meta={cuisine}
-              emoji={cuisineEmoji([cuisine])}
-              description={place.data.description}
-              rating={place.data.rating}
-            />
-          ))
-        }
-      </div>
-    </section>
   </article>
 </BaseLayout>
 
@@ -131,11 +142,17 @@ const description = "The best of the St. Louis food I've tried, by category."
     }
   }
 
-  /* The leading cuisine emoji, in place of the old star badge. */
-  .favorite-emoji {
+  /* The leading award mark, echoing the Favorites button that links here. The
+     global `.icon` rule pins icons muted, so recolor to the accent here. */
+  .favorite-icon {
+    display: inline-flex;
     flex-shrink: 0;
-    font-size: var(--font-size-xl);
-    line-height: 1;
+  }
+
+  .favorite-icon :global(.icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-accent);
   }
 
   .favorite-text {
@@ -176,6 +193,53 @@ const description = "The best of the St. Louis food I've tried, by category."
     h2 {
       margin-bottom: var(--spacing-xs);
     }
+  }
+
+  /* Best by Cuisine as a plain old-web table — the global table styles carry
+     the frame, hairlines, mono header, and zebra rows. Stretch it full width:
+     the global `display: block` scroll-guard would leave it fit-content, and
+     three short columns can't overflow anyway. */
+  .best-table {
+    display: table;
+    width: 100%;
+    margin-block-start: var(--spacing-md);
+  }
+
+  /* The cuisine is the row's lookup key. Collapse the column to its content
+     (width: 1% + nowrap under auto table layout) so the place column takes the
+     remaining width instead of auto-layout padding this one out. */
+  .best-cuisine {
+    width: 1%;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .best-table td a {
+    font-weight: 600;
+  }
+  /* Hover underline for the place links — the global rule only grants it to
+     `.body` prose tables, and this table lives outside one. */
+  .best-table td a:hover {
+    text-decoration-line: underline;
+  }
+
+  /* The winner's 0-10 score, matching the related-card rating badge. */
+  .best-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .best-rating :global(.icon) {
+    width: 0.9em;
+    height: 0.9em;
+    color: var(--color-accent);
+    fill: currentColor;
+    stroke: currentColor;
   }
 
   .description {

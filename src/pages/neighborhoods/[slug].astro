@@ -142,10 +142,11 @@ const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, en
 // The generated fallback line for a neighborhood without its own summary.
 const generated = neighborhoodGeneratedSummary(slug)
 
-// On-page summary under the title: a manual `description` when set, otherwise the
-// generated line. Deliberately NOT the writeup excerpt — that just repeats the
-// opening paragraph rendered right below it.
-const summary = entry?.data.description ?? generated
+// On-page summary under the title: the manual `description` tagline when set,
+// otherwise the generated line. Deliberately NOT the writeup excerpt — that just
+// repeats the opening paragraph rendered right below it.
+const tagline = entry?.data.description
+const summary = tagline ?? generated
 
 // The footer timestamp: the last revision when set, otherwise the created date.
 // Only written neighborhoods (a markdown entry) carry dates.
@@ -154,10 +155,13 @@ const lastUpdated = entry ? (entry.data.updated ?? entry.data.created) : undefin
 // SEO meta description: the writeup excerpt when there is one (a fuller sentence
 // than the short tagline); otherwise the generated line enriched with borders and
 // the reviewed-food count, prefixed by the authored tagline when one exists — so
-// data-only pages don't all share a near-identical short snippet.
+// data-only pages don't all share a near-identical short snippet. The generated
+// line gets whatever character budget the tagline leaves (the ". " join costs 2),
+// keeping the whole description inside the meta-description cap.
+const generatedBudget = META_DESCRIPTION_CHARS - (tagline ? tagline.length + 2 : 0)
 const metaDescription = hasWriteup
   ? excerpt(entry?.body, META_DESCRIPTION_CHARS)
-  : [entry?.data.description, neighborhoodMetaDescription(slug, neighbors, places.length)]
+  : [tagline, neighborhoodMetaDescription(slug, neighbors, places.length, generatedBudget)]
       .filter(Boolean)
       .join('. ')
 

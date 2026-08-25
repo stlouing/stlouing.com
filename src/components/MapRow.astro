@@ -9,7 +9,7 @@
 // default slot (the panel body).
 //
 // Filterable rows (Food/Hikes) carry the data-* attributes the filter + map
-// scripts read off each <li> (data-filter-item, coords, marker, search, …); the
+// scripts read off each <li> (data-filter-item, coords, search, …); the
 // Neighborhood list sets `filterable={false}` and passes its own via `attrs`.
 import { href } from '../lib/url'
 import IconArrowRight from '../assets/IconArrowRight.astro'
@@ -23,7 +23,6 @@ interface Props {
   readMore?: boolean
   // Filter rows only — emit the values the filter/map scripts read off the <li>.
   filterable?: boolean
-  marker?: string
   coords?: string
   url?: string
   search?: string
@@ -39,7 +38,6 @@ const {
   detailHref,
   readMore = true,
   filterable = true,
-  marker = '',
   coords = '',
   url = '',
   search = '',
@@ -54,7 +52,6 @@ const filterAttrs = filterable
       'data-coords': coords,
       'data-title': title,
       'data-url': url,
-      'data-marker': marker,
       'data-search': search,
     }
   : {}

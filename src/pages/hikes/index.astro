@@ -46,7 +46,6 @@ const hasCoords = hikes.some((hike) => hike.data.coords)
             id={hike.id}
             title={hike.data.title}
             detailHref={`/hikes/${hike.id}/`}
-            marker="🥾"
             coords={hike.data.coords?.join(',') ?? ''}
             url={hike.data.url ?? ''}
             search={[hike.data.title, hike.data.area, hike.data.difficulty, ...hike.data.tags]

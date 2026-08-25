@@ -2,15 +2,14 @@
 // with a `data-wikilink` id by remark-wikilink). Desktop only: on hover/focus
 // for ~1s, fetch the shared preview map once and show a small title + excerpt
 
-import { cuisineLabel } from "../lib/emoji"
+import { cuisineLabel } from "../lib/cuisine"
 
 // card near the link. Touch / coarse-pointer devices just follow the link.
 interface Preview {
   title: string
   excerpt: string
-  // Food only: a cuisine chip (with its emoji) + neighborhood.
+  // Food only: cuisine chips + neighborhood.
   cuisine?: string[]
-  emoji?: string
   neighborhood?: string
   // Food, topics + neighborhoods: the curated tagline, shown in the accent color.
   description?: string
@@ -98,15 +97,14 @@ export function initWikilinkPreviews(): void {
       card.appendChild(description)
     }
 
-    // Food metadata: a cuisine chip (emoji on the first) + the neighborhood.
+    // Food metadata: cuisine chips + the neighborhood.
     if (preview.cuisine?.length || preview.neighborhood) {
       const meta = document.createElement('div')
       meta.className = 'wikilink-card-meta'
-      preview.cuisine?.forEach((cuisine, index) => {
+      preview.cuisine?.forEach((cuisine) => {
         const chip = document.createElement('span')
-        const cuisinePresentable = cuisineLabel(cuisine)
         chip.className = 'chip'
-        chip.textContent = index === 0 && preview.emoji ? `${preview.emoji} ${cuisinePresentable}` : cuisinePresentable
+        chip.textContent = cuisineLabel(cuisine)
         meta.appendChild(chip)
       })
       if (preview.neighborhood) {

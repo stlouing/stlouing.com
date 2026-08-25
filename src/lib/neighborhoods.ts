@@ -163,11 +163,15 @@ function joinNames(names: string[]): string {
 // A fuller generated meta description for a data-only page, so the dozens of
 // unwritten neighborhoods don't all share a near-identical 40-character search
 // snippet: the summary sentence padded with up to three bordering areas and the
-// count of reviewed food spots (both already shown on the page itself).
+// count of reviewed food spots (both already shown on the page itself). `budget`
+// is the character count left for this sentence (the page subtracts any authored
+// tagline it prefixes) — trailing clauses drop until the sentence fits, so the
+// search snippet doesn't truncate mid-clause.
 export function neighborhoodMetaDescription(
   slug: string,
   neighbors: NeighborhoodInfo[],
   foodCount: number,
+  budget: number = Infinity,
 ): string | undefined {
   const info = infoBySlug.get(slug)
   if (!info) {
@@ -182,7 +186,13 @@ export function neighborhoodMetaDescription(
   const foodClause =
     foodCount > 0 ? `, with ${foodCount} reviewed food spot${foodCount === 1 ? '' : 's'}` : ''
 
-  return `${opening}${borderClause}${foodClause}.`
+  const candidates = [
+    `${opening}${borderClause}${foodClause}.`,
+    `${opening}${borderClause}.`,
+    `${opening}.`,
+  ]
+
+  return candidates.find((candidate) => candidate.length <= budget) ?? candidates[2]
 }
 
 // Neighborhoods that share a boundary with the given one, resolved from the
