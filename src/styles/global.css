@@ -7,8 +7,8 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #eceae6;
-  --color-surface: #f8f6f3;
+  --color-background: #f8f6f3;
+  --color-surface: #f0eeeb;
   --color-surface-2: #e8e4df;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
@@ -39,7 +39,7 @@
   /* Fonts */
   --font-body: Georgia, 'Times New Roman', serif;
   --font-serif: Georgia, 'Times New Roman', serif;
-  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-display: Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxs: 0.8125rem; /* 13px */
