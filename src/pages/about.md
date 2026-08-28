@@ -2,7 +2,7 @@
 layout: ../layouts/MarkdownPage.astro
 title: About
 seoTitle: About St. Louing
-tagline: My quest to document St. Louis
+tagline: My ongoing project to document St. Louis
 description: 'St. Louing is an independent guide to the food and neighborhoods of St. Louis. A love letter to an underrated city, built in the spirit of the early internet.'
 ---
 
