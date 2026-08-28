@@ -324,9 +324,6 @@ const trail = [
               <h2 class="detail-section-label head-black head-black--sm head-rule">Map</h2>
               <figure class="neighborhood-locator-figure">
                 <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
-                <figcaption>
-                  {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
-                </figcaption>
               </figure>
               <a class="continue-link aside-more-link" href={href('/neighborhoods/')}>
                 Back to neighborhood map <IconArrowRight />

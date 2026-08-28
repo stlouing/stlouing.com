@@ -5,6 +5,7 @@ import BoundaryMap from '../components/BoundaryMap.astro'
 import CorridorMap from '../components/CorridorMap.astro'
 import Entry from '../components/Entry.astro'
 import EntryDates from '../components/EntryDates.astro'
+import ShareActions from '../components/ShareActions.astro'
 import { published } from '../lib/content'
 import { getBacklinks } from '../lib/backlinks'
 import { articleSchema } from '../lib/schema'
@@ -65,6 +66,7 @@ const schema = articleSchema(
         </p>
       )
     }
+    <ShareActions title={data.title} slot="meta" />
     <Fragment slot="footer-meta">
       <EntryDates created={data.created} updated={data.updated} />
     </Fragment>

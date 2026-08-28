@@ -2358,6 +2358,12 @@ body:has([data-filter-root]) .masthead-nav {
   margin-inline: auto;
 }
 
+/* The share/meta row centers with the rest of the topic header (the meta's
+   base flex flows from the left on the directory-style detail pages). */
+.entry:has(.topic-layout) .entry-bar .meta {
+  justify-content: center;
+}
+
 .entry-bar {
   display: flex;
   flex-wrap: wrap;
