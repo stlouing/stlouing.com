@@ -3,6 +3,7 @@ import Nav from './Nav.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 import { href } from '../lib/url'
+// import FleurDeLis from '../assets/FleurDeLis.astro'
 
 interface Props {
   trail: Array<any>
@@ -43,18 +44,22 @@ const { variant = 'compact' } = Astro.props
     </>
   )
 }
-{/* One nav bar for every page: brand hard left, links centered, theme switch
+{
+  /* One nav bar for every page: brand hard left, links centered, theme switch
    hard right. On the homepage it sits below the nameplate and carries the
-   brand once the nameplate scrolls away. */}
+   brand once the nameplate scrolls away. */
+}
 <div class:list={['masthead-nav', { 'is-home': variant === 'home' }]} data-header>
   <div class="wrap wrap-wide masthead-nav-inner">
     <a class="masthead-brand" href={href('/')}>
-      <img class="brand-flag" src={href('/stlflag.png')} alt="" width="28" height="28" /> St. Louing
+      <!-- <FleurDeLis class="brand-crest" />
+      St. Louing -->
+      <img class="brand-flag" src={href('/flag-square.svg')} alt="" width="28" height="28" /> St. Louing
     </a>
     <Nav />
     <ThemeToggle variant="quiet" />
   </div>
-  <div class="masthead-double-rule" />
+  <div class="masthead-double-rule"></div>
 </div>
 
 <script>
@@ -90,6 +95,11 @@ const { variant = 'compact' } = Astro.props
 </script>
 
 <style>
+  .masthead-brand :global(.brand-crest) {
+    width: 28px;
+    height: 28px;
+  }
+
   .masthead-ear {
     border-block-end: 1px solid var(--color-line-contrast);
   }
@@ -173,7 +183,7 @@ const { variant = 'compact' } = Astro.props
     justify-self: start;
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-shmedium);
     color: var(--color-text-heading);
     text-decoration: none;
     font-family: var(--font-display);

@@ -56,11 +56,12 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 <BaseLayout crumb={region.label} title={seoTitle} description={metaDescription}>
   <Breadcrumbs trail={trail} />
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header entry-header-with-flag">
       <div class="entry-bar">
         <h1>{region.label}</h1>
         <span class="count">{count}</span>
       </div>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
     <nav class="region-nav" aria-label="Regions">
       {

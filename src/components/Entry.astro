@@ -30,7 +30,7 @@ const isArticle = Boolean(permalink)
 ---
 
 <article class:list={['entry', { 'h-entry': isArticle }]}>
-  <header class="entry-header">
+  <header class="entry-header entry-header-with-flag">
     <div class="entry-headline">
       <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
       <div class="entry-headline-sub">
@@ -38,6 +38,7 @@ const isArticle = Boolean(permalink)
           <slot name="lede" />
         </div>
       </div>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </div>
 
     {
@@ -95,6 +96,6 @@ const isArticle = Boolean(permalink)
 
   .entry-headline-lede {
     min-width: 0;
-    max-width: 50ch;
+    max-width: 600px;
   }
 </style>
