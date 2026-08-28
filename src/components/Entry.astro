@@ -4,14 +4,12 @@
 // footer. Passing `permalink` marks it up as an IndieWeb h-entry
 // (notes/topics); without it, it's a plain directory entry (food/hikes).
 //
-// Slots: `lede` (under the title), `meta` (the meta row), `header-extra` (after
-// the meta row, e.g. an address), `footer-meta` (the quiet last-updated byline at
-// the foot of the article), and the default slot (the body). The Share + Feedback
-// buttons ride top-right of the header on every entry page.
+// Slots: `lede` (under the title), `meta` (the meta row), `header-extra`
+// (after the meta row, e.g. an address), `footer-meta` (the quiet
+// last-updated byline at the foot of the article), and the default slot (the
+// body).
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
-import NewsletterSignup from './NewsletterSignup.astro'
-import ShareActions from './ShareActions.astro'
 import Byline from './Byline.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
@@ -38,9 +36,6 @@ const isArticle = Boolean(permalink)
       <div class="entry-headline-sub">
         <div class="entry-headline-lede">
           <slot name="lede" />
-        </div>
-        <div class="entry-headline-actions">
-          <ShareActions title={title} />
         </div>
       </div>
     </div>
@@ -90,56 +85,22 @@ const isArticle = Boolean(permalink)
   </footer>
 </article>
 
-{/* Full-width newsletter band: the flag "river" spans edge to edge, the signup
-    stays wrap-width, and the real site footer follows below. */}
-<section class="entry-newsletter">
-  <NewsletterSignup compact />
-</section>
-
 <style>
   /* The title owns the full measure (long titles were wrapping early when it
      shared a row with the buttons); the lede and the Share / Feedback buttons
      share the row beneath it, buttons right-aligned on the lede line. */
+  /* Centered like the front-page lead: the lede stacks over the actions. */
   .entry-headline-sub {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--spacing-md);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
   }
 
   .entry-headline-lede {
     min-width: 0;
+    max-width: 50ch;
   }
 
-  .entry-headline-actions {
-    flex-shrink: 0;
-    margin-inline-start: auto;
-  }
 
-  /* Stack on narrow screens: buttons drop below the lede, left-aligned. The
-     title also steps below the global h1 clamp's 28px floor, which crowds a
-     phone screen. */
-  @media screen and (max-width: 700px) {
-    .entry-headline h1 {
-      font-size: var(--font-size-xxl); /* 24px */
-    }
-
-    .entry-headline-sub {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--spacing-sm);
-    }
-
-    .entry-headline-actions {
-      margin-inline-start: 0;
-    }
-  }
-
-  /* Break the newsletter band out of the centered .wrap so its river runs edge to
-     edge; the signup inside re-constrains to the measure. */
-  .entry-newsletter {
-    width: 100vw;
-    margin-inline: calc(50% - 50vw);
-    margin-block-start: var(--spacing-xl);
-  }
 </style>

@@ -18,6 +18,9 @@ interface Props {
   title: string
   // The kicker text above the name (cuisine, neighborhood, event date, …).
   meta?: string
+  // The kicker as discrete parts instead, joined by the map lists' hairline
+  // tick dividers rather than punctuation. Wins over `meta` when present.
+  metaParts?: string[]
   // How to render `meta`: 'cuisine' maps the key to its label; anything else is
   // shown verbatim.
   metaType?: 'cuisine' | 'neighborhood' | 'date' | 'text'
@@ -43,6 +46,7 @@ const {
   href,
   title,
   meta,
+  metaParts = [],
   metaType = 'cuisine',
   verdict,
   stat,
@@ -81,8 +85,19 @@ const linkAttributes = href
   }
   <span class="related-body">
     {
-      meta && (
-        <span class="related-kicker">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>
+      metaParts.length > 0 ? (
+        <span class="related-kicker">
+          {metaParts.map((part, partIndex) => (
+            <>
+              {partIndex > 0 && <span class="eyebrow-divider" aria-hidden="true" />}
+              {part}
+            </>
+          ))}
+        </span>
+      ) : (
+        meta && (
+          <span class="related-kicker">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>
+        )
       )
     }
     <span class="related-title">{title}</span>
@@ -123,15 +138,22 @@ const linkAttributes = href
   /* One row per item, divided by a hairline (no divider after the last). The lead
      + trailing affordance sit on either side of the flex:1 body; rows with a
      description top-align so the lead lines up with the name's first line. */
+  /* The homepage rail's row voice: serif title over a muted description on
+     dotted rules — no leading icons or trailing arrows. */
   .related-card {
     position: relative;
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    padding: var(--spacing-sm) 0;
-    border-block-end: 1px solid var(--color-line);
+    padding: var(--spacing-shmedium) 0;
+    border-block-end: 1px dotted var(--color-line-input);
     text-decoration: none;
     color: var(--color-text);
+  }
+
+  .related-lead,
+  .related-arrow {
+    display: none;
   }
 
   /* Whole-row hover wash (matching the directory + map-list rows). A pseudo-element
@@ -207,6 +229,14 @@ const linkAttributes = href
     line-height: 1.2;
   }
 
+  /* The hairline tick between kicker parts (the map lists' eyebrow divider,
+     restyled for the kicker's flex gap — no margins of its own). */
+  .related-kicker .eyebrow-divider {
+    width: 1px;
+    height: 0.85em;
+    background: var(--color-line-input);
+  }
+
   /* Shared title styling lives in global.css (`.list-title, .related-title`);
      only the hover-underline offset is related-card-specific. */
   .related-title {
@@ -216,7 +246,7 @@ const linkAttributes = href
   .related-desc {
     margin: 0;
     color: var(--color-muted);
-    line-height: 1.3;
+    line-height: 1.45;
     font-size: var(--font-size-sm); 
   }
 
@@ -248,20 +278,11 @@ const linkAttributes = href
     height: 0.9em;
   }
 
-  .related-arrow {
-    display: inline-flex;
-    flex-shrink: 0;
-  }
-
   /* Hover affordances only on actual links. */
   a.related-card:hover .related-title {
+    color: var(--color-accent-blue);
     text-decoration: underline;
     text-decoration-thickness: 2px;
-  }
-
-  a.related-card:hover .related-title,
-  a.related-card:hover .related-arrow :global(.icon) {
-    color: var(--color-accent);
   }
 
   /* A trailing rating badge: an accent star beside the 0–10 score, mono and

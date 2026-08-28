@@ -24,6 +24,8 @@ import IconListChecks from '../assets/IconListChecks.astro'
 import IconInfo from '../assets/IconInfo.astro'
 import IconWalk from '../assets/IconWalk.astro'
 import IconHome from '../assets/IconHome.astro'
+import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
+import IconFolderTree from '../assets/IconFolderTree.astro'
 
 interface Props {
   // A keyword from the registry below. Unknown / undefined -> book.
@@ -54,6 +56,8 @@ const iconByKeyword: Record<string, typeof IconBook> = {
   info: IconInfo,
   walk: IconWalk,
   home: IconHome,
+  'message-circle-heart': IconMessageCircleHeart,
+  'folder-tree': IconFolderTree,
 }
 
 const { name } = Astro.props

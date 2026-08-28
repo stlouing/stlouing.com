@@ -38,12 +38,16 @@ interface Props {
   // Opt into marker clustering on the map (Food only) — emits data-map-cluster,
   // which map.ts reads to gate its clustering codepath.
   cluster?: boolean
+  // Forwarded to FilterBar: render its search field (off when the page hosts
+  // its own [data-filter-search] input, e.g. the food pane header).
+  search?: boolean
 }
 
 const {
   label,
   count,
   searchPlaceholder,
+  search,
   facets,
   sorts,
   hasCoords,
@@ -103,6 +107,7 @@ const {
         searchPlaceholder={searchPlaceholder}
         facets={facets}
         sorts={sorts}
+        search={search}
       />
     </div>
     {
@@ -125,7 +130,7 @@ const {
     {
       hasCoords && floating && (
         <button type="button" class="map-split-toggle" data-map-split-toggle>
-          Map
+          View map
         </button>
       )
     }

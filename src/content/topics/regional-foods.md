@@ -1,34 +1,15 @@
 ---
 title: Regional Foods of St. Louis
 icon: utensils
-description: Hometown foods from gooey butter cake to gooey Provel
+category: Food
+description: Talking about the specialty food of St. Louis, from gooey butter cake to gooey Provel cheese
 created: 2026-06-03
 updated: 2026-07-22
 ---
 
-Most cities are lucky to have one local food speciality they can lay claim to, but St. Louis has an abundance of them. I've been interested to discover the food items that either originated in St. Louis or can only be found here. 
+Most cities are lucky to have one local food speciality they can lay claim to, but St. Louis has an abundance of them. I've been interested to discover the food items that either originated in St. Louis or can only be found here.
 
 So here's what I've discovered so far:
-
-## Bar & Diner Food
-
-### Toasted ravioli
-
-You'd be hard pressed to find a bar or restaurant in the entire St. Louis metro area that doesn't serve toasted ravioli, also known as "t-ravs". They're the default appetizer of choice throughout the region - little beef-filled ravioli that are deep fried, sprinkled with parmesan, and served with marinara sauce for dipping.
-
-I was a bit thrown off by toasted ravioli when I first moved here, as I always expect ravioli to be filled with ricotta cheese, not a smooth beef paste, but I got used to it. I tend to prefer the ones that are filled with something else, like the buffalo chicken t-travs from [[stacked-stl|Stacked]], or the burnt end t-ravs from Salt & Smoke, or even the spinach artichoke t-ravs at McGurk's.
-
-The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza and Beer]].
-
-### Trashed wings
-
-Trashed wings are a double-fried style of bar wings. First the wings are fried, then tossed in sauce and fried again, caramelizing the sauce and making them twice as crisp.
-
-### Slinger
-
-A slinger is a greasy spoon diner meal that consists of eggs, hash browns and a hamburger patty, covered in chili and cheese. I haven't been drunk enough to ever need this meal, but I'm sure I'll be exposed to it eventually.
-
-## Pizza, etc.
 
 ### St. Louis-style pizza
 
@@ -58,7 +39,7 @@ There are two things to discuss here - St. Louis-style BBQ, and St. Louis cut ri
 
 ### Ribs
 
-There's a popular cut of ribs called a "St. Louis cut", which is a spare rib with the ends neatly trimmed, resulting in a rectangular shape. This allows for even cooking, as you don't have one end that is significantly wider than the other. Surprisingly, most BBQ spots around here don't tend to use this cut. 
+There's a popular cut of ribs called a "St. Louis cut", which is a spare rib with the ends neatly trimmed, resulting in a rectangular shape. This allows for even cooking, as you don't have one end that is significantly wider than the other. Surprisingly, most BBQ spots around here don't tend to use this cut.
 
 It's not exactly a style of regional food, but it's worth mentioning.
 
@@ -91,6 +72,30 @@ As a lover of spicy vinegar-based BBQ sauce and wood-smoked savory meats, St. Lo
 ### Pork steak
 
 Pork steak is a cut of meat derived from sliced pork butt, usually with the bone in. Often they're grilled over high heat then slathered in BBQ sauce and braised until tender. Although most BBQ spots in St. Louis won't have it on the menu, pork steak is known to all. It's one of the primary meats of choice for any backyard BBQ.
+
+## Bar & Diner Food
+
+### Toasted ravioli
+
+You'd be hard pressed to find a bar or restaurant in the entire St. Louis metro area that doesn't serve toasted ravioli, also known as "t-ravs". They're the default appetizer of choice throughout the region - little beef-filled ravioli that are deep fried, sprinkled with parmesan, and served with marinara sauce for dipping.
+
+I was a bit thrown off by toasted ravioli when I first moved here, as I always expect ravioli to be filled with ricotta cheese, not a smooth beef paste, but I got used to it. I tend to prefer the ones that are filled with something else, like the buffalo chicken t-travs from [[stacked-stl|Stacked]], or the burnt end t-ravs from Salt & Smoke, or even the spinach artichoke t-ravs at McGurk's.
+
+The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza and Beer]].
+
+### Trashed wings
+
+Trashed wings are a double-fried style of bar wings. First the wings are fried, then tossed in sauce and fried again, caramelizing the sauce and making them twice as crisp.
+
+### Slinger
+
+A slinger is a greasy spoon diner meal that consists of eggs, hash browns and a hamburger patty, covered in chili and cheese. I haven't been drunk enough to ever need this meal, but I'm sure I'll be exposed to it eventually.
+
+### Brain sandwich
+
+Yeah...St. Louis is one of the only places in the U.S. you can still get a brain sandwich. You can get it at Schottzie's Bar & Grill, deep-fried and served on marble rye, pickles, and mustard.
+
+## Pizza, etc.
 
 ## Chinese
 

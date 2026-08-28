@@ -6,6 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import MapRow from '../../components/MapRow.astro'
 import Rating from '../../components/Rating.astro'
+import IconSearch from '../../assets/IconSearch.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/content'
 import { cuisineLabel } from '../../lib/cuisine'
@@ -13,7 +14,6 @@ import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
 import { resolveVerdict, verdictLabels, isExplored, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
-import IconAward from '../../assets/IconAward.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
 // alphabetically (A / B / C) via the sort control — the grouping itself is built
@@ -77,13 +77,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
   .filter((value) => rows.some((entry) => entry.verdict === value))
   .map((value) => ({ value, label: verdictLabels[value] }))
 
-// Default preview line for a place without a writeup, so an un-written stub row
-// (and its map popup) reads as intentional rather than unfinished. Keyed off status:
-// a tried spot is awaiting a review, the rest are still to visit.
-const stubExcerpt = (status: string): string =>
-  status === 'tried'
-    ? "I've been here, but haven't written up a review yet."
-    : "I haven't made it here yet, but it's on my list."
 ---
 
 <BaseLayout
@@ -95,7 +88,7 @@ const stubExcerpt = (status: string): string =>
     cluster
     label="places"
     count={count}
-    searchPlaceholder="name, cuisine"
+    search={false}
     facets={[
       { label: 'Cuisine', facet: 'cuisine', options: cuisines },
       { label: 'Neighborhood', facet: 'neighborhood', options: neighborhoods },
@@ -115,10 +108,17 @@ const stubExcerpt = (status: string): string =>
           <span class="pane-count"><span data-filter-count>{count}</span></span>
         </span>
         <div class="pane-links">
-          <a class="btn btn-filled btn-compact" href={href('/best/')}><IconAward />Favorites</a>
-          <a class="btn btn-outline btn-compact" href={href('/food/backlog/')}>
-            On the list <IconArrowRight />
-          </a>
+          <label class="pane-search-wrap">
+            <IconSearch />
+            <input
+              class="pane-search"
+              type="search"
+              placeholder="name, cuisine"
+              autocomplete="off"
+              aria-label="Search places"
+              data-filter-search
+            />
+          </label>
         </div>
       </div>
       <ul class="list" data-food-rows>
@@ -161,18 +161,18 @@ const stubExcerpt = (status: string): string =>
                 'data-photo': thumb?.src ?? '',
                 'data-instagram': place.data.instagram ?? '',
                 'data-tagline': place.data.description ?? '',
-                'data-excerpt': hasBody(place)
-                  ? excerpt(place.body, PREVIEW_EXCERPT_CHARS)
-                  : stubExcerpt(place.data.status),
+                'data-excerpt': hasBody(place) ? excerpt(place.body, PREVIEW_EXCERPT_CHARS) : '',
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
-                <span class="list-meta" slot="title-after">
-                  {[
-                    ...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)),
-                    place.data.neighborhood,
-                  ]
+                <span class="list-meta" slot="eyebrow">
+                  {[...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)), place.data.neighborhood]
                     .filter(Boolean)
-                    .join(' / ')}
+                    .map((part, partIndex) => (
+                      <>
+                        {partIndex > 0 && <span class="eyebrow-divider" aria-hidden="true" />}
+                        {part}
+                      </>
+                    ))}
                 </span>
               )}
               {thumb && (
@@ -182,7 +182,6 @@ const stubExcerpt = (status: string): string =>
                   aria-hidden="true"
                 />
               )}
-              {place.data.description && <div class="list-tagline">{place.data.description}</div>}
               {hasBody(place) && (
                 <div class="map-preview">{excerpt(place.body, PREVIEW_EXCERPT_CHARS)}</div>
               )}
@@ -211,9 +210,35 @@ const stubExcerpt = (status: string): string =>
 </script>
 
 <style>
+  /* The search fills whatever width the title row leaves over. */
   .pane-links {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    flex: 1;
+    margin-inline-start: var(--spacing-lg);
+  }
+
+  /* The header search field, standing in for the old Favorites button: a
+     pixel magnifier inset on the left, the input stretching the rest. */
+  .pane-search-wrap {
+    position: relative;
+    display: flex;
+    flex: 1;
+  }
+
+  .pane-search-wrap :global(.icon) {
+    position: absolute;
+    inset-inline-start: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  .pane-links .pane-search {
+    width: 100%;
+    padding-inline-start: calc(var(--spacing-sm) + 16px + var(--spacing-sm));
   }
 </style>

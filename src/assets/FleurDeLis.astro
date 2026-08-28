@@ -1,8 +1,9 @@
 ---
 // The St. Louis fleur-de-lis (extracted from public/flag.svg), in the flag's
-// own colors: a red outer ring, yellow disc, and blue fleur (#c70f2e / #f5dc0f /
-// #012773 — the flag's literal fills, deliberately identical in both themes).
-// viewBox is a tight square around the r110 disc centered at (270,250).
+// own colors: yellow disc and blue fleur (#f5dc0f / #012773 — the flag's
+// literal fills, deliberately identical in both themes) at the flag's own
+// proportions (disc r110, fleur 192 tall — the disc must NOT shrink or the
+// fleur overflows it). viewBox is a tight square around the disc at (270,250).
 interface Props {
   class?: string
 }
@@ -17,8 +18,7 @@ const { class: className } = Astro.props
   role="img"
   aria-label="Fleur-de-lis, the emblem of St. Louis">
   <g id="g1815">
-  <circle id="ring" cx="270" cy="250" r="110" style="fill:#c70f2e"/>
-  <circle id="path1106" cx="270" cy="250" r="94" style="fill-rule:evenodd;fill:#f5dc0f;paint-order:stroke markers fill;stroke-linecap:round;stroke-width:.840131"/>
+  <circle id="path1106" cx="270" cy="250" r="110" style="fill-rule:evenodd;fill:#f5dc0f;paint-order:stroke markers fill;stroke-linecap:round;stroke-width:.840131"/>
   <g id="g1804">
    <path id="p16xxTWB6T" d="m265.771 335.804c-3.19254-1.711-8.09537-6.65389-9.61564-9.7337-1.8243-3.65014-1.71029-4.71476 1.10219-8.8972 4.1047-6.12159 6.30907-11.3306 7.29725-17.2621l0.49408-2.96574 9.57763-0.22813 0.45608 2.77563c0.57009 3.46003 2.24238 8.63105 3.83866 11.7869 1.29221 2.58551 5.09286 8.51699 5.66296 8.85919 0.79814 0.49429 0.34206 3.19387-0.98817 5.89345-1.67228 3.34596-5.70097 7.52841-9.27358 9.61963-3.23055 1.86309-5.2829 1.90111-8.55146 0.15209z" style="fill:#012773;stroke-width:.0380144"/>
    <path id="pQAol6trK" d="m239.47 315.158c-3.23055-2.85167-3.23055-3.53607 0.076-7.07214 3.07853-3.30794 5.16889-6.50181 6.08104-9.23941l0.72212-2.09123h8.2094v1.82507c0 3.46003-2.66045 9.80975-5.70097 13.7641-4.56078 5.89345-5.58695 6.19762-9.3876 2.81364z" style="fill:#012773;stroke-width:.0380144"/>

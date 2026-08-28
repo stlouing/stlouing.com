@@ -1,7 +1,8 @@
 ---
 title: St. Louis Field Notes
 icon: notebook
-description: A little city with a lot of regional culture
+category: Culture
+description: My notes on St. Louis culture
 created: 2026-05-28
 updated: 2026-06-29
 ---

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Icon from '../components/Icon.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import { href } from '../lib/url'
 import { published, excerpt, sortTopics } from '../lib/content'
@@ -27,18 +26,13 @@ const topics = sortTopics(published(await getCollection('topics')))
       {
         topics.map((topic) => (
           <a class="topic-card" href={href(`/${topic.id}/`)}>
-            <span class="topic-icon">
-              <Icon name={topic.data.icon} />
-            </span>
-            <div class="topic-main">
-              <h2 class="topic-title">{topic.data.title}</h2>
-              {topic.data.description && (
-                <p class="topic-description">{topic.data.description}.</p>
-              )}
-              <p class="topic-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
-            </div>
-            <span class="topic-arrow">
-              <IconArrowRight />
+            {topic.data.category && <p class="topic-kicker">{topic.data.category}</p>}
+            <h2 class="topic-title">{topic.data.title}</h2>
+            {topic.data.description && <p class="topic-description">{topic.data.description}</p>}
+            <p class="topic-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
+            {/* A span, not a nested link — the whole card is the anchor. */}
+            <span class="continue-link">
+              Continue reading <IconArrowRight />
             </span>
           </a>
         ))
@@ -48,8 +42,27 @@ const topics = sortTopics(published(await getCollection('topics')))
 </BaseLayout>
 
 <style>
+  /* Cards fan into columns on the wide page (3 at desktop, 2 mid, 1 phone),
+     each an equal-height flex stack with the continue link on the floor.
+     Counts are fixed per breakpoint (not auto-fill) so the vertical gutter
+     rules below know which cards start a row. */
   .topic-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-md) var(--spacing-xl);
     margin-block-start: var(--spacing-md);
+  }
+
+  @media (max-width: 1000px) {
+    .topic-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .topic-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   /* Each card is one whole-row link — content left, an arrow on the right —
@@ -58,12 +71,10 @@ const topics = sortTopics(published(await getCollection('topics')))
      hover highlight extends past the text while the text stays aligned. */
   .topic-card {
     position: relative;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
     padding-block: var(--spacing-lg);
-    padding-inline: var(--spacing-sm);
+    padding-inline: var(--spacing-md);
     margin-inline: calc(-1 * var(--spacing-sm));
     border-radius: var(--radius);
     color: inherit;
@@ -77,19 +88,47 @@ const topics = sortTopics(published(await getCollection('topics')))
     background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
   }
 
-  /* The hairline divider, drawn inset back to the text column — a border on
-     the pulled-wide card would overhang the rules above and below it. */
+  /* The dotted divider (the homepage rail's idiom) under every card row. */
   .topic-card::after {
     content: '';
     position: absolute;
     inset-block-end: 0;
     inset-inline: var(--spacing-sm);
-    height: 1px;
-    background: var(--color-line);
+    height: 0;
+    border-block-end: 1px dotted var(--color-line-input);
   }
 
-  .topic-card:last-child::after {
-    content: none;
+  /* And a matching dotted rule up each column gutter: every card draws one
+     just off its leading edge (the cards overhang their tracks by --spacing-sm,
+     so -sm lands on the gutter's center line), and the rules are switched off
+     for cards that start a row — per column count, matching the grids above. */
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--spacing-sm);
+    inset-inline-start: calc(-1 * var(--spacing-sm));
+    width: 0;
+    border-inline-start: 1px dotted var(--color-line-input);
+  }
+
+  .topic-card:nth-child(3n + 1)::before {
+    display: none;
+  }
+
+  @media (max-width: 1000px) {
+    .topic-card:nth-child(3n + 1)::before {
+      display: block;
+    }
+
+    .topic-card:nth-child(odd)::before {
+      display: none;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .topic-card:nth-child(n)::before {
+      display: none;
+    }
   }
 
   /* The site's serif heading voice, at heading size — mono is for labels and
@@ -106,57 +145,49 @@ const topics = sortTopics(published(await getCollection('topics')))
   }
 
   .topic-card:hover .topic-title {
-    color: var(--color-accent);
+    color: var(--color-accent-blue);
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
 
-  /* The icon rides its own left column, top-aligned and nudged to sit
-     optically against the title's first line (24px serif on a ~29px line box)
-     while the title, lede, and excerpt share one text edge. */
-  .topic-icon {
-    display: inline-flex;
-    align-self: start;
-    margin-block-start: 4px;
-    color: var(--color-accent);
-
-    :global(svg) {
-      width: 20px;
-      height: 20px;
-      color: inherit;
-    }
+  /* The continue link anchors the card's bottom-right corner, pinned to the
+     flex floor so it lines up across a grid row. */
+  .topic-card .continue-link {
+    display: block;
+    margin-block-start: auto;
+    padding-block-start: var(--spacing-sm);
+    text-align: end;
   }
 
-  /* The subtitle: the body serif in accent, like the map lists' taglines. */
+  /* The subject kicker, in the unified accent eyebrow voice. */
+  .topic-kicker {
+    margin: 0 0 var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+  }
+
+  /* The subtitle in the muted deck voice — description text never wears the
+     accent. */
   .topic-description {
     margin-block: var(--spacing-xs) 0;
     font-family: var(--font-body);
     font-size: var(--font-size-lg);
-    font-weight: 500;
-    color: var(--color-accent);
-    line-height: 1.2;
+    font-weight: 400;
+    color: var(--color-muted);
+    line-height: 1.3;
   }
 
+  /* Matches the front page's food-card excerpts. */
   .topic-excerpt {
-    margin-block: var(--spacing-sm) 0;
-    font-size: var(--font-size-sm);
-    color: var(--color-muted);
-    line-height: 1.5;
-  }
-
-  .topic-arrow {
-    display: inline-flex;
-    color: var(--color-muted);
-
-    :global(svg) {
-      width: 20px;
-      height: 20px;
-      color: inherit;
-    }
-  }
-
-  .topic-card:hover .topic-arrow {
-    color: var(--color-accent);
+    margin-block: var(--spacing-sm) var(--spacing-sm);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    line-height: 1.45;
   }
 </style>

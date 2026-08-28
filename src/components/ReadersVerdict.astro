@@ -1,36 +1,25 @@
 ---
-// The combined review bar for a food page: the writer's verdict (fleur rating +
-// statement, always shown) and the readers' 👍/👎 poll (shown only when Supabase is
-// configured) sit side by side in one bar at the top of the page. A vote reveals an
-// optional (private) note below it. src/scripts/readers-verdict.ts loads live counts,
-// records votes, and reveals the note.
+// The readers' 👍/👎 poll for a food page (shown only when Supabase is
+// configured). A vote reveals an optional (private) note below it.
+// src/scripts/readers-verdict.ts loads live counts, records votes, and
+// reveals the note. (The writer's own rating lives in the sidebar's My
+// rating card, not here.)
 //
-// Type system follows the rest of the app: mono uppercase for labels/meta, Georgia +
-// the display serif for the verdict value. Icons, never emoji — the "Liked it" side
-// carries the app's heart; the tally rides muted to the right.
-//
-// The bar wears the shared Win98 dialog chrome (.win98-* in global.css): title bar,
-// beveled vote/submit buttons, sunken inputs. The chrome re-themes itself for dark
-// mode; the interior styles only through the --win98-* tokens and goes monochrome
-// (see the .verdict-bar comment below).
-import Rating from './Rating.astro'
-import { href } from '../lib/url'
+// The bar is a thin-ruled newspaper box (the What's New treatment): ink frame,
+// gold surface wash, centered serif title. The interior still styles through
+// the --win98-* token NAMES (a large surface area of rules below), remapped
+// locally to theme tokens on .verdict-bar.
 import IconThumbsUp from '../assets/IconThumbsUp.astro'
 import IconThumbsDown from '../assets/IconThumbsDown.astro'
 import IconPencil from '../assets/IconPencil.astro'
 import IconX from '../assets/IconX.astro'
-import { type WriterState } from '../lib/verdict'
 
 interface Props {
   slug: string
   title: string
-  // The writer's stance for the "My Review" slot — a rated verdict, or an
-  // unrated placeholder ("Haven't visited yet" / "Haven't reviewed yet").
-  // Resolved by resolveWriterState so a stub place still shows a line.
-  writerState?: WriterState
 }
 
-const { slug, title, writerState } = Astro.props
+const { slug, title } = Astro.props
 
 const readersEnabled = Boolean(
   import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
@@ -38,36 +27,16 @@ const readersEnabled = Boolean(
 ---
 
 {
-  (writerState || readersEnabled) && (
+  readersEnabled && (
     <section
-      class="verdict-bar win98-window"
-      data-readers-verdict={readersEnabled ? '' : undefined}
+      class="verdict-bar"
+      data-readers-verdict
       data-slug={slug}
       aria-label={`Review of ${title}`}>
-      <div class="win98-titlebar">
-        <span class="win98-caption">
-          <img class="win98-titlebar-icon" src={href('/stlflag.png')} alt="" width="16" height="16" />
-          {readersEnabled ? 'Rate this restaurant' : 'Ratings'}
-        </span>
-      </div>
+      <h2 class="vb-title">Rate this restaurant</h2>
       <div class="vb-row">
-        {writerState && (
-          <div
-            class:list={[
-              'vb-mine',
-              writerState.verdict ? `verdict-${writerState.verdict}` : 'vb-mine-muted',
-            ]}>
-            <span class="vb-label">My Rating</span>
-            <div class="vb-mine-row">
-              <span class="vb-mine-value">{writerState.statement}</span>
-              <Rating verdict={writerState.verdict} />
-            </div>
-          </div>
-        )}
-
         {readersEnabled && (
           <div class="vb-take">
-            <span class="vb-label">Readers' Rating</span>
             {/* Pre-vote nudge; hidden once this browser has voted (text set by the script). */}
             <p class="rv-cta" data-cta>
               Been here? What did you think?
@@ -75,7 +44,7 @@ const readersEnabled = Boolean(
             <div class="rv-pill">
               <button
                 type="button"
-                class="rv-choice win98-button"
+                class="rv-choice btn btn-outline btn-compact"
                 data-vote="like"
                 aria-pressed="false"
                 aria-label="I liked it"
@@ -86,7 +55,7 @@ const readersEnabled = Boolean(
               </button>
               <button
                 type="button"
-                class="rv-choice win98-button"
+                class="rv-choice btn btn-outline btn-compact"
                 data-vote="dislike"
                 aria-pressed="false"
                 aria-label="Not for me"
@@ -127,7 +96,7 @@ const readersEnabled = Boolean(
                   Name <span class="rv-field-note">(optional)</span>
                 </span>
                 <input
-                  class="rv-input win98-field"
+                  class="rv-input"
                   type="text"
                   data-note-name
                   maxlength="80"
@@ -137,7 +106,7 @@ const readersEnabled = Boolean(
               <label class="rv-field">
                 <span class="rv-field-label">Note</span>
                 <textarea
-                  class="rv-input rv-note-textarea win98-field"
+                  class="rv-input rv-note-textarea"
                   data-note-comment
                   rows="3"
                   maxlength="2000"
@@ -151,7 +120,7 @@ const readersEnabled = Boolean(
                   <input type="text" data-note-hp tabindex="-1" autocomplete="off" />
                 </label>
               </div>
-              <button type="submit" class="rv-note-submit win98-button">
+              <button type="submit" class="rv-note-submit btn btn-dark btn-compact">
                 Submit
               </button>
             </form>
@@ -164,81 +133,57 @@ const readersEnabled = Boolean(
 }
 
 <style>
-  /* One Win98 window at the top of the writeup: title bar, then My Rating on
-     the left and the Readers' Rating poll beside it on the gray face, the note
-     form below. The chrome comes from .win98-window. The site's colored inks
-     (verdict colors, fleur gold, accent ledes) read low-contrast on the gray
-     face, so the interior goes monochrome — statement and fleurs in the
-     window's text ink, muted secondary text — with the window accent kept
-     only for small touches (thumbs, statuses). The Rating fleurs fill with
-     --color-map-north via currentColor; remapping it here recolors them. */
+  /* The newspaper box (the What's New treatment): ink frame on the gold
+     surface wash, centered serif title. The interior rules below still speak
+     in --win98-* names from the old chrome — remapped here to theme tokens so
+     everything reads in the site's normal inks and re-themes for dark mode. */
   .verdict-bar {
-    --color-map-north: var(--win98-text);
+    --win98-text: var(--color-text);
+    --win98-muted: var(--color-muted);
+    --win98-accent: var(--color-accent);
+    --win98-accent-2: var(--color-accent-2);
+    --win98-highlight: var(--color-background);
+    --win98-shadow: var(--color-line-input);
 
     margin-block-end: var(--spacing-lg);
+    border: 2px solid var(--color-line-contrast);
+    background: var(--color-surface);
+    padding: var(--spacing-md);
+  }
+
+  /* Centered Georgia title, like the list rows' serif voice. */
+  .vb-title {
+    margin: 0 0 var(--spacing-md);
+    text-align: center;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 1.1;
+    font-size: var(--font-size-xl);
+    color: var(--color-text-heading);
+  }
+
+  /* The poll's pressed state (readers-verdict.ts toggles .is-active): the ink block. */
+  .rv-choice.is-active {
+    background: var(--color-text-heading);
+    border-color: var(--color-text-heading);
+    color: var(--color-surface);
   }
 
   .vb-row {
     display: flex;
+    justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
     gap: var(--spacing-sm) var(--spacing-lg);
-    padding: var(--spacing-md);
   }
 
-  /* The two mono uppercase eyebrows ("My Review" / "Your Take") ride muted, not
-     the accent that .section-label uses. */
-  .vb-label {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    letter-spacing: var(--letter-spacing);
-    text-transform: uppercase;
-    color: var(--win98-text);
-    white-space: nowrap;
-  }
-
-  /* --- My Review (fleur rating + colored verdict value) --- the eyebrow rides on
-     top, the fleur + statement on the row below it. */
-  .vb-mine {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-xs);
-  }
-
-  .vb-mine-row {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-
-  /* The statement rides plain black on the gray face (the verdict still shows
-     in the fleur count beside it). */
-  .vb-mine-value {
-    font-family: var(--font-body);
-    font-size: var(--font-size-lg);
-    font-weight: 400;
-    line-height: 1;
-    color: var(--win98-text);
-  }
-
-  /* Unrated place: a quiet, verdict-less line ("Haven't visited yet"). */
-  .vb-mine-muted .vb-mine-value {
-    color: var(--win98-muted);
-  }
-
-  /* --- Readers' Rating (poll) --- an eyebrow over the two thumb buttons, mirroring
-     the My Rating column and divided from it by a hairline. */
+  /* --- The poll --- the nudge over the two thumb buttons, centered under the
+     centered title (the title alone names it; no eyebrow). */
   .vb-take {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--spacing-sm);
-    /* An etched groove divider: shadow line with the highlight just inside it. */
-    border-inline-start: 1px solid var(--win98-shadow);
-    box-shadow: inset 1px 0 0 var(--win98-highlight);
-    padding-inline-start: var(--spacing-lg);
   }
 
   /* Pre-vote nudge over the pill: a quiet italic serif line. */
@@ -254,14 +199,15 @@ const readersEnabled = Boolean(
     display: none;
   }
 
-  /* The 👍 / 👎 poll as two Win98 push buttons; the voted side holds the
-     pressed-in state (.is-active, handled by .win98-button). */
+  /* The 👍 / 👎 poll as two outlined buttons; the voted side holds the
+     .is-active ink-block state above. */
   .rv-pill {
     display: inline-flex;
     gap: var(--spacing-sm);
   }
 
-  /* Roomier than the stock .win98-button, but the bevels come from it. */
+  /* Roomier than the stock compact button (hover ink comes from the shared
+     .btn-outline rule). */
   .rv-choice {
     gap: var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-md);
@@ -274,11 +220,16 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* The thumbs ride in the pinned accent (override the global muted .icon). */
+  /* The thumbs ride muted (override the global .icon rule for the size);
+     inside the pressed ink block they invert with the text. */
   .rv-choice :global(.icon) {
-    color: var(--win98-accent-2);
+    color: var(--win98-muted);
     width: 16px;
     height: 16px;
+  }
+
+  .rv-choice.is-active :global(.icon) {
+    color: var(--color-surface);
   }
 
   /* The live count after the thumb — hidden when zero (the script leaves it empty). */
@@ -292,8 +243,9 @@ const readersEnabled = Boolean(
 
   /* Shown only if a vote fails to record (then the buttons re-enable for a retry). */
   .rv-vote-status {
-    margin: 0;
-    padding: 0 var(--spacing-md) var(--spacing-sm);
+    margin: var(--spacing-sm) 0 0;
+    padding: 0;
+    text-align: center;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
     color: var(--win98-accent);
@@ -303,12 +255,13 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* Optional note, revealed after a vote: stacked Name + Note fields, spanning
-     the full width, split from the rating row above by an etched groove. */
+  /* Optional note, revealed after a vote: stacked Name + Note fields, flush
+     with the box padding, split from the poll above by a dotted rule (the
+     site's list-divider idiom). */
   .rv-note {
-    padding: var(--spacing-md);
-    border-block-start: 1px solid var(--win98-shadow);
-    box-shadow: inset 0 1px 0 var(--win98-highlight);
+    margin-block-start: var(--spacing-md);
+    padding-block-start: var(--spacing-md);
+    border-block-start: 1px dotted var(--color-line-input);
   }
 
   .rv-note-form {
@@ -346,7 +299,7 @@ const readersEnabled = Boolean(
     cursor: pointer;
 
     &:hover {
-      color: var(--win98-accent);
+      color: var(--color-text-heading);
     }
 
     :global(.icon) {
@@ -384,7 +337,7 @@ const readersEnabled = Boolean(
     cursor: pointer;
 
     &:hover {
-      color: var(--win98-accent);
+      color: var(--color-text-heading);
     }
   }
 
@@ -414,21 +367,24 @@ const readersEnabled = Boolean(
     color: var(--win98-muted);
   }
 
-  /* Sunken .win98-field wells; the bevel replaces the input border, so focus
-     moves to an outline (the bevel lives in box-shadow and must survive). */
+  /* Plain bordered fields on the wash, in the site's normal input voice. */
   .rv-input {
     padding: var(--spacing-sm);
-    border: 0;
+    border: 1px solid var(--color-line-input);
     border-radius: var(--radius);
+    background: var(--color-background);
     color: var(--win98-text);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     font-weight: 400;
     min-width: 0;
 
+    /* The site's standard input focus (accent border + 1px ring), not an
+       offset outline stacked on top of it. */
     &:focus {
-      outline: 2px solid var(--win98-accent);
-      outline-offset: 1px;
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 1px var(--color-accent);
     }
   }
 
@@ -465,24 +421,4 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* Stack the bar's segments on a narrow screen. The vertical divider between them
-     becomes a horizontal rule above the readers' section, so My Rating and Readers'
-     Rating stay clearly separated. */
-  @media (max-width: 700px) {
-    .vb-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0;
-    }
-
-    .vb-take {
-      margin-block-start: var(--spacing-sm);
-      padding-block-start: var(--spacing-sm);
-      /* The groove divider rotates horizontal when the columns stack. */
-      border-block-start: 1px solid var(--win98-shadow);
-      box-shadow: inset 0 1px 0 var(--win98-highlight);
-      border-inline-start: 0;
-      padding-inline-start: 0;
-    }
-  }
 </style>

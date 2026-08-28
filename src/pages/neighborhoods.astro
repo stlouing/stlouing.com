@@ -189,7 +189,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-spots': String(popup.spots),
                     }}>
                     {neighborhood.group && (
-                      <span class="list-meta" slot="title-after">
+                      <span class="list-meta" slot="eyebrow">
                         {section === 'park' ? 'Park' : neighborhood.group}
                       </span>
                     )}
@@ -200,7 +200,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
                         aria-hidden="true"
                       />
                     )}
-                    {popup.tagline && <div class="list-tagline">{popup.tagline}</div>}
                     {written && entry && (
                       <div class="map-preview">{excerpt(entry.body, PREVIEW_EXCERPT_CHARS)}</div>
                     )}

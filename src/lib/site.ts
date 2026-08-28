@@ -6,6 +6,9 @@ export const SITE_TITLE = 'St. Louing'
 export const SITE_DESCRIPTION =
   'An independent guide to the food, neighborhoods, and culture of St. Louis.'
 
+// The visible tagline, shared by the homepage nameplate and the h-card note.
+export const TAGLINE = `Exploring the food, neighborhoods, and culture of St. Louis`
+
 // Newsletter (Substack), env-driven so clones/forks don't inherit this URL — the
 // signup + footer link self-hide when it's unset. The signup form GETs to
 // `${NEWSLETTER_URL}/subscribe`, which Substack prefills from the `email` param.

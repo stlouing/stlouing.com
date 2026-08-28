@@ -5,7 +5,7 @@ import { FEEDBACK_ENDPOINT } from '../lib/site'
 const description = 'Send a note, a correction, or a recommendation.'
 ---
 
-<BaseLayout crumb="Feedback" description={description}>
+<BaseLayout article crumb="Feedback" description={description}>
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">
@@ -16,6 +16,7 @@ const description = 'Send a note, a correction, or a recommendation.'
       </p>
     </header>
 
+    <div class="feedback-body">
     {
       FEEDBACK_ENDPOINT && (
         <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
@@ -58,15 +59,27 @@ const description = 'Send a note, a correction, or a recommendation.'
     <p class="feedback-alt">
       Prefer email? <a href="mailto:hello+feedback@stlouing.com">hello@stlouing.com</a>
     </p>
+    </div>
   </article>
 </BaseLayout>
 
 <style>
+  /* The form and email line sit in the same centered 600px column as the
+     topic articles — the header (and its dotted rule) caps to match. */
+  .entry-header {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .feedback-body {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
   .feedback-form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    max-width: 32rem;
     margin-block-start: var(--spacing-lg);
   }
 
@@ -86,7 +99,7 @@ const description = 'Send a note, a correction, or a recommendation.'
   /* The global input rules don't cover textarea — match them here. */
   textarea[name='message'] {
     padding: var(--spacing-sm);
-    background: var(--color-surface);
+    background: var(--color-background);
     color: var(--color-text);
     border: 1px solid var(--color-line-input);
     border-radius: var(--radius);

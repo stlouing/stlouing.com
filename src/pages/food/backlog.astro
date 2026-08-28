@@ -30,15 +30,13 @@ const triedList = allFood.filter((place) => place.data.status === 'tried').sort(
 const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(right.name)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
 
-// The kicker line: the cuisine label and neighborhood, whichever are present.
-const cardMeta = (item: CardData) => {
-  const parts = [
+// The kicker parts: the cuisine label and neighborhood, whichever are present —
+// joined by the hairline tick divider inside RelatedCard, not punctuation.
+const cardMeta = (item: CardData): string[] =>
+  [
     item.cuisine && item.cuisine.length > 0 ? cuisineLabel(item.cuisine[0]) : null,
     item.neighborhood ?? null,
-  ].filter(Boolean)
-
-  return parts.length > 0 ? parts.join(' · ') : undefined
-}
+  ].filter(Boolean) as string[]
 
 const description =
   "Places in St. Louis I haven't been to yet, plus a few that I haven't gotten around to writing about yet."
@@ -70,8 +68,7 @@ const description =
               <RelatedCard
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
-                meta={cardMeta(place.data)}
-                metaType="neighborhood"
+                metaParts={cardMeta(place.data)}
                 description={place.data.description}
               />
             ))}
@@ -96,8 +93,7 @@ const description =
               <RelatedCard
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
-                meta={cardMeta(place.data)}
-                metaType="neighborhood"
+                metaParts={cardMeta(place.data)}
                 description={place.data.description}
               />
             ))}
@@ -119,8 +115,7 @@ const description =
             {inMemoriam.map((item) => (
               <RelatedCard
                 title={item.name}
-                meta={cardMeta(item)}
-                metaType="neighborhood"
+                metaParts={cardMeta(item)}
                 description={item.note}
               />
             ))}
@@ -159,16 +154,32 @@ const description =
       column-gap: 4rem;
     }
 
-    /* Two columns: keep every row's divider, including the last card, so the two
+    /* Multi-column: keep every row's divider, including the last card, so the
        stacks end on an even line instead of one column dropping its border. */
     .card-list :global(.related-card:last-child) {
       border-block-end: 1px solid var(--color-line);
     }
   }
 
-  /* Pull the description up close under its heading, and quiet it down. */
+  @media screen and (min-width: 1000px) {
+    .card-list {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  /* The front page's heavy black header voice over the thick rule — the same
+     treatment as TOPICS / MAPS / MORE. */
   section h2 {
-    margin-bottom: var(--spacing-xs);
+    margin: 0 0 var(--spacing-xs);
+    padding-block-end: var(--spacing-xs);
+    border-block-end: 2px solid var(--color-line-contrast);
+    font-family: var(--font-display-black);
+    font-weight: 400;
+    font-size: var(--font-size-xxl);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
   }
 
   .description {

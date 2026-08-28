@@ -9,7 +9,7 @@ const { title } = Astro.props
 ---
 
 <section class="related">
-  <h2 class="section-label">{title}</h2>
+  <h2 class="related-heading">{title}</h2>
   <div class="related-list">
     <slot />
   </div>
@@ -20,13 +20,21 @@ const { title } = Astro.props
     margin-block-start: var(--spacing-lg);
   }
 
-  /* Heading font comes from the shared global `.section-label`; keep only the
-     spacing below it. */
-  .related h2 {
+  /* The front page's heavy black header voice over the thick rule — the same
+     treatment as TOPICS / EXPLORE / FOOD. */
+  .related-heading {
     margin-block-start: var(--spacing-xl);
     margin-bottom: var(--spacing-xs);
     padding-bottom: var(--spacing-xs);
     border-bottom: 2px solid var(--color-line-contrast);
+    font-family: var(--font-display-black);
+    font-weight: 400;
+    /* Same size as the front page's TOPICS / MAPS / MORE rail headers. */
+    font-size: var(--font-size-xxl);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
   }
 
   /* A bordered frame around the rows; overflow clips the row dividers to the

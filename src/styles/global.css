@@ -7,9 +7,12 @@
   color-scheme: light;
 
   /* Colors */
-  --color-background: #f8f6f3;
-  --color-surface: #f0eeeb;
-  --color-surface-2: #e8e4df;
+  --color-background: white;
+  /* The aged-newsprint gold wash (same recipe as the What's New box, which
+     paints itself with this token). */
+  --color-surface: color-mix(in srgb, var(--color-accent-gold) 10%, var(--color-background));
+  /* A lighter step of the surface wash (half the gold). */
+  --color-surface-2: color-mix(in srgb, var(--color-accent-gold) 5%, var(--color-background));
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -20,6 +23,10 @@
   --color-line-contrast: #1b1a17;
   --color-accent: #a90b26;
   --color-accent-2: #c70f2e;
+  /* The flag's other two colors, as accents: blue and gold pull weight so the
+     red stays an occasional highlight rather than the whole palette. */
+  --color-accent-blue: #2766ad;
+  --color-accent-gold: #b8860b;
   --color-map-accent: #6a47a6;
   /* City regions (north→south): yellow, red, violet; county blue; parks green. */
   --color-map-north: #b8860b;
@@ -39,9 +46,12 @@
   /* Fonts */
   --font-body: Georgia, 'Times New Roman', serif;
   --font-serif: Georgia, 'Times New Roman', serif;
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  /* One-weight heavy grotesque for shouty uppercase section headers. */
+  --font-display-black: 'Archivo Black', 'Arial Black', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
 
+  --font-size-xxxs: 0.8125rem; /* 12px */
   --font-size-xxs: 0.8125rem; /* 13px */
   --font-size-xs: 0.875rem; /* 14px */
   --font-size-sm: 0.9375rem; /* 15px */
@@ -58,6 +68,7 @@
 
   /* Space + measure */
   --measure: 900px;
+  --measure-wide: 1260px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-shmedium: 0.75rem;
@@ -95,11 +106,13 @@
   --color-text-article: #d4d3d8;
   --color-muted: #9b9aa3;
   --color-muted-2: #afaeb5;
-  --color-line: #343339;
-  --color-line-input: #45444b;
+  --color-line: #403f45;
+  --color-line-input: #54535a;
   --color-line-contrast: #45444b;
   --color-accent: #ed818a;
   --color-accent-2: #f28d95;
+  --color-accent-blue: #84b0e6;
+  --color-accent-gold: #dcc24f;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
   --color-map-central: #e6877a;
@@ -216,12 +229,12 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.625rem, 1.4rem + 1vw, 2.5rem); /* 26px - 40px */
+  font-size: clamp(1.625rem, 1.4rem + 1vw, 2rem); /* 26px - 40px */
   margin-bottom: 1.2rem;
 }
 
 h3 {
-  font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.75rem); /* 21px - 28px */
+  font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.5rem); /* 21px - 28px */
   margin-bottom: var(--spacing-md);
   color: var(--color-accent);
 }
@@ -524,7 +537,7 @@ a.corridor-spot {
   line-height: 1.4;
   white-space: nowrap;
   color: var(--color-text);
-  background: var(--color-surface);
+  background: var(--color-background);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   padding: 1px var(--spacing-xs);
@@ -593,6 +606,34 @@ a.wikipedia-link {
   &:hover {
     text-decoration-line: underline;
   }
+}
+
+/* The shared inline continue link — serif ink with a thin underline and an
+   inline arrow riding under it (the magazine reference). Works on <a> or, when
+   nested inside a card that is itself a link, on a styled <span>. */
+.continue-link {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  font-weight: 400;
+  color: var(--color-text-heading);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-text-heading);
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+
+.continue-link:hover {
+  color: var(--color-accent-blue);
+  text-decoration-color: var(--color-accent-blue);
+}
+
+.continue-link .icon {
+  display: inline;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  color: inherit;
 }
 
 a.more {
@@ -766,14 +807,25 @@ button.chip:hover {
   border-color: var(--color-accent);
 }
 
-/* Removable filter chip (built in filter.ts): a value + hidden label + × control. */
+/* Removable filter chip (built in filter.ts): a value + hidden label + × control.
+   Solid flag blue, white-on-color (the background token, so it stays readable
+   against the dark theme's lighter blue too). */
 .chip-filter {
   gap: var(--spacing-xs);
   padding-block: 3px;
+  background: var(--color-accent-blue);
+  border-color: var(--color-accent-blue);
+  color: var(--color-background);
+}
+
+button.chip-filter:hover {
+  color: var(--color-background);
+  border-color: var(--color-accent-blue);
+  background: color-mix(in srgb, var(--color-accent-blue) 85%, var(--color-text));
 }
 
 .chip-filter .chip-value {
-  color: var(--color-accent);
+  color: var(--color-background);
   font-weight: 600;
 }
 
@@ -789,8 +841,8 @@ button.chip:hover {
   margin-left: var(--spacing-xs);
 }
 
-.chip-filter:hover .chip-x .icon {
-  color: var(--color-accent);
+.chip-filter .chip-x .icon {
+  color: var(--color-background);
 }
 
 @media screen and (min-width: 600px) {
@@ -896,11 +948,22 @@ button.chip:hover {
   padding-inline: var(--spacing-md);
 }
 
+/* The homepage's newspaper front page needs room for three columns. */
+.wrap-wide {
+  max-width: var(--measure-wide);
+}
+
+/* Reading pages (articles, food/neighborhood details) shrink to their widest
+   content: the detail layout's 600px column + 2.5rem gap + 290px sidebar,
+   plus the wrap's own inline padding. */
+.wrap-wide.wrap-article {
+  max-width: calc(600px + 2.5rem + 290px + 2 * var(--spacing-md));
+}
+
 /* Standalone content pages (Want to try, Best of, …) shouldn't butt up against
    the footer. Map pages don't use .page, so they're unaffected. */
-.page {
-  padding-block-end: var(--spacing-lg);
-}
+/* .page {
+} */
 
 main {
   flex: 1 0 auto;
@@ -911,7 +974,7 @@ main {
 .entry,
 .body {
   ::marker {
-    color: var(--color-accent);
+    color: var(--color-muted);
   }
 }
 
@@ -919,15 +982,50 @@ main {
   margin-block-end: var(--spacing-xl);
 }
 
+/* The newspaper drop cap opening every article body (the front-page lead's
+   treatment). Keyed to the first paragraph, so a leading figure or map keeps
+   its own first line. Topics nest their prose inside .topic-layout (the
+   centered column), so both containers are covered. */
+.body > p:first-of-type::first-letter,
+.body .topic-layout > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-size: 3.5em;
+  line-height: 0.8;
+  /* Physical properties: Chromium ignores logical padding on ::first-letter. */
+  padding-right: var(--spacing-xs);
+  padding-top: 0.04em;
+  color: var(--color-text-heading);
+}
+
 .body {
   color: var(--color-text-article);
   margin-block-end: var(--spacing-lg);
   font-size: var(--font-size-article);
   line-height: 1.55;
+  /* The wide page keeps a readable prose column — headers span the full
+     measure, the text does not. */
+  max-width: 70ch;
+
+  /* Article section headings in the body serif, ink — never the accent (the
+     display face is reserved for titles). */
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    color: var(--color-text-heading);
+  }
 
   h2:not(:first-child) {
     margin-top: 3rem;
   }
+}
+
+/* Column layouts (an article with a ToC, a detail page with its sidebar)
+   manage their own measure — the prose cap would squeeze the whole grid,
+   sidebar included. Their grids cap the text track instead. */
+.body:has(.topic-layout),
+.body:has(.detail-layout) {
+  max-width: none;
 }
 
 /* The bumped article size is a wide-measure comfort; on a phone's short lines
@@ -963,7 +1061,7 @@ label {
 input,
 select {
   padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--color-surface);
+  background: var(--color-background);
   color: var(--color-text);
   border: 1px solid var(--color-line-input);
   border-radius: var(--radius);
@@ -1089,17 +1187,21 @@ body:has(.map-split) main > .wrap,
   .map-split-toggle {
     display: block;
     position: fixed;
-    bottom: 30px;
+    /* Clear of the mini footer band that rides the bottom of the map pages. */
+    bottom: 76px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1100;
     padding: var(--spacing-sm) var(--spacing-lg);
-    border: 1px solid var(--color-accent);
-    background: var(--color-accent);
-    color: var(--color-background);
+    /* The site's black block, not the red pill. */
+    border: 1px solid var(--color-text-heading);
+    background: var(--color-text-heading);
+    color: var(--color-surface);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
     cursor: pointer;
     box-shadow: var(--box-shadow);
   }
@@ -1246,23 +1348,16 @@ body:has(.map-split) main > .wrap,
 .map-list .map-preview {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
-  line-height: 1.3;
-  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  font-size: var(--font-size-md);
 }
 
 /* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
    MyTownView links), used both at the top of a neighborhood detail page and in the
    expanded list row. */
-/* The decorative river border eats vertical space under the full-height map
-   layouts, so hide it on the map pages (Food + Neighborhoods) — keyed off each
-   page's map container so no per-page wiring is needed. */
-body:has([data-map]) .river-border,
-body:has([data-neighborhood-map]) .river-border {
-  display: none;
-}
 
 /* Shared list reset + row dividers for BOTH map lists (Food + Neighborhoods), so
    they're styled from one place. Neither uses the generic <List> component — they
@@ -1274,14 +1369,10 @@ body:has([data-neighborhood-map]) .river-border {
   list-style: none;
 }
 
-/* `position: relative` anchors the absolutely-positioned `.list-arrow` to the row. */
 .map-list .list > li {
   position: relative;
   margin: 0;
   padding: var(--spacing-md);
-  /* Reserve room on the right for the absolutely-positioned `.list-arrow` so row
-     content never runs under it. */
-  padding-inline-end: calc(var(--spacing-md) + 2rem);
   border-block-end: 1px solid var(--color-line);
   transition: background-color 0.12s ease;
 }
@@ -1313,33 +1404,6 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-muted);
 }
 
-/* Trailing affordance: a right-pointing arrow that signals the whole row is a
-   link to the detail page. Vertically centered against the full row height and
-   decorative — `pointer-events: none` lets clicks fall through to the stretched
-   `.list-title::after` that handles navigation (and map-view popups). */
-.map-list .list-arrow {
-  position: absolute;
-  top: 50%;
-  inset-inline-end: var(--spacing-md);
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-}
-
-/* The SVG carries its own muted color (the global `.icon` rule sets it directly,
-   and the stroke is `currentColor`), so the accent-on-hover has to target the
-   icon itself — inheriting from `.list-arrow` wouldn't reach it. */
-.map-list .list-arrow .icon {
-  width: 14px;
-  height: 14px;
-  transition: color 0.12s ease;
-}
-
-.map-list .list > li:hover .list-arrow .icon {
-  color: var(--color-accent);
-}
-
 /* Row 2: the address (and any other muted second-line meta). */
 .map-list .list-sub {
   display: flex;
@@ -1350,18 +1414,6 @@ body:has([data-neighborhood-map]) .river-border {
   font-size: var(--font-size-sm);
   font-weight: 500;
   font-family: var(--font-mono);
-}
-
-/* A tagline (the entry's description) under the name, in accent — the body
-   serif, not the mono of the surrounding sub line. Shared by the neighborhood
-   list and the food list. */
-.map-list .list-tagline {
-  font-family: var(--font-body);
-  font-weight: 500;
-  color: var(--color-accent);
-  font-size: var(--font-size-md);
-  line-height: 1.2;
-  margin-block-end: var(--spacing-xs);
 }
 
 .map-list .chips {
@@ -1377,9 +1429,10 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-muted);
 }
 
-/* Cuisine · neighborhood (food) / region (neighborhood) sitting inline after the
-   row title: a quiet uppercase mono tag — no pill, no emoji, just text. */
-.map-list .list-headline .list-meta {
+/* Cuisine / neighborhood (food) or region (neighborhood) as the quiet kicker
+   over the row title — the eyebrow voice, muted so a long list doesn't turn
+   into a wall of red. */
+.map-list .list-eyebrow .list-meta {
   font-family: var(--font-mono);
   font-size: var(--font-size-xxs);
   font-weight: 500;
@@ -1388,20 +1441,54 @@ body:has([data-neighborhood-map]) .river-border {
   color: var(--color-muted);
 }
 
+.map-list .list-eyebrow {
+  margin-block-end: 2px;
+}
+
+/* A hairline vertical tick between eyebrow parts (Cuisine | Neighborhood). */
+.list-eyebrow .eyebrow-divider {
+  display: inline-block;
+  width: 1px;
+  height: 0.85em;
+  margin-inline: var(--spacing-sm);
+  background: var(--color-line-input);
+  vertical-align: -1px;
+}
+
+/* Newspaper headline voice on the map rows: the serif over the eyebrow, not
+   the shared mono list title. */
+.map-list .list-title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
 /* Shared list row title for the food/neighborhood map lists. Reads like a
    heading, not a button or link (in map view it's also clickable to open the
    place's popup). */
 /* Shared list/card title: the mono heading used by the directory list (ListItem,
    List.astro), the map-backed Food/Neighborhood lists (MapRow), and RelatedCard
    rows. The per-component styles now only add what's unique to each. */
-.list-title,
-.related-title {
+.list-title {
   display: block;
   font-family: var(--font-mono);
   font-size: var(--font-size-md);
   font-weight: 600;
   color: var(--color-text-heading);
   line-height: 1.2;
+  text-decoration: none;
+}
+
+/* Related/backlink rows on the detail pages read in the serif headline
+   voice, a step larger than the mono list titles. */
+.related-title {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--color-text-heading);
+  line-height: 1.25;
   text-decoration: none;
 }
 
@@ -1419,10 +1506,10 @@ body:has([data-neighborhood-map]) .river-border {
 }
 
 .map-list a.list-title:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-blue);
   text-decoration: underline;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent);
+  text-decoration-color: var(--color-accent-blue);
   text-underline-offset: 2px;
 }
 
@@ -1656,17 +1743,11 @@ body:has([data-neighborhood-map]) .river-border {
    below) wins the specificity tie with Chip's scoped base rule, which is
    otherwise a cascade-order coin-flip. */
 .chip.is-filled {
-  color: var(--chip-color, var(--color-accent)) !important;
-  background: color-mix(
-    in srgb,
-    var(--chip-color, var(--color-accent)) 12%,
-    var(--color-surface)
-  ) !important;
-  border-color: color-mix(
-    in srgb,
-    var(--chip-color, var(--color-accent)) 60%,
-    transparent
-  ) !important;
+  /* Solid verdict-colored pill, white-on-color (the background token, so it
+     stays high-contrast against the dark theme's pastel verdict colors too). */
+  color: var(--color-background) !important;
+  background: var(--chip-color, var(--color-accent)) !important;
+  border-color: var(--chip-color, var(--color-accent)) !important;
   font-weight: 500;
 }
 
@@ -1710,7 +1791,7 @@ body:has([data-neighborhood-map]) .river-border {
   justify-content: space-between;
   gap: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-surface);
+  background: var(--color-background);
   height: 45px;
 }
 
@@ -1720,12 +1801,16 @@ body:has([data-neighborhood-map]) .river-border {
   gap: var(--spacing-sm);
 }
 
+/* The front page's heavy black header voice, at pane-bar scale. */
 .list-pane-header .pane-title {
   margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-md);
-  font-weight: 600;
-  color: var(--color-text);
+  font-family: var(--font-display-black);
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-heading);
 }
 
 .list-pane-header .pane-count {
@@ -1762,7 +1847,7 @@ body:has([data-neighborhood-map]) .river-border {
   position: sticky;
   top: 45px;
   z-index: 2;
-  background: var(--color-surface);
+  background: var(--color-background);
 }
 
 /* Mobile: the Food list scrolls with the page, and the only element pinned to the
@@ -1800,17 +1885,6 @@ body:has([data-neighborhood-map]) .river-border {
 /* .food-grouped li.group-header[data-verdict] {
   border-block-end: 2px solid var(--verdict-color, var(--color-muted));
 } */
-
-/* Desktop: each entry row in a verdict group carries a 3px left border in its
-   verdict color (the header keeps its bottom border). Targeting the filterable
-   rows (data-filter-item) skips the header and outranks the list-only padding
-   reset so the content keeps its inset off the bar. */
-@media (min-width: 700px) {
-  .food-grouped .list > li[data-filter-item][data-verdict] {
-    border-inline-start: 3px solid var(--verdict-color, var(--color-muted));
-    padding-inline-start: var(--spacing-md);
-  }
-}
 
 /* Alphabetical mode: the letter dividers read bigger + accent. */
 .food-grouped li.group-header.group-header-alpha .group-label {
@@ -1866,11 +1940,9 @@ body:has([data-neighborhood-map]) .river-border {
   padding-inline: 0;
 }
 
-/* Flush the rows to the pane's left edge in list-only view, but keep the right-side
-   reserve so the row arrow never overlaps the content (matches the neighborhood
-   list, which keeps its reserve in every view). */
+/* Flush the rows to the pane's left edge in list-only view. */
 [data-filter-root]:not([data-view='map']) .food-grouped .list > li {
-  padding-inline: 0 calc(var(--spacing-md) + 2rem);
+  padding-inline: 0 var(--spacing-md);
 }
 
 /* Mobile: the group header has no trailing arrow, so it doesn't need the row's
@@ -1932,9 +2004,10 @@ body:has([data-neighborhood-map]) .river-border {
   }
 }
 
-/* On directory pages the filter toolbar is the sticky bar; let the site header
-   scroll away (list view) / sit statically (map shell) so they don't stack. */
-body:has([data-filter-root]) .site-header {
+/* On directory pages the filter toolbar is the sticky bar; let the masthead
+   nav scroll away (list view) / sit statically (map shell) so they don't
+   stack. */
+body:has([data-filter-root]) .masthead-nav {
   position: static;
 }
 
@@ -2096,7 +2169,8 @@ body:has([data-filter-root]) .site-header {
 .maplibregl-popup.food-popup .maplibregl-popup-content {
   background: var(--color-background);
   color: var(--color-text);
-  border: 2px solid var(--color-accent);
+  /* The ink newspaper-box frame (like What's New), not the old red. */
+  border: 2px solid var(--color-line-contrast);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
   font-family: var(--font-mono);
@@ -2133,7 +2207,7 @@ body:has([data-filter-root]) .site-header {
      pin flickers (enter/leave loop) and swallows the click that opens the popup. */
   pointer-events: none;
   padding: var(--spacing-sm);
-  background: var(--color-surface);
+  background: var(--color-background);
   color: var(--color-text);
   border: 1px solid var(--color-line-input);
   border-radius: var(--radius);
@@ -2166,15 +2240,21 @@ body:has([data-filter-root]) .site-header {
      long title like "Vinnie's Italian Beef & Gyros" WRAP into that available width
      rather than running one line under the X (nowrap overflowed past the padding). */
   padding-inline-end: var(--spacing-lg);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-lg);
   white-space: normal;
 }
 
+/* The list rows' serif headline voice. */
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 a {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-text-heading);
   text-decoration: none;
+}
+
+.maplibregl-popup.food-popup .popup-meta {
+  margin-block-end: 2px;
 }
 
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 a:hover {
@@ -2185,24 +2265,16 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent);
 }
 
-.maplibregl-popup.food-popup .popup-tagline {
-  margin-block: var(--spacing-xs) 0;
-  font-family: var(--font-body);
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--color-accent);
-}
-
 .maplibregl-popup.food-popup .tip-excerpt {
   margin-block: var(--spacing-xs) 0;
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.45;
   color: var(--color-text-article);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2218,8 +2290,7 @@ body:has([data-filter-root]) .site-header {
   margin-block: var(--spacing-sm);
 }
 
-.maplibregl-popup.food-popup .list-meta,
-.maplibregl-popup.food-popup .popup-meta-sep {
+.maplibregl-popup.food-popup .list-meta {
   font-family: var(--font-mono);
   font-size: var(--font-size-xxs);
   font-weight: 500;
@@ -2259,24 +2330,13 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-accent);
 }
 
+/* The colors come from the shared .btn-dark block; this only stretches it to
+   the popup's full width. */
 .maplibregl-popup.food-popup .popup-more-link {
-  display: block;
+  display: flex;
+  justify-content: center;
   width: 100%;
   margin-block-start: var(--spacing-md);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius);
-  background: var(--color-accent);
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  color: var(--color-background);
-  text-decoration: none;
-}
-
-.maplibregl-popup.food-popup .popup-more-link:hover {
-  color: var(--color-background);
-  background: color-mix(in srgb, var(--color-accent) 85%, #000);
 }
 
 .maplibregl-popup.food-popup .maplibregl-popup-close-button {
@@ -2312,11 +2372,12 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-muted);
 }
 
-/* Italic accent lede under an entry title (topics, neighborhoods). */
+/* The lede under an entry title (topics, neighborhoods) — muted like the
+   homepage lead deck, never accent-colored description text. */
 .entry-summary {
   font-size: var(--font-size-lg);
-  color: var(--color-accent);
-  font-weight: 500;
+  color: var(--color-muted);
+  font-weight: 400;
   margin: 0;
   line-height: 1.3;
   margin-block-end: var(--spacing-xs);
@@ -2327,14 +2388,18 @@ body:has([data-filter-root]) .site-header {
 .entry-header {
   margin-block: var(--spacing-lg);
   padding-block-end: var(--spacing-md);
-  border-block-end: 1px solid var(--color-line);
+  /* Centered like the front page's lead story, over its dotted rule. */
+  text-align: center;
+  border-block-end: 1px dotted var(--color-line-input);
 
   h1 {
     margin-block: 0 var(--spacing-xs);
-    font-family: var(--font-serif);
-    font-weight: 500;
+    /* The homepage lead headline's display serif, site-wide, at a size with
+       real front-page presence. */
+    font-family: var(--font-display);
+    font-weight: 400;
     line-height: 1.05;
-    font-size: clamp(2rem, 2rem + 2.2vw, 3rem);
+    font-size: clamp(2.5rem, 2rem + 3.5vw, 4.5rem);
   }
 
   .address {
@@ -2347,11 +2412,28 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
+/* Topic pages read in the 600px centered column, so the whole header —
+   title, deck, dateline/share row, and its dotted rule — caps at the same
+   measure. */
+.entry:has(.topic-layout) .entry-header {
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+/* The "Written … and updated …" byline lines up with the same column (its
+   scoped base is inline-flex, which would hug the page's left edge). */
+.entry:has(.topic-layout) .entry-byline {
+  display: flex;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
 .entry-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  justify-content: space-between;
+  /* Centered with the rest of the entry header. */
+  justify-content: center;
   gap: var(--spacing-md);
   margin-block-start: var(--spacing-sm);
   width: 100%;
@@ -2374,16 +2456,22 @@ body:has([data-filter-root]) .site-header {
   margin-block-start: var(--spacing-lg);
 }
 
+/* The sidebar as a plain rail — unboxed; on desktop it takes a single column
+   rule on its leading edge, the front page's gutter idiom. */
 .detail-aside {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-lg);
   isolation: isolate;
 }
 
 @media screen and (min-width: 900px) {
   .detail-layout {
-    grid-template-columns: minmax(0, 1fr) 290px;
+    /* Text holds the standard 600px reading column with the sidebar a fixed
+       2.5rem beside it — the pair centered as one block instead of spreading
+       to the page edges. */
+    grid-template-columns: minmax(0, 600px) 290px;
+    justify-content: center;
     align-items: start;
     gap: 2.5rem;
   }
@@ -2408,12 +2496,11 @@ body:has([data-filter-root]) .site-header {
   }
 }
 
-/* Hairline between two sidebar sections (address / links / pick / facts); the
-   aside's column gap spaces it. */
-.detail-divider {
-  margin: 0;
-  border: 0;
-  border-block-start: 1px solid var(--color-line);
+/* The sidebar's "Back to the … map" / "View directions" continue-links,
+   spaced off the map or address above them. */
+.detail-aside .aside-more-link {
+  display: inline-block;
+  margin-block-start: var(--spacing-sm);
 }
 
 /* A content-width "back to the map" link at the foot of the sidebar. Overrides
@@ -2439,8 +2526,31 @@ body:has([data-filter-root]) .site-header {
 .detail-links {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-xs);
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Each link is a full-width row on the rail's dotted hairlines (the index
+   page's list idiom); no rule after the last. The double selector outranks the
+   .btn border that SourceLink's quiet variant carries. The bled padding gives
+   the row the index rail's hover wash without moving the resting layout. */
+.detail-links > *,
+.detail-links > .btn {
+  padding-block: var(--spacing-xs);
+  padding-inline: var(--spacing-sm);
+  margin-inline: calc(-1 * var(--spacing-sm));
+  border: 0;
+  border-block-end: 1px dotted var(--color-line-input);
+  border-radius: 0;
+  transition: background-color 0.12s ease;
+}
+
+.detail-links > *:hover {
+  background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+}
+
+.detail-links > :last-child {
+  border-block-end: 0;
 }
 
 /* Explicit stub treatment for an entry without a writeup: a dashed note that
@@ -2500,8 +2610,8 @@ body:has([data-filter-root]) .site-header {
 
 .btn-outline:hover,
 .btn-outline.is-copied {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  color: var(--color-text-heading);
+  border-color: var(--color-text-heading);
 }
 
 .btn-filled {
@@ -2521,12 +2631,14 @@ body:has([data-filter-root]) .site-header {
 }
 
 /* Solid black on the light theme, but the quiet bordered `.btn-outline` look on
-   the dark theme (a solid black button reads too heavy against the dark surface). */
+   the dark theme (a solid black button reads too heavy against the dark surface).
+   Always shouted — READ MORE / SUBSCRIBE / SHARE — so every black block matches. */
 .btn-dark {
   color: var(--color-surface);
   background: var(--color-text-heading);
   border-color: var(--color-text-heading);
   flex-shrink: 0;
+  text-transform: uppercase;
 }
 
 .btn-dark:hover {
@@ -2610,62 +2722,6 @@ body:has([data-filter-root]) .site-header {
   opacity: 0.9;
 }
 
-/* Windows 98 chrome (Share / Feedback and the theme toggle): a raised double bevel
-   (light top/left, dark bottom/right) on a silver face, squared corners, and
-   the classic press-in on :active. Face/bevel tones are warm-tinted to sit in
-   the site palette, with a dark-theme variant. Last of the variants so its
-   steady-face hover wins the cascade tie against the other variants' glows. */
-.btn-retro {
-  --w98-face: #cbcbcb;
-  --w98-light: #ffffff;
-  --w98-mid: #979797;
-  --w98-dark: #4f4f4f;
-
-  border-radius: 0;
-  padding: 2px var(--spacing-sm);
-  background: var(--w98-face);
-  border: 1px solid;
-  border-color: var(--w98-light) var(--w98-dark) var(--w98-dark) var(--w98-light);
-  box-shadow:
-    inset 1px 1px 0 var(--w98-light),
-    inset -1px -1px 0 var(--w98-mid);
-  color: var(--color-text);
-  flex-shrink: 0;
-
-  svg {
-    height: 18px;
-    width: 18px;
-  }
-}
-
-:root[data-theme='dark'] .btn-retro {
-  --w98-face: #40434b;
-  --w98-light: #6a6e78;
-  --w98-mid: #26282d;
-  --w98-dark: #101114;
-}
-
-/* Win98 buttons don't glow on hover; keep the face steady. */
-.btn-retro:hover,
-.btn-retro.is-copied {
-  color: var(--color-text);
-  background: var(--w98-face);
-  border-color: var(--w98-light) var(--w98-dark) var(--w98-dark) var(--w98-light);
-}
-
-/* Pressed: the bevel inverts and the content nudges down-right a pixel. */
-.btn-retro:active {
-  border-color: var(--w98-dark) var(--w98-light) var(--w98-light) var(--w98-dark);
-  box-shadow:
-    inset 1px 1px 0 var(--w98-mid),
-    inset -1px -1px 0 var(--w98-light);
-  padding: 3px calc(var(--spacing-sm) - 1px) 1px calc(var(--spacing-sm) + 1px);
-}
-
-.btn-retro:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
 
 .back {
   margin-block: var(--spacing-md) 0;
@@ -2681,13 +2737,31 @@ body:has([data-filter-root]) .site-header {
    list + card section header (Mentioned in, Notable spots, By the numbers, My
    pick, Explored / The rest, Location, …). One definition so they never drift;
    each usage keeps its own margin via its own class. */
+/* Matches the unified eyebrow spec (xxs / 500 / uppercase / accent). */
 .section-label {
   font-family: var(--font-mono);
   font-size: var(--font-size-xxs);
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   color: var(--color-accent);
+}
+
+/* The box labels — the detail sidebar's sections (Address, Links) and the side
+   cards (By the numbers, Vibe, My pick) — trade the red mono eyebrow for the
+   heavy black header voice at label size. Double-class so it outranks both the
+   .section-label base and the `.body h2` serif rule. */
+.section-label.detail-section-label,
+.section-label.side-card-label,
+.section-label.my-pick-label {
+  font-family: var(--font-display-black);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-heading);
+  /* The rail-header rule under the label, spanning the sidebar column. */
+  padding-block-end: var(--spacing-xs);
+  border-block-end: 2px solid var(--color-line-contrast);
 }
 
 .chips {
@@ -2699,9 +2773,23 @@ body:has([data-filter-root]) .site-header {
   color: var(--color-muted);
 }
 
-/* A mono uppercase section heading, used over a List on the Best of page. */
+/* A section heading over a List (the Best of page): the front page's heavy
+   black header voice over the thick rule. */
 .fact-section {
   margin-block-start: var(--spacing-lg);
+}
+
+.fact-section h2 {
+  margin-block: 0 var(--spacing-xs);
+  padding-block-end: var(--spacing-xs);
+  border-block-end: 2px solid var(--color-line-contrast);
+  font-family: var(--font-display-black);
+  font-weight: 400;
+  font-size: var(--font-size-xxl);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-heading);
 }
 
 .group-label {
@@ -2729,8 +2817,11 @@ body:has([data-filter-root]) .site-header {
   font-style: italic;
 }
 
-/* The "Clear filters" pill that sits inside the empty state, on its own line. */
+/* The "Clear filters" pill that sits inside the empty state, on its own line
+   BELOW the message (the inline-flex .btn would otherwise ride beside it). */
 .empty .filter-clear {
+  display: flex;
+  width: fit-content;
   margin-block-start: var(--spacing-sm);
 }
 
@@ -2748,23 +2839,6 @@ body:has([data-filter-root]) .site-header {
   font-size: var(--font-size-sm);
   color: var(--color-muted);
   font-weight: 500;
-}
-
-.stlouis-flag {
-  height: 36px;
-  width: 36px;
-  image-rendering: pixelated;
-  flex-shrink: 0;
-  /* Hard offset shadow, no blur — the flat sticker look. */
-  box-shadow: 2px 2px 0 var(--color-line-contrast);
-}
-
-/* Shrink the flag on mobile so it doesn't crowd the header. */
-@media (max-width: 700px) {
-  .stlouis-flag {
-    height: 26px;
-    width: 26px;
-  }
 }
 
 .image-grid {
@@ -2858,153 +2932,4 @@ body:has([data-filter-root]) .site-header {
 
 .nowrap {
   text-wrap: nowrap;
-}
-
-/* ===========================================================================
-   Win98 dialog chrome
-   =========================================================================== */
-
-/* The retro window dressing shared by the homepage What's New box and the food
-   pages' rating dialog: raised gray window, gradient title bar, sunken
-   fields, beveled buttons. In light mode the chrome is the classic fixed
-   Win98 gray with light-palette inks; interiors must use the --win98-* tokens
-   (never the theme inks directly) so the dark override below re-themes them
-   in one place. The title bar tracks the theme in both modes: the accent
-   pushed toward black sweeping to accent-2 pushed toward white, as intense as
-   the classic navy→blue gradient. */
-.win98-window {
-  --win98-face: #c0c0c0;
-  --win98-highlight: #ffffff;
-  --win98-light: #dfdfdf;
-  --win98-shadow: #808080;
-  --win98-frame: #0a0a0a;
-  --win98-text: #000000;
-  --win98-muted: #555555;
-  --win98-accent: #a90b26;
-  --win98-accent-2: #c70f2e;
-  --win98-link: #225aa9;
-  --win98-link-hover: #17488d;
-  /* The caption and sunken-field ground are white in light mode but must not
-     follow the bevel highlight when dark mode dims it — hence own tokens. */
-  --win98-title-text: #ffffff;
-  --win98-field-bg: #ffffff;
-  --win98-title-dark: color-mix(in srgb, var(--color-accent), #000 55%);
-  --win98-title-bright: color-mix(in srgb, var(--color-accent-2), #fff 15%);
-
-  background: var(--win98-face);
-  padding: 3px;
-  /* The raised window bevel: two stacked inset rings, light catching the
-     top-left edges and shadow falling to the bottom-right. */
-  box-shadow:
-    inset -1px -1px var(--win98-frame),
-    inset 1px 1px var(--win98-light),
-    inset -2px -2px var(--win98-shadow),
-    inset 2px 2px var(--win98-highlight);
-}
-
-/* Dark theme: the window dims to the same chrome as the .btn-retro buttons
-   (Share / Feedback, theme toggle) — face #40434b with their bevel grays
-   (keep the two palettes in sync). Same bevel logic — the light still lands
-   on the top-left edges — while the interior inks hand over to the theme
-   tokens, so text, links, and accents flip with the theme. The caption stays
-   white: it sits on the gradient's dark end in both modes. */
-:root[data-theme='dark'] .win98-window {
-  --win98-face: #40434b;
-  --win98-highlight: #6a6e78;
-  --win98-light: #565a63;
-  --win98-shadow: #26282d;
-  --win98-frame: #101114;
-  --win98-text: var(--color-text);
-  --win98-muted: var(--color-muted);
-  --win98-accent: var(--color-accent);
-  --win98-accent-2: var(--color-accent-2);
-  --win98-link: var(--color-link);
-  --win98-link-hover: var(--color-link-hover);
-  --win98-field-bg: var(--color-surface);
-}
-
-.win98-titlebar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
-  padding: 3px 3px 3px var(--spacing-sm);
-  background: linear-gradient(90deg, var(--win98-title-dark), var(--win98-title-bright));
-}
-
-/* The caption: white mixed-case mono; works on a heading or a span. */
-.win98-caption {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  letter-spacing: normal;
-  text-transform: none;
-  color: var(--win98-title-text);
-}
-
-/* The 16px window icon (the pixel flag), with a hair of the header flag's
-   sticker shadow so the red field doesn't dissolve into the accent bar. */
-.win98-titlebar-icon {
-  width: 16px;
-  height: 16px;
-  image-rendering: pixelated;
-  box-shadow: 1px 1px 0 var(--win98-frame);
-}
-
-/* A raised push button (works on <a> and <button>): :active inverts the bevel
-   so the face reads pushed in, and .is-active holds that pressed state for
-   toggles (the voted side of the rating poll). */
-.win98-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  padding: 1px var(--spacing-sm);
-  border: 0;
-  background: var(--win98-face);
-  color: var(--win98-text);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
-  font-weight: 600;
-  text-decoration-line: none;
-  cursor: pointer;
-  box-shadow:
-    inset -1px -1px var(--win98-frame),
-    inset 1px 1px var(--win98-highlight),
-    inset -2px -2px var(--win98-shadow),
-    inset 2px 2px var(--win98-light);
-
-  &:hover {
-    color: var(--win98-text);
-  }
-
-  &:active,
-  &.is-active {
-    box-shadow:
-      inset -1px -1px var(--win98-highlight),
-      inset 1px 1px var(--win98-frame),
-      inset -2px -2px var(--win98-light),
-      inset 2px 2px var(--win98-shadow);
-  }
-
-  &.is-active {
-    background: var(--win98-light);
-  }
-}
-
-.win98-button .icon {
-  color: inherit;
-}
-
-/* A sunken field: text wells and inputs (white in light, surface in dark). */
-.win98-field {
-  background: var(--win98-field-bg);
-  box-shadow:
-    inset -1px -1px var(--win98-highlight),
-    inset 1px 1px var(--win98-shadow),
-    inset -2px -2px var(--win98-light),
-    inset 2px 2px var(--win98-frame);
 }

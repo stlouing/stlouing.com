@@ -86,11 +86,13 @@ const hasIcon = Astro.slots.has('icon')
     width: 1rem;
     height: 1rem;
     margin-block-start: 2px;
-    color: var(--color-accent-2);
+    /* Hooks so a section can recolor its rows (the Chip.astro pattern) without
+       specificity fights; defaults keep the accent look everywhere else. */
+    color: var(--list-icon-color, var(--color-accent-2));
   }
 
   a.list-item:hover .list-title {
-    color: var(--color-accent);
+    color: var(--list-hover-color, var(--color-accent));
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 2px;

@@ -30,14 +30,18 @@ const { trail } = Astro.props
 </nav>
 
 <style>
+  /* Centered under the masthead, in the small quiet voice. */
   .breadcrumbs {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: var(--spacing-sm);
     margin-block-start: var(--spacing-lg);
     font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xxs);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
 
     a {
       display: flex;

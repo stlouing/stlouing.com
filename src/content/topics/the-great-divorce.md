@@ -2,7 +2,8 @@
 title: The Great Divorce
 seoTitle: The Great Divorce of St. Louis City and County
 icon: heart-crack
-description: How the St. Louis City-County split skews its crime stats
+category: History
+description: How one fateful decision has divided the St. Louis region for 150 years
 created: 2026-06-29
 updated: 2026-07-31
 ---

@@ -7,20 +7,20 @@ export interface Section {
   primary?: boolean
   description?: string
   // Icon keyword from the shared <Icon> registry, shown beside the label in the
-  // primary nav.
+  // primary nav and the homepage lists.
   icon?: string
 }
 
 // Homepage groups, in display order. 'notes' is intentionally omitted for now —
 // it has no content yet, so the section stays defined (its page + feed work) but
 // isn't surfaced on the homepage or in the nav until there are posts.
-// `numeral` prefixes the section label (I, II, III…); `kicker` is the
-// right-justified caption shown opposite the label in the homepage directory.
-export const groups: { id: Group; label?: string; numeral?: string; kicker?: string }[] = [
-  { id: 'explore', label: 'Explore', numeral: 'I', kicker: 'Maps' },
-  { id: 'topics', label: 'Topics', numeral: 'II', kicker: 'Reading' },
-  { id: 'lists', label: 'Lists', numeral: 'III', kicker: 'Collections' },
-  { id: 'site', label: 'Site', numeral: 'IV', kicker: 'Meta' },
+// `kicker` is the right-justified caption shown opposite the label in the
+// homepage group headers.
+export const groups: { id: Group; label?: string; kicker?: string }[] = [
+  { id: 'explore', label: 'Maps' },
+  { id: 'topics', label: 'Topics' },
+  { id: 'lists', label: 'Lists' },
+  { id: 'site', label: 'Site' },
 ]
 
 export const sections: Section[] = [
@@ -30,7 +30,7 @@ export const sections: Section[] = [
     group: 'explore',
     primary: true,
     icon: 'utensils',
-    description: `An interactive map of my favorite spots across the STL metro, filterable by cuisine and neighborhood. All ratings are subjective, based on my taste and experiences.`,
+    description: `An interactive map of my favorite spots across the St. Louis metro, filterable by cuisine, rating, and neighborhood`,
   },
   {
     label: 'Neighborhoods',
@@ -38,7 +38,7 @@ export const sections: Section[] = [
     group: 'explore',
     primary: true,
     icon: 'map-pin',
-    description: `A map of the 79 neighborhoods and 9 parks in St. Louis city, plus a few additional points of interest in the county.`,
+    description: `The 79 neighborhoods and 9 parks of St. Louis city, plus a few additional points of interest in the county`,
   },
   // {
   //   label: 'Hikes',
@@ -63,24 +63,28 @@ export const sections: Section[] = [
     label: 'The Best Food in St. Louis',
     path: '/best/',
     group: 'lists',
+    icon: 'award',
     description: 'My favorite restaurants and cafes so far!',
   },
   {
-    label: 'Backlog',
+    label: 'The Backlog',
     path: '/food/backlog/',
     group: 'lists',
+    icon: 'list-checks',
     description: "Places I haven't tried or rated yet.",
   },
   {
     label: 'Annual Events',
     path: '/events/',
     group: 'lists',
+    icon: 'calendar',
     description: 'A calendar of festivals and events across the city.',
   },
   {
     label: 'Sitemap',
     path: '/sitemap/',
     group: 'site',
+    icon: 'folder-tree',
     description: 'An index of every page on the site.',
   },
   // Hidden until it has posts (omitted from `groups` above and not `primary`).
@@ -94,11 +98,19 @@ export const sections: Section[] = [
     icon: 'info',
     description: 'Why I made this city exploration website.',
   },
-  { label: 'Tags', path: '/tags/', group: 'site', description: 'Browse everything by topic.' },
+  {
+    label: 'Tags',
+    path: '/tags/',
+    group: 'site',
+    icon: 'tags',
+    description: 'Browse everything by topic.',
+  },
   {
     label: 'Feedback',
     path: '/feedback/',
     group: 'site',
+    primary: true,
+    icon: 'message-circle-heart',
     description: 'Let me know your thoughts!',
   },
 ]

@@ -3,7 +3,7 @@
 // with the title + lede). `title` seeds the native share payload.
 import ShareButton from './ShareButton.astro'
 import Button from './Button.astro'
-import IconPencil from '../assets/IconPencil.astro'
+import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
 import { href } from '../lib/url'
 
 interface Props {
@@ -14,9 +14,9 @@ const { title } = Astro.props
 ---
 
 <div class="share-actions">
-  <ShareButton title={title} label="Share" variant="retro" class="share-pill" />
-  <Button href={href('/feedback/')} variant="retro" class="share-pill">
-    <IconPencil />
+  <ShareButton title={title} label="Share" variant="outline" compact class="share-pill" />
+  <Button href={href('/feedback/')} variant="outline" compact class="share-pill">
+    <IconMessageCircleHeart />
     Feedback
   </Button>
 </div>
@@ -26,5 +26,16 @@ const { title } = Astro.props
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+
+    svg {
+      height: 16px;
+      width: 16px;
+    }
+  }
+
+  /* Quiet outline pills, not the heavy ink blocks: transparent over the page
+     background (the outline base paints the surface wash). */
+  .share-actions :global(.share-pill) {
+    background: transparent;
   }
 </style>

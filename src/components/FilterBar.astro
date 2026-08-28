@@ -19,9 +19,19 @@ interface Props {
   facets: Facet[]
   searchPlaceholder?: string
   sorts?: SortOption[]
+  // Render the search field. A page can turn this off and host its own
+  // [data-filter-search] input elsewhere (the food page's pane header does).
+  search?: boolean
 }
 
-const { label, count, facets, searchPlaceholder = 'name...', sorts = [] } = Astro.props
+const {
+  label,
+  count,
+  facets,
+  searchPlaceholder = 'name...',
+  sorts = [],
+  search = true,
+} = Astro.props
 ---
 
 <form class="filters" role="search" aria-label={`Filter ${label}`}>
@@ -57,14 +67,18 @@ const { label, count, facets, searchPlaceholder = 'name...', sorts = [] } = Astr
       </p>
     )
   }
-  <p class="field">
-    <label for="q">Search</label>
-    <input
-      id="q"
-      type="search"
-      placeholder={searchPlaceholder}
-      autocomplete="off"
-      data-filter-search
-    />
-  </p>
+  {
+    search && (
+      <p class="field">
+        <label for="q">Search</label>
+        <input
+          id="q"
+          type="search"
+          placeholder={searchPlaceholder}
+          autocomplete="off"
+          data-filter-search
+        />
+      </p>
+    )
+  }
 </form>

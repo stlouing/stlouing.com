@@ -32,19 +32,22 @@ const { pick } = Astro.props
     gap: var(--spacing-sm);
   }
 
+  /* The front page's Topics-rail row voice: serif title over a serif muted
+     description. */
   .pick-name {
     display: block;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-md);
-    font-weight: 600;
-    line-height: 1.2;
+    font-family: var(--font-serif);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    line-height: 1.25;
     color: var(--color-text-heading);
   }
 
   .pick-note {
     margin: var(--spacing-xs) 0 0;
+    font-family: var(--font-serif);
     font-size: var(--font-size-sm);
     color: var(--color-muted);
-    line-height: 1.3;
+    line-height: 1.4;
   }
 </style>

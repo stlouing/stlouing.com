@@ -1,12 +1,13 @@
 ---
 // Shared row for the map-backed directory lists — Food/Hikes (filterable) and
-// Neighborhoods (section list). Renders the common chrome: the title link, a
-// `title-after` slot inline beside it, an optional `sub` line, and the always-open
-// `.list-description` panel. Styling lives in global.css (`.map-list …`) so it
-// reaches the slotted bits.
+// Neighborhoods (section list). Renders the common chrome in the newspaper
+// order: an `eyebrow` slot (cuisine / neighborhood, region) over the serif
+// title link, an optional `sub` line, and the always-open `.list-description`
+// panel. Styling lives in global.css (`.map-list …`) so it reaches the
+// slotted bits.
 //
-// Slots: title-after (inline after the title), sub (a second line), and the
-// default slot (the panel body).
+// Slots: eyebrow (the red kicker above the title), sub (a second line), and
+// the default slot (the panel body).
 //
 // Filterable rows (Food/Hikes) carry the data-* attributes the filter + map
 // scripts read off each <li> (data-filter-item, coords, search, …); the
@@ -64,9 +65,15 @@ const showPanel = slotHtml.length > 0 || readMore
 ---
 
 <li id={id} class:list={[className]} {...filterAttrs} {...attrs}>
+  {
+    Astro.slots.has('eyebrow') && (
+      <div class="list-eyebrow">
+        <slot name="eyebrow" />
+      </div>
+    )
+  }
   <div class="list-headline">
     <a class="list-title" href={href(detailHref)}>{title}</a>
-    <slot name="title-after" />
   </div>
   {
     Astro.slots.has('sub') && (
@@ -87,5 +94,4 @@ const showPanel = slotHtml.length > 0 || readMore
       </div>
     )
   }
-  <span class="list-arrow" aria-hidden="true"><IconArrowRight /></span>
 </li>

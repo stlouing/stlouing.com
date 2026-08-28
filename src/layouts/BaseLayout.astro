@@ -1,12 +1,15 @@
 ---
 import '../styles/global.css'
 
-import '@fontsource/ibm-plex-mono/400.css'
-import '@fontsource/ibm-plex-mono/500.css'
-import '@fontsource/ibm-plex-mono/600.css'
-import '@fontsource/ibm-plex-mono/700.css'
+import '@fontsource/google-sans-code/400.css'
+import '@fontsource/google-sans-code/500.css'
+import '@fontsource/google-sans-code/600.css'
+import '@fontsource/google-sans-code/700.css'
 
 import '@fontsource/instrument-serif/400.css'
+
+// Heavy display face for the front page's dramatic section headers.
+import '@fontsource/archivo-black/400.css'
 
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
@@ -16,6 +19,14 @@ import { sections } from '../lib/sections'
 import { SITE_DESCRIPTION, SOCIALS } from '../lib/site'
 
 interface Props {
+  // The homepage sets this for the newspaper front page: the Header renders the
+  // big nameplate masthead instead of the compact bar, and the main wrap widens
+  // to fit the three-column layout. Explicit prop (not a URL check) so the 404
+  // page — which renders at arbitrary paths — always gets the compact header.
+  home?: boolean
+  // Reading pages (topic articles, food/neighborhood details, about) pull the
+  // content in a step from the full front-page measure.
+  article?: boolean
   crumb?: string
   // An SEO-tuned <title> leaf, used when it should differ from the (shorter)
   // breadcrumb `crumb` — e.g. a food page adds its cuisine + "St. Louis".
@@ -44,6 +55,8 @@ interface Props {
 
 const SITE_NAME = 'St. Louing'
 const {
+  home = false,
+  article = false,
   crumb,
   title,
   description,
@@ -214,10 +227,12 @@ const analyticsUrl = analyticsBase
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <Header trail={trail} />
+    <Header trail={trail} variant={home ? 'home' : 'compact'} />
 
     <main id="main">
-      <div class="wrap">
+      {/* Every page shares the front page's wide measure (reading pages pull
+         in a step); prose re-constrains itself further (.body's max-width). */}
+      <div class:list={['wrap', 'wrap-wide', { 'wrap-article': article }]}>
         <slot />
       </div>
     </main>

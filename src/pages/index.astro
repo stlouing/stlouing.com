@@ -1,117 +1,258 @@
 ---
 import { getCollection, render } from 'astro:content'
+import { Image } from 'astro:assets'
 
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
-import { published, sortTopics } from '../lib/content'
+import {
+  published,
+  sortTopics,
+  excerpt,
+  PINNED_TOPIC_ID,
+  PREVIEW_EXCERPT_CHARS,
+} from '../lib/content'
 import { isExplored } from '../lib/verdict'
 import { getChangelog } from '../lib/changelog'
-import { formatDateShort, formatDate } from '../lib/dates'
+import { formatDate } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
+import { TAGLINE } from '../lib/site'
+import Button from '../components/Button.astro'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
-import NewsletterSignup from '../components/NewsletterSignup.astro'
 import Icon from '../components/Icon.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
-import IconUtensils from '../assets/IconUtensils.astro'
-import IconMapPin from '../assets/IconMapPin.astro'
-import IconAward from '../assets/IconAward.astro'
-import IconListChecks from '../assets/IconListChecks.astro'
-import IconFolderTree from '../assets/IconFolderTree.astro'
-import IconInfo from '../assets/IconInfo.astro'
-import IconTags from '../assets/IconTags.astro'
-import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
-import IconCalendar from '../assets/IconCalendar.astro'
+import FleurGlyph from '../assets/FleurGlyph.astro'
 
-// A Lucide icon per directory section, keyed by path. Topic icons come from the
-// shared <Icon> component, resolved from each topic's `icon:` frontmatter (so
-// the homepage + /topics stay in sync).
-const iconByPath: Record<string, typeof IconInfo> = {
-  '/food/': IconUtensils,
-  '/neighborhoods/': IconMapPin,
-  '/best/': IconAward,
-  '/food/backlog/': IconListChecks,
-  '/events/': IconCalendar,
-  '/sitemap/': IconFolderTree,
-  '/about/': IconInfo,
-  '/tags/': IconTags,
-  '/feedback/': IconMessageCircleHeart,
-}
+const intro = `Welcome to St. Louing, a website I created to document living in St. Louis and learning to love it.`
 
-const tagline = 'Documenting the food, neighborhoods, and culture of St. Louis.'
-const intro = `St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.`
-
-const allNotes = published(await getCollection('notes')).sort(
-  (left, right) => right.data.created.valueOf() - left.data.created.valueOf(),
-)
 const allTopics = sortTopics(published(await getCollection('topics')))
 
-// Latest few of each for the homepage columns.
-const latestNotes = allNotes.slice(0, 5)
-const latestTopics = allTopics.slice(0, 4)
+// The lead story: the most recently updated topic, skipping the pinned Field
+// Notes entry (a living index, not an article). The teaser is derived from the
+// topic's own prose, the same way /topics builds its excerpts.
+const leadTopic = allTopics.find((topic) => topic.id !== PINNED_TOPIC_ID)
+const leadTeaser = leadTopic ? excerpt(leadTopic.body, 420) : ''
 
-// The three most recent updates, shown at the top so a returning visitor can see
-// the site is alive at a glance. The full log lives at /updates. The Markdown
-// body is rendered (same as /updates) so links + emphasis in a change show here too.
+// The most recent updates, shown in the What's New window so a returning
+// visitor can see the site is alive at a glance. The full log lives at
+// /updates. The Markdown body is rendered (same as /updates) so links +
+// emphasis in a change show here too.
 const latestUpdates = await Promise.all(
-  (await getChangelog()).slice(0, 1).map(async (entry) => {
+  (await getChangelog()).slice(0, 2).map(async (entry) => {
     const { Content } = await render(entry)
 
     return { date: entry.data.date, Content }
   }),
 )
 
-// Item counts shown next to the guide sections in the directory.
+// Progress report tallies for the intro sentence: restaurants actually
+// visited (written-up or tried, not the want-to-try backlog); neighborhoods
+// wandered mirrors the "explored" count.
 const allFood = published(await getCollection('food'))
 const allNeighborhoods = published(await getCollection('neighborhoods'))
-const foodCount = allFood.length
-const neighborhoodCount = allNeighborhoods.length
-// Progress report tallies: restaurants actually visited (written-up or tried, not
-// the want-to-try backlog); neighborhoods wandered mirrors the "explored" count.
 const visitedCount = allFood.filter((place) => isExplored(place.data.status)).length
-const wanderedCount = neighborhoodCount
-const countByPath: Record<string, string> = {
-  '/food/': `${foodCount} spots`,
-  '/neighborhoods/': `${neighborhoodCount} explored`,
-}
+const wanderedCount = allNeighborhoods.length
+
+// The Explore rail: the map sections.
+const exploreGroup = groups.find((group) => group.id === 'explore')
+const exploreSections = sections.filter((section) => section.group === 'explore')
+
+// The food cards: a hand-picked four, shown in this order. Each id is a file
+// in src/content/food/ — edit the list to change the front page.
+const FEATURED_FOOD_IDS = [
+  'pizzeria-da-gloria',
+  'kishimoto-mendo',
+  'nicky-slices',
+  'dalies-smokehouse',
+]
+const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
+  allFood.filter((place) => place.id === foodId),
+).map((place) => ({ place, teaser: excerpt(place.body, PREVIEW_EXCERPT_CHARS) }))
+
+// The left rail: the article index (all published topics, straight from the
+// collection so it grows as pieces publish), then a compact "More" section —
+// the list pages plus the non-primary site pages (About and Feedback already
+// live in the nav).
+const moreSections = [
+  ...sections.filter((section) => section.group === 'lists'),
+  ...sections.filter((section) => section.group === 'site' && !section.primary),
+]
 
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
 
-<BaseLayout jsonLd={website}>
-  <header class="h-card index-header">
-    <div class="index-body">
-      <div class="index-intro">
-        <h1 class="page-title">St. Louing</h1>
-        <p class="tagline p-note">{tagline}</p>
-
-        <p class="introduction">
-          {intro}
-          So far, I've explored <span class="stat">{wanderedCount}</span> neighborhoods and visited{
-            ' '
+<BaseLayout home jsonLd={website}>
+  <div class="front-page">
+    {
+      /* Column 1: the article rail — serif titles with date bylines, then a
+       compact More section for everything else. */
+    }
+    <aside class="front-index" aria-label="Site index">
+      <section class="front-index-topics">
+        <h2 class="rail-header">Topics</h2>
+        <ul class="rail-articles">
+          {
+            allTopics.map((topic) => (
+              <li>
+                <a href={href(`/${topic.id}/`)}>
+                  <span class="rail-article-title">{topic.data.title}</span>
+                  {topic.data.description && (
+                    <span class="rail-article-description">{topic.data.description}</span>
+                  )}
+                </a>
+              </li>
+            ))
           }
-          <span class="stat">{visitedCount}</span> restaurants!
-          <a class="more inline" href={href('/about/')} aria-label="Read more about St. Louing">
-            Read more <IconArrowRight />
-          </a>
-        </p>
-      </div>
-      <!-- <div class="index-crest">
-        <FleurDeLis class="index-crest-img" />
-      </div> -->
-      <section class="group recently win98-window">
-        <div class="win98-titlebar">
-          <h2 class="win98-caption">
-            {/* The window icon: the same pixel flag as the header mark. */}
-            <img class="win98-titlebar-icon" src={href('/stlflag.png')} alt="" width="16" height="16" />
-            What's New
-          </h2>
-          <a class="win98-button" href={href('/updates/')}>
-            All <IconArrowRight />
+        </ul>
+      </section>
+      <section class="front-index-more">
+        <h2 class="rail-header">More</h2>
+        <ul class="front-index-list">
+          {
+            moreSections.map((section) => (
+              <li>
+                <a href={href(section.path)}>
+                  <span class="front-index-label">{section.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </aside>
+
+    {
+      /* The site intro, topping the left column on desktop. Its own grid item
+       (not inside a column wrapper) so the phone layout can keep it first. */
+    }
+    <header class="h-card front-intro">
+      {
+        /* The tagline leads the block as its main header; the p-note class
+         doubles it as the h-card's note for mf2 parsers. */
+      }
+      <p class="front-eyebrow">About</p>
+      <h2 class="front-tagline p-note">{TAGLINE}</h2>
+      <p class="introduction">
+        {intro}
+        <br /><br />
+        <strong>So far</strong>: <span class="stat">{wanderedCount}</span> neighborhoods and
+        <span class="stat">{visitedCount}</span> restaurants! <a
+          class="continue-link"
+          href={href('/about/')}
+          aria-label="Read more about St. Louing">
+          Continue reading <IconArrowRight />
+        </a>
+      </p>
+      {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
+      <span class="p-name" hidden>St. Louing</span>
+      <a class="u-url" href={href('/')} hidden>stlouing.com</a>
+      <img class="u-photo" src={href('/og.png')} alt="" hidden />
+    </header>
+
+    {
+      /* Column 2: the lead story and food cards. The wrapper lets the column
+       flow at its own height (no row coupling with the rails); on phones it
+       dissolves (display: contents) so the grid can interleave the areas. */
+    }
+    <div class="front-center">
+      {
+        leadTopic && (
+          <section class="front-lead">
+            {/* The curated blurb-free banner (never the OG card — its baked-in
+             title would double the headline). Duplicate of the headline link,
+             so it's hidden from the accessibility tree. */}
+            {leadTopic.data.leadImage && (
+              <a
+                class="lead-figure"
+                href={href(`/${leadTopic.id}/`)}
+                aria-hidden="true"
+                tabindex="-1">
+                <img src={href(leadTopic.data.leadImage)} alt="" width="1200" height="800" />
+              </a>
+            )}
+            <p class="section-label lead-kicker">Featured</p>
+            <p class="lead-dateline">{formatDate(leadTopic.data.updated)}</p>
+            <h2 class="lead-headline">
+              <a href={href(`/${leadTopic.id}/`)}>{leadTopic.data.title}</a>
+            </h2>
+            {leadTopic.data.description && <p class="lead-deck">{leadTopic.data.description}</p>}
+            {leadTeaser && <p class="lead-teaser">{leadTeaser}</p>}
+            <p class="lead-meta">
+              <Button href={href(`/${leadTopic.id}/`)} variant="dark" compact>
+                Read more <IconArrowRight />
+              </Button>
+            </p>
+          </section>
+        )
+      }
+
+      <section class="front-food">
+        <div class="group-header">
+          <h2 class="group-label">Food</h2>
+          <a class="group-all continue-link" href={href('/best/')}>
+            All restaurants & cafes <IconArrowRight />
           </a>
         </div>
-        <ul class="recent-list win98-field">
+        <div class="food-cards">
+          {
+            featuredFood.map(({ place, teaser }) => (
+              <article class="food-card">
+                <a class="food-card-link" href={href(`/food/${place.id}/`)}>
+                  {place.data.photo && (
+                    <Image
+                      class="food-card-photo"
+                      src={place.data.photo}
+                      alt={place.data.title}
+                      width={520}
+                    />
+                  )}
+                  <span class="food-card-title">{place.data.title}</span>
+                  {place.data.description && (
+                    <span class="food-card-description">{place.data.description}</span>
+                  )}
+                  {teaser && <span class="food-card-excerpt">{teaser}</span>}
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+
+    {
+      /* Column 3: the Explore rail — the maps, then the What's New window. Same
+       independent-flow wrapper as the center column. */
+    }
+    <div class="front-rail">
+      <section class="front-explore">
+        <div class="group-header">
+          <h2 class="group-label">{exploreGroup?.label}</h2>
+          {exploreGroup?.kicker && <span class="group-kicker">{exploreGroup.kicker}</span>}
+        </div>
+        <List>
+          {
+            exploreSections.map((section) => (
+              <ListItem
+                title={section.label}
+                href={href(section.path)}
+                description={section.description}>
+                {section.icon && <Icon name={section.icon} slot="icon" />}
+              </ListItem>
+            ))
+          }
+        </List>
+      </section>
+
+      <section class="front-whatsnew whats-new">
+        <h2 class="whats-new-title">What's New</h2>
+        {/* The classic column's asterisk separator, in fleurs. */}
+        <div class="whats-new-fleurs" aria-hidden="true">
+          <FleurGlyph />
+          <FleurGlyph />
+          <FleurGlyph />
+        </div>
+        <ul class="recent-list">
           {
             latestUpdates.map(({ date, Content }) => (
               <li class="recent-item">
@@ -125,231 +266,373 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             ))
           }
         </ul>
+        <a class="whats-new-all continue-link" href={href('/updates/')}>
+          All updates <IconArrowRight />
+        </a>
       </section>
     </div>
-    {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
-    <span class="p-name" hidden>St. Louing</span>
-    <a class="u-url" href={href('/')} hidden>stlouing.com</a>
-    <img class="u-photo" src={href('/og.png')} alt="" hidden />
-  </header>
-
-  <div class="directory">
-    {
-      groups.map((group) => {
-        if (group.id === 'notes') {
-          return (
-            <section class="group">
-              <div class="group-header">
-                <h2 class="group-label">{group.label}</h2>
-                <a class="all" href={href('/notes/')}>
-                  All <IconArrowRight />
-                </a>
-              </div>
-              <List>
-                {latestNotes.map((note) => (
-                  <ListItem
-                    title={note.data.title}
-                    href={href(`/notes/${note.id}/`)}
-                    meta={formatDateShort(note.data.created)}
-                  />
-                ))}
-              </List>
-            </section>
-          )
-        }
-
-        if (group.id === 'topics') {
-          return (
-            <section class="group">
-              <div class="group-header">
-                <h2 class="group-label">
-                  {/* <span class="group-numeral">{group.numeral}.</span>  */}
-                  {group.label}
-                </h2>
-                {group.kicker && <span class="group-kicker">{group.kicker}</span>}
-              </div>
-              <List>
-                {latestTopics.map((topic) => (
-                  <ListItem
-                    title={topic.data.title}
-                    href={href(`/${topic.id}/`)}
-                    description={
-                      topic.data.description
-                        ? `${topic.data.description}.`
-                        : formatDateShort(topic.data.updated)
-                    }>
-                    <Icon name={topic.data.icon} slot="icon" />
-                  </ListItem>
-                ))}
-              </List>
-            </section>
-          )
-        }
-
-        const items = sections.filter((section) => section.group === group.id)
-
-        if (items.length === 0) {
-          return null
-        }
-
-        return (
-          <section class="group">
-            <div class="group-header">
-              <h2 class="group-label">
-                {/* <span class="group-numeral">{group.numeral}.</span>  */}
-                {group.label}
-              </h2>
-              {group.kicker && <span class="group-kicker">{group.kicker}</span>}
-            </div>
-
-            <List>
-              {items.map((section) => {
-                const Icon = iconByPath[section.path]
-                return (
-                  <ListItem
-                    title={section.label}
-                    href={href(section.path)}
-                    description={section.description}
-                    meta={countByPath[section.path]}>
-                    {Icon && <Icon slot="icon" />}
-                  </ListItem>
-                )
-              })}
-            </List>
-          </section>
-        )
-      })
-    }
-  </div>
-
-  <div class="newsletter-section">
-    <NewsletterSignup compact />
   </div>
 </BaseLayout>
 
 <style>
-  h1.page-title {
-    display: flex;
-    align-items: baseline;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-xl);
-    margin-bottom: 0;
-    font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 1.1;
-    font-size: clamp(3rem, 2rem + 8vw, 4rem);
-
-    span {
-      font-size: var(--font-size-xs);
-      color: var(--color-muted);
-      font-weight: 500;
-      font-family: var(--font-mono);
-    }
-  }
-
-  .index-header {
-    margin-bottom: var(--spacing-xl);
-  }
-
-  /* The title spans the full width on top; below it, the tagline + intro copy on
-     the left and the crest on the right, with the crest vertically centered
-     against that below-the-title block (not the title itself). */
-  .index-body {
+  /* The holy-grail front page: index rail | center | explore rail, as one flat
+     grid so the responsive collapses can reorder freely. The column rules are
+     drawn by the container (below), so they run the full column height no
+     matter how tall each item is. */
+  .front-page {
+    --front-rail-left: 250px;
+    --front-rail-right: 300px;
+    --front-gap: var(--spacing-xl);
+    position: relative;
     display: grid;
-    align-items: center;
-    grid-template-columns: 2fr 1fr;
-    gap: var(--spacing-lg);
+    grid-template-columns: var(--front-rail-left) minmax(0, 1fr) var(--front-rail-right);
+    grid-template-areas:
+      'intro center rail'
+      'index center rail';
+    /* Row 1 hugs the intro; without this, the tall row-spanning center column
+       distributes its height into row 1 and opens a hole above the index. */
+    grid-template-rows: auto 1fr;
+    column-gap: var(--front-gap);
+    row-gap: var(--spacing-lg);
+    align-items: start;
+    margin-block: var(--spacing-lg);
   }
 
-  .index-intro {
-    flex: 1;
+  /* Each column is its own flow, so a tall item in one column never opens a
+     hole in another (grid rows would otherwise couple their heights). */
+  .front-center,
+  .front-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
     min-width: 0;
   }
 
-  /* A right-hand column wider than the crest so the crest sits centered within
-     it rather than hugging the edge. The flag's yellow and blue are fixed brand
-     colors, so the crest stays as-is in dark mode. */
-  .index-crest {
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    justify-self: center;
-    width: clamp(80px, 12vw, 100px);
-    margin: 0 var(--spacing-lg);
-    margin-top: var(--spacing-lg);
+  .front-center {
+    grid-area: center;
   }
 
-  /* :global() because Astro's scope doesn't reach the child component's root
-     <svg>; without it the reset (svg { max-width: 100% }) lets the fleur grow to
-     fill the container instead of holding this fixed size. */
-  .index-crest :global(.index-crest-img) {
-    width: clamp(48px, 12vw, 90px);
-    height: auto;
+  .front-rail {
+    grid-area: rail;
   }
 
-  /* Desktop only: turn the crest column into a larger red disc behind the SVG.
-     A container background always paints behind its children, so the SVG (its
-     own disc + fleur) sits on top; sharing the accent color, the container disc
-     and the SVG disc read as one bigger circle while the fleur keeps its size. */
-  @media (min-width: 700px) {
-    .index-crest {
-      width: clamp(104px, 18vw, 150px);
-      aspect-ratio: 1;
-      background: #c70f2e;
-      border-radius: 50%;
-    }
+  /* Newspaper column rules, centered in each gap. */
+  .front-page::before,
+  .front-page::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    width: 1px;
+    background: var(--color-line);
   }
 
-  /* Hidden on narrow screens — there's no right-hand column to sit in. Collapse
-     the grid to one column too, so the intro spans the full width instead of
-     staying pinned to the 2fr track with an empty column beside it. */
-  @media (max-width: 700px) {
-    .index-body {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-
-    .index-crest {
-      display: none;
-    }
+  .front-page::before {
+    left: calc(var(--front-rail-left) + var(--front-gap) / 2);
   }
 
-  .tagline {
-    margin-block: var(--spacing-xs) 0;
-    font-size: var(--font-size-lg);
-    color: var(--color-accent);
-    font-weight: 500;
-    line-height: 1.2;
+  .front-page::after {
+    right: calc(var(--front-rail-right) + var(--front-gap) / 2);
   }
 
-  /* A running tally under the tagline; the counts ride in accent, the label quiet. */
-  .progress-report {
-    margin-block: var(--spacing-sm) 0;
-    /* font-family: var(--font-mono); */
-    font-size: var(--font-size-lg);
-    color: var(--color-muted);
+  .front-index {
+    grid-area: index;
+    min-width: 0;
+  }
+
+  .front-intro {
+    grid-area: intro;
+    min-width: 0;
+  }
+
+  .front-lead {
+    grid-area: lead;
+    min-width: 0;
+  }
+
+  .front-food {
+    grid-area: food;
+    min-width: 0;
+  }
+
+  .front-explore {
+    grid-area: explore;
+    min-width: 0;
+  }
+
+  .front-whatsnew {
+    grid-area: whatsnew;
+    min-width: 0;
+  }
+
+  /* ----- The article rail ----- */
+
+  /* Rail section headers in the same heavy black voice as Lists/Explore,
+     scaled down for the narrow column. */
+  .rail-header {
+    margin: 0 0 var(--spacing-xs);
+    padding-block-end: var(--spacing-xs);
+    border-block-end: 2px solid var(--color-line-contrast);
+    font-family: var(--font-display-black);
     font-weight: 400;
-    line-height: 1.2;
+    /* Same size as the Explore/Lists group labels. */
+    font-size: var(--font-size-xxl);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
   }
 
-  .stat {
-    color: var(--color-accent);
-    font-weight: 700;
+  /* Article rows: serif title over a red date byline, dotted rules between —
+     the magazine-rail treatment. */
+  .rail-articles {
+    margin: 0 0 var(--spacing-lg);
+    padding: 0;
+    list-style: none;
   }
 
-  .stat-title {
+  .rail-articles li {
+    margin: 0;
+  }
+
+  .rail-articles li + li {
+    border-block-start: 1px dotted var(--color-line-input);
+  }
+
+  /* The whole-row hover wash, with the ListItem padding/negative-margin bleed
+     so the tint extends past the text while alignment holds. */
+  .rail-articles a {
+    display: block;
+    padding: var(--spacing-shmedium) var(--spacing-sm);
+    margin-inline: calc(-1 * var(--spacing-sm));
+    color: var(--color-text-heading);
+    text-decoration: none;
+    transition: background-color 0.12s ease;
+  }
+
+  .rail-articles a:hover {
+    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+  }
+
+  .rail-article-title {
+    display: block;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: var(--font-size-lg);
+    line-height: 1.25;
+  }
+
+  .rail-article-description {
+    display: block;
+    margin-block-start: var(--spacing-xs);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    color: var(--color-muted);
+  }
+
+  .rail-articles a:hover .rail-article-title {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .front-index-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .front-index-list li {
+    margin: 0;
+  }
+
+  /* Fine dotted rules between rows, under the solid-ruled section header. */
+  .front-index-list li + li {
+    border-block-start: 1px dotted var(--color-line-input);
+  }
+
+  /* Dense mono rows for the More section. */
+  .front-index-list a {
+    display: block;
+    min-width: 0;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-inline: calc(-1 * var(--spacing-sm));
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
     color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.12s ease;
+  }
+
+  .front-index-list a:hover {
+    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+  }
+
+  .front-index-list a:hover .front-index-label {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  /* ----- The center column ----- */
+
+  /* The heavy grotesque (not the serif) so the column opener doesn't clash
+     with the lead story's serif headline below it. */
+  /* The red eyebrow over the intro — same voice as the datelines. */
+  .front-eyebrow {
+    margin-block: 0 var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+  }
+
+  /* Sized for the narrow left column it now tops (full-width on tablet and
+     phone, where it still reads fine at this scale). */
+  .front-tagline {
+    margin-block: 0 var(--spacing-sm);
+    font-family: var(--font-display-black);
+    font-weight: 400;
+    line-height: 1.25;
+    font-size: var(--font-size-xl);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
+    text-wrap: balance;
   }
 
   .introduction {
     max-width: 65ch;
     font-size: var(--font-size-md);
-    margin-block: var(--spacing-md);
+    margin-block: 0;
     color: var(--color-text);
   }
 
-  /* Section header: label on the left, optional "all →" on the right, with a
-     dotted rule under both (matches the list-item separators below it). */
+  .stat {
+    color: var(--color-accent-blue);
+    /* font-weight: 700; */
+  }
+
+  /* The lead now opens the center column, so only the food band below it
+     carries a seam rule. */
+  .front-food {
+    border-block-start: 1px solid var(--color-line);
+    padding-block-start: var(--spacing-md);
+  }
+
+  /* The lead story reads like a magazine feature: centered kicker + dateline +
+     headline + deck, then a dotted rule into a drop-capped two-column teaser. */
+  .front-lead {
+    text-align: center;
+  }
+
+  .lead-figure {
+    display: block;
+    margin-block-end: var(--spacing-md);
+  }
+
+  .lead-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-line);
+  }
+
+  .lead-kicker {
+    margin-block: 0 var(--spacing-sm);
+    color: var(--color-text-heading);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+  }
+
+  .lead-dateline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    margin-block: 0 var(--spacing-sm);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
+  }
+
+  .lead-dateline :global(.icon) {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--color-accent);
+  }
+
+  .lead-headline {
+    margin-block: 0 var(--spacing-xs);
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+    text-wrap: balance;
+  }
+
+  .lead-headline a {
+    color: var(--color-text-heading);
+    text-decoration: none;
+  }
+
+  .lead-headline a:hover {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .lead-deck {
+    margin-block: 0 var(--spacing-md);
+    font-size: var(--font-size-lg);
+    color: var(--color-muted);
+    font-weight: 400;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .lead-teaser {
+    margin-block: 0 var(--spacing-sm);
+    padding-block-start: var(--spacing-md);
+    border-block-start: 1px dotted var(--color-line-input);
+    text-align: start;
+    font-size: var(--font-size-md);
+    color: var(--color-text-article);
+    columns: 2;
+    column-gap: var(--spacing-xl);
+    column-rule: 1px dotted var(--color-line-input);
+  }
+
+  /* The big plain drop cap opens the teaser, magazine-style. */
+  .lead-teaser::first-letter {
+    float: left;
+    font-family: var(--font-display);
+    font-size: 4.4em;
+    line-height: 0.75;
+    padding-inline-end: var(--spacing-sm);
+    padding-block-start: 0.04em;
+    color: var(--color-text-heading);
+  }
+
+  .lead-meta {
+    display: flex;
+    justify-content: flex-end;
+    margin-block: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+  }
+
+  /* ----- Shared section headers (Explore, Lists) ----- */
+
   .group-header {
     display: flex;
     align-items: flex-end;
@@ -360,18 +643,54 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-end: var(--spacing-xs);
   }
 
+  /* Dramatic black section headers, magazine-style — heavy uppercase grotesque
+     over the thick rule, with the quiet mono kicker riding flush right. */
   .group-header .group-label {
     margin: 0;
+    font-family: var(--font-display-black);
+    font-weight: 400;
+    font-size: var(--font-size-xxl);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
   }
 
-  /* Roman numeral prefix (I. II. …) set apart from the section label. */
-  .group-numeral {
-    color: var(--color-accent);
+  /* The rail's list rows pick up the flag blue via the ListItem hooks. */
+  .front-explore {
+    --list-icon-color: var(--color-accent-blue);
+    --list-hover-color: var(--color-accent-blue);
+  }
+
+  /* The two map links read as links: underlined like body-copy anchors. The
+     hover override pins the same offset so the underline holds its position
+     (ListItem's own hover rule uses 2px) and only the color changes. */
+  .front-explore :global(.list-title) {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--color-muted);
+    text-underline-offset: 3px;
+  }
+
+  .front-explore :global(a.list-item:hover .list-title) {
+    text-underline-offset: 3px;
+  }
+
+  /* The map descriptions read at the intro paragraph's measure. The extra
+     .list-item class outranks List.astro's scoped rule (a bare descendant
+     selector only ties it, and cascade order is unreliable across files). */
+  .front-explore :global(.list-item .list-description) {
+    font-size: var(--font-size-md);
+    line-height: 1.55;
+  }
+
+  /* The map link titles step up to the large size. */
+  .front-explore :global(.list-item .list-title) {
+    font-size: var(--font-size-lg);
   }
 
   /* Right-justified section caption (Maps / Reading / …). */
   .group-kicker {
-    display: none;
     flex-shrink: 0;
     font-family: var(--font-mono);
     font-size: var(--font-size-xxs);
@@ -381,85 +700,191 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     letter-spacing: var(--letter-spacing);
   }
 
-  .group-header .all {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
+  /* ----- The food cards ----- */
+
+  /* Placement only — the look comes from .continue-link. */
+  .group-all {
     flex-shrink: 0;
-    font-size: var(--font-size-sm);
-    color: var(--color-muted);
-    font-weight: 500;
   }
 
-  .group-header .all:hover {
-    text-decoration-color: var(--color-accent);
+  /* A 2x2 of equal-height cards: 1fr auto-rows stretch every card to the
+     tallest row. */
+  .food-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: var(--spacing-lg);
+    margin-block-start: var(--spacing-sm);
   }
 
-  /* Keep the arrow the same accent color as the link text. */
-  .group-header .all :global(.icon) {
-    color: inherit;
-  }
-
-  /* What's New rides the header grid's right column, top-aligned with the
-     title; the grid's 700px collapse stacks it under the intro. The Win98
-     dressing (window, title bar, sunken field, button) is the shared .win98-*
-     chrome in global.css; only this page's layout and pinned interior inks
-     live here. */
-  .recently {
-    margin-block-start: var(--spacing-lg);
+  .food-card {
+    margin: 0;
     min-width: 0;
   }
 
-  /* Interior text styles only through the --win98-* tokens (light-palette
-     inks on the light face, theme inks once dark mode re-themes the window).
-     The date rides as a red uppercase eyebrow (same treatment as /updates)
-     so it stands out without competing with the title bar. */
-  .recently .recent-date {
+  /* Padding pulled back out by a matching negative margin (the ListItem
+     idiom), so the hover wash bleeds past the content while everything stays
+     aligned with the column. */
+  .food-card-link {
+    display: flex;
+    flex-direction: column;
+    /* Tight title-to-description rhythm; the photo opens its own gap below. */
+    gap: var(--spacing-xs);
+    height: 100%;
+    padding: var(--spacing-sm);
+    margin: calc(-1 * var(--spacing-sm));
+    border-radius: var(--radius);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.12s ease;
+  }
+
+  .food-card-link:hover {
+    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+  }
+
+  .food-card-link :global(.food-card-photo) {
+    width: 100%;
+    height: var(--card-photo-height);
+    object-fit: cover;
+    /* The photo keeps a fuller gap than the tightened title/description one. */
+    margin-block-end: var(--spacing-xs);
+  }
+
+  .food-card-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: var(--font-size-lg);
+    line-height: 1.25;
+    color: var(--color-text-heading);
+  }
+
+  .food-card-description {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.45;
+    color: var(--color-muted);
+    margin-bottom: var(--spacing-xs);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    /* The clamp box is the card's only shrinkable child — without this the
+       equal-height rows crush it to nothing. */
+    flex-shrink: 0;
+  }
+
+  /* A taste of the review itself, under the one-line description. */
+  .food-card-excerpt {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.45;
+    color: var(--color-text);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    /* Same equal-height-row crush guard as the description. */
+    flex-shrink: 0;
+  }
+
+  .food-card-link:hover .food-card-title {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  /* ----- The What's New box ----- */
+
+  /* A thin-ruled newspaper column: big centered serif title, a fleur separator
+     standing in for the classic asterisks, then dated entries divided by
+     dotted rules. The date rides as a muted uppercase caption. */
+  .whats-new {
+    min-width: 0;
+    border: 2px solid var(--color-line-contrast);
+    padding: var(--spacing-md);
+    /* The aged-newsprint wash, single-sourced from the surface token. */
+    background: var(--color-surface);
+  }
+
+  .whats-new-title {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    font-size: 2rem;
+    color: var(--color-text-heading);
+  }
+
+  .whats-new-fleurs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-block: var(--spacing-sm);
+    color: var(--color-accent-gold);
+  }
+
+  .whats-new-fleurs :global(svg) {
+    width: 0.6rem;
+    height: auto;
+  }
+
+  /* Centered like the box's title and fleurs (the WSJ column centers its
+     section labels the same way); the entry text below stays left-aligned.
+     Muted, not the red eyebrow. */
+  .whats-new .recent-date {
     font-weight: 600;
     letter-spacing: var(--letter-spacing);
     text-transform: uppercase;
-    color: var(--win98-accent);
-    font-size: var(--font-size-xs);
+    color: var(--color-accent-blue);
+    font-size: var(--font-size-xxs);
+    text-align: center;
   }
 
-  .recently .recent-changes {
-    color: var(--win98-text);
+  /* Update links in ink, bold instead of underlined (the WSJ lead-in
+     treatment — a box full of underlines read as noise); hover goes flag
+     blue with the underline back for affordance. */
+  .whats-new .recent-changes :global(a) {
+    color: var(--color-text-heading);
+    font-weight: 600;
+    text-decoration-line: none;
   }
 
-  .recently .recent-changes :global(a) {
-    color: var(--win98-link);
-    text-decoration-color: var(--win98-link);
+  .whats-new .recent-changes :global(a:hover) {
+    color: var(--color-accent-blue);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-accent-blue);
   }
 
-  .recently .recent-changes :global(a:hover) {
-    color: var(--win98-link-hover);
-    text-decoration-color: var(--win98-link-hover);
-  }
-
-  /* The box's column is too narrow for the /updates two-track date rail; stack
-     the date over its changes instead — the same collapse /updates uses on
-     phones — and tighten the row rhythm to fit the card. The list itself is a
-     sunken .win98-field; it only needs its own padding. */
-  .recently .recent-list {
+  /* The rail is too narrow for the /updates two-track date rail; stack the
+     date over its changes instead — the same collapse /updates uses on
+     phones — and tighten the row rhythm to fit the box. */
+  .whats-new .recent-list {
     grid-template-columns: 1fr;
-    /* A gray inset so the face shows around the sunken well, separating it
-       from the title bar — the classic dialog client margin. */
-    margin: var(--spacing-xs);
-    padding: var(--spacing-md) var(--spacing-lg);
   }
 
-  .recently .recent-item {
-    row-gap: var(--spacing-sm);
+  .whats-new .recent-item {
+    row-gap: var(--spacing-xs);
     padding-block: var(--spacing-md);
-    border-color: var(--win98-light);
+    border-block-start: 1px dotted var(--color-line-input);
   }
 
-  .recently .recent-item:first-child {
-    padding-block-start: 0;
+  .whats-new .recent-item:first-child {
+    border-block-start: 0;
+    padding-block-start: var(--spacing-sm);
   }
 
-  .recently .recent-item:last-child {
+  .whats-new .recent-item:last-child {
     padding-block-end: 0;
+  }
+
+  /* Placement only — the look comes from .continue-link. */
+  .whats-new-all {
+    display: block;
+    text-align: end;
+    margin-block-start: var(--spacing-sm);
   }
 
   /* Same layout as the What's New page (/updates): the list owns two tracks — a
@@ -498,10 +923,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   /* The rendered Markdown list. Keep the bullets, just reset spacing. */
+  /* Same measure as the intro paragraph. */
   .recent-changes {
     color: var(--color-text);
-    line-height: 1.45;
-    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    font-size: var(--font-size-md);
   }
 
   .recent-changes :global(ul) {
@@ -526,43 +952,80 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-decoration-line: underline;
   }
 
-  /* Stack the date over its changes on phones, like /updates does. The box
-     also drops its top offset there — stacked under the intro, the grid row
-     provides the separation. */
+  /* ----- Responsive collapses ----- */
+
+  /* Tablet: the rails can't both fit — the index drops to a full-width band at
+     the bottom (its groups fan out into columns), the Explore rail keeps its
+     column and its rule. */
+  @media (max-width: 1000px) {
+    .front-page {
+      grid-template-columns: minmax(0, 1fr) var(--front-rail-right);
+      grid-template-areas:
+        'intro  intro'
+        'center rail'
+        'index  index';
+      grid-template-rows: auto;
+    }
+
+    /* The container-drawn rules span the whole grid — including the
+       full-width intro and index rows — so here the column seam is drawn by
+       the rail itself, which only spans its own row. Centered in the gap via
+       the half-gap pull/pad. */
+    .front-page::before,
+    .front-page::after {
+      display: none;
+    }
+
+    .front-rail {
+      border-inline-start: 1px solid var(--color-line);
+      margin-inline-start: calc(-1 * var(--front-gap) / 2);
+      padding-inline-start: calc(var(--front-gap) / 2);
+    }
+
+    /* The rail's two sections sit side by side in the full-width band. */
+    .front-index {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      column-gap: var(--spacing-xl);
+      align-items: start;
+    }
+  }
+
+  /* Phone: one column, no rules; content first (intro, what's new, lead),
+     then the index and rails. The column wrappers dissolve so their children
+     become grid items again and the areas can interleave across columns. */
   @media (max-width: 700px) {
-    .recently {
-      margin-block-start: 0;
-    }
-
-    .recent-list {
+    .front-page {
       grid-template-columns: 1fr;
+      grid-template-areas:
+        'intro'
+        'whatsnew'
+        'lead'
+        'index'
+        'explore'
+        'food';
+      grid-template-rows: auto;
     }
 
-    .recent-item {
-      row-gap: var(--spacing-sm);
-      padding-block: var(--spacing-md);
+    .front-center,
+    .front-rail {
+      display: contents;
     }
-  }
 
-  .directory {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-    margin-block-end: var(--spacing-lg);
-  }
+    .front-page::before,
+    .front-page::after {
+      display: none;
+    }
 
-  @media (max-width: 700px) {
-    .directory {
+    /* A phone column is too narrow to split the teaser. */
+    .lead-teaser {
+      columns: 1;
+    }
+
+    /* Cards stack, each at its own natural height. */
+    .food-cards {
       grid-template-columns: 1fr;
+      grid-auto-rows: auto;
     }
-  }
-
-  /* Break the newsletter out of the centered .wrap so its river runs edge to edge,
-     like the entry pages; the signup inside re-constrains to the measure. */
-  .newsletter-section {
-    width: 100vw;
-    margin-inline: calc(50% - 50vw);
-    margin-block-start: var(--spacing-xl);
   }
 </style>

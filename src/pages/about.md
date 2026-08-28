@@ -2,7 +2,7 @@
 layout: ../layouts/MarkdownPage.astro
 title: About
 seoTitle: About St. Louing
-tagline: St. Louis as a verb
+tagline: My quest to document St. Louis
 description: 'St. Louing is an independent guide to the food and neighborhoods of St. Louis. A love letter to an underrated city, built in the spirit of the early internet.'
 ---
 
@@ -41,7 +41,6 @@ This site is the source of truth, and I'll automatically publish to these other 
 Just some thoughts I'm mulling on.
 
 - A case for St. Louis
-- Walkability of neighborhoods
 - Nearby hiking spots
 - Things to do in St. Louis
 - Like and Dislikes of STL

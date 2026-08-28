@@ -50,7 +50,7 @@ for (const event of events) {
 }
 
 const description =
-  'A month-by-month calendar of annual festivals, parades, and celebrations across St. Louis neighborhoods.'
+  'A calendar of annual festivals, parades, and celebrations across St. Louis neighborhoods.'
 ---
 
 <BaseLayout crumb="Annual Events" title="St. Louis Events by Month" description={description}>
@@ -70,15 +70,15 @@ const description =
               ? href(`/neighborhoods/${event.neighborhood}/`)
               : undefined
             // Kicker pairs the specific timing with the neighborhood (the month is
-            // already the section header), e.g. "Late June · Downtown".
-            const kicker = event.place ? `${event.when} · ${event.place}` : event.when
+            // already the section header), joined by the hairline tick divider,
+            // e.g. "Late June | Downtown".
+            const kickerParts = event.place ? [event.when, event.place] : [event.when]
 
             return (
               <RelatedCard
                 href={link}
                 title={event.name}
-                meta={kicker}
-                metaType="date"
+                metaParts={kickerParts}
                 description={event.blurb}>
                 <IconCalendar slot="icon" />
               </RelatedCard>

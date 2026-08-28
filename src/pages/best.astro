@@ -43,7 +43,7 @@ const favorites = (superlatives as Award[])
 const description = "The best of the St. Louis food I've tried, by category."
 ---
 
-<BaseLayout crumb="Best of" title="The Best Food in St. Louis" description={description}>
+<BaseLayout article crumb="Best of" title="The Best Food in St. Louis" description={description}>
   <article class="page">
     <header class="entry-header">
       <div class="entry-bar">
@@ -52,69 +52,84 @@ const description = "The best of the St. Louis food I've tried, by category."
       <p class="entry-summary">My favorite restaurants, bars, and cafes so far!</p>
     </header>
 
-    <section class="fact-section">
-      <h2>Best by Cuisine</h2>
-      <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
-      <table class="best-table">
-        <thead>
-          <tr>
-            <th>Cuisine</th>
-            <th>Place</th>
-            <th align="right">Rating</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            cuisineWinners.map(([cuisine, place]) => (
-              <tr>
-                <td class="best-cuisine">{cuisineLabel(cuisine)}</td>
-                <td>
-                  <a href={href(`/food/${place.id}/`)}>{place.data.title}</a>
-                </td>
-                <td align="right">
-                  <span class="best-rating">
-                    <IconStar />
-                    {place.data.rating}
+    <div class="best-body">
+      {
+        favorites.length > 0 && (
+          <section class="fact-section">
+            <h2>My Favorites</h2>
+            <p class="description">My favorite individual items throughout the St. Louis area.</p>
+            <div class="favorites-grid">
+              {favorites.map((award) => (
+                <a class="favorite" href={href(`/food/${award.place!.id}/`)}>
+                  <span class="favorite-icon" aria-hidden="true">
+                    <IconAward />
                   </span>
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </section>
+                  <span class="favorite-text">
+                    <span class="favorite-label">{award.label}</span>
+                    <span class="favorite-name">{award.place!.data.title}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
 
-    {
-      favorites.length > 0 && (
-        <section class="fact-section">
-          <h2>My Favorites</h2>
-          <p class="description">My favorite individual items throughout the St. Louis area.</p>
-          <div class="favorites-grid">
-            {favorites.map((award) => (
-              <a class="favorite" href={href(`/food/${award.place!.id}/`)}>
-                <span class="favorite-icon" aria-hidden="true">
-                  <IconAward />
-                </span>
-                <span class="favorite-text">
-                  <span class="favorite-label">{award.label}</span>
-                  <span class="favorite-name">{award.place!.data.title}</span>
-                </span>
-              </a>
-            ))}
-          </div>
-        </section>
-      )
-    }
+      <section class="fact-section">
+        <h2>Best by Cuisine</h2>
+        <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
+        <table class="best-table">
+          <thead>
+            <tr>
+              <th>Cuisine</th>
+              <th>Place</th>
+              <th align="right">Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              cuisineWinners.map(([cuisine, place]) => (
+                <tr>
+                  <td class="best-cuisine">{cuisineLabel(cuisine)}</td>
+                  <td>
+                    <a href={href(`/food/${place.id}/`)}>{place.data.title}</a>
+                  </td>
+                  <td align="right">
+                    <span class="best-rating">
+                      {place.data.rating}
+                      <IconStar />
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </section>
+    </div>
   </article>
 </BaseLayout>
 
 <style>
+  /* The sections sit in the same centered 600px column as the standalone
+     prose pages (about, feedback) — the header (and its dotted rule) caps to
+     match. */
+  .entry-header {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .best-body {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
   /* The favorites: a 3-up grid of cards in one bordered frame. The dividers are
      the grid's own 1px gap showing the line-colored track behind the cards, so
      rows + columns are handled uniformly with no per-cell border math. */
   .favorites-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1px;
     background: var(--color-line);
     border: 1px solid var(--color-line);
@@ -133,7 +148,9 @@ const description = "The best of the St. Louis food I've tried, by category."
   }
 
   .favorite:hover .favorite-name {
-    color: var(--color-accent);
+    color: var(--color-text-heading);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   @media (max-width: 700px) {
@@ -152,7 +169,7 @@ const description = "The best of the St. Louis food I've tried, by category."
   .favorite-icon :global(.icon) {
     width: 1.25rem;
     height: 1.25rem;
-    color: var(--color-accent);
+    color: var(--color-accent-gold);
   }
 
   .favorite-text {
@@ -167,7 +184,7 @@ const description = "The best of the St. Louis food I've tried, by category."
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
+    color: var(--color-muted);
     line-height: 1.2;
   }
 
@@ -223,7 +240,7 @@ const description = "The best of the St. Louis food I've tried, by category."
     text-decoration-line: underline;
   }
 
-  /* The winner's 0-10 score, matching the related-card rating badge. */
+  /* The winner's 0-10 score: a gold star beside the figure in ink. */
   .best-rating {
     display: inline-flex;
     align-items: center;
@@ -231,13 +248,13 @@ const description = "The best of the St. Louis food I've tried, by category."
     font-family: var(--font-mono);
     font-weight: 700;
     line-height: 1;
-    color: var(--color-accent);
+    color: var(--color-text);
   }
 
   .best-rating :global(.icon) {
     width: 0.9em;
     height: 0.9em;
-    color: var(--color-accent);
+    color: var(--color-accent-gold);
     fill: currentColor;
     stroke: currentColor;
   }

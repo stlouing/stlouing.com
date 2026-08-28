@@ -1,86 +1,313 @@
 ---
+// The site footer: the city flag as a band — red field, the river ribbon on
+// top, the crest — carrying the site identity on the left and the newsletter
+// signup on the right. The form hands off to Substack (no iframe widget, no
+// tracking, works without JS): submitting GETs to `${NEWSLETTER_URL}/subscribe`,
+// which Substack prefills + handles double-opt-in. The newsletter side
+// self-hides when the URL is unset.
+import { NEWSLETTER_URL, SITE_DESCRIPTION } from '../lib/site'
 import { href } from '../lib/url'
-import { NEWSLETTER_URL } from '../lib/site'
+import FleurDeLis from '../assets/FleurDeLis.astro'
 import IconHeart from '../assets/IconHeart.astro'
+import IconInstagram from '../assets/IconInstagram.astro'
 ---
 
 <footer class="site-footer">
-  <div class="wrap footer-inner">
-    <span class="footer-tagline"
-      ><IconHeart />
-      <span class="footer-tagline-text"><span class="footer-tagline-text-extra">Made in</span> STL</span
-      ></span
-    >
-    <nav class="footer-nav" aria-label="Footer">
-      <a href="https://www.instagram.com/st.louing" target="_blank">@st.louing</a>
-      <a href={NEWSLETTER_URL} target="_blank">Newsletter</a>
+  <div class="river-border" aria-hidden="true"></div>
+  <div class="wrap wrap-wide footer-inner">
+    <div class="footer-identity">
+      <FleurDeLis class="footer-crest" />
+      <p class="footer-name">St. Louing</p>
+      <p class="footer-description">{SITE_DESCRIPTION}</p>
+    </div>
+    {
+      /* Rendered even when NEWSLETTER_URL is unset (dev has no .env value);
+         Substack simply isn't reachable then, same as the old signup. */
+    }
+    <div class="footer-newsletter">
+      <p class="footer-newsletter-title">Newsletter</p>
+      <p class="footer-description">
+        I'm always wandering St. Louis. Sign up if you want updates on the site. No spam.
+      </p>
+      <form
+        class="newsletter-form"
+        action={`${NEWSLETTER_URL}/subscribe`}
+        method="get"
+        target="_blank">
+        <input
+          type="email"
+          name="email"
+          placeholder="you@email.com"
+          aria-label="Your email"
+          required
+        />
+        {
+          /* The shared black-block look via the .btn classes on a native
+             button — the Button component pins type="button", and a form
+             submit needs type="submit". */
+        }
+        <button type="submit" class="btn btn-dark btn-compact">Subscribe</button>
+      </form>
+    </div>
+  </div>
+  {/* The closing bar: hairline, copyright left, socials right. */}
+  <div class="wrap wrap-wide footer-bottom">
+    <span class="footer-made">
+      Made with <IconHeart /> in STL
+    </span>
+    <nav class="footer-links" aria-label="Footer">
       <a href={href('/feedback/')}>Feedback</a>
+      <a class="footer-instagram" href="https://www.instagram.com/st.louing" target="_blank">
+        <IconInstagram />
+        st.louing
+      </a>
     </nav>
   </div>
 </footer>
 
 <style>
+  /* The band wears the city flag's own colors — pinned in BOTH themes (like
+     the pixel flag and crest: flag colors are fixed, not theme inks). The
+     river ribbon on top is the flag's white-fimbriated blue wave, so the
+     whole band reads as the flag itself. */
   .site-footer {
-    border-top: 1px solid var(--color-line);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    color: var(--color-text);
+    --footer-red: #c70f2e;
+    --footer-yellow: #f5dc0f;
+    --footer-white: #ffffff;
+    --footer-ink: #1b1a17;
+    --river-height: 32px;
+    margin-block-start: var(--spacing-xl);
+    /* The red field starts BELOW the river strip — the tile paints its own
+       below-wave red, so the wavy line is the band's actual top edge and the
+       page shows through above it. */
+    background: linear-gradient(
+      to bottom,
+      transparent var(--river-height),
+      var(--footer-red) var(--river-height)
+    );
   }
 
-  .footer-tagline {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-weight: 500;
-  }
-
-  /* The heart in accent (the global `.icon` rule colors it muted otherwise; the
-     icon sets its own color, so target it directly). */
-  .footer-tagline :global(.icon) {
-    color: var(--color-accent);
+  /* A little taller than the global 24px ribbon. 32px keeps the tile math
+     whole-pixel (the 90x80 tile scales to 36px), so no seam leaks. Decorative
+     only — when the ribbon overlaps content (map pages), clicks fall through. */
+  .river-border {
+    height: var(--river-height);
+    pointer-events: none;
   }
 
   .footer-inner {
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-xl) var(--spacing-xl);
+    padding-block: var(--spacing-xl);
+  }
+
+  .footer-identity {
+    flex: 1 1 18rem;
+    max-width: 30rem;
+  }
+
+  .footer-identity :global(.footer-crest) {
+    width: 64px;
+    height: 64px;
+    margin-block-end: var(--spacing-md);
+  }
+
+  /* The name in the nameplate's display serif, as written — not shouted. */
+  .footer-name {
+    margin: 0 0 var(--spacing-sm);
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 2.75rem;
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--footer-white);
+  }
+
+  .footer-newsletter-title {
+    margin: 0 0 var(--spacing-sm);
+    font-family: var(--font-display-black);
+    font-weight: 400;
+    font-size: var(--font-size-xxl);
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--footer-white);
+  }
+
+  .footer-description {
+    margin: 0;
+    max-width: 30ch;
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.45;
+    color: var(--footer-white);
+    opacity: 0.92;
+  }
+
+  /* The newsletter blurb runs a little wider than the identity line. */
+  .footer-newsletter .footer-description {
+    max-width: 40ch;
+  }
+
+  /* Bottom-aligned against the taller identity stack, so the form anchors to
+     the band's baseline instead of floating at the top. */
+  .footer-newsletter {
+    flex: 1 1 16rem;
+    max-width: 26rem;
+    align-self: flex-end;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-block-start: var(--spacing-md);
+  }
+
+  /* Field + button pinned to the flag palette in both themes. */
+  .newsletter-form input {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--footer-white);
+    color: var(--footer-ink);
+    border-color: var(--footer-white);
+  }
+
+  /* The map pages (Food + Neighborhoods) get the mini footer: just the river
+     edge and the closing bar — the full identity + signup panel eats vertical
+     room under the full-height map layouts. Keyed off each page's own map
+     container, so no per-page wiring is needed. Flat :global on purpose. */
+  :global(body:has([data-map])) .footer-inner,
+  :global(body:has([data-neighborhood-map])) .footer-inner {
+    display: none;
+  }
+
+  /* The river rides UP over the map's bottom edge, so the wave crest cuts
+     into the content instead of leaving a blank strip above it. The footer
+     stacks over the map's own layered canvases; the ribbon itself is
+     pointer-transparent so the overlapped map stays clickable. */
+  :global(body:has([data-map])) .site-footer,
+  :global(body:has([data-neighborhood-map])) .site-footer {
+    position: relative;
+    z-index: 2;
+    margin-block-start: calc(-1 * var(--river-height));
+    /* The footer's own box covers the overlapped strip — let clicks fall
+       through it to the map, then re-arm the interactive red bar below. */
+    pointer-events: none;
+  }
+
+  :global(body:has([data-map])) .footer-bottom,
+  :global(body:has([data-neighborhood-map])) .footer-bottom {
+    pointer-events: auto;
+  }
+
+  /* Without the panel above it, the bar sits right under the wave — skip the
+     hairline (the river is the bar's top edge) and tuck the top padding in
+     so the mini band stays balanced. */
+  :global(body:has([data-map])) .footer-bottom,
+  :global(body:has([data-neighborhood-map])) .footer-bottom {
+    border-block-start: 0;
+    padding-block-start: var(--spacing-xs);
+  }
+
+  /* The closing bar under a soft hairline. */
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--spacing-md);
-    padding-block: var(--spacing-sm);
+    padding-block: var(--spacing-md);
+    border-block-start: 1px solid color-mix(in srgb, var(--footer-white) 30%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
   }
 
-  .footer-nav {
+  .footer-made {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--footer-white);
+    font-weight: 500;
+  }
+
+  /* The heart in the flag's own yellow (the crest disc), popping off the red;
+     flat :global on purpose (nested :global gets stripped). */
+  .footer-made :global(.icon) {
+    width: 1rem;
+    height: 1rem;
+    color: var(--footer-white);
+    margin: 0 0.2rem;
+  }
+
+  .footer-links {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-
-    & a {
-      display: flex;
-      gap: var(--spacing-sm);
-      color: var(--color-muted-2);
-      text-decoration-line: none;
-      text-underline-offset: 3px;
-      font-weight: 500;
-
-      &:hover {
-        color: var(--color-accent);
-        text-decoration-line: underline;
-        text-decoration-color: var(--color-accent);
-        text-decoration-thickness: 2px;
-        text-underline-offset: 2px;
-      }
-    }
+    align-items: center;
+    gap: var(--spacing-lg);
   }
 
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    color: var(--footer-white);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--footer-white);
+    text-underline-offset: 4px;
+  }
+
+  /* Flat :global on purpose (nested :global gets stripped). */
+  .footer-links :global(.icon) {
+    width: 1rem;
+    height: 1rem;
+    color: inherit;
+  }
+
+  .footer-links a:hover {
+    color: var(--footer-yellow);
+    text-decoration-color: var(--footer-yellow);
+  }
+
+  /* Stack the two blocks on phones, form full width — trimmed padding and a
+     slightly smaller voice so the band doesn't tower over a phone screen. */
   @media (max-width: 700px) {
-    .footer-tagline-text-extra {
-      display: none;
+    .site-footer {
+      margin-block-start: var(--spacing-lg);
     }
 
-    .footer-nav {
-      a {
-        font-size: var(--font-size-xxs);
-      }
+    .footer-inner {
+      flex-direction: column;
+      align-items: stretch;
+      padding-block: var(--spacing-lg);
+    }
+
+    .footer-name {
+      font-size: 2.25rem;
+    }
+
+    .footer-newsletter-title {
+      font-size: var(--font-size-xl);
+    }
+
+    .footer-description {
+      font-size: var(--font-size-sm);
+    }
+
+    .footer-identity,
+    .footer-newsletter {
+      flex: 0 0 auto;
+      max-width: none;
+      /* In the column stack, align-self would nudge it sideways instead. */
+      align-self: auto;
     }
   }
 </style>

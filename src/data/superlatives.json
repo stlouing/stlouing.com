@@ -7,5 +7,6 @@
   { "label": "ribs", "slug": "pappys" },
   { "label": "reuben sandwich", "slug": "blues-city-deli" },
   { "label": "butter chicken", "slug": "tikka-tangy" },
-  { "label": "chai tea", "slug": "telva-at-the-ridge" }
+  { "label": "chai tea", "slug": "telva-at-the-ridge" },
+  { "label": "pad kee mao", "slug": "teerak-thai" }
 ]

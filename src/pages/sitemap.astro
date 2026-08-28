@@ -5,7 +5,6 @@ import { href } from '../lib/url'
 import { published } from '../lib/content'
 import neighborhoods from '../data/neighborhoods.json'
 import IconMapPin from '../assets/IconMapPin.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
 
 // A human-readable map of the whole site, pulled live from the content
 // collections so it never drifts. (This is the people-facing index; the
@@ -15,8 +14,6 @@ const byTitle = (left: { data: { title: string } }, right: { data: { title: stri
 
 const food = published(await getCollection('food')).sort(byTitle)
 const topics = published(await getCollection('topics')).sort(byTitle)
-const notes = published(await getCollection('notes')).sort(byTitle)
-const hikes = published(await getCollection('hikes')).sort(byTitle)
 
 // Every real neighborhood (skip the `ignored` rows folded into a merged one),
 // alphabetical for findability — each has a page, written or data-only.
@@ -70,25 +67,6 @@ const groups: SitemapGroup[] = [
       path: `/neighborhoods/${neighborhood.slug}/`,
     })),
   },
-
-  ...(notes.length > 0
-    ? [
-        {
-          label: 'Notes',
-          path: '/notes/',
-          items: notes.map((note) => ({ title: note.data.title, path: `/notes/${note.id}/` })),
-        },
-      ]
-    : []),
-  ...(hikes.length > 0
-    ? [
-        {
-          label: 'Hikes',
-          path: '/hikes/',
-          items: hikes.map((hike) => ({ title: hike.data.title, path: `/hikes/${hike.id}/` })),
-        },
-      ]
-    : []),
 ]
 ---
 
@@ -109,7 +87,13 @@ const groups: SitemapGroup[] = [
           <section class:list={['sitemap-section', { featured: group.featured }]}>
             <h2 class="sitemap-head">
               <span class="sitemap-head-label">
-                <span class="sitemap-label">{group.label}</span>
+                {group.path ? (
+                  <a class="sitemap-label" href={href(group.path)}>
+                    {group.label}
+                  </a>
+                ) : (
+                  <span class="sitemap-label">{group.label}</span>
+                )}
                 {group.featured && (
                   <span class="sitemap-map-badge">
                     <IconMapPin /> Map
@@ -117,11 +101,6 @@ const groups: SitemapGroup[] = [
                 )}
                 <span class="sitemap-count">{group.items.length}</span>
               </span>
-              {group.path && (
-                <a class="btn btn-outline" href={href(group.path)}>
-                  {group.featured ? 'View map' : 'View all'} <IconArrowRight />
-                </a>
-              )}
             </h2>
             <ul class="sitemap-list">
               {group.items.map((entry) => (
@@ -138,6 +117,12 @@ const groups: SitemapGroup[] = [
 </BaseLayout>
 
 <style>
+  /* The directory spans the whole wide page (the global .body 70ch cap is for
+     prose), everything centered within it. */
+  .body {
+    max-width: none;
+  }
+
   .sitemap-section {
     margin-block-start: var(--spacing-lg);
   }
@@ -152,7 +137,7 @@ const groups: SitemapGroup[] = [
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-    padding: 1px var(--spacing-sm);
+    padding: 2px var(--spacing-xs);
     border: 1px solid var(--color-accent);
     border-radius: 20px;
     font-family: var(--font-mono);
@@ -165,21 +150,26 @@ const groups: SitemapGroup[] = [
 
   .sitemap-map-badge :global(.icon) {
     color: var(--color-accent);
+    height: 14px;
+    width: 14px;
   }
 
-  /* Category header: a mono label with its count flush right, on a hairline rule —
-     mirrors the Food / Neighborhoods list section heads. */
+  /* Category header: the front page's heavy black header voice over the thick
+     rule. */
   .sitemap-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--spacing-sm);
     margin: 0 0 var(--spacing-sm);
     padding-block-end: var(--spacing-xs);
-    border-block-end: 1px solid var(--color-line);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-md);
-    font-weight: 600;
+    border-block-end: 2px solid var(--color-line-contrast);
+    font-family: var(--font-display-black);
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
   }
 
   .sitemap-head a {
@@ -188,28 +178,26 @@ const groups: SitemapGroup[] = [
   }
 
   .sitemap-head a:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-blue);
   }
 
+  /* The count keeps the quiet mono voice beside the heavy label. */
   .sitemap-count {
+    font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     font-weight: 400;
     color: var(--color-muted);
   }
 
-  /* Two columns above mobile so long lists (85 neighborhoods) stay compact
-     instead of running down one endless column; a single column on mobile. */
+  /* As many columns as fit the wide page (~5 at full width), so long lists
+     (85 neighborhoods) stay compact; the column width collapses the count on
+     its own at narrow sizes. */
   .sitemap-list {
     margin: 0;
     padding: 0;
     list-style: none;
+    columns: 12rem;
     column-gap: var(--spacing-lg);
-  }
-
-  @media (min-width: 600px) {
-    .sitemap-list {
-      column-count: 2;
-    }
   }
 
   .sitemap-list li {

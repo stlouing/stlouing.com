@@ -35,8 +35,9 @@ export interface PopupConfig {
   chips?: PopupChip[]
   // Food only: address lines, rendered under the title.
   addressLines?: string[]
-  // A one-line tagline (the entry's description), shown in accent below the chips.
-  // Passed by both the Food and Neighborhood maps.
+  // A one-line tagline (the entry's description). Accepted for compatibility
+  // but no longer rendered — the popups match the lists, which dropped
+  // descriptions in favor of the excerpt.
   tagline?: string
   // A short writeup teaser, clamped to a few lines by the popup CSS.
   excerpt?: string
@@ -111,7 +112,6 @@ export function buildPopupHtml(config: PopupConfig): string {
     verdict,
     chips = [],
     addressLines = [],
-    tagline = '',
     excerpt = '',
     sources = [],
     showMore = true,
@@ -133,19 +133,20 @@ export function buildPopupHtml(config: PopupConfig): string {
       ).join('')}</span>`
     : ''
 
-  // Joined with a slashed separator, matching the list rows' `CUISINE / NEIGHBORHOOD`.
-  const metaInner = chips.map(chipHtml).join('<span class="popup-meta-sep">/</span>')
-  const metaHtml = metaInner ? `<div class="popup-meta">${metaInner}</div>` : ''
+  // Joined with the hairline tick the list eyebrows use; the list-eyebrow
+  // class picks up the shared divider styling.
+  const metaInner = chips.map(chipHtml).join('<span class="eyebrow-divider" aria-hidden="true"></span>')
+  const metaHtml = metaInner ? `<div class="popup-meta list-eyebrow">${metaInner}</div>` : ''
 
   const addressHtml = addressLines.length
     ? `<span class="tip-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
     : ''
 
-  const taglineHtml = tagline ? `<p class="popup-tagline">${escapeHtml(tagline)}</p>` : ''
-
   const excerptHtml = excerpt ? `<p class="tip-excerpt">${escapeHtml(excerpt)}</p>` : ''
 
-  const moreHtml = showMore ? `<a class="popup-more-link" href="${link}">View more</a>` : ''
+  const moreHtml = showMore
+    ? `<a class="btn btn-dark btn-compact popup-more-link" href="${link}">View more</a>`
+    : ''
 
   const sourcesHtml = sources.length
     ? `<div class="popup-actions">${sources
@@ -156,7 +157,8 @@ export function buildPopupHtml(config: PopupConfig): string {
         .join('')}</div>`
     : ''
 
-  // Order mirrors the list rows: the photo banner, title, then the chips, then
-  // the tagline (description), with the address (Food) and excerpt below.
-  return `${photoHtml}${ratingHtml}${titleHtml}${metaHtml}${taglineHtml}${excerptHtml}${moreHtml}`
+  // Order mirrors the list rows: the photo banner, rating, the eyebrow, then
+  // the serif title with the address and excerpt below (no tagline — the lists
+  // dropped descriptions too).
+  return `${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${excerptHtml}${moreHtml}`
 }

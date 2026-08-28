@@ -8,11 +8,10 @@
 //   filled            — solid accent
 //   quiet             — borderless accent text link ("Read more →")
 //   muted             — borderless muted text w/ dotted underline (list sources)
-//   retro             — Windows 98 bevel chrome (Share / Feedback, theme toggle)
 // compact: tighter vertical padding for inline rows.
 interface Props {
   href?: string
-  variant?: 'outline' | 'filled' | 'quiet' | 'muted' | 'dark' | 'retro'
+  variant?: 'outline' | 'filled' | 'quiet' | 'muted' | 'dark'
   compact?: boolean
   class?: string
   [key: string]: unknown

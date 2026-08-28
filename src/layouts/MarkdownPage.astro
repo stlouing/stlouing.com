@@ -10,7 +10,7 @@ interface Props {
 const { frontmatter } = Astro.props
 ---
 
-<BaseLayout
+<BaseLayout article
   crumb={frontmatter.title}
   title={frontmatter.seoTitle}
   description={frontmatter.description}>
@@ -28,3 +28,17 @@ const { frontmatter } = Astro.props
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  /* Standalone prose pages read in the same centered 600px column as the
+     topic articles — the header (and its dotted rule) caps to match. */
+  .entry-header {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .body {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+</style>

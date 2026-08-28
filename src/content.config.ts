@@ -150,6 +150,9 @@ const topics = defineCollection({
     // An SEO-tuned <title> used when it should differ from the (shorter)
     // visible title — e.g. "The Great Divorce of St. Louis City and County".
     seoTitle: z.string().optional(),
+    // One-word subject label ("Food", "History") shown as the accent eyebrow
+    // over the topic's card on /topics.
+    category: z.string().optional(),
     description: z.string().optional(),
     // Leading-icon keyword for the topic lists (homepage + /topics). Resolved
     // by src/components/Icon.astro; falls back to a book when unset or unknown.
@@ -157,6 +160,11 @@ const topics = defineCollection({
     // Root-relative path to a 1200x630 social-share image in public/ (the
     // link-preview card). Falls back to the site flag when unset.
     ogImage: z.string().optional(),
+    // Root-relative path to an image in public/ for the homepage lead story —
+    // a blurb-free variant of the OG card, since the OG card's baked-in title
+    // would double the headline. No image renders on the homepage when unset.
+    // Keep the <img> width/height in index.astro in sync with its dimensions.
+    leadImage: z.string().optional(),
     updated: z.coerce.date(),
     created: z.coerce.date().optional(),
     // 'list' renders the body in the compact reference-list look (mono section

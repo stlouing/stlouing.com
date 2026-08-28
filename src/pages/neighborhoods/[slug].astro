@@ -191,6 +191,7 @@ const trail = [
 ---
 
 <BaseLayout
+  article
   crumb={title}
   title={seoTitle}
   description={metaDescription}
@@ -323,18 +324,23 @@ const trail = [
       <aside class="detail-aside">
         {
           (hasNeighborhoodShape(slug) || info?.coords) && (
-            <figure class="neighborhood-locator-figure">
-              <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
-              <figcaption>
-                {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
-              </figcaption>
-            </figure>
+            <div class="neighborhood-map-block">
+              <h2 class="section-label detail-section-label">Map</h2>
+              <figure class="neighborhood-locator-figure">
+                <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
+                <figcaption>
+                  {title} in {info?.group === 'St. Louis County' ? 'St. Louis County' : 'St. Louis'}
+                </figcaption>
+              </figure>
+              <a class="continue-link aside-more-link" href={href('/neighborhoods/')}>
+                Back to neighborhood map <IconArrowRight />
+              </a>
+            </div>
           )
         }
         {
           resourceLinks.length > 0 && (
             <>
-              <hr class="detail-divider" />
               <div class="detail-links-section">
                 <h2 class="section-label detail-section-label">Links</h2>
                 <div class="detail-links">
@@ -360,7 +366,6 @@ const trail = [
             </>
           )
         }
-        <hr class="detail-divider" />
         <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
       </aside>
     </div>

@@ -47,7 +47,7 @@ const hasCard = hasNumbers || hasVibe
       )}
       {hasVibe && (
         <div class:list={['card-section', { 'has-divider': hasNumbers }]}>
-          <h2 class="side-card-label section-label">Vibe</h2>
+          <h2 class="side-card-label section-label">Tags</h2>
           <div class="vibe-chips">
             {tags.map((tag) => (
               <Chip href={href(`/tags/${tagSlug(tag)}/`)}>
@@ -69,11 +69,10 @@ const hasCard = hasNumbers || hasVibe
     padding: 0;
   }
 
-  /* A second section (Vibe under By the numbers) gets a hairline rule above it. */
+  /* A second section (Vibe under By the numbers) — spacing only; its own
+     ruled label carries the separation. */
   .card-section.has-divider {
-    margin-block-start: var(--spacing-md);
-    padding-block-start: var(--spacing-md);
-    border-block-start: 1px solid var(--color-line);
+    margin-block-start: var(--spacing-lg);
   }
 
   /* Font comes from the shared global `.section-label`; this keeps only the
@@ -118,15 +117,39 @@ const hasCard = hasNumbers || hasVibe
     color: var(--color-muted);
   }
 
+  /* On the desktop rail the stat rows divide on dotted hairlines, like the
+     index page's lists (the mobile row layout keeps them clean). */
+  @media (min-width: 900px) {
+    .facts > .fact:not(:first-child) {
+      margin-block-start: var(--spacing-xs);
+      padding-block-start: var(--spacing-xs);
+      border-block-start: 1px dotted var(--color-line-input);
+    }
+  }
+
   .vibe-chips {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-xs);
   }
 
-  /* Square corners on the vibe chips (the shared .chip is rounded). */
+  /* Square corners on the vibe chips (the shared .chip is rounded), in the
+     applied-filter chips' solid flag blue with white-on-color text. */
   .vibe-chips :global(.chip) {
     border-radius: 0;
+    background: var(--color-accent-blue);
+    border-color: var(--color-accent-blue);
+    color: var(--color-background);
+  }
+
+  .vibe-chips :global(.chip .icon) {
+    color: var(--color-background);
+  }
+
+  .vibe-chips :global(a.chip:hover) {
+    color: var(--color-background);
+    border-color: var(--color-accent-blue);
+    background: color-mix(in srgb, var(--color-accent-blue) 85%, var(--color-text));
   }
 
   /* Mobile (declared last so it wins over the base rules at this width). The

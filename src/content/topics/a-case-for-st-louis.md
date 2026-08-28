@@ -3,6 +3,7 @@ title: A Case for St. Louis
 description: The good, bad, etc.
 created: 2026-07-05
 icon: landmark
+category: Culture
 updated: 2026-06-24
 draft: true
 ---

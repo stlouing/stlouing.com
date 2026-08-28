@@ -1,75 +1,103 @@
 ---
 import Nav from './Nav.astro'
 import ThemeToggle from './ThemeToggle.astro'
+import FleurGlyph from '../assets/FleurGlyph.astro'
 import { href } from '../lib/url'
 
 interface Props {
   trail: Array<any>
+  // 'home' renders the full newspaper masthead: ear row, big centered <h1>
+  // nameplate, and the nav bar that sticks once the nameplate scrolls away.
+  // 'compact' (every other page) renders ONLY the nav bar, with the pixel
+  // flag + wordmark on the left as the way home.
+  variant?: 'home' | 'compact'
 }
+
+const { variant = 'compact' } = Astro.props
 ---
 
-<header class="site-header">
-  <div class="wrap header-inner">
-    <a class="site-name" href={href('/')}>
-      <img class="stlouis-flag" src={href('/stlflag.png')} alt="" width="32" height="32" /> St.
-      Louing
-    </a>
-    <div class="header-actions">
-      <Nav />
-      <ThemeToggle />
-    </div>
-  </div>
-</header>
-
 {
-  /* Masthead strip: the rules run full-bleed edge-to-edge, while the caption
-   stays in the 880px `.wrap` so it lines up with the nav above. */
+  variant === 'home' && (
+    <>
+      {/* The nameplate scrolls away; only .masthead-nav below is sticky. The two
+         blocks are siblings (not nested) because a sticky element can only stick
+         within its parent's box — nesting the nav inside the masthead header
+         would end its sticky range where the masthead ends. */}
+      <header class="masthead-home">
+        <div class="masthead-ear">
+          <div class="wrap wrap-wide masthead-ear-line">
+            <span class="masthead-ear-left">
+              <span>An Independent Guide</span>
+            </span>
+            <span class="masthead-ear-right">
+              <span>St. Louis, Missouri</span>
+              <FleurGlyph class="ear-fleur" />
+              <span>Est. 2026</span>
+            </span>
+          </div>
+        </div>
+        <div class="wrap wrap-wide nameplate">
+          <h1 class="nameplate-title">St. Louing</h1>
+        </div>
+      </header>
+    </>
+  )
 }
-<div class="masthead">
-  <div class="masthead-rule"></div>
-  <div class="wrap">
-    <div class="masthead-line">
-      <span class="masthead-left">An Independent Guide</span>
-      <span class="masthead-middle">St. Louis, Missouri</span>
-      <span class="masthead-right">est. 2026</span>
-    </div>
+{/* One nav bar for every page: brand hard left, links centered, theme switch
+   hard right. On the homepage it sits below the nameplate and carries the
+   brand once the nameplate scrolls away. */}
+<div class:list={['masthead-nav', { 'is-home': variant === 'home' }]} data-header>
+  <div class="wrap wrap-wide masthead-nav-inner">
+    <a class="masthead-brand" href={href('/')}>
+      <img class="brand-flag" src={href('/stlflag.png')} alt="" width="28" height="28" /> St. Louing
+    </a>
+    <Nav />
+    <ThemeToggle variant="quiet" />
   </div>
-  <div class="masthead-rule-thin"></div>
-  <div class="masthead-rule-thin"></div>
+  {/* The Scotch rule closing the flag: thick bar over a skinny line. */}
+  <div class="masthead-double-rule" />
 </div>
 
 <script>
-  // Publish the sticky header's height so in-page anchors (:target) can offset
-  // by it. Tracks wrapping/resize so the offset stays correct across breakpoints.
-  const header = document.querySelector<HTMLElement>('.site-header')
+  // Publish the sticky nav bar's height so in-page anchors (:target) can
+  // offset by it. Tracks wrapping/resize so the offset stays correct across
+  // breakpoints.
+  const header = document.querySelector<HTMLElement>('[data-header]')
   if (header) {
     const setHeight = () =>
       document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`)
     setHeight()
     window.addEventListener('resize', setHeight)
   }
+
+  // Homepage: the bar's brand stays hidden while the big nameplate is on
+  // screen, fading in once the masthead scrolls away and the bar sticks.
+  // Inner pages: the bar sits at the very top, so any scroll means stuck.
+  // Either way `.is-stuck` also thins the Scotch rule to a single hairline.
+  const masthead = document.querySelector('.masthead-home')
+  if (header && masthead) {
+    const observer = new IntersectionObserver(([entry]) => {
+      header.classList.toggle('is-stuck', !entry.isIntersecting)
+    })
+    observer.observe(masthead)
+  } else if (header) {
+    const setStuck = () => {
+      header.classList.toggle('is-stuck', window.scrollY > 0)
+    }
+
+    setStuck()
+    window.addEventListener('scroll', setStuck, { passive: true })
+  }
 </script>
 
 <style>
-  /* Thick line stacked over a thin line: the element's own top border is thick,
-     its bottom border thin, and its height opens the gap between them. */
-  .masthead-rule {
-    height: 2px;
-    border-block-start: 1px solid var(--color-line-contrast);
+  .masthead-ear {
     border-block-end: 1px solid var(--color-line-contrast);
   }
-  .masthead-rule-thin {
-    height: 1px;
-    border-block-end: 1px solid var(--color-line-contrast);
 
-    &:last-of-type {
-      margin-top: 2px;
-    }
-  }
-
-  .masthead-line {
+  .masthead-ear-line {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--spacing-md);
     padding-block: var(--spacing-xs);
@@ -81,105 +109,187 @@ interface Props {
     font-weight: 500;
   }
 
-  .site-header {
+  .masthead-ear-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .masthead-ear-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+  }
+
+  /* Flat :global on purpose (nested :global gets stripped by the compiler);
+     scoped to the whole line so the fleur can sit in any ear slot. */
+  .masthead-ear-line :global(.ear-fleur) {
+    width: 0.55em;
+    height: auto;
+    flex-shrink: 0;
+    color: var(--color-accent-gold);
+  }
+
+  .nameplate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-xs);
+    padding-block: var(--spacing-md);
+  }
+
+  .nameplate-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    font-size: clamp(3rem, 1.5rem + 7vw, 6.5rem);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
+  }
+
+  .masthead-nav {
     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    border-block-end: 1px solid var(--color-line-contrast);
-    padding-block: var(--spacing-sm);
+    border-block-start: 1px solid var(--color-line-contrast);
     background: var(--color-background);
     transform: translateZ(0);
     isolation: isolate;
   }
 
-  .header-inner {
-    display: flex;
-    flex-wrap: wrap;
+  /* Three zones: 1fr rails pin the brand hard left and the toggle hard right
+     while the links hold the true center. */
+  .masthead-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: var(--spacing-md);
+    padding-block: var(--spacing-sm);
   }
 
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+  .masthead-nav-inner :global(.theme-toggle) {
+    justify-self: end;
   }
 
-  a.site-name {
+  /* The wordmark in the nameplate's display serif, not the mono. */
+  .masthead-brand {
+    justify-self: start;
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    color: var(--color-muted);
+    color: var(--color-text-heading);
     text-decoration: none;
-    font-size: var(--font-size-md);
-    color: var(--color-text);
-    font-family: var(--font-mono);
-    font-weight: 700;
-
-    &:hover {
-      color: var(--color-accent);
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 2px;
-    }
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    font-weight: 400;
+    white-space: nowrap;
   }
 
-  /* Mobile: name + theme toggle on the top row, nav stacked below as an even
-     three-column grid. Desktop (above) is unchanged. */
+  /* On the homepage the brand waits under the nameplate — invisible (but
+     still holding its grid cell, so the links stay centered) until the bar
+     sticks. */
+  .masthead-nav.is-home .masthead-brand {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease;
+  }
+
+  .masthead-nav.is-home.is-stuck .masthead-brand {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .masthead-brand:hover {
+    color: var(--color-text-heading);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  .brand-flag {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    border-radius: 6px;
+  }
+
+  /* Thick bar, 2px gap, thin line — the borders draw both, the height between
+     them opens the gap. The transition lets the stuck collapse below read as
+     a slide (it fires mid-scroll) instead of a 6px jump. */
+  .masthead-double-rule {
+    height: 7px;
+    border-block-start: 4px solid var(--color-line-contrast);
+    border-block-end: 1px solid var(--color-line-contrast);
+    transition:
+      height 0.15s ease,
+      border-block-start-width 0.15s ease;
+  }
+
+  /* Scrolled (stuck): the rule collapses to just the thin line, so the bar
+     closes symmetrically — hairline, padding, links, padding, hairline — with
+     no leftover slot where the thick bar was. */
+  .masthead-nav.is-stuck .masthead-double-rule {
+    height: 1px;
+    border-block-start-width: 0;
+  }
+
   @media (max-width: 700px) {
-    /* The masthead caption is too cramped to read on a phone — drop it. */
-    .masthead {
+    /* Brand + toggle share the top row; the links drop to a full row below. */
+    .masthead-nav-inner {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'brand toggle'
+        'nav nav';
+      row-gap: var(--spacing-xs);
+    }
+
+    .masthead-brand {
+      grid-area: brand;
+    }
+
+    .masthead-nav-inner :global(.theme-toggle) {
+      grid-area: toggle;
+    }
+
+    .masthead-nav-inner :global(.site-nav-inline) {
+      grid-area: nav;
+      justify-content: space-between;
+      padding-block: 0;
+    }
+
+    /* Homepage: a phone shows neither the brand (it links to the page you're
+       on) nor the theme toggle — just the one nav row, whether stuck or not,
+       so the bar's height never changes and the content below never jumps. */
+    .masthead-nav.is-home .masthead-nav-inner {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'nav';
+    }
+
+    .masthead-nav.is-home .masthead-brand,
+    .masthead-nav.is-home :global(.theme-toggle) {
       display: none;
     }
 
-    /* No bottom padding — the nav toolbar sits flush on the header's bottom
-       border, so its cell dividers connect top line to bottom line. */
-    .site-header {
-      padding-block: var(--spacing-sm) 0;
+    /* The left ear caption is too cramped to read on a phone — drop it, and
+       the surviving right caption reads from the left edge. */
+    .masthead-ear-left {
+      display: none;
     }
 
-    .header-inner {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      grid-template-areas:
-        'name theme'
-        'nav nav';
-      align-items: center;
-      column-gap: var(--spacing-md);
-      row-gap: var(--spacing-sm);
-    }
-
-    .site-name {
-      grid-area: name;
-    }
-
-    /* Unwrap the actions so the nav and toggle place into the grid independently
-       (display:contents keeps them as DOM children but drops the wrapper box). */
-    .header-actions {
-      display: contents;
-    }
-
-    .header-actions :global(.theme-toggle) {
-      grid-area: theme;
-      justify-self: end;
-    }
-
-    .header-actions :global(.site-nav) {
-      grid-area: nav;
+    .masthead-ear-line {
       display: flex;
-      justify-content: start;
-      /* No column gap — the nav's toolbar cells pad themselves off their
-         dividers. Negative margins cancel the .wrap inline padding so the
-         toolbar runs edge to edge. */
-      column-gap: 0;
-      row-gap: var(--spacing-xs);
-      margin-inline: calc(-1 * var(--spacing-md));
-      width: calc(100% + 2 * var(--spacing-md));
-      /* The rule separating the name row above from the toolbar. */
-      border-block-start: 1px solid var(--color-line);
+      justify-content: flex-start;
+      padding-block: var(--spacing-xs);
+    }
+
+    .nameplate {
+      padding-block: var(--spacing-sm);
     }
   }
 </style>

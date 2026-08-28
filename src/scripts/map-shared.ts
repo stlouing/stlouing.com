@@ -13,7 +13,7 @@ interface PannableMap {
 // header plus the secondary/filter toolbar. A popup opened near the top is nudged
 // below this so its title isn't hidden behind them.
 export function topChromeBottom(): number {
-  return ['.site-header', '.secondary-header']
+  return ['.masthead-nav', '.secondary-header']
     .map((selector) => document.querySelector<HTMLElement>(selector))
     .reduce(
       (bottom, node) => (node ? Math.max(bottom, node.getBoundingClientRect().bottom) : bottom),

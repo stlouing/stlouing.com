@@ -1,9 +1,11 @@
 ---
 title: St. Louis's Most Walkable Streets
-description: Mapping the most interesting neighborhoods to explore in St. Louis
+description: Highlighting most interesting neighborhoods to explore
 seoTitle: The Most Walkable Neighborhoods and Streets in St. Louis
 icon: map
+category: Neighborhoods
 ogImage: /og/walkable-st-louis.png
+leadImage: /og/walkable-st-louis-lead.jpg
 created: 2026-08-19
 updated: 2026-08-20
 ---
@@ -13,8 +15,6 @@ One of the first things you learn about St. Louis is there is no single main str
 St. Louis is a city of many neighborhoods, and you'll find interesting clusters of shops and hidden gems all over the place, but it isn't always obvious to newcomers where to look.
 
 I've been on a mission to discover all these walkable\* spots around the city and surrounding area. A few of them are obvious - The Grove and Cherokee Street are often mentioned by name - but some I just happened to stumble upon and slowly discover over time.
-
-<small id="walkable-note">\*Walkable in this article refers to the ease exploring cafes, restaurants, book stores, and shops by foot within a single street, not access to bus/train routes, grocery stores, and other amenities that would make an area walkable for day-to-day life.</small>
 
 ## Overview
 

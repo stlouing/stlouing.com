@@ -10,13 +10,14 @@ import EntryDates from '../../components/EntryDates.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import FoodLocator from '../../components/FoodLocator.astro'
 import MyPick from '../../components/MyPick.astro'
+import Rating from '../../components/Rating.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { published, excerpt, hasBody, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref } from '../../lib/neighborhoods'
-import { resolveVerdict, resolveWriterState } from '../../lib/verdict'
+import { resolveVerdict, resolveWriterState, verdictLabels } from '../../lib/verdict'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineLabel } from '../../lib/cuisine'
@@ -127,7 +128,9 @@ const seoTitle = primaryCuisine
 const locality = data.neighborhood ? `${data.neighborhood}, St. Louis` : 'St. Louis'
 const stubDescription = [
   data.description,
-  primaryCuisine ? `${cuisineLabel(primaryCuisine)} in ${locality}` : `${data.title} in ${locality}`,
+  primaryCuisine
+    ? `${cuisineLabel(primaryCuisine)} in ${locality}`
+    : `${data.title} in ${locality}`,
 ]
   .filter(Boolean)
   .join(' — ')
@@ -137,6 +140,7 @@ const seoDescription = hasBody(entry)
 ---
 
 <BaseLayout
+  article
   crumb={data.title}
   title={seoTitle}
   description={seoDescription}
@@ -156,7 +160,6 @@ const seoDescription = hasBody(entry)
     }
     <div class="detail-layout">
       <div class="detail-main">
-        <ReadersVerdict slug={entry.id} title={data.title} writerState={writerState} />
         {
           data.photo && (
             <Image
@@ -187,6 +190,8 @@ const seoDescription = hasBody(entry)
             </Byline>
           )
         }
+
+        <ReadersVerdict slug={entry.id} title={data.title} />
 
         <section class="more-food">
           {
@@ -221,7 +226,24 @@ const seoDescription = hasBody(entry)
         </section>
       </div>
       <aside class="detail-aside">
-        <FoodLocator coords={data.coords} label={data.neighborhood} />
+        {
+          writerState.verdict && (
+            <div class="my-rating">
+              <h2 class="section-label detail-section-label">My rating</h2>
+              <div class="my-rating-row">
+                <span class="my-rating-value">{verdictLabels[writerState.verdict]}</span>
+                <Rating verdict={writerState.verdict} />
+              </div>
+            </div>
+          )
+        }
+        <div class="food-map-block">
+          <h2 class="section-label detail-section-label">Map</h2>
+          <FoodLocator coords={data.coords} label={data.neighborhood} />
+          <a class="continue-link aside-more-link" href={href('/food/')}>
+            Back to food map <IconArrowRight />
+          </a>
+        </div>
         {
           data.address && data.address.length > 0 && (
             <div class="food-address-block">
@@ -231,13 +253,21 @@ const seoDescription = hasBody(entry)
                   <span>{line}</span>
                 ))}
               </address>
+              {googleMapsHref(data) && (
+                <a
+                  class="continue-link aside-more-link"
+                  href={googleMapsHref(data)}
+                  target="_blank"
+                  rel="noopener">
+                  View directions <IconArrowRight />
+                </a>
+              )}
             </div>
           )
         }
         {
           (data.url || data.instagram || googleMapsHref(data)) && (
             <>
-              <hr class="detail-divider" />
               <div class="detail-links-section">
                 <h2 class="section-label detail-section-label">Links</h2>
                 <div class="detail-links">
@@ -273,7 +303,6 @@ const seoDescription = hasBody(entry)
         {
           data.pick && (
             <>
-              <hr class="detail-divider" />
               <MyPick pick={data.pick} />
             </>
           )
@@ -289,6 +318,24 @@ const seoDescription = hasBody(entry)
 </script>
 
 <style>
+  /* The word in the serif title voice beside the sized-up fleurs, under the
+     sidebar's standard ruled label. */
+  .my-rating-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-xl);
+    font-weight: 500;
+    color: var(--color-text-heading);
+  }
+
+  .my-rating-row :global(.rating .rating-fleur) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+
   /* A photo of the place, leading the writeup: full-width, rounded, hairline
      border. Astro's <Image> emits width/height so it never causes layout shift. */
   .food-photo {
@@ -310,7 +357,7 @@ const seoDescription = hasBody(entry)
     font-style: normal;
     color: var(--color-muted-2);
     text-align: start;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.4;
   }
 </style>

@@ -1,8 +1,10 @@
 ---
 import { sections } from '../lib/sections'
 import { href } from '../lib/url'
-import Icon from './Icon.astro'
+import FleurGlyph from '../assets/FleurGlyph.astro'
 
+// The masthead's newspaper section line — plain labels separated by tiny
+// fleurs-de-lis. The nameplate above is the way home, so there's no Home link.
 const items = sections.filter((section) => section.primary)
 const current = Astro.url.pathname
 
@@ -13,103 +15,77 @@ const isActive = (path: string) => {
 
   return current === target || current.startsWith(target)
 }
-
-// Home matches only the root exactly (not startsWith, which every path passes).
-const homeActive = current === href('/')
 ---
 
-<nav class="site-nav" aria-label="Primary">
-  <a class="nav-home" href={href('/')} aria-current={homeActive ? 'page' : undefined}>
-    <Icon name="home" />
-    Home
-  </a>
+<nav class="site-nav-inline" aria-label="Primary">
   {
-    items.map((section) => (
-      <a
-        href={href(section.path)}
-        class={`nav-section-${section.label.toLowerCase()}`}
-        aria-current={isActive(section.path) ? 'page' : undefined}>
-        {section.icon && <Icon name={section.icon} />}
-        {section.label}
-      </a>
+    items.map((section, index) => (
+      <>
+        {index > 0 && <FleurGlyph class="nav-fleur" />}
+        <a
+          href={href(section.path)}
+          class={`nav-section-${section.label.toLowerCase()}`}
+          aria-current={isActive(section.path) ? 'page' : undefined}>
+          {section.label}
+        </a>
+      </>
     ))
   }
 </nav>
 
 <style>
-  .site-nav {
+  /* Labels on one row with tiny gold fleur-de-lis separators (the flag's
+     fleur), wrapping on narrow screens. */
+  .site-nav-inline {
     display: flex;
     flex-wrap: wrap;
-    /* No column gap — each cell's inline padding spaces it off the divider. */
-    column-gap: 0;
+    align-items: center;
+    justify-content: center;
+    column-gap: var(--spacing-md);
     row-gap: var(--spacing-xs);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
 
-    /* Desktop reaches Home via the site-name logo, so the nav link is mobile-only. */
-    .nav-home {
-      display: none;
-    }
-
-    /* Toolbar cells: the icon centered above its label, a hairline divider
-       between items (border-inline-end on all but the last — the hidden Home
-       link's border never shows, so the first visible item stays clean). Hover
-       and the active section turn the whole cell (icon included, via
-       currentColor) accent. */
     a {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      padding-inline: var(--spacing-md);
       color: var(--color-text);
       text-decoration: none;
       font-weight: 500;
-      border-inline-end: 1px solid var(--color-line);
-
-      &:last-child {
-        border-inline-end: 0;
-      }
-
-      /* Icons follow the link color (the global .icon rule would otherwise
-         pin them muted). */
-      :global(svg) {
-        width: 20px;
-        height: 20px;
-        color: inherit;
-      }
 
       &:hover {
-        color: var(--color-accent);
+        color: var(--color-accent-blue);
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
       }
 
       &[aria-current='page'] {
-        color: var(--color-accent);
+        color: var(--color-text-heading);
         font-weight: 600;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
       }
     }
   }
 
-  /* Mobile: one full-width bar, never wrapping — smaller type and tighter
-     padding so all five cells (Neighborhoods included) fit a phone, with the
-     leftover width shared out by flex-grow. */
+  /* Flat descendant selector on purpose — :global() nested inside a nesting
+     block gets stripped by the compiler. */
+  .site-nav-inline :global(.nav-fleur) {
+    width: 0.6em;
+    height: auto;
+    color: var(--color-accent-gold);
+  }
+
   @media (max-width: 700px) {
-    .site-nav {
-      flex-wrap: nowrap;
-      width: 100%;
-    }
-
-    .site-nav .nav-home {
-      display: inline-flex;
-    }
-
-    .site-nav a {
-      flex: 1 1 auto;
-      min-width: 0;
-      padding-block: var(--spacing-sm);
-      padding-inline: var(--spacing-xs);
+    .site-nav-inline {
+      column-gap: var(--spacing-md);
       font-size: var(--font-size-xxs);
+      padding-block: var(--spacing-sm);
+    }
+
+    /* The fleur separators crowd a phone-width line — labels only. */
+    .site-nav-inline :global(.nav-fleur) {
+      display: none;
     }
   }
 </style>

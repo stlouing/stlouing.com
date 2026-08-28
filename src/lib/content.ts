@@ -9,7 +9,8 @@ export function published<
 // Topics list order, shared by /topics and the homepage column: "St. Louis Field
 // Notes" is pinned to the top as the section's living index, then everything else
 // by most-recently-updated — so it stays first even when another topic is newer.
-const PINNED_TOPIC_ID = 'field-notes'
+// Exported so the homepage can skip the pinned index when picking a lead story.
+export const PINNED_TOPIC_ID = 'field-notes'
 export function sortTopics<Entry extends { id: string; data: { updated: Date } }>(
   entries: Entry[],
 ): Entry[] {
