@@ -16,7 +16,7 @@
      Defined off text/background so it re-themes on its own. */
   --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
   /* The standard centered reading column (articles, prose pages). */
-  --measure-reading: 600px;
+  --measure-reading: 620px;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -114,8 +114,8 @@
   --color-line: #403f45;
   --color-line-input: #54535a;
   --color-line-contrast: #45444b;
-  --color-accent: #ed818a;
-  --color-accent-2: #f28d95;
+  --color-accent: #f67f93;
+  --color-accent-2: #f88c9e;
   --color-accent-blue: #84b0e6;
   --color-flag-blue: #003db8;
   --color-accent-gold: #dcc24f;
@@ -125,11 +125,11 @@
   --color-map-south: #b59ae0;
   --color-map-county: #84b0e6;
   --color-map-park: #7ec98a;
-  --color-map-corridor: #e6877a;
+  --color-map-corridor: #f67f93;
   --color-link: #99c3ff;
   --color-link-hover: #b5d4ff;
 
-  --color-verdict-loved: #f08a78;
+  --color-verdict-loved: #f67f93;
   --color-verdict-liked: #d6a35a;
   --color-verdict-neutral: #a89c86;
   --color-verdict-notforme: #8f8574;
@@ -330,14 +330,10 @@ time {
 }
 
 table {
+  margin-block: var(--spacing-md);
   border-collapse: collapse;
   border: 1px solid var(--color-line-contrast);
   font-size: var(--font-size-sm);
-
-  /* `main` uses overflow-x: clip to contain full-bleed maps, so a table wider
-     than the viewport would be cut off with no way to reach it. Make the table
-     its own horizontal scroll container so wide tables scroll in place instead
-     of being clipped by the page. */
   display: block;
   width: fit-content;
   max-width: 100%;
@@ -444,7 +440,7 @@ tbody tr:last-child td {
 
 .corridor-map {
   height: 300px;
-  border: 1px solid var(--color-line-contrast);
+  border: 2px solid var(--color-line-contrast);
   background: var(--color-surface-2);
 }
 
@@ -2681,8 +2677,13 @@ body:has([data-filter-root]) .masthead-nav {
   font-size: var(--font-size-lg);
 }
 
-.head-black--sm {
+.head-black.head-black--sm {
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
+  font-family: var(--font-sans-serif);
+  font-weight: 700;
+  letter-spacing: normal;
+  padding-bottom: 3px;
 }
 
 /* Prose bodies re-voice bare h2/h3 to the serif (`.body h2` is 0,1,1 and would
@@ -2690,7 +2691,7 @@ body:has([data-filter-root]) .masthead-nav {
    headings inside them (the sidebar labels, More in… headings). */
 .body h2.head-black,
 .body h3.head-black {
-  font-family: var(--font-display-black);
+  /* font-family: var(--font-display-black); */
   color: var(--color-text-heading);
 }
 

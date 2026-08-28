@@ -568,7 +568,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
      hover override pins the same offset so the underline holds its position
      (ListItem's own hover rule uses 2px) and only the color changes. */
   .front-explore :global(.list-title) {
-    text-decoration-line: underline;
+    text-decoration-line: none;
     text-decoration-thickness: 2px;
     text-decoration-color: var(--color-muted);
     text-underline-offset: 3px;
@@ -587,6 +587,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .front-explore :global(.list-item .list-title) {
+    font-family: var(--font-sans-serif);
     font-size: var(--font-size-lg);
   }
 
