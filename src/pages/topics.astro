@@ -16,11 +16,12 @@ const topics = sortTopics(published(await getCollection('topics')))
   title="Topics: Deep-Dives into St. Louis Food and Culture"
   description="Evergreen deep-dives into St. Louis food, drink, and culture, tended and updated over time.">
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header entry-header-with-flag">
       <div class="entry-bar">
         <h1>Topics</h1>
       </div>
       <p class="entry-summary">Deep-dives into St. Louis food and culture</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
     <div class="topic-grid">
       {

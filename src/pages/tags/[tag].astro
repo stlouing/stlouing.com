@@ -42,25 +42,28 @@ const countLabel = `${items.length} ${items.length === 1 ? 'entry' : 'entries'}`
 
 <BaseLayout crumb={`#${tag}`} title={`Tags: ${cuisineLabel(tag)} - St. Louing`} noindex>
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header entry-header-with-flag reading-col">
       <div class="entry-bar">
         <h1>{`#${tag}`}</h1>
       </div>
       <p class="entry-summary">{countLabel}</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
-    {
-      grouped.map((group) => (
-        <section class="tag-section">
-          <h2 class="section-label">{group.label}</h2>
-          <List>
-            {group.items.map((item) => (
-              <ListItem title={item.title} href={href(item.url)} description={item.description} />
-            ))}
-          </List>
-        </section>
-      ))
-    }
+    <div class="reading-col">
+      {
+        grouped.map((group) => (
+          <section class="tag-section">
+            <h2 class="group-label head-black">{group.label}</h2>
+            <List>
+              {group.items.map((item) => (
+                <ListItem title={item.title} href={href(item.url)} description={item.description} />
+              ))}
+            </List>
+          </section>
+        ))
+      }
+    </div>
   </article>
 </BaseLayout>
 

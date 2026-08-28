@@ -65,18 +65,18 @@ export const sections: Section[] = [
     description: 'My favorite restaurants and cafes so far!',
   },
   {
-    label: 'The Backlog',
-    path: '/food/backlog/',
-    group: 'lists',
-    icon: 'list-checks',
-    description: "Places I haven't tried or rated yet.",
-  },
-  {
-    label: 'Annual Events',
+    label: 'Annual Events in St. Louis',
     path: '/events/',
     group: 'lists',
     icon: 'calendar',
     description: 'A calendar of festivals and events across the city.',
+  },
+  {
+    label: 'Backlog',
+    path: '/food/backlog/',
+    group: 'lists',
+    icon: 'list-checks',
+    description: "Places I haven't tried or rated yet.",
   },
   {
     label: 'Sitemap',

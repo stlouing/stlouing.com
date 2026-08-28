@@ -10,20 +10,21 @@ interface Props {
 const { frontmatter } = Astro.props
 ---
 
-<BaseLayout article
+<BaseLayout
+  article
   crumb={frontmatter.title}
   title={frontmatter.seoTitle}
   description={frontmatter.description}>
   <article class="page">
-    <header class="entry-header reading-col">
+    <header class="entry-header entry-header-with-flag reading-col">
       <div class="entry-bar">
         {frontmatter.title && <h1>{frontmatter.title}</h1>}
       </div>
       {frontmatter.tagline && <p class="entry-summary">{frontmatter.tagline}</p>}
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
     <div class="body reading-col">
       <slot />
     </div>
   </article>
 </BaseLayout>
-

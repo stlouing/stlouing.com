@@ -7,58 +7,59 @@ const description = 'Send a note, a correction, or a recommendation.'
 
 <BaseLayout article crumb="Feedback" description={description}>
   <article class="page">
-    <header class="entry-header reading-col">
+    <header class="entry-header entry-header-with-flag reading-col">
       <div class="entry-bar">
         <h1>Feedback</h1>
       </div>
       <p class="entry-summary">
         If you have a question, comment, or if I got something wrong, please reach out!
       </p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
     <div class="feedback-body reading-col">
-    {
-      FEEDBACK_ENDPOINT && (
-        <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
-          <label class="field">
-            <span class="field-label">Your note</span>
-            <textarea name="message" rows="6" required />
-          </label>
-
-          <label class="field">
-            <span class="field-label">
-              Name <span class="optional">(optional)</span>
-            </span>
-            <input type="text" name="name" autocomplete="name" />
-          </label>
-
-          <label class="field">
-            <span class="field-label">
-              Email <span class="optional">(optional)</span>
-            </span>
-            <input type="email" name="email" autocomplete="email" />
-          </label>
-
-          <input type="hidden" name="_subject" value="St. Louing feedback" />
-
-          <p class="gotcha" aria-hidden="true">
-            <label>
-              Leave this field empty
-              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      {
+        FEEDBACK_ENDPOINT && (
+          <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
+            <label class="field">
+              <span class="field-label">Your note</span>
+              <textarea name="message" rows="6" required />
             </label>
-          </p>
 
-          <div class="form-actions">
-            <button type="submit">Send</button>
-            <span class="form-status" data-form-status role="status" aria-live="polite" />
-          </div>
-        </form>
-      )
-    }
+            <label class="field">
+              <span class="field-label">
+                Name <span class="optional">(optional)</span>
+              </span>
+              <input type="text" name="name" autocomplete="name" />
+            </label>
 
-    <p class="feedback-alt">
-      Prefer email? <a href="mailto:hello+feedback@stlouing.com">hello@stlouing.com</a>
-    </p>
+            <label class="field">
+              <span class="field-label">
+                Email <span class="optional">(optional)</span>
+              </span>
+              <input type="email" name="email" autocomplete="email" />
+            </label>
+
+            <input type="hidden" name="_subject" value="St. Louing feedback" />
+
+            <p class="gotcha" aria-hidden="true">
+              <label>
+                Leave this field empty
+                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+              </label>
+            </p>
+
+            <div class="form-actions">
+              <button type="submit">Send</button>
+              <span class="form-status" data-form-status role="status" aria-live="polite" />
+            </div>
+          </form>
+        )
+      }
+
+      <p class="feedback-alt">
+        Prefer email? <a href="mailto:hello+feedback@stlouing.com">hello@stlouing.com</a>
+      </p>
     </div>
   </article>
 </BaseLayout>

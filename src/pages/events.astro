@@ -55,37 +55,40 @@ const description =
 
 <BaseLayout crumb="Annual Events" title="St. Louis Events by Month" description={description}>
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header reading-col">
       <div class="entry-bar">
         <h1>Annual Events in St. Louis</h1>
       </div>
       <p class="entry-summary">{description}</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
-    {
-      byMonth.map((month) => (
-        <RelatedList title={month.label}>
-          {month.events.map((event) => {
-            const link = event.neighborhood
-              ? href(`/neighborhoods/${event.neighborhood}/`)
-              : undefined
-            // Kicker pairs the specific timing with the neighborhood (the month is
-            // already the section header), joined by the hairline tick divider,
-            // e.g. "Late June | Downtown".
-            const kickerParts = event.place ? [event.when, event.place] : [event.when]
+    <div class="reading-col">
+      {
+        byMonth.map((month) => (
+          <RelatedList title={month.label}>
+            {month.events.map((event) => {
+              const link = event.neighborhood
+                ? href(`/neighborhoods/${event.neighborhood}/`)
+                : undefined
+              // Kicker pairs the specific timing with the neighborhood (the month is
+              // already the section header), joined by the hairline tick divider,
+              // e.g. "Late June | Downtown".
+              const kickerParts = event.place ? [event.when, event.place] : [event.when]
 
-            return (
-              <RelatedCard
-                href={link}
-                title={event.name}
-                metaParts={kickerParts}
-                description={event.blurb}>
-                <IconCalendar slot="icon" />
-              </RelatedCard>
-            )
-          })}
-        </RelatedList>
-      ))
-    }
+              return (
+                <RelatedCard
+                  href={link}
+                  title={event.name}
+                  metaParts={kickerParts}
+                  description={event.blurb}>
+                  <IconCalendar slot="icon" />
+                </RelatedCard>
+              )
+            })}
+          </RelatedList>
+        ))
+      }
+    </div>
   </article>
 </BaseLayout>

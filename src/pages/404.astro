@@ -28,17 +28,20 @@ const neighborhoods = published(await getCollection('neighborhoods'))
   .slice(0, 2)
 ---
 
-{/* noindex: served with a 404 status either way, but the explicit flag keeps a
-    canonical + indexable head from ever contradicting that. */}
+{
+  /* noindex: served with a 404 status either way, but the explicit flag keeps a
+    canonical + indexable head from ever contradicting that. */
+}
 <BaseLayout crumb="Not found" title="Page Not Found" noindex>
   <article class="page notfound">
-    <header class="entry-header">
+    <header class="entry-header entry-header-with-flag">
       <div class="entry-bar">
         <h1>Page Not Found</h1>
       </div>
       <p class="entry-summary">
         That page doesn't exist (or it moved). Here's a good place to start:
       </p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
     {

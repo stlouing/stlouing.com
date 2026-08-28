@@ -681,7 +681,7 @@ a.wikipedia-link {
   z-index: 50;
   max-width: 320px;
   padding: var(--spacing-md);
-  background: var(--color-surface);
+  background: var(--color-background);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-floating);
@@ -712,9 +712,9 @@ a.wikipedia-link {
 }
 
 .wikilink-card-title {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: var(--font-size-md);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--font-size-lg);
   color: var(--color-text);
   margin-block-end: var(--spacing-sm);
   line-height: 1.2;
@@ -731,9 +731,9 @@ a.wikipedia-link {
 .wikilink-card-description {
   margin-block: 0 var(--spacing-xs);
   font-size: var(--font-size-md);
-  color: var(--color-accent);
+  color: var(--color-muted-2);
   line-height: 1.2;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .wikilink-card-description:last-child {
@@ -2186,7 +2186,7 @@ body:has([data-filter-root]) .masthead-nav {
   padding-block-end: var(--spacing-md);
   /* Centered like the front page's lead story, over its dotted rule. */
   text-align: center;
-  border-block-end: 1px dotted var(--color-line-input);
+  /* border-block-end: 1px dotted var(--color-line-input); */
 
   &.entry-header-with-flag {
     padding-bottom: none;
@@ -2684,10 +2684,7 @@ body:has([data-filter-root]) .masthead-nav {
   border-block-end: 2px solid var(--color-line-contrast);
 }
 
-/* The mono eyebrow/kicker (FEATURED, ABOUT, cuisine · neighborhood, …).
-   `.section-label` is the legacy alias for the same voice. */
-.eyebrow,
-.section-label {
+.eyebrow {
   font-family: var(--font-mono);
   font-size: var(--font-size-xxs);
   font-weight: 500;

@@ -17,14 +17,15 @@ const groups = [
 
 <BaseLayout title="Tags - St. Louing" noindex>
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header entry-header-with-flag reading-col">
       <div class="entry-bar">
         <h1>Tags</h1>
       </div>
       <p class="entry-summary">Browse everything by cuisine, neighborhood vibe, or topic.</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
-    <div class="tag-groups">
+    <div class="tag-groups reading-col">
       {
         groups.map((group) => (
           <section>
@@ -85,7 +86,7 @@ const groups = [
     color: var(--color-text);
     text-decoration: none;
     font-weight: 500;
-    line-height: 1.2;
+    line-height: 1;
 
     &:hover {
       border-color: var(--color-accent-blue);

@@ -18,27 +18,30 @@ const updates = await Promise.all(
 
 <BaseLayout crumb="Updates" title="What's New in St. Louing" description={description}>
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header entry-header-with-flag reading-col">
       <div class="entry-bar">
         <h1>What's New</h1>
       </div>
       <p class="entry-summary">A running log of what I've added and changed</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
-    <ol class="updates">
-      {
-        updates.map(({ date, Content }) => (
-          <li class="update">
-            <time class="update-date eyebrow" datetime={date.toISOString()}>
-              {formatDate(date)}
-            </time>
-            <div class="update-changes">
-              <Content />
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+    <div class="reading-col">
+      <ol class="updates">
+        {
+          updates.map(({ date, Content }) => (
+            <li class="update">
+              <time class="update-date eyebrow" datetime={date.toISOString()}>
+                {formatDate(date)}
+              </time>
+              <div class="update-changes">
+                <Content />
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </article>
 </BaseLayout>
 
