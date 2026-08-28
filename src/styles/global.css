@@ -334,10 +334,19 @@ table {
   border-collapse: collapse;
   border: 1px solid var(--color-line-contrast);
   font-size: var(--font-size-sm);
-  display: block;
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
+}
+
+/* Markdown tables come wrapped in this scroll guard (rehype-table-scroll):
+   the table above stretches to the full column, and when its nowrap columns
+   outgrow a narrow screen the wrapper scrolls instead of the page. */
+.table-scroll {
+  margin-block: var(--spacing-md);
   overflow-x: auto;
+}
+
+.table-scroll > table {
+  margin-block: 0;
 }
 
 th,
@@ -412,6 +421,109 @@ tbody tr:last-child td {
   color: var(--color-muted);
 }
 
+/* The in-article contents index. An article opts in by dropping
+   <div data-article-toc></div> where the index should sit; rehype-article-toc
+   replaces it with a nav of every heading that follows, grouped by region when
+   the config supplies groups. Set like a newspaper index: two columns split by
+   a hairline gutter rule, thick ink section titles, dotted rules between
+   entries. */
+.article-toc {
+  margin-block: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+}
+
+.article-toc-label {
+  margin: 0 0 var(--spacing-sm);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+
+.article-toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The dotted rows set their own rhythm — the prose list gap would break it. */
+.article-toc li {
+  margin: 0;
+}
+
+/* The grouped index sets as a two-column grid — whole groups per cell (a
+   multicol would split a group mid-list). The largest group (the plugin sorts
+   it first) holds the full left column and carries the gutter rule on its
+   trailing edge; the shorter groups stack on the right. */
+.article-toc-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: var(--spacing-md);
+}
+
+.article-toc-groups > .article-toc-group:first-child {
+  grid-row: 1 / span 2;
+  padding-inline-end: var(--spacing-lg);
+  border-inline-end: 1px solid var(--color-line);
+}
+
+.article-toc-groups > .article-toc-group:not(:first-child) {
+  padding-inline-start: var(--spacing-lg);
+}
+
+/* The flat fallback (no groups) still reads in two balanced newspaper
+   columns. */
+.article-toc > ol:not(.article-toc-groups) {
+  columns: 2;
+  column-gap: var(--spacing-lg);
+  column-rule: 1px solid var(--color-line);
+}
+
+/* On a phone the index stacks: one group under another, no gutter rule. */
+@media (max-width: 700px) {
+  .article-toc-groups {
+    display: block;
+  }
+
+  .article-toc-groups > .article-toc-group:first-child {
+    padding-inline-end: 0;
+    border-inline-end: 0;
+  }
+
+  .article-toc-groups > .article-toc-group:not(:first-child) {
+    padding-inline-start: 0;
+  }
+
+  .article-toc-group + .article-toc-group {
+    margin-block-start: var(--spacing-md);
+  }
+}
+
+.article-toc-group-title {
+  display: block;
+  border-block-end: 2px solid var(--color-line-contrast);
+  font-family: var(--font-sans-serif);
+  font-weight: 700;
+  color: var(--color-text-heading);
+  /* Keep a title attached to its first entries at a column break. */
+  break-after: avoid;
+}
+
+/* Every entry is a full-width row under a dotted rule. */
+.article-toc li > a {
+  display: block;
+  padding-block: var(--spacing-xs);
+  border-block-end: 1px dotted var(--color-line);
+
+  &:hover {
+    background: var(--color-wash);
+  }
+}
+
+.article-toc-streets li {
+  break-inside: avoid;
+}
+
 /* The Great Divorce city/county boundary figure: a fixed-height inline map.
    The placeholder div lives in the article markdown; BoundaryMap.astro mounts
    the MapLibre basemap into it on page load. */
@@ -436,6 +548,16 @@ tbody tr:last-child td {
    the MapLibre basemaps into them as they scroll near. */
 .corridor-map-figure {
   margin: var(--spacing-lg) 0;
+  /* margin-block: var(--spacing-lg); */
+  /* Break out of the 600px reading column up to the wrap-article width (the
+     2.5rem gap + 290px sidebar track the topic column doesn't use), but never
+     past the viewport minus the wrap's own inline padding. Full 930px frame
+     on desktop, partial breakout at mid widths, no-op on mobile. */
+  /* margin-inline: clamp(
+    calc((2.5rem + 290px) / -2),
+    calc((100% - (100vw - 2 * var(--spacing-md))) / 2),
+    0px
+  ); */
 }
 
 .corridor-map {
@@ -466,19 +588,13 @@ tbody tr:last-child td {
    under the figure (the visible counterpart of the pin tooltips). */
 .corridor-map-caption {
   margin-block-start: var(--spacing-xs);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
-  color: var(--color-muted);
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-sm);
   text-align: center;
-}
-
-.corridor-map-caption a {
-  color: var(--color-muted);
-  text-decoration: none;
+  font-weight: 700;
 }
 
 .corridor-map-caption a:hover {
-  color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

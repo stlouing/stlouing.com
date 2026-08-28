@@ -192,14 +192,6 @@ const description = "The best of the St. Louis food I've tried, by category."
     }
   }
 
-  /* Stretch the table full width: the global `display: block` scroll-guard
-     would leave it fit-content, and three short columns can't overflow anyway. */
-  .best-table {
-    display: table;
-    width: 100%;
-    margin-block-start: var(--spacing-md);
-  }
-
   /* The cuisine is the row's lookup key. Collapse the column to its content
      (width: 1% + nowrap under auto table layout) so the place column takes the
      remaining width instead of auto-layout padding this one out. */

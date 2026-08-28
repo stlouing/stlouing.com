@@ -7,6 +7,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { remarkWikiLink } from './src/lib/remark-wikilink.mjs'
+import { rehypeTableScroll } from './src/lib/rehype-table-scroll.mjs'
+import { rehypeArticleToc } from './src/lib/rehype-article-toc.mjs'
 import { entryUrl } from './src/lib/entry-url.mjs'
 
 // Base path: "/" for a custom domain; set to "/stlouing.com" for a GitHub Pages
@@ -14,6 +16,40 @@ import { entryUrl } from './src/lib/entry-url.mjs'
 const BASE = '/'
 
 const contentRoot = fileURLToPath(new URL('./src/content', import.meta.url))
+const dataRoot = fileURLToPath(new URL('./src/data', import.meta.url))
+
+// Region label for each walkable-corridor article section, derived from the
+// corridor data: every corridor names its heading anchor and its neighborhoods,
+// and every neighborhood carries its map group. A strip straddling the city
+// line files under its city-side group — only an all-county strip reads as
+// St. Louis County. The contents index (rehype-article-toc) groups by these.
+function buildTocGroups() {
+  const { corridors } = JSON.parse(fs.readFileSync(path.join(dataRoot, 'corridors.json'), 'utf8'))
+  const neighborhoods = JSON.parse(
+    fs.readFileSync(path.join(dataRoot, 'neighborhoods.json'), 'utf8'),
+  )
+  const groupBySlug = new Map(
+    neighborhoods.map((neighborhood) => [neighborhood.slug, neighborhood.group]),
+  )
+
+  const groupsByAnchor = {}
+  for (const corridor of corridors) {
+    if (!corridor.anchor || groupsByAnchor[corridor.anchor]) {
+      continue
+    }
+
+    const corridorGroups = (corridor.neighborhoods ?? [])
+      .map((slug) => groupBySlug.get(slug))
+      .filter(Boolean)
+    const group = corridorGroups.find((label) => label !== 'St. Louis County') ?? corridorGroups[0]
+
+    if (group) {
+      groupsByAnchor[corridor.anchor] = group
+    }
+  }
+
+  return groupsByAnchor
+}
 
 // Map every content entry id -> its canonical URL (the same one used by the
 // backlinks and tag indexes, via the shared entryUrl helper). Rebuilt when the
@@ -157,6 +193,9 @@ export default defineConfig({
     remarkPlugins: [[remarkWikiLink, { resolve }]],
     rehypePlugins: [
       rehypeSlug,
+      // After slug (it links to the generated heading ids), before autolink
+      // (so it reads heading text without the appended "#" anchor).
+      [rehypeArticleToc, { groups: buildTocGroups() }],
       [
         rehypeAutolinkHeadings,
         {
@@ -165,6 +204,7 @@ export default defineConfig({
           content: { type: 'text', value: '#' },
         },
       ],
+      rehypeTableScroll,
     ],
   },
 })

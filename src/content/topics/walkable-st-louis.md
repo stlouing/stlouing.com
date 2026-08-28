@@ -7,7 +7,7 @@ category: Neighborhoods
 ogImage: /og/walkable-st-louis.png
 leadImage: /og/walkable-st-louis-lead.jpg
 created: 2026-08-19
-updated: 2026-08-20
+updated: 2026-08-26
 ---
 
 One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch, Ballpark Village, and the business district, but isn't the place most people spend their time.
@@ -18,7 +18,7 @@ I've been on a mission to discover all these walkable\* spots around the city an
 
 ## Overview
 
-This is a map of all the walkable St. Louis streets you'll see throughout the article.
+This is a map of all the walkable St. Louis streets you'll see throughout the article. Click on a title to scroll to the relevant section.
 
 <figure class="corridor-map-figure">
   <div class="corridor-map corridor-overview" data-corridor-overview></div>
@@ -26,9 +26,9 @@ This is a map of all the walkable St. Louis streets you'll see throughout the ar
 
 <small>The shaded areas denote the official neighborhoods, the lines are the highlighted streets.</small>
 
-## Central Corridor
+<div data-article-toc></div>
 
-### The Grove
+## The Grove
 
 | Street                                                                                   | Neighborhood                         | Vibe                  | Website                                         |
 | :--------------------------------------------------------------------------------------- | :----------------------------------- | :-------------------- | :---------------------------------------------- |
@@ -42,7 +42,7 @@ One of the most distinctive and well-known streets in St. Louis is The Grove in 
 
 The Grove is most famous for being the city's LGBTQ+ nightlife district. On one end, you have Platypus bar and Urban Chestnut brewery, and on the other you have Handlebar, Atomic, and Rehab. In between are a few of my favorite restaurants in the city - Sultan, Grace Meat & Three, and The Gramophone.
 
-### The Delmar Loop
+## The Delmar Loop
 
 | Street                                                                         | Neighborhoods                                                              | Vibe               | Website                                       |
 | :----------------------------------------------------------------------------- | :------------------------------------------------------------------------- | :----------------- | :-------------------------------------------- |
@@ -58,7 +58,7 @@ There are a lot of interesting things to see on the street - the St. Louis Walk 
 
 Notably, there is a concentration of very good Asian cuisine along Delmar, including my favorite ramen in the world, [[kishimoto-mendo|Kishimoto Mendo]]. The original Salt & Smoke BBQ and Fitz's are here, and Vintage Vinyl is a great spot to browse for vinyl records.
 
-### Central West End
+## Central West End
 
 | Street                                                                  | Neighborhood                           | Vibe           | Website                               |
 | :---------------------------------------------------------------------- | :------------------------------------- | :------------- | :------------------------------------ |
@@ -76,7 +76,7 @@ One of St. Louis's independent bookstores, [Left Bank Books](https://left-bank.c
 
 Euclid is just a few short blocks from Forest Park, the proximity of which is a huge pro for the neighborhood. It's also a relatively bike-friendly area.
 
-### Washington Avenue
+## Washington Avenue
 
 | Street                                                                | Neighborhoods                                                          | Vibe                        | Website                                             |
 | :-------------------------------------------------------------------- | :--------------------------------------------------------------------- | :-------------------------- | :-------------------------------------------------- |
@@ -92,7 +92,7 @@ I've mostly tried to keep common tourist items off this list like the Aquarium, 
 
 Being downtown, it's as walkable as it gets, and one of the areas most likely to have a lot of foot traffic during the day.
 
-### Dogtown
+## Dogtown
 
 | Street                                                                  | Neighborhood         | Vibe         |
 | :---------------------------------------------------------------------- | :------------------- | :----------- |
@@ -104,9 +104,7 @@ Being downtown, it's as walkable as it gets, and one of the areas most likely to
 
 Around the Clayton and Tamm intersection in Dogtown (technically the Clayton-Tamm neighborhood) is St. Louis's historical Irish neighborhood, where a St. Patrick's Day parade takes place each year. There are several Irish bars in this spot, like Seamus McDaniel's and The Pat Connolly Tavern.
 
-## South City
-
-### Cherokee Street
+## Cherokee Street
 
 | Street                                                                   | Neighborhoods                                                                                                                                                                                | Vibe                        | Website                                                                                                      |
 | :----------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------- | :----------------------------------------------------------------------------------------------------------- |
@@ -120,7 +118,7 @@ Cherokee St. is the Mexican neighborhood strip in St. Louis. There are several r
 
 The eastern wing of Cherokee St. is the [antique row](https://cherokeeantiquerow.net/), with spots like Hammond's Antiques and Books and Elder's Antiques and a vinyl record store. This whole area is all small, family-owned storefronts with no chains and has a very eclectic, artistic vibe.
 
-### Tower Grove South
+## Tower Grove South
 
 | Street                                                                  | Neighborhoods                                                                                  | Vibe          |
 | :---------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- | :------------ |
@@ -139,7 +137,7 @@ The South Grand strip stops right at Tower Grove Park, which really adds to the 
 
 There's also a smaller strip along Morganford with a few places of interest, such as Amsterdam Tavern, the soccer bar, and Songbird.
 
-### Shaw
+## Shaw
 
 | Street                                                                     | Neighborhood   | Vibe                    |
 | :------------------------------------------------------------------------- | :------------- | :---------------------- |
@@ -155,7 +153,7 @@ There is not exactly one main street to walk along, but several businesses dotte
 
 Flora Place is a particularly pretty boulevard to walk along, showcasing many beautiful Victorian-era homes.
 
-### Hampton & Macklind
+## Hampton & Macklind
 
 | Street                                                                          | Neighborhoods                                                                                                             | Vibe  |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------ | :---- |
@@ -172,7 +170,7 @@ There is nothing otherwise particularly noteworthy or interesting about this str
 
 There's also another small strip nearby on Macklind with a Clementine's ice cream shop and a few bars and restaurants. The neighborhood around the shops is also fun to walk through.
 
-### The Hill
+## The Hill
 
 | Street                                                                   | Neighborhood           | Vibe    | Website                                 |
 | :----------------------------------------------------------------------- | :--------------------- | :------ | :-------------------------------------- |
@@ -188,7 +186,7 @@ St. Ambrose Church on Marconi is the heart of the neighborhood. All throughout t
 
 My two favorites are [[nicky-slices|Nicky Slices]] for Detroit-style pizza, and [[pizzeria-da-gloria|Pizzeria da Gloria]] for immaculate vibes and pizza.
 
-### Bevo
+## Bevo
 
 | Street                                                                 | Neighborhood             | Vibe    |
 | :--------------------------------------------------------------------- | :----------------------- | :------ |
@@ -204,7 +202,7 @@ As far as restaurants in the area, Das Bevo is a biergarten in the Bevo windmill
 
 Although it has been thirty years since the Bosnian refugees settled in Bevo, there are still many signs of the population that built up the area. The Sebilj fountain replica stands as a monument for the region. Nowawdays, much of [the Bosnian population has moved to South County areas like Affton](https://www.stlmag.com/The-Bosnian-Boom-in-South-County-St-Louis/).
 
-### Southtown
+## Southtown
 
 | Street                                                                         | Neighborhoods                                                                                                          | Vibe       |
 | :----------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- | :--------- |
@@ -220,7 +218,7 @@ It seems there used to be a Southtown Famous-Barr department store at Kingshighw
 
 Now, there are new restaurants and bars filling up the space, such as the Golden Hoosier and Himalayan Yeti. It's honestly not the most walkable area of the city due to Kingshighway being such a busy street, but I can see the area getting more and more built up [as Garcia Properties is working on revializing it](https://www.stlmag.com/business/garcia-properties-south-kingshighway/).
 
-### Soulard
+## Soulard
 
 | Street                                                                          | Neighborhood         | Vibe                | Website                                 |
 | :------------------------------------------------------------------------------ | :------------------- | :------------------ | :-------------------------------------- |
@@ -240,7 +238,7 @@ I haven't spent much time in Soulard myself during its peak hours, but McGurk's 
 
 The north and south ends of Soulard have a different feel, with the north side being a bit more commercial and bustling, especially with the farmers market on a Saturday morning, and the south side being more residential and quiet.
 
-### Lafayette Square
+## Lafayette Square
 
 | Street                                                                  | Neighborhood                           | Vibe                | Website                                             |
 | :---------------------------------------------------------------------- | :------------------------------------- | :------------------ | :-------------------------------------------------- |
@@ -256,7 +254,7 @@ Many of the businesses around Lafayette Square are not necessarily bars and rest
 
 In addition to the park, there are also beautiful, historic mansions painted in vibrant colors that give this area an interesting, historic charm.
 
-### Carondelet
+## Carondelet
 
 | Street                                                                | Neighborhoods                                              | Vibe      |
 | :-------------------------------------------------------------------- | :--------------------------------------------------------- | :-------- |
@@ -272,9 +270,7 @@ I didn't really know there was anything in Carondelet aside from [[stacked-stl|S
 
 I have not personally explored this area outside of driving through and I don't know how much I would recommend taking a stroll around the neighborhood - there were a lot of boarded up buildings along the strip in between the bars and live music venues.
 
-## St. Louis County
-
-### DeMun
+## DeMun
 
 | Street                                                                      | Neighborhood         | Vibe          |
 | :-------------------------------------------------------------------------- | :------------------- | :------------ |
@@ -290,7 +286,7 @@ In this area, you'll find Louie, an amazing spot to celebrate a birthday or anni
 
 Demun is a small spot overall, but worth mentioning for how pleasant it is.
 
-### Maplewood
+## Maplewood
 
 | Street                                                                       | Neighborhood             | Vibe             | Website                                         |
 | :--------------------------------------------------------------------------- | :----------------------- | :--------------- | :---------------------------------------------- |
@@ -306,7 +302,7 @@ There are two major breweries located in Maplewood - Side Project Brewing and Sc
 
 Maplewood is a streetcar suburb with Metrolink access to the city, making it one of a few. The Treasure Aisles Antique Mall is nearby, as well as some restaurants like Locoz Tacos and the Japanese Sando Shack.
 
-### Webster Groves
+## Webster Groves
 
 | Street                                                                         | Neighborhood                       | Vibe              | Website                                                                 |
 | :----------------------------------------------------------------------------- | :--------------------------------- | :---------------- | :---------------------------------------------------------------------- |
@@ -321,7 +317,7 @@ There are two main strips in Webster Groves. The Old Orchard district includes t
 
 On the east end of Webster, there's another main retail area with Telva at the Ridge (a cafe by the owners of Balkan Treat Box), Olive + Oak, and the Webster Groves Bookshop.
 
-### Kirkwood
+## Kirkwood
 
 | Street                                                                 | Neighborhood           | Vibe               | Website                                                                                                  |
 | :--------------------------------------------------------------------- | :--------------------- | :----------------- | :------------------------------------------------------------------------------------------------------- |

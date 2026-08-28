@@ -277,16 +277,10 @@ const { variant = 'compact' } = Astro.props
       display: none;
     }
 
-    /* The left ear caption is too cramped to read on a phone — drop it, and
-       the surviving right caption reads from the left edge. */
-    .masthead-ear-left {
+    /* The ear row is too cramped to read on a phone — drop it entirely, so
+       the masthead starts at the nameplate. */
+    .masthead-ear {
       display: none;
-    }
-
-    .masthead-ear-line {
-      display: flex;
-      justify-content: flex-start;
-      padding-block: var(--spacing-xs);
     }
 
     .nameplate {

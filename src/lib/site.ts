@@ -7,7 +7,7 @@ export const SITE_DESCRIPTION =
   'An independent guide to the food, neighborhoods, and culture of St. Louis.'
 
 // The visible tagline, shared by the homepage nameplate and the h-card note.
-export const TAGLINE = `Exploring the food, neighborhoods, and culture of St. Louis`
+export const TAGLINE = `An independent guide to the food, neighborhoods, and culture of St. Louis`
 
 // Newsletter (Substack), env-driven so clones/forks don't inherit this URL — the
 // signup + footer link self-hide when it's unset. The signup form GETs to

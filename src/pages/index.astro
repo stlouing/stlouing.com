@@ -24,7 +24,7 @@ import Icon from '../components/Icon.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 
-const intro = `Welcome to St. Louing, a website I created to document living in St. Louis and learning to love it.`
+const intro = `Welcome to St. Louing, a website I created to document living in St. Louis and learning to love it!`
 
 const allTopics = sortTopics(published(await getCollection('topics')))
 
@@ -93,7 +93,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                 <a class="hover-wash" href={href(`/${topic.id}/`)}>
                   <span class="rail-article-title title-serif title-link">{topic.data.title}</span>
                   {topic.data.description && (
-                    <span class="rail-article-description desc-muted">{topic.data.description}</span>
+                    <span class="rail-article-description desc-muted">
+                      {topic.data.description}
+                    </span>
                   )}
                 </a>
               </li>
@@ -132,7 +134,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         {intro}
         <br /><br />
         <strong>So far</strong>: <span class="stat">{wanderedCount}</span> neighborhoods and
-        <span class="stat">{visitedCount}</span> restaurants! <a
+        <span class="stat">{visitedCount}</span> restaurants. <a
           class="continue-link"
           href={href('/about/')}
           aria-label="Read more about St. Louing">
@@ -171,7 +173,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             <h2 class="lead-headline">
               <a href={href(`/${leadTopic.id}/`)}>{leadTopic.data.title}</a>
             </h2>
-            {leadTopic.data.description && <p class="lead-deck desc-muted desc-muted--lg">{leadTopic.data.description}</p>}
+            {leadTopic.data.description && (
+              <p class="lead-deck desc-muted desc-muted--lg">{leadTopic.data.description}</p>
+            )}
             {leadTeaser && <p class="lead-teaser">{leadTeaser}</p>}
             <p class="lead-meta">
               <Button href={href(`/${leadTopic.id}/`)} variant="dark" compact>
@@ -219,7 +223,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       <section class="front-explore">
         <div class="group-header head-rule">
           <h2 class="group-label head-black">{exploreGroup?.label}</h2>
-          {exploreGroup?.kicker && <span class="group-kicker eyebrow eyebrow--muted">{exploreGroup.kicker}</span>}
+          {
+            exploreGroup?.kicker && (
+              <span class="group-kicker eyebrow eyebrow--muted">{exploreGroup.kicker}</span>
+            )
+          }
         </div>
         <List>
           {
