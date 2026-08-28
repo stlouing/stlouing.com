@@ -171,11 +171,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     if (verdictClass) {
       element.classList.add(`verdict-${verdictClass}`)
     }
-    // A place I haven't visited yet (want-to-try / suggested) rides grayed on the
-    // map so it reads as "not explored yet" against the full-color explored pins.
-    if (item.dataset.explored === 'false') {
-      element.classList.add('is-unexplored')
-    }
     element.innerHTML = pinSvg
 
     const cuisines = (item.dataset.cuisine ?? '').split('|').filter(Boolean)
@@ -215,6 +210,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       photo: item.dataset.photo ?? '',
       tagline: item.dataset.tagline ?? '',
       verdict,
+      showRating: true,
       chips,
       addressLines: (item.dataset.address ?? '').split('\n').filter(Boolean),
       excerpt: excerptText,

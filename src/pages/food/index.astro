@@ -12,7 +12,7 @@ import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/co
 import { cuisineLabel } from '../../lib/cuisine'
 import { googleMapsHref } from '../../lib/maps'
 import { href } from '../../lib/url'
-import { resolveVerdict, verdictLabels, isExplored, type Verdict } from '../../lib/verdict'
+import { resolveVerdict, verdictLabels, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
@@ -54,7 +54,7 @@ const rows = (
         ? await getImage({ src: place.data.photo, width: 480, format: 'webp' })
         : undefined
 
-      return { place, verdict, groupKey, rankLetter, thumb, explored: isExplored(place.data.status) }
+      return { place, verdict, groupKey, rankLetter, thumb }
     }),
   )
 )
@@ -123,7 +123,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
       </div>
       <ul class="list" data-food-rows>
         {
-          rows.map(({ place, verdict, groupKey, rankLetter, thumb, explored }) => (
+          rows.map(({ place, verdict, groupKey, rankLetter, thumb }) => (
             <MapRow
               id={place.id}
               title={place.data.title}
@@ -144,7 +144,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 .filter(Boolean)
                 .join(' ')}
               attrs={{
-                'data-cuisine': place.data.cuisine[0],
+                'data-cuisine': place.data.cuisine.join('|'),
                 'data-neighborhood': place.data.neighborhood ?? '',
                 'data-address': (place.data.address ?? []).join('\n'),
                 // data-verdict drives the Rating facet + group color, so it's set
@@ -153,8 +153,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 // Far-flung spots opt out of the map's default framing (still pinned).
                 ...(place.data.excludeFromMapFit ? { 'data-exclude-fit': '' } : {}),
                 'data-group': groupKey,
-                // Grayed marker on the map for places I haven't visited yet.
-                'data-explored': String(explored),
                 'data-sort-name': place.data.title.toLowerCase(),
                 'data-sort-verdict': `${rankLetter}|${place.data.title.toLowerCase()}`,
                 'data-google': googleMapsHref(place.data),

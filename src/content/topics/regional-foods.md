@@ -93,7 +93,7 @@ A slinger is a greasy spoon diner meal that consists of eggs, hash browns and a 
 
 ### Brain sandwich
 
-Yeah...St. Louis is one of the only places in the U.S. you can still get a brain sandwich. You can get it at Schottzie's Bar & Grill, deep-fried and served on marble rye, pickles, and mustard.
+Yeah...St. Louis is one of the only places in the U.S. you can still get a brain sandwich. You can get it at Schottzie's Bar & Grill, deep-fried and served on marble rye with pickles and mustard.
 
 ## Pizza, etc.
 

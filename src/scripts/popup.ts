@@ -31,6 +31,10 @@ export interface PopupConfig {
   // loved) that sets how many of the four glyphs are filled; `label` is its word,
   // carried into the rating's aria-label.
   verdict?: { key: string; label: string }
+  // Food only: render the rating row even without a verdict — all four fleurs
+  // faded, aria-label "Not yet rated" — matching Rating.astro in the list rows.
+  // Neighborhood popups leave it unset and show no rating.
+  showRating?: boolean
   // Chip row under the title (cuisine + neighborhood pin, or a single area chip).
   chips?: PopupChip[]
   // Food only: address lines, rendered under the title.
@@ -109,6 +113,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     link,
     photo = '',
     verdict,
+    showRating = false,
     chips = [],
     addressLines = [],
     excerpt = '',
@@ -123,14 +128,19 @@ export function buildPopupHtml(config: PopupConfig): string {
   const titleHtml = `<h2><a href="${link}">${escapeHtml(title)}</a></h2>`
 
   // The rating, matching Rating.astro: four fleur-de-lis, filled to the verdict's
-  // level (not-for-me = 1 … loved = 4). The label rides along as an aria-label.
+  // level (not-for-me = 1 … loved = 4), all four faded when unrated. The label
+  // rides along as an aria-label.
   const filled = verdict ? (RATING_FILLED[verdict.key] ?? 0) : 0
-  const ratingHtml = verdict
-    ? `<span class="rating" role="img" aria-label="Rating: ${escapeHtml(verdict.label)}, ${filled} of ${RATING_TOTAL}">${Array.from(
-        { length: RATING_TOTAL },
-        (_unused, index) => fleurGlyph(index < filled ? 'rating-fleur is-filled' : 'rating-fleur'),
-      ).join('')}</span>`
-    : ''
+  const ratingLabel = verdict
+    ? `Rating: ${escapeHtml(verdict.label)}, ${filled} of ${RATING_TOTAL}`
+    : 'Not yet rated'
+  const ratingHtml =
+    verdict || showRating
+      ? `<span class="rating" role="img" aria-label="${ratingLabel}">${Array.from(
+          { length: RATING_TOTAL },
+          (_unused, index) => fleurGlyph(index < filled ? 'rating-fleur is-filled' : 'rating-fleur'),
+        ).join('')}</span>`
+      : ''
 
   // Joined with the hairline tick the list eyebrows use; the list-eyebrow
   // class picks up the shared divider styling.

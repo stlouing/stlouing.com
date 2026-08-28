@@ -419,8 +419,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     min-width: 0;
     padding: var(--spacing-xs) var(--spacing-sm);
     margin-inline: calc(-1 * var(--spacing-sm));
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--color-text);
     text-decoration: none;
@@ -551,7 +551,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     display: flex;
     justify-content: flex-end;
     margin-block: 0;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans-serif);
     font-size: var(--font-size-xs);
   }
 
@@ -781,7 +781,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .recent-date {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans-serif);
     font-size: var(--font-size-xs);
     font-weight: 500;
     color: var(--color-muted);

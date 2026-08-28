@@ -54,7 +54,6 @@
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   /* One-weight heavy grotesque for shouty uppercase section headers. */
   --font-display-black: 'Archivo Black', 'Arial Black', 'Helvetica Neue', sans-serif;
-  --font-mono: 'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --font-size-xxxs: 0.8125rem; /* 12px */
   --font-size-xxs: 0.8125rem; /* 13px */
@@ -391,7 +390,7 @@ td[align='center'] {
 }
 
 thead th {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 700;
   text-transform: uppercase;
@@ -645,7 +644,7 @@ a.corridor-spot {
   bottom: calc(100% + var(--spacing-xs));
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 500;
   line-height: 1.4;
@@ -774,7 +773,7 @@ a.more {
 
 a.wikipedia-link {
   font-size: var(--font-size-xs);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   color: var(--color-muted);
   text-underline-offset: 3px;
 
@@ -871,7 +870,7 @@ a.wikipedia-link {
 .wikilink-card-neighborhood,
 .list-pane-header .pane-count,
 .food-grouped li.group-header .group-count {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xs);
   color: var(--color-muted);
   font-weight: 500;
@@ -900,7 +899,7 @@ a.wikipedia-link {
   border: 1px solid var(--chip-border, var(--color-line-input));
   border-radius: 20px;
   background: var(--color-surface);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 500;
   color: var(--chip-color, var(--color-muted-2));
@@ -1107,7 +1106,7 @@ main {
   flex-wrap: wrap;
   align-items: end;
   gap: var(--spacing-sm) var(--spacing-md);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
 }
 
@@ -1116,7 +1115,7 @@ label {
   font-size: var(--font-size-xxs);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-weight: 500;
   line-height: 1;
 }
@@ -1128,7 +1127,7 @@ select {
   color: var(--color-text);
   border: 1px solid var(--color-line-input);
   border-radius: var(--radius);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
   font-weight: 400;
   /* Pin line-height so <input> and <select> resolve to the same height (their
@@ -1255,7 +1254,7 @@ body:has(.map-split) main > .wrap,
     z-index: 1100;
     padding: var(--spacing-sm) var(--spacing-lg);
     border: 1px solid var(--color-text-heading);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans-serif);
     font-size: var(--font-size-sm);
     font-weight: 600;
     letter-spacing: var(--letter-spacing);
@@ -1426,7 +1425,7 @@ body:has(.map-split) main > .wrap,
   color: var(--color-muted-2);
   font-size: var(--font-size-sm);
   font-weight: 500;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
 }
 
 .map-list .chips {
@@ -1448,7 +1447,7 @@ body:has(.map-split) main > .wrap,
    specificity, so the grouping lives here). */
 .map-list .list-eyebrow .list-meta,
 .maplibregl-popup.food-popup .list-meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 500;
   text-transform: uppercase;
@@ -1476,7 +1475,7 @@ body:has(.map-split) main > .wrap,
    rows. */
 .list-title {
   display: block;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-md);
   font-weight: 600;
   color: var(--color-text-heading);
@@ -1522,6 +1521,13 @@ body:has(.map-split) main > .wrap,
 
 .map-list .list-description .more {
   margin-block-start: var(--spacing-sm);
+}
+
+/* The footer's river band rides 32px up over the page bottom on map pages, so
+   the list keeps enough end padding that its last row clears the wave — in
+   list view (page flow) and in the scrolling map/split panes alike. */
+.map-list {
+  padding-block-end: calc(var(--spacing-xl) + var(--spacing-md));
 }
 
 [data-view='map'] .map-list {
@@ -1697,7 +1703,7 @@ body:has(.map-split) main > .wrap,
 }
 
 .verdict-card .verdict-card-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 400;
   letter-spacing: var(--letter-spacing);
@@ -1971,7 +1977,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .active-filters .active-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   color: var(--color-muted);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
@@ -2019,19 +2025,6 @@ body:has([data-filter-root]) .masthead-nav {
   stroke: var(--color-text);
 }
 
-/* A place I haven't visited yet (want-to-try / suggested): faded gray pin, so it
-   reads as "not explored yet" against the accent explored pins. Hover and
-   selection still bring it forward. */
-.food-marker.is-unexplored {
-  color: var(--color-muted);
-  opacity: 0.7;
-}
-
-.food-marker.is-unexplored:hover,
-.food-marker.is-unexplored.is-selected {
-  opacity: 1;
-}
-
 /* A cluster count bubble (Food map only): a place-count in a solid accent pill,
    sized up for bigger clusters via the data-size bucket set in map.ts. The
    box-shadow layers a concentric ring of the accent at lower opacity around the
@@ -2043,7 +2036,7 @@ body:has([data-filter-root]) .masthead-nav {
   min-width: 32px;
   height: 32px;
   padding-inline: var(--spacing-xs);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-weight: 600;
   color: var(--color-text);
   background: var(--color-background);
@@ -2109,11 +2102,14 @@ body:has([data-filter-root]) .masthead-nav {
   border: 2px solid var(--color-line-contrast);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   padding: var(--spacing-md);
   font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1.2;
+  /* A photo-less popup would otherwise shrink to its short text and crowd the
+     close button against the title — hold a comfortable floor. */
+  min-width: 260px;
 }
 
 /* Photo banner atop a popup (an entry with a picture): full width — negative
@@ -2148,7 +2144,7 @@ body:has([data-filter-root]) .masthead-nav {
   border: 1px solid var(--color-line-input);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   line-height: 1.3;
 }
 
@@ -2267,7 +2263,7 @@ body:has([data-filter-root]) .masthead-nav {
 .maplibregl-popup.food-popup .maplibregl-popup-close-button {
   top: var(--spacing-sm);
   right: var(--spacing-sm);
-  padding: 0 var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-size-lg);
   line-height: 1;
   color: var(--color-muted);
@@ -2293,7 +2289,7 @@ body:has([data-filter-root]) .masthead-nav {
   flex-wrap: wrap;
   gap: var(--spacing-md);
   margin-block: var(--spacing-xs) var(--spacing-md);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
   color: var(--color-muted);
 }
@@ -2334,7 +2330,7 @@ body:has([data-filter-root]) .masthead-nav {
 
   .address {
     margin-block: var(--spacing-xs);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans-serif);
     font-size: var(--font-size-sm);
     color: var(--color-muted);
     font-weight: 500;
@@ -2362,6 +2358,13 @@ body:has([data-filter-root]) .masthead-nav {
    base flex flows from the left on the directory-style detail pages). */
 .entry:has(.topic-layout) .entry-bar .meta {
   justify-content: center;
+}
+
+/* The backlinks footer ("Mentioned in") reads at the same 600px column as the
+   topic prose — the detail pages size it with their own layout columns. */
+.entry:has(.topic-layout) > footer {
+  max-width: var(--measure-reading);
+  margin-inline: auto;
 }
 
 .entry-bar {
@@ -2506,8 +2509,8 @@ body:has([data-filter-root]) .masthead-nav {
   padding: var(--spacing-sm);
   border: 1px solid transparent;
   border-radius: var(--radius);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
@@ -2541,6 +2544,7 @@ body:has([data-filter-root]) .masthead-nav {
   border-color: var(--color-text-heading);
   flex-shrink: 0;
   text-transform: uppercase;
+  font-size: var(--font-size-xs);
 }
 
 .btn-dark:hover {
@@ -2605,7 +2609,7 @@ body:has([data-filter-root]) .masthead-nav {
 
 .back {
   margin-block: var(--spacing-md) 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
 }
 
@@ -2650,7 +2654,7 @@ body:has([data-filter-root]) .masthead-nav {
    Regional Foods): mono section headings, while keeping full Markdown —
    wikilinks, images, and sub-sections all still work. */
 .topic-list h2 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-lg);
 }
 
@@ -2825,7 +2829,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 500;
   text-transform: uppercase;
