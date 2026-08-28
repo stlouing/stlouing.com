@@ -34,6 +34,9 @@ const allTopics = sortTopics(published(await getCollection('topics')))
 const leadTopic = allTopics.find((topic) => topic.id !== PINNED_TOPIC_ID)
 const leadTeaser = leadTopic ? excerpt(leadTopic.body, 420) : ''
 
+// The Topics rail skips the lead story — it's already the featured article.
+const railTopics = allTopics.filter((topic) => topic.id !== leadTopic?.id)
+
 // The most recent updates, shown in the What's New window so a returning
 // visitor can see the site is alive at a glance. The full log lives at
 // /updates. The Markdown body is rendered (same as /updates) so links +
@@ -88,7 +91,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         <h2 class="rail-header head-black head-rule">Topics</h2>
         <ul class="rail-articles">
           {
-            allTopics.map((topic) => (
+            railTopics.map((topic) => (
               <li>
                 <a class="hover-wash" href={href(`/${topic.id}/`)}>
                   <span class="rail-article-title title-serif title-link">{topic.data.title}</span>
