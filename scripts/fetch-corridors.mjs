@@ -316,7 +316,7 @@ const corridors = [
     neighborhoods: [],
   },
   {
-    // Shaw's 39th Street node (TeeRak, Ices Plain & Fancy), running down to
+    // Shaw's 39th Street node (Tee Rak, Ices Plain & Fancy), running down to
     // the park edge at Magnolia.
     id: 'shaw',
     name: 'Shaw',

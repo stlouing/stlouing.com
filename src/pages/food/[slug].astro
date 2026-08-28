@@ -40,13 +40,11 @@ const { data } = entry
 // the "My Review" half of the top-of-page review bar.
 const writerState = resolveWriterState(data)
 // A friendly one-liner shown in a dashed note in place of the (empty) writeup on a
-// body-less stub — mirroring the "not explored yet" treatment on neighborhood pages.
-// Tried-but-unrated reads differently from never-visited.
+// body-less stub. Tried-but-unrated reads differently from never-visited.
 const stubNote =
   writerState.kind === 'pending'
     ? `I've been to ${data.title}, but I haven't written up a review yet.`
     : `I haven't made it to ${data.title} yet, but it's on my list to try.`
-// The footer timestamp: the last revision when set, otherwise the created date.
 const lastUpdated = data.updated ?? data.created
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
@@ -84,7 +82,6 @@ const trail = [
 // others sharing this place's primary cuisine (best-rated first, capped, and
 // de-duped so a place shows in at most one group).
 const allFood = published(await getCollection('food'))
-// Top related places, each paired with its verdict for display.
 const topRelated = (places: typeof allFood) =>
   [...places]
     .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
@@ -229,7 +226,7 @@ const seoDescription = hasBody(entry)
         {
           writerState.verdict && (
             <div class="my-rating">
-              <h2 class="section-label detail-section-label">My rating</h2>
+              <h2 class="detail-section-label head-black head-black--sm head-rule">My rating</h2>
               <div class="my-rating-row">
                 <span class="my-rating-value">{verdictLabels[writerState.verdict]}</span>
                 <Rating verdict={writerState.verdict} />
@@ -238,7 +235,7 @@ const seoDescription = hasBody(entry)
           )
         }
         <div class="food-map-block">
-          <h2 class="section-label detail-section-label">Map</h2>
+          <h2 class="detail-section-label head-black head-black--sm head-rule">Map</h2>
           <FoodLocator coords={data.coords} label={data.neighborhood} />
           <a class="continue-link aside-more-link" href={href('/food/')}>
             Back to food map <IconArrowRight />
@@ -247,7 +244,7 @@ const seoDescription = hasBody(entry)
         {
           data.address && data.address.length > 0 && (
             <div class="food-address-block">
-              <h2 class="section-label detail-section-label">Address</h2>
+              <h2 class="detail-section-label head-black head-black--sm head-rule">Address</h2>
               <address class="food-address">
                 {data.address.map((line) => (
                   <span>{line}</span>
@@ -269,7 +266,7 @@ const seoDescription = hasBody(entry)
           (data.url || data.instagram || googleMapsHref(data)) && (
             <>
               <div class="detail-links-section">
-                <h2 class="section-label detail-section-label">Links</h2>
+                <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
                 <div class="detail-links">
                   <SourceLink
                     href={data.url}
@@ -318,8 +315,6 @@ const seoDescription = hasBody(entry)
 </script>
 
 <style>
-  /* The word in the serif title voice beside the sized-up fleurs, under the
-     sidebar's standard ruled label. */
   .my-rating-row {
     display: flex;
     align-items: center;
@@ -336,8 +331,7 @@ const seoDescription = hasBody(entry)
   }
 
 
-  /* A photo of the place, leading the writeup: full-width, rounded, hairline
-     border. Astro's <Image> emits width/height so it never causes layout shift. */
+  /* Astro's <Image> emits width/height so it never causes layout shift. */
   .food-photo {
     display: block;
     width: 100%;
@@ -347,8 +341,6 @@ const seoDescription = hasBody(entry)
     margin-block-end: var(--spacing-lg);
   }
 
-  /* The postal address under the map (a quiet mono block, one line per address
-     line), left-aligned in the sidebar. */
   .food-address {
     display: flex;
     flex-direction: column;

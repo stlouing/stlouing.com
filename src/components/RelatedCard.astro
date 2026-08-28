@@ -86,7 +86,7 @@ const linkAttributes = href
   <span class="related-body">
     {
       metaParts.length > 0 ? (
-        <span class="related-kicker">
+        <span class="related-kicker eyebrow eyebrow--muted">
           {metaParts.map((part, partIndex) => (
             <>
               {partIndex > 0 && <span class="eyebrow-divider" aria-hidden="true" />}
@@ -96,12 +96,12 @@ const linkAttributes = href
         </span>
       ) : (
         meta && (
-          <span class="related-kicker">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>
+          <span class="related-kicker eyebrow eyebrow--muted">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>
         )
       )
     }
-    <span class="related-title">{title}</span>
-    {description && <p class="related-desc">{description}</p>}
+    <span class="related-title title-link">{title}</span>
+    {description && <p class="related-desc desc-muted">{description}</p>}
     {
       tags.length > 0 && (
         <span class="related-tags" aria-hidden="true">
@@ -135,11 +135,9 @@ const linkAttributes = href
 </Tag>
 
 <style>
-  /* One row per item, divided by a hairline (no divider after the last). The lead
-     + trailing affordance sit on either side of the flex:1 body; rows with a
-     description top-align so the lead lines up with the name's first line. */
-  /* The homepage rail's row voice: serif title over a muted description on
-     dotted rules — no leading icons or trailing arrows. */
+  /* The base (homepage rail) voice hides the leading mark and trailing arrow;
+     rows with a description top-align so the lead lines up with the name's
+     first line. */
   .related-card {
     position: relative;
     display: flex;
@@ -166,7 +164,7 @@ const linkAttributes = href
     inset-block: 0;
     inset-inline: calc(-1 * var(--spacing-sm));
     border-radius: var(--radius);
-    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+    background: var(--color-wash);
     opacity: 0;
     transition: opacity 0.12s ease;
   }
@@ -183,8 +181,6 @@ const linkAttributes = href
     border-block-end: 0;
   }
 
-  /* The leading mark: an emoji at the body's largest size, or a line icon recolored
-     to the accent and sized to sit beside it. */
   .related-lead {
     flex-shrink: 0;
     font-size: var(--font-size-xl);
@@ -215,43 +211,18 @@ const linkAttributes = href
     gap: 2px;
   }
 
-  /* The meta as a muted mono kicker above the name. */
+  /* The flex gap spaces the bare .eyebrow-divider ticks. */
   .related-kicker {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-muted);
     line-height: 1.2;
-  }
-
-  /* The hairline tick between kicker parts (the map lists' eyebrow divider,
-     restyled for the kicker's flex gap — no margins of its own). */
-  .related-kicker .eyebrow-divider {
-    width: 1px;
-    height: 0.85em;
-    background: var(--color-line-input);
-  }
-
-  /* Shared title styling lives in global.css (`.list-title, .related-title`);
-     only the hover-underline offset is related-card-specific. */
-  .related-title {
-    text-underline-offset: 2px;
   }
 
   .related-desc {
     margin: 0;
-    color: var(--color-muted);
-    line-height: 1.45;
-    font-size: var(--font-size-sm); 
   }
 
-  /* Vibe tags: small mono pills beneath the description (e.g. a neighborhood's
-     character). Plain, non-interactive — the row's own link carries the click. */
   .related-tags {
     display: flex;
     flex-wrap: wrap;
@@ -278,15 +249,6 @@ const linkAttributes = href
     height: 0.9em;
   }
 
-  /* Hover affordances only on actual links. */
-  a.related-card:hover .related-title {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-  }
-
-  /* A trailing rating badge: an accent star beside the 0–10 score, mono and
-     tabular so scores line up down the column. */
   .related-rating {
     display: inline-flex;
     align-items: center;
@@ -310,8 +272,6 @@ const linkAttributes = href
     stroke: currentColor;
   }
 
-  /* A right-aligned secondary stat (e.g. population): darker and heavier than the
-     muted kicker, tabular so figures line up down the column. */
   .related-stat {
     flex-shrink: 0;
     text-align: end;

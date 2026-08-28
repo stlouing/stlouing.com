@@ -2,13 +2,7 @@
 // The readers' 👍/👎 poll for a food page (shown only when Supabase is
 // configured). A vote reveals an optional (private) note below it.
 // src/scripts/readers-verdict.ts loads live counts, records votes, and
-// reveals the note. (The writer's own rating lives in the sidebar's My
-// rating card, not here.)
-//
-// The bar is a thin-ruled newspaper box (the What's New treatment): ink frame,
-// gold surface wash, centered serif title. The interior still styles through
-// the --win98-* token NAMES (a large surface area of rules below), remapped
-// locally to theme tokens on .verdict-bar.
+// reveals the note.
 import IconThumbsUp from '../assets/IconThumbsUp.astro'
 import IconThumbsDown from '../assets/IconThumbsDown.astro'
 import IconPencil from '../assets/IconPencil.astro'
@@ -29,11 +23,11 @@ const readersEnabled = Boolean(
 {
   readersEnabled && (
     <section
-      class="verdict-bar"
+      class="verdict-bar panel"
       data-readers-verdict
       data-slug={slug}
       aria-label={`Review of ${title}`}>
-      <h2 class="vb-title">Rate this restaurant</h2>
+      <h2 class="vb-title title-serif">Rate this restaurant</h2>
       <div class="vb-row">
         {readersEnabled && (
           <div class="vb-take">
@@ -133,10 +127,9 @@ const readersEnabled = Boolean(
 }
 
 <style>
-  /* The newspaper box (the What's New treatment): ink frame on the gold
-     surface wash, centered serif title. The interior rules below still speak
-     in --win98-* names from the old chrome — remapped here to theme tokens so
-     everything reads in the site's normal inks and re-themes for dark mode. */
+  /* The interior rules below speak in --win98-* names — remapped here to theme
+     tokens so everything reads in the site's normal inks and re-themes for
+     dark mode. */
   .verdict-bar {
     --win98-text: var(--color-text);
     --win98-muted: var(--color-muted);
@@ -146,29 +139,17 @@ const readersEnabled = Boolean(
     --win98-shadow: var(--color-line-input);
 
     margin-block-end: var(--spacing-lg);
-    border: 2px solid var(--color-line-contrast);
-    background: var(--color-surface);
-    padding: var(--spacing-md);
   }
 
-  /* Centered Georgia title, like the list rows' serif voice. */
   .vb-title {
     margin: 0 0 var(--spacing-md);
     text-align: center;
-    font-family: var(--font-serif);
-    font-weight: 500;
     line-height: 1.1;
     font-size: var(--font-size-xl);
-    color: var(--color-text-heading);
   }
 
-  /* The poll's pressed state (readers-verdict.ts toggles .is-active): the ink block. */
-  .rv-choice.is-active {
-    background: var(--color-text-heading);
-    border-color: var(--color-text-heading);
-    color: var(--color-surface);
-  }
-
+  /* The pressed (.is-active) ink-block state lives in global.css beside
+     .btn-dark, so it shares the dark-theme swap. */
   .vb-row {
     display: flex;
     justify-content: center;
@@ -177,8 +158,7 @@ const readersEnabled = Boolean(
     gap: var(--spacing-sm) var(--spacing-lg);
   }
 
-  /* --- The poll --- the nudge over the two thumb buttons, centered under the
-     centered title (the title alone names it; no eyebrow). */
+  /* --- The poll --- */
   .vb-take {
     display: flex;
     flex-direction: column;
@@ -186,7 +166,6 @@ const readersEnabled = Boolean(
     gap: var(--spacing-sm);
   }
 
-  /* Pre-vote nudge over the pill: a quiet italic serif line. */
   .rv-cta {
     margin: 0;
     font-family: var(--font-body);
@@ -199,15 +178,12 @@ const readersEnabled = Boolean(
     display: none;
   }
 
-  /* The 👍 / 👎 poll as two outlined buttons; the voted side holds the
-     .is-active ink-block state above. */
   .rv-pill {
     display: inline-flex;
     gap: var(--spacing-sm);
   }
 
-  /* Roomier than the stock compact button (hover ink comes from the shared
-     .btn-outline rule). */
+  /* Hover ink comes from the shared .btn-outline rule. */
   .rv-choice {
     gap: var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-md);
@@ -220,8 +196,7 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* The thumbs ride muted (override the global .icon rule for the size);
-     inside the pressed ink block they invert with the text. */
+  /* Overrides the global .icon rule (size + muted color). */
   .rv-choice :global(.icon) {
     color: var(--win98-muted);
     width: 16px;
@@ -229,7 +204,7 @@ const readersEnabled = Boolean(
   }
 
   .rv-choice.is-active :global(.icon) {
-    color: var(--color-surface);
+    color: inherit;
   }
 
   /* The live count after the thumb — hidden when zero (the script leaves it empty). */
@@ -255,9 +230,7 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* Optional note, revealed after a vote: stacked Name + Note fields, flush
-     with the box padding, split from the poll above by a dotted rule (the
-     site's list-divider idiom). */
+  /* Optional note, revealed after a vote (readers-verdict.ts). */
   .rv-note {
     margin-block-start: var(--spacing-md);
     padding-block-start: var(--spacing-md);
@@ -277,7 +250,6 @@ const readersEnabled = Boolean(
     display: none;
   }
 
-  /* The form's header row: a label paired with the collapse (×) control. */
   .rv-note-head {
     display: flex;
     align-items: center;
@@ -286,7 +258,6 @@ const readersEnabled = Boolean(
     width: 100%;
   }
 
-  /* The small × that collapses the form back down to the "Leave a comment" trigger. */
   .rv-note-close {
     display: inline-flex;
     align-items: center;
@@ -308,8 +279,6 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* Collapsed state: a quiet mono link-button (pencil + "Leave a comment") standing
-     in for the whole form. Reopens it on click. */
   .rv-note-trigger {
     display: inline-flex;
     align-items: center;
@@ -318,7 +287,6 @@ const readersEnabled = Boolean(
     border: 0;
     background: none;
     color: var(--win98-muted);
-    /* font-family: var(--font-mono); */
     font-size: var(--font-size-md);
     font-weight: 500;
 
@@ -341,7 +309,6 @@ const readersEnabled = Boolean(
     }
   }
 
-  /* A labeled field: the mono eyebrow over its input, each spanning the row. */
   .rv-field {
     display: flex;
     flex-direction: column;
@@ -367,7 +334,6 @@ const readersEnabled = Boolean(
     color: var(--win98-muted);
   }
 
-  /* Plain bordered fields on the wash, in the site's normal input voice. */
   .rv-input {
     padding: var(--spacing-sm);
     border: 1px solid var(--color-line-input);
@@ -379,8 +345,6 @@ const readersEnabled = Boolean(
     font-weight: 400;
     min-width: 0;
 
-    /* The site's standard input focus (accent border + 1px ring), not an
-       offset outline stacked on top of it. */
     &:focus {
       outline: none;
       border-color: var(--color-accent);
@@ -402,7 +366,6 @@ const readersEnabled = Boolean(
     overflow: hidden;
   }
 
-  /* The Submit action: a stock Win98 push button at dialog-button size. */
   .rv-note-submit {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-xs);

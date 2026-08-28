@@ -91,8 +91,7 @@ function setupWidget(root: HTMLElement): void {
       dislikeCount.textContent = loaded && counts.dislikes > 0 ? String(counts.dislikes) : ''
     }
 
-    // The nudge is hidden once this browser has voted; otherwise it invites the first
-    // vote when the place has none yet, or asks for a take when it already has some.
+    // The nudge is hidden once this browser has voted.
     if (cta) {
       if (choice) {
         cta.hidden = true
@@ -164,7 +163,6 @@ function setupWidget(root: HTMLElement): void {
     }
   }
 
-  // The optional note appears after voting (revealNote).
   noteForm?.addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault()
     void submitNote()
@@ -192,7 +190,6 @@ function setupWidget(root: HTMLElement): void {
     const name = nameInput?.value.trim() ?? ''
     const comment = commentInput?.value.trim() ?? ''
 
-    // Nothing typed — nothing to save.
     if (!name && !comment) {
       setStatus(noteStatus, '')
 

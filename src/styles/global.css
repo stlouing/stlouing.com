@@ -11,8 +11,12 @@
   /* The aged-newsprint gold wash (same recipe as the What's New box, which
      paints itself with this token). */
   --color-surface: color-mix(in srgb, var(--color-accent-gold) 10%, var(--color-background));
-  /* A lighter step of the surface wash (half the gold). */
   --color-surface-2: color-mix(in srgb, var(--color-accent-gold) 5%, var(--color-background));
+  /* The whole-row hover tint (rail rows, cards, map rows, sidebar links).
+     Defined off text/background so it re-themes on its own. */
+  --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+  /* The standard centered reading column (articles, prose pages). */
+  --measure-reading: 600px;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -216,8 +220,6 @@ h4 {
   color: var(--color-text-heading);
 }
 
-/* Headings keep the serif — the Inter body font is for copy only. (h4 re-sets
-   itself to the mono below; the homepage title uses --font-display.) */
 h1,
 h2,
 h3 {
@@ -326,9 +328,6 @@ time {
   font-weight: 500;
 }
 
-/* Markdown tables in article content. Mono uppercase headers (matching the site's
-   section labels), a hairline cell grid, and a faint zebra to keep wide rows
-   readable. */
 table {
   border-collapse: collapse;
   border: 1px solid var(--color-line-contrast);
@@ -490,7 +489,7 @@ tbody tr:last-child td {
 /* Hand-picked spots on the corridor maps: the same teardrop pin as the
    neighborhood map, with the name as a hover/focus tooltip (always-visible
    labels overlapped when spots cluster), linking to the spot's page when it
-   has one. The pin lift on hover comes from the shared .marker-pin rules. */
+   has one. */
 /* NOTE: no position/top/left here — MapLibre's .maplibregl-marker positions
    the element (absolute + transform); overriding it breaks marker placement
    (and the two stylesheets' order differs between dev and prod bundles). The
@@ -511,7 +510,9 @@ a.corridor-spot {
 }
 
 .corridor-spot:hover .marker-pin,
-.corridor-spot:focus-visible .marker-pin {
+.corridor-spot:focus-visible .marker-pin,
+.neighborhood-marker:hover .marker-pin,
+.food-marker:hover .marker-pin {
   transform: scale(1.12);
 }
 
@@ -608,9 +609,8 @@ a.wikipedia-link {
   }
 }
 
-/* The shared inline continue link — serif ink with a thin underline and an
-   inline arrow riding under it (the magazine reference). Works on <a> or, when
-   nested inside a card that is itself a link, on a styled <span>. */
+/* The shared inline continue link. Works on <a> or, when nested inside a card
+   that is itself a link, on a styled <span>. */
 .continue-link {
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
@@ -657,10 +657,6 @@ a.more {
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
-}
-
-.ml-auto {
-  margin-left: auto;
 }
 
 a.wikipedia-link {
@@ -757,7 +753,11 @@ a.wikipedia-link {
   margin-block-end: 0;
 }
 
-.wikilink-card-neighborhood {
+/* The quiet mono caption beside a title (wikilink cards, the pane + group
+   counts — one voice, grouped here). */
+.wikilink-card-neighborhood,
+.list-pane-header .pane-count,
+.food-grouped li.group-header .group-count {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   color: var(--color-muted);
@@ -807,21 +807,11 @@ button.chip:hover {
   border-color: var(--color-accent);
 }
 
-/* Removable filter chip (built in filter.ts): a value + hidden label + × control.
-   Solid flag blue, white-on-color (the background token, so it stays readable
-   against the dark theme's lighter blue too). */
+/* Removable filter chip (built in filter.ts): a value + hidden label + ×
+   control. */
 .chip-filter {
   gap: var(--spacing-xs);
   padding-block: 3px;
-  background: var(--color-accent-blue);
-  border-color: var(--color-accent-blue);
-  color: var(--color-background);
-}
-
-button.chip-filter:hover {
-  color: var(--color-background);
-  border-color: var(--color-accent-blue);
-  background: color-mix(in srgb, var(--color-accent-blue) 85%, var(--color-text));
 }
 
 .chip-filter .chip-value {
@@ -849,55 +839,6 @@ button.chip-filter:hover {
   .chip-filter .chip-label {
     display: block;
   }
-}
-
-/* Section chip (Neighborhoods list): a colored dot before the label.
-   --legend-color is set per section by the page (region/county/park). */
-.chip-region {
-  gap: 6px;
-  padding-block: 3px;
-}
-
-.chip-region::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--legend-color);
-  flex-shrink: 0;
-}
-
-/* Section dot color per group/type — global so both the list chips and the
-   JS-built map popup chips pick it up via the region-<section> class. */
-.region-north {
-  --legend-color: var(--color-map-north);
-}
-
-.region-central {
-  --legend-color: var(--color-map-central);
-}
-
-.region-south {
-  --legend-color: var(--color-map-south);
-}
-
-.region-county {
-  --legend-color: var(--color-map-county);
-}
-
-.region-park {
-  --legend-color: var(--color-map-park);
-}
-
-/* The Neighborhoods list region chip carries a map-pin instead of the dot: hide
-   the ::before dot when an icon is present, and tint the pin the region color (so
-   the popup chips, which have no icon, keep their dot). */
-.chip-region:has(.icon)::before {
-  display: none;
-}
-
-.chip.chip-region .icon {
-  color: var(--legend-color);
 }
 
 .chip .icon {
@@ -957,7 +898,7 @@ button.chip-filter:hover {
    content: the detail layout's 600px column + 2.5rem gap + 290px sidebar,
    plus the wrap's own inline padding. */
 .wrap-wide.wrap-article {
-  max-width: calc(600px + 2.5rem + 290px + 2 * var(--spacing-md));
+  max-width: calc(var(--measure-reading) + 2.5rem + 290px + 2 * var(--spacing-md));
 }
 
 /* Standalone content pages (Want to try, Best of, …) shouldn't butt up against
@@ -982,10 +923,10 @@ main {
   margin-block-end: var(--spacing-xl);
 }
 
-/* The newspaper drop cap opening every article body (the front-page lead's
-   treatment). Keyed to the first paragraph, so a leading figure or map keeps
-   its own first line. Topics nest their prose inside .topic-layout (the
-   centered column), so both containers are covered. */
+/* The newspaper drop cap opening every article body. Keyed to the first
+   paragraph, so a leading figure or map keeps its own first line. Topics nest
+   their prose inside .topic-layout (the centered column), so both containers
+   are covered. */
 .body > p:first-of-type::first-letter,
 .body .topic-layout > p:first-of-type::first-letter {
   float: left;
@@ -1138,8 +1079,6 @@ body:has(.map-split) main > .wrap,
   min-height: 0;
 }
 
-/* Google-Maps-style split — list on the left, map on the right, spanning the
-   full viewport width and filling the height below the toolbar. */
 [data-view='map'] .results,
 .map-split .results {
   flex: 1;
@@ -1193,37 +1132,13 @@ body:has(.map-split) main > .wrap,
     transform: translateX(-50%);
     z-index: 1100;
     padding: var(--spacing-sm) var(--spacing-lg);
-    /* The site's black block, not the red pill. */
     border: 1px solid var(--color-text-heading);
-    background: var(--color-text-heading);
-    color: var(--color-surface);
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: var(--letter-spacing);
     cursor: pointer;
     box-shadow: var(--box-shadow);
-  }
-}
-
-/* Numbered badge centered on each neighborhood boundary. */
-.neighborhood-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 50%;
-  color: var(--color-text);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-@media (max-width: 700px) {
-  .neighborhood-number {
-    font-size: 12px;
   }
 }
 
@@ -1248,14 +1163,8 @@ body:has(.map-split) main > .wrap,
   fill: var(--color-surface);
 }
 
-/* The neighborhood pins are interactive (vs the quiet number on unexplored ones):
-   an obvious pointer + a hover lift. */
 .neighborhood-marker {
   cursor: pointer;
-}
-
-.neighborhood-marker:hover .marker-pin {
-  transform: scale(1.12);
 }
 
 .content-pane {
@@ -1287,8 +1196,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Thumbnail on a list row (a place/neighborhood with a photo): a centered
-   cover background floated right of the tagline + teaser text. */
 .map-list .list-photo {
   float: right;
   width: var(--list-photo-width);
@@ -1310,7 +1217,6 @@ body:has(.map-split) main > .wrap,
   margin-left: 0;
 }
 
-/* The website + Google Maps links sit on one row in the open panel. */
 .map-list .list-description .place-links {
   display: flex;
   flex-wrap: wrap;
@@ -1334,17 +1240,10 @@ body:has(.map-split) main > .wrap,
   margin-block: var(--spacing-md) 0;
 }
 
-/* Neighborhoods list (a section list, no lead badge): the title reads as a body
-   heading (like the Food title), the number sits quiet ahead of it, and the row
-   holds a clamped plain-text excerpt of the writeup. */
-
-/* The number prefix (when shown) sits quiet ahead of the neighborhood name. */
 .map-list.section-list .number {
   color: var(--color-muted);
 }
 
-/* The clamped plain-text writeup teaser on a map-list row — shared by both the
-   Food and Neighborhoods lists. */
 .map-list .map-preview {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -1354,10 +1253,6 @@ body:has(.map-split) main > .wrap,
   line-height: 1.45;
   font-size: var(--font-size-md);
 }
-
-/* A row of outlined resource buttons (a neighborhood's Wikipedia / City /
-   MyTownView links), used both at the top of a neighborhood detail page and in the
-   expanded list row. */
 
 /* Shared list reset + row dividers for BOTH map lists (Food + Neighborhoods), so
    they're styled from one place. Neither uses the generic <List> component — they
@@ -1381,15 +1276,12 @@ body:has(.map-split) main > .wrap,
   border-block-end: 0;
 }
 
-/* Whole-row hover highlight, matching the directory ListItem rows. Excludes the
-   non-link header rows (Food's `.group-header`, Neighborhoods' `.section-head`). */
+/* Whole-row hover highlight. Excludes the non-link header rows (Food's
+   `.group-header`, Neighborhoods' `.section-head`). */
 .map-list .list > li:not(.group-header):not(.section-head):hover {
-  background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+  background: var(--color-wash);
 }
 
-/* The row title + its inline `title-after` meta (cuisine · neighborhood / region),
-   wrapping to a second line when tight. The <li> stacks this over the optional sub
-   line and the description panel. */
 .map-list .list-headline {
   display: flex;
   align-items: baseline;
@@ -1404,7 +1296,6 @@ body:has(.map-split) main > .wrap,
   color: var(--color-muted);
 }
 
-/* Row 2: the address (and any other muted second-line meta). */
 .map-list .list-sub {
   display: flex;
   align-items: center;
@@ -1430,9 +1321,11 @@ body:has(.map-split) main > .wrap,
 }
 
 /* Cuisine / neighborhood (food) or region (neighborhood) as the quiet kicker
-   over the row title — the eyebrow voice, muted so a long list doesn't turn
-   into a wall of red. */
-.map-list .list-eyebrow .list-meta {
+   over the row title — the muted eyebrow voice, shared with the JS-built map
+   popups (whose DOM can't carry pattern classes past the .list-meta base's
+   specificity, so the grouping lives here). */
+.map-list .list-eyebrow .list-meta,
+.maplibregl-popup.food-popup .list-meta {
   font-family: var(--font-mono);
   font-size: var(--font-size-xxs);
   font-weight: 500;
@@ -1445,31 +1338,20 @@ body:has(.map-split) main > .wrap,
   margin-block-end: 2px;
 }
 
-/* A hairline vertical tick between eyebrow parts (Cuisine | Neighborhood). */
+/* Inline eyebrow contexts space the tick themselves (flex contexts use the
+   bare .eyebrow-divider pattern; its geometry lives in the pattern section). */
 .list-eyebrow .eyebrow-divider {
-  display: inline-block;
-  width: 1px;
-  height: 0.85em;
   margin-inline: var(--spacing-sm);
-  background: var(--color-line-input);
   vertical-align: -1px;
 }
 
-/* Newspaper headline voice on the map rows: the serif over the eyebrow, not
-   the shared mono list title. */
 .map-list .list-title {
-  font-family: var(--font-serif);
   font-size: var(--font-size-xl);
-  font-weight: 500;
-  line-height: 1.2;
 }
 
-/* Shared list row title for the food/neighborhood map lists. Reads like a
-   heading, not a button or link (in map view it's also clickable to open the
-   place's popup). */
 /* Shared list/card title: the mono heading used by the directory list (ListItem,
    List.astro), the map-backed Food/Neighborhood lists (MapRow), and RelatedCard
-   rows. The per-component styles now only add what's unique to each. */
+   rows. */
 .list-title {
   display: block;
   font-family: var(--font-mono);
@@ -1477,18 +1359,6 @@ body:has(.map-split) main > .wrap,
   font-weight: 600;
   color: var(--color-text-heading);
   line-height: 1.2;
-  text-decoration: none;
-}
-
-/* Related/backlink rows on the detail pages read in the serif headline
-   voice, a step larger than the mono list titles. */
-.related-title {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: var(--font-size-lg);
-  font-weight: 500;
-  color: var(--color-text-heading);
-  line-height: 1.25;
   text-decoration: none;
 }
 
@@ -1503,14 +1373,6 @@ body:has(.map-split) main > .wrap,
 
 .map-list a.list-title {
   cursor: pointer;
-}
-
-.map-list a.list-title:hover {
-  color: var(--color-accent-blue);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent-blue);
-  text-underline-offset: 2px;
 }
 
 /* Stretch the title link over the whole <li> so the entire row is one click target
@@ -1536,8 +1398,6 @@ body:has(.map-split) main > .wrap,
   text-underline-offset: 2px;
 }
 
-/* Pills that filter the list when clicked (cuisine, difficulty); a plain span
-   pill (e.g. hike distance) is non-interactive. */
 .map-list .list-description .more {
   margin-block-start: var(--spacing-sm);
 }
@@ -1650,8 +1510,6 @@ body:has(.map-split) main > .wrap,
   --chip-color: var(--color-verdict-notforme);
 }
 
-/* Square the verdict chips — the old-internet badge look, matching the vibe
-   chips. */
 .chip.verdict-loved,
 .chip.verdict-liked,
 .chip.verdict-neutral,
@@ -1659,11 +1517,9 @@ body:has(.map-split) main > .wrap,
   border-radius: 0;
 }
 
-/* Rating pill (Verdict.astro `card`, food detail hero; also the map popup): a
-   solid verdict-colored icon disc, then the word in the body serif (an optional
-   "MY RATING" eyebrow above it). Bordered in the verdict color over a low-opacity
-   tint of it. --verdict-color is set per verdict below; the three --verdict-*-size
-   vars drive the scale, so the compact + mobile variants only flip those. */
+/* Rating pill (Verdict.astro `card`, food detail hero; also the map popup).
+   --verdict-color is set per verdict below; the three --verdict-*-size vars
+   drive the scale, so the compact + mobile variants only flip those. */
 .verdict-card {
   --verdict-disc-size: 2.25rem;
   --verdict-glyph-size: 1.1rem;
@@ -1693,7 +1549,6 @@ body:has(.map-split) main > .wrap,
   --verdict-color: var(--color-verdict-notforme);
 }
 
-/* Solid disc holding the verdict icon, glyph in the surface color for contrast. */
 .verdict-card .verdict-card-icon {
   display: inline-flex;
   align-items: center;
@@ -1737,9 +1592,7 @@ body:has(.map-split) main > .wrap,
   color: var(--verdict-color);
 }
 
-/* A filled verdict pill (food detail pages), matching the .verdict-card
-   treatment: a low-opacity tint of the chip color, a same-color border, and the
-   color itself as text (rather than a solid fill). `!important` (like .chip.round
+/* A filled verdict pill (food detail pages). `!important` (like .chip.round
    below) wins the specificity tie with Chip's scoped base rule, which is
    otherwise a cascade-order coin-flip. */
 .chip.is-filled {
@@ -1755,10 +1608,9 @@ body:has(.map-split) main > .wrap,
   color: inherit;
 }
 
-/* A circular chip — for icon-only content (e.g. an icon-only verdict). Equal
-   padding + square aspect + a 50% radius make a round badge around the glyph.
-   Lives here (not Chip's scoped style) so the dynamically-applied `round` class
-   isn't pruned as "unused" during Chip's scoped-CSS analysis. */
+/* A circular chip — for icon-only content (e.g. an icon-only verdict). Lives
+   here (not Chip's scoped style) so the dynamically-applied `round` class isn't
+   pruned as "unused" during Chip's scoped-CSS analysis. */
 .chip.round {
   padding: 4px !important;
   aspect-ratio: 1;
@@ -1782,9 +1634,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* List-pane header (Food + Neighborhoods): a section title + count on the left,
-   page-specific actions on the right (Food's wishlist link, the neighborhood
-   region legend), on a surface card at the top of the scrolling pane. */
 .list-pane-header {
   display: flex;
   align-items: center;
@@ -1801,23 +1650,8 @@ body:has(.map-split) main > .wrap,
   gap: var(--spacing-sm);
 }
 
-/* The front page's heavy black header voice, at pane-bar scale. */
 .list-pane-header .pane-title {
   margin: 0;
-  font-family: var(--font-display-black);
-  font-size: var(--font-size-lg);
-  font-weight: 400;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-text-heading);
-}
-
-.list-pane-header .pane-count {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  color: var(--color-muted);
-  font-weight: 500;
 }
 
 /* Food's pane is sticky in the map (split) view; in the full list-only view it
@@ -1886,7 +1720,6 @@ body:has(.map-split) main > .wrap,
   border-block-end: 2px solid var(--verdict-color, var(--color-muted));
 } */
 
-/* Alphabetical mode: the letter dividers read bigger + accent. */
 .food-grouped li.group-header.group-header-alpha .group-label {
   /* font-size: var(--font-size-xl); */
   color: var(--color-accent);
@@ -1910,13 +1743,6 @@ body:has(.map-split) main > .wrap,
   flex: 1;
 }
 
-.food-grouped li.group-header .group-count {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  color: var(--color-muted);
-  font-weight: 500;
-}
-
 /* The last row of a section (i.e. right before the next section header) drops its
    divider, so it doesn't double up with the header's top border. Covers both list
    flavors — Food's group headers and the Neighborhoods section heads. */
@@ -1925,8 +1751,6 @@ body:has(.map-split) main > .wrap,
   border-block-end: none;
 }
 
-/* No lead column anymore (the bar carries the verdict), so the open panel lines
-   up with the row text instead of indenting past a badge. */
 .food-grouped .list-description {
   margin-left: 0;
 }
@@ -1940,7 +1764,6 @@ body:has(.map-split) main > .wrap,
   padding-inline: 0;
 }
 
-/* Flush the rows to the pane's left edge in list-only view. */
 [data-filter-root]:not([data-view='map']) .food-grouped .list > li {
   padding-inline: 0 var(--spacing-md);
 }
@@ -2068,11 +1891,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-accent);
 }
 
-/* Grow slightly on hover, matching the neighborhood pins. */
-.food-marker:hover .marker-pin {
-  transform: scale(1.12);
-}
-
 /* Selected place (from the list or the map): ring the pin in the text color —
    the pins themselves are accent, so an accent ring would disappear. */
 .food-marker.is-selected .marker-pin-body {
@@ -2127,10 +1945,6 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 /* Attribution (required OSM/Protomaps credit), themed. */
-
-.verdict-chip {
-  margin-bottom: var(--spacing-sm);
-}
 
 /* The fleur-de-lis rating leading a food popup, mirroring the Rating component in
    the list rows: four glyphs, gold when filled, faded otherwise. (Rating.astro's
@@ -2253,10 +2067,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration: none;
 }
 
-.maplibregl-popup.food-popup .popup-meta {
-  margin-block-end: 2px;
-}
-
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 a:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -2288,15 +2098,6 @@ body:has([data-filter-root]) .masthead-nav {
   align-items: baseline;
   gap: var(--spacing-xs);
   margin-block: var(--spacing-sm);
-}
-
-.maplibregl-popup.food-popup .list-meta {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-  color: var(--color-muted);
 }
 
 .maplibregl-popup.food-popup button.list-meta {
@@ -2372,15 +2173,10 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-/* The lede under an entry title (topics, neighborhoods) — muted like the
-   homepage lead deck, never accent-colored description text. */
+/* The lede under an entry title (topics, neighborhoods): the deck voice (see
+   .desc-muted--lg alias in the pattern section); only margins live here. */
 .entry-summary {
-  font-size: var(--font-size-lg);
-  color: var(--color-muted);
-  font-weight: 400;
-  margin: 0;
-  line-height: 1.3;
-  margin-block-end: var(--spacing-xs);
+  margin: 0 0 var(--spacing-xs);
 }
 
 /* An organized header bar holding the meta and the edit link, divided from the
@@ -2416,7 +2212,7 @@ body:has([data-filter-root]) .masthead-nav {
    title, deck, dateline/share row, and its dotted rule — caps at the same
    measure. */
 .entry:has(.topic-layout) .entry-header {
-  max-width: 600px;
+  max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
@@ -2424,7 +2220,7 @@ body:has([data-filter-root]) .masthead-nav {
    scoped base is inline-flex, which would hug the page's left edge). */
 .entry:has(.topic-layout) .entry-byline {
   display: flex;
-  max-width: 600px;
+  max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
@@ -2470,7 +2266,7 @@ body:has([data-filter-root]) .masthead-nav {
     /* Text holds the standard 600px reading column with the sidebar a fixed
        2.5rem beside it — the pair centered as one block instead of spreading
        to the page edges. */
-    grid-template-columns: minmax(0, 600px) 290px;
+    grid-template-columns: minmax(0, var(--measure-reading)) 290px;
     justify-content: center;
     align-items: start;
     gap: 2.5rem;
@@ -2501,17 +2297,6 @@ body:has([data-filter-root]) .masthead-nav {
 .detail-aside .aside-more-link {
   display: inline-block;
   margin-block-start: var(--spacing-sm);
-}
-
-/* A content-width "back to the map" link at the foot of the sidebar. Overrides
-   the btn-quiet hover-only underline with an always-on 2px solid accent one. */
-.detail-back-link {
-  align-self: flex-start;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent);
-  text-underline-offset: 3px;
 }
 
 /* A section label inside the detail sidebar (Address, Links, …): the shared
@@ -2546,7 +2331,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .detail-links > *:hover {
-  background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
+  background: var(--color-wash);
 }
 
 .detail-links > :last-child {
@@ -2594,13 +2379,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: inherit;
 }
 
-.btn-block {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  padding-block: var(--spacing-xs);
-}
-
 .btn-outline {
   color: var(--color-text);
   background: var(--color-surface);
@@ -2612,22 +2390,6 @@ body:has([data-filter-root]) .masthead-nav {
 .btn-outline.is-copied {
   color: var(--color-text-heading);
   border-color: var(--color-text-heading);
-}
-
-.btn-filled {
-  color: var(--color-background);
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  flex-shrink: 0;
-}
-
-/* Lighten the fill toward white on hover (mixing explicitly rather than dropping
-   opacity, which only reads as "lighter" over the light theme — over the dark
-   surface a lower opacity just muddied the color). */
-.btn-filled:hover {
-  color: var(--color-background);
-  background: color-mix(in srgb, var(--color-accent), white 14%);
-  border-color: color-mix(in srgb, var(--color-accent), white 14%);
 }
 
 /* Solid black on the light theme, but the quiet bordered `.btn-outline` look on
@@ -2659,6 +2421,20 @@ body:has([data-filter-root]) .masthead-nav {
   border-color: var(--color-accent);
 }
 
+/* The voted poll button (toggled by readers-verdict.ts) wears the ink block's
+   colors — including its dark-theme swap — without the shout. */
+.rv-choice.is-active {
+  color: var(--color-surface);
+  background: var(--color-text-heading);
+  border-color: var(--color-text-heading);
+}
+
+:root[data-theme='dark'] .rv-choice.is-active {
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-color: var(--color-line-input);
+}
+
 /* Borderless accent text link ("Read more →"). */
 .btn-quiet {
   gap: var(--spacing-sm);
@@ -2678,26 +2454,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-underline-offset: 3px;
 }
 
-/* Borderless muted text link (source links inside lists); underlines on hover. */
-.btn-muted {
-  gap: var(--spacing-sm);
-  padding: 0;
-  font-weight: 500;
-  color: var(--color-muted);
-  text-decoration: none;
-  text-underline-offset: 3px;
-  flex-shrink: 0;
-  background: transparent;
-}
-
-.btn-muted:hover,
-.btn-muted.is-copied {
-  color: var(--color-accent);
-  text-decoration-line: underline;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent);
-}
-
 /* Tighter vertical padding for inline rows (source links, resource bars). */
 .btn-inline {
   padding-block: 0;
@@ -2705,21 +2461,6 @@ body:has([data-filter-root]) .masthead-nav {
 
 .btn-compact {
   padding-block: var(--spacing-xs);
-}
-
-.btn-small {
-  padding-block: var(--spacing-xs);
-}
-
-.btn-filled-contrast {
-  color: var(--color-surface);
-  background: var(--color-text-heading);
-  border-color: var(--color-text-heading);
-}
-
-.btn-filled-contrast:hover {
-  color: var(--color-surface);
-  opacity: 0.9;
 }
 
 
@@ -2737,32 +2478,7 @@ body:has([data-filter-root]) .masthead-nav {
    list + card section header (Mentioned in, Notable spots, By the numbers, My
    pick, Explored / The rest, Location, …). One definition so they never drift;
    each usage keeps its own margin via its own class. */
-/* Matches the unified eyebrow spec (xxs / 500 / uppercase / accent). */
-.section-label {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xxs);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-  color: var(--color-accent);
-}
-
-/* The box labels — the detail sidebar's sections (Address, Links) and the side
-   cards (By the numbers, Vibe, My pick) — trade the red mono eyebrow for the
-   heavy black header voice at label size. Double-class so it outranks both the
-   .section-label base and the `.body h2` serif rule. */
-.section-label.detail-section-label,
-.section-label.side-card-label,
-.section-label.my-pick-label {
-  font-family: var(--font-display-black);
-  font-size: var(--font-size-sm);
-  font-weight: 400;
-  letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-text-heading);
-  /* The rail-header rule under the label, spanning the sidebar column. */
-  padding-block-end: var(--spacing-xs);
-  border-block-end: 2px solid var(--color-line-contrast);
-}
+/* (.section-label's voice now lives in the pattern section as `.eyebrow`.) */
 
 .chips {
   display: flex;
@@ -2773,23 +2489,14 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-/* A section heading over a List (the Best of page): the front page's heavy
-   black header voice over the thick rule. */
+/* A section over a List (the Best of page); its h2 wears the shared
+   .head-black / .head-rule patterns. */
 .fact-section {
   margin-block-start: var(--spacing-lg);
 }
 
 .fact-section h2 {
   margin-block: 0 var(--spacing-xs);
-  padding-block-end: var(--spacing-xs);
-  border-block-end: 2px solid var(--color-line-contrast);
-  font-family: var(--font-display-black);
-  font-weight: 400;
-  font-size: var(--font-size-xxl);
-  line-height: 1.1;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-text-heading);
 }
 
 .group-label {
@@ -2827,18 +2534,6 @@ body:has([data-filter-root]) .masthead-nav {
 
 [data-view='map'] [data-filter-empty] .filter-clear {
   margin-inline: auto;
-}
-
-/* Address shown beneath a place in the Food list (comma-separated, one line). */
-.list-address {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
-  font-weight: 500;
 }
 
 .image-grid {
@@ -2932,4 +2627,158 @@ body:has([data-filter-root]) .masthead-nav {
 
 .nowrap {
   text-wrap: nowrap;
+}
+
+/* ===========================================================================
+   PATTERN CLASSES — the site's shared voices, named for what things ARE.
+   One definition per pattern; markup composes them. Rules of the road:
+   - Patterns never set margins; each usage keeps its own margin in a small
+     residual rule.
+   - A residual that CONTRADICTS a pattern declaration uses the compound form
+     (.own-class.pattern-class) so specificity — not file order — decides.
+   - This section stays at the END of the file so pattern classes win
+     same-specificity ties against older single-class rules above.
+   =========================================================================== */
+
+/* The heavy black header voice (Archivo Black, shouted): TOPICS / MORE /
+   FEATURED FOOD / MORE IN THE HILL / … Size modifiers only — everything else
+   is the one voice. */
+.head-black {
+  font-family: var(--font-display-black);
+  font-weight: 400;
+  font-size: var(--font-size-xxl);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-heading);
+}
+
+.head-black--lg {
+  font-size: var(--font-size-lg);
+}
+
+.head-black--sm {
+  font-size: var(--font-size-sm);
+}
+
+/* Prose bodies re-voice bare h2/h3 to the serif (`.body h2` is 0,1,1 and would
+   beat the single class) — re-assert the black voice for pattern-classed
+   headings inside them (the sidebar labels, More in… headings). */
+.body h2.head-black,
+.body h3.head-black {
+  font-family: var(--font-display-black);
+  color: var(--color-text-heading);
+}
+
+/* The thick ink rule closing a header. Composes with .head-black, or rides
+   alone on a flex header bar. */
+.head-rule {
+  padding-block-end: var(--spacing-xs);
+  border-block-end: 2px solid var(--color-line-contrast);
+}
+
+/* The mono eyebrow/kicker (FEATURED, ABOUT, cuisine · neighborhood, …).
+   `.section-label` is the legacy alias for the same voice. */
+.eyebrow,
+.section-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-accent);
+}
+
+.eyebrow--muted {
+  color: var(--color-muted);
+}
+
+/* The hairline tick between eyebrow parts (Cuisine | Neighborhood). Contexts
+   with their own flex gap use it bare; inline contexts add margins (see
+   .list-eyebrow's residual). */
+.eyebrow-divider {
+  display: inline-block;
+  width: 1px;
+  height: 0.85em;
+  background: var(--color-line-input);
+}
+
+/* The serif headline voice on rows and cards (Georgia, calm).
+   `.related-title` is the legacy alias. */
+.title-serif,
+.related-title {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--color-text-heading);
+  text-decoration: none;
+}
+
+/* The muted serif description under a title. --lg is the "deck" size;
+   `.entry-summary` is a legacy alias for the deck. */
+.desc-muted,
+.entry-summary {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.desc-muted--lg,
+.entry-summary {
+  font-size: var(--font-size-lg);
+  line-height: 1.3;
+}
+
+/* A title that is (or lives inside) a link: flag blue + a 2px underline on
+   hover. Put the class on the title element; hovering it or any ancestor
+   link/button triggers it. */
+:is(a, button):hover .title-link,
+a.title-link:hover,
+button.title-link:hover {
+  color: var(--color-accent-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* Whole-row hover wash. Bleed geometry (padding + negative margins) stays
+   per-site. */
+.hover-wash {
+  transition: background-color 0.12s ease;
+}
+
+.hover-wash:hover {
+  background: var(--color-wash);
+}
+
+/* The centered reading column (articles, prose pages, their headers). */
+.reading-col {
+  max-width: var(--measure-reading);
+  margin-inline: auto;
+}
+
+/* The ink-framed newspaper panel on the gold wash (What's New, the verdict
+   box). */
+.panel {
+  border: 2px solid var(--color-line-contrast);
+  background: var(--color-surface);
+  padding: var(--spacing-md);
+}
+
+/* The solid flag-blue chip (applied filters, neighborhood tags). Compound
+   with .chip so it deterministically outranks the .chip base colors. */
+.chip.chip-blue {
+  background: var(--color-accent-blue);
+  border-color: var(--color-accent-blue);
+  color: var(--color-background);
+}
+
+a.chip.chip-blue:hover,
+button.chip.chip-blue:hover {
+  color: var(--color-background);
+  border-color: var(--color-accent-blue);
+  background: color-mix(in srgb, var(--color-accent-blue) 85%, var(--color-text));
 }

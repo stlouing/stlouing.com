@@ -7,7 +7,7 @@ const description = 'Send a note, a correction, or a recommendation.'
 
 <BaseLayout article crumb="Feedback" description={description}>
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header reading-col">
       <div class="entry-bar">
         <h1>Feedback</h1>
       </div>
@@ -16,7 +16,7 @@ const description = 'Send a note, a correction, or a recommendation.'
       </p>
     </header>
 
-    <div class="feedback-body">
+    <div class="feedback-body reading-col">
     {
       FEEDBACK_ENDPOINT && (
         <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
@@ -64,18 +64,6 @@ const description = 'Send a note, a correction, or a recommendation.'
 </BaseLayout>
 
 <style>
-  /* The form and email line sit in the same centered 600px column as the
-     topic articles — the header (and its dotted rule) caps to match. */
-  .entry-header {
-    max-width: 600px;
-    margin-inline: auto;
-  }
-
-  .feedback-body {
-    max-width: 600px;
-    margin-inline: auto;
-  }
-
   .feedback-form {
     display: flex;
     flex-direction: column;

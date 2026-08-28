@@ -56,9 +56,7 @@ export const sections: Section[] = [
     description: "Field notes and deep dives on what I've learned.",
   },
 
-  // Lists: my subjective picks and running lists. (Pronunciations + Slang are
-  // reference, reached via the St. Louis Overview topic; Want to Try lives with
-  // Food on the /food page — none of them are top-level groups anymore.)
+  // Lists: my subjective picks and running lists.
   {
     label: 'The Best Food in St. Louis',
     path: '/best/',

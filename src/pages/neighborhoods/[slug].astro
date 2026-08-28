@@ -38,7 +38,6 @@ import IconBook from '../../assets/IconBook.astro'
 import IconLandmark from '../../assets/IconLandmark.astro'
 import IconCalendar from '../../assets/IconCalendar.astro'
 
-// An icon per resource link, matching the Food page's labeled source links.
 const resourceIcons: Record<string, typeof IconExternalLink> = {
   Wikipedia: IconBook,
   MyTownView: IconChart,
@@ -84,10 +83,8 @@ const backlinks = entry ? await getBacklinks(entry.id) : []
 // (with icons, linking to /tags) rather than in the Entry header's tag row.
 const tags = entry?.data.tags ?? []
 
-// Signature attractions/landmarks for the "Notable spots" list.
 const attractions = entry?.data.attractions ?? []
 
-// Computed data layer.
 const population = neighborhoodPopulation(slug)
 // Nearby neighborhoods: a manual `neighbors` list (frontmatter) for entries the
 // geo adjacency graph doesn't cover (county municipalities), else the computed set.
@@ -139,7 +136,6 @@ const nearbyNeighbors = [...exploredNeighbors, ...unexploredNeighbors].slice(0, 
 // auto-generated City of St. Louis + MyTownView profiles — rendered as a button bar.
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
-// The generated fallback line for a neighborhood without its own summary.
 const generated = neighborhoodGeneratedSummary(slug)
 
 // On-page summary under the title: the manual `description` tagline when set,
@@ -325,7 +321,7 @@ const trail = [
         {
           (hasNeighborhoodShape(slug) || info?.coords) && (
             <div class="neighborhood-map-block">
-              <h2 class="section-label detail-section-label">Map</h2>
+              <h2 class="detail-section-label head-black head-black--sm head-rule">Map</h2>
               <figure class="neighborhood-locator-figure">
                 <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
                 <figcaption>
@@ -342,12 +338,10 @@ const trail = [
           resourceLinks.length > 0 && (
             <>
               <div class="detail-links-section">
-                <h2 class="section-label detail-section-label">Links</h2>
+                <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
                 <div class="detail-links">
                   {resourceLinks.map((link) => {
                     const Icon = resourceIcons[link.label]
-                    // The Website link shows its bare host (no scheme/www), like
-                    // the Food page; the named resources keep their labels.
                     const label = link.label === 'Website' ? displayUrl(link.href) : link.label
 
                     return (
@@ -373,8 +367,6 @@ const trail = [
 </BaseLayout>
 
 <style>
-  /* The locator map + its caption at the top of the shared sidebar. The map carries
-     its own frame (NeighborhoodLocator); the caption is a quiet mono line under it. */
   .neighborhood-locator-figure {
     margin: 0;
   }

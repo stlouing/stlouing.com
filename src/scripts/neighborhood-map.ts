@@ -515,10 +515,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         map.fitBounds(selectedBounds, { padding: 40, maxZoom: 13, animate: false })
       }
     } else {
-      // Frame the whole city, then zoom in half a level for a tighter default view.
-      // Instant on initial load — no fly-in. (setZoom/setCenter below are jumps.)
+      // Frame the whole city. Instant on initial load — no fly-in. (setCenter
+      // below is a jump.)
       map.fitBounds(cityBounds, { padding: 40, animate: false })
-      // map.setZoom(map.getZoom())
 
       const visibleBounds = map.getBounds()
       const visibleLatSpan = visibleBounds.getNorth() - visibleBounds.getSouth()

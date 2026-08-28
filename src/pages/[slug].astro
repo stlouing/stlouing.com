@@ -68,7 +68,7 @@ const schema = articleSchema(
     <Fragment slot="footer-meta">
       <EntryDates created={data.created} updated={data.updated} />
     </Fragment>
-    <div class:list={['topic-layout', { 'topic-list': data.display === 'list' }]}>
+    <div class:list={['topic-layout', 'reading-col', { 'topic-list': data.display === 'list' }]}>
       <Content />
     </div>
   </Entry>
@@ -80,8 +80,6 @@ const schema = articleSchema(
      every paragraph). */
   .topic-layout {
     margin-block-start: var(--spacing-md);
-    max-width: 600px;
-    margin-inline: auto;
   }
 
 </style>

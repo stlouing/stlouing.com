@@ -25,7 +25,7 @@ const { variant = 'compact' } = Astro.props
          would end its sticky range where the masthead ends. */}
       <header class="masthead-home">
         <div class="masthead-ear">
-          <div class="wrap wrap-wide masthead-ear-line">
+          <div class="wrap wrap-wide masthead-ear-line eyebrow eyebrow--muted">
             <span class="masthead-ear-left">
               <span>An Independent Guide</span>
             </span>
@@ -54,7 +54,6 @@ const { variant = 'compact' } = Astro.props
     <Nav />
     <ThemeToggle variant="quiet" />
   </div>
-  {/* The Scotch rule closing the flag: thick bar over a skinny line. */}
   <div class="masthead-double-rule" />
 </div>
 
@@ -101,12 +100,6 @@ const { variant = 'compact' } = Astro.props
     justify-content: space-between;
     gap: var(--spacing-md);
     padding-block: var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-muted);
-    font-weight: 500;
   }
 
   .masthead-ear-left {
@@ -176,7 +169,6 @@ const { variant = 'compact' } = Astro.props
     justify-self: end;
   }
 
-  /* The wordmark in the nameplate's display serif, not the mono. */
   .masthead-brand {
     justify-self: start;
     display: flex;
@@ -240,7 +232,6 @@ const { variant = 'compact' } = Astro.props
   }
 
   @media (max-width: 700px) {
-    /* Brand + toggle share the top row; the links drop to a full row below. */
     .masthead-nav-inner {
       grid-template-columns: 1fr auto;
       grid-template-areas:

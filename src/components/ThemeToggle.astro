@@ -44,9 +44,6 @@ const { variant = 'dark' } = Astro.props
       d="M18 22H8v-2h10v2ZM8 20H6v-2h2v2Zm12 0h-2v-2h2v2ZM6 18H4v-2h2v2Zm16 0h-2v-4h-2v-2h2v-2h2v8ZM4 16H2V6h2v10Zm14 0h-6v-2h6v2Zm-6-2h-2v-2h2v2Zm-2-2H8V6h2v6ZM6 6H4V4h2v2Zm8-2h-2v2h-2V4H6V2h8v2Z"
     ></path></svg
   >
-  {/* The label names the mode currently active, pairing with the icon. */}
-  <!-- <span class="theme-label theme-label-dark">Dark</span>
-  <span class="theme-label theme-label-light">Light</span> -->
 </Button>
 
 <style>
@@ -84,13 +81,6 @@ const { variant = 'dark' } = Astro.props
     }
   }
 
-  .theme-label {
-    font-size: var(--font-size-xxs);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-  }
-
   /* Mobile: the ink block tracks the flag tile's smaller size. */
   @media (max-width: 700px) {
     :global(.theme-toggle.btn-dark) {
@@ -103,10 +93,7 @@ const { variant = 'dark' } = Astro.props
     }
   }
 
-  /* The control shows the current mode: sun + "Light" in light mode, moon +
-     "Dark" in dark mode. */
-  .icon-moon,
-  .theme-label-dark {
+  .icon-moon {
     display: none;
   }
 
@@ -115,12 +102,7 @@ const { variant = 'dark' } = Astro.props
       display: block;
     }
 
-    .theme-label-dark {
-      display: inline;
-    }
-
-    .icon-sun,
-    .theme-label-light {
+    .icon-sun {
       display: none;
     }
   }

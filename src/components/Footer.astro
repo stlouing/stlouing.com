@@ -3,8 +3,7 @@
 // top, the crest — carrying the site identity on the left and the newsletter
 // signup on the right. The form hands off to Substack (no iframe widget, no
 // tracking, works without JS): submitting GETs to `${NEWSLETTER_URL}/subscribe`,
-// which Substack prefills + handles double-opt-in. The newsletter side
-// self-hides when the URL is unset.
+// which Substack prefills + handles double-opt-in.
 import { NEWSLETTER_URL, SITE_DESCRIPTION } from '../lib/site'
 import { href } from '../lib/url'
 import FleurDeLis from '../assets/FleurDeLis.astro'
@@ -22,7 +21,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     </div>
     {
       /* Rendered even when NEWSLETTER_URL is unset (dev has no .env value);
-         Substack simply isn't reachable then, same as the old signup. */
+         Substack simply isn't reachable then. */
     }
     <div class="footer-newsletter">
       <p class="footer-newsletter-title">Newsletter</p>
@@ -42,15 +41,13 @@ import IconInstagram from '../assets/IconInstagram.astro'
           required
         />
         {
-          /* The shared black-block look via the .btn classes on a native
-             button — the Button component pins type="button", and a form
-             submit needs type="submit". */
+          /* A native button, not the Button component — it pins type="button",
+             and a form submit needs type="submit". */
         }
         <button type="submit" class="btn btn-dark btn-compact">Subscribe</button>
       </form>
     </div>
   </div>
-  {/* The closing bar: hairline, copyright left, socials right. */}
   <div class="wrap wrap-wide footer-bottom">
     <span class="footer-made">
       Made with <IconHeart /> in STL
@@ -115,7 +112,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     margin-block-end: var(--spacing-md);
   }
 
-  /* The name in the nameplate's display serif, as written — not shouted. */
   .footer-name {
     margin: 0 0 var(--spacing-sm);
     font-family: var(--font-display);
@@ -147,7 +143,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     opacity: 0.92;
   }
 
-  /* The newsletter blurb runs a little wider than the identity line. */
   .footer-newsletter .footer-description {
     max-width: 40ch;
   }
@@ -215,7 +210,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     padding-block-start: var(--spacing-xs);
   }
 
-  /* The closing bar under a soft hairline. */
   .footer-bottom {
     display: flex;
     flex-wrap: wrap;
@@ -236,8 +230,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     font-weight: 500;
   }
 
-  /* The heart in the flag's own yellow (the crest disc), popping off the red;
-     flat :global on purpose (nested :global gets stripped). */
+  /* Flat :global on purpose (nested :global gets stripped). */
   .footer-made :global(.icon) {
     width: 1rem;
     height: 1rem;
@@ -277,8 +270,8 @@ import IconInstagram from '../assets/IconInstagram.astro'
     text-decoration-color: var(--footer-yellow);
   }
 
-  /* Stack the two blocks on phones, form full width — trimmed padding and a
-     slightly smaller voice so the band doesn't tower over a phone screen. */
+  /* Stacked on phones, in a smaller voice so the band doesn't tower over the
+     screen. */
   @media (max-width: 700px) {
     .site-footer {
       margin-block-start: var(--spacing-lg);

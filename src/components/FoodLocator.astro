@@ -32,9 +32,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
   }
 
   /* The placeholder before the map loads: a faint diagonal hatch, echoing the
-     map's own grid, so the box reads as a map even while the chunk is fetching.
-     Its own hairline frame, since it now sits at the top of the border-left sidebar
-     rather than inside a bordered card. */
+     map's own grid, so the box reads as a map even while the chunk is fetching. */
   .food-locator-map {
     position: relative;
     height: 220px;
@@ -51,8 +49,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
   }
 
   /* The neighborhood tag, above the map's controls and out of its container so
-     initializing the map doesn't disturb it. Top-left, clear of the bottom credit
-     (the zoom control is moved to the top-right to match). */
+     initializing the map doesn't disturb it. Top-left, clear of the bottom credit. */
   .food-locator-tag {
     position: absolute;
     z-index: 500;
@@ -72,7 +69,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
 <script>
   // Upgrade each placeholder into a map. MapLibre is a heavy dependency, so defer
   // the dynamic import until the locator nears the viewport (and keep it out of the
-  // page's main bundle). It's a dynamic import so it never lands in the main chunk.
+  // page's main bundle).
   const boxes = [...document.querySelectorAll<HTMLElement>('[data-food-locator]')]
 
   if (boxes.length) {

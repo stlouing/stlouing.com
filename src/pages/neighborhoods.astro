@@ -47,8 +47,6 @@ const restCount = listed.length - writtenCount
 
 // Per-neighborhood facts the map popup needs (area + resource links), stashed as
 // data attributes on each row so the client map can read them without re-deriving.
-// Resources come from the shared helper so the popup matches the detail page +
-// list (deduped Website, plus the City of St. Louis link the popup used to omit).
 // Default preview line for a neighborhood without a writeup, so an un-explored row
 // (and its map popup) reads as intentional rather than unfinished.
 const NOT_EXPLORED_EXCERPT = "I haven't explored this neighborhood yet."
@@ -122,7 +120,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
       <article class="page content-pane map-list section-list">
         <div class="list-pane-header">
           <span class="pane-left">
-            <h1 class="pane-title">Neighborhoods, Parks, & Cities</h1>
+            <h1 class="pane-title head-black head-black--lg">Neighborhoods, Parks, & Cities</h1>
             <span class="pane-count">{count}</span>
           </span>
         </div>

@@ -8,7 +8,7 @@ import { published } from '../../lib/content'
 import { cuisineLabel } from '../../lib/cuisine'
 import { href } from '../../lib/url'
 
-// The wishlist + tried lists are now first-class food entries carrying a `status`
+// The wishlist + tried lists are first-class food entries carrying a `status`
 // (each has its own /food/<slug> page + map pin); this page just reads them back
 // out by status. RIP stays a plain data file — a closed place needs no page.
 interface FoodNote {
@@ -57,7 +57,7 @@ const description =
     {
       wishlist.length > 0 ? (
         <section>
-          <h2>
+          <h2 class="head-black head-rule">
             Haven't tried yet <span class="section-count">{wishlist.length}</span>
           </h2>
           <p class="description">
@@ -82,7 +82,7 @@ const description =
     {
       triedList.length > 0 && (
         <section>
-          <h2>
+          <h2 class="head-black head-rule">
             Tried, not yet rated <span class="section-count">{triedList.length}</span>
           </h2>
           <p class="description">
@@ -105,7 +105,7 @@ const description =
     {
       inMemoriam.length > 0 && (
         <section>
-          <h2>
+          <h2 class="head-black head-rule">
             RIP <span class="section-count">{inMemoriam.length}</span>
           </h2>
           <p class="description">
@@ -127,7 +127,6 @@ const description =
 </BaseLayout>
 
 <style>
-  /* A muted count beside each section heading. */
   .section-count {
     margin-inline-start: var(--spacing-sm);
     font-family: var(--font-mono);
@@ -136,13 +135,10 @@ const description =
     color: var(--color-muted);
   }
 
-  /* Each section: a normal h2 + a line of description, then the list of cards. */
   section {
     margin-block-start: var(--spacing-xl);
   }
 
-  /* These lists run long, so split them into two columns on desktop. The rows
-     keep their own hairline dividers; the column gap separates the two stacks. */
   .card-list {
     display: grid;
     grid-template-columns: 1fr;
@@ -167,19 +163,8 @@ const description =
     }
   }
 
-  /* The front page's heavy black header voice over the thick rule — the same
-     treatment as TOPICS / MAPS / MORE. */
   section h2 {
     margin: 0 0 var(--spacing-xs);
-    padding-block-end: var(--spacing-xs);
-    border-block-end: 2px solid var(--color-line-contrast);
-    font-family: var(--font-display-black);
-    font-weight: 400;
-    font-size: var(--font-size-xxl);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
   .description {

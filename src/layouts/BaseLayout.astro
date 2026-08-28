@@ -108,13 +108,10 @@ const pageTitle = titleLeaf ?? `${SITE_NAME}: Food, Neighborhoods, and Culture o
 
 const metaDescription = description ?? SITE_DESCRIPTION
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
-// Social-share image. Absolute URL (required by OG). A dedicated 1200x630 card
+// Social-share image. Absolute URL (required by OG).
 const socialImage = new URL(href(ogImage ?? '/og.png'), Astro.site ?? Astro.url.origin).href
-// A custom share image gets the page title as alt; the default flag keeps its own.
 const socialImageAlt = ogImage ? (crumb ?? SITE_NAME) : `${SITE_NAME} - the St. Louis flag`
 
-// Structured data: an automatic BreadcrumbList from the trail, plus any
-// page-specific schema passed in.
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
 const breadcrumbSchema =
   trail.length > 1

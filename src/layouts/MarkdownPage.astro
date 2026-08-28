@@ -15,30 +15,15 @@ const { frontmatter } = Astro.props
   title={frontmatter.seoTitle}
   description={frontmatter.description}>
   <article class="page">
-    <header class="entry-header">
+    <header class="entry-header reading-col">
       <div class="entry-bar">
         {frontmatter.title && <h1>{frontmatter.title}</h1>}
       </div>
-      {/* One-line tagline under the title, in accent — mirrors the topic detail
-          pages' description lede. */}
       {frontmatter.tagline && <p class="entry-summary">{frontmatter.tagline}</p>}
     </header>
-    <div class="body">
+    <div class="body reading-col">
       <slot />
     </div>
   </article>
 </BaseLayout>
 
-<style>
-  /* Standalone prose pages read in the same centered 600px column as the
-     topic articles — the header (and its dotted rule) caps to match. */
-  .entry-header {
-    max-width: 600px;
-    margin-inline: auto;
-  }
-
-  .body {
-    max-width: 600px;
-    margin-inline: auto;
-  }
-</style>

@@ -22,13 +22,13 @@ const topics = sortTopics(published(await getCollection('topics')))
       </div>
       <p class="entry-summary">Deep-dives into St. Louis food and culture</p>
     </header>
-    <div class="topic-list">
+    <div class="topic-grid">
       {
         topics.map((topic) => (
-          <a class="topic-card" href={href(`/${topic.id}/`)}>
-            {topic.data.category && <p class="topic-kicker">{topic.data.category}</p>}
-            <h2 class="topic-title">{topic.data.title}</h2>
-            {topic.data.description && <p class="topic-description">{topic.data.description}</p>}
+          <a class="topic-card hover-wash" href={href(`/${topic.id}/`)}>
+            {topic.data.category && <p class="topic-kicker eyebrow">{topic.data.category}</p>}
+            <h2 class="topic-title title-serif title-link">{topic.data.title}</h2>
+            {topic.data.description && <p class="topic-description desc-muted desc-muted--lg">{topic.data.description}</p>}
             <p class="topic-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
             {/* A span, not a nested link — the whole card is the anchor. */}
             <span class="continue-link">
@@ -46,7 +46,7 @@ const topics = sortTopics(published(await getCollection('topics')))
      each an equal-height flex stack with the continue link on the floor.
      Counts are fixed per breakpoint (not auto-fill) so the vertical gutter
      rules below know which cards start a row. */
-  .topic-list {
+  .topic-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--spacing-md) var(--spacing-xl);
@@ -54,21 +54,19 @@ const topics = sortTopics(published(await getCollection('topics')))
   }
 
   @media (max-width: 1000px) {
-    .topic-list {
+    .topic-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 700px) {
-    .topic-list {
+    .topic-grid {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 
-  /* Each card is one whole-row link — content left, an arrow on the right —
-     divided on hairlines (the site's list idiom, not boxes). Like the list
-     items, the card pulls itself a step wider than the text column so the
-     hover highlight extends past the text while the text stays aligned. */
+  /* The card pulls itself a step wider than the text column so the hover
+     highlight extends past the text while the text stays aligned. */
   .topic-card {
     position: relative;
     display: flex;
@@ -79,16 +77,9 @@ const topics = sortTopics(published(await getCollection('topics')))
     border-radius: var(--radius);
     color: inherit;
     text-decoration: none;
-    transition: background-color 0.12s ease;
   }
 
-  /* The same whole-row highlight the list items use: a soft text-over-
-     background tint that works in both themes. */
-  .topic-card:hover {
-    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
-  }
-
-  /* The dotted divider (the homepage rail's idiom) under every card row. */
+  /* The dotted divider under every card row. */
   .topic-card::after {
     content: '';
     position: absolute;
@@ -131,24 +122,9 @@ const topics = sortTopics(published(await getCollection('topics')))
     }
   }
 
-  /* The site's serif heading voice, at heading size — mono is for labels and
-     turns clumsy at display sizes, and the serif is what separates the title
-     from the lede and excerpt below it. */
   .topic-title {
     margin-block: 0 var(--spacing-sm);
-    font-family: var(--font-serif);
-    /* ~23px on phones up to the full xxxl on wide screens, on the same clamp
-       idiom as the global heading scale. */
     font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
-    font-weight: 500;
-    color: var(--color-text-heading);
-  }
-
-  .topic-card:hover .topic-title {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
   }
 
   /* The continue link anchors the card's bottom-right corner, pinned to the
@@ -160,29 +136,14 @@ const topics = sortTopics(published(await getCollection('topics')))
     text-align: end;
   }
 
-  /* The subject kicker, in the unified accent eyebrow voice. */
   .topic-kicker {
     margin: 0 0 var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
   }
 
-  /* The subtitle in the muted deck voice — description text never wears the
-     accent. */
   .topic-description {
     margin-block: var(--spacing-xs) 0;
-    font-family: var(--font-body);
-    font-size: var(--font-size-lg);
-    font-weight: 400;
-    color: var(--color-muted);
-    line-height: 1.3;
   }
 
-  /* Matches the front page's food-card excerpts. */
   .topic-excerpt {
     margin-block: var(--spacing-sm) var(--spacing-sm);
     font-family: var(--font-serif);

@@ -41,16 +41,15 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   const scope: Element | Document = el.closest('[data-filter-root]') ?? document
 
   // Marker clustering is opt-in per page (Food sets data-map-cluster; Hikes doesn't),
-  // so every clustering codepath below is gated on this flag — when false the map
-  // behaves exactly as it did before clustering existed.
+  // so every clustering codepath below is gated on this flag.
   const clusterEnabled = el.dataset.mapCluster !== undefined
 
   const map = createBasemapMap(el, { minZoom: 10, maxZoom: 16 })
 
   // Faint neighborhood outlines under the pin markers, so each spot reads with
   // some geographic context. One geojson source (fetched by MapLibre from the URL)
-  // + a thin line layer; the color comes from the hairline token, which differs
-  // light/dark. transformStyle (see basemap.ts) carries both across a theme swap.
+  // + a thin line layer. transformStyle (see basemap.ts) carries both across a
+  // theme swap.
   const BOUNDARY_SOURCE = 'nbhd-boundaries'
   const BOUNDARY_LINE = 'nbhd-boundaries-line'
   // A muted gray (not the pale hairline token, which vanishes on the light
@@ -161,9 +160,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   const pinSvg =
     '<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>'
 
-  // Build a place's pin marker + popup once, lazily. The popup carries the same
-  // card the list row shows: cuisine/neighborhood chips (which filter), a tagline,
-  // an address, a writeup teaser, and external source buttons.
+  // Build a place's pin marker + popup once, lazily.
   function buildMarker(item: HTMLElement, lngLat: [number, number]): maplibregl.Marker {
     // The pin lives in an inner element so hover can scale it without touching
     // the marker element's transform (MapLibre owns that for positioning — same
@@ -228,8 +225,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     // closeOnClick:false — we manage closing (map-click + single-open) so the row
     // selection stays in sync. `anchor: 'bottom'` pins the popup ABOVE the marker
     // so it never flips sides as you pan/near edges; keepPopupInView pans the map
-    // to keep it on-screen instead (matching the old Leaflet behavior). The offset
-    // lifts it clear of the marker.
+    // to keep it on-screen instead. The offset lifts it clear of the marker.
     const popup = new maplibregl.Popup({
       className: 'food-popup',
       closeButton: true,
@@ -296,7 +292,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     //     two nearly-stacked pins can't be clicked apart, so the cluster gives you
     //     a target that zooms in and separates them.
     //   radius 16   — the (screen-pixel) merge distance; smaller = less eager, so
-    //     only genuinely close spots cluster (far fewer bubbles than the old 38).
+    //     only genuinely close spots cluster.
     //   maxZoom 13  — the last zoom clustering is computed at, one under the map's
     //     own max (14), so clicking a cluster (or reaching zoom 14) always splits
     //     it into individual leaves.
@@ -338,7 +334,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   }
 
   // Reconcile the map with the index for the current viewport: show the existing
-  // emoji marker for each leaf, a count bubble for each cluster. Leaves are diffed
+  // pin marker for each leaf, a count bubble for each cluster. Leaves are diffed
   // (added/removed, never rebuilt) so an open popup / selected row survives; bubbles
   // are stateless (their ids aren't stable across zoom) so they're cleared + rebuilt.
   function renderClusters(): void {

@@ -33,7 +33,6 @@ interface SitemapGroup {
   items: Entry[]
 }
 
-// One shape for every group, so each renders identically (header + columns).
 const groups: SitemapGroup[] = [
   {
     label: 'Pages',
@@ -85,7 +84,7 @@ const groups: SitemapGroup[] = [
       {
         groups.map((group) => (
           <section class:list={['sitemap-section', { featured: group.featured }]}>
-            <h2 class="sitemap-head">
+            <h2 class="sitemap-head head-black head-black--lg head-rule">
               <span class="sitemap-head-label">
                 {group.path ? (
                   <a class="sitemap-label" href={href(group.path)}>
@@ -154,22 +153,11 @@ const groups: SitemapGroup[] = [
     width: 14px;
   }
 
-  /* Category header: the front page's heavy black header voice over the thick
-     rule. */
   .sitemap-head {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
     margin: 0 0 var(--spacing-sm);
-    padding-block-end: var(--spacing-xs);
-    border-block-end: 2px solid var(--color-line-contrast);
-    font-family: var(--font-display-black);
-    font-size: var(--font-size-lg);
-    font-weight: 400;
-    line-height: 1.1;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
   .sitemap-head a {
@@ -181,7 +169,6 @@ const groups: SitemapGroup[] = [
     color: var(--color-accent-blue);
   }
 
-  /* The count keeps the quiet mono voice beside the heavy label. */
   .sitemap-count {
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);

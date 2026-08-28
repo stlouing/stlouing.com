@@ -1,10 +1,10 @@
 // Wikipedia-style hovercards for resolved `[[wikilinks]]` (marked `a.wikilink`
 // with a `data-wikilink` id by remark-wikilink). Desktop only: on hover/focus
 // for ~1s, fetch the shared preview map once and show a small title + excerpt
+// card near the link. Touch / coarse-pointer devices just follow the link.
 
 import { cuisineLabel } from "../lib/cuisine"
 
-// card near the link. Touch / coarse-pointer devices just follow the link.
 interface Preview {
   title: string
   excerpt: string

@@ -9,7 +9,6 @@ import { href } from '../lib/url'
 import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import { cuisineLabel } from '../lib/cuisine'
 
-// Featured reading: the pizza deep-dive (leads with its photo) + regional foods.
 const topics = published(await getCollection('topics'))
 const pizza = topics.find((topic) => topic.id === 'st-louis-style-pizza')
 const regional = topics.find((topic) => topic.id === 'regional-foods')
@@ -56,7 +55,7 @@ const neighborhoods = published(await getCollection('neighborhoods'))
             />
           )}
           <span class="feature-body">
-            <span class="feature-kicker">Featured</span>
+            <span class="feature-kicker eyebrow">Featured</span>
             <span class="feature-title">{pizza.data.title}</span>
             {pizza.data.description && <span class="feature-desc">{pizza.data.description}</span>}
           </span>
@@ -128,8 +127,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
   </article>
 
   <style>
-    /* The featured article: its photo beside title + blurb, the whole card a link.
-       Stacks image-over-text on narrow screens. */
     .feature {
       display: grid;
       grid-template-columns: minmax(0, 340px) 1fr;
@@ -165,15 +162,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
       flex-direction: column;
       gap: var(--spacing-xs);
       min-width: 0;
-    }
-
-    .feature-kicker {
-      font-family: var(--font-mono);
-      font-size: var(--font-size-xxs);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: var(--letter-spacing);
-      color: var(--color-accent);
     }
 
     .feature-title {

@@ -7,8 +7,7 @@ import { tagGroups, tagSlug } from '../../lib/tags'
 
 const { cuisines, vibes, topics } = await tagGroups()
 
-// One shape per section so each renders identically. `kind` picks whether a
-// leading vibe icon shows and how the label is cased.
+// `kind` picks whether a leading vibe icon shows and how the label is cased.
 const groups = [
   { label: 'Cuisines', kind: 'cuisine', tags: cuisines },
   { label: 'Neighborhood vibes', kind: 'vibe', tags: vibes },
@@ -29,7 +28,7 @@ const groups = [
       {
         groups.map((group) => (
           <section>
-            <h2 class="section-label tags-head">{group.label}</h2>
+            <h2 class="tags-head head-black head-black--lg head-rule">{group.label}</h2>
             <ul class="tag-row">
               {group.tags.map(({ tag, count }) => (
                 <li>
@@ -49,18 +48,8 @@ const groups = [
 </BaseLayout>
 
 <style>
-  /* The front page's heavy black header voice over the thick rule, overriding
-     the small mono .section-label base. */
   .tags-head {
     margin-block: 0 var(--spacing-sm);
-    padding-block-end: var(--spacing-xs);
-    border-block-end: 2px solid var(--color-line-contrast);
-    font-family: var(--font-display-black);
-    font-weight: 400;
-    font-size: var(--font-size-lg);
-    line-height: 1.1;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
   .tag-groups {

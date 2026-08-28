@@ -36,8 +36,7 @@ export interface PopupConfig {
   // Food only: address lines, rendered under the title.
   addressLines?: string[]
   // A one-line tagline (the entry's description). Accepted for compatibility
-  // but no longer rendered — the popups match the lists, which dropped
-  // descriptions in favor of the excerpt.
+  // but not rendered.
   tagline?: string
   // A short writeup teaser, clamped to a few lines by the popup CSS.
   excerpt?: string
@@ -158,7 +157,6 @@ export function buildPopupHtml(config: PopupConfig): string {
     : ''
 
   // Order mirrors the list rows: the photo banner, rating, the eyebrow, then
-  // the serif title with the address and excerpt below (no tagline — the lists
-  // dropped descriptions too).
+  // the serif title with the address and excerpt below.
   return `${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${excerptHtml}${moreHtml}`
 }

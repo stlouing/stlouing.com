@@ -104,7 +104,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
     <div class="map-list food-grouped">
       <div class="list-pane-header">
         <span class="pane-left">
-          <h1 class="pane-title">Food</h1>
+          <h1 class="pane-title head-black head-black--lg">Food</h1>
           <span class="pane-count"><span data-filter-count>{count}</span></span>
         </span>
         <div class="pane-links">
@@ -210,7 +210,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
 </script>
 
 <style>
-  /* The search fills whatever width the title row leaves over. */
   .pane-links {
     display: flex;
     align-items: center;
@@ -219,8 +218,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
     margin-inline-start: var(--spacing-lg);
   }
 
-  /* The header search field, standing in for the old Favorites button: a
-     pixel magnifier inset on the left, the input stretching the rest. */
   .pane-search-wrap {
     position: relative;
     display: flex;

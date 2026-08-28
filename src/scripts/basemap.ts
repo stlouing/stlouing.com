@@ -81,8 +81,8 @@ export function createBasemapMap(
     zoom: 11,
     dragRotate: false,
     pitchWithRotate: false,
-    // Attribution is required (OSM/Protomaps); keep it always-expanded like the
-    // old map rather than the collapsed "ⓘ" toggle.
+    // Attribution is required (OSM/Protomaps); keep it always-expanded rather
+    // than the collapsed "ⓘ" toggle.
     attributionControl: { compact: false },
     ...options,
   })

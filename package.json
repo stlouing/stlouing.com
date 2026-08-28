@@ -22,7 +22,6 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/archivo-black": "^5.3.0",
     "@fontsource/google-sans-code": "^5.3.0",
-    "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/instrument-serif": "^5.2.8",
     "@protomaps/basemaps": "^5.7.2",
     "astro": "^6.4.2",

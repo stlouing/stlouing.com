@@ -5,13 +5,12 @@
 //
 // variant:
 //   outline (default) — bordered surface button (source links, CTAs)
-//   filled            — solid accent
-//   quiet             — borderless accent text link ("Read more →")
-//   muted             — borderless muted text w/ dotted underline (list sources)
+//   dark              — solid ink block
+//   quiet             — borderless text-voice control
 // compact: tighter vertical padding for inline rows.
 interface Props {
   href?: string
-  variant?: 'outline' | 'filled' | 'quiet' | 'muted' | 'dark'
+  variant?: 'outline' | 'quiet' | 'dark'
   compact?: boolean
   class?: string
   [key: string]: unknown

@@ -28,8 +28,7 @@ export function initLocator(el: HTMLElement): void {
     minZoom: 10,
     maxZoom: 15,
     // A plain scroll or one-finger drag moves the PAGE, not the map; two fingers
-    // (or ⌘/ctrl + scroll) pan/zoom it, with a hint overlay. MapLibre's built-in
-    // replacement for the old hand-rolled two-finger gesture gating, so a locator
+    // (or ⌘/ctrl + scroll) pan/zoom it, with a hint overlay — so a locator
     // sitting inline in a scrolling page never traps the reader.
     cooperativeGestures: true,
     // Small map: collapse the required OSM/Protomaps credit to the "ⓘ" toggle

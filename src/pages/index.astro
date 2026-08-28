@@ -54,7 +54,6 @@ const allNeighborhoods = published(await getCollection('neighborhoods'))
 const visitedCount = allFood.filter((place) => isExplored(place.data.status)).length
 const wanderedCount = allNeighborhoods.length
 
-// The Explore rail: the map sections.
 const exploreGroup = groups.find((group) => group.id === 'explore')
 const exploreSections = sections.filter((section) => section.group === 'explore')
 
@@ -84,21 +83,17 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
 <BaseLayout home jsonLd={website}>
   <div class="front-page">
-    {
-      /* Column 1: the article rail — serif titles with date bylines, then a
-       compact More section for everything else. */
-    }
     <aside class="front-index" aria-label="Site index">
       <section class="front-index-topics">
-        <h2 class="rail-header">Topics</h2>
+        <h2 class="rail-header head-black head-rule">Topics</h2>
         <ul class="rail-articles">
           {
             allTopics.map((topic) => (
               <li>
-                <a href={href(`/${topic.id}/`)}>
-                  <span class="rail-article-title">{topic.data.title}</span>
+                <a class="hover-wash" href={href(`/${topic.id}/`)}>
+                  <span class="rail-article-title title-serif title-link">{topic.data.title}</span>
                   {topic.data.description && (
-                    <span class="rail-article-description">{topic.data.description}</span>
+                    <span class="rail-article-description desc-muted">{topic.data.description}</span>
                   )}
                 </a>
               </li>
@@ -107,13 +102,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         </ul>
       </section>
       <section class="front-index-more">
-        <h2 class="rail-header">More</h2>
+        <h2 class="rail-header head-black head-rule">More</h2>
         <ul class="front-index-list">
           {
             moreSections.map((section) => (
               <li>
-                <a href={href(section.path)}>
-                  <span class="front-index-label">{section.label}</span>
+                <a class="hover-wash" href={href(section.path)}>
+                  <span class="front-index-label title-link">{section.label}</span>
                 </a>
               </li>
             ))
@@ -123,15 +118,15 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     </aside>
 
     {
-      /* The site intro, topping the left column on desktop. Its own grid item
-       (not inside a column wrapper) so the phone layout can keep it first. */
+      /* The intro is its own grid item (not inside a column wrapper) so the
+       phone layout can keep it first. */
     }
     <header class="h-card front-intro">
       {
-        /* The tagline leads the block as its main header; the p-note class
-         doubles it as the h-card's note for mf2 parsers. */
+        /* The p-note class doubles the tagline as the h-card's note for mf2
+         parsers. */
       }
-      <p class="front-eyebrow">About</p>
+      <p class="front-eyebrow eyebrow">About</p>
       <h2 class="front-tagline p-note">{TAGLINE}</h2>
       <p class="introduction">
         {intro}
@@ -151,9 +146,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     </header>
 
     {
-      /* Column 2: the lead story and food cards. The wrapper lets the column
-       flow at its own height (no row coupling with the rails); on phones it
-       dissolves (display: contents) so the grid can interleave the areas. */
+      /* The wrapper lets the column flow at its own height (no row coupling
+       with the rails); on phones it dissolves (display: contents) so the grid
+       can interleave the areas. */
     }
     <div class="front-center">
       {
@@ -172,11 +167,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
               </a>
             )}
             <p class="section-label lead-kicker">Featured</p>
-            <p class="lead-dateline">{formatDate(leadTopic.data.updated)}</p>
+            <p class="lead-dateline eyebrow">{formatDate(leadTopic.data.updated)}</p>
             <h2 class="lead-headline">
               <a href={href(`/${leadTopic.id}/`)}>{leadTopic.data.title}</a>
             </h2>
-            {leadTopic.data.description && <p class="lead-deck">{leadTopic.data.description}</p>}
+            {leadTopic.data.description && <p class="lead-deck desc-muted desc-muted--lg">{leadTopic.data.description}</p>}
             {leadTeaser && <p class="lead-teaser">{leadTeaser}</p>}
             <p class="lead-meta">
               <Button href={href(`/${leadTopic.id}/`)} variant="dark" compact>
@@ -188,8 +183,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       }
 
       <section class="front-food">
-        <div class="group-header">
-          <h2 class="group-label">Food</h2>
+        <div class="group-header head-rule">
+          <h2 class="group-label head-black">Food</h2>
           <a class="group-all continue-link" href={href('/best/')}>
             All restaurants & cafes <IconArrowRight />
           </a>
@@ -198,7 +193,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           {
             featuredFood.map(({ place, teaser }) => (
               <article class="food-card">
-                <a class="food-card-link" href={href(`/food/${place.id}/`)}>
+                <a class="food-card-link hover-wash" href={href(`/food/${place.id}/`)}>
                   {place.data.photo && (
                     <Image
                       class="food-card-photo"
@@ -207,9 +202,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                       width={520}
                     />
                   )}
-                  <span class="food-card-title">{place.data.title}</span>
+                  <span class="food-card-title title-serif title-link">{place.data.title}</span>
                   {place.data.description && (
-                    <span class="food-card-description">{place.data.description}</span>
+                    <span class="food-card-description desc-muted">{place.data.description}</span>
                   )}
                   {teaser && <span class="food-card-excerpt">{teaser}</span>}
                 </a>
@@ -220,15 +215,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       </section>
     </div>
 
-    {
-      /* Column 3: the Explore rail — the maps, then the What's New window. Same
-       independent-flow wrapper as the center column. */
-    }
     <div class="front-rail">
       <section class="front-explore">
-        <div class="group-header">
-          <h2 class="group-label">{exploreGroup?.label}</h2>
-          {exploreGroup?.kicker && <span class="group-kicker">{exploreGroup.kicker}</span>}
+        <div class="group-header head-rule">
+          <h2 class="group-label head-black">{exploreGroup?.label}</h2>
+          {exploreGroup?.kicker && <span class="group-kicker eyebrow eyebrow--muted">{exploreGroup.kicker}</span>}
         </div>
         <List>
           {
@@ -244,9 +235,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         </List>
       </section>
 
-      <section class="front-whatsnew whats-new">
+      <section class="front-whatsnew whats-new panel">
         <h2 class="whats-new-title">What's New</h2>
-        {/* The classic column's asterisk separator, in fleurs. */}
         <div class="whats-new-fleurs" aria-hidden="true">
           <FleurGlyph />
           <FleurGlyph />
@@ -366,24 +356,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   /* ----- The article rail ----- */
 
-  /* Rail section headers in the same heavy black voice as Lists/Explore,
-     scaled down for the narrow column. */
   .rail-header {
     margin: 0 0 var(--spacing-xs);
-    padding-block-end: var(--spacing-xs);
-    border-block-end: 2px solid var(--color-line-contrast);
-    font-family: var(--font-display-black);
-    font-weight: 400;
-    /* Same size as the Explore/Lists group labels. */
-    font-size: var(--font-size-xxl);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
-  /* Article rows: serif title over a red date byline, dotted rules between —
-     the magazine-rail treatment. */
   .rail-articles {
     margin: 0 0 var(--spacing-lg);
     padding: 0;
@@ -406,35 +382,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-inline: calc(-1 * var(--spacing-sm));
     color: var(--color-text-heading);
     text-decoration: none;
-    transition: background-color 0.12s ease;
-  }
-
-  .rail-articles a:hover {
-    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
-  }
-
-  .rail-article-title {
-    display: block;
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: var(--font-size-lg);
-    line-height: 1.25;
   }
 
   .rail-article-description {
     display: block;
     margin-block-start: var(--spacing-xs);
-    font-family: var(--font-serif);
-    font-size: var(--font-size-sm);
-    line-height: 1.4;
-    color: var(--color-muted);
-  }
-
-  .rail-articles a:hover .rail-article-title {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
   }
 
   .front-index-list {
@@ -447,12 +399,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin: 0;
   }
 
-  /* Fine dotted rules between rows, under the solid-ruled section header. */
   .front-index-list li + li {
     border-block-start: 1px dotted var(--color-line-input);
   }
 
-  /* Dense mono rows for the More section. */
   .front-index-list a {
     display: block;
     min-width: 0;
@@ -463,37 +413,14 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-weight: 500;
     color: var(--color-text);
     text-decoration: none;
-    transition: background-color 0.12s ease;
-  }
-
-  .front-index-list a:hover {
-    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
-  }
-
-  .front-index-list a:hover .front-index-label {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
   }
 
   /* ----- The center column ----- */
 
-  /* The heavy grotesque (not the serif) so the column opener doesn't clash
-     with the lead story's serif headline below it. */
-  /* The red eyebrow over the intro — same voice as the datelines. */
   .front-eyebrow {
     margin-block: 0 var(--spacing-xs);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
   }
 
-  /* Sized for the narrow left column it now tops (full-width on tablet and
-     phone, where it still reads fine at this scale). */
   .front-tagline {
     margin-block: 0 var(--spacing-sm);
     font-family: var(--font-display-black);
@@ -514,18 +441,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .stat {
     color: var(--color-accent-blue);
-    /* font-weight: 700; */
   }
 
-  /* The lead now opens the center column, so only the food band below it
-     carries a seam rule. */
   .front-food {
     border-block-start: 1px solid var(--color-line);
     padding-block-start: var(--spacing-md);
   }
 
-  /* The lead story reads like a magazine feature: centered kicker + dateline +
-     headline + deck, then a dotted rule into a drop-capped two-column teaser. */
   .front-lead {
     text-align: center;
   }
@@ -556,12 +478,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     justify-content: center;
     gap: var(--spacing-xs);
     margin-block: 0 var(--spacing-sm);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
   }
 
   .lead-dateline :global(.icon) {
@@ -579,6 +495,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-wrap: balance;
   }
 
+  /* The scoped resting rule out-ranks the shared .title-link hover (Astro
+     scoping doubles the attribute), so the hover stays scoped here too. */
   .lead-headline a {
     color: var(--color-text-heading);
     text-decoration: none;
@@ -593,10 +511,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .lead-deck {
     margin-block: 0 var(--spacing-md);
-    font-size: var(--font-size-lg);
-    color: var(--color-muted);
-    font-weight: 400;
-    line-height: 1.35;
     text-wrap: balance;
   }
 
@@ -612,7 +526,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     column-rule: 1px dotted var(--color-line-input);
   }
 
-  /* The big plain drop cap opens the teaser, magazine-style. */
   .lead-teaser::first-letter {
     float: left;
     font-family: var(--font-display);
@@ -638,22 +551,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     align-items: flex-end;
     justify-content: space-between;
     gap: var(--spacing-sm);
-    border-block-end: 2px solid var(--color-line-contrast);
-    padding-block-end: var(--spacing-xs);
     margin-block-end: var(--spacing-xs);
   }
 
-  /* Dramatic black section headers, magazine-style — heavy uppercase grotesque
-     over the thick rule, with the quiet mono kicker riding flush right. */
   .group-header .group-label {
     margin: 0;
-    font-family: var(--font-display-black);
-    font-weight: 400;
-    font-size: var(--font-size-xxl);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
   /* The rail's list rows pick up the flag blue via the ListItem hooks. */
@@ -684,25 +586,16 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     line-height: 1.55;
   }
 
-  /* The map link titles step up to the large size. */
   .front-explore :global(.list-item .list-title) {
     font-size: var(--font-size-lg);
   }
 
-  /* Right-justified section caption (Maps / Reading / …). */
   .group-kicker {
     flex-shrink: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    color: var(--color-muted);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
   }
 
   /* ----- The food cards ----- */
 
-  /* Placement only — the look comes from .continue-link. */
   .group-all {
     flex-shrink: 0;
   }
@@ -728,7 +621,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .food-card-link {
     display: flex;
     flex-direction: column;
-    /* Tight title-to-description rhythm; the photo opens its own gap below. */
     gap: var(--spacing-xs);
     height: 100%;
     padding: var(--spacing-sm);
@@ -736,34 +628,18 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     border-radius: var(--radius);
     color: var(--color-text);
     text-decoration: none;
-    transition: background-color 0.12s ease;
-  }
-
-  .food-card-link:hover {
-    background: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
   }
 
   .food-card-link :global(.food-card-photo) {
     width: 100%;
     height: var(--card-photo-height);
     object-fit: cover;
-    /* The photo keeps a fuller gap than the tightened title/description one. */
     margin-block-end: var(--spacing-xs);
   }
 
-  .food-card-title {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: var(--font-size-lg);
-    line-height: 1.25;
-    color: var(--color-text-heading);
-  }
-
   .food-card-description {
-    font-family: var(--font-serif);
     font-size: var(--font-size-md);
     line-height: 1.45;
-    color: var(--color-muted);
     margin-bottom: var(--spacing-xs);
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -774,7 +650,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     flex-shrink: 0;
   }
 
-  /* A taste of the review itself, under the one-line description. */
   .food-card-excerpt {
     font-family: var(--font-serif);
     font-size: var(--font-size-md);
@@ -788,24 +663,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     flex-shrink: 0;
   }
 
-  .food-card-link:hover .food-card-title {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-  }
-
   /* ----- The What's New box ----- */
 
-  /* A thin-ruled newspaper column: big centered serif title, a fleur separator
-     standing in for the classic asterisks, then dated entries divided by
-     dotted rules. The date rides as a muted uppercase caption. */
   .whats-new {
     min-width: 0;
-    border: 2px solid var(--color-line-contrast);
-    padding: var(--spacing-md);
-    /* The aged-newsprint wash, single-sourced from the surface token. */
-    background: var(--color-surface);
   }
 
   .whats-new-title {
@@ -831,9 +692,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     height: auto;
   }
 
-  /* Centered like the box's title and fleurs (the WSJ column centers its
-     section labels the same way); the entry text below stays left-aligned.
-     Muted, not the red eyebrow. */
   .whats-new .recent-date {
     font-weight: 600;
     letter-spacing: var(--letter-spacing);
@@ -843,9 +701,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-align: center;
   }
 
-  /* Update links in ink, bold instead of underlined (the WSJ lead-in
-     treatment — a box full of underlines read as noise); hover goes flag
-     blue with the underline back for affordance. */
+  /* Update links in ink, bold instead of underlined — a box full of underlines
+     read as noise; hover goes flag blue with the underline back for affordance. */
   .whats-new .recent-changes :global(a) {
     color: var(--color-text-heading);
     font-weight: 600;
@@ -880,7 +737,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     padding-block-end: 0;
   }
 
-  /* Placement only — the look comes from .continue-link. */
   .whats-new-all {
     display: block;
     text-align: end;
@@ -922,8 +778,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     padding-block-start: 2px;
   }
 
-  /* The rendered Markdown list. Keep the bullets, just reset spacing. */
-  /* Same measure as the intro paragraph. */
   .recent-changes {
     color: var(--color-text);
     line-height: 1.55;
@@ -947,7 +801,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-start: var(--spacing-sm);
   }
 
-  /* Match the prose convention: links gain a solid underline on hover. */
   .recent-changes :global(a:hover) {
     text-decoration-line: underline;
   }
@@ -982,7 +835,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       padding-inline-start: calc(var(--front-gap) / 2);
     }
 
-    /* The rail's two sections sit side by side in the full-width band. */
     .front-index {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1017,12 +869,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       display: none;
     }
 
-    /* A phone column is too narrow to split the teaser. */
     .lead-teaser {
       columns: 1;
     }
 
-    /* Cards stack, each at its own natural height. */
     .food-cards {
       grid-template-columns: 1fr;
       grid-auto-rows: auto;
