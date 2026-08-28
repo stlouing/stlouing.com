@@ -30,26 +30,27 @@
   /* The flag's other two colors, as accents: blue and gold pull weight so the
      red stays an occasional highlight rather than the whole palette. */
   --color-accent-blue: #2766ad;
+  --color-flag-blue: #012773;
   --color-accent-gold: #b8860b;
   --color-map-accent: #6a47a6;
   /* City regions (north→south): yellow, red, violet; county blue; parks green. */
   --color-map-north: #b8860b;
-  --color-map-central: #c0392b;
+  --color-map-central: #a90b26;
   --color-map-south: #6a47a6;
   --color-map-county: #2766ad;
   --color-map-park: #2e7d4a;
   /* Walkable St. Louis corridor lines on the article mini-maps. */
-  --color-map-corridor: #c0392b;
+  --color-map-corridor: #a90b26;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
-  --color-verdict-loved: #9c3b2e;
+  --color-verdict-loved: #a90b26;
   --color-verdict-liked: #b0742e;
   --color-verdict-neutral: #6f6b61;
   --color-verdict-notforme: #74727c;
 
   /* Fonts */
-  --font-body: Georgia, 'Times New Roman', serif;
   --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans-serif: 'Archivo', sans-serif;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   /* One-weight heavy grotesque for shouty uppercase section headers. */
   --font-display-black: 'Archivo Black', 'Arial Black', 'Helvetica Neue', sans-serif;
@@ -116,6 +117,7 @@
   --color-accent: #ed818a;
   --color-accent-2: #f28d95;
   --color-accent-blue: #84b0e6;
+  --color-flag-blue: #003db8;
   --color-accent-gold: #dcc24f;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
@@ -203,7 +205,7 @@ body {
   flex-direction: column;
   background: var(--color-background);
   color: var(--color-text);
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--text);
   line-height: 1.55;
   font-synthesis: none;
@@ -232,22 +234,21 @@ h1 {
 
 h2 {
   font-size: clamp(1.625rem, 1.4rem + 1vw, 2rem); /* 26px - 40px */
-  margin-bottom: 1.2rem;
+  margin-bottom: var(--spacing-md);
 }
 
 h3 {
   font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.5rem); /* 21px - 28px */
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
   color: var(--color-accent);
 }
 
 h4 {
-  font-size: var(--font-size-sm);
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
+  font-size: var(--font-size-md);
   color: var(--color-accent);
   font-weight: 600;
+  font-family: var(--font-sans-serif);
+  margin-bottom: var(--spacing-sm);
 }
 
 p,
@@ -712,7 +713,7 @@ a.wikipedia-link {
 }
 
 .wikilink-card-title {
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-weight: 400;
   font-size: var(--font-size-lg);
   color: var(--color-text);
@@ -952,8 +953,17 @@ main {
      display face is reserved for titles). */
   h2,
   h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans-serif);
     color: var(--color-text-heading);
+  }
+
+  h2 {
+    font-weight: 700;
+  }
+
+  h3 {
+    font-weight: 600;
+    /* color: var(--color-accent); */
   }
 
   h2:not(:first-child) {
@@ -1315,7 +1325,7 @@ body:has(.map-split) main > .wrap,
 }
 
 .map-list .list-meta {
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--font-size-md);
   color: var(--color-muted);
 }
@@ -1585,7 +1595,7 @@ body:has(.map-split) main > .wrap,
 }
 
 .verdict-card .verdict-card-value {
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--verdict-value-size);
   font-weight: 700;
   line-height: 1;
@@ -1729,7 +1739,7 @@ body:has(.map-split) main > .wrap,
    pane's "Food" title — solid text color, mono, weight 600, at the pane-title size
    rather than the quiet muted label the base rule gives them. */
 .food-grouped li.group-header.group-header-status .group-label {
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--font-size-md);
   font-weight: 400;
   color: var(--color-muted-2);
@@ -2077,7 +2087,7 @@ body:has([data-filter-root]) .masthead-nav {
 
 .maplibregl-popup.food-popup .tip-excerpt {
   margin-block: var(--spacing-xs) 0;
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--font-size-sm);
   font-weight: 400;
   line-height: 1.45;
@@ -2098,6 +2108,8 @@ body:has([data-filter-root]) .masthead-nav {
   align-items: baseline;
   gap: var(--spacing-xs);
   margin-block: var(--spacing-sm);
+  border-bottom: 1px dotted var(--color-line-input);
+  padding-bottom: var(--spacing-xs);
 }
 
 .maplibregl-popup.food-popup button.list-meta {
@@ -2147,12 +2159,13 @@ body:has([data-filter-root]) .masthead-nav {
   font-size: var(--font-size-lg);
   line-height: 1;
   color: var(--color-muted);
-  background: none;
+  background: var(--color-background);
+  border-radius: 0;
 }
 
 .maplibregl-popup.food-popup .maplibregl-popup-close-button:hover {
   color: var(--color-text);
-  background: none;
+  background: var(--color-wash);
 }
 
 .maplibregl-popup.food-popup .maplibregl-popup-tip {
@@ -2189,8 +2202,12 @@ body:has([data-filter-root]) .masthead-nav {
   /* border-block-end: 1px dotted var(--color-line-input); */
 
   &.entry-header-with-flag {
-    padding-bottom: none;
-    border-bottom: none;
+    padding-bottom: 0;
+
+    .river-border-basic {
+      margin-top: var(--spacing-md);
+    }
+    /* border-bottom: none; */
   }
 
   h1 {
@@ -2444,7 +2461,7 @@ body:has([data-filter-root]) .masthead-nav {
 .btn-quiet {
   gap: var(--spacing-sm);
   padding: 0;
-  color: var(--color-link);
+  color: var(--color-text);
   text-decoration: none;
   text-underline-offset: 3px;
   flex-shrink: 0;
@@ -2505,7 +2522,7 @@ body:has([data-filter-root]) .masthead-nav {
 
 .group-label {
   margin-block-end: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--font-size-md);
   font-weight: 400;
   color: var(--color-accent);

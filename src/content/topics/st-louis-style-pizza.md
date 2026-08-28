@@ -2,7 +2,7 @@
 title: St. Louis-style Pizza
 icon: pizza
 category: Food
-description: Discovering, explaining, and ranking this polarizing regional pizza style
+description: Discovering, explaining, and ranking St. Louis's unique regional pizza style
 ogImage: /og/st-louis-style-pizza.png
 created: 2026-05-31
 updated: 2026-07-06
