@@ -3,7 +3,7 @@ layout: ../layouts/MarkdownPage.astro
 title: About
 seoTitle: About St. Louing
 tagline: My ongoing project to document St. Louis
-description: 'St. Louing is an independent guide to the food and neighborhoods of St. Louis. A love letter to an underrated city, built in the spirit of the early internet.'
+description: "St. Louing is an independent guide to the food and neighborhoods of St. Louis. It's a love letter to an underrated city, built in the spirit of the early internet."
 ---
 
 Welcome! St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
@@ -12,7 +12,7 @@ I've been on a quest to find [the best food in St. Louis](/food/), and after rea
 
 The site is not meant to be an absolutely definitive source of information about the STL food scene or neighborhoods, it's mostly a field guide for me to keep track of what I've found and what I like. There is a heavy focus on food as that's my primary way of exploring the city and culture.
 
-Everything on this site is made by one person. All writing and photography is original content for this site! 
+> All photography on this site was taken in person, by me, in St. Louis. All content on this site is written by me.
 
 ## Purpose
 

@@ -106,8 +106,9 @@ const pageTitle = titleLeaf ?? `${SITE_NAME}: Food, Neighborhoods, and Culture o
 
 const metaDescription = description ?? SITE_DESCRIPTION
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
-// Social-share image. Absolute URL (required by OG).
-const socialImage = new URL(href(ogImage ?? '/og.png'), Astro.site ?? Astro.url.origin).href
+// Social-share image. Absolute URL (required by OG). Scrapers cache the URL
+// hard, so bump ?v= whenever og.png's artwork changes.
+const socialImage = new URL(href(ogImage ?? '/og.png?v=2'), Astro.site ?? Astro.url.origin).href
 const socialImageAlt = ogImage ? (crumb ?? SITE_NAME) : `${SITE_NAME} - the St. Louis flag`
 
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
