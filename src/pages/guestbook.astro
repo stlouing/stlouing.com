@@ -24,7 +24,7 @@ const guestbookEnabled = Boolean(
     {
       guestbookEnabled ? (
         <div class="guestbook reading-col" data-guestbook>
-          <section class="gb-sign panel" aria-label="Sign the guestbook">
+          <section class="gb-sign panel" aria-label="Sign the guestbook" data-sign-panel>
             {/* <h2 class="gb-form-title title-serif">Sign the guestbook!</h2> */}
             <form class="gb-form" data-sign-form>
               <label class="field">
@@ -55,6 +55,9 @@ const guestbookEnabled = Boolean(
                 <span class="gb-sign-status" data-sign-status role="status" aria-live="polite" />
               </div>
             </form>
+            <p class="gb-signed desc-muted" data-signed-note hidden>
+              Thanks for signing!
+            </p>
           </section>
 
           <section class="gb-entries-block" aria-label="Signatures">
@@ -103,6 +106,17 @@ const guestbookEnabled = Boolean(
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+  }
+
+  /* .gb-form sets display, which would otherwise override the hidden attribute
+     (same lesson as .gb-older below). */
+  .gb-form[hidden] {
+    display: none;
+  }
+
+  .gb-signed {
+    margin: 0;
+    text-align: center;
   }
 
   .gb-textarea {

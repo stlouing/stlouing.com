@@ -4,6 +4,8 @@
 // private note (name + comment) can be attached. No third-party SDK — just fetch against
 // the anon REST API, which is safe because the table is RLS-locked behind cast_vote().
 
+import { browserId } from './browser-id'
+
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
@@ -361,19 +363,10 @@ function patchPlace(slug: string, patch: PlaceState): void {
   saveStore(store)
 }
 
-// A stable per-browser id. Kept behind try/catch so private-mode storage denial can't
-// break voting outright (a fresh id per call just means the server treats it as new).
+// The shared per-browser id (see browser-id.ts); the store's legacy voterId
+// field is adopted by it, so pre-unification voters keep their identity.
 function voterId(): string {
-  const store = loadStore()
-  if (store.voterId) {
-    return store.voterId
-  }
-
-  const created = crypto.randomUUID()
-  store.voterId = created
-  saveStore(store)
-
-  return created
+  return browserId()
 }
 
 function readChoice(slug: string): Choice | null {

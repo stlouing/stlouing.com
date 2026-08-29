@@ -3,6 +3,8 @@
 // which is safe because the table is RLS-locked behind SECURITY DEFINER functions.
 // Entries are public and render immediately; the server rate-limits and validates.
 
+import { browserId } from './browser-id'
+
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
@@ -24,7 +26,9 @@ type GuestbookEntry = {
 }
 
 type GuestbookStore = {
-  signerId?: string
+  // Set after a successful signature: the form hides for this browser (the
+  // panel is skipped entirely on later visits).
+  signed?: boolean
 }
 
 export function initGuestbook(): void {
@@ -49,15 +53,36 @@ function setupGuestbook(root: HTMLElement): void {
   const olderButton = root.querySelector<HTMLButtonElement>('[data-older]')
   const loadStatus = root.querySelector<HTMLElement>('[data-load-status]')
 
+  const signPanel = root.querySelector<HTMLElement>('[data-sign-panel]')
   const form = root.querySelector<HTMLFormElement>('[data-sign-form]')
   const nameInput = root.querySelector<HTMLInputElement>('[data-sign-name]')
   const messageInput = root.querySelector<HTMLTextAreaElement>('[data-sign-message]')
   const honeypot = root.querySelector<HTMLInputElement>('[data-sign-hp]')
   const submitButton = root.querySelector<HTMLButtonElement>('[data-sign-submit]')
   const signStatus = root.querySelector<HTMLElement>('[data-sign-status]')
+  const signedNote = root.querySelector<HTMLElement>('[data-signed-note]')
 
   if (!entriesList) {
     return
+  }
+
+  // One signature per browser: after signing, the form swaps for the thanks
+  // line, and a returning signer doesn't see the panel at all.
+  if (loadStore().signed && signPanel) {
+    signPanel.hidden = true
+  }
+
+  const markSigned = (): void => {
+    const store = loadStore()
+    store.signed = true
+    saveStore(store)
+
+    if (form) {
+      form.hidden = true
+    }
+    if (signedNote) {
+      signedNote.hidden = false
+    }
   }
 
   // How many entries the list currently shows, and the server's total — together
@@ -122,7 +147,7 @@ function setupGuestbook(root: HTMLElement): void {
   const sign = async (): Promise<void> => {
     // Honeypot: a real person never fills the hidden field. Pretend success, do nothing.
     if (honeypot?.value) {
-      setStatus(signStatus, 'Thanks for signing!')
+      markSigned()
 
       return
     }
@@ -163,8 +188,7 @@ function setupGuestbook(root: HTMLElement): void {
       shown += 1
       total += 1
       renderCount()
-      form?.reset()
-      setStatus(signStatus, 'Thanks for signing!')
+      markSigned()
     } catch {
       setStatus(signStatus, "Couldn't sign. Try again later!")
     } finally {
@@ -250,20 +274,9 @@ function authHeaders(): Record<string, string> {
   return { apikey: SUPABASE_ANON_KEY }
 }
 
-// A stable per-browser id, kept in its own store so this module stays independent
-// of the readers-verdict one. Storage denial just means a fresh id per call, which
-// the server simply treats as a new signer.
+// The shared per-browser id (see browser-id.ts).
 function signerId(): string {
-  const store = loadStore()
-  if (store.signerId) {
-    return store.signerId
-  }
-
-  const created = crypto.randomUUID()
-  store.signerId = created
-  saveStore(store)
-
-  return created
+  return browserId()
 }
 
 function loadStore(): GuestbookStore {
