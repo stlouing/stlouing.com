@@ -31,9 +31,6 @@ const readersEnabled = Boolean(
       <div class="vb-row">
         {readersEnabled && (
           <div class="vb-take">
-            <p class="rv-cta" data-cta>
-              Been here? What did you think?
-            </p>
             <div class="rv-pill">
               <button
                 type="button"
@@ -125,14 +122,19 @@ const readersEnabled = Boolean(
 
 <style>
   .verdict-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     margin-block-end: var(--spacing-lg);
   }
 
   .vb-title {
-    margin: 0 0 var(--spacing-md);
+    margin: 0;
     text-align: center;
     line-height: 1.1;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
   }
 
   .vb-row {
@@ -198,6 +200,7 @@ const readersEnabled = Boolean(
   }
 
   .rv-vote-status {
+    flex-basis: 100%;
     margin: var(--spacing-sm) 0 0;
     padding: 0;
     text-align: center;
@@ -210,7 +213,10 @@ const readersEnabled = Boolean(
     }
   }
 
+  /* The note area breaks onto its own full-width row BELOW the title + buttons
+     bar (the section is a wrapping flex row). */
   .rv-note {
+    flex-basis: 100%;
     margin-block-start: var(--spacing-md);
     padding-block-start: var(--spacing-md);
     border-block-start: 1px dotted var(--color-line-input);
@@ -257,7 +263,7 @@ const readersEnabled = Boolean(
   }
 
   .rv-note-trigger {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: var(--spacing-sm);
     padding: 0;
@@ -266,6 +272,7 @@ const readersEnabled = Boolean(
     color: var(--color-muted);
     font-size: var(--font-size-md);
     font-weight: 500;
+    justify-self: center;
 
     &[hidden] {
       display: none;
@@ -360,4 +367,13 @@ const readersEnabled = Boolean(
     }
   }
 
+  @media (max-width: 700px) {
+    .vb-title {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .verdict-bar {
+      justify-content: center;
+    }
+  }
 </style>

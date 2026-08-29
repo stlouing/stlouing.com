@@ -157,6 +157,7 @@ const seoDescription = hasBody(entry)
     }
     <div class="detail-layout">
       <div class="detail-main">
+        <ReadersVerdict slug={entry.id} title={data.title} />
         {
           data.photo && (
             <Image
@@ -187,8 +188,6 @@ const seoDescription = hasBody(entry)
             </Byline>
           )
         }
-
-        <ReadersVerdict slug={entry.id} title={data.title} />
 
         <section class="more-food">
           {
@@ -329,7 +328,6 @@ const seoDescription = hasBody(entry)
     width: 1.25rem;
     height: 1.25rem;
   }
-
 
   .food-photo {
     display: block;

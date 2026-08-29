@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const description = 'Sign your name and leave a note.'
+
+// Same gate as ReadersVerdict: the book only works when the site is built with
+// Supabase creds. Without them the page points at Feedback instead of rendering
+// a form that goes nowhere.
+const guestbookEnabled = Boolean(
+  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+)
+---
+
+<BaseLayout article crumb="Guestbook" description={description}>
+  <article class="page">
+    <header class="entry-header entry-header-with-flag reading-col">
+      <div class="entry-bar">
+        <h1>Guestbook</h1>
+      </div>
+      <p class="entry-summary">Passing through? Sign your name and leave a note.</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
+    </header>
+
+    {
+      guestbookEnabled ? (
+        <div class="guestbook reading-col" data-guestbook>
+          <section class="gb-sign panel" aria-label="Sign the guestbook">
+            {/* <h2 class="gb-form-title title-serif">Sign the guestbook!</h2> */}
+            <form class="gb-form" data-sign-form>
+              <label class="field">
+                <span>Name</span>
+                <input type="text" data-sign-name maxlength="80" autocomplete="name" required />
+              </label>
+              <label class="field">
+                <span>Message</span>
+                <textarea
+                  class="gb-textarea"
+                  data-sign-message
+                  rows="4"
+                  maxlength="1000"
+                  required
+                />
+              </label>
+              {/* Honeypot - hidden from people, tempting to bots. Filled === silently dropped. */}
+              <div class="gb-hp" aria-hidden="true">
+                <label>
+                  Leave this field empty
+                  <input type="text" data-sign-hp tabindex="-1" autocomplete="off" />
+                </label>
+              </div>
+              <div class="gb-form-actions">
+                <button type="submit" class="btn btn-dark btn-compact" data-sign-submit>
+                  Sign
+                </button>
+                <span class="gb-sign-status" data-sign-status role="status" aria-live="polite" />
+              </div>
+            </form>
+          </section>
+
+          <section class="gb-entries-block" aria-label="Signatures">
+            <div class="gb-entries-head head-rule">
+              <h2 class="head-black head-black--lg">Messages</h2>
+              <span class="gb-count" data-count />
+            </div>
+            <ul class="gb-entries" data-entries />
+            <p class="gb-empty desc-muted" data-empty hidden>
+              None yet
+            </p>
+            <p class="gb-load-status" data-load-status role="status" aria-live="polite" />
+            <button type="button" class="btn btn-outline btn-compact gb-older" data-older hidden>
+              Show older entries
+            </button>
+          </section>
+        </div>
+      ) : (
+        <p class="gb-offline reading-col">Guestbook closed.</p>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<script>
+  import { initGuestbook } from '../scripts/guestbook'
+  initGuestbook()
+</script>
+
+<style>
+  .guestbook {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    margin-block-start: var(--spacing-lg);
+  }
+
+  .gb-form-title {
+    margin: 0 0 var(--spacing-md);
+    text-align: center;
+    line-height: 1.1;
+    font-size: var(--font-size-xl);
+  }
+
+  .gb-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .gb-textarea {
+    padding: var(--spacing-sm);
+    background: var(--color-background);
+    color: var(--color-text);
+    border: 1px solid var(--color-line-input);
+    border-radius: var(--radius);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.45;
+    resize: vertical;
+  }
+
+  .gb-textarea:focus {
+    outline: none;
+    border: 1px solid var(--color-accent-blue);
+    box-shadow: 0 0 0 1px var(--color-accent-blue);
+  }
+
+  /* Off-screen honeypot */
+  .gb-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .gb-form-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .gb-sign-status,
+  .gb-load-status {
+    margin: 0;
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-xxs);
+    color: var(--color-accent);
+  }
+
+  .gb-sign-status:empty,
+  .gb-load-status:empty {
+    display: none;
+  }
+
+  .gb-entries-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+  }
+
+  .gb-entries-head h2 {
+    margin: 0;
+  }
+
+  .gb-count {
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-xxs);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-muted);
+  }
+
+  .gb-empty {
+    margin: var(--spacing-md) 0 0;
+  }
+
+  .gb-older {
+    align-self: flex-start;
+    margin-block-start: var(--spacing-md);
+  }
+
+  /* .btn sets display, which would otherwise override the hidden attribute. */
+  .gb-older[hidden],
+  .gb-empty[hidden] {
+    display: none;
+  }
+
+  .gb-offline {
+    margin-block-start: var(--spacing-lg);
+  }
+
+  /* The list itself is server-rendered, but every entry inside it is built by
+     guestbook.ts at runtime, so entry rules must be flat :global() descendants
+     (injected nodes never carry the Astro scope class — and a :global() nested
+     inside a CSS nesting block gets silently stripped by the compiler). */
+  .gb-entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .gb-entries :global(.gb-entry) {
+    padding-block: var(--spacing-md);
+    border-block-end: 1px dotted var(--color-line-input);
+  }
+
+  .gb-entries :global(.gb-entry > p) {
+    margin: 0;
+  }
+
+  .gb-entries :global(.gb-date) {
+    margin-block-end: var(--spacing-xs);
+  }
+
+  .gb-entries :global(.gb-signer) {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  /* The name keeps title-serif's lg/500 so it reads a level above the message. */
+  .gb-entries :global(.gb-name) {
+    display: inline;
+  }
+
+  .gb-entries :global(.gb-message) {
+    margin-block-start: var(--spacing-xs);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.55;
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+</style>

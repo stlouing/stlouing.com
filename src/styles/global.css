@@ -1058,7 +1058,7 @@ body:has(.map-split) main > .wrap,
     display: block;
     position: fixed;
 
-    bottom: 76px;
+    bottom: 66px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1100;
@@ -1114,17 +1114,21 @@ body:has(.map-split) main > .wrap,
   }
 }
 
+/* The row photo is a full-height cover panel pinned to the row's right edge;
+   the row reserves the column for it so no text runs underneath. */
+.map-list [data-filter-item]:has(.list-photo) {
+  position: relative;
+  padding-inline-end: calc(var(--list-photo-width) + var(--spacing-md));
+}
+
 .map-list .list-photo {
-  float: right;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
   width: var(--list-photo-width);
-  aspect-ratio: 3 / 2;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  margin-left: var(--spacing-md);
-  margin-bottom: var(--spacing-xs);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius);
 }
 
 .map-list.food-grouped .list-description,
@@ -1561,11 +1565,16 @@ body:has(.map-split) main > .wrap,
 }
 
 .food-grouped li.group-header .group-label {
-  color: var(--verdict-color, var(--color-muted));
+  color: var(--color-text);
+}
+
+.food-grouped li.group-header.group-header-alpha {
+  padding-block: var(--spacing-xs);
 }
 
 .food-grouped li.group-header.group-header-alpha .group-label {
-  color: var(--color-accent);
+  color: var(--color-accent-blue);
+  font-size: var(--font-size-lg);
 }
 
 .food-grouped li.group-header.group-header-status .group-label {
@@ -1702,13 +1711,16 @@ body:has([data-filter-root]) .masthead-nav {
 
 .food-popup .tip-directions {
   display: inline-block;
-  margin-block-end: var(--spacing-md);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+}
+
+.food-popup .tip-directions:not(:last-of-type) {
+  margin-block-end: var(--spacing-md);
 }
 
 .food-popup .tip-directions:hover {
@@ -2223,6 +2235,7 @@ body:has([data-filter-root]) .masthead-nav {
 
 .btn-compact {
   padding-block: var(--spacing-xs);
+  font-size: var(--font-size-xxs);
 }
 
 .back {
@@ -2474,6 +2487,20 @@ button.title-link:hover {
   border: 2px solid var(--color-line-contrast);
   background: var(--color-surface);
   padding: var(--spacing-md);
+}
+
+.food-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: var(--spacing-lg);
+}
+
+@media (max-width: 700px) {
+  .food-cards {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
 }
 
 .chip.chip-blue {

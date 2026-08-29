@@ -20,7 +20,9 @@ const description = 'Send a note, a correction, or a recommendation.'
     <div class="feedback-body reading-col">
       {
         FEEDBACK_ENDPOINT && (
-          <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
+          <section class="feedback-panel panel" aria-label="Feedback form">
+            {/* <h2 class="feedback-title title-serif">Send feedback</h2> */}
+            <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
             <label class="field">
               <span class="field-label">Your note</span>
               <textarea name="message" rows="6" required />
@@ -50,10 +52,11 @@ const description = 'Send a note, a correction, or a recommendation.'
             </p>
 
             <div class="form-actions">
-              <button type="submit">Send</button>
+              <button type="submit" class="btn btn-dark btn-compact">Send</button>
               <span class="form-status" data-form-status role="status" aria-live="polite" />
             </div>
           </form>
+          </section>
         )
       }
 
@@ -65,11 +68,22 @@ const description = 'Send a note, a correction, or a recommendation.'
 </BaseLayout>
 
 <style>
+  .feedback-panel {
+    margin-block-start: var(--spacing-lg);
+  }
+
+  /* For the (currently commented-out) panel title, matching .gb-form-title. */
+  .feedback-title {
+    margin: 0 0 var(--spacing-md);
+    text-align: center;
+    line-height: 1.1;
+    font-size: var(--font-size-xl);
+  }
+
   .feedback-form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    margin-block-start: var(--spacing-lg);
   }
 
   .field-label {
@@ -121,23 +135,6 @@ const description = 'Send a note, a correction, or a recommendation.'
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-  }
-
-  .feedback-form button {
-    align-self: flex-start;
-    padding: var(--spacing-xs) var(--spacing-lg);
-    background: var(--color-accent);
-    color: var(--color-surface);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius);
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  .feedback-form button:hover {
-    opacity: 0.9;
   }
 
   .form-status,

@@ -45,9 +45,9 @@ export function initFoodGroups(rootSelector = '[data-filter-root]'): void {
     // + accent.
     if (mode === 'verdict' && verdictKeys.has(key)) {
       header.dataset.verdict = key
-      const dot = document.createElement('span')
-      dot.className = 'group-dot'
-      header.appendChild(dot)
+      // const dot = document.createElement('span')
+      // dot.className = 'group-dot'
+      // header.appendChild(dot)
     } else if (mode === 'verdict') {
       header.classList.add('group-header-status')
     } else {

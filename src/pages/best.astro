@@ -1,225 +1,217 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { href } from '../lib/url'
-import { published } from '../lib/content'
-import { cuisineLabel } from '../lib/cuisine'
-import IconAward from '../assets/IconAward.astro'
-import IconStar from '../assets/IconStar.astro'
+import FleurGlyph from '../assets/FleurGlyph.astro'
+import FoodCard from '../components/FoodCard.astro'
+import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
   label: string
   slug: string
-  note?: string
 }
 
-// Only rated places I've actually visited feed the rankings.
-const visited = published(await getCollection('food')).filter(
-  (place) => typeof place.data.rating === 'number',
-)
+// Hand-authored awards (src/data/superlatives.json) resolved against the food
+// collection, kept in the file's editorial order. Unresolvable slugs drop out.
+const food = published(await getCollection('food'))
+const foodBySlug = new Map(food.map((place) => [place.id, place]))
+const resolvedAwards = (superlatives as Award[]).flatMap((award) => {
+  const place = foodBySlug.get(award.slug)
 
-// The single highest-rated place in each cuisine.
-const bestByCuisine = new Map<string, (typeof visited)[number]>()
-for (const place of visited) {
-  for (const cuisine of place.data.cuisine) {
-    const current = bestByCuisine.get(cuisine)
-    if (!current || (place.data.rating ?? 0) > (current.data.rating ?? 0)) {
-      bestByCuisine.set(cuisine, place)
-    }
-  }
-}
-const cuisineWinners = [...bestByCuisine.entries()].sort(
-  (left, right) => (right[1].data.rating ?? 0) - (left[1].data.rating ?? 0),
-)
+  return place ? [{ ...award, place, teaser: excerpt(place.body ?? '', PREVIEW_EXCERPT_CHARS) }] : []
+})
 
-// Hand-authored favorites (the editorial picks a ranking can't express), resolved
-// from src/data/superlatives.json against the food collection.
-const foodBySlug = new Map(published(await getCollection('food')).map((place) => [place.id, place]))
-const favorites = (superlatives as Award[])
-  .map((award) => ({ ...award, place: foodBySlug.get(award.slug) }))
-  .filter((award) => award.place)
+// Photo cards group together at the top so grid rows stay even; the JSON's
+// editorial order is kept within each group.
+const awards = [
+  ...resolvedAwards.filter((award) => award.place.data.photo),
+  ...resolvedAwards.filter((award) => !award.place.data.photo),
+]
+
+// The Reader Favorites sidebar is live data (Supabase get_reader_ratings); the
+// page bakes a slug → title map so the client script can name the winners.
+const readersEnabled = Boolean(
+  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+)
+const placeTitles = Object.fromEntries(food.map((place) => [place.id, place.data.title]))
 
 const description = "The best of the St. Louis food I've tried, by category."
 ---
 
 <BaseLayout article crumb="Best of" title="The Best Food in St. Louis" description={description}>
   <article class="page">
-    <header class="entry-header reading-col">
+    <header class="entry-header">
       <div class="entry-bar">
         <h1>The Best Food in St. Louis</h1>
       </div>
-      <p class="entry-summary">My favorite restaurants, bars, and cafes so far!</p>
+      <p class="entry-summary">My subjective favorites and readers top-voted spots</p>
+      <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
-    <div class="best-body reading-col">
+    <div class="detail-layout">
+      <div class="detail-main">
+        <!-- <h2 class="best-mine head-black head-rule">My Favorites</h2> -->
+        <div class="food-cards">
+          {
+            awards.map(({ label, place, teaser }) => (
+              <div class="best-cell">
+                <h3 class="best-type head-black head-black--sm head-rule">{label}</h3>
+                <FoodCard place={place} teaser={teaser} eyebrow={place.data.neighborhood} horizontal />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
       {
-        favorites.length > 0 && (
-          <section class="fact-section">
-            <h2 class="head-black head-rule">My Favorites</h2>
-            <p class="description">My favorite individual items throughout the St. Louis area.</p>
-            <div class="favorites-grid">
-              {favorites.map((award) => (
-                <a class="favorite" href={href(`/food/${award.place!.id}/`)}>
-                  <span class="favorite-icon" aria-hidden="true">
-                    <IconAward />
-                  </span>
-                  <span class="favorite-text">
-                    <span class="favorite-label eyebrow eyebrow--muted">{award.label}</span>
-                    <span class="favorite-name">{award.place!.data.title}</span>
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
+        readersEnabled && (
+          <aside class="detail-aside">
+            <section
+              class="best-readers panel"
+              data-reader-favorites
+              aria-label="Reader favorites"
+              hidden>
+              <h2 class="best-readers-title">Reader Favorites</h2>
+              <div class="best-readers-fleurs" aria-hidden="true">
+                <FleurGlyph />
+                <FleurGlyph />
+                <FleurGlyph />
+              </div>
+              <ol data-favorites-list />
+              <p class="best-readers-empty desc-muted" data-favorites-empty hidden>
+                No reader votes yet.
+              </p>
+            </section>
+            <script
+              is:inline
+              type="application/json"
+              data-place-titles
+              set:html={JSON.stringify(placeTitles)}
+            />
+          </aside>
         )
       }
-
-      <section class="fact-section">
-        <h2 class="head-black head-rule">Best by Cuisine</h2>
-        <p class="description">The best restaurants I've tried so far for each type of cuisine.</p>
-        <table class="best-table">
-          <thead>
-            <tr>
-              <th>Cuisine</th>
-              <th>Place</th>
-              <th align="right">Rating</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              cuisineWinners.map(([cuisine, place]) => (
-                <tr>
-                  <td class="best-cuisine">{cuisineLabel(cuisine)}</td>
-                  <td>
-                    <a href={href(`/food/${place.id}/`)}>{place.data.title}</a>
-                  </td>
-                  <td align="right">
-                    <span class="best-rating">
-                      {place.data.rating}
-                      <IconStar />
-                    </span>
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </section>
     </div>
   </article>
 </BaseLayout>
 
+<script>
+  import { initReaderFavorites } from '../scripts/reader-favorites'
+  initReaderFavorites()
+</script>
+
 <style>
-  .favorites-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--color-line);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    overflow: hidden;
+  .best-mine {
+    margin: 0 0 var(--spacing-lg);
   }
 
-  .favorite {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-    background: var(--color-surface);
-    text-decoration: none;
-    color: var(--color-text);
+  /* One horizontal card per row on this page (the homepage keeps the 2-up grid). */
+  .food-cards {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
   }
 
-  .favorite:hover .favorite-name {
-    color: var(--color-text-heading);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  @media (max-width: 700px) {
-    .favorite {
-      padding: var(--spacing-sm);
-    }
-  }
-
-  .favorite-icon {
-    display: inline-flex;
-    flex-shrink: 0;
-  }
-
-  .favorite-icon :global(.icon) {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--color-accent-gold);
-  }
-
-  .favorite-text {
+  /* Each grid cell opens with the award type in the small bold label voice
+     (head-black--sm — a clear step below the My Favorites section header), so
+     the top line stays consistent whether or not the card below has a photo. */
+  .best-cell {
     display: flex;
     flex-direction: column;
     min-width: 0;
   }
 
-  .favorite-label {
-    line-height: 1.2;
+  .best-type {
+    margin: 0 0 var(--spacing-sm);
   }
 
-  .favorite-name {
-    font-weight: 700;
-    color: var(--color-text);
+  .best-cell :global(.food-card) {
+    flex: 1;
+  }
+
+  /* Reader Favorites box — the What's New panel voice. Rows are injected by
+     reader-favorites.ts, so their rules are flat :global() descendants (injected
+     nodes never carry the Astro scope class). */
+  .best-readers[hidden] {
+    display: none;
+  }
+
+  .best-readers-title {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    font-size: var(--font-size-xxl);
+  }
+
+  .best-readers-fleurs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-block: var(--spacing-sm);
+    color: var(--color-accent-gold);
+  }
+
+  .best-readers-fleurs :global(svg) {
+    width: 0.6rem;
+    height: auto;
+  }
+
+  .best-readers ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .best-readers :global(li) {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding-block: var(--spacing-xs);
+  }
+
+  .best-readers :global(li + li) {
+    margin-block-start: 0;
+    border-block-start: 1px dotted var(--color-line-input);
+  }
+
+  .best-readers :global(a) {
+    min-width: 0;
+    font-family: var(--font-sans-serif);
     font-size: var(--font-size-md);
-  }
-
-  @media (max-width: 700px) {
-    .favorites-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 500px) {
-    .favorites-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .fact-section {
-    h2 {
-      margin-bottom: var(--spacing-xs);
-    }
-  }
-
-  .best-cuisine {
-    width: 1%;
-    white-space: nowrap;
     font-weight: 500;
+    color: var(--color-text-heading);
+    text-decoration: none;
   }
 
-  .best-table td a {
-    font-weight: 600;
-  }
-  .best-table td a:hover {
-    text-decoration-line: underline;
+  .best-readers :global(a:hover) {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
   }
 
-  .best-rating {
+  .best-readers :global(.fav-count) {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
     font-family: var(--font-sans-serif);
-    font-weight: 700;
-    line-height: 1;
-    color: var(--color-text);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--color-muted);
   }
 
-  .best-rating :global(.icon) {
-    width: 0.9em;
-    height: 0.9em;
+  .best-readers :global(.fav-count svg) {
+    width: 14px;
+    height: 14px;
     color: var(--color-accent-gold);
-    fill: currentColor;
-    stroke: currentColor;
   }
 
-  .description {
-    color: var(--color-muted-2);
+  .best-readers-empty {
+    margin: var(--spacing-sm) 0 0;
+    text-align: center;
   }
 </style>

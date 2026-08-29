@@ -1,0 +1,125 @@
+---
+// One food card — photo, serif title, tagline, writeup teaser — the whole card
+// is a single link. Shared by the homepage Food section (vertical, photo on
+// top) and /best/ (horizontal: text 2/3, photo 1/3, via the `horizontal` prop).
+// Cards sit in a `.food-cards` grid (global.css); each page's own margins stay
+// page-side. The text wrapper is display:contents in the vertical layout, so
+// the homepage markup renders exactly as it did before the wrapper existed.
+import type { CollectionEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+import { href } from '../lib/url'
+
+interface Props {
+  place: CollectionEntry<'food'>
+  teaser?: string
+  // Optional mono kicker above the title (e.g. the neighborhood on /best/).
+  eyebrow?: string
+  // Text 2/3 + photo 1/3 side by side (stacks back to vertical on phones).
+  horizontal?: boolean
+}
+
+const { place, teaser, eyebrow, horizontal = false } = Astro.props
+---
+
+<article class="food-card">
+  <a
+    class:list={['food-card-link', 'hover-wash', { 'is-horizontal': horizontal }]}
+    href={href(`/food/${place.id}/`)}>
+    {
+      place.data.photo && (
+        <Image class="food-card-photo" src={place.data.photo} alt={place.data.title} width={520} />
+      )
+    }
+    <span class="food-card-text">
+      {eyebrow && <span class="food-card-eyebrow eyebrow eyebrow--muted">{eyebrow}</span>}
+      <span class="food-card-title title-serif title-link">{place.data.title}</span>
+      {
+        place.data.description && (
+          <span class="food-card-description desc-muted">{place.data.description}</span>
+        )
+      }
+      {teaser && <span class="food-card-excerpt">{teaser}</span>}
+    </span>
+  </a>
+</article>
+
+<style>
+  .food-card {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .food-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    height: 100%;
+    padding: var(--spacing-sm);
+    margin: calc(-1 * var(--spacing-sm));
+    border-radius: var(--radius);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  /* Vertical (default): the wrapper is invisible to layout. */
+  .food-card-text {
+    display: contents;
+  }
+
+  .food-card-link :global(.food-card-photo) {
+    width: 100%;
+    height: var(--card-photo-height);
+    object-fit: cover;
+    margin-block-end: var(--spacing-xs);
+  }
+
+  .food-card-description {
+    font-size: var(--font-size-md);
+    line-height: 1.45;
+    margin-bottom: var(--spacing-xs);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .food-card-excerpt {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.45;
+    color: var(--color-text);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Horizontal: text column 2/3, photo 1/3 on the right, photo cropped to the
+     text column's height. Falls back to the vertical stack on phones. */
+  @media (min-width: 601px) {
+    .food-card-link.is-horizontal {
+      flex-direction: row;
+      gap: var(--spacing-md);
+    }
+
+    .food-card-link.is-horizontal .food-card-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      flex: 2;
+      min-width: 0;
+    }
+
+    .food-card-link.is-horizontal :global(.food-card-photo) {
+      order: 2;
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+      height: auto;
+      align-self: stretch;
+      margin-block-end: 0;
+    }
+  }
+</style>

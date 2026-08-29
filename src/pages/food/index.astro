@@ -35,10 +35,11 @@ const statusRankLetter: Record<'tried' | 'want-to-try' | 'suggested', string> = 
 
 const all = published(await getCollection('food'))
 
-// Default DOM order is group-ordered then alphabetical (so the no-JS view reads
-// sensibly); filter.ts re-sorts on the client from the data-sort-* keys. Cards
-// render a plain-text excerpt (not the full writeup) so the route stays light —
-// the full prose lives on each /food/<slug> page.
+// Default DOM order is plain alphabetical, matching the default Alphabetical
+// sort (so the no-JS view reads sensibly); filter.ts re-sorts on the client
+// from the data-sort-* keys. Cards render a plain-text excerpt (not the full
+// writeup) so the route stays light — the full prose lives on each
+// /food/<slug> page.
 const rows = (
   await Promise.all(
     all.map(async (place) => {
@@ -58,11 +59,7 @@ const rows = (
     }),
   )
 )
-  .sort(
-    (left, right) =>
-      left.rankLetter.localeCompare(right.rankLetter) ||
-      left.place.data.title.localeCompare(right.place.data.title),
-  )
+  .sort((left, right) => left.place.data.title.localeCompare(right.place.data.title))
 
 const count = rows.length
 const cuisines = [...new Set(rows.flatMap((entry) => entry.place.data.cuisine))].sort()
@@ -95,8 +92,8 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
       { label: 'Rating', facet: 'verdict', options: verdictOptions },
     ]}
     sorts={[
-      { label: 'Rating', value: 'verdict:asc' },
       { label: 'Alphabetical', value: 'name:asc' },
+      { label: 'Rating', value: 'verdict:asc' },
     ]}
     hasCoords={hasCoords}
     mapLabel="Map of food spots"

@@ -104,6 +104,13 @@ export const sections: Section[] = [
     description: 'Browse everything by topic.',
   },
   {
+    label: 'Guestbook',
+    path: '/guestbook/',
+    group: 'site',
+    icon: 'notebook',
+    description: 'Sign your name and leave a note.',
+  },
+  {
     label: 'Feedback',
     path: '/feedback/',
     group: 'site',
