@@ -55,8 +55,8 @@ const description = "The best of the St. Louis food I've tried, by category."
           {
             awards.map(({ label, place, teaser }) => (
               <div class="best-cell">
-                <h3 class="best-type head-black head-black--sm head-rule">{label}</h3>
-                <FoodCard place={place} teaser={teaser} eyebrow={place.data.neighborhood} horizontal />
+                <h3 class="best-type head-black head-rule">{label}</h3>
+                <FoodCard place={place} teaser={teaser} horizontal />
               </div>
             ))
           }
