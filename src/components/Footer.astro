@@ -1,9 +1,13 @@
 ---
 // The site footer: the city flag as a band — red field, the river ribbon on
 // top, the crest — carrying the site identity on the left and the newsletter
-// signup on the right. The form hands off to Substack (no iframe widget, no
-// tracking, works without JS): submitting GETs to `${NEWSLETTER_URL}/subscribe`,
-// which Substack prefills + handles double-opt-in.
+// handoff on the right, plus a plain Newsletter link in the bottom bar (map
+// pages hide .footer-inner, so the bottom bar is their only newsletter entry
+// point). Subscribing has to FINISH on Substack (a static site can't post into
+// their signup API cross-origin, and their old `?email=` prefill is dead —
+// verified 2026-08-29), so both are honest links to `${NEWSLETTER_URL}/subscribe`
+// rather than an email input that would only pretend to subscribe (no iframe
+// widget, no tracking, works without JS).
 import { NEWSLETTER_URL, SITE_DESCRIPTION } from '../lib/site'
 import { href } from '../lib/url'
 import FleurDeLis from '../assets/FleurDeLis.astro'
@@ -25,20 +29,17 @@ import IconInstagram from '../assets/IconInstagram.astro'
         I'm always wandering St. Louis! Sign up if you want infrequent updates from the site. No
         ads, no spam.
       </p>
-      <form
-        class="newsletter-form"
-        action={`${NEWSLETTER_URL}/subscribe`}
-        method="get"
-        target="_blank">
-        <input
-          type="email"
-          name="email"
-          placeholder="you@email.com"
-          aria-label="Your email"
-          required
-        />
-        <button type="submit" class="btn btn-dark btn-compact">Subscribe</button>
-      </form>
+      {
+        NEWSLETTER_URL && (
+          <a
+            class="btn btn-dark btn-compact newsletter-link"
+            href={`${NEWSLETTER_URL}/subscribe`}
+            target="_blank"
+            rel="noopener">
+            Subscribe
+          </a>
+        )
+      }
     </div>
   </div>
   <div class="wrap wrap-wide footer-bottom">
@@ -46,6 +47,13 @@ import IconInstagram from '../assets/IconInstagram.astro'
       Made with <IconHeart /> in STL
     </span>
     <nav class="footer-links" aria-label="Footer">
+      {
+        NEWSLETTER_URL && (
+          <a href={`${NEWSLETTER_URL}/subscribe`} target="_blank" rel="noopener">
+            Newsletter
+          </a>
+        )
+      }
       <a href={href('/feedback/')}>Feedback</a>
       <a class="footer-instagram" href="https://www.instagram.com/st.louing" target="_blank">
         <IconInstagram />
@@ -136,21 +144,8 @@ import IconInstagram from '../assets/IconInstagram.astro'
     align-self: flex-end;
   }
 
-  .newsletter-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
+  .newsletter-link {
     margin-block-start: var(--spacing-md);
-  }
-
-  .newsletter-form input {
-    flex: 1;
-    min-width: 0;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-sm);
-    background: var(--footer-white);
-    color: var(--footer-ink);
-    border-color: var(--footer-white);
   }
 
   :global(body:has([data-map])) .footer-inner,

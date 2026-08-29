@@ -9,9 +9,6 @@ export const SITE_DESCRIPTION =
 // The visible tagline, shared by the homepage nameplate and the h-card note.
 export const TAGLINE = `An independent guide to the food, neighborhoods, and culture of St. Louis`
 
-// Newsletter (Substack), env-driven so clones/forks don't inherit this URL — the
-// signup + footer link self-hide when it's unset. The signup form GETs to
-// `${NEWSLETTER_URL}/subscribe`, which Substack prefills from the `email` param.
 export const NEWSLETTER_URL = import.meta.env.PUBLIC_NEWSLETTER_URL ?? ''
 
 // Feedback form endpoint (Formspree). Comes from the PUBLIC_FORMSPREE_URL env var
