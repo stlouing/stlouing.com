@@ -213,6 +213,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       showRating: true,
       chips,
       addressLines: (item.dataset.address ?? '').split('\n').filter(Boolean),
+      directionsHref: google,
       excerpt: excerptText,
       sources,
       showMore: Boolean(excerptText),

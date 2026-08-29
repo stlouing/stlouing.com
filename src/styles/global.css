@@ -473,7 +473,6 @@ tbody tr:last-child td {
 
 .corridor-map-figure {
   margin: var(--spacing-lg) 0;
-
 }
 
 .corridor-map {
@@ -915,7 +914,6 @@ main {
 
   h3 {
     font-weight: 600;
-
   }
 
   h2:not(:first-child) {
@@ -1096,7 +1094,6 @@ body:has(.map-split) main > .wrap,
 }
 
 .content-pane {
-
   .list-pane-header {
     position: sticky;
     top: 0;
@@ -1469,7 +1466,6 @@ body:has(.map-split) main > .wrap,
 }
 
 .chip.is-filled {
-
   color: var(--color-background) !important;
   background: var(--chip-color, var(--color-accent)) !important;
   border-color: var(--chip-color, var(--color-accent)) !important;
@@ -1569,7 +1565,6 @@ body:has(.map-split) main > .wrap,
 }
 
 .food-grouped li.group-header.group-header-alpha .group-label {
-
   color: var(--color-accent);
 }
 
@@ -1692,11 +1687,42 @@ body:has([data-filter-root]) .masthead-nav {
 .food-popup .tip-address {
   display: block;
   margin-block: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-muted-2);
   white-space: nowrap;
   line-height: 1.3;
+}
+
+/* The directions link reads as part of the address block, so the address hands
+   its bottom margin down to the link. */
+.food-popup .tip-address:has(+ .tip-directions) {
+  margin-block-end: var(--spacing-xs);
+}
+
+.food-popup .tip-directions {
+  display: inline-block;
+  margin-block-end: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.food-popup .tip-directions:hover {
+  color: var(--color-accent-blue);
+}
+
+/* The pixel external-link arrow rides inline after the text, continue-link style. */
+.food-popup .tip-directions .icon {
+  display: inline;
+  width: 12px;
+  height: 12px;
+  margin-inline-start: var(--spacing-xs);
+  vertical-align: -0.125em;
+  color: inherit;
 }
 
 .food-marker {
@@ -1802,7 +1828,6 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .map-hover-tip .maplibregl-popup-content {
-
   pointer-events: none;
   padding: var(--spacing-sm);
   background: var(--color-background);
@@ -1964,7 +1989,6 @@ body:has([data-filter-root]) .masthead-nav {
     .river-border-basic {
       margin-top: var(--spacing-md);
     }
-
   }
 
   h1 {
@@ -2037,7 +2061,6 @@ body:has([data-filter-root]) .masthead-nav {
 
 @media screen and (min-width: 900px) {
   .detail-layout {
-
     grid-template-columns: minmax(0, var(--measure-reading)) 290px;
     justify-content: center;
     align-items: start;
@@ -2095,7 +2118,6 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .not-explored {
-
 }
 
 .not-explored p {
@@ -2324,6 +2346,14 @@ body:has([data-filter-root]) .masthead-nav {
     width: 100%;
     margin-inline: 0;
   }
+
+  .entry-header {
+    &.entry-header-with-flag {
+      .river-border-basic {
+        margin-top: var(--spacing-sm);
+      }
+    }
+  }
 }
 
 .river-border {
@@ -2365,7 +2395,6 @@ body:has([data-filter-root]) .masthead-nav {
 
 .body h2.head-black,
 .body h3.head-black {
-
   color: var(--color-text-heading);
 }
 

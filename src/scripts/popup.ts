@@ -39,6 +39,9 @@ export interface PopupConfig {
   chips?: PopupChip[]
   // Food only: address lines, rendered under the title.
   addressLines?: string[]
+  // Food only: the place's Google Maps link, rendered as a small
+  // "View directions" link under the address.
+  directionsHref?: string
   // A one-line tagline (the entry's description). Accepted for compatibility
   // but not rendered.
   tagline?: string
@@ -91,6 +94,10 @@ const SOURCE_ICON: Record<string, string> = {
   ),
 }
 
+// Pixelarticons `external-link` (MIT) — fill-based, unlike the stroked Lucide
+// set above; the pixel-art voice for the popup's outbound "View directions" link.
+const DIRECTIONS_ICON = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" class="icon" aria-hidden="true"><path d="M21 11V3h-8v2h4v2h-2v2h-2v2h-2v2H9v2h2v-2h2v-2h2V9h2V7h2v4h2zM11 5H3v16h16v-8h-2v6H5V7h6V5z" fill="currentColor"/></svg>`
+
 // The St. Louis fleur-de-lis emblem (single-color glyph, no disc), matching
 // FleurGlyph.astro. currentColor fills it, so the popup rating CSS colors the
 // filled glyphs gold and fades the rest. `className` sets `is-filled` per glyph.
@@ -116,6 +123,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     showRating = false,
     chips = [],
     addressLines = [],
+    directionsHref = '',
     excerpt = '',
     sources = [],
     showMore = true,
@@ -151,6 +159,10 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<span class="tip-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
     : ''
 
+  const directionsHtml = directionsHref
+    ? `<a class="tip-directions" href="${directionsHref}" target="_blank" rel="noopener">View directions${DIRECTIONS_ICON}</a>`
+    : ''
+
   const excerptHtml = excerpt ? `<p class="tip-excerpt">${escapeHtml(excerpt)}</p>` : ''
 
   const moreHtml = showMore
@@ -167,6 +179,6 @@ export function buildPopupHtml(config: PopupConfig): string {
     : ''
 
   // Order mirrors the list rows: the photo banner, rating, the eyebrow, then
-  // the serif title with the address and excerpt below.
-  return `${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${excerptHtml}${moreHtml}`
+  // the serif title with the address (plus its directions link) and excerpt below.
+  return `${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${directionsHtml}${excerptHtml}${moreHtml}`
 }

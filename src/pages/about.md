@@ -12,7 +12,7 @@ I've been on a quest to find [the best food in St. Louis](/food/), and after rea
 
 The site is not meant to be an absolutely definitive source of information about the STL food scene or neighborhoods, it's mostly a field guide for me to keep track of what I've found and what I like. There is a heavy focus on food as that's my primary way of exploring the city and culture.
 
-All writing and photography is original content for this site!
+Everything on this site is made by one person. All writing and photography is original content for this site! 
 
 ## Purpose
 
@@ -66,6 +66,8 @@ A few open-source projects this site relies on.
 
 - [**Built St. Louis**](https://www.builtstlouis.net)
   - A website documenting the historic architecture of St. Louis in the "old internet" style of website I love to see.
+- [**STL Urbanists**](https://stlurbanists.org/)
+  - A grassroots advocacy group working to create safer and more effective infrastructure for pedestrians, bicycle users, and transit riders.
 - [**St. Louis City Talk**](https://www.stlouiscitytalk.com/)
   - Many thoughts and pictures about St. Louis neighborhoods.
 - [**Next STL**](https://nextstl.com/)
