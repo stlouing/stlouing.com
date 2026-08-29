@@ -16,10 +16,17 @@ interface Preview {
   // Food only.
   cuisine?: string[]
   neighborhood?: string
+  // Any entry: its tags, shown in the card's eyebrow meta row.
+  tags?: string[]
   // Food, topics + neighborhoods: the curated tagline.
   description?: string
   // Entries with a photo: a card-sized rendition shown atop the hovercard.
   photo?: string
+}
+
+// Only carry a tag list that has something in it — keeps the payload lean.
+function presentTags(tags: string[] | undefined): string[] | undefined {
+  return tags && tags.length > 0 ? tags : undefined
 }
 
 // Card-sized rendition of an entry photo (640px wide covers the 320px card on
@@ -36,11 +43,15 @@ async function cardPhoto(photo: ImageMetadata | undefined): Promise<string | und
 export const GET: APIRoute = async () => {
   const previews: Record<string, Preview> = {}
 
-  function add<T extends { id: string; body?: string; data: { title: string; draft?: boolean } }>(
-    entries: T[],
-  ): void {
+  function add<
+    T extends { id: string; body?: string; data: { title: string; draft?: boolean; tags?: string[] } },
+  >(entries: T[]): void {
     for (const entry of published(entries)) {
-      previews[entry.id] = { title: entry.data.title, excerpt: excerpt(entry.body, PREVIEW_EXCERPT_CHARS) }
+      previews[entry.id] = {
+        title: entry.data.title,
+        excerpt: excerpt(entry.body, PREVIEW_EXCERPT_CHARS),
+        tags: presentTags(entry.data.tags),
+      }
     }
   }
 
@@ -50,6 +61,7 @@ export const GET: APIRoute = async () => {
       excerpt: excerpt(place.body, PREVIEW_EXCERPT_CHARS),
       cuisine: place.data?.cuisine,
       neighborhood: place.data?.neighborhood,
+      tags: presentTags(place.data?.tags),
       description: place.data?.description,
       photo: await cardPhoto(place.data?.photo),
     }
@@ -58,6 +70,7 @@ export const GET: APIRoute = async () => {
     previews[topic.id] = {
       title: topic.data?.title,
       excerpt: excerpt(topic.body, PREVIEW_EXCERPT_CHARS),
+      tags: presentTags(topic.data?.tags),
       description: topic.data?.description,
     }
   }
@@ -69,6 +82,7 @@ export const GET: APIRoute = async () => {
     previews[neighborhood.id] = {
       title: neighborhood.data.title,
       excerpt: excerpt(neighborhood.body, PREVIEW_EXCERPT_CHARS),
+      tags: presentTags(neighborhood.data.tags),
       description: neighborhood.data.description,
       photo: await cardPhoto(neighborhood.data.photo),
     }

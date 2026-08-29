@@ -161,15 +161,8 @@ const analyticsUrl = analyticsBase
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    {
-      /* Body serif is Georgia, a system font (with Times New Roman / generic
-       serif fallbacks), so no webfont is loaded for body copy. */
-    }
-
     {pmtilesOrigin && <link rel="preconnect" href={pmtilesOrigin} crossorigin />}
 
-    <!-- Set the theme before paint: stored choice wins, else light — the site
-         deliberately ignores the OS preference until the visitor toggles. -->
     <script is:inline>
       const storedTheme = localStorage.getItem('theme')
       document.documentElement.dataset.theme = storedTheme ?? 'light'
@@ -183,7 +176,6 @@ const analyticsUrl = analyticsBase
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href={href('/rss.xml')} />
 
-    {/* rel=me identity links for Mastodon/Bluesky/IndieAuth verification. */}
     {SOCIALS.map((social) => <link rel="me" href={social.url} />)}
 
     <meta property="og:type" content={ogType} />
@@ -203,21 +195,12 @@ const analyticsUrl = analyticsBase
     {ogType === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={socialImage} />
-    {
-      /* X/Twitter reads og:title/description but not og:image:alt, so the alt is
-        repeated in its own namespace. */
-    }
     <meta name="twitter:image:alt" content={socialImageAlt} />
 
     <meta name="generator" content={Astro.generator} />
 
     {structuredData.map((schema) => <JsonLd data={schema} />)}
 
-    {
-      /* Cookieless, no-consent-banner analytics (GoatCounter). Production builds
-        only (local dev + previews don't count) AND only when PUBLIC_ANALYTICS_URL
-        is set, so a fork without that var sends nothing here. */
-    }
     {
       import.meta.env.PROD && analyticsUrl && (
         <script is:inline data-goatcounter={analyticsUrl} async src="https://gc.zgo.at/count.js" />
@@ -230,8 +213,6 @@ const analyticsUrl = analyticsBase
     <Header trail={trail} variant={home ? 'home' : 'compact'} />
 
     <main id="main">
-      {/* Every page shares the front page's wide measure (reading pages pull
-         in a step); prose re-constrains itself further (.body's max-width). */}
       <div class:list={['wrap', 'wrap-wide', { 'wrap-article': article }]}>
         <slot />
       </div>

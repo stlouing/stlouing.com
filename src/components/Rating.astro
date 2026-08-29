@@ -37,12 +37,9 @@ const label = verdict ? `Rating: ${verdictLabels[verdict]}, ${filled} of ${total
     display: inline-flex;
     align-items: center;
     gap: 2px;
-    /* Sit the glyph row on the text baseline of the title beside it. */
     vertical-align: -0.1em;
   }
 
-  /* :global() because the scoped class can't reach the child <svg>'s root. Color
-     rides in via `color` (the glyph fills with currentColor, which is inherited). */
   .rating :global(.rating-fleur) {
     width: 0.85em;
     height: 0.85em;

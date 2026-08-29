@@ -3,14 +3,9 @@ import Nav from './Nav.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 import { href } from '../lib/url'
-// import FleurDeLis from '../assets/FleurDeLis.astro'
 
 interface Props {
   trail: Array<any>
-  // 'home' renders the full newspaper masthead: ear row, big centered <h1>
-  // nameplate, and the nav bar that sticks once the nameplate scrolls away.
-  // 'compact' (every other page) renders ONLY the nav bar, with the pixel
-  // flag + wordmark on the left as the way home.
   variant?: 'home' | 'compact'
 }
 
@@ -20,10 +15,6 @@ const { variant = 'compact' } = Astro.props
 {
   variant === 'home' && (
     <>
-      {/* The nameplate scrolls away; only .masthead-nav below is sticky. The two
-         blocks are siblings (not nested) because a sticky element can only stick
-         within its parent's box — nesting the nav inside the masthead header
-         would end its sticky range where the masthead ends. */}
       <header class="masthead-home">
         <div class="masthead-ear">
           <div class="wrap wrap-wide masthead-ear-line eyebrow eyebrow--muted">
@@ -44,16 +35,9 @@ const { variant = 'compact' } = Astro.props
     </>
   )
 }
-{
-  /* One nav bar for every page: brand hard left, links centered, theme switch
-   hard right. On the homepage it sits below the nameplate and carries the
-   brand once the nameplate scrolls away. */
-}
 <div class:list={['masthead-nav', { 'is-home': variant === 'home' }]} data-header>
   <div class="wrap wrap-wide masthead-nav-inner">
     <a class="masthead-brand" href={href('/')}>
-      <!-- <FleurDeLis class="brand-crest" />
-      St. Louing -->
       <img class="brand-flag" src={href('/flag-square.svg')} alt="" width="28" height="28" /> St. Louing
     </a>
     <Nav />
@@ -63,9 +47,6 @@ const { variant = 'compact' } = Astro.props
 </div>
 
 <script>
-  // Publish the sticky nav bar's height so in-page anchors (:target) can
-  // offset by it. Tracks wrapping/resize so the offset stays correct across
-  // breakpoints.
   const header = document.querySelector<HTMLElement>('[data-header]')
   if (header) {
     const setHeight = () =>
@@ -74,10 +55,6 @@ const { variant = 'compact' } = Astro.props
     window.addEventListener('resize', setHeight)
   }
 
-  // Homepage: the bar's brand stays hidden while the big nameplate is on
-  // screen, fading in once the masthead scrolls away and the bar sticks.
-  // Inner pages: the bar sits at the very top, so any scroll means stuck.
-  // Either way `.is-stuck` also thins the Scotch rule to a single hairline.
   const masthead = document.querySelector('.masthead-home')
   if (header && masthead) {
     const observer = new IntersectionObserver(([entry]) => {
@@ -125,8 +102,6 @@ const { variant = 'compact' } = Astro.props
     gap: var(--spacing-sm);
   }
 
-  /* Flat :global on purpose (nested :global gets stripped by the compiler);
-     scoped to the whole line so the fleur can sit in any ear slot. */
   .masthead-ear-line :global(.ear-fleur) {
     width: 0.55em;
     height: auto;
@@ -165,8 +140,6 @@ const { variant = 'compact' } = Astro.props
     isolation: isolate;
   }
 
-  /* Three zones: 1fr rails pin the brand hard left and the toggle hard right
-     while the links hold the true center. */
   .masthead-nav-inner {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -192,9 +165,6 @@ const { variant = 'compact' } = Astro.props
     white-space: nowrap;
   }
 
-  /* On the homepage the brand waits under the nameplate — invisible (but
-     still holding its grid cell, so the links stay centered) until the bar
-     sticks. */
   .masthead-nav.is-home .masthead-brand {
     opacity: 0;
     visibility: hidden;
@@ -221,9 +191,6 @@ const { variant = 'compact' } = Astro.props
     border-radius: 6px;
   }
 
-  /* Thick bar, 2px gap, thin line — the borders draw both, the height between
-     them opens the gap. The transition lets the stuck collapse below read as
-     a slide (it fires mid-scroll) instead of a 6px jump. */
   .masthead-double-rule {
     height: 7px;
     border-block-start: 4px solid var(--color-line-contrast);
@@ -233,9 +200,6 @@ const { variant = 'compact' } = Astro.props
       border-block-start-width 0.15s ease;
   }
 
-  /* Scrolled (stuck): the rule collapses to just the thin line, so the bar
-     closes symmetrically — hairline, padding, links, padding, hairline — with
-     no leftover slot where the thick bar was. */
   .masthead-nav.is-stuck .masthead-double-rule {
     height: 1px;
     border-block-start-width: 0;
@@ -264,9 +228,6 @@ const { variant = 'compact' } = Astro.props
       padding-block: 0;
     }
 
-    /* Homepage: a phone shows neither the brand (it links to the page you're
-       on) nor the theme toggle — just the one nav row, whether stuck or not,
-       so the bar's height never changes and the content below never jumps. */
     .masthead-nav.is-home .masthead-nav-inner {
       grid-template-columns: 1fr;
       grid-template-areas: 'nav';
@@ -277,8 +238,6 @@ const { variant = 'compact' } = Astro.props
       display: none;
     }
 
-    /* The ear row is too cramped to read on a phone — drop it entirely, so
-       the masthead starts at the nameplate. */
     .masthead-ear {
       display: none;
     }

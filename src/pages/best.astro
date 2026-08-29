@@ -111,9 +111,6 @@ const description = "The best of the St. Louis food I've tried, by category."
 </BaseLayout>
 
 <style>
-  /* The dividers are the grid's own 1px gap showing the line-colored track
-     behind the cards, so rows + columns are handled uniformly with no
-     per-cell border math. */
   .favorites-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -146,7 +143,6 @@ const description = "The best of the St. Louis food I've tried, by category."
     }
   }
 
-  /* The global `.icon` rule pins icons muted, so recolor to the accent here. */
   .favorite-icon {
     display: inline-flex;
     flex-shrink: 0;
@@ -192,9 +188,6 @@ const description = "The best of the St. Louis food I've tried, by category."
     }
   }
 
-  /* The cuisine is the row's lookup key. Collapse the column to its content
-     (width: 1% + nowrap under auto table layout) so the place column takes the
-     remaining width instead of auto-layout padding this one out. */
   .best-cuisine {
     width: 1%;
     white-space: nowrap;
@@ -204,8 +197,6 @@ const description = "The best of the St. Louis food I've tried, by category."
   .best-table td a {
     font-weight: 600;
   }
-  /* Hover underline for the place links — the global rule only grants it to
-     `.body` prose tables, and this table lives outside one. */
   .best-table td a:hover {
     text-decoration-line: underline;
   }

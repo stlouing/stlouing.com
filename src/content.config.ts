@@ -6,8 +6,6 @@ const coords = { coords: z.tuple([z.number(), z.number()]).optional() }
 
 const md = (folder: string) => glob({ pattern: '**/*.md', base: `./src/content/${folder}` })
 
-/* Collections ------------------------------------------------------------- */
-
 const food = defineCollection({
   loader: md('food'),
   schema: ({ image }) =>

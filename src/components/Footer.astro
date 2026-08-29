@@ -19,10 +19,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
       <p class="footer-name">St. Louing</p>
       <p class="footer-description">{SITE_DESCRIPTION}</p>
     </div>
-    {
-      /* Rendered even when NEWSLETTER_URL is unset (dev has no .env value);
-         Substack simply isn't reachable then. */
-    }
     <div class="footer-newsletter">
       <p class="footer-newsletter-title">Newsletter</p>
       <p class="footer-description">
@@ -40,10 +36,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
           aria-label="Your email"
           required
         />
-        {
-          /* A native button, not the Button component — it pins type="button",
-             and a form submit needs type="submit". */
-        }
         <button type="submit" class="btn btn-dark btn-compact">Subscribe</button>
       </form>
     </div>
@@ -63,10 +55,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
 </footer>
 
 <style>
-  /* The band wears the city flag's own colors — pinned in BOTH themes (like
-     the pixel flag and crest: flag colors are fixed, not theme inks). The
-     river ribbon on top is the flag's white-fimbriated blue wave, so the
-     whole band reads as the flag itself. */
   .site-footer {
     --footer-red: #c70f2e;
     --footer-yellow: #f5dc0f;
@@ -74,9 +62,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     --footer-ink: #1b1a17;
     --river-height: 32px;
     margin-block-start: var(--spacing-xl);
-    /* The red field starts BELOW the river strip — the tile paints its own
-       below-wave red, so the wavy line is the band's actual top edge and the
-       page shows through above it. */
     background: linear-gradient(
       to bottom,
       transparent var(--river-height),
@@ -84,9 +69,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     );
   }
 
-  /* A little taller than the global 24px ribbon. 32px keeps the tile math
-     whole-pixel (the 90x80 tile scales to 36px), so no seam leaks. Decorative
-     only — when the ribbon overlaps content (map pages), clicks fall through. */
   .river-border {
     height: var(--river-height);
     pointer-events: none;
@@ -147,8 +129,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     max-width: 40ch;
   }
 
-  /* Bottom-aligned against the taller identity stack, so the form anchors to
-     the band's baseline instead of floating at the top. */
   .footer-newsletter {
     flex: 1 1 16rem;
     max-width: 26rem;
@@ -162,7 +142,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     margin-block-start: var(--spacing-md);
   }
 
-  /* Field + button pinned to the flag palette in both themes. */
   .newsletter-form input {
     flex: 1;
     min-width: 0;
@@ -173,26 +152,16 @@ import IconInstagram from '../assets/IconInstagram.astro'
     border-color: var(--footer-white);
   }
 
-  /* The map pages (Food + Neighborhoods) get the mini footer: just the river
-     edge and the closing bar — the full identity + signup panel eats vertical
-     room under the full-height map layouts. Keyed off each page's own map
-     container, so no per-page wiring is needed. Flat :global on purpose. */
   :global(body:has([data-map])) .footer-inner,
   :global(body:has([data-neighborhood-map])) .footer-inner {
     display: none;
   }
 
-  /* The river rides UP over the map's bottom edge, so the wave crest cuts
-     into the content instead of leaving a blank strip above it. The footer
-     stacks over the map's own layered canvases; the ribbon itself is
-     pointer-transparent so the overlapped map stays clickable. */
   :global(body:has([data-map])) .site-footer,
   :global(body:has([data-neighborhood-map])) .site-footer {
     position: relative;
     z-index: 2;
     margin-block-start: calc(-1 * var(--river-height));
-    /* The footer's own box covers the overlapped strip — let clicks fall
-       through it to the map, then re-arm the interactive red bar below. */
     pointer-events: none;
   }
 
@@ -201,9 +170,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     pointer-events: auto;
   }
 
-  /* Without the panel above it, the bar sits right under the wave — skip the
-     hairline (the river is the bar's top edge) and tuck the top padding in
-     so the mini band stays balanced. */
   :global(body:has([data-map])) .footer-bottom,
   :global(body:has([data-neighborhood-map])) .footer-bottom {
     border-block-start: 0;
@@ -230,7 +196,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     font-weight: 500;
   }
 
-  /* Flat :global on purpose (nested :global gets stripped). */
   .footer-made :global(.icon) {
     width: 1rem;
     height: 1rem;
@@ -258,7 +223,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     text-underline-offset: 4px;
   }
 
-  /* Flat :global on purpose (nested :global gets stripped). */
   .footer-links :global(.icon) {
     width: 1rem;
     height: 1rem;
@@ -270,8 +234,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     text-decoration-color: var(--footer-yellow);
   }
 
-  /* Stacked on phones, in a smaller voice so the band doesn't tower over the
-     screen. */
   @media (max-width: 700px) {
     .site-footer {
       margin-block-start: var(--spacing-lg);
@@ -299,7 +261,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     .footer-newsletter {
       flex: 0 0 auto;
       max-width: none;
-      /* In the column stack, align-self would nudge it sideways instead. */
       align-self: auto;
     }
 

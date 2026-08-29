@@ -16,12 +16,13 @@ import { isExplored } from '../lib/verdict'
 import { getChangelog } from '../lib/changelog'
 import { formatDate } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
-import { TAGLINE } from '../lib/site'
+import { TAGLINE, SOCIALS } from '../lib/site'
 import Button from '../components/Button.astro'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
 import Icon from '../components/Icon.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
+import IconInstagram from '../assets/IconInstagram.astro'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 
 const intro = `Welcome to St. Louing, my ongoing project to document living in St. Louis and learning to love it!`
@@ -81,6 +82,8 @@ const moreSections = [
   ...sections.filter((section) => section.group === 'site' && !section.primary),
 ]
 
+const instagram = SOCIALS.find((social) => social.label === 'Instagram')
+
 const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 ---
 
@@ -118,19 +121,27 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
               </li>
             ))
           }
+          {
+            instagram && (
+              <li>
+                <a
+                  class="hover-wash front-index-instagram"
+                  href={instagram.url}
+                  target="_blank"
+                  rel="noopener">
+                  <span class="instagram-tile" aria-hidden="true">
+                    <IconInstagram />
+                  </span>
+                  <span class="front-index-label title-link">Instagram</span>
+                </a>
+              </li>
+            )
+          }
         </ul>
       </section>
     </aside>
 
-    {
-      /* The intro is its own grid item (not inside a column wrapper) so the
-       phone layout can keep it first. */
-    }
     <header class="h-card front-intro">
-      {
-        /* The p-note class doubles the tagline as the h-card's note for mf2
-         parsers. */
-      }
       <p class="front-eyebrow eyebrow">About</p>
       <h2 class="front-tagline p-note">{TAGLINE}</h2>
       <p class="introduction">
@@ -144,24 +155,15 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           Continue reading <IconArrowRight />
         </a>
       </p>
-      {/* Author identity for feeds/IndieWeb parsers; data only, not shown. */}
       <span class="p-name" hidden>St. Louing</span>
       <a class="u-url" href={href('/')} hidden>stlouing.com</a>
       <img class="u-photo" src={href('/og.png')} alt="" hidden />
     </header>
 
-    {
-      /* The wrapper lets the column flow at its own height (no row coupling
-       with the rails); on phones it dissolves (display: contents) so the grid
-       can interleave the areas. */
-    }
     <div class="front-center">
       {
         leadTopic && (
           <section class="front-lead">
-            {/* The curated blurb-free banner (never the OG card — its baked-in
-             title would double the headline). Duplicate of the headline link,
-             so it's hidden from the accessibility tree. */}
             {leadTopic.data.leadImage && (
               <a
                 class="lead-figure"
@@ -276,10 +278,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 </BaseLayout>
 
 <style>
-  /* The holy-grail front page: index rail | center | explore rail, as one flat
-     grid so the responsive collapses can reorder freely. The column rules are
-     drawn by the container (below), so they run the full column height no
-     matter how tall each item is. */
   .front-page {
     --front-rail-left: 250px;
     --front-rail-right: 300px;
@@ -290,8 +288,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     grid-template-areas:
       'intro center rail'
       'index center rail';
-    /* Row 1 hugs the intro; without this, the tall row-spanning center column
-       distributes its height into row 1 and opens a hole above the index. */
     grid-template-rows: auto 1fr;
     column-gap: var(--front-gap);
     row-gap: var(--spacing-lg);
@@ -299,8 +295,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block: var(--spacing-lg);
   }
 
-  /* Each column is its own flow, so a tall item in one column never opens a
-     hole in another (grid rows would otherwise couple their heights). */
   .front-center,
   .front-rail {
     display: flex;
@@ -317,7 +311,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     grid-area: rail;
   }
 
-  /* Newspaper column rules, centered in each gap. */
   .front-page::before,
   .front-page::after {
     content: '';
@@ -365,8 +358,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     min-width: 0;
   }
 
-  /* ----- The article rail ----- */
-
   .rail-header {
     margin: 0 0 var(--spacing-xs);
   }
@@ -385,8 +376,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     border-block-start: 1px dotted var(--color-line-input);
   }
 
-  /* The whole-row hover wash, with the ListItem padding/negative-margin bleed
-     so the tint extends past the text while alignment holds. */
   .rail-articles a {
     display: block;
     padding: var(--spacing-shmedium) var(--spacing-sm);
@@ -426,7 +415,35 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-decoration: none;
   }
 
-  /* ----- The center column ----- */
+  .front-index-list a.front-index-instagram {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .instagram-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: radial-gradient(
+      circle at 30% 107%,
+      #fdf497 0%,
+      #fdf497 5%,
+      #fd5949 45%,
+      #d6249f 60%,
+      #285aeb 90%
+    );
+  }
+
+  .instagram-tile :global(.icon) {
+    width: 12px;
+    height: 12px;
+    color: #ffffff;
+  }
 
   .front-eyebrow {
     margin-block: 0 var(--spacing-xs);
@@ -506,8 +523,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-wrap: balance;
   }
 
-  /* The scoped resting rule out-ranks the shared .title-link hover (Astro
-     scoping doubles the attribute), so the hover stays scoped here too. */
   .lead-headline a {
     color: var(--color-text-heading);
     text-decoration: none;
@@ -555,8 +570,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-size: var(--font-size-xs);
   }
 
-  /* ----- Shared section headers (Explore, Lists) ----- */
-
   .group-header {
     display: flex;
     align-items: flex-end;
@@ -569,15 +582,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin: 0;
   }
 
-  /* The rail's list rows pick up the flag blue via the ListItem hooks. */
   .front-explore {
     --list-icon-color: var(--color-accent-blue);
     --list-hover-color: var(--color-accent-blue);
   }
 
-  /* The two map links read as links: underlined like body-copy anchors. The
-     hover override pins the same offset so the underline holds its position
-     (ListItem's own hover rule uses 2px) and only the color changes. */
   .front-explore :global(.list-title) {
     text-decoration-line: none;
     text-decoration-thickness: 2px;
@@ -589,9 +598,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-underline-offset: 3px;
   }
 
-  /* The map descriptions read at the intro paragraph's measure. The extra
-     .list-item class outranks List.astro's scoped rule (a bare descendant
-     selector only ties it, and cascade order is unreliable across files). */
   .front-explore :global(.list-item .list-description) {
     font-size: var(--font-size-md);
     line-height: 1.55;
@@ -606,14 +612,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     flex-shrink: 0;
   }
 
-  /* ----- The food cards ----- */
-
   .group-all {
     flex-shrink: 0;
   }
 
-  /* A 2x2 of equal-height cards: 1fr auto-rows stretch every card to the
-     tallest row. */
   .food-cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -627,9 +629,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     min-width: 0;
   }
 
-  /* Padding pulled back out by a matching negative margin (the ListItem
-     idiom), so the hover wash bleeds past the content while everything stays
-     aligned with the column. */
   .food-card-link {
     display: flex;
     flex-direction: column;
@@ -657,8 +656,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    /* The clamp box is the card's only shrinkable child — without this the
-       equal-height rows crush it to nothing. */
     flex-shrink: 0;
   }
 
@@ -671,11 +668,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
-    /* Same equal-height-row crush guard as the description. */
     flex-shrink: 0;
   }
-
-  /* ----- The What's New box ----- */
 
   .whats-new {
     min-width: 0;
@@ -713,8 +707,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-align: center;
   }
 
-  /* Update links in ink, bold instead of underlined — a box full of underlines
-     read as noise; hover goes flag blue with the underline back for affordance. */
   .whats-new .recent-changes :global(a) {
     color: var(--color-text-heading);
     font-weight: 600;
@@ -727,9 +719,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-decoration-color: var(--color-accent-blue);
   }
 
-  /* The rail is too narrow for the /updates two-track date rail; stack the
-     date over its changes instead — the same collapse /updates uses on
-     phones — and tighten the row rhythm to fit the box. */
   .whats-new .recent-list {
     grid-template-columns: 1fr;
   }
@@ -755,9 +744,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-start: var(--spacing-sm);
   }
 
-  /* Same layout as the What's New page (/updates): the list owns two tracks — a
-     date rail sized to the widest date, then the changes — and each row is a
-     subgrid spanning both, which also carries the per-row hairline. */
   .recent-list {
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -786,7 +772,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-weight: 500;
     color: var(--color-muted);
     text-wrap: nowrap;
-    /* Nudge onto the first line of the changes list beside it. */
     padding-block-start: 2px;
   }
 
@@ -817,11 +802,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-decoration-line: underline;
   }
 
-  /* ----- Responsive collapses ----- */
-
-  /* Tablet: the rails can't both fit — the index drops to a full-width band at
-     the bottom (its groups fan out into columns), the Explore rail keeps its
-     column and its rule. */
   @media (max-width: 1000px) {
     .front-page {
       grid-template-columns: minmax(0, 1fr) var(--front-rail-right);
@@ -832,10 +812,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       grid-template-rows: auto;
     }
 
-    /* The container-drawn rules span the whole grid — including the
-       full-width intro and index rows — so here the column seam is drawn by
-       the rail itself, which only spans its own row. Centered in the gap via
-       the half-gap pull/pad. */
     .front-page::before,
     .front-page::after {
       display: none;
@@ -855,9 +831,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     }
   }
 
-  /* Phone: one column, no rules; content first (intro, what's new, lead),
-     then the index and rails. The column wrappers dissolve so their children
-     become grid items again and the areas can interleave across columns. */
   @media (max-width: 700px) {
     .front-page {
       grid-template-columns: 1fr;

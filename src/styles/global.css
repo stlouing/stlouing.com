@@ -1,21 +1,13 @@
-/* ===========================================================================
-   Theme tokens
-   =========================================================================== */
-
-/* Light theme */
 :root {
   color-scheme: light;
 
-  /* Colors */
   --color-background: white;
-  /* The aged-newsprint gold wash (same recipe as the What's New box, which
-     paints itself with this token). */
+
   --color-surface: color-mix(in srgb, var(--color-accent-gold) 10%, var(--color-background));
   --color-surface-2: color-mix(in srgb, var(--color-accent-gold) 5%, var(--color-background));
-  /* The whole-row hover tint (rail rows, cards, map rows, sidebar links).
-     Defined off text/background so it re-themes on its own. */
+
   --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
-  /* The standard centered reading column (articles, prose pages). */
+
   --measure-reading: 620px;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
@@ -27,19 +19,18 @@
   --color-line-contrast: #1b1a17;
   --color-accent: #a90b26;
   --color-accent-2: #c70f2e;
-  /* The flag's other two colors, as accents: blue and gold pull weight so the
-     red stays an occasional highlight rather than the whole palette. */
+
   --color-accent-blue: #2766ad;
   --color-flag-blue: #012773;
   --color-accent-gold: #b8860b;
   --color-map-accent: #6a47a6;
-  /* City regions (north→south): yellow, red, violet; county blue; parks green. */
+
   --color-map-north: #b8860b;
   --color-map-central: #a90b26;
   --color-map-south: #6a47a6;
   --color-map-county: #2766ad;
   --color-map-park: #2e7d4a;
-  /* Walkable St. Louis corridor lines on the article mini-maps. */
+
   --color-map-corridor: #a90b26;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
@@ -48,29 +39,26 @@
   --color-verdict-neutral: #6f6b61;
   --color-verdict-notforme: #74727c;
 
-  /* Fonts */
   --font-serif: Georgia, 'Times New Roman', serif;
   --font-sans-serif: 'Archivo', sans-serif;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  /* One-weight heavy grotesque for shouty uppercase section headers. */
+
   --font-display-black: 'Archivo Black', 'Arial Black', 'Helvetica Neue', sans-serif;
 
-  --font-size-xxxs: 0.8125rem; /* 12px */
-  --font-size-xxs: 0.8125rem; /* 13px */
-  --font-size-xs: 0.875rem; /* 14px */
-  --font-size-sm: 0.9375rem; /* 15px */
-  --font-size-md: 1rem; /* 16px */
-  --font-size-article: 1.0625rem; /* 17px */
-  --font-size-label: 1.125rem; /* 18px */
-  --font-size-lg: 1.25rem; /* 20px */
-  --font-size-xl: 1.375rem; /* 22px */
-  --font-size-xxl: 1.5rem; /* 24px */
-  --font-size-xxxl: 1.75rem; /* 28px */
+  --font-size-xxxs: 0.8125rem;
+  --font-size-xxs: 0.8125rem;
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 0.9375rem;
+  --font-size-md: 1rem;
+  --font-size-article: 1.0625rem;
+  --font-size-label: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.375rem;
+  --font-size-xxl: 1.5rem;
+  --font-size-xxxl: 1.75rem;
 
-  /* Type scale + rhythm */
   --text: 1rem;
 
-  /* Space + measure */
   --measure: 900px;
   --measure-wide: 1260px;
   --spacing-xs: 0.25rem;
@@ -82,13 +70,10 @@
   --spacing-xl: 2rem;
   --radius: 0;
 
-  /* Entry-photo boxes: the list-row thumbnail, the hovercard banner, and the
-     map-popup banner. */
   --list-photo-width: 33%;
   --card-photo-height: 9rem;
   --popup-photo-height: 150px;
 
-  /* Misc */
   --letter-spacing: 0.04rem;
   --letter-spacing-tight: -0.01rem;
   --box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
@@ -97,8 +82,6 @@
   --box-shadow-flag: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 }
 
-/* Dark theme: only the color tokens change (sizes, fonts, spacing are shared).
-   Set on <html> pre-paint by the inline script in BaseLayout. */
 :root[data-theme='dark'] {
   color-scheme: dark;
 
@@ -139,21 +122,11 @@
   --box-shadow-flag: rgba(0, 0, 0, 0.85) 0px 3px 3px 0px;
 }
 
-/* Light-on-dark serif text halates: bright strokes bloom into the dark surround
-   and smear Georgia's thin serifs. Grayscale antialiasing (macOS) and a hair of
-   tracking counter it; the dimmer dark-mode article ink above does the rest. */
 :root[data-theme='dark'] body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* :root[data-theme='dark'] .body {
-  letter-spacing: 0.007em;
-} */
-
-/* ===========================================================================
-   Reset
-   =========================================================================== */
 *,
 *::before,
 *::after {
@@ -175,8 +148,6 @@ video {
   height: auto;
 }
 
-/* Honor the `hidden` attribute even on elements the reset gives a `display`
-   (e.g. img) — author rules otherwise override the UA `[hidden]` rule. */
 [hidden] {
   display: none;
 }
@@ -194,9 +165,6 @@ select {
   }
 }
 
-/* ===========================================================================
-   Base elements / typography
-   =========================================================================== */
 body {
   margin: 0;
   min-height: 100dvh;
@@ -228,16 +196,16 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(1.75rem, 1.4rem + 1vw, 3rem); /* 28px - 48px */
+  font-size: clamp(1.75rem, 1.4rem + 1vw, 3rem);
 }
 
 h2 {
-  font-size: clamp(1.625rem, 1.4rem + 1vw, 2rem); /* 26px - 40px */
+  font-size: clamp(1.625rem, 1.4rem + 1vw, 2rem);
   margin-bottom: var(--spacing-md);
 }
 
 h3 {
-  font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.5rem); /* 21px - 28px */
+  font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.5rem);
   margin-bottom: var(--spacing-sm);
   color: var(--color-accent);
 }
@@ -293,19 +261,14 @@ blockquote {
   font-size: var(--font-size-lg);
 }
 
-/* A single-paragraph quote shouldn't carry the inner paragraph's bottom margin
-   inside its border box. */
 blockquote > :last-child {
   margin-block-end: 0;
 }
 
-/* When a <cite> attribution follows, tuck it close to the quote. */
 blockquote:has(+ p cite) {
   margin-block-end: var(--spacing-md);
 }
 
-/* Source attribution under a pull quote: aligned under the quote's text, quieter
-   than body copy, and upright (the quote already carries the italic). */
 cite {
   display: block;
   padding-inline-start: calc(var(--spacing-md) + 3px);
@@ -336,9 +299,6 @@ table {
   width: 100%;
 }
 
-/* Markdown tables come wrapped in this scroll guard (rehype-table-scroll):
-   the table above stretches to the full column, and when its nowrap columns
-   outgrow a narrow screen the wrapper scrolls instead of the page. */
 .table-scroll {
   margin-block: var(--spacing-md);
   overflow-x: auto;
@@ -358,27 +318,17 @@ td {
   line-height: 1.4;
 }
 
-/* The outer frame is drawn by the table's own (darker) border; edge cells drop
-   their trailing divider so the collapsed border keeps the frame color. */
 th:last-child,
 td:last-child {
   border-inline-end: 0;
 }
 
-/* Honor GFM column alignment (e.g. right-aligned numeric columns). The renderer
-   emits an `align` attribute, which the blanket `text-align: start` above would
-   otherwise win over; right-aligned columns also get tabular figures so digits
-   line up by place value. */
 th[align='right'],
 td[align='right'] {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-/* Keep numeric values and headers intact on narrow screens — figures like
-   "(est.) 278,144", unit values like "66 sq. mi", and the mono header labels
-   read as single tokens and shouldn't break across lines. The table scrolls
-   horizontally when this pushes it past the viewport. */
 th,
 td[align='right'] {
   white-space: nowrap;
@@ -411,21 +361,12 @@ tbody tr:last-child td {
   border-block-end: 0;
 }
 
-/* A short line directly above a table reads as its caption: small + quiet mono,
-   not a full heading (and not in the document outline). */
-/* p:has(+ table), */
 .table-caption {
   margin-block: -0.5rem var(--spacing-lg);
   font-size: var(--font-size-sm);
   color: var(--color-muted);
 }
 
-/* The in-article contents index. An article opts in by dropping
-   <div data-article-toc></div> where the index should sit; rehype-article-toc
-   replaces it with a nav of every heading that follows, grouped by region when
-   the config supplies groups. Set like a newspaper index: two columns split by
-   a hairline gutter rule, thick ink section titles, dotted rules between
-   entries. */
 .article-toc {
   margin-block: var(--spacing-lg);
   font-size: var(--font-size-sm);
@@ -445,15 +386,10 @@ tbody tr:last-child td {
   list-style: none;
 }
 
-/* The dotted rows set their own rhythm — the prose list gap would break it. */
 .article-toc li {
   margin: 0;
 }
 
-/* The grouped index sets as a two-column grid — whole groups per cell (a
-   multicol would split a group mid-list). The largest group (the plugin sorts
-   it first) holds the full left column and carries the gutter rule on its
-   trailing edge; the shorter groups stack on the right. */
 .article-toc-groups {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -470,15 +406,12 @@ tbody tr:last-child td {
   padding-inline-start: var(--spacing-lg);
 }
 
-/* The flat fallback (no groups) still reads in two balanced newspaper
-   columns. */
 .article-toc > ol:not(.article-toc-groups) {
   columns: 2;
   column-gap: var(--spacing-lg);
   column-rule: 1px solid var(--color-line);
 }
 
-/* On a phone the index stacks: one group under another, no gutter rule. */
 @media (max-width: 700px) {
   .article-toc-groups {
     display: block;
@@ -504,11 +437,10 @@ tbody tr:last-child td {
   font-family: var(--font-sans-serif);
   font-weight: 700;
   color: var(--color-text-heading);
-  /* Keep a title attached to its first entries at a column break. */
+
   break-after: avoid;
 }
 
-/* Every entry is a full-width row under a dotted rule. */
 .article-toc li > a {
   display: block;
   padding-block: var(--spacing-xs);
@@ -523,9 +455,6 @@ tbody tr:last-child td {
   break-inside: avoid;
 }
 
-/* The Great Divorce city/county boundary figure: a fixed-height inline map.
-   The placeholder div lives in the article markdown; BoundaryMap.astro mounts
-   the MapLibre basemap into it on page load. */
 .boundary-map-figure {
   margin: var(--spacing-lg) 0;
 }
@@ -542,21 +471,9 @@ tbody tr:last-child td {
   }
 }
 
-/* Walkable St. Louis corridor figures: a small fixed-height inline map per strip.
-   The placeholder divs live in the article markdown; CorridorMap.astro mounts
-   the MapLibre basemaps into them as they scroll near. */
 .corridor-map-figure {
   margin: var(--spacing-lg) 0;
-  /* margin-block: var(--spacing-lg); */
-  /* Break out of the 600px reading column up to the wrap-article width (the
-     2.5rem gap + 290px sidebar track the topic column doesn't use), but never
-     past the viewport minus the wrap's own inline padding. Full 930px frame
-     on desktop, partial breakout at mid widths, no-op on mobile. */
-  /* margin-inline: clamp(
-    calc((2.5rem + 290px) / -2),
-    calc((100% - (100vw - 2 * var(--spacing-md))) / 2),
-    0px
-  ); */
+
 }
 
 .corridor-map {
@@ -571,8 +488,6 @@ tbody tr:last-child td {
   }
 }
 
-/* The lead overview map (every strip on one city-wide map) runs taller than
-   the per-strip figures. */
 .corridor-map.corridor-overview {
   height: 460px;
 }
@@ -583,8 +498,6 @@ tbody tr:last-child td {
   }
 }
 
-/* The generated list of a corridor map's pinned spots, as a quiet mono caption
-   under the figure (the visible counterpart of the pin tooltips). */
 .corridor-map-caption {
   margin-block-start: var(--spacing-xs);
   font-family: var(--font-sans-serif);
@@ -598,20 +511,10 @@ tbody tr:last-child td {
   text-underline-offset: 2px;
 }
 
-/* Hand-picked spots on the corridor maps: the same teardrop pin as the
-   neighborhood map, with the name as a hover/focus tooltip (always-visible
-   labels overlapped when spots cluster), linking to the spot's page when it
-   has one. */
-/* NOTE: no position/top/left here — MapLibre's .maplibregl-marker positions
-   the element (absolute + transform); overriding it breaks marker placement
-   (and the two stylesheets' order differs between dev and prod bundles). The
-   marker element is already the tooltip's positioned ancestor. */
 .corridor-spot {
   display: block;
 }
 
-/* Lift the hovered/focused pin above its neighbors, so its tooltip overlaps
-   them instead of being painted underneath (markers stack in DOM order). */
 .corridor-spot:hover,
 .corridor-spot:focus-visible {
   z-index: 2;
@@ -628,8 +531,6 @@ a.corridor-spot {
   transform: scale(1.12);
 }
 
-/* On mostly north-south strips the upright pin body would cover the vertical
-   line; lie it on its side (rotated around the tip, which stays on the spot). */
 .corridor-spot.is-horizontal .marker-pin {
   transform: rotate(90deg);
 }
@@ -667,24 +568,17 @@ a.corridor-spot {
   z-index: 99999;
 }
 
-/* A sideways pin lies along the bottom half of its layout box (rotated around
-   the tip), so its tooltip anchors near the box middle, not its empty top. */
 .corridor-spot.is-horizontal .corridor-spot-name {
   bottom: calc(50% + 2px);
 }
 
-/* Jumping to an in-page anchor (a heading permalink, a /food#id link) should
-   land below the sticky header, not behind it. --header-height is measured in
-   Header.astro; the fallback covers the no-JS / pre-hydration case. */
 :target {
   scroll-margin-top: calc(var(--header-height, 4rem) + var(--spacing-sm));
 }
 
 a {
   color: var(--color-link);
-  /* Regular links carry no underline at rest — the link color signals them — and
-     gain a solid underline on hover. The decoration longhands stay set so the
-     underline is ready the moment the line turns on. */
+
   text-decoration-line: none;
   text-decoration-thickness: 2px;
   text-decoration-style: solid;
@@ -702,16 +596,10 @@ a {
   }
 }
 
-/* Regular links gain a solid underline on hover only in article *prose* —
-   paragraphs, list items, quotes, table cells. Component lists/cards (e.g.
-   .related-card), chips, and buttons also live inside `.body` but render their
-   anchors outside these text elements, so they stay underline-free on hover. */
 .body :is(p, li, blockquote, td, th) a:hover {
   text-decoration-line: underline;
 }
 
-/* Wikilinks and Wikipedia references behave like regular links (no underline
-   until hover); their distinct color/typography carries the affordance. */
 a.wikilink,
 a.wikipedia-link {
   text-decoration-line: none;
@@ -721,8 +609,6 @@ a.wikipedia-link {
   }
 }
 
-/* The shared inline continue link. Works on <a> or, when nested inside a card
-   that is itself a link, on a styled <span>. */
 .continue-link {
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
@@ -762,8 +648,6 @@ a.more {
     justify-self: flex-end;
   }
 
-  /* "Read more →" affordances underline on hover (they sit outside `.body`, so the
-     prose hover rule doesn't reach them). */
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 2px;
@@ -786,8 +670,6 @@ a.wikipedia-link {
   color: var(--color-muted);
 }
 
-/* Desktop hover preview for wikilinks (positioned + toggled by
-   src/scripts/wikilink-preview.ts). */
 .wikilink-card {
   position: absolute;
   z-index: 50;
@@ -807,8 +689,6 @@ a.wikipedia-link {
   pointer-events: auto;
 }
 
-/* Entry photo atop the hovercard. The card gets a fixed width and the photo a
-   fixed height so nothing reflows when the image finishes loading. */
 .wikilink-card:has(.wikilink-card-photo) {
   width: 320px;
 }
@@ -839,7 +719,6 @@ a.wikipedia-link {
   line-height: 1.4;
 }
 
-/* Topic-only tagline in the hovercard (the entry's `description`). */
 .wikilink-card-description {
   margin-block: 0 var(--spacing-xs);
   font-size: var(--font-size-md);
@@ -852,22 +731,14 @@ a.wikipedia-link {
   margin-block-end: 0;
 }
 
-/* Food-only meta row in the hovercard: cuisine chip(s) + neighborhood. */
 .wikilink-card-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-block: var(--spacing-sm) var(--spacing-md);
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  margin-block: 0 2px;
 }
 
-.wikilink-card-meta:last-child {
-  margin-block-end: 0;
-}
-
-/* The quiet mono caption beside a title (wikilink cards, the pane + group
-   counts — one voice, grouped here). */
-.wikilink-card-neighborhood,
 .list-pane-header .pane-count,
 .food-grouped li.group-header .group-count {
   font-family: var(--font-sans-serif);
@@ -885,12 +756,6 @@ a.wikipedia-link {
   }
 }
 
-/* Inside a chip, an icon follows the chip's color (e.g. a verdict chip's token)
-   rather than the global muted default. */
-/* ---------------------------------------------------------------------------
-   Chips — one pill (Chip.astro + JS-built chips), variants via modifier classes.
-   --chip-color / --chip-border recolor it (verdict chips below).
-   --------------------------------------------------------------------------- */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -919,8 +784,6 @@ button.chip:hover {
   border-color: var(--color-accent);
 }
 
-/* Removable filter chip (built in filter.ts): a value + hidden label + ×
-   control. */
 .chip-filter {
   gap: var(--spacing-xs);
   padding-block: 3px;
@@ -957,8 +820,6 @@ button.chip:hover {
   color: inherit;
 }
 
-/* Permalink "#" appended to rendered Markdown headings (rehype-autolink-headings);
-   revealed on hover/focus of the heading. */
 .heading-anchor {
   margin-inline-start: var(--spacing-sm);
   color: var(--color-muted);
@@ -976,10 +837,6 @@ button.chip:hover {
   opacity: 1;
 }
 
-/* ===========================================================================
-   Layout
-   =========================================================================== */
-/* Screen readers */
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -1001,27 +858,18 @@ button.chip:hover {
   padding-inline: var(--spacing-md);
 }
 
-/* The homepage's newspaper front page needs room for three columns. */
 .wrap-wide {
   max-width: var(--measure-wide);
 }
 
-/* Reading pages (articles, food/neighborhood details) shrink to their widest
-   content: the detail layout's 600px column + 2.5rem gap + 290px sidebar,
-   plus the wrap's own inline padding. */
 .wrap-wide.wrap-article {
   max-width: calc(var(--measure-reading) + 2.5rem + 290px + 2 * var(--spacing-md));
 }
 
-/* Standalone content pages (Want to try, Best of, …) shouldn't butt up against
-   the footer. Map pages don't use .page, so they're unaffected. */
-/* .page {
-} */
-
 main {
   flex: 1 0 auto;
   width: 100%;
-  overflow-x: clip; /* contain full-bleed maps; no horizontal scrollbar */
+  overflow-x: clip;
 }
 
 .entry,
@@ -1035,17 +883,13 @@ main {
   margin-block-end: var(--spacing-xl);
 }
 
-/* The newspaper drop cap opening every article body. Keyed to the first
-   paragraph, so a leading figure or map keeps its own first line. Topics nest
-   their prose inside .topic-layout (the centered column), so both containers
-   are covered. */
 .body > p:first-of-type::first-letter,
 .body .topic-layout > p:first-of-type::first-letter {
   float: left;
   font-family: var(--font-display);
   font-size: 3.5em;
   line-height: 0.8;
-  /* Physical properties: Chromium ignores logical padding on ::first-letter. */
+
   padding-right: var(--spacing-xs);
   padding-top: 0.04em;
   color: var(--color-text-heading);
@@ -1056,12 +900,9 @@ main {
   margin-block-end: var(--spacing-lg);
   font-size: var(--font-size-article);
   line-height: 1.55;
-  /* The wide page keeps a readable prose column — headers span the full
-     measure, the text does not. */
+
   max-width: 70ch;
 
-  /* Article section headings in the body serif, ink — never the accent (the
-     display face is reserved for titles). */
   h2,
   h3 {
     font-family: var(--font-sans-serif);
@@ -1074,7 +915,7 @@ main {
 
   h3 {
     font-weight: 600;
-    /* color: var(--color-accent); */
+
   }
 
   h2:not(:first-child) {
@@ -1082,25 +923,17 @@ main {
   }
 }
 
-/* Column layouts (an article with a ToC, a detail page with its sidebar)
-   manage their own measure — the prose cap would squeeze the whole grid,
-   sidebar included. Their grids cap the text track instead. */
 .body:has(.topic-layout),
 .body:has(.detail-layout) {
   max-width: none;
 }
 
-/* The bumped article size is a wide-measure comfort; on a phone's short lines
-   it just costs words per line, so drop back to the base size. */
 @media (max-width: 700px) {
   .body {
     font-size: var(--font-size-md);
   }
 }
 
-/* ===========================================================================
-   Forms (the filter toolbar inputs)
-   =========================================================================== */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -1130,8 +963,7 @@ select {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
   font-weight: 400;
-  /* Pin line-height so <input> and <select> resolve to the same height (their
-     UA defaults differ); with border-box + equal padding they now match. */
+
   line-height: 1.4;
 
   &:focus {
@@ -1152,31 +984,22 @@ select {
   margin: 0;
 }
 
-/* ===========================================================================
-   Map & directory pages
-   =========================================================================== */
 [data-map] {
   height: 70vh;
   border-block: 1px solid var(--color-line);
   transform: translate3d(0, 0, 0);
-  /* Backdrop behind the WebGL canvas before tiles paint (both themes), instead of
-     a bright flash. Roughly matches the vector flavor's background. */
+
   background: var(--color-background);
 }
 
-/* The neighborhood map's container gets the same load backdrop as [data-map]. */
 .neighborhood-map {
   background: var(--color-background);
 }
 
-/* List view (default, and with JS off): show the list, hide the map. */
 [data-filter-root]:not([data-view='map']) [data-map] {
   display: none;
 }
 
-/* Map view becomes a fixed-height app shell: the page itself never scrolls.
-   The site header, sticky filter toolbar and footer frame a results region
-   that fills the leftover height, and only the list pane scrolls. */
 body:has([data-view='map']),
 body:has(.map-split) {
   height: 100dvh;
@@ -1218,27 +1041,16 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Neighborhoods left pane: the writeups scroll while the map stays put. The
-   scroll-padding clears both sticky layers — the .list-pane-header and the
-   Explored / Not Explored section head pinned beneath it (top: 45px + its ~40px
-   height) — so a selected row lands just below them, not hidden behind them. */
 .map-split .content-pane.map-list {
   min-height: 0;
   overflow-y: auto;
   scroll-padding-block-start: 85px;
 }
 
-/* The global :target margin is sized to the *site* header, which isn't the
-   sticky element inside this pane (the .list-pane-header is, already cleared by
-   the scroll-padding above). Left in, the two stack and a deep-linked row like
-   /neighborhoods#benton-park lands ~64px too low. Reset it here. */
 .map-split .content-pane :target {
   scroll-margin-top: 0;
 }
 
-/* Floating list/map switch on the directory pages (Food + Neighborhoods): mobile
-   only, since desktop shows both panes and has nothing to toggle. Shared here
-   because both pages render the same `.map-split-toggle` button. */
 .map-split-toggle {
   display: none;
 }
@@ -1247,7 +1059,7 @@ body:has(.map-split) main > .wrap,
   .map-split-toggle {
     display: block;
     position: fixed;
-    /* Clear of the mini footer band that rides the bottom of the map pages. */
+
     bottom: 76px;
     left: 50%;
     transform: translateX(-50%);
@@ -1263,11 +1075,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Teardrop map pin, shared by the neighborhood explored markers and the food
-   locator: the tip points at the spot. The body fill is set inline per marker
-   (region color, or accent for the locator); the ring + center dot use
-   --color-surface so they invert with the theme (white on the dark fills in light
-   mode, dark on the pastel in dark mode). */
 .marker-pin {
   display: block;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
@@ -1289,9 +1096,7 @@ body:has(.map-split) main > .wrap,
 }
 
 .content-pane {
-  /* The shared .list-pane-header sits at the top of the scrolling pane. Not
-     selectable, so dragging a selection across it can't trigger the
-     sticky-element scroll-to-top quirk. */
+
   .list-pane-header {
     position: sticky;
     top: 0;
@@ -1300,16 +1105,11 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Shared Food/Hikes list-item layout + controls (markup in MapRow; the
-   meta/chips come from each page's slots, so these are global — not component
-   scoped — to reach that slotted content). */
-/* Indent the open panel past the rating badge so it lines up with the row's
-   text content instead of starting under the badge. */
 .map-list .list-description {
   font-size: var(--font-size-sm);
   margin-left: calc(var(--spacing-md) + 56px);
   margin-top: var(--spacing-shmedium);
-  /* Contain the floated row thumbnail so it can't spill into the next row. */
+
   display: flow-root;
 
   p {
@@ -1330,9 +1130,6 @@ body:has(.map-split) main > .wrap,
   border-radius: var(--radius);
 }
 
-/* Food + Neighborhoods show the teaser inline on every row (no lead badge), so
-   align the panel under the row text instead of indenting past a nonexistent
-   badge (only Hikes, with its rating badge, keeps the indent above). */
 .map-list.food-grouped .list-description,
 .map-list.section-list .list-description {
   margin-left: 0;
@@ -1350,9 +1147,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Food + Neighborhood lists (always-open rows): keep the actions row quiet so a
-   long list doesn't shout — a low-key accent "Read more →" then the sources as
-   muted text links instead of buttons. Sits under the teaser. */
 .map-list.food-grouped .list-description .place-links,
 .map-list.section-list .list-description .place-links {
   align-items: center;
@@ -1375,10 +1169,6 @@ body:has(.map-split) main > .wrap,
   font-size: var(--font-size-md);
 }
 
-/* Shared list reset + row dividers for BOTH map lists (Food + Neighborhoods), so
-   they're styled from one place. Neither uses the generic <List> component — they
-   render a raw <ul class="list"> of <MapRow> rows. Food layers on row padding +
-   group-header logic below. */
 .map-list .list {
   margin: 0;
   padding: 0;
@@ -1397,8 +1187,6 @@ body:has(.map-split) main > .wrap,
   border-block-end: 0;
 }
 
-/* Whole-row hover highlight. Excludes the non-link header rows (Food's
-   `.group-header`, Neighborhoods' `.section-head`). */
 .map-list .list > li:not(.group-header):not(.section-head):hover {
   background: var(--color-wash);
 }
@@ -1441,12 +1229,9 @@ body:has(.map-split) main > .wrap,
   color: var(--color-muted);
 }
 
-/* Cuisine / neighborhood (food) or region (neighborhood) as the quiet kicker
-   over the row title — the muted eyebrow voice, shared with the JS-built map
-   popups (whose DOM can't carry pattern classes past the .list-meta base's
-   specificity, so the grouping lives here). */
 .map-list .list-eyebrow .list-meta,
-.maplibregl-popup.food-popup .list-meta {
+.maplibregl-popup.food-popup .list-meta,
+.wikilink-card .list-meta {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
   font-weight: 500;
@@ -1459,8 +1244,6 @@ body:has(.map-split) main > .wrap,
   margin-block-end: 2px;
 }
 
-/* Inline eyebrow contexts space the tick themselves (flex contexts use the
-   bare .eyebrow-divider pattern; its geometry lives in the pattern section). */
 .list-eyebrow .eyebrow-divider {
   margin-inline: var(--spacing-sm);
   vertical-align: -1px;
@@ -1470,9 +1253,6 @@ body:has(.map-split) main > .wrap,
   font-size: var(--font-size-xl);
 }
 
-/* Shared list/card title: the mono heading used by the directory list (ListItem,
-   List.astro), the map-backed Food/Neighborhood lists (MapRow), and RelatedCard
-   rows. */
 .list-title {
   display: block;
   font-family: var(--font-sans-serif);
@@ -1483,7 +1263,6 @@ body:has(.map-split) main > .wrap,
   text-decoration: none;
 }
 
-/* Map rows render the title as an <a> acting as a heading — strip the link chrome. */
 .map-list .list-title,
 .map-list a.list-title {
   padding: 0;
@@ -1496,10 +1275,6 @@ body:has(.map-split) main > .wrap,
   cursor: pointer;
 }
 
-/* Stretch the title link over the whole <li> so the entire row is one click target
-   (and, in map view, the `.list-title` click handler opens the popup from anywhere
-   on the row). No wrapper anchor — the row's own links (Read more, wikilinks) would
-   nest illegally inside one; there are no interactive sub-elements left to lift. */
 .map-list a.list-title::after {
   content: '';
   position: absolute;
@@ -1523,9 +1298,6 @@ body:has(.map-split) main > .wrap,
   margin-block-start: var(--spacing-sm);
 }
 
-/* The footer's river band rides 32px up over the page bottom on map pages, so
-   the list keeps enough end padding that its last row clears the wave — in
-   list view (page flow) and in the scrolling map/split panes alike. */
 .map-list {
   padding-block-end: calc(var(--spacing-xl) + var(--spacing-md));
 }
@@ -1533,12 +1305,9 @@ body:has(.map-split) main > .wrap,
 [data-view='map'] .map-list {
   min-height: 0;
   overflow-y: auto;
-  /* Offset BOTH sticky layers — the 45px .list-pane-header plus the 40px verdict
-     group header pinned beneath it (top: 45px) — so a marker-selected row scrolls
-     to just below the pinned chrome instead of hiding behind it. */
+
   scroll-padding-block-start: 85px;
 
-  /* Over the map, any title is clickable — it opens the place's popup. */
   .list-title {
     cursor: pointer;
   }
@@ -1550,9 +1319,6 @@ body:has(.map-split) main > .wrap,
   border-inline-start: 1px solid var(--color-line);
 }
 
-/* Keep the empty-state in the list's grid cell so it can't add a third grid
-   track that shoves the map. It overlaps the (now-empty) list pane and only
-   shows when no rows match; centered so it clears the sticky list header. */
 [data-view='map'] .map-list,
 [data-view='map'] [data-filter-empty] {
   grid-column: 1;
@@ -1565,7 +1331,6 @@ body:has(.map-split) main > .wrap,
   text-align: center;
 }
 
-/* Narrow screens: filter pages show just the map so the user sees it in full. */
 @media (max-width: 700px) {
   [data-view='map'] .results {
     grid-template-columns: 1fr;
@@ -1580,7 +1345,6 @@ body:has(.map-split) main > .wrap,
     border-inline: 0;
   }
 
-  /* Neighborhoods: one pane at a time, switched by the floating toggle. */
   .map-split .results {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
@@ -1595,15 +1359,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Food: grouped-by-verdict list
-   The Food list groups its rows under Loved / Liked / Fine headers (alphabetical
-   within each); a colored left bar on each row carries the verdict instead of a
-   word. These live here (not component-scoped) so they reach the MapRow
-   rows, which render in their own scope.
-   --------------------------------------------------------------------------- */
-
-/* Per-verdict accent, set on each group section + row via [data-verdict]. */
 .food-grouped [data-verdict='loved'] {
   --verdict-color: var(--color-verdict-loved);
 }
@@ -1620,8 +1375,6 @@ body:has(.map-split) main > .wrap,
   --verdict-color: var(--color-verdict-notforme);
 }
 
-/* Verdict chips (Verdict.astro) reuse the Chip pill, recolored to the verdict's
-   token via Chip's --chip-color / --chip-border hooks. */
 .chip.verdict-loved {
   --chip-color: var(--color-verdict-loved);
 }
@@ -1645,9 +1398,6 @@ body:has(.map-split) main > .wrap,
   border-radius: 0;
 }
 
-/* Rating pill (Verdict.astro `card`, food detail hero; also the map popup).
-   --verdict-color is set per verdict below; the three --verdict-*-size vars
-   drive the scale, so the compact + mobile variants only flip those. */
 .verdict-card {
   --verdict-disc-size: 2.25rem;
   --verdict-glyph-size: 1.1rem;
@@ -1687,8 +1437,6 @@ body:has(.map-split) main > .wrap,
   border-radius: 50%;
   background: var(--verdict-color);
 
-  /* The glyph reads as the surface color for contrast on the disc — override the
-     global `.icon` rule, which otherwise pins it muted. */
   .icon {
     width: var(--verdict-glyph-size);
     height: var(--verdict-glyph-size);
@@ -1720,12 +1468,8 @@ body:has(.map-split) main > .wrap,
   color: var(--verdict-color);
 }
 
-/* A filled verdict pill (food detail pages). `!important` (like .chip.round
-   below) wins the specificity tie with Chip's scoped base rule, which is
-   otherwise a cascade-order coin-flip. */
 .chip.is-filled {
-  /* Solid verdict-colored pill, white-on-color (the background token, so it
-     stays high-contrast against the dark theme's pastel verdict colors too). */
+
   color: var(--color-background) !important;
   background: var(--chip-color, var(--color-accent)) !important;
   border-color: var(--chip-color, var(--color-accent)) !important;
@@ -1736,9 +1480,6 @@ body:has(.map-split) main > .wrap,
   color: inherit;
 }
 
-/* A circular chip — for icon-only content (e.g. an icon-only verdict). Lives
-   here (not Chip's scoped style) so the dynamically-applied `round` class isn't
-   pruned as "unused" during Chip's scoped-CSS analysis. */
 .chip.round {
   padding: 4px !important;
   aspect-ratio: 1;
@@ -1782,20 +1523,12 @@ body:has(.map-split) main > .wrap,
   margin: 0;
 }
 
-/* Food's pane is sticky in the map (split) view; in the full list-only view it
-   isn't (the filter toolbar is) and it blends into the page background. */
 [data-view='map'] .food-grouped .list-pane-header {
   position: sticky;
   top: 0;
   z-index: 6;
 }
 
-/* Sticky list section headers — SHARED by the Food group headers (built by
-   food-groups.ts: an optional dot + label + flex rule + count) and the
-   Neighborhoods "Explored / Not Explored" headers, so the two lists look identical.
-   Each keeps the current section pinned just beneath its list's sticky chrome
-   (~45px) as you scroll, with hairline top/bottom borders and an opaque surface
-   background that covers the rows sliding under it. */
 .map-list .list > li.group-header,
 .map-list .list > li.section-head {
   display: flex;
@@ -1812,11 +1545,6 @@ body:has(.map-split) main > .wrap,
   background: var(--color-surface-2);
 }
 
-/* Mobile: the Food list scrolls with the page, and the only element pinned to the
-   top is the filter toolbar (the site + pane headers scroll away). It wraps to a
-   variable height, so pin the group headers just beneath its live height (published
-   as --filter-toolbar-height by views.ts) rather than the desktop pane's 45px.
-   Only Food needs this — the Neighborhoods section heads have no filter toolbar. */
 @media (max-width: 700px) {
   .map-list .list > li.group-header {
     top: var(--filter-toolbar-height, 65px);
@@ -1831,8 +1559,6 @@ body:has(.map-split) main > .wrap,
   flex-shrink: 0;
 }
 
-/* The verdict fleur cloned into each group header (food-groups.ts): sized to sit
-   beside the mono label, not the em-scale it uses inline in list rows. */
 .food-grouped li.group-header .rating {
   font-size: var(--font-size-md);
   flex-shrink: 0;
@@ -1842,20 +1568,11 @@ body:has(.map-split) main > .wrap,
   color: var(--verdict-color, var(--color-muted));
 }
 
-/* Verdict groups: a full-width 2px bottom border in the verdict color across the
-   whole header row (instead of a rule between the label and the count). */
-/* .food-grouped li.group-header[data-verdict] {
-  border-block-end: 2px solid var(--verdict-color, var(--color-muted));
-} */
-
 .food-grouped li.group-header.group-header-alpha .group-label {
-  /* font-size: var(--font-size-xl); */
+
   color: var(--color-accent);
 }
 
-/* Status groups (Tried, not yet rated / Want to try / Suggested): read like the
-   pane's "Food" title — solid text color, mono, weight 600, at the pane-title size
-   rather than the quiet muted label the base rule gives them. */
 .food-grouped li.group-header.group-header-status .group-label {
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
@@ -1865,15 +1582,10 @@ body:has(.map-split) main > .wrap,
   letter-spacing: 0;
 }
 
-/* The rule is just a flex spacer that pushes the count to the end of the row — no
-   visible line in either mode (verdict headers carry a bottom border instead). */
 .food-grouped .group-rule {
   flex: 1;
 }
 
-/* The last row of a section (i.e. right before the next section header) drops its
-   divider, so it doesn't double up with the header's top border. Covers both list
-   flavors — Food's group headers and the Neighborhoods section heads. */
 .map-list .list > li:has(+ li.group-header),
 .map-list .list > li:has(+ li.section-head) {
   border-block-end: none;
@@ -1883,10 +1595,6 @@ body:has(.map-split) main > .wrap,
   margin-left: 0;
 }
 
-/* List-only view (no map): rows sit in a centered column rather than flush to the
-   pane edge, so drop the verdict left-bar (it'd float oddly mid-page) and blend
-   the pane header into the page instead of sitting on a surface card. The group
-   headers still carry the verdict color. */
 [data-filter-root]:not([data-view='map']) .food-grouped .list-pane-header {
   background: var(--color-background);
   padding-inline: 0;
@@ -1896,8 +1604,6 @@ body:has(.map-split) main > .wrap,
   padding-inline: 0 var(--spacing-md);
 }
 
-/* Mobile: the group header has no trailing arrow, so it doesn't need the row's
-   right-side reserve — drop it back to the normal inline padding. */
 @media (max-width: 700px) {
   [data-filter-root]:not([data-view='map']) .food-grouped .list > li.group-header {
     padding-inline-end: var(--spacing-md);
@@ -1908,7 +1614,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* Sticky filter toolbar on directory pages (Food/Hikes). */
 .secondary-header {
   position: sticky;
   top: 0;
@@ -1925,16 +1630,13 @@ body:has(.map-split) main > .wrap,
     align-items: flex-end;
     gap: var(--spacing-md);
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
 
     &::-webkit-scrollbar {
-      display: none; /* WebKit */
+      display: none;
     }
   }
 
-  /* The view toggle keeps its natural width; the filter form grows to fill the
-     toolbar and its fields share that space evenly (falling back to a horizontal
-     scroll only when they can't fit their min-width). */
   .wrap > * {
     flex-shrink: 0;
   }
@@ -1955,20 +1657,15 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* On directory pages the filter toolbar is the sticky bar; let the masthead
-   nav scroll away (list view) / sit statically (map shell) so they don't
-   stack. */
 body:has([data-filter-root]) .masthead-nav {
   position: static;
 }
 
-/* Second row of the sticky toolbar: the active-filter chip tray + clear-all.
-   Overrides the toolbar `.wrap` (which scrolls horizontally) so chips wrap. */
 .secondary-header .wrap.active-filters {
   align-items: center;
   flex-wrap: wrap;
   overflow-x: visible;
-  /* border-block-start: 1px solid var(--color-line); */
+
   padding: 0 var(--spacing-md) var(--spacing-sm) var(--spacing-md);
 }
 
@@ -1992,9 +1689,6 @@ body:has([data-filter-root]) .masthead-nav {
   min-width: 0;
 }
 
-/* Address line under a food marker's title in the popup. Lines are pre-split with
-   <br>, so keep them no-wrap and let the box widen to fit the longest line instead
-   of wrapping mid-line to the title's width. */
 .food-popup .tip-address {
   display: block;
   margin-block: var(--spacing-sm) var(--spacing-md);
@@ -2005,30 +1699,15 @@ body:has([data-filter-root]) .masthead-nav {
   line-height: 1.3;
 }
 
-/* ===========================================================================
-   MapLibre GL basemap: markers, controls, popups (shared by Food + Neighborhoods)
-   =========================================================================== */
-
-/* Emoji place marker — our own element handed to maplibregl.Marker. */
-/* The marker element is a bare positioning wrapper (MapLibre sets its transform);
-   the visible pin + hover-scale live on the inner .marker-pin so they don't fight
-   it. The pin body fills with currentColor, so the verdict classes below (and
-   theme swaps) color it with no script involvement. */
 .food-marker {
   cursor: pointer;
   color: var(--color-accent);
 }
 
-/* Selected place (from the list or the map): ring the pin in the text color —
-   the pins themselves are accent, so an accent ring would disappear. */
 .food-marker.is-selected .marker-pin-body {
   stroke: var(--color-text);
 }
 
-/* A cluster count bubble (Food map only): a place-count in a solid accent pill,
-   sized up for bigger clusters via the data-size bucket set in map.ts. The
-   box-shadow layers a concentric ring of the accent at lower opacity around the
-   pill, over the usual depth shadow. */
 .cluster-marker {
   display: flex;
   align-items: center;
@@ -2049,21 +1728,16 @@ body:has([data-filter-root]) .masthead-nav {
   &[data-size='md'] {
     min-width: 40px;
     height: 40px;
-    font-size: 1.0625rem; /* 17px */
+    font-size: 1.0625rem;
   }
 
   &[data-size='lg'] {
     min-width: 48px;
     height: 48px;
-    font-size: 1.125rem; /* 18px */
+    font-size: 1.125rem;
   }
 }
 
-/* Attribution (required OSM/Protomaps credit), themed. */
-
-/* The fleur-de-lis rating leading a food popup, mirroring the Rating component in
-   the list rows: four glyphs, gold when filled, faded otherwise. (Rating.astro's
-   own styles are scoped, so the popup's raw HTML needs its own rules here.) */
 .maplibregl-popup.food-popup .rating {
   display: inline-flex;
   align-items: center;
@@ -2098,7 +1772,7 @@ body:has([data-filter-root]) .masthead-nav {
 .maplibregl-popup.food-popup .maplibregl-popup-content {
   background: var(--color-background);
   color: var(--color-text);
-  /* The ink newspaper-box frame (like What's New), not the old red. */
+
   border: 2px solid var(--color-line-contrast);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
@@ -2107,14 +1781,10 @@ body:has([data-filter-root]) .masthead-nav {
   font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1.2;
-  /* A photo-less popup would otherwise shrink to its short text and crowd the
-     close button against the title — hold a comfortable floor. */
+
   min-width: 260px;
 }
 
-/* Photo banner atop a popup (an entry with a picture): full width — negative
-   margins bleed it through the content padding to the popup's border — as a
-   centered cover background at a fixed height. */
 .maplibregl-popup.food-popup .popup-photo {
   height: var(--popup-photo-height);
   background-size: cover;
@@ -2123,8 +1793,6 @@ body:has([data-filter-root]) .masthead-nav {
   margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md)) var(--spacing-md);
 }
 
-/* Neighborhood map hover card: a small, non-interactive quick-facts tip (name +
-   region + population + food count), distinct from the full click popup. */
 .maplibregl-popup.map-hover-tip {
   pointer-events: none;
 }
@@ -2134,9 +1802,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .map-hover-tip .maplibregl-popup-content {
-  /* MapLibre sets pointer-events:auto on the content, overriding the container's
-     `none` above — without this the hover card captures the mouse, so hovering a
-     pin flickers (enter/leave loop) and swallows the click that opens the popup. */
+
   pointer-events: none;
   padding: var(--spacing-sm);
   background: var(--color-background);
@@ -2157,7 +1823,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-text-heading);
 }
 
-/* One data point per line, never wrapping mid-value. */
 .map-hover-tip .hover-tip-fact {
   display: block;
   white-space: nowrap;
@@ -2168,15 +1833,12 @@ body:has([data-filter-root]) .masthead-nav {
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 {
   margin-block-start: 0;
   margin-block-end: var(--spacing-xs);
-  /* Reserve space for the absolutely-positioned close button (top-right) and let a
-     long title like "Vinnie's Italian Beef & Gyros" WRAP into that available width
-     rather than running one line under the X (nowrap overflowed past the padding). */
+
   padding-inline-end: var(--spacing-lg);
   font-size: var(--font-size-lg);
   white-space: normal;
 }
 
-/* The list rows' serif headline voice. */
 .maplibregl-popup.food-popup .maplibregl-popup-content h2 a {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -2207,9 +1869,6 @@ body:has([data-filter-root]) .masthead-nav {
   overflow: hidden;
 }
 
-/* Cuisine / neighborhood / region meta, matching the list rows'
-   `.list-headline .list-meta`: quiet uppercase mono text, slash-separated — no
-   pill, no emoji. Filterable values stay clickable buttons. */
 .maplibregl-popup.food-popup .popup-meta {
   display: flex;
   flex-wrap: wrap;
@@ -2251,8 +1910,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-accent);
 }
 
-/* The colors come from the shared .btn-dark block; this only stretches it to
-   the popup's full width. */
 .maplibregl-popup.food-popup .popup-more-link {
   display: flex;
   justify-content: center;
@@ -2280,9 +1937,6 @@ body:has([data-filter-root]) .masthead-nav {
   display: none;
 }
 
-/* ===========================================================================
-   Detail pages (entry: food / hikes / notes / topics)
-   =========================================================================== */
 .meta {
   display: flex;
   align-items: center;
@@ -2294,20 +1948,15 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-/* The lede under an entry title (topics, neighborhoods): the deck voice (see
-   .desc-muted--lg alias in the pattern section); only margins live here. */
 .entry-summary {
   margin: 0 0 var(--spacing-xs);
 }
 
-/* An organized header bar holding the meta and the edit link, divided from the
-   body; tags + backlinks grouped in a footer. */
 .entry-header {
   margin-block: var(--spacing-lg);
   padding-block-end: var(--spacing-md);
-  /* Centered like the front page's lead story, over its dotted rule. */
+
   text-align: center;
-  /* border-block-end: 1px dotted var(--color-line-input); */
 
   &.entry-header-with-flag {
     padding-bottom: 0;
@@ -2315,13 +1964,12 @@ body:has([data-filter-root]) .masthead-nav {
     .river-border-basic {
       margin-top: var(--spacing-md);
     }
-    /* border-bottom: none; */
+
   }
 
   h1 {
     margin-block: 0 var(--spacing-xs);
-    /* The homepage lead headline's display serif, site-wide, at a size with
-       real front-page presence. */
+
     font-family: var(--font-display);
     font-weight: 400;
     line-height: 1.05;
@@ -2334,34 +1982,25 @@ body:has([data-filter-root]) .masthead-nav {
     font-size: var(--font-size-sm);
     color: var(--color-muted);
     font-weight: 500;
-    white-space: pre-line; /* render each address line on its own row */
+    white-space: pre-line;
   }
 }
 
-/* Topic pages read in the 600px centered column, so the whole header —
-   title, deck, dateline/share row, and its dotted rule — caps at the same
-   measure. */
 .entry:has(.topic-layout) .entry-header {
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
-/* The "Written … and updated …" byline lines up with the same column (its
-   scoped base is inline-flex, which would hug the page's left edge). */
 .entry:has(.topic-layout) .entry-byline {
   display: flex;
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
-/* The share/meta row centers with the rest of the topic header (the meta's
-   base flex flows from the left on the directory-style detail pages). */
 .entry:has(.topic-layout) .entry-bar .meta {
   justify-content: center;
 }
 
-/* The backlinks footer ("Mentioned in") reads at the same 600px column as the
-   topic prose — the detail pages size it with their own layout columns. */
 .entry:has(.topic-layout) > footer {
   max-width: var(--measure-reading);
   margin-inline: auto;
@@ -2371,7 +2010,7 @@ body:has([data-filter-root]) .masthead-nav {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  /* Centered with the rest of the entry header. */
+
   justify-content: center;
   gap: var(--spacing-md);
   margin-block-start: var(--spacing-sm);
@@ -2383,20 +2022,12 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Shared detail-page layout: writeup + sidebar, used by BOTH the Food and the
-   Neighborhood detail pages so the two stay structurally identical. One column
-   on mobile (the writeup leads, the aside stacks under it); a two-column grid
-   with a sticky, left-bordered sidebar once there's room.
-   --------------------------------------------------------------------------- */
 .detail-layout {
   display: grid;
   gap: var(--spacing-lg);
   margin-block-start: var(--spacing-lg);
 }
 
-/* The sidebar as a plain rail — unboxed; on desktop it takes a single column
-   rule on its leading edge, the front page's gutter idiom. */
 .detail-aside {
   display: flex;
   flex-direction: column;
@@ -2406,25 +2037,18 @@ body:has([data-filter-root]) .masthead-nav {
 
 @media screen and (min-width: 900px) {
   .detail-layout {
-    /* Text holds the standard 600px reading column with the sidebar a fixed
-       2.5rem beside it — the pair centered as one block instead of spreading
-       to the page edges. */
+
     grid-template-columns: minmax(0, var(--measure-reading)) 290px;
     justify-content: center;
     align-items: start;
     gap: 2.5rem;
   }
 
-  /* DOM order is main-then-aside so the writeup leads on mobile (the map + the
-     rest of the sidebar follow it); on desktop the aside is placed back into
-     the right column. */
   .detail-main {
     grid-column: 1;
     grid-row: 1;
   }
 
-  /* The sidebar is no longer a bordered box — a single hairline on its inner
-     edge divides it from the writeup, and its content sits in from that rule. */
   .detail-aside {
     grid-column: 2;
     grid-row: 1;
@@ -2435,22 +2059,15 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-/* The sidebar's "Back to the … map" / "View directions" continue-links,
-   spaced off the map or address above them. */
 .detail-aside .aside-more-link {
   display: inline-block;
   margin-block-start: var(--spacing-sm);
 }
 
-/* A section label inside the detail sidebar (Address, Links, …): the shared
-   `.section-label` font tucked above its content. */
 .detail-section-label {
   margin: 0 0 var(--spacing-sm);
 }
 
-/* The sidebar "Links" section: a stack of quiet source links (Website /
-   Instagram / … ), each led by a small icon. Left-aligned and content-width,
-   not full-bleed buttons. */
 .detail-links {
   display: flex;
   flex-direction: column;
@@ -2458,10 +2075,6 @@ body:has([data-filter-root]) .masthead-nav {
   gap: 0;
 }
 
-/* Each link is a full-width row on the rail's dotted hairlines (the index
-   page's list idiom); no rule after the last. The double selector outranks the
-   .btn border that SourceLink's quiet variant carries. The bled padding gives
-   the row the index rail's hover wash without moving the resting layout. */
 .detail-links > *,
 .detail-links > .btn {
   padding-block: var(--spacing-xs);
@@ -2481,11 +2094,8 @@ body:has([data-filter-root]) .masthead-nav {
   border-block-end: 0;
 }
 
-/* Explicit stub treatment for an entry without a writeup: a dashed note that
-   reads as "intentionally unfinished" rather than a sparse, broken page. Shared
-   by both detail pages. */
 .not-explored {
-  /* color: var(--color-muted); */
+
 }
 
 .not-explored p {
@@ -2496,12 +2106,6 @@ body:has([data-filter-root]) .masthead-nav {
   margin-block-start: var(--spacing-sm);
 }
 
-/* Outlined button: mono label, line border, surface fill, accent on hover. The
-   shared base for the share/feedback buttons (.share-button keeps its copy-link
-   "is-copied" state) and the directory "View all / View map" links. */
-/* ---------------------------------------------------------------------------
-   Buttons — one primitive (Button.astro), variants via modifier classes.
-   --------------------------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -2517,7 +2121,6 @@ body:has([data-filter-root]) .masthead-nav {
   white-space: nowrap;
 }
 
-/* Icons follow the button's text color (the global .icon rule pins them muted). */
 .btn .icon {
   color: inherit;
 }
@@ -2535,9 +2138,6 @@ body:has([data-filter-root]) .masthead-nav {
   border-color: var(--color-text-heading);
 }
 
-/* Solid black on the light theme, but the quiet bordered `.btn-outline` look on
-   the dark theme (a solid black button reads too heavy against the dark surface).
-   Always shouted — READ MORE / SUBSCRIBE / SHARE — so every black block matches. */
 .btn-dark {
   color: var(--color-surface);
   background: var(--color-text-heading);
@@ -2565,8 +2165,6 @@ body:has([data-filter-root]) .masthead-nav {
   border-color: var(--color-accent);
 }
 
-/* The voted poll button (toggled by readers-verdict.ts) wears the ink block's
-   colors — including its dark-theme swap — without the shout. */
 .rv-choice.is-active {
   color: var(--color-surface);
   background: var(--color-text-heading);
@@ -2579,7 +2177,6 @@ body:has([data-filter-root]) .masthead-nav {
   border-color: var(--color-line-input);
 }
 
-/* Borderless accent text link ("Read more →"). */
 .btn-quiet {
   gap: var(--spacing-sm);
   padding: 0;
@@ -2598,7 +2195,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-underline-offset: 3px;
 }
 
-/* Tighter vertical padding for inline rows (source links, resource bars). */
 .btn-inline {
   padding-block: 0;
 }
@@ -2613,16 +2209,6 @@ body:has([data-filter-root]) .masthead-nav {
   font-size: var(--font-size-sm);
 }
 
-/* ===========================================================================
-   Shared bits / utilities
-   =========================================================================== */
-
-/* The shared section/list-header label: quiet mono uppercase, used over every
-   list + card section header (Mentioned in, Notable spots, By the numbers, My
-   pick, Explored / The rest, Location, …). One definition so they never drift;
-   each usage keeps its own margin via its own class. */
-/* (.section-label's voice now lives in the pattern section as `.eyebrow`.) */
-
 .chips {
   display: flex;
   gap: var(--spacing-xs);
@@ -2632,8 +2218,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-/* A section over a List (the Best of page); its h2 wears the shared
-   .head-black / .head-rule patterns. */
 .fact-section {
   margin-block-start: var(--spacing-lg);
 }
@@ -2650,23 +2234,17 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-accent);
 }
 
-/* A topic rendered as a reference list (frontmatter `display: list`, e.g.
-   Regional Foods): mono section headings, while keeping full Markdown —
-   wikilinks, images, and sub-sections all still work. */
 .topic-list h2 {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-lg);
 }
 
-/* "No matches" state under a filtered list. */
 .empty {
   margin-block-start: var(--spacing-md);
   color: var(--color-muted);
   font-style: italic;
 }
 
-/* The "Clear filters" pill that sits inside the empty state, on its own line
-   BELOW the message (the inline-flex .btn would otherwise ride beside it). */
 .empty .filter-clear {
   display: flex;
   width: fit-content;
@@ -2685,10 +2263,6 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-/* A single photo floated beside the article text with a caption. The <img> is an
-   optimized Markdown image; the <figure>/<figcaption> are raw HTML in the .md —
-   same wrap-Markdown-in-HTML approach as .image-grid. On narrow screens it drops
-   the float and goes full width so it doesn't crowd the text. */
 .figure {
   width: min(280px, 40%);
 
@@ -2719,9 +2293,6 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-/* A full-width photo that spans the whole article column (vs. the small floated .figure),
-   with a centered caption below — for standalone/feature shots. The .figure img/figcaption
-   rules above still apply. */
 .figure.full {
   width: 100%;
   float: none;
@@ -2734,8 +2305,6 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-/* Drop the top margin when the full-width figure leads the article or sits directly
-   under a heading — the heading/article start already provides the space above. */
 .figure.full:first-child,
 :is(h1, h2, h3, h4, h5, h6) + .figure.full {
   margin-block-start: 0;
@@ -2757,10 +2326,6 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-/* Decorative "river" ribbon — the St. Louis flag's blue-and-white wave on red,
-   repeated seamlessly. Flag colors are fixed in both themes. The height must stay
-   a multiple of 8: the 90×80 tile then scales to a whole-pixel width (24px → 27px),
-   so repeat-x doesn't round and leak a 1px red seam between tiles. */
 .river-border {
   height: 24px;
   background: transparent url('/river-border2.svg') repeat-x center / auto 100%;
@@ -2775,20 +2340,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-wrap: nowrap;
 }
 
-/* ===========================================================================
-   PATTERN CLASSES — the site's shared voices, named for what things ARE.
-   One definition per pattern; markup composes them. Rules of the road:
-   - Patterns never set margins; each usage keeps its own margin in a small
-     residual rule.
-   - A residual that CONTRADICTS a pattern declaration uses the compound form
-     (.own-class.pattern-class) so specificity — not file order — decides.
-   - This section stays at the END of the file so pattern classes win
-     same-specificity ties against older single-class rules above.
-   =========================================================================== */
-
-/* The heavy black header voice (Archivo Black, shouted): TOPICS / MORE /
-   FEATURED FOOD / MORE IN THE HILL / … Size modifiers only — everything else
-   is the one voice. */
 .head-black {
   font-family: var(--font-display-black);
   font-weight: 400;
@@ -2812,17 +2363,12 @@ body:has([data-filter-root]) .masthead-nav {
   padding-bottom: 3px;
 }
 
-/* Prose bodies re-voice bare h2/h3 to the serif (`.body h2` is 0,1,1 and would
-   beat the single class) — re-assert the black voice for pattern-classed
-   headings inside them (the sidebar labels, More in… headings). */
 .body h2.head-black,
 .body h3.head-black {
-  /* font-family: var(--font-display-black); */
+
   color: var(--color-text-heading);
 }
 
-/* The thick ink rule closing a header. Composes with .head-black, or rides
-   alone on a flex header bar. */
 .head-rule {
   padding-block-end: var(--spacing-xs);
   border-block-end: 2px solid var(--color-line-contrast);
@@ -2841,9 +2387,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-/* The hairline tick between eyebrow parts (Cuisine | Neighborhood). Contexts
-   with their own flex gap use it bare; inline contexts add margins (see
-   .list-eyebrow's residual). */
 .eyebrow-divider {
   display: inline-block;
   width: 1px;
@@ -2851,8 +2394,6 @@ body:has([data-filter-root]) .masthead-nav {
   background: var(--color-line-input);
 }
 
-/* The serif headline voice on rows and cards (Georgia, calm).
-   `.related-title` is the legacy alias. */
 .title-serif,
 .related-title {
   display: block;
@@ -2864,8 +2405,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration: none;
 }
 
-/* The muted serif description under a title. --lg is the "deck" size;
-   `.entry-summary` is a legacy alias for the deck. */
 .desc-muted,
 .entry-summary {
   font-family: var(--font-serif);
@@ -2880,9 +2419,6 @@ body:has([data-filter-root]) .masthead-nav {
   line-height: 1.3;
 }
 
-/* A title that is (or lives inside) a link: flag blue + a 2px underline on
-   hover. Put the class on the title element; hovering it or any ancestor
-   link/button triggers it. */
 :is(a, button):hover .title-link,
 a.title-link:hover,
 button.title-link:hover {
@@ -2892,8 +2428,6 @@ button.title-link:hover {
   text-underline-offset: 3px;
 }
 
-/* Whole-row hover wash. Bleed geometry (padding + negative margins) stays
-   per-site. */
 .hover-wash {
   transition: background-color 0.12s ease;
 }
@@ -2902,22 +2436,17 @@ button.title-link:hover {
   background: var(--color-wash);
 }
 
-/* The centered reading column (articles, prose pages, their headers). */
 .reading-col {
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
-/* The ink-framed newspaper panel on the gold wash (What's New, the verdict
-   box). */
 .panel {
   border: 2px solid var(--color-line-contrast);
   background: var(--color-surface);
   padding: var(--spacing-md);
 }
 
-/* The solid flag-blue chip (applied filters, neighborhood tags). Compound
-   with .chip so it deterministically outranks the .chip base colors. */
 .chip.chip-blue {
   background: var(--color-accent-blue);
   border-color: var(--color-accent-blue);

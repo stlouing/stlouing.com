@@ -6,7 +6,7 @@ tagline: My ongoing project to document St. Louis
 description: 'St. Louing is an independent guide to the food and neighborhoods of St. Louis. A love letter to an underrated city, built in the spirit of the early internet.'
 ---
 
-St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
+Welcome! St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
 
 I've been on a quest to find [the best food in St. Louis](/food/), and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
 
@@ -58,8 +58,7 @@ A few open-source projects this site relies on.
 - **Web Framework** - [Astro](https://astro.build)
 - **Maps** - [MapLibre GL](https://maplibre.org) / [Protomaps](https://protomaps.com) / [OpenStreetMap](https://www.openstreetmap.org/)
   - Map vector files for St. Louis greater area were saved as a `.pmtiles` binary and served from [Supabase](https://supabase.com/) to prevent relying on third-party CDNs.
-- **Icons** - [Pixel Art Icons](https://pixelarticons.com/)
-  - The pixel icon set used across this site, made by Gerrit Halfmann.
+- **Icons** - [Pixel Art Icons](https://pixelarticons.com/) - made by Gerrit Halfmann.
 - **Forms** - [Formspree](https://formspree.io)
 - **Analytics** - [GoatCounter](https://www.goatcounter.com)
 

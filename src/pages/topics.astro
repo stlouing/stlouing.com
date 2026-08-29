@@ -31,7 +31,6 @@ const topics = sortTopics(published(await getCollection('topics')))
             <h2 class="topic-title title-serif title-link">{topic.data.title}</h2>
             {topic.data.description && <p class="topic-description desc-muted desc-muted--lg">{topic.data.description}</p>}
             <p class="topic-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
-            {/* A span, not a nested link — the whole card is the anchor. */}
             <span class="continue-link">
               Continue reading <IconArrowRight />
             </span>
@@ -43,10 +42,6 @@ const topics = sortTopics(published(await getCollection('topics')))
 </BaseLayout>
 
 <style>
-  /* Cards fan into columns on the wide page (3 at desktop, 2 mid, 1 phone),
-     each an equal-height flex stack with the continue link on the floor.
-     Counts are fixed per breakpoint (not auto-fill) so the vertical gutter
-     rules below know which cards start a row. */
   .topic-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -66,8 +61,6 @@ const topics = sortTopics(published(await getCollection('topics')))
     }
   }
 
-  /* The card pulls itself a step wider than the text column so the hover
-     highlight extends past the text while the text stays aligned. */
   .topic-card {
     position: relative;
     display: flex;
@@ -80,7 +73,6 @@ const topics = sortTopics(published(await getCollection('topics')))
     text-decoration: none;
   }
 
-  /* The dotted divider under every card row. */
   .topic-card::after {
     content: '';
     position: absolute;
@@ -90,10 +82,6 @@ const topics = sortTopics(published(await getCollection('topics')))
     border-block-end: 1px dotted var(--color-line-input);
   }
 
-  /* And a matching dotted rule up each column gutter: every card draws one
-     just off its leading edge (the cards overhang their tracks by --spacing-sm,
-     so -sm lands on the gutter's center line), and the rules are switched off
-     for cards that start a row — per column count, matching the grids above. */
   .topic-card::before {
     content: '';
     position: absolute;
@@ -128,8 +116,6 @@ const topics = sortTopics(published(await getCollection('topics')))
     font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
   }
 
-  /* The continue link anchors the card's bottom-right corner, pinned to the
-     flex floor so it lines up across a grid row. */
   .topic-card .continue-link {
     display: block;
     margin-block-start: auto;

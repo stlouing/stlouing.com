@@ -187,10 +187,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
           ))
         }
       </ul>
-      {
-        /* Hidden fleur ratings, one per verdict, cloned into each verdict group
-          header by food-groups.ts (which builds the headers client-side). */
-      }
       <div class="fleur-templates" hidden>
         <span data-fleur="loved"><Rating verdict="loved" /></span>
         <span data-fleur="liked"><Rating verdict="liked" /></span>

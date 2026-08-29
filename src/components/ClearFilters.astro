@@ -1,15 +1,8 @@
----
-// "Clear filters" pill for a filterable list header. Wired by filter.ts via the
-// [data-filter-clear] hook (resets search + facets + sort); hidden until a filter
-// is active. Drop into the List `actions` slot: `<ClearFilters slot="actions" />`.
----
-
 <button type="button" class="btn btn-dark btn-compact filter-clear" data-filter-clear hidden
   >Clear filters</button
 >
 
 <style>
-  /* Shown only while a filter is active (filter.ts toggles the attribute). */
   .filter-clear[hidden] {
     display: none;
   }

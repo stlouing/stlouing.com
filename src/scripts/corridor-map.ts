@@ -391,17 +391,11 @@ function mountCorridorMap(element: HTMLElement, group: Corridor[]): MountedMap {
   return { map, disposeTheme }
 }
 
-/* ---- The lead overview map: every strip on one city-wide map. ------------ */
-
 const OVERVIEW_BOUNDARIES_SOURCE_ID = 'corridor-overview-boundaries'
 const OVERVIEW_FILL_LAYER_ID = 'corridor-overview-fill'
 const OVERVIEW_OUTLINE_LAYER_ID = 'corridor-overview-outline'
 const OVERVIEW_HIT_LAYER_ID = 'corridor-overview-hit'
 
-// The city boundary file keys polygons by NHD_NAME; the site's slugs are the
-// slugified names except these two (see cityNeighborhoodSlug in
-// src/lib/neighborhoods.ts). County municipalities aren't in the city file, so
-// their strips draw without a polygon.
 const siteSlugByCitySlug: Record<string, string> = {
   'forest-park-southeast': 'the-grove',
   'skinker-debaliviere': 'delmar-loop',
@@ -419,7 +413,6 @@ interface BoundaryFeature {
   geometry: { type: string; coordinates: unknown }
 }
 
-// The boundary polygons of every neighborhood a strip runs through.
 async function loadInvolvedBoundaries(group: Corridor[]): Promise<BoundaryFeature[]> {
   const wanted = new Set(group.flatMap((corridor) => corridor.neighborhoods ?? []))
 
@@ -433,7 +426,6 @@ async function loadInvolvedBoundaries(group: Corridor[]): Promise<BoundaryFeatur
       return wanted.has(siteSlugByCitySlug[citySlug] ?? citySlug)
     })
   } catch {
-    // No polygons is a graceful state — the lines still draw.
     return []
   }
 }
@@ -589,16 +581,6 @@ function mountOverviewMap(element: HTMLElement): MountedMap {
   return { map, disposeTheme }
 }
 
-/**
- * Mount a corridor figure into every `[data-corridor-map="<id> [<id>…]"]`
- * placeholder, and the city-wide overview into `[data-corridor-overview]`.
- * Maps mount lazily as their placeholder nears the viewport and are torn down
- * again once it scrolls far away — the article carries more figures than the
- * browser's WebGL context ceiling (~16), so only the maps near the viewport
- * hold a live context. The mount margin (600px) is well inside the teardown
- * margin (1800px) so a map never thrashes at a single boundary; the generated
- * caption is outside the map container and survives teardown.
- */
 export function initCorridorMaps(
   selector = '[data-corridor-map], [data-corridor-overview]',
 ): void {

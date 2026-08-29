@@ -135,9 +135,6 @@ const linkAttributes = href
 </Tag>
 
 <style>
-  /* The base (homepage rail) voice hides the leading mark and trailing arrow;
-     rows with a description top-align so the lead lines up with the name's
-     first line. */
   .related-card {
     position: relative;
     display: flex;
@@ -154,9 +151,6 @@ const linkAttributes = href
     display: none;
   }
 
-  /* Whole-row hover wash (matching the directory + map-list rows). A pseudo-element
-     behind the content so the resting layout and the full-width divider stay put,
-     while the highlight extends slightly past the text with rounded corners. */
   a.related-card::before {
     content: '';
     position: absolute;
@@ -197,8 +191,6 @@ const linkAttributes = href
     color: var(--color-accent);
   }
 
-  /* Nudge the icon down to optically align with the first text line in tall,
-     description-bearing rows. */
   .related-card.has-description .related-lead-icon :global(.icon) {
     margin-block-start: 2px;
   }
@@ -211,7 +203,6 @@ const linkAttributes = href
     gap: 2px;
   }
 
-  /* The flex gap spaces the bare .eyebrow-divider ticks. */
   .related-kicker {
     display: inline-flex;
     align-items: center;
@@ -262,8 +253,6 @@ const linkAttributes = href
     color: var(--color-accent);
   }
 
-  /* The global `.icon` rule pins icons muted, so set the accent color here (not
-     via currentColor) and fill the star so it reads as a solid accent mark. */
   .related-rating :global(.icon) {
     width: 0.9em;
     height: 0.9em;

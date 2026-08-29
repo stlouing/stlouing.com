@@ -103,8 +103,6 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
     gap: var(--spacing-sm);
   }
 
-  /* A tab bar: a hairline runs under the whole row, and the current region's tab
-     carries an accent underline indicator sitting on that baseline. */
   .region-nav {
     display: flex;
     flex-wrap: wrap;
@@ -118,8 +116,6 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
   .region-nav a,
   .region-nav-current {
     padding-block: var(--spacing-xs);
-    /* Pull the tab's own border down onto the row's baseline so the active
-       indicator overlaps the hairline instead of doubling it. */
     margin-block-end: -1px;
     border-block-end: 2px solid transparent;
     color: var(--color-muted);

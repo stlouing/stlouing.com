@@ -40,14 +40,9 @@ const hasIcon = Astro.slots.has('icon')
 </li>
 
 <style>
-  /* The whole row is the click target; on hover only the title reacts (accent +
-     underline). The row's divider comes from `.list > li` in List.astro. */
   .list-item {
     display: block;
     padding-block: var(--spacing-sm);
-    /* Horizontal padding pulled back out with a matching negative margin so the
-       hover highlight extends past the text while the text stays aligned with
-       the row dividers. */
     padding-inline: var(--spacing-sm);
     margin-inline: calc(-1 * var(--spacing-sm));
     border-radius: var(--radius);
@@ -66,7 +61,6 @@ const hasIcon = Astro.slots.has('icon')
     min-width: 0;
   }
 
-  /* Leading icon: accent (overriding the global muted `.icon`). */
   .list-icon {
     flex-shrink: 0;
     display: inline-flex;
@@ -76,8 +70,6 @@ const hasIcon = Astro.slots.has('icon')
     width: 1rem;
     height: 1rem;
     margin-block-start: 2px;
-    /* Hooks so a section can recolor its rows (the Chip.astro pattern) without
-       specificity fights; defaults keep the accent look everywhere else. */
     color: var(--list-icon-color, var(--color-accent-2));
   }
 

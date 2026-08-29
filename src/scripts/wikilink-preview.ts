@@ -8,9 +8,11 @@ import { cuisineLabel } from "../lib/cuisine"
 interface Preview {
   title: string
   excerpt: string
-  // Food only: cuisine chips + neighborhood.
+  // Food only: cuisines + neighborhood.
   cuisine?: string[]
   neighborhood?: string
+  // Any entry: its tags.
+  tags?: string[]
   // Food, topics + neighborhoods: the curated tagline, shown in the accent color.
   description?: string
   // Entries with a photo: a card-sized rendition shown atop the card.
@@ -84,6 +86,32 @@ export function initWikilinkPreviews(): void {
       card.appendChild(photo)
     }
 
+    // Entry metadata — cuisines, neighborhood, tags — in the muted mono
+    // eyebrow voice the list rows and map popups use, tick-divided, riding
+    // above the title as its kicker (the list-row order).
+    const metaParts = [
+      ...(preview.cuisine ?? []).map((cuisine) => cuisineLabel(cuisine)),
+      ...(preview.neighborhood ? [preview.neighborhood] : []),
+      ...(preview.tags ?? []),
+    ]
+    if (metaParts.length > 0) {
+      const meta = document.createElement('div')
+      meta.className = 'wikilink-card-meta list-eyebrow'
+      metaParts.forEach((part, partIndex) => {
+        if (partIndex > 0) {
+          const divider = document.createElement('span')
+          divider.className = 'eyebrow-divider'
+          divider.setAttribute('aria-hidden', 'true')
+          meta.appendChild(divider)
+        }
+        const label = document.createElement('span')
+        label.className = 'list-meta'
+        label.textContent = part
+        meta.appendChild(label)
+      })
+      card.appendChild(meta)
+    }
+
     const title = document.createElement('div')
     title.className = 'wikilink-card-title'
     title.textContent = preview.title
@@ -95,25 +123,6 @@ export function initWikilinkPreviews(): void {
       description.className = 'wikilink-card-description'
       description.textContent = preview.description
       card.appendChild(description)
-    }
-
-    // Food metadata: cuisine chips + the neighborhood.
-    if (preview.cuisine?.length || preview.neighborhood) {
-      const meta = document.createElement('div')
-      meta.className = 'wikilink-card-meta'
-      preview.cuisine?.forEach((cuisine) => {
-        const chip = document.createElement('span')
-        chip.className = 'chip'
-        chip.textContent = cuisineLabel(cuisine)
-        meta.appendChild(chip)
-      })
-      if (preview.neighborhood) {
-        const neighborhood = document.createElement('span')
-        neighborhood.className = 'wikilink-card-neighborhood'
-        neighborhood.textContent = preview.neighborhood
-        meta.appendChild(neighborhood)
-      }
-      card.appendChild(meta)
     }
 
     if (preview.excerpt) {

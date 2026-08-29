@@ -63,8 +63,6 @@ const hasCard = hasNumbers || hasVibe
 }
 
 <style>
-  /* No box of its own — it sits as a plain labeled section in the shared
-     border-left sidebar, set off from the section above by the aside's divider. */
   .side-card {
     padding: 0;
   }
@@ -113,8 +111,6 @@ const hasCard = hasNumbers || hasVibe
     color: var(--color-muted);
   }
 
-  /* On the desktop rail the stat rows divide on dotted hairlines, like the
-     index page's lists (the mobile row layout keeps them clean). */
   @media (min-width: 900px) {
     .facts > .fact:not(:first-child) {
       margin-block-start: var(--spacing-xs);
@@ -133,9 +129,6 @@ const hasCard = hasNumbers || hasVibe
     border-radius: 0;
   }
 
-  /* Mobile (declared last so it wins over the base rules at this width): the
-     aside leads the page here, so it sheds the boxed card and reads as plain
-     content. */
   @media (max-width: 899px) {
     .side-card {
       padding: 0;

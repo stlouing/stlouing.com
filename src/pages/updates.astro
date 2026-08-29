@@ -46,9 +46,6 @@ const updates = await Promise.all(
 </BaseLayout>
 
 <style>
-  /* The list owns the two tracks — a date rail sized to the widest date, then the
-     changes — so every date aligns into one column no matter its length. Each row
-     is a subgrid spanning both tracks, which also keeps the per-row hairline. */
   .updates {
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -73,7 +70,6 @@ const updates = await Promise.all(
 
   .update-date {
     text-wrap: nowrap;
-    /* Nudge onto the first line of the changes list beside it. */
     padding-block-start: 2px;
   }
 
@@ -91,8 +87,6 @@ const updates = await Promise.all(
     margin-block: 0;
   }
 
-  /* Reset the first paragraph's top margin so it lines up with the date, and give
-     any following paragraphs reading spacing. */
   .update-changes :global(p) {
     margin-block: 0;
   }
@@ -101,9 +95,6 @@ const updates = await Promise.all(
     margin-block-start: var(--spacing-sm);
   }
 
-  /* Match the prose convention: links gain a solid underline on hover (the base
-     `a` rule already sets the thickness/color; this block sits outside `.body`,
-     so it needs its own hover-underline rule). */
   .update-changes :global(a:hover) {
     text-decoration-line: underline;
   }

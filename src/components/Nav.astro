@@ -66,8 +66,6 @@ const isActive = (path: string) => {
     }
   }
 
-  /* Flat descendant selector on purpose — :global() nested inside a nesting
-     block gets stripped by the compiler. */
   .site-nav-inline :global(.nav-fleur) {
     width: 0.6em;
     height: auto;
@@ -81,7 +79,6 @@ const isActive = (path: string) => {
       padding-block: var(--spacing-sm);
     }
 
-    /* The fleur separators crowd a phone-width line — labels only. */
     .site-nav-inline :global(.nav-fleur) {
       display: none;
     }

@@ -66,18 +66,10 @@ const {
   data-view-mode={floating ? 'floating' : 'toggle'}
 >
   {
-    /* Pre-paint: set the starting view before this subtree paints, so the page
-      doesn't flash one layout then snap into another. Mirrors the theme pre-paint
-      script in BaseLayout. */
-  }
-  {
     floating ? (
       <script is:inline>
         {
           const filterRoot = document.currentScript.parentElement
-          // Floating mode: open on the list on mobile (readable rows first, and
-          // the map isn't built until the user asks for it); desktop always shows
-          // both panes, which is the 'map' state.
           filterRoot.dataset.view = window.matchMedia('(max-width: 700px)').matches
             ? 'list'
             : 'map'
@@ -88,9 +80,6 @@ const {
         {
           const filterRoot = document.currentScript.parentElement
           const savedView = localStorage.getItem('list-map-view')
-          // No saved preference: default to the list on mobile (so the page opens
-          // on readable rows, not a full-bleed map a one-finger swipe can't scroll
-          // past) and to the map on wider screens.
           const defaultView = window.matchMedia('(max-width: 700px)').matches ? 'list' : 'map'
           filterRoot.dataset.view =
             savedView === 'list' || savedView === 'map' ? savedView : defaultView
@@ -110,10 +99,6 @@ const {
         search={search}
       />
     </div>
-    {
-      /* Applied-filter tray: chips for each active facet (filter.ts builds them)
-        plus the clear-all control. Hidden until a filter is active. */
-    }
     <div class="wrap active-filters" data-filter-active hidden>
       <div class="filter-chips" data-filter-chips></div>
       <ClearFilters />

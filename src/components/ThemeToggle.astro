@@ -21,7 +21,6 @@ const { variant = 'dark' } = Astro.props
   data-theme-toggle
   aria-label="Toggle dark mode"
   aria-pressed="false">
-  {/* Pixelarticons sun + moon (same set as the site's other icons). */}
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -47,9 +46,6 @@ const { variant = 'dark' } = Astro.props
 </Button>
 
 <style>
-  /* The quiet flavor sits in a mono text row, so it takes the row's muted
-     voice: transparent, but with a real padded hit area — a bare 16px svg is
-     too small a target. */
   :global(.theme-toggle.btn-quiet) {
     height: auto;
     padding: var(--spacing-xs) var(--spacing-sm);
@@ -66,8 +62,6 @@ const { variant = 'dark' } = Astro.props
     text-decoration: none;
   }
 
-  /* Icon centered in the ink block. :global because the <button> is rendered
-     by the Button child, outside this scope. */
   :global(.theme-toggle.btn-dark) {
     height: 36px;
     padding: 0 var(--spacing-sm);
@@ -81,7 +75,6 @@ const { variant = 'dark' } = Astro.props
     }
   }
 
-  /* Mobile: the ink block tracks the flag tile's smaller size. */
   @media (max-width: 700px) {
     :global(.theme-toggle.btn-dark) {
       height: 30px;

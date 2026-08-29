@@ -85,7 +85,6 @@ const description = 'Send a note, a correction, or a recommendation.'
     text-transform: none;
   }
 
-  /* The global input rules don't cover textarea — match them here. */
   textarea[name='message'] {
     padding: var(--spacing-sm);
     background: var(--color-background);
@@ -109,7 +108,7 @@ const description = 'Send a note, a correction, or a recommendation.'
     max-width: 22rem;
   }
 
-  /* Honeypot: off-screen for humans, irresistible to bots. */
+  /* Honeypot: off-screen for humans, bots see it. */
   .gotcha {
     position: absolute;
     left: -9999px;

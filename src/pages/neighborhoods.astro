@@ -103,11 +103,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
   title="St. Louis Neighborhood Map - City and County"
   description="A map and field guide to all 79 neighborhoods and 9 parks of the City of St. Louis, including local food, events, population, borders, and discoveries.">
   <div class="map-split" data-map-split data-view="map">
-    {
-      /* Pre-paint: on mobile (one pane at a time) open on the reading list rather
-        than the full-bleed map, so the page lands on scrollable rows. Desktop shows
-        both panes regardless of data-view, so it stays on the map default. */
-    }
     <script is:inline>
       {
         const split = document.currentScript.parentElement
