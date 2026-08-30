@@ -19,6 +19,7 @@
   --color-line-contrast: #1b1a17;
   --color-accent: #a90b26;
   --color-accent-2: #c70f2e;
+  --color-pin: #c70f2e;
 
   --color-accent-blue: #2766ad;
   --color-flag-blue: #012773;
@@ -26,15 +27,15 @@
   --color-map-accent: #6a47a6;
 
   --color-map-north: #b8860b;
-  --color-map-central: #a90b26;
+  --color-map-central: #c70f2e;
   --color-map-south: #6a47a6;
   --color-map-county: #2766ad;
   --color-map-park: #2e7d4a;
 
-  --color-map-corridor: #a90b26;
+  --color-map-corridor: #c70f2e;
   --color-link: #225aa9;
   --color-link-hover: #17488d;
-  --color-verdict-loved: #a90b26;
+  --color-verdict-loved: #c70f2e;
   --color-verdict-liked: #b0742e;
   --color-verdict-neutral: #6f6b61;
   --color-verdict-notforme: #74727c;
@@ -107,11 +108,12 @@
   --color-map-south: #b59ae0;
   --color-map-county: #84b0e6;
   --color-map-park: #7ec98a;
-  --color-map-corridor: #f67f93;
+  --color-map-corridor: #f88c9e;
   --color-link: #99c3ff;
   --color-link-hover: #b5d4ff;
+  --color-pin: #f83555;
 
-  --color-verdict-loved: #f67f93;
+  --color-verdict-loved: #f88c9e;
   --color-verdict-liked: #d6a35a;
   --color-verdict-neutral: #a89c86;
   --color-verdict-notforme: #8f8574;
@@ -512,11 +514,15 @@ tbody tr:last-child td {
 
 .corridor-spot {
   display: block;
+  color: var(--color-pin);
 }
 
 .corridor-spot:hover,
 .corridor-spot:focus-visible {
   z-index: 2;
+  /* Re-pin the fill: the link pins are <a>s, and the global a:hover blue would
+     otherwise recolor the currentColor pin body. */
+  color: var(--color-pin);
 }
 
 a.corridor-spot {
@@ -1091,6 +1097,7 @@ body:has(.map-split) main > .wrap,
 
 .neighborhood-marker {
   cursor: pointer;
+  color: var(--color-pin);
 }
 
 .content-pane {
@@ -1116,7 +1123,7 @@ body:has(.map-split) main > .wrap,
 
 /* The row photo is a full-height cover panel pinned to the row's right edge;
    the row reserves the column for it so no text runs underneath. */
-.map-list [data-filter-item]:has(.list-photo) {
+.map-list .list > li:has(.list-photo) {
   position: relative;
   padding-inline-end: calc(var(--list-photo-width) + var(--spacing-md));
 }
@@ -1575,6 +1582,8 @@ body:has(.map-split) main > .wrap,
 .food-grouped li.group-header.group-header-alpha .group-label {
   color: var(--color-accent-blue);
   font-size: var(--font-size-lg);
+  font-family: var(--font-sans-serif);
+  font-weight: 700;
 }
 
 .food-grouped li.group-header.group-header-status .group-label {
@@ -1604,8 +1613,10 @@ body:has(.map-split) main > .wrap,
   padding-inline: 0;
 }
 
+/* Only the start side resets — the end side must keep the reserved photo
+   column from the li:has(.list-photo) rule above. */
 [data-filter-root]:not([data-view='map']) .food-grouped .list > li {
-  padding-inline: 0 var(--spacing-md);
+  padding-inline-start: 0;
 }
 
 @media (max-width: 700px) {
@@ -1739,7 +1750,7 @@ body:has([data-filter-root]) .masthead-nav {
 
 .food-marker {
   cursor: pointer;
-  color: var(--color-accent);
+  color: var(--color-pin);
 }
 
 .food-marker.is-selected .marker-pin-body {

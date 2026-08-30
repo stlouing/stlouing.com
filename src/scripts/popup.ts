@@ -49,8 +49,6 @@ export interface PopupConfig {
   excerpt?: string
   // Outlined buttons to external sources (Website, Instagram, Wikipedia, …).
   sources?: PopupSource[]
-  // Show the ruled "View more" link (defaults on; Food hides it without a teaser).
-  showMore?: boolean
 }
 
 // The cuisine / neighborhood / region meta, styled like the list rows'
@@ -106,12 +104,7 @@ function fleurGlyph(className: string): string {
 }
 
 // Filled fleur-de-lis count per verdict, out of four — matches Rating.astro.
-const RATING_FILLED: Record<string, number> = {
-  'not-for-me': 1,
-  neutral: 2,
-  liked: 3,
-  loved: 4,
-}
+const RATING_FILLED: Record<string, number> = { 'not-for-me': 1, neutral: 2, liked: 3, loved: 4 }
 const RATING_TOTAL = 4
 
 export function buildPopupHtml(config: PopupConfig): string {
@@ -126,7 +119,6 @@ export function buildPopupHtml(config: PopupConfig): string {
     directionsHref = '',
     excerpt = '',
     sources = [],
-    showMore = true,
   } = config
 
   const photoHtml = photo
@@ -146,13 +138,16 @@ export function buildPopupHtml(config: PopupConfig): string {
     verdict || showRating
       ? `<span class="rating" role="img" aria-label="${ratingLabel}">${Array.from(
           { length: RATING_TOTAL },
-          (_unused, index) => fleurGlyph(index < filled ? 'rating-fleur is-filled' : 'rating-fleur'),
+          (_unused, index) =>
+            fleurGlyph(index < filled ? 'rating-fleur is-filled' : 'rating-fleur'),
         ).join('')}</span>`
       : ''
 
   // Joined with the hairline tick the list eyebrows use; the list-eyebrow
   // class picks up the shared divider styling.
-  const metaInner = chips.map(chipHtml).join('<span class="eyebrow-divider" aria-hidden="true"></span>')
+  const metaInner = chips
+    .map(chipHtml)
+    .join('<span class="eyebrow-divider" aria-hidden="true"></span>')
   const metaHtml = metaInner ? `<div class="popup-meta list-eyebrow">${metaInner}</div>` : ''
 
   const addressHtml = addressLines.length
@@ -165,9 +160,7 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   const excerptHtml = excerpt ? `<p class="tip-excerpt">${escapeHtml(excerpt)}</p>` : ''
 
-  const moreHtml = showMore
-    ? `<a class="btn btn-dark btn-compact popup-more-link" href="${link}">View more</a>`
-    : ''
+  const moreHtml = `<a class="btn btn-dark btn-compact popup-more-link" href="${link}">View more</a>`
 
   const sourcesHtml = sources.length
     ? `<div class="popup-actions">${sources

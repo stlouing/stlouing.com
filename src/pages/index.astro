@@ -252,6 +252,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         <a class="whats-new-all continue-link" href={href('/updates/')}>
           All updates <IconArrowRight />
         </a>
+        <p class="whats-new-guestbook">
+          <a href={href('/guestbook/')}>Sign the guestbook</a>
+        </p>
       </section>
     </div>
   </div>
@@ -336,6 +339,32 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .front-whatsnew {
     grid-area: whatsnew;
     min-width: 0;
+  }
+
+  .front-guestbook {
+    grid-area: guestbook;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .guestbook-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    font-size: 1.5rem;
+    color: var(--color-text-heading);
+  }
+
+  .guestbook-note {
+    margin-block: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-md);
+  }
+
+  .guestbook-action {
+    display: flex;
+    justify-content: center;
+    margin-block: 0;
   }
 
   .rail-header {
@@ -673,6 +702,27 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin-block-start: var(--spacing-sm);
   }
 
+  .whats-new-guestbook {
+    margin-block: var(--spacing-md) 0;
+    padding-block-start: var(--spacing-md);
+    border-block-start: 1px dotted var(--color-line-input);
+    text-align: center;
+    font-size: var(--font-size-md);
+    color: var(--color-muted);
+  }
+
+  .whats-new-guestbook a {
+    color: var(--color-text-heading);
+    font-weight: 600;
+    text-decoration-line: none;
+  }
+
+  .whats-new-guestbook a:hover {
+    color: var(--color-accent-blue);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-accent-blue);
+  }
+
   .recent-list {
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -786,6 +836,5 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     .lead-teaser {
       columns: 1;
     }
-
   }
 </style>

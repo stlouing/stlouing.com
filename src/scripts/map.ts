@@ -2,7 +2,7 @@ import maplibregl from 'maplibre-gl'
 import Supercluster from 'supercluster'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, type PopupChip, type PopupSource } from './popup'
-import { keepPopupInView } from './map-shared'
+import { fitZoomFor, frameCityView, keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import { cuisineLabel } from '../lib/cuisine'
 
@@ -55,7 +55,8 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   // A muted gray (not the pale hairline token, which vanishes on the light
   // basemap); differs light/dark, so recolor on a theme swap.
   const boundaryColor = () =>
-    getComputedStyle(document.documentElement).getPropertyValue('--color-muted-2').trim() || '#6f6b61'
+    getComputedStyle(document.documentElement).getPropertyValue('--color-muted-2').trim() ||
+    '#6f6b61'
   function addBoundaryLayer(): void {
     if (!map.getSource(BOUNDARY_SOURCE)) {
       map.addSource(BOUNDARY_SOURCE, {
@@ -154,9 +155,9 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
   }
 
-  // The teardrop pin (same shape as the neighborhood map's), colored by the
-  // row's verdict via CSS classes — `currentColor` fill, so theme swaps and
-  // verdict tokens apply without any JS recoloring.
+  // The teardrop pin (same shape as the neighborhood map's) — `currentColor`
+  // fill, so the pin color (and its theme swap) comes from the `.food-marker`
+  // CSS without any JS recoloring.
   const pinSvg =
     '<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>'
 
@@ -182,11 +183,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       filterValue: cuisine,
     }))
     if (neighborhood) {
-      chips.push({
-        label: neighborhood,
-        filterSet: 'neighborhood',
-        filterValue: neighborhood,
-      })
+      chips.push({ label: neighborhood, filterSet: 'neighborhood', filterValue: neighborhood })
     }
 
     const url = item.dataset.url ?? ''
@@ -216,7 +213,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       directionsHref: google,
       excerpt: excerptText,
       sources,
-      showMore: Boolean(excerptText),
     })
 
     // closeOnClick:false — we manage closing (map-click + single-open) so the row
@@ -397,7 +393,10 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       // of stalling at a zoom where they're still merged into one bubble.
       const lngLat = lngLatFromItem(pendingOpenItem)
       if (lngLat) {
-        map.easeTo({ center: lngLat, zoom: Math.min(map.getMaxZoom(), Math.floor(map.getZoom()) + 2) })
+        map.easeTo({
+          center: lngLat,
+          zoom: Math.min(map.getMaxZoom(), Math.floor(map.getZoom()) + 2),
+        })
       }
     }
   }
@@ -471,7 +470,19 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     }
 
     if (anyVisible) {
-      map.fitBounds(anyFitPoint ? bounds : fallbackBounds, { padding: 30, maxZoom: 12, animate })
+      const fitTarget = anyFitPoint ? bounds : fallbackBounds
+      const allShown = items.every((item) => !item.hidden)
+      // With every place shown, the metro-wide fit can need a zoom below the
+      // map's minZoom on a narrow (phone) pane — MapLibre clamps the zoom but
+      // keeps the metro-wide center, stranding the view over the middle of the
+      // county with the city (and most pins) off-screen east. Frame the City of
+      // St. Louis instead, Mississippi on the right; the county spots stay
+      // pinned, reachable by panning or filtering.
+      if (allShown && fitZoomFor(map, fitTarget, 30) < map.getMinZoom()) {
+        frameCityView(map, 30)
+      } else {
+        map.fitBounds(fitTarget, { padding: 30, maxZoom: 12, animate })
+      }
       viewInitialized = true
     } else if (!viewInitialized) {
       // A deep-linked filter matched nothing: still give the map a view.

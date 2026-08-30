@@ -3,7 +3,7 @@ import type { ExpressionSpecification } from 'maplibre-gl'
 import type { Feature, FeatureCollection, Geometry, Position } from 'geojson'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, escapeHtml, type PopupChip, type PopupSource } from './popup'
-import { keepPopupInView } from './map-shared'
+import { frameCityView, keepPopupInView } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
 // Join boundaries to the page's sections by the official NHD_NUM (unique), so
@@ -132,12 +132,6 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   const boundsBySlug = new Map<string, maplibregl.LngLatBounds>()
   const nameBySlug = new Map<string, string>()
   const regionKeyBySlug = new Map<string, RegionKey>()
-  const pinBodyBySlug = new Map<string, Element>()
-  // Bounds used to frame the default view — St. Louis City only. The St. Louis
-  // County municipalities (Chesterfield, Clayton, Kirkwood, …) still render, but
-  // they sit far west/south and must NOT drive the fit, or the city shrinks to a
-  // corner. Chesterfield especially is way out west; it just exists on the map.
-  const cityBounds = new maplibregl.LngLatBounds()
 
   geojson.features.forEach((feature: Feature, index: number) => {
     feature.id = index
@@ -148,16 +142,9 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
     const region = regionKeyForArea(entry)
     feature.properties = { ...feature.properties, region, slug, name }
 
-    const isCounty = entry?.group === 'St. Louis County'
     const featureBounds = new maplibregl.LngLatBounds()
     forEachPosition(feature.geometry, (position) => {
-      const lngLat: [number, number] = [position[0], position[1]]
-      featureBounds.extend(lngLat)
-
-      // County municipalities render but don't count toward the city framing.
-      if (!isCounty) {
-        cityBounds.extend(lngLat)
-      }
+      featureBounds.extend([position[0], position[1]])
     })
 
     if (slug) {
@@ -414,20 +401,14 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       if (!center) {
         continue
       }
-      const region = regionKeyBySlug.get(slug) ?? 'central'
-      const color = regionColors[region]
 
       const element = document.createElement('div')
       element.className = 'neighborhood-marker'
       // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke (which
       // sits half-outside the path edge) isn't clipped; the tip at path (12,32)
-      // lands at pixel (14,34) in the padded box.
-      element.innerHTML = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="${color}" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
-      // Keep the pin body so it recolors alongside the polygons on a theme swap.
-      const pinBody = element.querySelector('.marker-pin-body')
-      if (pinBody) {
-        pinBodyBySlug.set(slug, pinBody)
-      }
+      // lands at pixel (14,34) in the padded box. `currentColor` fill — the pin
+      // color (and its theme swap) comes from the `.neighborhood-marker` CSS.
+      element.innerHTML = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
 
       new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(center).addTo(map)
 
@@ -515,28 +496,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
         map.fitBounds(selectedBounds, { padding: 40, maxZoom: 13, animate: false })
       }
     } else {
-      // Frame the whole city. Instant on initial load — no fly-in. (setCenter
-      // below is a jump.)
-      map.fitBounds(cityBounds, { padding: 40, animate: false })
-
-      const visibleBounds = map.getBounds()
-      const visibleLatSpan = visibleBounds.getNorth() - visibleBounds.getSouth()
-      const visibleLngSpan = visibleBounds.getEast() - visibleBounds.getWest()
-      const center = map.getCenter()
-
-      // Bias ~10% south: the far-north tip is a long, thin neighborhood we don't need
-      // centered, so drop it off the top and pull more of South City in.
-      const biasedLat = center.lat - visibleLatSpan * 0.1
-
-      // Pull the view west so the Mississippi (the city's east edge) sits ~6% from
-      // the right edge, rather than framing empty Illinois on a wide pane. Math.min
-      // means we only ever shift WEST — a narrow/mobile viewport that already fits
-      // the city tightly (little horizontal slack) is left centered as-is.
-      const riverEdge = cityBounds.getEast()
-      const westBiasedLng = riverEdge + visibleLngSpan * 0.06 - visibleLngSpan / 2
-      const biasedLng = Math.min(center.lng, westBiasedLng)
-
-      map.setCenter([biasedLng, biasedLat])
+      // Frame the City of St. Louis (shared with the Food map). The county
+      // municipalities (Chesterfield, Clayton, Kirkwood, …) still render, but
+      // they sit far west/south and must not drive the fit, or the city shrinks
+      // to a corner.
+      frameCityView(map, 40)
     }
   }
 
@@ -577,12 +541,6 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       }
       if (map.getLayer(LINE_LAYER)) {
         map.setPaintProperty(LINE_LAYER, 'line-color', regionColorExpression())
-      }
-      for (const [slug, pinBody] of pinBodyBySlug) {
-        const region = regionKeyBySlug.get(slug)
-        if (region) {
-          pinBody.setAttribute('fill', regionColors[region])
-        }
       }
     })
     frameWhenSized()

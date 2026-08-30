@@ -46,9 +46,9 @@ interface Spot {
 const spotsByCorridor = corridorSpots as Record<string, Spot[]>
 
 // The same teardrop pin the neighborhood map uses (padded viewBox so the ring
-// stroke isn't clipped); the body fill is set per-theme from the corridor token.
-const pinSvg = (fill: string) =>
-  `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="${fill}" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
+// stroke isn't clipped); `currentColor` fill — the pin color (and its theme
+// swap) comes from the `.corridor-spot` CSS.
+const pinSvg = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
 
 // Spot coords are building positions (review frontmatter / OSM POIs), often a
 // storefront-depth off the street centerline — visible as a zigzag on short,
@@ -89,11 +89,7 @@ function snapToLines(point: [number, number], group: Corridor[]): [number, numbe
   return bestDistance <= SNAP_METERS ? best : point
 }
 
-// Returns the pin-body elements so a theme swap can recolor them.
-function addSpotMarkers(map: MapLibreMap, group: Corridor[]): Element[] {
-  const colors = readCorridorColors()
-  const pinBodies: Element[] = []
-
+function addSpotMarkers(map: MapLibreMap, group: Corridor[]): void {
   for (const corridor of group) {
     const spots = spotsByCorridor[corridor.id] ?? []
     if (spots.length === 0) {
@@ -105,29 +101,26 @@ function addSpotMarkers(map: MapLibreMap, group: Corridor[]): Element[] {
     const horizontal = isMostlyNorthSouth([corridor])
 
     for (const spot of spots) {
-    const element = document.createElement(spot.link ? 'a' : 'span')
-    element.className = horizontal ? 'corridor-spot is-horizontal' : 'corridor-spot'
-    element.setAttribute('aria-label', spot.name)
-    if (spot.link && element instanceof HTMLAnchorElement) {
-      element.href = import.meta.env.BASE_URL.replace(/\/$/, '') + spot.link
-    }
+      const element = document.createElement(spot.link ? 'a' : 'span')
+      element.className = horizontal ? 'corridor-spot is-horizontal' : 'corridor-spot'
+      element.setAttribute('aria-label', spot.name)
+      if (spot.link && element instanceof HTMLAnchorElement) {
+        element.href = import.meta.env.BASE_URL.replace(/\/$/, '') + spot.link
+      }
 
-    element.innerHTML = pinSvg(colors.line)
-    // The name renders as a hover/focus tooltip above the pin (always-visible
-    // labels overlapped when spots cluster).
-    const name = document.createElement('span')
-    name.className = 'corridor-spot-name'
-    name.textContent = spot.name
-    element.append(name)
-    pinBodies.push(...element.querySelectorAll('.marker-pin-body'))
+      element.innerHTML = pinSvg
+      // The name renders as a hover/focus tooltip above the pin (always-visible
+      // labels overlapped when spots cluster).
+      const name = document.createElement('span')
+      name.className = 'corridor-spot-name'
+      name.textContent = spot.name
+      element.append(name)
 
       new maplibregl.Marker({ element, anchor: 'bottom' })
         .setLngLat(snapToLines(spot.coords as [number, number], [corridor]))
         .addTo(map)
     }
   }
-
-  return pinBodies
 }
 
 function corridorsFor(element: HTMLElement): Corridor[] {
@@ -252,11 +245,7 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
     type: 'line',
     source: SOURCE_ID,
     layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: {
-      'line-color': colors.line,
-      'line-width': 4,
-      'line-opacity': 0.75,
-    },
+    paint: { 'line-color': colors.line, 'line-width': 4, 'line-opacity': 0.75 },
   })
 
   map.addLayer({
@@ -284,11 +273,7 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
         'text-anchor': 'bottom',
         'text-offset': [0, -0.6],
       },
-      paint: {
-        'text-color': colors.label,
-        'text-halo-color': colors.halo,
-        'text-halo-width': 1.5,
-      },
+      paint: { 'text-color': colors.label, 'text-halo-color': colors.halo, 'text-halo-width': 1.5 },
     })
   }
 }
@@ -325,7 +310,6 @@ interface MountedMap {
   map: MapLibreMap
   disposeTheme: () => void
 }
-
 
 // The camera frame for a section map: the corridor lines PLUS the section's
 // pins, so a spot set back from the strip (Soulard's grid bars) can't fall
@@ -375,17 +359,13 @@ function mountCorridorMap(element: HTMLElement, group: Corridor[]): MountedMap {
   })
 
   // DOM markers, so they stay clickable on this non-interactive map.
-  const pinBodies = addSpotMarkers(map, group)
+  addSpotMarkers(map, group)
   appendSpotCaption(element, group)
 
-  // Re-apply after a theme toggle swaps the basemap style (the layers via
-  // setPaintProperty, the pin bodies by re-filling their SVG paths).
+  // Re-apply after a theme toggle swaps the basemap style (the pins recolor
+  // themselves — their fill is a CSS token).
   const disposeTheme = watchThemeChanges(map, () => {
     applyCorridorLayers(map, group)
-    const colors = readCorridorColors()
-    for (const pinBody of pinBodies) {
-      pinBody.setAttribute('fill', colors.line)
-    }
   })
 
   return { map, disposeTheme }
@@ -540,11 +520,7 @@ function applyOverviewLayers(
       'text-anchor': 'bottom',
       'text-offset': [0, -0.4],
     },
-    paint: {
-      'text-color': labelColor,
-      'text-halo-color': haloColor,
-      'text-halo-width': 1.5,
-    },
+    paint: { 'text-color': labelColor, 'text-halo-color': haloColor, 'text-halo-width': 1.5 },
   })
 }
 
@@ -581,9 +557,7 @@ function mountOverviewMap(element: HTMLElement): MountedMap {
   return { map, disposeTheme }
 }
 
-export function initCorridorMaps(
-  selector = '[data-corridor-map], [data-corridor-overview]',
-): void {
+export function initCorridorMaps(selector = '[data-corridor-map], [data-corridor-overview]'): void {
   const elements = document.querySelectorAll<HTMLElement>(selector)
   if (elements.length === 0) {
     return

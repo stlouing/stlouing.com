@@ -7,7 +7,7 @@ import { createBasemapMap, watchThemeChanges } from './basemap'
 // a CSS context — so it themes with dark mode and never falls back to invisible.
 const PIN_SVG =
   '<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true">' +
-  '<path class="marker-pin-body" style="fill:var(--color-accent)" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" />' +
+  '<path class="marker-pin-body" style="fill:var(--color-pin)" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" />' +
   '<circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>'
 
 // Turn a placeholder box into a small "where is it" map: the themed basemap
