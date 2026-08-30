@@ -253,6 +253,7 @@
     },
     {
       "name": "Das Bevo",
+      "link": "/food/das-bevo/",
       "coords": [
         -90.266821,
         38.581902
@@ -402,6 +403,7 @@
     },
     {
       "name": "Adriana's",
+      "link": "/food/adrianas/",
       "coords": [
         -90.270628,
         38.617864
@@ -439,6 +441,7 @@
     },
     {
       "name": "Zia's",
+      "link": "/food/zias/",
       "coords": [
         -90.274098,
         38.615758
@@ -512,6 +515,7 @@
     },
     {
       "name": "Amsterdam Tavern",
+      "link": "/food/amsterdam-tavern/",
       "coords": [
         -90.261697,
         38.60193
@@ -581,6 +585,7 @@
     },
     {
       "name": "Honey Bee's Biscuits",
+      "link": "/food/honey-bees-biscuits/",
       "coords": [
         -90.40606,
         38.582423
@@ -619,6 +624,7 @@
     },
     {
       "name": "Schlafly Bottleworks",
+      "link": "/food/schlafly-bottleworks/",
       "coords": [
         -90.314852,
         38.613011
@@ -697,6 +703,7 @@
   "soulard": [
     {
       "name": "McGurk's",
+      "link": "/food/mcgurks/",
       "coords": [
         -90.209997,
         38.607586
@@ -754,6 +761,7 @@
     },
     {
       "name": "Bogart's Smokehouse",
+      "link": "/food/bogarts-smokehouse/",
       "coords": [
         -90.202805,
         38.610938
@@ -770,6 +778,7 @@
     },
     {
       "name": "Seamus McDaniel's",
+      "link": "/food/seamus-mcdaniels/",
       "coords": [
         -90.292767,
         38.628188
@@ -786,6 +795,7 @@
   "shaw": [
     {
       "name": "Sasha's on Shaw",
+      "link": "/food/sashas-on-shaw/",
       "coords": [
         -90.25036,
         38.616382
@@ -800,6 +810,7 @@
     },
     {
       "name": "Fiddlehead Fern Cafe",
+      "link": "/food/fiddlehead-fern-cafe/",
       "coords": [
         -90.250716,
         38.614262

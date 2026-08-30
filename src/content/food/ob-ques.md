@@ -1,5 +1,5 @@
 ---
-title: O'B'Que's
+title: O'B Que's
 description: Texas-style brisket at a gas station
 created: 2026-06-23
 rating: 9

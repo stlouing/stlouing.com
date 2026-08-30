@@ -1,5 +1,5 @@
 ---
-title: Brasserie
+title: Brasserie by Niche
 created: 2026-07-16
 status: want-to-try
 description: Parisian-style bistro from the Niche group

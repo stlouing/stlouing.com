@@ -11,9 +11,12 @@ interface Props {
   href?: string
   meta?: string
   description?: string
+  // Fill the gap between the title and the meta with dot leaders (index-style
+  // "Title .......... 42" rows).
+  leader?: boolean
 }
 
-const { title, href: linkHref, meta, description } = Astro.props
+const { title, href: linkHref, meta, description, leader = false } = Astro.props
 const Tag = linkHref ? 'a' : 'div'
 const hasIcon = Astro.slots.has('icon')
 ---
@@ -30,6 +33,7 @@ const hasIcon = Astro.slots.has('icon')
     <span class="list-item-body">
       <div class="list-row">
         <span class="list-title">{title}</span>
+        {leader && <span class="list-leader" aria-hidden="true"></span>}
         {meta && <span class="list-meta">{meta}</span>}
         <slot name="meta" />
       </div>
@@ -86,5 +90,11 @@ const hasIcon = Astro.slots.has('icon')
     justify-content: space-between;
     gap: var(--spacing-sm);
     margin-block: 0 2px;
+  }
+
+  .list-leader {
+    flex: 1;
+    min-width: var(--spacing-md);
+    border-block-end: 2px dotted var(--color-line-input);
   }
 </style>

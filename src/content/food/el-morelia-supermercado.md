@@ -1,5 +1,5 @@
 ---
-title: El Morelia Supermercado
+title: El Morelia Super Mercado
 created: 2026-07-16
 status: want-to-try
 description: Mexican grocery and taqueria

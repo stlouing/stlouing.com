@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content'
+import neighborhoodsData from '../data/neighborhoods.json'
 
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
@@ -60,6 +61,14 @@ const wanderedCount = allNeighborhoods.length
 
 const exploreGroup = groups.find((group) => group.id === 'explore')
 const exploreSections = sections.filter((section) => section.group === 'explore')
+
+// Dot-leader counts on the map rows: every listed place, and every listed
+// neighborhood — the same tallies the two pane headers show.
+const exploreCounts: Record<string, number> = {
+  '/food/': allFood.length,
+  '/neighborhoods/': neighborhoodsData.filter((neighborhood) => !('ignored' in neighborhood))
+    .length,
+}
 
 // The food cards: a hand-picked four, shown in this order. Each id is a file
 // in src/content/food/ — edit the list to change the front page.
@@ -147,8 +156,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       <p class="introduction">
         {intro}
         <br /><br />
-        <strong>So far</strong>: <span class="stat">{wanderedCount}</span> neighborhoods and
-        <span class="stat">{visitedCount}</span> restaurants. <a
+        <strong>Explored</strong>: <span class="stat">{wanderedCount}</span> neighborhoods and
+        <span class="stat">{visitedCount}</span> restaurants so far! <a
           class="continue-link"
           href={href('/about/')}
           aria-label="Read more about St. Louing">
@@ -220,7 +229,9 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
               <ListItem
                 title={section.label}
                 href={href(section.path)}
-                description={section.description}>
+                description={section.description}
+                meta={exploreCounts[section.path]?.toString()}
+                leader={section.path in exploreCounts}>
                 {section.icon && <Icon name={section.icon} slot="icon" />}
               </ListItem>
             ))
@@ -615,6 +626,14 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .front-explore :global(.list-item .list-title) {
     font-family: var(--font-sans-serif);
     font-size: var(--font-size-lg);
+  }
+
+  .front-explore :global(.list-meta) {
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing);
+    color: var(--color-accent);
   }
 
   .group-kicker {
