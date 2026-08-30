@@ -7,7 +7,7 @@ category: Neighborhoods
 ogImage: /og/walkable-st-louis.png
 leadImage: /og/walkable-st-louis-lead.jpg
 created: 2026-08-19
-updated: 2026-08-26
+updated: 2026-08-30
 ---
 
 One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch, Ballpark Village, and the business district, but isn't the place most people spend their time.
@@ -15,6 +15,8 @@ One of the first things you learn about St. Louis is there is no single main str
 St. Louis is a city of many neighborhoods, and you'll find interesting clusters of shops and hidden gems all over the place, but it isn't always obvious to newcomers where to look.
 
 I've been on a mission to discover all these walkable\* spots around the city and surrounding area. A few of them are obvious - The Grove and Cherokee Street are often mentioned by name - but some I just happened to stumble upon and slowly discover over time.
+
+In this article, I'm using _walkable_ to mean an area that is interesting to walk around and explore, with plenty of shops, restaurants, and other businesses along it. I haven't factored in livability factors such as proximity to public transportation or groceries, though I plan to update this article in the future to include them.
 
 ## Overview
 

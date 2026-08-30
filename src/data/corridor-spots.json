@@ -9,6 +9,7 @@
     },
     {
       "name": "Urban Chestnut",
+      "link": "/food/urban-chestnut/",
       "coords": [
         -90.260595,
         38.626741
@@ -602,6 +603,7 @@
     },
     {
       "name": "Side Project",
+      "link": "/food/side-project-brewing/",
       "coords": [
         -90.319413,
         38.612011
