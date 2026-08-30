@@ -1834,12 +1834,52 @@ body:has([data-filter-root]) .masthead-nav {
   min-width: 260px;
 }
 
+/* The popup body scrolls inside itself when taller than the pane (photo
+   entries on phones) — without this, reading the rest takes a map gesture,
+   which closes the popup. Negative margins + matching padding rebuild the
+   content's padded box so the photo's edge-to-edge bleed still works, and the
+   absolutely-positioned close button (a sibling) stays pinned while the body
+   scrolls. */
+.maplibregl-popup.food-popup .popup-scroll {
+  margin: calc(-1 * var(--spacing-md));
+  padding: var(--spacing-md);
+  max-height: max(220px, min(60vh, calc(100dvh - 260px)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .maplibregl-popup.food-popup .popup-photo {
   height: var(--popup-photo-height);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md)) var(--spacing-md);
+}
+
+/* Compact popups on phones, where the popup competes with the sticky chrome
+   for a small map pane: shorter photo banner, tighter padding, and the type
+   scale one notch down. Every popup rule reads these tokens, so the local
+   remap resizes the box, the photo bleed, and all the text together. Literal
+   values (not token references) so the remaps don't chain through each other. */
+@media (max-width: 700px) {
+  .maplibregl-popup.food-popup {
+    --popup-photo-height: 110px;
+    /* --spacing-shmedium: box padding + the scroll/photo bleed margins */
+    --spacing-md: 0.75rem;
+    /* --font-size-label: the title + close button */
+    --font-size-lg: 1.125rem;
+    /* --font-size-sm: the content base (and the 1em rating fleurs) */
+    --font-size-md: 0.9375rem;
+    /* --font-size-xs: address, directions, excerpt */
+    --font-size-sm: 0.875rem;
+    /* the cuisine | neighborhood chips — a notch below xxs/xxxs, which share
+       one value (0.8125rem) at the token layer */
+    --font-size-xxs: 0.75rem;
+  }
+
+  .maplibregl-popup.food-popup .rating {
+    margin-bottom: var(--spacing-xs);
+  }
 }
 
 .maplibregl-popup.map-hover-tip {

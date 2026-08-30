@@ -173,5 +173,7 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   // Order mirrors the list rows: the photo banner, rating, the eyebrow, then
   // the serif title with the address (plus its directions link) and excerpt below.
-  return `${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${directionsHtml}${excerptHtml}${moreHtml}`
+  // The .popup-scroll wrapper caps the popup's height on short viewports and
+  // scrolls internally (the close button, a sibling, stays pinned).
+  return `<div class="popup-scroll">${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${directionsHtml}${excerptHtml}${moreHtml}</div>`
 }
