@@ -343,6 +343,20 @@ const corridors = [
     website: 'https://www.washaveretail.com/',
   },
   {
+    // The stadium entertainment block: Clark runs along Busch Stadium's north
+    // edge with Ballpark Village fronting it across the street.
+    id: 'ballpark-village',
+    name: 'Ballpark Village',
+    street: 'Clark Avenue',
+    streetNames: ['Clark Avenue', 'Clark Street'],
+    from: { label: '8th', names: ['South 8th Street', '8th Street'] },
+    to: { label: 'Broadway', names: ['South Broadway', 'Broadway'] },
+    center: [38.6237, -90.1905],
+    anchor: 'ballpark-village',
+    neighborhoods: ['downtown'],
+    website: 'https://www.stlballparkvillage.com/',
+  },
+  {
     // The Old Orchard business district of Webster Groves.
     id: 'big-bend',
     name: 'Old Orchard',

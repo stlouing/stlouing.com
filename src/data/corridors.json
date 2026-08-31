@@ -2275,6 +2275,64 @@
       ]
     },
     {
+      "id": "ballpark-village",
+      "name": "Ballpark Village",
+      "street": "Clark Avenue",
+      "from": "8th",
+      "to": "Broadway",
+      "anchor": "ballpark-village",
+      "neighborhoods": [
+        "downtown"
+      ],
+      "website": "https://www.stlballparkvillage.com/",
+      "line": [
+        [
+          -90.194205,
+          38.624023
+        ],
+        [
+          -90.19405,
+          38.623988
+        ],
+        [
+          -90.193383,
+          38.623829
+        ],
+        [
+          -90.192947,
+          38.623718
+        ],
+        [
+          -90.192471,
+          38.623599
+        ],
+        [
+          -90.192172,
+          38.623524
+        ],
+        [
+          -90.192004,
+          38.623474
+        ],
+        [
+          -90.191737,
+          38.623362
+        ],
+        [
+          -90.191527,
+          38.623265
+        ],
+        [
+          -90.19113,
+          38.623081
+        ],
+        [
+          -90.190968,
+          38.62303
+        ]
+      ]
+    },
+    {
       "id": "big-bend",
       "name": "Old Orchard",
       "street": "Big Bend Boulevard",

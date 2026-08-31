@@ -10,11 +10,11 @@ created: 2026-08-19
 updated: 2026-08-30
 ---
 
-One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch, Ballpark Village, and the business district, but isn't the place most people spend their time.
+One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch and the main business district, but isn't the place most people spend their time.
 
 St. Louis is a city of many neighborhoods, and you'll find interesting clusters of shops and hidden gems all over the place, but it isn't always obvious to newcomers where to look.
 
-I've been on a mission to discover all these walkable\* spots around the city and surrounding area. A few of them are obvious - The Grove and Cherokee Street are often mentioned by name - but some I just happened to stumble upon and slowly discover over time.
+I've been on a mission to discover all these walkable spots around the city and county. A few of them are obvious - The Grove and Cherokee Street are often mentioned by name - but some I just happened to stumble upon and slowly discover over time.
 
 In this article, I'm using _walkable_ to mean an area that is interesting to walk around and explore, with plenty of shops, restaurants, and other businesses along it. I haven't factored in livability factors such as proximity to public transportation or groceries, though I plan to update this article in the future to include them.
 
@@ -64,7 +64,7 @@ Notably, there is a concentration of very good Asian cuisine along Delmar, inclu
 
 | Street                                                                  | Neighborhood                           | Vibe           | Website                               |
 | :---------------------------------------------------------------------- | :------------------------------------- | :------------- | :------------------------------------ |
-| <span class="nowrap">**Euclid Avenue**</span><br>From Laclede to Delmar | [[central-west-end\|Central West End]] | Upscale, Urban | [cwescene.com](https://cwescene.com/) |
+| <span class="nowrap">**Euclid Avenue**</span><br>From Laclede to Delmar | [[central-west-end\|Central West End]] | Upscale, urban | [cwescene.com](https://cwescene.com/) |
 
 <figure class="corridor-map-figure">
   <div class="corridor-map" data-corridor-map="euclid"></div>
@@ -93,6 +93,18 @@ Washington Avenue, often referred to as Wash Ave by locals, is one of the main s
 I've mostly tried to keep common tourist items off this list like the Aquarium, Ballpark Village, etc. - but it's worth mentioning City Museum, one of the most unique and interesting attractions in all of St. Louis, which is right along Wash Ave.
 
 Being downtown, it's as walkable as it gets, and one of the areas most likely to have a lot of foot traffic during the day.
+
+## Ballpark Village
+
+| Street                                                               | Neighborhoods          | Vibe                          | Website                                                       |
+| :------------------------------------------------------------------- | :--------------------- | :---------------------------- | :------------------------------------------------------------ |
+| <span class="nowrap">**Clark Avenue**</span><br>From 8th to Broadway | [[downtown\|Downtown]] | Baseball, entertainment, bars | [stlballparkvillage.com](https://www.stlballparkvillage.com/) |
+
+<figure class="corridor-map-figure">
+  <div class="corridor-map" data-corridor-map="ballpark-village"></div>
+</figure>
+
+Right next to Busch Stadium is Ballpark Village, a string of bars and restaurants surrounding a central entertainment district. It's a hub for people to hang out before a ball game or concert.
 
 ## Dogtown
 
@@ -276,7 +288,7 @@ I have not personally explored this area outside of driving through and I don't 
 
 | Street                                                                      | Neighborhood         | Vibe          |
 | :-------------------------------------------------------------------------- | :------------------- | :------------ |
-| <span class="nowrap">**DeMun Avenue**</span><br>From Northwood to Southwood | [[clayton\|Clayton]] | Cozy, Upscale |
+| <span class="nowrap">**DeMun Avenue**</span><br>From Northwood to Southwood | [[clayton\|Clayton]] | Cozy, upscale |
 
 <figure class="corridor-map-figure">
   <div class="corridor-map" data-corridor-map="demun"></div>

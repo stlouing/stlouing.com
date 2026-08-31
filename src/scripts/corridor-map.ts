@@ -350,11 +350,11 @@ function mountCorridorMap(element: HTMLElement, group: Corridor[]): MountedMap {
 
   map.on('load', () => {
     applyCorridorLayers(map, group)
-    // Half a zoom level looser than a tight fit — the frame already includes
-    // the section's pins, so it only needs a little extra street-grid context.
+    // A good zoom level looser than a tight fit, so each strip sits in its
+    // surrounding street grid rather than filling the frame edge to edge.
     const camera = map.cameraForBounds(figureBounds(group), { padding: 36 })
     if (camera) {
-      map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 14) - 0.25 })
+      map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 14) - 1.25 })
     }
   })
 

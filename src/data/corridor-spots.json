@@ -702,6 +702,44 @@
       ]
     }
   ],
+  "ballpark-village": [
+    {
+      "name": "Katie's",
+      "coords": [
+        -90.193294,
+        38.623984
+      ]
+    },
+    {
+      "name": "Condado",
+      "coords": [
+        -90.191688,
+        38.624085
+      ]
+    },
+    {
+      "name": "Koibito",
+      "coords": [
+        -90.191907,
+        38.624142
+      ]
+    },
+    {
+      "name": "The Clydesdale",
+      "coords": [
+        -90.191723,
+        38.623611
+      ]
+    },
+    {
+      "name": "Salt + Smoke",
+      "link": "/food/salt-and-smoke/",
+      "coords": [
+        -90.191253,
+        38.623403
+      ]
+    }
+  ],
   "soulard": [
     {
       "name": "McGurk's",
