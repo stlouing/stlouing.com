@@ -11,7 +11,7 @@ import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
-import { resolveVerdict } from '../../lib/verdict'
+import { resolveVerdict, resolveWriterState } from '../../lib/verdict'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -275,6 +275,9 @@ const trail = [
                   title={place.data.title}
                   meta={place.data.cuisine[0]}
                   verdict={resolveVerdict(place.data)}
+                  unratedLabel={
+                    resolveVerdict(place.data) ? undefined : resolveWriterState(place.data).statement
+                  }
                 />
               ))}
             </RelatedList>

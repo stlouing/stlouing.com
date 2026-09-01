@@ -37,8 +37,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data } = entry
 // The "My Review" stance: the verdict when rated, else a status-driven placeholder
-// ("Haven't reviewed yet" for a tried spot, "Haven't visited yet" otherwise). Drives
-// the "My Review" half of the top-of-page review bar.
+// ("Not yet rated" for a tried spot, "Haven't visited yet" otherwise). Drives the
+// aside's My rating section.
 const writerState = resolveWriterState(data)
 // A friendly one-liner shown in a dashed note in place of the (empty) writeup on a
 // body-less stub. Tried-but-unrated reads differently from never-visited.
@@ -87,7 +87,15 @@ const topRelated = (places: typeof allFood) =>
   [...places]
     .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
     .slice(0, 5)
-    .map((place) => ({ place, verdict: resolveVerdict(place.data) }))
+    .map((place) => {
+      const verdict = resolveVerdict(place.data)
+
+      return {
+        place,
+        verdict,
+        unratedLabel: verdict ? undefined : resolveWriterState(place.data).statement,
+      }
+    })
 
 const relatedNeighborhood = data.neighborhood
   ? topRelated(
@@ -194,12 +202,13 @@ const seoDescription = hasBody(entry)
           {
             relatedNeighborhood.length > 0 && (
               <RelatedList title={`More in ${data.neighborhood}`}>
-                {relatedNeighborhood.map(({ place, verdict }) => (
+                {relatedNeighborhood.map(({ place, verdict, unratedLabel }) => (
                   <RelatedCard
                     href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={place.data.cuisine[0]}
                     verdict={verdict}
+                    unratedLabel={unratedLabel}
                   />
                 ))}
               </RelatedList>
@@ -208,13 +217,14 @@ const seoDescription = hasBody(entry)
           {
             relatedCuisine.length > 0 && (
               <RelatedList title={`More ${cuisineLabel(primaryCuisine)}`}>
-                {relatedCuisine.map(({ place, verdict }) => (
+                {relatedCuisine.map(({ place, verdict, unratedLabel }) => (
                   <RelatedCard
                     href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={place.data.neighborhood}
                     metaType="neighborhood"
                     verdict={verdict}
+                    unratedLabel={unratedLabel}
                   />
                 ))}
               </RelatedList>
@@ -223,17 +233,16 @@ const seoDescription = hasBody(entry)
         </section>
       </div>
       <aside class="detail-aside">
-        {
-          writerState.verdict && (
-            <div class="my-rating">
-              <h2 class="detail-section-label head-black head-black--sm head-rule">My rating</h2>
-              <div class="my-rating-row">
-                <span class="my-rating-value">{verdictLabels[writerState.verdict]}</span>
-                <Rating verdict={writerState.verdict} />
-              </div>
-            </div>
-          )
-        }
+        <div class="my-rating">
+          <h2 class="detail-section-label head-black head-black--sm head-rule">My rating</h2>
+          <div class="my-rating-row">
+            <span
+              class:list={['my-rating-value', { 'my-rating-value--unrated': !writerState.verdict }]}>
+              {writerState.verdict ? verdictLabels[writerState.verdict] : writerState.statement}
+            </span>
+            <Rating verdict={writerState.verdict} />
+          </div>
+        </div>
         <div class="food-map-block">
           <h2 class="detail-section-label head-black head-black--sm head-rule">Map</h2>
           <FoodLocator coords={data.coords} label={data.neighborhood} />
@@ -324,6 +333,14 @@ const seoDescription = hasBody(entry)
     font-size: var(--font-size-xl);
     font-weight: 500;
     color: var(--color-text-heading);
+  }
+
+  /* The unrated placeholder ("Not yet rated" / "Haven't visited yet") reads
+     quiet beside the empty fleurs. */
+  .my-rating-value--unrated {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    color: var(--color-muted);
   }
 
   .my-rating-row :global(.rating .rating-fleur) {

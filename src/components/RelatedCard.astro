@@ -7,6 +7,7 @@
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconExternalLink from '../assets/IconExternalLink.astro'
 import IconStar from '../assets/IconStar.astro'
+import Chip from './Chip.astro'
 import VerdictChip from './Verdict.astro'
 import TagIcon from './TagIcon.astro'
 import { cuisineLabel } from '../lib/cuisine'
@@ -26,6 +27,10 @@ interface Props {
   metaType?: 'cuisine' | 'neighborhood' | 'date' | 'text'
   // Optional verdict, shown as a Chip before the trailing affordance.
   verdict?: Verdict
+  // Muted placeholder chip for a food row with no verdict ("Not yet rated" /
+  // "Haven't visited yet" from resolveWriterState). Only shown when `verdict`
+  // is absent; rows that never deal in verdicts just omit both.
+  unratedLabel?: string
   // Optional right-aligned secondary stat (e.g. a neighborhood's population).
   stat?: string
   // Optional leading emoji (e.g. a cuisine glyph). Mutually exclusive with the
@@ -49,6 +54,7 @@ const {
   metaParts = [],
   metaType = 'cuisine',
   verdict,
+  unratedLabel,
   stat,
   emoji,
   rating,
@@ -125,6 +131,13 @@ const linkAttributes = href
     )
   }
   {verdict && <VerdictChip verdict={verdict} icon narrow filled />}
+  {
+    !verdict && unratedLabel && (
+      <Chip class="verdict-unrated is-narrow">
+        <span>{unratedLabel}</span>
+      </Chip>
+    )
+  }
   {
     href && (
       <span class="related-arrow" aria-hidden="true">

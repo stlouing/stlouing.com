@@ -22,7 +22,11 @@
   --color-pin: #c70f2e;
 
   --color-accent-blue: #2766ad;
+
+  /* Flag colors — pinned, never themed. */
   --color-flag-blue: #012773;
+  --color-flag-yellow: #f5dc0f;
+
   --color-accent-gold: #b8860b;
   --color-map-accent: #6a47a6;
 
@@ -100,7 +104,6 @@
   --color-accent: #f67f93;
   --color-accent-2: #f88c9e;
   --color-accent-blue: #84b0e6;
-  --color-flag-blue: #003db8;
   --color-accent-gold: #dcc24f;
   --color-map-accent: #b59ae0;
   --color-map-north: #dcc24f;
@@ -111,7 +114,7 @@
   --color-map-corridor: #f88c9e;
   --color-link: #99c3ff;
   --color-link-hover: #b5d4ff;
-  --color-pin: #f83555;
+  --color-pin: #f64c68;
 
   --color-verdict-loved: #f88c9e;
   --color-verdict-liked: #d6a35a;
@@ -489,7 +492,17 @@ tbody tr:last-child td {
   }
 }
 
+/* The article-leading overview map breaks out of the reading column to the
+   article-wrap content width (the wrap-article max minus its padding), clamped
+   to the viewport on small screens. Negative symmetric margins keep it centered
+   on the column. */
 .corridor-map.corridor-overview {
+  --overview-width: min(
+    calc(var(--measure-reading) + 2.5rem + 290px),
+    calc(100vw - 2 * var(--spacing-md))
+  );
+  width: var(--overview-width);
+  margin-inline: calc((100% - var(--overview-width)) / 2);
   height: 460px;
 }
 
@@ -1399,10 +1412,18 @@ body:has(.map-split) main > .wrap,
   --chip-color: var(--color-verdict-notforme);
 }
 
+/* The verdict-less placeholder ("Not yet rated" / "Haven't visited yet") — a
+   quiet outline beside the colored verdict pills. */
+.chip.verdict-unrated {
+  --chip-color: var(--color-muted);
+  --chip-border: var(--color-line-input);
+}
+
 .chip.verdict-loved,
 .chip.verdict-liked,
 .chip.verdict-neutral,
-.chip.verdict-not-for-me {
+.chip.verdict-not-for-me,
+.chip.verdict-unrated {
   border-radius: 0;
 }
 
@@ -2118,7 +2139,7 @@ body:has([data-filter-root]) .masthead-nav {
 .detail-aside {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-xl);
   isolation: isolate;
 }
 
@@ -2465,6 +2486,16 @@ body:has([data-filter-root]) .masthead-nav {
 .head-rule {
   padding-block-end: var(--spacing-xs);
   border-block-end: 2px solid var(--color-line-contrast);
+}
+
+/* Aside section labels (My rating, Map, Address, My pick, the rail headers…)
+   speak in a muted voice: soft ink over a hairline rule instead of the full
+   head-black ink — the asides accompany the article, they don't compete. */
+.detail-aside .head-black--sm.head-rule {
+  /* color: var(--color-muted-2); */
+  padding-bottom: 3px;
+  border-block-end: 1px solid var(--color-line);
+  font-size: var(--font-size-xxs);
 }
 
 .eyebrow {

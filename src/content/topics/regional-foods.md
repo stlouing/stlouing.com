@@ -2,7 +2,7 @@
 title: Regional Foods of St. Louis
 icon: utensils
 category: Food
-description: Talking about the specialty food of St. Louis, from gooey butter cake to gooey Provel cheese
+description: An inventory of the specialty food of St. Louis, from gooey butter cake to gooey Provel cheese
 created: 2026-06-03
 updated: 2026-07-22
 ---

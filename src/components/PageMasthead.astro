@@ -1,0 +1,195 @@
+---
+// The full-bleed flag-blue article masthead: left-aligned heavy sans headline,
+// an optional lede, and the share bar (Share · Follow · Newsletter — no
+// Feedback), closed by a white-fimbriated red river wave along the bottom edge
+// — the city flag with its colors traded. Used by topic pages (via Entry's
+// `masthead` prop) and the standalone prose pages. All colors are exact flag
+// colors, pinned in both themes — the flag never themes.
+import ShareButton from './ShareButton.astro'
+import { NEWSLETTER_URL, SOCIALS } from '../lib/site'
+import IconInstagram from '../assets/IconInstagram.astro'
+import IconMail from '../assets/IconMail.astro'
+
+interface Props {
+  title: string
+  // Extra class for the h1 (topic pages pass p-name for the h-entry).
+  headingClass?: string
+  // Small uppercase kicker above the title (topic pages pass their category).
+  eyebrow?: string
+}
+
+const { title, headingClass, eyebrow } = Astro.props
+const instagram = SOCIALS.find((social) => social.label === 'Instagram')
+---
+
+<div class="page-masthead">
+  <div class="masthead-field">
+    <div class="masthead-inner">
+      <div class="masthead-heading">
+        {eyebrow && <p class="masthead-eyebrow eyebrow">{eyebrow}</p>}
+        <h1 class:list={['masthead-title', headingClass]}>{title}</h1>
+      </div>
+      {
+        Astro.slots.has('lede') && (
+          <div class="masthead-lede">
+            <slot name="lede" />
+          </div>
+        )
+      }
+      <div class="masthead-actions">
+        <ShareButton title={title} label="Share" variant="outline" compact class="masthead-pill" />
+        {
+          instagram && (
+            <a
+              class="btn btn-outline btn-compact masthead-pill"
+              href={instagram.url}
+              target="_blank"
+              rel="noopener">
+              <IconInstagram /> Follow
+            </a>
+          )
+        }
+        {
+          NEWSLETTER_URL && (
+            <a
+              class="btn btn-outline btn-compact masthead-pill"
+              href={`${NEWSLETTER_URL}/subscribe`}
+              target="_blank"
+              rel="noopener">
+              <IconMail /> Newsletter
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+  <svg class="masthead-wave" aria-hidden="true">
+    <defs>
+      <pattern
+        id="masthead-wave-tile"
+        width="90"
+        height="80"
+        patternUnits="userSpaceOnUse"
+        patternTransform="scale(0.4)">
+        <path
+          d="M-45 40 q22.5 14 45 0 q22.5 -14 45 0 q22.5 14 45 0 q22.5 -14 45 0 L135 0 L-45 0 Z"
+          fill="var(--color-flag-blue)"></path>
+        <path
+          d="M-45 40 q22.5 14 45 0 q22.5 -14 45 0 q22.5 14 45 0 q22.5 -14 45 0"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="22"></path>
+        <path
+          d="M-45 40 q22.5 14 45 0 q22.5 -14 45 0 q22.5 14 45 0 q22.5 -14 45 0"
+          fill="none"
+          stroke="#c70f2e"
+          stroke-width="10"></path>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#masthead-wave-tile)"></rect>
+  </svg>
+</div>
+
+<style>
+  /* Full-bleed via the site's 50vw idiom (main clips overflow-x). */
+  .page-masthead {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-block-end: var(--spacing-lg);
+  }
+
+  .masthead-field {
+    background: var(--color-flag-blue);
+  }
+
+  /* The inner column matches the article's reading column (620px centered),
+     so the masthead text lines up with the body prose below. */
+  .masthead-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    width: 100%;
+    max-width: calc(var(--measure-reading) + 2 * var(--spacing-md));
+    margin-inline: auto;
+    padding-block: var(--spacing-xl) var(--spacing-lg);
+    padding-inline: var(--spacing-md);
+  }
+
+  /* Eyebrow hugs the title, outside the inner column's roomier gap. */
+  .masthead-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .masthead-eyebrow {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .masthead-title {
+    margin: 0;
+    /* max-width: 20ch; */
+    font-family: var(--font-sans-serif);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: var(--letter-spacing-tight);
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .masthead-lede {
+    max-width: var(--measure-reading);
+    font-size: var(--font-size-lg);
+    line-height: 1.4;
+    font-weight: 400;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .masthead-lede :global(p) {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  .masthead-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-block-start: var(--spacing-xs);
+    -webkit-font-smoothing: antialiased;
+    margin-top: var(--spacing-lg);
+    border-top: 1px dotted rgba(255, 255, 255, 0.3);
+    padding-top: var(--spacing-sm);
+    width: 100%;
+  }
+
+  /* Borderless white pills on the blue field (transparent border keeps the
+     btn box size, so nothing shifts on hover). */
+  .page-masthead :global(.masthead-pill) {
+    border-color: transparent;
+    color: #ffffff;
+    background: transparent;
+  }
+
+  .page-masthead :global(.masthead-pill:hover) {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: var(--color-flag-blue);
+  }
+
+  .page-masthead :global(.masthead-pill svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .masthead-wave {
+    display: block;
+    width: 100%;
+    height: 32px;
+  }
+</style>

@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import FleurGlyph from '../assets/FleurGlyph.astro'
 import FoodCard from '../components/FoodCard.astro'
+import ReaderFavorites from '../components/ReaderFavorites.astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import superlatives from '../data/superlatives.json'
 
@@ -28,12 +28,12 @@ const awards = [
   ...resolvedAwards.filter((award) => !award.place.data.photo),
 ]
 
-// The Reader Favorites sidebar is live data (Supabase get_reader_ratings); the
-// page bakes a slug → title map so the client script can name the winners.
+// The Reader Favorites aside is live data (Supabase get_reader_ratings) —
+// ReaderFavorites renders nothing without creds, and the aside is gated too so
+// a credless build doesn't leave an empty right column.
 const readersEnabled = Boolean(
   import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
 )
-const placeTitles = Object.fromEntries(food.map((place) => [place.id, place.data.title]))
 
 const description = "The best of the St. Louis food I've tried, by category."
 ---
@@ -66,39 +66,13 @@ const description = "The best of the St. Louis food I've tried, by category."
       {
         readersEnabled && (
           <aside class="detail-aside">
-            <section
-              class="best-readers panel"
-              data-reader-favorites
-              aria-label="Reader favorites"
-              hidden>
-              <h2 class="best-readers-title">Reader Favorites</h2>
-              <div class="best-readers-fleurs" aria-hidden="true">
-                <FleurGlyph />
-                <FleurGlyph />
-                <FleurGlyph />
-              </div>
-              <ol data-favorites-list />
-              <p class="best-readers-empty desc-muted" data-favorites-empty hidden>
-                No reader votes yet.
-              </p>
-            </section>
-            <script
-              is:inline
-              type="application/json"
-              data-place-titles
-              set:html={JSON.stringify(placeTitles)}
-            />
+            <ReaderFavorites />
           </aside>
         )
       }
     </div>
   </article>
 </BaseLayout>
-
-<script>
-  import { initReaderFavorites } from '../scripts/reader-favorites'
-  initReaderFavorites()
-</script>
 
 <style>
   .best-mine {
@@ -126,92 +100,5 @@ const description = "The best of the St. Louis food I've tried, by category."
 
   .best-cell :global(.food-card) {
     flex: 1;
-  }
-
-  /* Reader Favorites box — the What's New panel voice. Rows are injected by
-     reader-favorites.ts, so their rules are flat :global() descendants (injected
-     nodes never carry the Astro scope class). */
-  .best-readers[hidden] {
-    display: none;
-  }
-
-  .best-readers-title {
-    margin: 0;
-    text-align: center;
-    font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 1.05;
-    font-size: var(--font-size-xxl);
-  }
-
-  .best-readers-fleurs {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    margin-block: var(--spacing-sm);
-    color: var(--color-accent-gold);
-  }
-
-  .best-readers-fleurs :global(svg) {
-    width: 0.6rem;
-    height: auto;
-  }
-
-  .best-readers ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .best-readers :global(li) {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--spacing-sm);
-    padding-block: var(--spacing-xs);
-  }
-
-  .best-readers :global(li + li) {
-    margin-block-start: 0;
-    border-block-start: 1px dotted var(--color-line-input);
-  }
-
-  .best-readers :global(a) {
-    min-width: 0;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-md);
-    font-weight: 500;
-    color: var(--color-text-heading);
-    text-decoration: none;
-  }
-
-  .best-readers :global(a:hover) {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-  }
-
-  .best-readers :global(.fav-count) {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-md);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    color: var(--color-muted);
-  }
-
-  .best-readers :global(.fav-count svg) {
-    width: 14px;
-    height: 14px;
-    color: var(--color-accent-gold);
-  }
-
-  .best-readers-empty {
-    margin: var(--spacing-sm) 0 0;
-    text-align: center;
   }
 </style>

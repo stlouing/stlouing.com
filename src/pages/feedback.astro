@@ -23,39 +23,41 @@ const description = 'Send a note, a correction, or a recommendation.'
           <section class="feedback-panel panel" aria-label="Feedback form">
             {/* <h2 class="feedback-title title-serif">Send feedback</h2> */}
             <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
-            <label class="field">
-              <span class="field-label">Your note</span>
-              <textarea name="message" rows="6" required />
-            </label>
-
-            <label class="field">
-              <span class="field-label">
-                Name <span class="optional">(optional)</span>
-              </span>
-              <input type="text" name="name" autocomplete="name" />
-            </label>
-
-            <label class="field">
-              <span class="field-label">
-                Email <span class="optional">(optional)</span>
-              </span>
-              <input type="email" name="email" autocomplete="email" />
-            </label>
-
-            <input type="hidden" name="_subject" value="St. Louing feedback" />
-
-            <p class="gotcha" aria-hidden="true">
-              <label>
-                Leave this field empty
-                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+              <label class="field">
+                <span class="field-label">Your note</span>
+                <textarea name="message" rows="6" required />
               </label>
-            </p>
 
-            <div class="form-actions">
-              <button type="submit" class="btn btn-dark btn-compact">Send</button>
-              <span class="form-status" data-form-status role="status" aria-live="polite" />
-            </div>
-          </form>
+              <label class="field">
+                <span class="field-label">
+                  Name <span class="optional">(optional)</span>
+                </span>
+                <input type="text" name="name" autocomplete="name" />
+              </label>
+
+              <label class="field">
+                <span class="field-label">
+                  Email <span class="optional">(optional)</span>
+                </span>
+                <input type="email" name="email" autocomplete="email" />
+              </label>
+
+              <input type="hidden" name="_subject" value="St. Louing feedback" />
+
+              <p class="gotcha" aria-hidden="true">
+                <label>
+                  Leave this field empty
+                  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+                </label>
+              </p>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-dark btn-compact">
+                  Send
+                </button>
+                <span class="form-status" data-form-status role="status" aria-live="polite" />
+              </div>
+            </form>
           </section>
         )
       }

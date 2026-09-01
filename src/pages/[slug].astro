@@ -5,7 +5,6 @@ import BoundaryMap from '../components/BoundaryMap.astro'
 import CorridorMap from '../components/CorridorMap.astro'
 import Entry from '../components/Entry.astro'
 import EntryDates from '../components/EntryDates.astro'
-import ShareActions from '../components/ShareActions.astro'
 import { published } from '../lib/content'
 import { getBacklinks } from '../lib/backlinks'
 import { articleSchema } from '../lib/schema'
@@ -58,15 +57,20 @@ const schema = articleSchema(
   jsonLd={schema}>
   {hasBoundaryMap && <BoundaryMap />}
   {hasCorridorMap && <CorridorMap />}
-  <Entry title={data.title} tags={data.tags} backlinks={backlinks} permalink={permalink}>
+  <Entry
+    title={data.title}
+    tags={data.tags}
+    backlinks={backlinks}
+    permalink={permalink}
+    masthead
+    eyebrow={data.category}>
     {
       data.description && (
-        <p class="entry-summary p-summary" slot="lede">
+        <p class="p-summary" slot="lede">
           {data.description}
         </p>
       )
     }
-    <ShareActions title={data.title} slot="meta" />
     <Fragment slot="footer-meta">
       <EntryDates created={data.created} updated={data.updated} />
     </Fragment>
@@ -80,5 +84,4 @@ const schema = articleSchema(
   .topic-layout {
     margin-block-start: var(--spacing-md);
   }
-
 </style>

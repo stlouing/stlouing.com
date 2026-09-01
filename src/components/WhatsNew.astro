@@ -1,0 +1,152 @@
+---
+// The What's New window: the latest changelog entries in a panel — serif title,
+// gold fleur trio, red date eyebrows — with a link to the full log. Shown in the
+// homepage right rail and the shared page sidebar. The Markdown body is rendered
+// (same as /updates) so links + emphasis in a change show here too.
+import { render } from 'astro:content'
+import { getChangelog } from '../lib/changelog'
+import { formatDate } from '../lib/dates'
+import { href } from '../lib/url'
+import FleurGlyph from '../assets/FleurGlyph.astro'
+import IconArrowRight from '../assets/IconArrowRight.astro'
+
+// The most recent updates, so a returning visitor can see the site is alive at
+// a glance. The full log lives at /updates.
+const latestUpdates = await Promise.all(
+  (await getChangelog()).slice(0, 2).map(async (entry) => {
+    const { Content } = await render(entry)
+
+    return { date: entry.data.date, Content }
+  }),
+)
+---
+
+<section class="whats-new panel">
+  <h2 class="whats-new-title">What's New</h2>
+  <div class="whats-new-fleurs" aria-hidden="true">
+    <FleurGlyph />
+    <FleurGlyph />
+    <FleurGlyph />
+  </div>
+  <ul class="recent-list">
+    {
+      latestUpdates.map(({ date, Content }) => (
+        <li class="recent-item">
+          <time class="recent-date" datetime={date.toISOString()}>
+            {formatDate(date)}
+          </time>
+          <div class="recent-changes">
+            <Content />
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+  <a class="whats-new-all continue-link" href={href('/updates/')}>
+    All updates <IconArrowRight />
+  </a>
+</section>
+
+<style>
+  .whats-new {
+    min-width: 0;
+  }
+
+  .whats-new-title {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    font-size: 2rem;
+    color: var(--color-text-heading);
+  }
+
+  .whats-new-fleurs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-block: var(--spacing-sm);
+    color: var(--color-accent-gold);
+  }
+
+  .whats-new-fleurs :global(svg) {
+    width: 0.6rem;
+    height: auto;
+  }
+
+  .recent-list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .recent-item {
+    display: grid;
+    row-gap: var(--spacing-xs);
+    padding-block: var(--spacing-md);
+    border-block-start: 1px dotted var(--color-line-input);
+  }
+
+  .recent-item:first-child {
+    border-block-start: 0;
+    padding-block-start: var(--spacing-sm);
+  }
+
+  .recent-item:last-child {
+    padding-block-end: 0;
+  }
+
+  .recent-date {
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-xxs);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing);
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-accent);
+    text-wrap: nowrap;
+  }
+
+  .recent-changes {
+    color: var(--color-text);
+    line-height: 1.55;
+    font-size: var(--font-size-md);
+  }
+
+  .recent-changes :global(ul) {
+    margin: 0;
+    padding-inline-start: var(--spacing-lg);
+  }
+
+  .recent-changes :global(li) {
+    margin-block: 0;
+  }
+
+  .recent-changes :global(p) {
+    margin-block: 0;
+  }
+
+  .recent-changes :global(p + p) {
+    margin-block-start: var(--spacing-sm);
+  }
+
+  .recent-changes :global(a) {
+    color: var(--color-text-heading);
+    font-weight: 600;
+    text-decoration-line: none;
+  }
+
+  .recent-changes :global(a:hover) {
+    color: var(--color-accent-blue);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-accent-blue);
+  }
+
+  .whats-new-all {
+    display: block;
+    text-align: end;
+    margin-block-start: var(--spacing-sm);
+  }
+</style>

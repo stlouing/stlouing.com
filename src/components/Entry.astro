@@ -11,6 +11,7 @@
 import TagList from './TagList.astro'
 import Backlinks from './Backlinks.astro'
 import Byline from './Byline.astro'
+import PageMasthead from './PageMasthead.astro'
 import { href } from '../lib/url'
 import type { Backlink } from '../lib/backlinks'
 
@@ -23,23 +24,46 @@ interface Props {
   // whose body holds trailing sections (e.g. food/neighborhood "More in…" lists)
   // pass `share={false}` and render <Byline> at the right spot.
   share?: boolean
+  // Render the full-bleed flag-blue PageMasthead (title + lede + share bar)
+  // instead of the centered serif header. Topic pages pass it; food/hikes keep
+  // the classic header.
+  masthead?: boolean
+  // Uppercase kicker above the masthead title (a topic's category).
+  eyebrow?: string
 }
 
-const { title, tags = [], backlinks = [], permalink, share = true } = Astro.props
+const {
+  title,
+  tags = [],
+  backlinks = [],
+  permalink,
+  share = true,
+  masthead = false,
+  eyebrow,
+} = Astro.props
 const isArticle = Boolean(permalink)
 ---
 
 <article class:list={['entry', { 'h-entry': isArticle }]}>
-  <header class="entry-header entry-header-with-flag">
-    <div class="entry-headline">
-      <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
-      <div class="entry-headline-sub">
-        <div class="entry-headline-lede">
-          <slot name="lede" />
+  <header
+    class:list={{ 'entry-header': !masthead, 'entry-header-with-flag': !masthead }}>
+    {
+      masthead ? (
+        <PageMasthead title={title} eyebrow={eyebrow} headingClass={isArticle ? 'p-name' : undefined}>
+          <slot name="lede" slot="lede" />
+        </PageMasthead>
+      ) : (
+        <div class="entry-headline">
+          <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
+          <div class="entry-headline-sub">
+            <div class="entry-headline-lede">
+              <slot name="lede" />
+            </div>
+          </div>
+          <div class="river-border-basic" aria-hidden="true" />
         </div>
-      </div>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </div>
+      )
+    }
 
     {
       (Astro.slots.has('meta') || tags.length > 0) && (

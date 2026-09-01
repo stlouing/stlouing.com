@@ -12,7 +12,7 @@ I've been on a quest to find [the best food in St. Louis](/food/), and after rea
 
 The site is not meant to be an absolutely definitive source of information about the STL food scene or neighborhoods, it's mostly a field guide for me to keep track of what I've found and what I like. There is a heavy focus on food as that's my primary way of exploring the city and culture.
 
-> All photography on this site was taken in person, by me, in St. Louis. All content on this site is written by me.
+All photography on this site was taken in person, by me, in St. Louis. All content on this site is written by me.
 
 ## Purpose
 

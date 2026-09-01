@@ -7,7 +7,7 @@
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
-const MAX_ROWS = 10
+const DEFAULT_MAX_ROWS = 10
 
 // Likes only — dislikes never factor into this ranking.
 type ReaderRating = {
@@ -32,8 +32,12 @@ export function initReaderFavorites(): void {
 
   const titles = readPlaceTitles()
 
+  // The box caps its own list via data-max-rows (the /best panel shows more
+  // than the page sidebar).
+  const maxRows = Number(box.dataset.maxRows) || DEFAULT_MAX_ROWS
+
   const render = (ratings: ReaderRating[]): void => {
-    const named = ratings.filter((rating) => Boolean(titles[rating.slug])).slice(0, MAX_ROWS)
+    const named = ratings.filter((rating) => Boolean(titles[rating.slug])).slice(0, maxRows)
 
     for (const rating of named) {
       list.append(buildRow(rating, titles[rating.slug]))
