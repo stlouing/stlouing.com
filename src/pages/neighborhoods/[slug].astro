@@ -37,6 +37,7 @@ import IconChart from '../../assets/IconChart.astro'
 import IconBook from '../../assets/IconBook.astro'
 import IconLandmark from '../../assets/IconLandmark.astro'
 import IconCalendar from '../../assets/IconCalendar.astro'
+import GuestbookBadge from '../../components/GuestbookBadge.astro'
 
 const resourceIcons: Record<string, typeof IconExternalLink> = {
   Wikipedia: IconBook,
@@ -358,6 +359,7 @@ const trail = [
           )
         }
         <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
+        <GuestbookBadge />
       </aside>
     </div>
   </Entry>

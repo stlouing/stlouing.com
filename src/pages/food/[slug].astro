@@ -25,6 +25,7 @@ import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
+import GuestbookBadge from '../../components/GuestbookBadge.astro'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -303,6 +304,7 @@ const seoDescription = hasBody(entry)
             </>
           )
         }
+        <GuestbookBadge />
       </aside>
     </div>
   </Entry>

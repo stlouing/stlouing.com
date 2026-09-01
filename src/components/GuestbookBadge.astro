@@ -1,0 +1,60 @@
+---
+// The "Sign the Guestbook" badge: an ink banner in the .btn-dark voice (solid
+// ink block, quiet-outline swap in dark mode). Margin-free — the homepage rail
+// wraps it in a spaced section, and the detail-page sidebars space children
+// with their flex gap.
+import { href } from '../lib/url'
+---
+
+<a class="guestbook-badge" href={href('/guestbook/')}>
+  <span class="guestbook-badge-title">Sign the Guestbook</span>
+  <span class="guestbook-badge-subtitle">like it's 1999</span>
+</a>
+
+<style>
+  .guestbook-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-text-heading);
+    background: var(--color-text-heading);
+    color: var(--color-surface);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .guestbook-badge-title {
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-md);
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+  }
+
+  .guestbook-badge-subtitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--font-size-sm);
+    opacity: 0.75;
+  }
+
+  .guestbook-badge:hover {
+    background: color-mix(in srgb, var(--color-text-heading) 85%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-text-heading) 85%, var(--color-surface));
+  }
+
+  :global(:root[data-theme='dark']) .guestbook-badge {
+    color: var(--color-text);
+    background: var(--color-surface);
+    border-color: var(--color-line-input);
+  }
+
+  :global(:root[data-theme='dark']) .guestbook-badge:hover {
+    color: var(--color-accent);
+    background: var(--color-surface);
+    border-color: var(--color-accent);
+  }
+</style>
