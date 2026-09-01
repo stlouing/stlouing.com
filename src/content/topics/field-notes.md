@@ -108,3 +108,13 @@ Since Missouri requires personal property taxes to be paid every year on cars re
 ### Candy Cane Lane
 
 A street in [[st-louis-hills|St. Louis Hills]] that goes all out during Christmas.
+
+### Art Hill
+
+Sledding on Art Hill in Forest Park is a common wintertime activity in St. Louis.
+
+## Brands
+
+There are a lot of regional products you'll see around in St. Louis. Fitz's is a popular root beer, Vess is a popular soda, and Red Hot Riplets are a popular potato chip brand.
+
+St. Louis Bread Co. is widely known as Panera outside of the region, though most of the locals have eschewed it since it was acquired by private equity.
