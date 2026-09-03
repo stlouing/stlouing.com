@@ -349,4 +349,4 @@ And of course - you guessed it - Kirkwood has a farmers market.
 
 ## Conclusion
 
-Did I miss a few spots? [Let me know](/feedback/)! I'm still learning and exploring so there's bound to be some areas I missed.
+Did I miss a few spots? [Let me know](/contact/)! I'm still learning and exploring so there's bound to be some areas I missed.

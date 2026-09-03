@@ -111,8 +111,8 @@ export const sections: Section[] = [
     description: 'Sign your name and leave a note.',
   },
   {
-    label: 'Feedback',
-    path: '/feedback/',
+    label: 'Contact',
+    path: '/contact/',
     group: 'site',
     primary: true,
     icon: 'message-circle-heart',

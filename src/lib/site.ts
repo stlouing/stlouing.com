@@ -14,7 +14,7 @@ export const NEWSLETTER_URL = import.meta.env.PUBLIC_NEWSLETTER_URL ?? ''
 // Feedback form endpoint (Formspree). Comes from the PUBLIC_FORMSPREE_URL env var
 // (a local .env in dev, the FORMSPREE_URL Actions variable in CI). The PUBLIC_
 // prefix is required — Vite only exposes prefixed vars to import.meta.env, and the
-// URL is public in the built page anyway. Empty when unset, where the /feedback
+// URL is public in the built page anyway. Empty when unset, where the /contact
 // page renders without the form (email fallback only).
 export const FEEDBACK_ENDPOINT = import.meta.env.PUBLIC_FORMSPREE_URL ?? ''
 

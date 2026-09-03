@@ -26,7 +26,7 @@ I'm generally following the principles of the [IndieWeb](https://indieweb.org/).
 
 I'd love to hear from you!
 
-- Fill out the [contact form](/feedback/)
+- Fill out the [contact form](/contact/)
 - Email me at [hello@stlouing.com](mailto:hello@stlouing.com)
 
 This site is the source of truth, and I'll automatically publish to these other platforms, following the [POSSE](https://indieweb.org/POSSE) practice (Publish on your Own Site, Syndicate Elsewhere).

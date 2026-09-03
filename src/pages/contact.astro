@@ -5,11 +5,11 @@ import { FEEDBACK_ENDPOINT } from '../lib/site'
 const description = 'Send a note, a correction, or a recommendation.'
 ---
 
-<BaseLayout article crumb="Feedback" description={description}>
+<BaseLayout article crumb="Contact" description={description}>
   <article class="page">
     <header class="entry-header entry-header-with-flag reading-col">
       <div class="entry-bar">
-        <h1>Feedback</h1>
+        <h1>Contact</h1>
       </div>
       <p class="entry-summary">
         If you have a question, comment, or if I got something wrong, please reach out!
@@ -20,7 +20,7 @@ const description = 'Send a note, a correction, or a recommendation.'
     <div class="feedback-body reading-col">
       {
         FEEDBACK_ENDPOINT && (
-          <section class="feedback-panel panel" aria-label="Feedback form">
+          <section class="feedback-panel panel" aria-label="Contact form">
             {/* <h2 class="feedback-title title-serif">Send feedback</h2> */}
             <form class="feedback-form" method="POST" action={FEEDBACK_ENDPOINT}>
               <label class="field">
