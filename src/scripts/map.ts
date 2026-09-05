@@ -218,14 +218,15 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     // closeOnClick:false — we manage closing (map-click + single-open) so the row
     // selection stays in sync. `anchor: 'bottom'` pins the popup ABOVE the marker
     // so it never flips sides as you pan/near edges; keepPopupInView pans the map
-    // to keep it on-screen instead. The offset lifts it clear of the marker.
+    // to keep it on-screen instead. The offset lifts it clear of the pin (which
+    // rises ~34px from its tip) — matches the neighborhood map's popup offset.
     const popup = new maplibregl.Popup({
       className: 'food-popup',
       closeButton: true,
       closeOnClick: false,
       anchor: 'bottom',
       maxWidth: '330px',
-      offset: 22,
+      offset: 38,
       focusAfterOpen: false,
     }).setHTML(popupHtml)
 

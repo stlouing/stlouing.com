@@ -1752,7 +1752,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .food-popup .tip-directions:not(:last-of-type) {
-  margin-block-end: var(--spacing-md);
+  margin-block-end: var(--spacing-sm);
 }
 
 .food-popup .tip-directions:hover {
