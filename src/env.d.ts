@@ -13,4 +13,9 @@ interface ImportMetaEnv {
   // Newsletter URL (Substack). Set in CI; unset on a clone, where the signup +
   // footer link self-hide.
   readonly PUBLIC_NEWSLETTER_URL?: string
+  // Supabase project URL + publishable (anon) key for reader data (verdict
+  // poll, guestbook, comments). Set in CI; unset on a clone, where those
+  // features render nothing.
+  readonly PUBLIC_SUPABASE_URL?: string
+  readonly PUBLIC_SUPABASE_ANON_KEY?: string
 }

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import { Image, getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Comments from '../../components/Comments.astro'
 import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import ReadersVerdict from '../../components/ReadersVerdict.astro'
@@ -25,7 +26,6 @@ import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
-import GuestbookBadge from '../../components/GuestbookBadge.astro'
 
 // Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
@@ -198,6 +198,8 @@ const seoDescription = hasBody(entry)
           )
         }
 
+        <Comments kind="food" slug={entry.id} title={data.title} />
+
         <section class="more-food">
           {
             relatedNeighborhood.length > 0 && (
@@ -207,6 +209,7 @@ const seoDescription = hasBody(entry)
                     href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={place.data.cuisine[0]}
+                    description={place.data.description}
                     verdict={verdict}
                     unratedLabel={unratedLabel}
                   />
@@ -223,6 +226,7 @@ const seoDescription = hasBody(entry)
                     title={place.data.title}
                     meta={place.data.neighborhood}
                     metaType="neighborhood"
+                    description={place.data.description}
                     verdict={verdict}
                     unratedLabel={unratedLabel}
                   />
@@ -313,7 +317,6 @@ const seoDescription = hasBody(entry)
             </>
           )
         }
-        <GuestbookBadge />
       </aside>
     </div>
   </Entry>

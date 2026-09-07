@@ -1,8 +1,9 @@
 // Readers' Verdict — a per-restaurant 👍/👎 poll backed by Supabase (PostgREST).
 // A browser identifies itself with a random voter_id kept in localStorage, so it votes
-// once per place (re-votable, upserted server-side), the tally is live, and an optional
-// private note (name + comment) can be attached. No third-party SDK — just fetch against
-// the anon REST API, which is safe because the table is RLS-locked behind cast_vote().
+// once per place (re-votable, upserted server-side) and the tally is live. No
+// third-party SDK — just fetch against the anon REST API, which is safe because
+// the table is RLS-locked behind cast_vote(). Public discussion lives in the
+// separate Comments section (comments.ts); the old private-note form is gone.
 
 import { browserId } from './browser-id'
 
@@ -10,8 +11,8 @@ const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
 // All reader state lives under ONE localStorage key: a stable browser id plus a
-// per-slug record (vote, whether a note was left, whether the note form was
-// collapsed). One object instead of three keys per place.
+// per-slug record. One object instead of a key per place. (Older stores may
+// still carry `noted`/`collapsed` flags from the retired note form — harmless.)
 const STORE_KEY = 'stl_reader'
 
 type Counts = { likes: number; dislikes: number }
@@ -19,13 +20,8 @@ type Counts = { likes: number; dislikes: number }
 type Choice = 'like' | 'dislike'
 
 // One place's remembered state; absent fields mean "no". Purely a client-side
-// convenience (the vote also lives server-side under the voter id) — the collapse
-// flag never leaves the browser.
-type PlaceState = {
-  vote?: Choice
-  noted?: boolean
-  collapsed?: boolean
-}
+// convenience (the vote also lives server-side under the voter id).
+type PlaceState = { vote?: Choice }
 
 type ReaderStore = {
   voterId?: string
@@ -56,15 +52,7 @@ function setupWidget(root: HTMLElement): void {
   const likeCount = root.querySelector<HTMLElement>('[data-count-like]')
   const dislikeCount = root.querySelector<HTMLElement>('[data-count-dislike]')
   const cta = root.querySelector<HTMLElement>('[data-cta]')
-  const note = root.querySelector<HTMLElement>('[data-note]')
   const voteStatus = root.querySelector<HTMLElement>('[data-vote-status]')
-  const noteForm = root.querySelector<HTMLFormElement>('[data-note-form]')
-  const noteTrigger = root.querySelector<HTMLButtonElement>('[data-note-trigger]')
-  const noteClose = root.querySelector<HTMLButtonElement>('[data-note-close]')
-  const nameInput = root.querySelector<HTMLInputElement>('[data-note-name]')
-  const commentInput = root.querySelector<HTMLTextAreaElement>('[data-note-comment]')
-  const honeypot = root.querySelector<HTMLInputElement>('[data-note-hp]')
-  const noteStatus = root.querySelector<HTMLElement>('[data-note-status]')
 
   if (!likeButton || !dislikeButton) {
     return
@@ -121,9 +109,6 @@ function setupWidget(root: HTMLElement): void {
     setStatus(voteStatus, '')
     lockButtons()
     render()
-    revealNote(note)
-    // A fresh vote opens the note expanded, inviting a comment.
-    setCollapsed(false)
 
     try {
       counts = await castVote({ slug, liked: next === 'like' })
@@ -134,7 +119,6 @@ function setupWidget(root: HTMLElement): void {
       // Never reached the server — roll back so a transient failure stays retryable.
       choice = null
       clearChoice(slug)
-      hideNote(note)
       likeButton.disabled = false
       dislikeButton.disabled = false
       render()
@@ -154,72 +138,9 @@ function setupWidget(root: HTMLElement): void {
     void vote('dislike')
   })
 
-  // Toggle the note between its full form and the compact "Leave a comment" trigger.
-  // The collapsed choice is remembered in localStorage, so it sticks across reloads.
-  const setCollapsed = (collapsed: boolean): void => {
-    if (noteForm) {
-      noteForm.hidden = collapsed
-    }
-    if (noteTrigger) {
-      noteTrigger.hidden = !collapsed
-    }
-  }
-
-  noteForm?.addEventListener('submit', (submitEvent) => {
-    submitEvent.preventDefault()
-    void submitNote()
-  })
-
-  noteClose?.addEventListener('click', () => {
-    writeCollapsed(slug)
-    setCollapsed(true)
-  })
-
-  noteTrigger?.addEventListener('click', () => {
-    clearCollapsed(slug)
-    setCollapsed(false)
-    nameInput?.focus()
-  })
-
-  const submitNote = async (): Promise<void> => {
-    // Honeypot: a real person never fills the hidden field. Pretend success, do nothing.
-    if (honeypot?.value) {
-      setStatus(noteStatus, 'Thanks!')
-
-      return
-    }
-
-    const name = nameInput?.value.trim() ?? ''
-    const comment = commentInput?.value.trim() ?? ''
-
-    if (!name && !comment) {
-      setStatus(noteStatus, '')
-
-      return
-    }
-
-    // The name is optional; an unnamed note is attributed to "Anonymous" (which
-    // also satisfies the server's name-required-with-comment rule). Once saved, the
-    // reader is done — the note area collapses away (no confirmation line).
-    try {
-      await addNote({ slug, name: name || 'Anonymous', comment: comment || null })
-      writeNoted(slug)
-      hideNote(note)
-    } catch {
-      setStatus(noteStatus, "Couldn't save that — try again.")
-    }
-  }
-
-  // Wire up: enable the buttons only if this browser hasn't voted yet; a returning voter
-  // stays locked in. The note form shows only for a voter who hasn't left one yet. Then
-  // load live counts.
-  if (choice) {
-    if (!readNoted(slug)) {
-      revealNote(note)
-      // Honor the reader's remembered collapse choice for this place.
-      setCollapsed(readCollapsed(slug))
-    }
-  } else {
+  // Wire up: enable the buttons only if this browser hasn't voted yet; a returning
+  // voter stays locked in. Then load live counts.
+  if (!choice) {
     likeButton.disabled = false
     dislikeButton.disabled = false
   }
@@ -273,30 +194,6 @@ async function castVote(input: { slug: string; liked: boolean }): Promise<Counts
   return toCounts(rows[0])
 }
 
-// Attach (or clear) the private note on the caller's existing vote. The server UPDATEs
-// in place and refuses when there's no vote yet — so a note can only follow a vote, and
-// it never touches the tally.
-async function addNote(input: {
-  slug: string
-  name: string | null
-  comment: string | null
-}): Promise<void> {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/add_note`, {
-    method: 'POST',
-    headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      p_slug: input.slug,
-      p_voter_id: voterId(),
-      p_name: input.name,
-      p_comment: input.comment,
-    }),
-  })
-
-  if (!response.ok) {
-    throw new Error(`add_note responded ${response.status}`)
-  }
-}
-
 // Anonymous access rides in the `apikey` header only. This works for both the newer
 // sb_publishable_… key (which isn't a JWT, so it must NOT go in a Bearer Authorization
 // header) and the legacy anon JWT. PostgREST falls back to the anon role when there's no
@@ -346,12 +243,6 @@ function patchPlace(slug: string, patch: PlaceState): void {
   if (!next.vote) {
     delete next.vote
   }
-  if (!next.noted) {
-    delete next.noted
-  }
-  if (!next.collapsed) {
-    delete next.collapsed
-  }
 
   if (Object.keys(next).length > 0) {
     places[slug] = next
@@ -383,38 +274,6 @@ function clearChoice(slug: string): void {
   patchPlace(slug, { vote: undefined })
 }
 
-function readNoted(slug: string): boolean {
-  return readPlace(slug).noted === true
-}
-
-function writeNoted(slug: string): void {
-  patchPlace(slug, { noted: true })
-}
-
-function readCollapsed(slug: string): boolean {
-  return readPlace(slug).collapsed === true
-}
-
-function writeCollapsed(slug: string): void {
-  patchPlace(slug, { collapsed: true })
-}
-
-function clearCollapsed(slug: string): void {
-  patchPlace(slug, { collapsed: false })
-}
-
-function revealNote(note: HTMLElement | null): void {
-  if (note) {
-    note.hidden = false
-  }
-}
-
-function hideNote(note: HTMLElement | null): void {
-  if (note) {
-    note.hidden = true
-  }
-}
-
 function setStatus(element: HTMLElement | null, message: string): void {
   if (element) {
     element.textContent = message
@@ -436,4 +295,3 @@ function safeSet(key: string, value: string): void {
     // Storage blocked (private mode / disabled) — nothing to persist.
   }
 }
-

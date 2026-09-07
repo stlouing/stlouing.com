@@ -11,6 +11,14 @@ export const TAGLINE = `An independent guide to the food, neighborhoods, and cul
 
 export const NEWSLETTER_URL = import.meta.env.PUBLIC_NEWSLETTER_URL ?? ''
 
+// True when the site is built with Supabase creds (a local .env in dev, Actions
+// variables in CI). Gates every reader-data feature — the verdict poll,
+// guestbook, reader favorites, and comments all render nothing (or a fallback
+// line) without them.
+export const SUPABASE_ENABLED = Boolean(
+  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+)
+
 // Feedback form endpoint (Formspree). Comes from the PUBLIC_FORMSPREE_URL env var
 // (a local .env in dev, the FORMSPREE_URL Actions variable in CI). The PUBLIC_
 // prefix is required — Vite only exposes prefixed vars to import.meta.env, and the

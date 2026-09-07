@@ -9,6 +9,7 @@ import ShareButton from './ShareButton.astro'
 import { NEWSLETTER_URL, SOCIALS } from '../lib/site'
 import IconInstagram from '../assets/IconInstagram.astro'
 import IconMail from '../assets/IconMail.astro'
+import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
 
 interface Props {
   title: string
@@ -16,9 +17,10 @@ interface Props {
   headingClass?: string
   // Small uppercase kicker above the title (topic pages pass their category).
   eyebrow?: string
+  commentsAnchor?: boolean
 }
 
-const { title, headingClass, eyebrow } = Astro.props
+const { title, headingClass, eyebrow, commentsAnchor = false } = Astro.props
 const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 ---
 
@@ -57,6 +59,17 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
               target="_blank"
               rel="noopener">
               <IconMail /> Newsletter
+            </a>
+          )
+        }
+        {
+          commentsAnchor && (
+            <a
+              class="btn btn-outline btn-compact masthead-pill"
+              href="#comments"
+              data-comments-link
+              hidden>
+              <IconMessageCircleHeart /> <span data-comments-link-label>Comments</span>
             </a>
           )
         }
@@ -185,6 +198,10 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
   .page-masthead :global(.masthead-pill svg) {
     width: 16px;
     height: 16px;
+  }
+
+  .page-masthead :global(.masthead-pill[hidden]) {
+    display: none;
   }
 
   .masthead-wave {

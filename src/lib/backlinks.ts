@@ -12,6 +12,7 @@ export interface Backlink {
   title: string
   url: string
   collection: string
+  description?: string
 }
 
 const WIKILINK = /\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g
@@ -27,6 +28,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
     id: string
     collection: string
     title: string
+    description?: string
     body: string
   }
   const sources: Source[] = []
@@ -34,7 +36,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
     Entry extends {
       id: string
       body?: string
-      data: { title?: string; draft?: boolean | undefined }
+      data: { title?: string; description?: string; draft?: boolean | undefined }
     },
   >(
     collection: string,
@@ -45,6 +47,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
         id: entry.id,
         collection,
         title: entry.data.title ?? entry.id,
+        description: entry.data.description,
         body: entry.body ?? '',
       })
     }
@@ -77,6 +80,7 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
         title: source.title,
         url: entryUrl(source.collection, source.id),
         collection: source.collection,
+        description: source.description,
       })
       map.set(target, list)
     }

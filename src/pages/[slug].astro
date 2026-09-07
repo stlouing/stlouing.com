@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import BoundaryMap from '../components/BoundaryMap.astro'
+import Comments from '../components/Comments.astro'
 import CorridorMap from '../components/CorridorMap.astro'
 import Entry from '../components/Entry.astro'
 import EntryDates from '../components/EntryDates.astro'
@@ -74,6 +75,7 @@ const schema = articleSchema(
     <Fragment slot="footer-meta">
       <EntryDates created={data.created} updated={data.updated} />
     </Fragment>
+    <Comments slot="comments" kind="topic" slug={entry.id} title={data.title} />
     <div class:list={['topic-layout', 'reading-col', { 'topic-list': data.display === 'list' }]}>
       <Content />
     </div>

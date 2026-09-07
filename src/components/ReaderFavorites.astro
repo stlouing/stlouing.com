@@ -6,6 +6,7 @@
 // until the RPC answers; without Supabase creds it renders nothing at all.
 import { getCollection } from 'astro:content'
 import { published } from '../lib/content'
+import { SUPABASE_ENABLED } from '../lib/site'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 
 interface Props {
@@ -20,9 +21,7 @@ interface Props {
 
 const { title = 'Reader Favorites', subtitle, maxRows = 10, quiet = false } = Astro.props
 
-const readersEnabled = Boolean(
-  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-)
+const readersEnabled = SUPABASE_ENABLED
 
 const food = published(await getCollection('food'))
 const placeTitles = Object.fromEntries(food.map((place) => [place.id, place.data.title]))

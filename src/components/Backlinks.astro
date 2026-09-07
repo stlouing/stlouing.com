@@ -43,7 +43,12 @@ const labelByCollection: Record<string, string> = {
         const label = labelByCollection[link.collection] ?? link.collection
 
         return (
-          <RelatedCard href={href(link.url)} title={link.title} meta={label} metaType="text">
+          <RelatedCard
+            href={href(link.url)}
+            title={link.title}
+            meta={label}
+            metaType="text"
+            description={link.description}>
             <Icon slot="icon" />
           </RelatedCard>
         )

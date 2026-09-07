@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import FoodCard from '../components/FoodCard.astro'
 import ReaderFavorites from '../components/ReaderFavorites.astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
+import { SUPABASE_ENABLED } from '../lib/site'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
@@ -31,9 +32,7 @@ const awards = [
 // The Reader Favorites aside is live data (Supabase get_reader_ratings) —
 // ReaderFavorites renders nothing without creds, and the aside is gated too so
 // a credless build doesn't leave an empty right column.
-const readersEnabled = Boolean(
-  import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-)
+const readersEnabled = SUPABASE_ENABLED
 
 const description = "The best of the St. Louis food I've tried, by category."
 ---

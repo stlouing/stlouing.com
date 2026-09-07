@@ -2114,6 +2114,17 @@ body:has([data-filter-root]) .masthead-nav {
   margin-inline: auto;
 }
 
+/* Reader comments (the Entry `comments` slot) track the article column: the
+   plain .body cap by default, the centered reading column on topic pages. */
+.entry-comments {
+  max-width: 70ch;
+}
+
+.entry:has(.topic-layout) .entry-comments {
+  max-width: var(--measure-reading);
+  margin-inline: auto;
+}
+
 .entry-bar {
   display: flex;
   flex-wrap: wrap;
