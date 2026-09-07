@@ -31,6 +31,9 @@ interface Props {
   masthead?: boolean
   // Uppercase kicker above the masthead title (a topic's category).
   eyebrow?: string
+  // The river ornament under the classic headline. Neighborhood pages drop it —
+  // the masthead map right below makes it noise.
+  riverBorder?: boolean
 }
 
 const {
@@ -41,6 +44,7 @@ const {
   share = true,
   masthead = false,
   eyebrow,
+  riverBorder = true,
 } = Astro.props
 const isArticle = Boolean(permalink)
 ---
@@ -65,7 +69,7 @@ const isArticle = Boolean(permalink)
               <slot name="lede" />
             </div>
           </div>
-          <div class="river-border-basic" aria-hidden="true" />
+          {riverBorder && <div class="river-border-basic" aria-hidden="true" />}
         </div>
       )
     }

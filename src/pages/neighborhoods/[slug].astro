@@ -217,7 +217,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
   ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
   ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}>
   <Breadcrumbs trail={trail} />
-  <Entry title={title} backlinks={backlinks} share={false}>
+  <Entry title={title} backlinks={backlinks} share={false} riverBorder={false}>
     {
       summary && (
         <p class="entry-summary" slot="lede">
@@ -262,6 +262,25 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
         }
 
         {
+          places.length > 0 && (
+            <RelatedList title="Food & drink">
+              {places.map((place) => (
+                <RelatedCard
+                  href={href(`/food/${place.id}/`)}
+                  title={place.data.title}
+                  meta={place.data.cuisine[0]}
+                  description={place.data.description}
+                  verdict={resolveVerdict(place.data)}
+                  unratedLabel={
+                    resolveVerdict(place.data) ? undefined : resolveWriterState(place.data).statement
+                  }
+                />
+              ))}
+            </RelatedList>
+          )
+        }
+
+        {
           corridors.length > 0 && (
             <RelatedList title="Walkable streets">
               {corridors.map((corridor) => (
@@ -294,25 +313,6 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
           )
         }
 
-
-        {
-          places.length > 0 && (
-            <RelatedList title="Nearby Food">
-              {places.map((place) => (
-                <RelatedCard
-                  href={href(`/food/${place.id}/`)}
-                  title={place.data.title}
-                  meta={place.data.cuisine[0]}
-                  description={place.data.description}
-                  verdict={resolveVerdict(place.data)}
-                  unratedLabel={
-                    resolveVerdict(place.data) ? undefined : resolveWriterState(place.data).statement
-                  }
-                />
-              ))}
-            </RelatedList>
-          )
-        }
 
         {
           festivals.length > 0 && (
@@ -359,7 +359,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
             </>
           )
         }
-        <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
+        <NeighborhoodFacts population={population} spots={places.length} />
         {
           nearbyNeighbors.length > 0 && (
             <nav class="neighbor-rail" aria-label="Nearby neighborhoods">
@@ -392,6 +392,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
             </nav>
           )
         }
+        <NeighborhoodFacts tags={tags} />
       </aside>
     </div>
   </Entry>
