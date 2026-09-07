@@ -1,0 +1,86 @@
+---
+// The neighborhood page's masthead map: a wide basemap banner under the title
+// with the neighborhood's boundary (in its region color) and a clickable pin
+// per mapped food spot. src/scripts/neighborhood-hero.ts mounts the MapLibre
+// map; the spot list is baked in as JSON so the script needs no fetch. County
+// areas without a boundary polygon center on their coords instead.
+import { href } from '../lib/url'
+
+interface HeroSpot {
+  title: string
+  url: string
+  // [lng, lat] — flipped from the food frontmatter's [lat, lng] by the page.
+  coords: [number, number]
+}
+
+interface Props {
+  slug: string
+  // The region's map-color token (e.g. --color-map-south) for the boundary.
+  boundaryToken: string
+  // Fallback center [lat, lng] for areas without a boundary polygon.
+  coords?: [number, number]
+  spots: HeroSpot[]
+}
+
+const { slug, boundaryToken, coords, spots } = Astro.props
+---
+
+<figure class="neighborhood-hero">
+  <div
+    class="neighborhood-hero-map"
+    data-neighborhood-hero
+    data-slug={slug}
+    data-boundary-token={boundaryToken}
+    data-coords={coords?.join(',')}>
+  </div>
+  <script
+    is:inline
+    type="application/json"
+    data-neighborhood-hero-spots
+    set:html={JSON.stringify(spots)}
+  />
+  <figcaption class="neighborhood-hero-caption">
+    <a href={href('/neighborhoods/')}>← Back to the neighborhood map</a>
+  </figcaption>
+</figure>
+
+<script>
+  import { initNeighborhoodHero } from '../scripts/neighborhood-hero'
+  initNeighborhoodHero()
+</script>
+
+<style>
+  .neighborhood-hero {
+    margin: 0 0 var(--spacing-lg);
+  }
+
+  .neighborhood-hero-map {
+    height: 440px;
+    border: 2px solid var(--color-line-contrast);
+    background: var(--color-surface-2);
+  }
+
+  .neighborhood-hero-caption {
+    margin-block-start: var(--spacing-xs);
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+  }
+
+  .neighborhood-hero-caption a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .neighborhood-hero-caption a:hover {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 700px) {
+    .neighborhood-hero-map {
+      height: 320px;
+    }
+  }
+</style>

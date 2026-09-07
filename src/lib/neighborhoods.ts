@@ -126,6 +126,77 @@ export function hasNeighborhoodShape(slug: string): boolean {
   return slug in (geo.shapes as Record<string, string>)
 }
 
+// --- Neighbor compass bearings ------------------------------------------------
+// Bucketed compass bearing (0/45/…/315 degrees clockwise from north) from one
+// neighborhood toward another, for the Nearby Neighborhoods rail's direction
+// arrows. City neighborhoods compare shape centers in the shared projected
+// viewBox (x grows east, y grows SOUTH — SVG y points down); county
+// municipalities compare [lat, lng] coords. A pair without a shared space (one
+// shape, one coords) gets no bearing — the projected viewBox and raw degrees
+// aren't comparable.
+
+const shapeCenterBySlug = new Map<string, { x: number; y: number }>()
+
+function shapeCenter(slug: string): { x: number; y: number } | undefined {
+  const cached = shapeCenterBySlug.get(slug)
+  if (cached) {
+    return cached
+  }
+
+  const path = (geo.shapes as Record<string, string>)[slug]
+  if (!path) {
+    return undefined
+  }
+
+  // Bounding-box center of the SVG path: pairs of x,y numbers throughout.
+  const numbers = path.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? []
+  let minX = Infinity
+  let minY = Infinity
+  let maxX = -Infinity
+  let maxY = -Infinity
+  for (let index = 0; index < numbers.length - 1; index += 2) {
+    minX = Math.min(minX, numbers[index])
+    maxX = Math.max(maxX, numbers[index])
+    minY = Math.min(minY, numbers[index + 1])
+    maxY = Math.max(maxY, numbers[index + 1])
+  }
+  if (!Number.isFinite(minX)) {
+    return undefined
+  }
+
+  const center = { x: (minX + maxX) / 2, y: (minY + maxY) / 2 }
+  shapeCenterBySlug.set(slug, center)
+
+  return center
+}
+
+export function neighborBearing(fromSlug: string, toSlug: string): number | undefined {
+  const fromShape = shapeCenter(fromSlug)
+  const toShape = shapeCenter(toSlug)
+
+  // Bearing in degrees clockwise from north.
+  let bearing: number | undefined
+  if (fromShape && toShape) {
+    bearing =
+      (Math.atan2(toShape.x - fromShape.x, -(toShape.y - fromShape.y)) * 180) / Math.PI
+  } else {
+    const fromCoords = infoBySlug.get(fromSlug)?.coords
+    const toCoords = infoBySlug.get(toSlug)?.coords
+    if (fromCoords && toCoords) {
+      const eastward =
+        (toCoords[1] - fromCoords[1]) * Math.cos((fromCoords[0] * Math.PI) / 180)
+      const northward = toCoords[0] - fromCoords[0]
+      bearing = (Math.atan2(eastward, northward) * 180) / Math.PI
+    }
+  }
+
+  if (bearing === undefined) {
+    return undefined
+  }
+
+  return (((Math.round(bearing / 45) % 8) + 8) % 8) * 45
+}
+
 // 2020 U.S. Census population for a neighborhood, or undefined where there's none
 // (parks/cemeteries). See scripts/build-neighborhood-population.mjs.
 export function neighborhoodPopulation(slug: string): number | undefined {

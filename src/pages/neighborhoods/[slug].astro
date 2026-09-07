@@ -7,7 +7,7 @@ import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
-import NeighborhoodLocator from '../../components/NeighborhoodLocator.astro'
+import NeighborhoodHero from '../../components/NeighborhoodHero.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
@@ -18,6 +18,7 @@ import { getBacklinks } from '../../lib/backlinks'
 import {
   foodByNeighborhood,
   normalizeName,
+  neighborBearing,
   neighborhoodInfo,
   hasNeighborhoodShape,
   neighborhoodPopulation,
@@ -109,28 +110,19 @@ const corridors = walkableStLouisLive ? corridorsIn(slug) : []
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
-// Each neighborhood's tagline + vibe tags (and whether it has a writeup), keyed by
-// slug, for the "Nearby Neighborhoods" cards. Unexplored neighborhoods have no
-// tagline/tags and fall back to a placeholder on the card.
-const neighborMetaBySlug = new Map(
+// Which neighborhoods have a writeup, keyed by slug, so the Neighbors rail can
+// lead with explored ones.
+const writtenBySlug = new Map(
   published(await getCollection('neighborhoods')).map((neighborhoodEntry) => [
     neighborhoodEntry.id,
-    {
-      description: neighborhoodEntry.data.description,
-      tags: neighborhoodEntry.data.tags ?? [],
-      written: Boolean(neighborhoodEntry.body && neighborhoodEntry.body.trim()),
-    },
+    Boolean(neighborhoodEntry.body && neighborhoodEntry.body.trim()),
   ]),
 )
 
 // Show up to 5 nearby neighborhoods, explored ones first — unexplored ones only
 // fill in when there aren't 5 explored neighbors to show.
-const exploredNeighbors = neighbors.filter(
-  (neighbor) => neighborMetaBySlug.get(neighbor.slug)?.written,
-)
-const unexploredNeighbors = neighbors.filter(
-  (neighbor) => !neighborMetaBySlug.get(neighbor.slug)?.written,
-)
+const exploredNeighbors = neighbors.filter((neighbor) => writtenBySlug.get(neighbor.slug))
+const unexploredNeighbors = neighbors.filter((neighbor) => !writtenBySlug.get(neighbor.slug))
 const nearbyNeighbors = [...exploredNeighbors, ...unexploredNeighbors].slice(0, 5)
 
 // External resources: the place's own site (if any), Wikipedia, and the
@@ -185,6 +177,34 @@ const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods/' },
   ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}/` }] : []),
 ]
+
+// The masthead map's food pins: every mapped spot in this neighborhood, coords
+// flipped to MapLibre's [lng, lat] order (food frontmatter stores [lat, lng]).
+const heroSpots = places.flatMap((place) => {
+  const [lat, lng] = place.data.coords ?? []
+
+  return lat !== undefined && lng !== undefined
+    ? [
+        {
+          title: place.data.title,
+          url: `/food/${place.id}/`,
+          coords: [lng, lat] as [number, number],
+        },
+      ]
+    : []
+})
+
+// Boundary color for the masthead map: the same region tokens the
+// neighborhoods index map paints its polygons with.
+const boundaryTokenByRegion: Record<string, string> = {
+  'north-city': '--color-map-north',
+  'central-corridor': '--color-map-central',
+  'south-city': '--color-map-south',
+  'st-louis-county': '--color-map-county',
+  parks: '--color-map-park',
+}
+const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-accent'
+
 ---
 
 <BaseLayout
@@ -203,6 +223,16 @@ const trail = [
         <p class="entry-summary" slot="lede">
           {summary}
         </p>
+      )
+    }
+    {
+      (hasNeighborhoodShape(slug) || info?.coords) && (
+        <NeighborhoodHero
+          slug={slug}
+          boundaryToken={boundaryToken}
+          coords={info?.coords}
+          spots={heroSpots}
+        />
       )
     }
     <div class="detail-layout">
@@ -230,8 +260,6 @@ const trail = [
             </Byline>
           )
         }
-
-        <Comments kind="neighborhood" slug={slug} title={title} />
 
         {
           corridors.length > 0 && (
@@ -302,41 +330,9 @@ const trail = [
           )
         }
 
-        {
-          nearbyNeighbors.length > 0 && (
-            <RelatedList title="Nearby Neighborhoods">
-              {nearbyNeighbors.map((neighbor) => {
-                const neighborMeta = neighborMetaBySlug.get(neighbor.slug)
-                return (
-                  <RelatedCard
-                    href={href(`/neighborhoods/${neighbor.slug}/`)}
-                    title={neighbor.name}
-                    meta={neighbor.group}
-                    metaType="neighborhood"
-                    description={neighborMeta?.description ?? ''}
-                    tags={[]}>
-                    <IconMapPin slot="icon" />
-                  </RelatedCard>
-                )
-              })}
-            </RelatedList>
-          )
-        }
+        <Comments kind="neighborhood" slug={slug} title={title} />
       </div>
       <aside class="detail-aside">
-        {
-          (hasNeighborhoodShape(slug) || info?.coords) && (
-            <div class="neighborhood-map-block">
-              <h2 class="detail-section-label head-black head-black--sm head-rule">Map</h2>
-              <figure class="neighborhood-locator-figure">
-                <NeighborhoodLocator slug={slug} name={title} coords={info?.coords} />
-              </figure>
-              <a class="continue-link aside-more-link" href={href('/neighborhoods/')}>
-                Back to neighborhood map <IconArrowRight />
-              </a>
-            </div>
-          )
-        }
         {
           resourceLinks.length > 0 && (
             <>
@@ -364,21 +360,108 @@ const trail = [
           )
         }
         <NeighborhoodFacts population={population} spots={places.length} tags={tags} />
+        {
+          nearbyNeighbors.length > 0 && (
+            <nav class="neighbor-rail" aria-label="Nearby neighborhoods">
+              <h2 class="detail-section-label head-black head-black--sm head-rule">
+                Nearby Neighborhoods
+              </h2>
+              <ul class="neighbor-list">
+                {nearbyNeighbors.map((neighbor) => {
+                  // The pixel arrow points east at rest, so a compass bearing
+                  // (clockwise from north) becomes its CSS rotation by -90°.
+                  const bearing = neighborBearing(slug, neighbor.slug)
+                  const rotation = bearing === undefined ? undefined : (bearing + 270) % 360
+
+                  return (
+                    <li>
+                      <a href={href(`/neighborhoods/${neighbor.slug}/`)}>
+                        {neighbor.name}
+                        {rotation !== undefined && (
+                          <span
+                            class:list={['neighbor-arrow', `neighbor-arrow--r${rotation}`]}
+                            aria-hidden="true">
+                            <IconArrowRight />
+                          </span>
+                        )}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
+          )
+        }
       </aside>
     </div>
   </Entry>
 </BaseLayout>
 
 <style>
-  .neighborhood-locator-figure {
+  .neighbor-list {
+    list-style: none;
     margin: 0;
+    padding: 0;
   }
 
-  .neighborhood-locator-figure figcaption {
-    margin-block-start: var(--spacing-xs);
+  .neighbor-list li + li {
+    border-block-start: 1px dotted var(--color-line-input);
+  }
+
+  .neighbor-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding-block: var(--spacing-xs);
     font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .neighbor-list a:hover {
+    color: var(--color-accent-blue);
+  }
+
+  /* The compass arrow, right-aligned on every row: the pixel arrow icon
+     rotated per direction. */
+  .neighbor-arrow {
+    display: inline-flex;
     color: var(--color-muted);
-    text-align: center;
+  }
+
+  .neighbor-arrow :global(.icon) {
+    width: 14px;
+    height: 14px;
+  }
+
+  .neighbor-arrow--r45 :global(.icon) {
+    transform: rotate(45deg);
+  }
+
+  .neighbor-arrow--r90 :global(.icon) {
+    transform: rotate(90deg);
+  }
+
+  .neighbor-arrow--r135 :global(.icon) {
+    transform: rotate(135deg);
+  }
+
+  .neighbor-arrow--r180 :global(.icon) {
+    transform: rotate(180deg);
+  }
+
+  .neighbor-arrow--r225 :global(.icon) {
+    transform: rotate(225deg);
+  }
+
+  .neighbor-arrow--r270 :global(.icon) {
+    transform: rotate(270deg);
+  }
+
+  .neighbor-arrow--r315 :global(.icon) {
+    transform: rotate(315deg);
   }
 </style>
