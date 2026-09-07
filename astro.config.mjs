@@ -166,9 +166,7 @@ export default defineConfig({
   // the slashless form, so keep every route + internal link on the slash form.
   trailingSlash: 'always',
   // The "Backlog" page used to live at /food/want-to-try; keep old links alive.
-  redirects: {
-    '/food/want-to-try/': '/food/backlog/',
-  },
+  redirects: { '/food/want-to-try/': '/food/backlog/' },
   integrations: [
     sitemap({
       // Tag/aggregation pages are noindex (see BaseLayout `noindex`), so keep them

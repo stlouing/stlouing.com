@@ -10,10 +10,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 const DEFAULT_MAX_ROWS = 10
 
 // Likes only — dislikes never factor into this ranking.
-type ReaderRating = {
-  slug: string
-  likes: number
-}
+type ReaderRating = { slug: string; likes: number }
 
 // Lucide thumbs-up, matching the ReadersVerdict poll button icon.
 const THUMBS_UP_SVG =

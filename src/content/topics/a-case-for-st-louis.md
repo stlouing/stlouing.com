@@ -58,7 +58,6 @@ Regional food, golf carts, Halloween jokes.
 
 ## Conclusion
 
-
 - so much local love and pride and local restaurants
 - so many events
 - has the infrastructure to hold a larger population

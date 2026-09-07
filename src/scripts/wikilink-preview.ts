@@ -3,7 +3,7 @@
 // for ~1s, fetch the shared preview map once and show a small title + excerpt
 // card near the link. Touch / coarse-pointer devices just follow the link.
 
-import { cuisineLabel } from "../lib/cuisine"
+import { cuisineLabel } from '../lib/cuisine'
 
 interface Preview {
   title: string

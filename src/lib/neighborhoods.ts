@@ -177,14 +177,12 @@ export function neighborBearing(fromSlug: string, toSlug: string): number | unde
   // Bearing in degrees clockwise from north.
   let bearing: number | undefined
   if (fromShape && toShape) {
-    bearing =
-      (Math.atan2(toShape.x - fromShape.x, -(toShape.y - fromShape.y)) * 180) / Math.PI
+    bearing = (Math.atan2(toShape.x - fromShape.x, -(toShape.y - fromShape.y)) * 180) / Math.PI
   } else {
     const fromCoords = infoBySlug.get(fromSlug)?.coords
     const toCoords = infoBySlug.get(toSlug)?.coords
     if (fromCoords && toCoords) {
-      const eastward =
-        (toCoords[1] - fromCoords[1]) * Math.cos((fromCoords[0] * Math.PI) / 180)
+      const eastward = (toCoords[1] - fromCoords[1]) * Math.cos((fromCoords[0] * Math.PI) / 180)
       const northward = toCoords[0] - fromCoords[0]
       bearing = (Math.atan2(eastward, northward) * 180) / Math.PI
     }

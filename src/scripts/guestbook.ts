@@ -92,8 +92,7 @@ function setupGuestbook(root: HTMLElement): void {
 
   const renderCount = (): void => {
     if (countLabel) {
-      countLabel.textContent =
-        total === 0 ? '' : total === 1 ? '1 message' : `${total} messages`
+      countLabel.textContent = total === 0 ? '' : total === 1 ? '1 message' : `${total} messages`
     }
     if (emptyLine) {
       emptyLine.hidden = total > 0
@@ -177,13 +176,7 @@ function setupGuestbook(root: HTMLElement): void {
 
       // The server accepted it — show it at the top right away rather than re-fetching.
       entriesList.prepend(
-        buildEntry({
-          id: 0,
-          name,
-          message,
-          created_at: new Date().toISOString(),
-          total: 0,
-        }),
+        buildEntry({ id: 0, name, message, created_at: new Date().toISOString(), total: 0 }),
       )
       shown += 1
       total += 1
@@ -256,11 +249,7 @@ async function signGuestbook(input: { name: string; message: string }): Promise<
   const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/sign_guestbook`, {
     method: 'POST',
     headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      p_name: input.name,
-      p_message: input.message,
-      p_signer_id: signerId(),
-    }),
+    body: JSON.stringify({ p_name: input.name, p_message: input.message, p_signer_id: signerId() }),
   })
 
   if (!response.ok) {

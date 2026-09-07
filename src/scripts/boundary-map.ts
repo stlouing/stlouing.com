@@ -72,13 +72,7 @@ export function initBoundaryMap(selector = '[data-boundary-map]'): void {
 
   function applyBoundaryLayers(): void {
     const colors = readBoundaryColors()
-    const colorByFips = [
-      'match',
-      ['get', 'fips'],
-      '29510',
-      colors.city,
-      colors.county,
-    ]
+    const colorByFips = ['match', ['get', 'fips'], '29510', colors.city, colors.county]
 
     if (!map.getSource(SOURCE_ID)) {
       map.addSource(SOURCE_ID, { type: 'geojson', data: collection })

@@ -56,10 +56,7 @@ async function loadBoundary(slug: string): Promise<BoundaryFeature | undefined> 
 }
 
 // Walk a Polygon/MultiPolygon's coordinates and extend the bbox with each point.
-function extendWithGeometry(
-  coordinates: unknown,
-  extend: (point: [number, number]) => void,
-): void {
+function extendWithGeometry(coordinates: unknown, extend: (point: [number, number]) => void): void {
   if (!Array.isArray(coordinates)) {
     return
   }
@@ -114,11 +111,7 @@ function readBoundaryColor(token: string): string {
   return styles.getPropertyValue(token).trim() || '#c70f2e'
 }
 
-function applyBoundaryLayers(
-  map: MapLibreMap,
-  boundary: BoundaryFeature,
-  token: string,
-): void {
+function applyBoundaryLayers(map: MapLibreMap, boundary: BoundaryFeature, token: string): void {
   const color = readBoundaryColor(token)
 
   if (map.getLayer(BOUNDARY_FILL_LAYER_ID)) {
@@ -128,10 +121,7 @@ function applyBoundaryLayers(
     return
   }
 
-  map.addSource(BOUNDARY_SOURCE_ID, {
-    type: 'geojson',
-    data: boundary as never,
-  })
+  map.addSource(BOUNDARY_SOURCE_ID, { type: 'geojson', data: boundary as never })
 
   map.addLayer({
     id: BOUNDARY_FILL_LAYER_ID,
@@ -165,9 +155,7 @@ function addSpotMarkers(map: MapLibreMap, spots: HeroSpot[]): void {
     name.textContent = spot.title
     element.append(name)
 
-    new maplibregl.Marker({ element, anchor: 'bottom' })
-      .setLngLat(spot.coords)
-      .addTo(map)
+    new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(spot.coords).addTo(map)
   }
 }
 

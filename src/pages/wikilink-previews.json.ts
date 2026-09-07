@@ -44,7 +44,11 @@ export const GET: APIRoute = async () => {
   const previews: Record<string, Preview> = {}
 
   function add<
-    T extends { id: string; body?: string; data: { title: string; draft?: boolean; tags?: string[] } },
+    T extends {
+      id: string
+      body?: string
+      data: { title: string; draft?: boolean; tags?: string[] }
+    },
   >(entries: T[]): void {
     for (const entry of published(entries)) {
       previews[entry.id] = {

@@ -21,13 +21,7 @@ const PAGE_SIZE = 20
 const LINK_PATTERN =
   /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|info|biz|xyz|top|site|online|shop|club|io|ru)\b)/i
 
-type CommentEntry = {
-  id: number
-  name: string
-  message: string
-  created_at: string
-  total: number
-}
+type CommentEntry = { id: number; name: string; message: string; created_at: string; total: number }
 
 type CommentsStore = {
   // The commenter's name, remembered after a successful post so the field is
@@ -107,8 +101,7 @@ function setupComments(root: HTMLElement): void {
 
   const renderCount = (): void => {
     if (countLabel) {
-      countLabel.textContent =
-        total === 0 ? '' : total === 1 ? '1 comment' : `${total} comments`
+      countLabel.textContent = total === 0 ? '' : total === 1 ? '1 comment' : `${total} comments`
     }
     if (anchorLabel) {
       anchorLabel.textContent =
@@ -208,13 +201,7 @@ function setupComments(root: HTMLElement): void {
 
       // The server accepted it — show it at the top right away rather than re-fetching.
       entriesList.prepend(
-        buildEntry({
-          id: 0,
-          name,
-          message,
-          created_at: new Date().toISOString(),
-          total: 0,
-        }),
+        buildEntry({ id: 0, name, message, created_at: new Date().toISOString(), total: 0 }),
       )
       shown += 1
       total += 1

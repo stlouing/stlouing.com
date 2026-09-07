@@ -111,7 +111,10 @@ const corridors = [
     street: 'Hampton Avenue',
     streetNames: ['Hampton Avenue', 'South Hampton Avenue'],
     from: { label: 'Chippewa', names: ['Chippewa Street', 'Chippewa Avenue'] },
-    to: { label: 'Gravois', names: ['Gravois Avenue', 'Eichelberger Street', 'Eichelberger Avenue'] },
+    to: {
+      label: 'Gravois',
+      names: ['Gravois Avenue', 'Eichelberger Street', 'Eichelberger Avenue'],
+    },
     center: [38.583, -90.2935],
     anchor: 'hampton-avenue',
     neighborhoods: ['st-louis-hills', 'southampton', 'princeton-heights'],
@@ -175,7 +178,13 @@ const corridors = [
     id: 'demun',
     name: 'DeMun',
     street: 'DeMun Avenue',
-    streetNames: ['De Mun Avenue', 'DeMun Avenue', 'Demun Avenue', 'South De Mun Avenue', 'North De Mun Avenue'],
+    streetNames: [
+      'De Mun Avenue',
+      'DeMun Avenue',
+      'Demun Avenue',
+      'South De Mun Avenue',
+      'North De Mun Avenue',
+    ],
     from: { label: 'Northwood', names: ['Northwood Avenue'] },
     to: { label: 'Southwood', names: ['Southwood Avenue'] },
     center: [38.642, -90.3167],
@@ -268,8 +277,14 @@ const corridors = [
     label: 'Gore',
     street: 'North Gore Avenue',
     streetNames: ['North Gore Avenue', 'Gore Avenue'],
-    from: { label: 'Lockwood', names: ['West Lockwood Avenue', 'East Lockwood Avenue', 'Lockwood Avenue'] },
-    to: { label: 'Kirkham', names: ['West Kirkham Avenue', 'East Kirkham Avenue', 'Kirkham Avenue'] },
+    from: {
+      label: 'Lockwood',
+      names: ['West Lockwood Avenue', 'East Lockwood Avenue', 'Lockwood Avenue'],
+    },
+    to: {
+      label: 'Kirkham',
+      names: ['West Kirkham Avenue', 'East Kirkham Avenue', 'Kirkham Avenue'],
+    },
     center: [38.5945, -90.3596],
     anchor: 'webster-groves',
     neighborhoods: [],
@@ -378,13 +393,13 @@ async function overpass(query) {
     let response
     try {
       response = await fetch(OVERPASS_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        // overpass-api.de rejects UA-less requests (406); identify ourselves.
-        'User-Agent': 'stlouing-corridors/1.0 (street extract for stlouing.com)',
-      },
-      body: `data=${encodeURIComponent(query)}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          // overpass-api.de rejects UA-less requests (406); identify ourselves.
+          'User-Agent': 'stlouing-corridors/1.0 (street extract for stlouing.com)',
+        },
+        body: `data=${encodeURIComponent(query)}`,
       })
     } catch (error) {
       console.warn(`  network error (${error.message}), attempt ${attempt}/3`)
@@ -532,7 +547,8 @@ function buildLine(points, start, end) {
 // With ids as arguments, only those corridors are re-fetched; everything else
 // is carried over from the existing corridors.json.
 const onlyIds = process.argv.slice(2)
-const targets = onlyIds.length > 0 ? corridors.filter((corridor) => onlyIds.includes(corridor.id)) : corridors
+const targets =
+  onlyIds.length > 0 ? corridors.filter((corridor) => onlyIds.includes(corridor.id)) : corridors
 
 const existing = new Map()
 if (onlyIds.length > 0) {
@@ -548,7 +564,9 @@ if (onlyIds.length > 0) {
 const problems = []
 
 for (const corridor of targets) {
-  console.log(`\n${corridor.name} (${corridor.street}, ${corridor.from.label} -> ${corridor.to.label})`)
+  console.log(
+    `\n${corridor.name} (${corridor.street}, ${corridor.from.label} -> ${corridor.to.label})`,
+  )
 
   const start = await resolveEndpoint(corridor, corridor.from)
   await sleep(2500)
@@ -577,7 +595,9 @@ for (const corridor of targets) {
   }
 
   const miles = (built.lengthMeters / 1609.34).toFixed(2)
-  console.log(`  ${points.length} raw points -> ${built.line.length} line points, ~${miles} mi end to end`)
+  console.log(
+    `  ${points.length} raw points -> ${built.line.length} line points, ~${miles} mi end to end`,
+  )
 
   existing.set(corridor.id, {
     id: corridor.id,

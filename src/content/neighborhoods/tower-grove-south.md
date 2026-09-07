@@ -27,7 +27,6 @@ Along Grand, you'll find a wide variety of international restaurants, from Brazi
 
 ### Impressions
 
-St. Louis does not generally have many concentrated immigrant communities (aside from [[bevo-mill|Bevo Mill's]] Bosnian presence and a few Mexican restaurants along Cherokee Street) so it's great to see such an array of international flavor all in one spot. 
+St. Louis does not generally have many concentrated immigrant communities (aside from [[bevo-mill|Bevo Mill's]] Bosnian presence and a few Mexican restaurants along Cherokee Street) so it's great to see such an array of international flavor all in one spot.
 
 It seems like Tower Grove South is seeing a lot of vibrancy and revitalization and is one of the more interesting neighborhoods in the city to explore.
-

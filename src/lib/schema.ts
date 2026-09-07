@@ -100,12 +100,7 @@ export function restaurantSchema(input: RestaurantInput) {
     '@context': CONTEXT,
     '@type': 'Review',
     itemReviewed: restaurant,
-    reviewRating: {
-      '@type': 'Rating',
-      ratingValue: input.rating,
-      bestRating: 10,
-      worstRating: 0,
-    },
+    reviewRating: { '@type': 'Rating', ratingValue: input.rating, bestRating: 10, worstRating: 0 },
     author: { '@type': 'Person', name: SITE_TITLE },
   }
 }

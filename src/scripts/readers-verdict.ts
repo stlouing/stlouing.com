@@ -23,10 +23,7 @@ type Choice = 'like' | 'dislike'
 // convenience (the vote also lives server-side under the voter id).
 type PlaceState = { vote?: Choice }
 
-type ReaderStore = {
-  voterId?: string
-  places?: Record<string, PlaceState>
-}
+type ReaderStore = { voterId?: string; places?: Record<string, PlaceState> }
 
 export function initReadersVerdict(): void {
   // Nothing to wire when the site was built without Supabase creds — the component
