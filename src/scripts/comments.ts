@@ -68,11 +68,13 @@ function setupComments(root: HTMLElement): void {
     return
   }
 
-  // The masthead's "Comments" anchor pill (topic pages only; one comments
-  // section per page, so a document-wide query is safe). Ships hidden and is
-  // revealed with the section; its label carries the live count.
+  // The page's "Comments" anchor — the masthead pill on topic pages (label
+  // carries the whole count text) or the neighborhood stats-bar cell (a bare
+  // number in [data-comments-count]). One comments section per page, so
+  // document-wide queries are safe. Ships hidden, revealed with the section.
   const anchorLink = document.querySelector<HTMLElement>('[data-comments-link]')
   const anchorLabel = document.querySelector<HTMLElement>('[data-comments-link-label]')
+  const anchorCellValue = document.querySelector<HTMLElement>('[data-comments-cell-value]')
 
   // Jump, don't glide: the site's global `scroll-behavior: smooth` animates
   // anchor jumps, and on a long article the ride to the foot of the page is
@@ -106,6 +108,10 @@ function setupComments(root: HTMLElement): void {
     if (anchorLabel) {
       anchorLabel.textContent =
         total === 0 ? 'Comments' : total === 1 ? '1 comment' : `${total} comments`
+    }
+    if (anchorCellValue) {
+      anchorCellValue.textContent =
+        total === 0 ? 'Leave a comment' : total === 1 ? '1 comment' : `${total} comments`
     }
     if (emptyLine) {
       emptyLine.hidden = total > 0

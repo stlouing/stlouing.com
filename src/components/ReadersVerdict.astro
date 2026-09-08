@@ -1,7 +1,9 @@
 ---
 // The readers' 👍/👎 poll for a food page (shown only when Supabase is
-// configured). src/scripts/readers-verdict.ts loads live counts and records
-// votes. Public discussion happens in the Comments section below the writeup.
+// configured), rendered as one cell of the header stats bar: the vote pill
+// over a "Your rating" label, beside the My rating and Comments cells.
+// src/scripts/readers-verdict.ts loads live counts and records votes. Public
+// discussion lives in the separate Comments section (comments.ts).
 import IconThumbsUp from '../assets/IconThumbsUp.astro'
 import { SUPABASE_ENABLED } from '../lib/site'
 import IconThumbsDown from '../assets/IconThumbsDown.astro'
@@ -19,96 +21,60 @@ const readersEnabled = SUPABASE_ENABLED
 {
   readersEnabled && (
     <section
-      class="verdict-bar panel"
+      class="verdict-bar"
       data-readers-verdict
       data-slug={slug}
-      aria-label={`Review of ${title}`}>
-      <h2 class="vb-title title-serif">Rate this restaurant</h2>
-      <div class="vb-row">
-        {readersEnabled && (
-          <div class="vb-take">
-            <div class="rv-pill">
-              <button
-                type="button"
-                class="rv-choice btn btn-outline btn-compact"
-                data-vote="like"
-                aria-pressed="false"
-                aria-label="I liked it"
-                disabled>
-                <IconThumbsUp />
-                Liked
-                <span class="rv-count" data-count-like />
-              </button>
-              <button
-                type="button"
-                class="rv-choice btn btn-outline btn-compact"
-                data-vote="dislike"
-                aria-pressed="false"
-                aria-label="Not for me"
-                disabled>
-                <IconThumbsDown />
-                Not for me
-                <span class="rv-count" data-count-dislike />
-              </button>
-            </div>
-          </div>
-        )}
+      aria-label={`Rate ${title}`}>
+      <span class="pane-stat-label">Your rating</span>
+      <div class="rv-pill">
+        <button
+          type="button"
+          class="rv-choice btn btn-outline btn-compact"
+          data-vote="like"
+          aria-pressed="false"
+          aria-label="I liked it"
+          disabled>
+          <IconThumbsUp />
+          Liked
+          <span class="rv-count" data-count-like />
+        </button>
+        <button
+          type="button"
+          class="rv-choice btn btn-outline btn-compact"
+          data-vote="dislike"
+          aria-pressed="false"
+          aria-label="Not for me"
+          disabled>
+          <IconThumbsDown />
+          Not for me
+          <span class="rv-count" data-count-dislike />
+        </button>
       </div>
-
-      {readersEnabled && (
-        <p class="rv-vote-status" data-vote-status role="status" aria-live="polite" />
-      )}
+      <p class="rv-vote-status" data-vote-status role="status" aria-live="polite" />
     </section>
   )
 }
 
 <style>
+  /* A stats-bar cell: the vote pill over its label (mirrors .pane-stat). */
   .verdict-bar {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    margin-block-end: var(--spacing-lg);
-  }
-
-  .vb-title {
-    margin: 0;
-    text-align: center;
-    line-height: 1.1;
-    font-size: var(--font-size-lg);
-    font-weight: 500;
-  }
-
-  .vb-row {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm) var(--spacing-lg);
-  }
-
-  .vb-take {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
-
-  .rv-cta {
+    gap: 2px;
     margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--font-size-md);
-    color: var(--color-muted);
   }
 
-  .rv-cta[hidden] {
-    display: none;
-  }
-
+  /* One split control, not two separate buttons: the halves share a middle
+     border (the left button owns it, so hover/active states color it). */
   .rv-pill {
     display: inline-flex;
-    gap: var(--spacing-sm);
+    gap: 0;
+    /* Pinned to the cell floor like the sibling cells' values. */
+    margin-block-start: auto;
+  }
+
+  .rv-pill .rv-choice + .rv-choice {
+    border-inline-start: 0;
   }
 
   .rv-choice {
@@ -142,26 +108,13 @@ const readersEnabled = SUPABASE_ENABLED
   }
 
   .rv-vote-status {
-    flex-basis: 100%;
-    margin: var(--spacing-sm) 0 0;
-    padding: 0;
-    text-align: center;
+    margin: var(--spacing-xs) 0 0;
     font-family: var(--font-sans-serif);
     font-size: var(--font-size-xxs);
     color: var(--color-accent);
 
     &:empty {
       display: none;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .vb-title {
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .verdict-bar {
-      justify-content: center;
     }
   }
 </style>

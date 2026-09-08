@@ -2,11 +2,6 @@
 import { href } from '../lib/url'
 import RelatedList from './RelatedList.astro'
 import RelatedCard from './RelatedCard.astro'
-import IconUtensils from '../assets/IconUtensils.astro'
-import IconMountain from '../assets/IconMountain.astro'
-import IconMapPin from '../assets/IconMapPin.astro'
-import IconPencil from '../assets/IconPencil.astro'
-import IconBook from '../assets/IconBook.astro'
 import type { Backlink } from '../lib/backlinks'
 
 interface Props {
@@ -15,17 +10,8 @@ interface Props {
 
 const { links } = Astro.props
 
-// A leading icon + singular kicker label per collection, so each "Mentioned in"
-// row reads like the other related lists (icon + type + name). Topics are the
-// fallback for any unmapped collection.
-const iconByCollection: Record<string, typeof IconBook> = {
-  food: IconUtensils,
-  hikes: IconMountain,
-  neighborhoods: IconMapPin,
-  notes: IconPencil,
-  topics: IconBook,
-}
-
+// A singular kicker label per collection, so each "Mentioned in" row reads like
+// the other related lists. Topics are the fallback for any unmapped collection.
 const labelByCollection: Record<string, string> = {
   food: 'Food',
   hikes: 'Hike',
@@ -39,7 +25,6 @@ const labelByCollection: Record<string, string> = {
   links.length > 0 && (
     <RelatedList title="Mentioned in">
       {links.map((link) => {
-        const Icon = iconByCollection[link.collection] ?? IconBook
         const label = labelByCollection[link.collection] ?? link.collection
 
         return (
@@ -48,9 +33,8 @@ const labelByCollection: Record<string, string> = {
             title={link.title}
             meta={label}
             metaType="text"
-            description={link.description}>
-            <Icon slot="icon" />
-          </RelatedCard>
+            description={link.description}
+          />
         )
       })}
     </RelatedList>

@@ -28,7 +28,7 @@ interface Props {
   // Optional verdict, shown as a Chip before the trailing affordance.
   verdict?: Verdict
   // Muted placeholder chip for a food row with no verdict ("Not yet rated" /
-  // "Haven't visited yet" from resolveWriterState). Only shown when `verdict`
+  // "Not yet visited" from resolveWriterState). Only shown when `verdict`
   // is absent; rows that never deal in verdicts just omit both.
   unratedLabel?: string
   // Optional right-aligned secondary stat (e.g. a neighborhood's population).
@@ -230,8 +230,9 @@ const linkAttributes = href
   .related-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-xs);
-    margin-block-start: var(--spacing-xs);
+    gap: var(--spacing-md);
+    row-gap: var(--spacing-xs);
+    margin-block-start: var(--spacing-sm);
   }
 
   .related-tag {

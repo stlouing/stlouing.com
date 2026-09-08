@@ -149,12 +149,14 @@ import IconInstagram from '../assets/IconInstagram.astro'
   }
 
   :global(body:has([data-map])) .footer-inner,
-  :global(body:has([data-neighborhood-map])) .footer-inner {
+  :global(body:has([data-neighborhood-map])) .footer-inner,
+  :global(body:has([data-neighborhood-hero])) .footer-inner {
     display: none;
   }
 
   :global(body:has([data-map])) .site-footer,
-  :global(body:has([data-neighborhood-map])) .site-footer {
+  :global(body:has([data-neighborhood-map])) .site-footer,
+  :global(body:has([data-neighborhood-hero])) .site-footer {
     position: relative;
     z-index: 2;
     margin-block-start: calc(-1 * var(--river-height));
@@ -162,12 +164,14 @@ import IconInstagram from '../assets/IconInstagram.astro'
   }
 
   :global(body:has([data-map])) .footer-bottom,
-  :global(body:has([data-neighborhood-map])) .footer-bottom {
+  :global(body:has([data-neighborhood-map])) .footer-bottom,
+  :global(body:has([data-neighborhood-hero])) .footer-bottom {
     pointer-events: auto;
   }
 
   :global(body:has([data-map])) .footer-bottom,
-  :global(body:has([data-neighborhood-map])) .footer-bottom {
+  :global(body:has([data-neighborhood-map])) .footer-bottom,
+  :global(body:has([data-neighborhood-hero])) .footer-bottom {
     border-block-start: 0;
     padding-block-start: 0;
   }

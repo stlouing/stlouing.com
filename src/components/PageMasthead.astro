@@ -1,15 +1,9 @@
 ---
-// The full-bleed flag-blue article masthead: left-aligned heavy sans headline,
-// an optional lede, and the share bar (Share · Follow · Newsletter — no
-// Feedback), closed by a white-fimbriated red river wave along the bottom edge
-// — the city flag with its colors traded. Used by topic pages (via Entry's
-// `masthead` prop) and the standalone prose pages. All colors are exact flag
-// colors, pinned in both themes — the flag never themes.
-import ShareButton from './ShareButton.astro'
-import { NEWSLETTER_URL, SOCIALS } from '../lib/site'
-import IconInstagram from '../assets/IconInstagram.astro'
-import IconMail from '../assets/IconMail.astro'
-import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
+// The article masthead: left-aligned heavy sans headline over the page ground,
+// an optional lede, and the shared ActionBar (Share · Follow · Newsletter ·
+// Comments — no Feedback). Used by topic pages via Entry's `masthead` prop.
+// (The flag-blue field and river wave were retired 2026-09-07.)
+import ActionBar from './ActionBar.astro'
 
 interface Props {
   title: string
@@ -21,7 +15,6 @@ interface Props {
 }
 
 const { title, headingClass, eyebrow, commentsAnchor = false } = Astro.props
-const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 ---
 
 <div class="page-masthead">
@@ -38,69 +31,9 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
           </div>
         )
       }
-      <div class="masthead-actions">
-        <ShareButton title={title} label="Share" variant="outline" compact class="masthead-pill" />
-        {
-          instagram && (
-            <a
-              class="btn btn-outline btn-compact masthead-pill"
-              href={instagram.url}
-              target="_blank"
-              rel="noopener">
-              <IconInstagram /> Follow
-            </a>
-          )
-        }
-        {
-          NEWSLETTER_URL && (
-            <a
-              class="btn btn-outline btn-compact masthead-pill"
-              href={`${NEWSLETTER_URL}/subscribe`}
-              target="_blank"
-              rel="noopener">
-              <IconMail /> Newsletter
-            </a>
-          )
-        }
-        {
-          commentsAnchor && (
-            <a
-              class="btn btn-outline btn-compact masthead-pill"
-              href="#comments"
-              data-comments-link
-              hidden>
-              <IconMessageCircleHeart /> <span data-comments-link-label>Comments</span>
-            </a>
-          )
-        }
-      </div>
+      <ActionBar title={title} commentsAnchor={commentsAnchor} />
     </div>
   </div>
-  <svg class="masthead-wave" aria-hidden="true">
-    <defs>
-      <pattern
-        id="masthead-wave-tile"
-        width="90"
-        height="80"
-        patternUnits="userSpaceOnUse"
-        patternTransform="scale(0.4)">
-        <path
-          d="M-45 40 q22.5 14 45 0 q22.5 -14 45 0 q22.5 14 45 0 q22.5 -14 45 0 L135 0 L-45 0 Z"
-          fill="var(--color-flag-blue)"></path>
-        <path
-          d="M-45 40 q22.5 14 45 0 q22.5 -14 45 0 q22.5 14 45 0 q22.5 -14 45 0"
-          fill="none"
-          stroke="#ffffff"
-          stroke-width="22"></path>
-        <path
-          d="M-45 40 q22.5 14 45 0 q22.5 -14 45 0 q22.5 14 45 0 q22.5 -14 45 0"
-          fill="none"
-          stroke="#c70f2e"
-          stroke-width="10"></path>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#masthead-wave-tile)"></rect>
-  </svg>
 </div>
 
 <style>
@@ -108,11 +41,12 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
   .page-masthead {
     width: 100vw;
     margin-inline: calc(50% - 50vw);
-    margin-block-end: var(--spacing-lg);
+    /* The same xl hand-off to the content as .detail-pane-header. */
+    margin-block-end: var(--spacing-xl);
   }
 
   .masthead-field {
-    background: var(--color-flag-blue);
+    background: none;
   }
 
   /* The inner column matches the article's reading column (620px centered),
@@ -125,7 +59,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
     width: 100%;
     max-width: calc(var(--measure-reading) + 2 * var(--spacing-md));
     margin-inline: auto;
-    padding-block: var(--spacing-xl) var(--spacing-lg);
+    padding-block: var(--spacing-xl) 0;
     padding-inline: var(--spacing-md);
   }
 
@@ -138,8 +72,6 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 
   .masthead-eyebrow {
     margin: 0;
-    color: rgba(255, 255, 255, 0.7);
-    -webkit-font-smoothing: antialiased;
   }
 
   .masthead-title {
@@ -150,8 +82,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
     font-size: clamp(1.75rem, 1.3rem + 1.6vw, 3rem);
     line-height: 1.1;
     letter-spacing: var(--letter-spacing-tight);
-    color: #ffffff;
-    -webkit-font-smoothing: antialiased;
+    color: var(--color-text-heading);
   }
 
   .masthead-lede {
@@ -159,8 +90,8 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
     font-size: var(--font-size-lg);
     line-height: 1.4;
     font-weight: 400;
-    color: #ffffff;
-    -webkit-font-smoothing: antialiased;
+    font-style: italic;
+    color: var(--color-muted);
   }
 
   .masthead-lede :global(p) {
@@ -169,51 +100,9 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
     font-size: inherit;
   }
 
-  .masthead-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    margin-block-start: var(--spacing-xs);
-    -webkit-font-smoothing: antialiased;
-    margin-top: var(--spacing-lg);
-    border-top: 1px dotted rgba(255, 255, 255, 0.3);
-    padding-top: var(--spacing-sm);
+  /* The action bar sits a step below the lede, full column width. */
+  .masthead-inner :global(.action-bar) {
     width: 100%;
-  }
-
-  /* Borderless white pills on the blue field (transparent border keeps the
-     btn box size, so nothing shifts on hover). */
-  .page-masthead :global(.masthead-pill) {
-    border-color: transparent;
-    color: #ffffff;
-    background: transparent;
-  }
-
-  .page-masthead :global(.masthead-pill:hover) {
-    background: #ffffff;
-    border-color: #ffffff;
-    color: var(--color-flag-blue);
-  }
-
-  .page-masthead :global(.masthead-pill svg) {
-    width: 16px;
-    height: 16px;
-  }
-
-  .page-masthead :global(.masthead-pill[hidden]) {
-    display: none;
-  }
-
-  .masthead-wave {
-    margin-top: -1px;
-    display: block;
-    width: 100%;
-    height: 32px;
-  }
-
-  @media screen and (max-width: 700px) {
-    .masthead-inner {
-      padding-bottom: 0;
-    }
+    margin-block-start: var(--spacing-md);
   }
 </style>

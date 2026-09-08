@@ -1,0 +1,100 @@
+---
+// The article action bar (Share · Follow · Newsletter · Comments) in the same
+// stats-bar chrome as the food/neighborhood header bars: hairlines above and
+// below, dotted rules between sections (both from the shared .pane-stats
+// pattern). The Comments action ships hidden and is revealed by comments.ts
+// with the live count once the page's comments section answers.
+import ShareButton from './ShareButton.astro'
+import { NEWSLETTER_URL, SOCIALS } from '../lib/site'
+import IconInstagram from '../assets/IconInstagram.astro'
+import IconMail from '../assets/IconMail.astro'
+import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
+
+interface Props {
+  // The page title, for the native share sheet.
+  title: string
+  // Render the Comments action (pages that mount a comments section pass it).
+  commentsAnchor?: boolean
+}
+
+const { title, commentsAnchor = false } = Astro.props
+const instagram = SOCIALS.find((social) => social.label === 'Instagram')
+---
+
+<div class="pane-stats action-bar">
+  <ShareButton title={title} label="Share" variant="outline" compact class="action-pill" />
+  {
+    instagram && (
+      <a
+        class="btn btn-outline btn-compact action-pill"
+        href={instagram.url}
+        target="_blank"
+        rel="noopener">
+        <IconInstagram /> Follow
+      </a>
+    )
+  }
+  {
+    NEWSLETTER_URL && (
+      <a
+        class="btn btn-outline btn-compact action-pill"
+        href={`${NEWSLETTER_URL}/subscribe`}
+        target="_blank"
+        rel="noopener">
+        <IconMail /> Newsletter
+      </a>
+    )
+  }
+  {
+    commentsAnchor && (
+      <a class="btn btn-outline btn-compact action-pill" href="#comments" data-comments-link hidden>
+        <IconMessageCircleHeart /> <span data-comments-link-label>Comments</span>
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .action-bar {
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    gap: var(--spacing-sm) var(--spacing-lg);
+    /* The consumer's own spacing follows the bar; don't stack the shared
+       pattern's bottom margin on top of it. */
+    margin-block-end: 0;
+  }
+
+  /* Plain text-and-icon actions, flush with the bar's edges — no pill
+     padding, no borders. */
+  .action-bar > :global(.action-pill) {
+    flex: 0 0 auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font-size: var(--font-size-md);
+  }
+
+  .action-bar > :global(.action-pill:hover) {
+    background: transparent;
+    color: var(--color-accent-blue);
+  }
+
+  /* This bar separates its actions with space, not the shared section
+     dividers. */
+  .action-bar > :global(* + *) {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+
+  /* .btn sets display, which would otherwise override the hidden attribute
+     (the Comments pill reveals once the comments backend answers). */
+  .action-bar > :global(.action-pill[hidden]) {
+    display: none;
+  }
+
+  .action-bar > :global(.action-pill svg) {
+    width: 16px;
+    height: 16px;
+  }
+</style>

@@ -25,9 +25,9 @@ interface Props {
   // whose body holds trailing sections (e.g. food/neighborhood "More in…" lists)
   // pass `share={false}` and render <Byline> at the right spot.
   share?: boolean
-  // Render the full-bleed flag-blue PageMasthead (title + lede + share bar)
-  // instead of the centered serif header. Topic pages pass it; food/hikes keep
-  // the classic header.
+  // Render the PageMasthead (title + lede + action bar) instead of the
+  // centered serif header. Topic pages pass it; hikes/notes keep the classic
+  // header.
   masthead?: boolean
   // Uppercase kicker above the masthead title (a topic's category).
   eyebrow?: string

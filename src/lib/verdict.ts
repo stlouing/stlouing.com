@@ -61,7 +61,7 @@ export type FoodStatus = 'written' | 'tried' | 'want-to-try' | 'suggested'
 // The "My Review" line shown above the readers' poll. A rated place shows its
 // verdict statement (colored); an unrated place shows where it sits instead.
 export interface WriterState {
-  // The full-sentence statement ("Loved it", "Haven't visited yet", …).
+  // The full-sentence statement ("Loved it", "Not yet visited", …).
   statement: string
   // The colored verdict when one exists; absent for the unrated states, which
   // render in a muted, verdict-less treatment.
@@ -73,7 +73,7 @@ export interface WriterState {
 
 // Resolve the writer's stance for the "My Review" slot. A rating/verdict wins;
 // otherwise the status decides the placeholder line (tried → "Not yet rated";
-// want-to-try / suggested → "Haven't visited yet").
+// want-to-try / suggested → "Not yet visited").
 export function resolveWriterState(data: {
   verdict?: Verdict
   rating?: number
@@ -88,7 +88,7 @@ export function resolveWriterState(data: {
     return { statement: 'Not yet rated', kind: 'pending' }
   }
 
-  return { statement: "Haven't visited yet", kind: 'unvisited' }
+  return { statement: "Not yet visited", kind: 'unvisited' }
 }
 
 // Whether a place is "explored by me" — full-color on the map. Written + tried

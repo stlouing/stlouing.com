@@ -7,7 +7,6 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Breadcrumbs from './Breadcrumbs.astro'
 import RelatedCard from './RelatedCard.astro'
-import IconMapPin from '../assets/IconMapPin.astro'
 import { published } from '../lib/content'
 import { href } from '../lib/url'
 import { regions, neighborhoodsInRegion } from '../lib/neighborhoods'
@@ -36,13 +35,18 @@ const metaBySlug = new Map(
   ]),
 )
 
-// Explored (written) neighborhoods first, then the rest in their numbered order.
+// Neighborhoods with authored content first (an md file counts even when it's
+// frontmatter-only — description/tags/attractions are content, e.g. Forest
+// Park), alphabetical within each group.
 const members = neighborhoodsInRegion(regionSlug)
-const sorted = [...members].sort(
-  (left, right) =>
-    Number(metaBySlug.get(right.slug)?.written ?? false) -
-    Number(metaBySlug.get(left.slug)?.written ?? false),
-)
+const sorted = [...members].sort((left, right) => {
+  const contentDelta = Number(metaBySlug.has(right.slug)) - Number(metaBySlug.has(left.slug))
+  if (contentDelta !== 0) {
+    return contentDelta
+  }
+
+  return left.name.localeCompare(right.name)
+})
 
 const count = members.length
 // "Central Corridor of St. Louis", but don't double up on a region that already
@@ -54,14 +58,15 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 ---
 
 <BaseLayout crumb={region.label} title={seoTitle} description={metaDescription}>
-  <Breadcrumbs trail={trail} />
-  <article class="page">
-    <header class="entry-header entry-header-with-flag">
-      <div class="entry-bar">
-        <h1>{region.label}</h1>
-        <span class="count">{count}</span>
-      </div>
-      <div class="river-border-basic" aria-hidden="true"></div>
+  <article class="page region-page">
+    <Breadcrumbs trail={trail} />
+
+    <header class="detail-pane-header">
+      <h1 class="detail-pane-title">{region.label}</h1>
+      <p class="entry-summary detail-pane-tagline">
+        {count}
+        {regionSlug === 'parks' ? 'parks' : 'neighborhoods'}
+      </p>
     </header>
     <nav class="region-nav" aria-label="Regions">
       {
@@ -76,32 +81,49 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
         )
       }
     </nav>
-    <div class="region-list">
-      {
-        sorted.map((neighborhood) => {
-          const meta = metaBySlug.get(neighborhood.slug)
+    <div class="region-list related-cards related-cards--three">
+      <div class="related-list">
+        {
+          sorted.map((neighborhood) => {
+            const meta = metaBySlug.get(neighborhood.slug)
 
-          return (
-            <RelatedCard
-              href={href(`/neighborhoods/${neighborhood.slug}/`)}
-              title={neighborhood.name}
-              description={meta?.description ?? ''}
-              tags={meta?.tags ?? []}>
-              <IconMapPin slot="icon" />
-            </RelatedCard>
-          )
-        })
-      }
+            return (
+              <RelatedCard
+                href={href(`/neighborhoods/${neighborhood.slug}/`)}
+                title={neighborhood.name}
+                description={meta?.description ?? ''}
+                tags={meta?.tags ?? []}
+              />
+            )
+          })
+        }
+      </div>
     </div>
   </article>
 </BaseLayout>
 
 <style>
-  .entry-bar {
-    display: flex;
-    align-items: baseline;
-    gap: var(--spacing-sm);
+  /* Breadcrumbs: left-aligned to match the header (the shared component
+     centers them). */
+  .region-page :global(.breadcrumbs) {
+    justify-content: flex-start;
+    margin-block-start: var(--spacing-xl);
   }
+
+  /* Vibe tags as a calm uppercase line — no chip boxes, no icons. */
+  .region-list :global(.related-tag) {
+    border: 0;
+    background: none;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing);
+    font-weight: 600;
+  }
+
+  .region-list :global(.related-tag .icon) {
+    display: none;
+  }
+
 
   .region-nav {
     display: flex;
@@ -130,11 +152,5 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
     color: var(--color-text-heading);
     font-weight: 700;
     border-block-end-color: var(--color-accent);
-  }
-
-  .count {
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-md);
-    color: var(--color-muted);
   }
 </style>

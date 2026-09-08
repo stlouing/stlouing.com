@@ -1,13 +1,16 @@
-// The neighborhood page's masthead map: one big basemap under the title with
-// the neighborhood's boundary drawn in its region color and a pin for every
-// food spot mapped to it. A figure, not an explorer (no pan/zoom), following
-// the corridor-map pattern; pins are DOM <a> markers so they stay clickable
-// with hover-tooltip names (the shared .corridor-spot pin-with-tooltip CSS).
-// One map per page mounted at the top — no lazy mount/teardown needed.
+// The neighborhood page's map pane: an interactive basemap filling the right
+// half of the split-screen layout, with the neighborhood's boundary drawn as a
+// dashed line in its region color and a pin for every food spot mapped to it.
+// Pins are DOM <a> markers (hover shows the name via the shared .corridor-spot
+// tooltip CSS); clicking one opens the food-map popup instead of navigating
+// (middle-click still opens the page). On phones the pane stacks on top of the
+// content at a fixed height, so the map is always visible at mount.
 
 import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
+import { buildPopupHtml } from './popup'
+import { keepPopupInView } from './map-shared'
 
 const BOUNDARY_SOURCE_ID = 'neighborhood-boundary'
 const BOUNDARY_FILL_LAYER_ID = 'neighborhood-boundary-fill'
@@ -19,6 +22,9 @@ interface HeroSpot {
   title: string
   url: string
   coords: [number, number]
+  cuisine?: string
+  verdict?: { key: string; label: string }
+  tagline?: string
 }
 
 // The city shapefile names a few neighborhoods differently than the site does.
@@ -138,7 +144,11 @@ function applyBoundaryLayers(map: MapLibreMap, boundary: BoundaryFeature, token:
   })
 }
 
-function addSpotMarkers(map: MapLibreMap, spots: HeroSpot[]): void {
+function addSpotMarkers(
+  map: MapLibreMap,
+  spots: HeroSpot[],
+  openPopup: (spot: HeroSpot) => void,
+): void {
   // The same teardrop pin as the corridor/food maps; currentColor fill, colored
   // by the shared .corridor-spot CSS (--color-pin).
   const pinSvg = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
@@ -154,6 +164,14 @@ function addSpotMarkers(map: MapLibreMap, spots: HeroSpot[]): void {
     name.className = 'corridor-spot-name'
     name.textContent = spot.title
     element.append(name)
+
+    // A plain click opens the popup in place; the element stays an <a>, so
+    // middle-click / open-in-new-tab still navigates to the food page.
+    element.addEventListener('click', (clickEvent) => {
+      clickEvent.preventDefault()
+      clickEvent.stopPropagation()
+      openPopup(spot)
+    })
 
     new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(spot.coords).addTo(map)
   }
@@ -187,19 +205,41 @@ export function initNeighborhoodHero(): void {
   const fallbackCoords = (root.dataset.coords ?? '').split(',').map(Number)
 
   const map = createBasemapMap(root, {
-    // A figure, not an explorer: no pan/zoom, so scrolling the page never
-    // fights the map.
-    interactive: false,
+    minZoom: 10,
+    maxZoom: 16,
     attributionControl: { compact: true },
   })
 
-  map.on('load', async () => {
-    const boundary = await loadBoundary(slug)
-    if (boundary) {
-      applyBoundaryLayers(map, boundary, boundaryToken)
-    }
+  // One reused popup, food-map options verbatim (map.ts).
+  const popup = new maplibregl.Popup({
+    className: 'food-popup',
+    closeButton: true,
+    closeOnClick: false,
+    anchor: 'bottom',
+    maxWidth: '330px',
+    offset: 38,
+    focusAfterOpen: false,
+  })
 
-    const bounds = heroBounds(boundary, spots)
+  const openSpotPopup = (spot: HeroSpot): void => {
+    const popupHtml = buildPopupHtml({
+      title: spot.title,
+      link: import.meta.env.BASE_URL.replace(/\/$/, '') + spot.url,
+      chips: spot.cuisine ? [{ label: spot.cuisine }] : [],
+      verdict: spot.verdict,
+      showRating: Boolean(spot.verdict),
+      excerpt: spot.tagline ?? '',
+    })
+    popup.setLngLat(spot.coords).setHTML(popupHtml).addTo(map)
+    keepPopupInView(map, () => popup.getElement() ?? undefined)
+  }
+
+  map.on('click', () => popup.remove())
+
+  // The pane is always visible at mount (desktop right half, mobile top strip),
+  // so the camera frames once on load; MapLibre's own trackResize covers
+  // window resizes after that.
+  const frameView = (bounds: LngLatBoundsLike | undefined): void => {
     if (bounds) {
       // A touch looser than a tight fit, so the boundary sits in its
       // surrounding street grid.
@@ -210,6 +250,15 @@ export function initNeighborhoodHero(): void {
     } else if (fallbackCoords.length === 2 && fallbackCoords.every(Number.isFinite)) {
       map.jumpTo({ center: [fallbackCoords[1], fallbackCoords[0]], zoom: 12.5 })
     }
+  }
+
+  map.on('load', async () => {
+    const boundary = await loadBoundary(slug)
+    if (boundary) {
+      applyBoundaryLayers(map, boundary, boundaryToken)
+    }
+
+    frameView(heroBounds(boundary, spots))
 
     watchThemeChanges(map, () => {
       if (boundary) {
@@ -218,5 +267,5 @@ export function initNeighborhoodHero(): void {
     })
   })
 
-  addSpotMarkers(map, spots)
+  addSpotMarkers(map, spots, openSpotPopup)
 }

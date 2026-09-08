@@ -386,7 +386,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   // Explored neighborhoods (a writeup exists) get a filled, clickable region-colored
-  // pin marker that opens their popup; unexplored ones have none, so clicks fall
+  // pin marker that opens their popup; Not yet visited ones have none, so clicks fall
   // through to the polygon.
   function addExploredMarkers(): void {
     for (const [slug, ids] of slugToFeatureIds) {

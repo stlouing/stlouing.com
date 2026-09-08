@@ -2,17 +2,16 @@
 import { getCollection, render } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
-import Entry from '../../components/Entry.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
 import NeighborhoodHero from '../../components/NeighborhoodHero.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
-import IconMapPin from '../../assets/IconMapPin.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
-import { resolveVerdict, resolveWriterState } from '../../lib/verdict'
+import { resolveVerdict, resolveWriterState, verdictLabels } from '../../lib/verdict'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -20,7 +19,6 @@ import {
   normalizeName,
   neighborBearing,
   neighborhoodInfo,
-  hasNeighborhoodShape,
   neighborhoodPopulation,
   neighborhoodGeneratedSummary,
   neighborhoodMetaDescription,
@@ -31,6 +29,7 @@ import {
   regionOf,
 } from '../../lib/neighborhoods'
 import neighborhoods from '../../data/neighborhoods.json'
+import Button from '../../components/Button.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
@@ -38,7 +37,6 @@ import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconChart from '../../assets/IconChart.astro'
 import IconBook from '../../assets/IconBook.astro'
 import IconLandmark from '../../assets/IconLandmark.astro'
-import IconCalendar from '../../assets/IconCalendar.astro'
 
 const resourceIcons: Record<string, typeof IconExternalLink> = {
   Wikipedia: IconBook,
@@ -49,7 +47,7 @@ const resourceIcons: Record<string, typeof IconExternalLink> = {
 
 // A page for EVERY real neighborhood, not just the ones with a writeup. Where a
 // markdown file exists its prose is rendered; otherwise the page still stands on
-// the computed data layer (region, borders, food, events, locator map), so no
+// the computed data layer (region, borders, food, events, map), so no
 // neighborhood is a dead end.
 export async function getStaticPaths() {
   const entries = published(await getCollection('neighborhoods'))
@@ -81,8 +79,8 @@ const sharePhoto = entry?.data.photo
   : undefined
 const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
-// The neighborhood's tags double as the aside "Vibe" chips, so they're shown there
-// (with icons, linking to /tags) rather than in the Entry header's tag row.
+// The neighborhood's tags double as the "Tags" chips in the pane's aside
+// sections rather than a header tag row.
 const tags = entry?.data.tags ?? []
 
 const attractions = entry?.data.attractions ?? []
@@ -110,8 +108,8 @@ const corridors = walkableStLouisLive ? corridorsIn(slug) : []
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
-// Which neighborhoods have a writeup, keyed by slug, so the Neighbors rail can
-// lead with explored ones.
+// Which neighborhoods have a writeup, keyed by slug, so the Nearby
+// Neighborhoods rail can lead with explored ones.
 const writtenBySlug = new Map(
   published(await getCollection('neighborhoods')).map((neighborhoodEntry) => [
     neighborhoodEntry.id,
@@ -119,11 +117,11 @@ const writtenBySlug = new Map(
   ]),
 )
 
-// Show up to 5 nearby neighborhoods, explored ones first — unexplored ones only
-// fill in when there aren't 5 explored neighbors to show.
+// Show up to 5 nearby neighborhoods, explored ones first — not-yet-visited ones
+// only fill in when there aren't 5 explored neighbors to show.
 const exploredNeighbors = neighbors.filter((neighbor) => writtenBySlug.get(neighbor.slug))
-const unexploredNeighbors = neighbors.filter((neighbor) => !writtenBySlug.get(neighbor.slug))
-const nearbyNeighbors = [...exploredNeighbors, ...unexploredNeighbors].slice(0, 5)
+const notYetVisitedNeighbors = neighbors.filter((neighbor) => !writtenBySlug.get(neighbor.slug))
+const nearbyNeighbors = [...exploredNeighbors, ...notYetVisitedNeighbors].slice(0, 5)
 
 // External resources: the place's own site (if any), Wikipedia, and the
 // auto-generated City of St. Louis + MyTownView profiles — rendered as a button bar.
@@ -137,8 +135,8 @@ const generated = neighborhoodGeneratedSummary(slug)
 const tagline = entry?.data.description
 const summary = tagline ?? generated
 
-// The footer timestamp: the last revision when set, otherwise the created date.
-// Only written neighborhoods (a markdown entry) carry dates.
+// The "Last walked" stat + byline timestamp: the last revision when set,
+// otherwise the created date. Only written neighborhoods carry dates.
 const lastUpdated = entry ? (entry.data.updated ?? entry.data.created) : undefined
 
 // SEO meta description: the writeup excerpt when there is one (a fuller sentence
@@ -178,24 +176,30 @@ const trail = [
   ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}/` }] : []),
 ]
 
-// The masthead map's food pins: every mapped spot in this neighborhood, coords
-// flipped to MapLibre's [lng, lat] order (food frontmatter stores [lat, lng]).
+// The map pane's food pins: every mapped spot in this neighborhood, coords
+// flipped to MapLibre's [lng, lat] order (food frontmatter stores [lat, lng]);
+// cuisine/verdict/tagline feed the click popup.
 const heroSpots = places.flatMap((place) => {
   const [lat, lng] = place.data.coords ?? []
+  if (lat === undefined || lng === undefined) {
+    return []
+  }
+  const verdict = resolveVerdict(place.data)
 
-  return lat !== undefined && lng !== undefined
-    ? [
-        {
-          title: place.data.title,
-          url: `/food/${place.id}/`,
-          coords: [lng, lat] as [number, number],
-        },
-      ]
-    : []
+  return [
+    {
+      title: place.data.title,
+      url: `/food/${place.id}/`,
+      coords: [lng, lat] as [number, number],
+      cuisine: place.data.cuisine[0],
+      verdict: verdict ? { key: verdict, label: verdictLabels[verdict] } : undefined,
+      tagline: place.data.description ?? '',
+    },
+  ]
 })
 
-// Boundary color for the masthead map: the same region tokens the
-// neighborhoods index map paints its polygons with.
+// Boundary color for the map pane: the same region tokens the neighborhoods
+// index map paints its polygons with.
 const boundaryTokenByRegion: Record<string, string> = {
   'north-city': '--color-map-north',
   'central-corridor': '--color-map-central',
@@ -204,11 +208,9 @@ const boundaryTokenByRegion: Record<string, string> = {
   parks: '--color-map-park',
 }
 const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-accent'
-
 ---
 
 <BaseLayout
-  article
   crumb={title}
   title={seoTitle}
   description={metaDescription}
@@ -216,218 +218,265 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
   ogImage={sharePhoto ? rootRelative(sharePhoto.src) : undefined}
   ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
   ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}>
-  <Breadcrumbs trail={trail} />
-  <Entry title={title} backlinks={backlinks} share={false} riverBorder={false}>
-    {
-      summary && (
-        <p class="entry-summary" slot="lede">
-          {summary}
-        </p>
-      )
-    }
-    {
-      (hasNeighborhoodShape(slug) || info?.coords) && (
-        <NeighborhoodHero
-          slug={slug}
-          boundaryToken={boundaryToken}
-          coords={info?.coords}
-          spots={heroSpots}
-        />
-      )
-    }
-    <div class="detail-layout">
-      <div class="detail-main">
-        {
-          hasWriteup && Content ? (
-            <Content />
-          ) : (
-            <div class="not-explored">
-              <p>I haven't written about {title} yet.</p>
-              <p>
-                Is there something you want to suggest here?
-                <a href={href('/contact/')}>Let me know</a>!
-              </p>
-            </div>
-          )
-        }
+  <div class="map-split neighborhood-split" data-map-split data-view="map">
+    <div class="results">
+      <article class="page content-pane detail-pane">
+        <div class="detail-pane-inner">
+          <Breadcrumbs trail={trail} />
 
-        {
-          lastUpdated && (
-            <Byline>
-              <Fragment slot="footer-meta">
-                <EntryDates created={entry?.data.created} updated={entry?.data.updated} />
-              </Fragment>
-            </Byline>
-          )
-        }
-
-        {
-          places.length > 0 && (
-            <RelatedList title="Food & drink">
-              {places.map((place) => (
-                <RelatedCard
-                  href={href(`/food/${place.id}/`)}
-                  title={place.data.title}
-                  meta={place.data.cuisine[0]}
-                  description={place.data.description}
-                  verdict={resolveVerdict(place.data)}
-                  unratedLabel={
-                    resolveVerdict(place.data) ? undefined : resolveWriterState(place.data).statement
-                  }
-                />
-              ))}
-            </RelatedList>
-          )
-        }
-
-        {
-          corridors.length > 0 && (
-            <RelatedList title="Walkable streets">
-              {corridors.map((corridor) => (
-                <RelatedCard
-                  href={href(`/walkable-st-louis/#${corridor.anchor}`)}
-                  title={corridor.name}
-                  meta={corridor.street}
-                  metaType="text"
-                  description={`${corridor.from} to ${corridor.to}`}>
-                  <IconMapPin slot="icon" />
-                </RelatedCard>
-              ))}
-            </RelatedList>
-          )
-        }
-
-        {
-          attractions.length > 0 && (
-            <RelatedList title="Notable spots">
-              {attractions.map((spot) => (
-                <RelatedCard
-                  href={spot.url}
-                  title={spot.name}
-                  description={spot.description}
-                  external>
-                  <IconLandmark slot="icon" />
-                </RelatedCard>
-              ))}
-            </RelatedList>
-          )
-        }
-
-
-        {
-          festivals.length > 0 && (
-            <RelatedList title="Annual events">
-              {festivals.map((festival) => (
-                <RelatedCard
-                  title={festival.name}
-                  meta={festival.when}
-                  metaType="date"
-                  description={festival.blurb}>
-                  <IconCalendar slot="icon" />
-                </RelatedCard>
-              ))}
-            </RelatedList>
-          )
-        }
-
-        <Comments kind="neighborhood" slug={slug} title={title} />
-      </div>
-      <aside class="detail-aside">
-        {
-          resourceLinks.length > 0 && (
-            <>
-              <div class="detail-links-section">
-                <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
-                <div class="detail-links">
-                  {resourceLinks.map((link) => {
-                    const Icon = resourceIcons[link.label]
-                    const label = link.label === 'Website' ? displayUrl(link.href) : link.label
-
-                    return (
-                      <SourceLink
-                        href={link.href}
-                        label={label}
-                        variant="quiet"
-                        compact={false}
-                        class="btn-inline">
-                        {Icon && <Icon slot="icon" />}
-                      </SourceLink>
-                    )
-                  })}
+          <header class="detail-pane-header">
+            <h1 class="detail-pane-title">{title}</h1>
+            {summary && <p class="entry-summary detail-pane-tagline">{summary}</p>}
+            {
+              (population != null || places.length > 0) && (
+                <div class="pane-stats">
+                  {population != null && (
+                    <div class="pane-stat">
+                      <span class="pane-stat-label">Population</span>
+                      <span class="pane-stat-value">{population.toLocaleString('en-US')}</span>
+                    </div>
+                  )}
+                  {places.length > 0 && (
+                    <div class="pane-stat">
+                      <span class="pane-stat-label">Spots explored</span>
+                      <span class="pane-stat-value">{places.length}</span>
+                    </div>
+                  )}
+                  {/* Revealed by comments.ts once the comments backend answers;
+                    the value reads "Leave a comment" until comments exist,
+                    then the live count. */}
+                  <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
+                    <span class="pane-stat-label">Comments</span>
+                    <span class="pane-stat-value continue-link">
+                      <span data-comments-cell-value>Leave a comment</span>
+                    </span>
+                  </a>
                 </div>
-              </div>
-            </>
-          )
-        }
-        <NeighborhoodFacts population={population} spots={places.length} />
-        {
-          nearbyNeighbors.length > 0 && (
-            <nav class="neighbor-rail" aria-label="Nearby neighborhoods">
-              <h2 class="detail-section-label head-black head-black--sm head-rule">
-                Nearby Neighborhoods
-              </h2>
-              <ul class="neighbor-list">
-                {nearbyNeighbors.map((neighbor) => {
-                  // The pixel arrow points east at rest, so a compass bearing
-                  // (clockwise from north) becomes its CSS rotation by -90°.
-                  const bearing = neighborBearing(slug, neighbor.slug)
-                  const rotation = bearing === undefined ? undefined : (bearing + 270) % 360
+              )
+            }
+          </header>
 
-                  return (
-                    <li>
-                      <a href={href(`/neighborhoods/${neighbor.slug}/`)}>
-                        {neighbor.name}
-                        {rotation !== undefined && (
-                          <span
-                            class:list={['neighbor-arrow', `neighbor-arrow--r${rotation}`]}
-                            aria-hidden="true">
-                            <IconArrowRight />
-                          </span>
-                        )}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-            </nav>
-          )
-        }
-        <NeighborhoodFacts tags={tags} />
-      </aside>
+          <div class="body">
+            {
+              hasWriteup && Content ? (
+                <Content />
+              ) : (
+                <div class="not-explored">
+                  <p>I haven't written about {title} yet.</p>
+                  <p>
+                    Is there something you want to suggest here?
+                    <a href={href('/contact/')}>Let me know</a>!
+                  </p>
+                </div>
+              )
+            }
+          </div>
+
+          {
+            lastUpdated && (
+              <Byline>
+                <Fragment slot="footer-meta">
+                  <EntryDates created={entry?.data.created} updated={entry?.data.updated} />
+                </Fragment>
+              </Byline>
+            )
+          }
+
+          {
+            places.length > 0 && (
+              <RelatedList title="Food & Drink" class="related-cards">
+                {places.map((place) => (
+                  <RelatedCard
+                    href={href(`/food/${place.id}/`)}
+                    title={place.data.title}
+                    meta={place.data.cuisine[0]}
+                    description={place.data.description}
+                    verdict={resolveVerdict(place.data)}
+                    unratedLabel={
+                      resolveVerdict(place.data)
+                        ? undefined
+                        : resolveWriterState(place.data).statement
+                    }
+                  />
+                ))}
+              </RelatedList>
+            )
+          }
+
+          {
+            corridors.length > 0 && (
+              <RelatedList title="Walkable streets">
+                {corridors.map((corridor) => (
+                  <RelatedCard
+                    href={href(`/walkable-st-louis/#${corridor.anchor}`)}
+                    title={corridor.name}
+                    meta={corridor.street}
+                    metaType="text"
+                    description={`${corridor.from} to ${corridor.to}`}
+                  />
+                ))}
+              </RelatedList>
+            )
+          }
+
+          {
+            festivals.length > 0 && (
+              <RelatedList title="Annual events">
+                {festivals.map((festival) => (
+                  <RelatedCard
+                    title={festival.name}
+                    meta={festival.when}
+                    metaType="date"
+                    description={festival.blurb}
+                  />
+                ))}
+              </RelatedList>
+            )
+          }
+
+          {
+            attractions.length > 0 && (
+              <RelatedList title="Landmarks">
+                {attractions.map((spot) => (
+                  <RelatedCard
+                    href={spot.url}
+                    title={spot.name}
+                    description={spot.description}
+                    external
+                  />
+                ))}
+              </RelatedList>
+            )
+          }
+
+          <div class="pane-aside">
+            {
+              nearbyNeighbors.length > 0 && (
+                <nav class="detail-links-section" aria-label="Nearby neighborhoods">
+                  <h2 class="detail-section-label head-black head-black--sm head-rule">
+                    Nearby Neighborhoods
+                  </h2>
+                  <div class="detail-links">
+                    {nearbyNeighbors.map((neighbor) => {
+                      // The pixel arrow points east at rest, so a compass bearing
+                      // (clockwise from north) becomes its CSS rotation by -90°.
+                      const bearing = neighborBearing(slug, neighbor.slug)
+                      const rotation = bearing === undefined ? undefined : (bearing + 270) % 360
+
+                      return (
+                        <Button
+                          href={href(`/neighborhoods/${neighbor.slug}/`)}
+                          variant="quiet"
+                          compact={false}
+                          class="btn-inline">
+                          {rotation !== undefined && (
+                            <span
+                              class:list={['neighbor-arrow', `neighbor-arrow--r${rotation}`]}
+                              aria-hidden="true">
+                              <IconArrowRight />
+                            </span>
+                          )}
+                          {neighbor.name}
+                        </Button>
+                      )
+                    })}
+                  </div>
+                </nav>
+              )
+            }
+            {
+              resourceLinks.length > 0 && (
+                <div class="detail-links-section">
+                  <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
+                  <div class="detail-links">
+                    {resourceLinks.map((link) => {
+                      const Icon = resourceIcons[link.label]
+                      const label = link.label === 'Website' ? displayUrl(link.href) : link.label
+
+                      return (
+                        <SourceLink
+                          href={link.href}
+                          label={label}
+                          variant="quiet"
+                          compact={false}
+                          class="btn-inline">
+                          {Icon && <Icon slot="icon" />}
+                        </SourceLink>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            }
+            <NeighborhoodFacts tags={tags} />
+          </div>
+
+          <Comments kind="neighborhood" slug={slug} title={title} />
+
+          <footer>
+            <Backlinks links={backlinks} />
+          </footer>
+        </div>
+      </article>
+
+      <NeighborhoodHero
+        slug={slug}
+        boundaryToken={boundaryToken}
+        coords={info?.coords}
+        spots={heroSpots}
+      />
     </div>
-  </Entry>
+  </div>
 </BaseLayout>
 
 <style>
-  .neighbor-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .detail-pane {
+    padding-block-end: calc(var(--spacing-xl) + var(--spacing-md));
   }
 
-  .neighbor-list li + li {
-    border-block-start: 1px dotted var(--color-line-input);
+  /* The pane's reading column: the article content sits in a centered measure
+     rather than spanning the full half-viewport pane. */
+  .detail-pane-inner {
+    max-width: calc(var(--measure-reading) + 2 * var(--spacing-lg));
+    margin-inline: auto;
+    padding-inline: var(--spacing-lg);
   }
 
-  .neighbor-list a {
+  /* Breadcrumbs: left-aligned in the pane (the shared component centers them). */
+  .detail-pane :global(.breadcrumbs) {
+    justify-content: flex-start;
+    margin-block-start: var(--spacing-xl);
+  }
+
+  /* The header voice (.detail-pane-header/.pane-stats) is a global pattern
+     shared with the food detail page. */
+
+  /* Rail / Links / Tags: quiet sections — stacked on phones; on wider screens
+     Nearby Neighborhoods and Links pair up side by side with Tags spanning
+     the full row beneath them. */
+  .pane-aside {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-sm);
-    padding-block: var(--spacing-xs);
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    color: var(--color-text);
-    text-decoration: none;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    margin-block: var(--spacing-xl);
   }
 
-  .neighbor-list a:hover {
-    color: var(--color-accent-blue);
+  @media (min-width: 701px) {
+    .pane-aside {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-xl) var(--spacing-lg);
+      align-items: start;
+    }
+
+    /* The Tags card is a component root (no page scope attribute). */
+    .pane-aside > :global(.side-card) {
+      grid-column: 1 / -1;
+    }
   }
 
-  /* The compass arrow, right-aligned on every row: the pixel arrow icon
-     rotated per direction. */
+  /* The compass arrow leading each neighbor row (the Links-bar icon spot):
+     the pixel arrow icon rotated per direction. */
   .neighbor-arrow {
     display: inline-flex;
     color: var(--color-muted);
