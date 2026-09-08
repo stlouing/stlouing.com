@@ -38,9 +38,9 @@ const { title, headingClass, eyebrow, commentsAnchor = false } = Astro.props
 
 <style>
   /* Full-bleed via the site's 50vw idiom (main clips overflow-x). */
+  /* In normal flow — the full-bleed negative-margin breakout left with the
+     blue field it existed for. */
   .page-masthead {
-    width: 100vw;
-    margin-inline: calc(50% - 50vw);
     /* The same xl hand-off to the content as .detail-pane-header. */
     margin-block-end: var(--spacing-xl);
   }
@@ -57,10 +57,11 @@ const { title, headingClass, eyebrow, commentsAnchor = false } = Astro.props
     align-items: flex-start;
     gap: var(--spacing-sm);
     width: 100%;
-    max-width: calc(var(--measure-reading) + 2 * var(--spacing-md));
+    /* Aligned to the reading column; the page wrap already provides the
+       side gutters, so no inline padding of its own. */
+    max-width: var(--measure-reading);
     margin-inline: auto;
     padding-block: var(--spacing-xl) 0;
-    padding-inline: var(--spacing-md);
   }
 
   /* Eyebrow hugs the title, outside the inner column's roomier gap. */

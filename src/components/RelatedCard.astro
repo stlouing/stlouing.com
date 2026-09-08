@@ -7,8 +7,7 @@
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconExternalLink from '../assets/IconExternalLink.astro'
 import IconStar from '../assets/IconStar.astro'
-import Chip from './Chip.astro'
-import VerdictChip from './Verdict.astro'
+import Rating from './Rating.astro'
 import TagIcon from './TagIcon.astro'
 import { cuisineLabel } from '../lib/cuisine'
 import type { Verdict } from '../lib/verdict'
@@ -25,12 +24,9 @@ interface Props {
   // How to render `meta`: 'cuisine' maps the key to its label; anything else is
   // shown verbatim.
   metaType?: 'cuisine' | 'neighborhood' | 'date' | 'text'
-  // Optional verdict, shown as a Chip before the trailing affordance.
+  // Optional verdict, shown as a fleur rating before the trailing affordance;
+  // unrated places simply show nothing.
   verdict?: Verdict
-  // Muted placeholder chip for a food row with no verdict ("Not yet rated" /
-  // "Not yet visited" from resolveWriterState). Only shown when `verdict`
-  // is absent; rows that never deal in verdicts just omit both.
-  unratedLabel?: string
   // Optional right-aligned secondary stat (e.g. a neighborhood's population).
   stat?: string
   // Optional leading emoji (e.g. a cuisine glyph). Mutually exclusive with the
@@ -54,7 +50,6 @@ const {
   metaParts = [],
   metaType = 'cuisine',
   verdict,
-  unratedLabel,
   stat,
   emoji,
   rating,
@@ -130,14 +125,7 @@ const linkAttributes = href
       </span>
     )
   }
-  {verdict && <VerdictChip verdict={verdict} icon narrow filled />}
-  {
-    !verdict && unratedLabel && (
-      <Chip class="verdict-unrated is-narrow">
-        <span>{unratedLabel}</span>
-      </Chip>
-    )
-  }
+  {verdict && <Rating verdict={verdict} />}
   {
     href && (
       <span class="related-arrow" aria-hidden="true">
@@ -273,6 +261,12 @@ const linkAttributes = href
     color: var(--color-accent);
     fill: currentColor;
     stroke: currentColor;
+  }
+
+  /* Fleur rating sized up a touch from its inline default. */
+  .related-card :global(.rating .rating-fleur) {
+    width: 0.95rem;
+    height: 0.95rem;
   }
 
   .related-stat {

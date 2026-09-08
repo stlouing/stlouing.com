@@ -1,14 +1,14 @@
 :root {
   color-scheme: light;
 
-  --color-background: white;
+  --color-background: white; /* #FAF8F6 */
 
   --color-surface: color-mix(in srgb, var(--color-accent-gold) 10%, var(--color-background));
   --color-surface-2: color-mix(in srgb, var(--color-accent-gold) 5%, var(--color-background));
 
   --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
 
-  --measure-reading: 620px;
+  --measure-reading: 650px;
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -30,10 +30,10 @@
   --color-accent-gold: #b8860b;
   --color-map-accent: #6a47a6;
 
-  --color-map-north: #b8860b;
-  --color-map-central: #c70f2e;
-  --color-map-south: #6a47a6;
-  --color-map-county: #2766ad;
+  --color-map-north: #2766ad;
+  --color-map-central: #b8860b;
+  --color-map-south: #c70f2e;
+  --color-map-county: #6a47a6;
   --color-map-park: #2e7d4a;
 
   --color-map-corridor: #c70f2e;
@@ -92,24 +92,24 @@
 
   --color-background: #22242a;
   --color-surface: #1a1c21;
-  --color-surface-2: #25242a;
+  --color-surface-2: #292b33;
   --color-text-heading: #f3f1f7;
   --color-text: #e9e8ec;
   --color-text-article: #d4d3d8;
   --color-muted: #9b9aa3;
   --color-muted-2: #afaeb5;
   --color-line: #403f45;
-  --color-line-input: #54535a;
+  --color-line-input: #5e5d63;
   --color-line-contrast: #45444b;
   --color-accent: #f67f93;
   --color-accent-2: #f88c9e;
   --color-accent-blue: #84b0e6;
   --color-accent-gold: #dcc24f;
   --color-map-accent: #b59ae0;
-  --color-map-north: #dcc24f;
-  --color-map-central: #e6877a;
-  --color-map-south: #b59ae0;
-  --color-map-county: #84b0e6;
+  --color-map-north: #84b0e6;
+  --color-map-central: #dcc24f;
+  --color-map-south: #e6877a;
+  --color-map-county: #b59ae0;
   --color-map-park: #7ec98a;
   --color-map-corridor: #f88c9e;
   --color-link: #99c3ff;
@@ -482,7 +482,7 @@ tbody tr:last-child td {
 
 .corridor-map {
   height: 300px;
-  border: 2px solid var(--color-line-contrast);
+  border: 1px solid var(--color-line-contrast);
   background: var(--color-surface-2);
 }
 
@@ -1847,11 +1847,11 @@ body:has([data-filter-root]) .masthead-nav {
 .maplibregl-popup.food-popup .rating-fleur {
   width: 1em;
   height: 1em;
-  color: color-mix(in srgb, var(--color-map-north) 26%, transparent);
+  color: color-mix(in srgb, var(--color-accent-gold) 26%, transparent);
 }
 
 .maplibregl-popup.food-popup .rating-fleur.is-filled {
-  color: var(--color-map-north);
+  color: var(--color-accent-gold);
 }
 
 .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
@@ -2241,7 +2241,11 @@ body:has([data-filter-root]) .masthead-nav {
   border-block-end: 0;
 }
 
+/* The "haven't been yet" stub note on body-less pages: a dashed note with
+   generous breathing room so the sparse page reads calm rather than empty. */
 .not-explored {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border: 1px dashed var(--color-line-input);
 }
 
 .not-explored p {
@@ -2498,7 +2502,7 @@ body:has([data-filter-root]) .masthead-nav {
 .head-black {
   font-family: var(--font-display-black);
   font-weight: 400;
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-xl);
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-tight);
@@ -2599,6 +2603,12 @@ body:has([data-filter-root]) .masthead-nav {
     padding-inline-start: var(--spacing-md);
   }
 
+  /* A lone cell closing the grid still gets its right-hand column rule (the
+     neighbor that would normally draw it doesn't exist). */
+  .related-cards .related-list > .related-card:nth-child(odd):last-child {
+    border-inline-end: 1px dotted var(--color-line-input);
+  }
+
   /* Three-up variant (region pages): re-derive the column rules — every cell
      except a row's first carries one. Written AFTER the two-up rule so the
      tie on even cells resolves this way. */
@@ -2616,9 +2626,19 @@ body:has([data-filter-root]) .masthead-nav {
     padding-inline-start: var(--spacing-md);
   }
 
+  /* Same closing rule for a short last row in the three-up (reset the two-up
+     odd rule first — its math doesn't apply here). */
+  .related-cards--three .related-list > .related-card:nth-child(odd):last-child {
+    border-inline-end: 0;
+  }
+
+  .related-cards--three .related-list > .related-card:last-child:not(:nth-child(3n)) {
+    border-inline-end: 1px dotted var(--color-line-input);
+  }
+
   /* The verdict chip pins to the cell's top-right corner (the card is already
      position: relative) so the name and description run the full cell width. */
-  .related-cards .related-list .related-card > .chip {
+  .related-cards .related-list .related-card > :is(.chip, .rating) {
     position: absolute;
     top: var(--spacing-md);
     inset-inline-end: var(--spacing-md);
@@ -2629,11 +2649,6 @@ body:has([data-filter-root]) .masthead-nav {
     margin-block-end: var(--spacing-xs);
   }
 
-  /* When a chip is pinned in the corner, drop the title below the chip's row
-     so a long name never butts against it. */
-  .related-cards .related-list .related-card:has(> .chip) .related-title {
-    margin-block-start: var(--spacing-sm);
-  }
 
   /* Only the kicker shares its line with the pinned chip — cap it so a long
      neighborhood name wraps instead of running underneath. */
@@ -2751,6 +2766,13 @@ body:has([data-filter-root]) .masthead-nav {
    full-width line with no stray divider. */
 .detail-pane-header {
   container-type: inline-size;
+}
+
+/* Containment stops child margins collapsing into the header's own bottom
+   margin — zero the last child's margin or the hand-off gap doubles (the
+   header's xl margin alone is the spacing). */
+.detail-pane-header > :last-child {
+  margin-block-end: 0;
 }
 
 @container (max-width: 560px) {

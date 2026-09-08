@@ -7,7 +7,7 @@ import { published, excerpt, sortTopics } from '../lib/content'
 
 // A paragraph-length teaser from the top of each article (the shorter
 // PREVIEW_EXCERPT_CHARS is tuned for one-line list rows, not cards).
-const TOPIC_EXCERPT_CHARS = 300
+const TOPIC_EXCERPT_CHARS = 250
 
 const topics = sortTopics(published(await getCollection('topics')))
 ---

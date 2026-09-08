@@ -19,7 +19,7 @@ import { TAGLINE, SOCIALS } from '../lib/site'
 import Button from '../components/Button.astro'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
-import Icon from '../components/Icon.astro'
+import GroupHeader from '../components/GroupHeader.astro'
 import GuestbookBadge from '../components/GuestbookBadge.astro'
 import FoodCard from '../components/FoodCard.astro'
 import WhatsNew from '../components/WhatsNew.astro'
@@ -189,12 +189,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       }
 
       <section class="front-food">
-        <div class="group-header head-rule">
-          <h2 class="group-label head-black">Food</h2>
-          <a class="group-all continue-link" href={href('/food/')}>
-            All restaurants & cafes <IconArrowRight />
-          </a>
-        </div>
+        <GroupHeader
+          title="Food"
+          moreHref={href('/food/')}
+          moreLabel="All restaurants & cafes"
+        />
         <div class="food-cards">
           {featuredFood.map(({ place, teaser }) => <FoodCard place={place} teaser={teaser} />)}
         </div>
@@ -203,14 +202,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
     <div class="front-rail">
       <section class="front-explore">
-        <div class="group-header head-rule">
-          <h2 class="group-label head-black">{exploreGroup?.label}</h2>
-          {
-            exploreGroup?.kicker && (
-              <span class="group-kicker eyebrow eyebrow--muted">{exploreGroup.kicker}</span>
-            )
-          }
-        </div>
+        <GroupHeader title={exploreGroup?.label ?? ''} kicker={exploreGroup?.kicker} />
         <List>
           {
             exploreSections.map((section) => (
@@ -219,9 +211,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                 href={href(section.path)}
                 description={section.description}
                 meta={exploreCounts[section.path]?.toString()}
-                leader={section.path in exploreCounts}>
-                {section.icon && <Icon name={section.icon} slot="icon" />}
-              </ListItem>
+                leader={section.path in exploreCounts}
+              />
             ))
           }
         </List>
@@ -537,20 +528,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-size: var(--font-size-xs);
   }
 
-  .group-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--spacing-sm);
-    margin-block-end: var(--spacing-xs);
-  }
-
-  .group-header .group-label {
-    margin: 0;
-  }
-
   .front-explore {
-    --list-icon-color: var(--color-accent-blue);
     --list-hover-color: var(--color-accent-blue);
   }
 
@@ -581,14 +559,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     font-weight: 500;
     letter-spacing: var(--letter-spacing);
     color: var(--color-accent);
-  }
-
-  .group-kicker {
-    flex-shrink: 0;
-  }
-
-  .group-all {
-    flex-shrink: 0;
   }
 
   .food-cards {

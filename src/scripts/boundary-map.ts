@@ -46,8 +46,10 @@ function readBoundaryColors(): { city: string; county: string } {
     styles.getPropertyValue(token).trim() || fallback
 
   return {
-    city: readColor('--color-map-central', '#c0392b'),
-    county: readColor('--color-map-county', '#2766ad'),
+    // Stable colors, not region tokens — the region palette can rotate, but
+    // this map's city-red / county-blue coding shouldn't move with it.
+    city: readColor('--color-map-corridor', '#c0392b'),
+    county: readColor('--color-accent-blue', '#2766ad'),
   }
 }
 

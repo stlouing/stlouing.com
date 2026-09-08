@@ -81,22 +81,14 @@ const trail = [
 ]
 
 // Related places for the "more food" footer: others in the same neighborhood, and
-// others sharing this place's primary cuisine (best-rated first, capped, and
-// de-duped so a place shows in at most one group).
+// others sharing this place's primary cuisine (best-rated first, capped to one
+// card-grid row, and de-duped so a place shows in at most one group).
 const allFood = published(await getCollection('food'))
 const topRelated = (places: typeof allFood) =>
   [...places]
     .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
-    .slice(0, 5)
-    .map((place) => {
-      const verdict = resolveVerdict(place.data)
-
-      return {
-        place,
-        verdict,
-        unratedLabel: verdict ? undefined : resolveWriterState(place.data).statement,
-      }
-    })
+    .slice(0, 2)
+    .map((place) => ({ place, verdict: resolveVerdict(place.data) }))
 
 const relatedNeighborhood = data.neighborhood
   ? topRelated(
@@ -215,7 +207,7 @@ const seoDescription = hasBody(entry)
           }
 
           {
-            lastUpdated && (
+            hasBody(entry) && lastUpdated && (
               <Byline>
                 <Fragment slot="footer-meta">
                   <EntryDates created={data.created} updated={data.updated} />
@@ -224,18 +216,22 @@ const seoDescription = hasBody(entry)
             )
           }
 
+          <Comments kind="food" slug={entry.id} title={data.title} />
+
           <section class="more-food">
             {
               relatedNeighborhood.length > 0 && (
-                <RelatedList title={`More in ${data.neighborhood}`} class="related-cards">
-                  {relatedNeighborhood.map(({ place, verdict, unratedLabel }) => (
+                <RelatedList
+                  title={`More in ${data.neighborhood}`}
+                  class="related-cards"
+                  moreHref={href(`/food/?neighborhood=${encodeURIComponent(data.neighborhood)}`)}>
+                  {relatedNeighborhood.map(({ place, verdict }) => (
                     <RelatedCard
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={place.data.cuisine[0]}
                       description={place.data.description}
                       verdict={verdict}
-                      unratedLabel={unratedLabel}
                     />
                   ))}
                 </RelatedList>
@@ -243,8 +239,11 @@ const seoDescription = hasBody(entry)
             }
             {
               relatedCuisine.length > 0 && (
-                <RelatedList title={`More ${cuisineLabel(primaryCuisine)}`} class="related-cards">
-                  {relatedCuisine.map(({ place, verdict, unratedLabel }) => (
+                <RelatedList
+                  title={`More ${cuisineLabel(primaryCuisine)}`}
+                  class="related-cards"
+                  moreHref={href(`/food/?cuisine=${primaryCuisine}`)}>
+                  {relatedCuisine.map(({ place, verdict }) => (
                     <RelatedCard
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
@@ -252,19 +251,15 @@ const seoDescription = hasBody(entry)
                       metaType="neighborhood"
                       description={place.data.description}
                       verdict={verdict}
-                      unratedLabel={unratedLabel}
                     />
                   ))}
                 </RelatedList>
               )
             }
           </section>
-
-          <Comments kind="food" slug={entry.id} title={data.title} />
         </div>
         <aside class="detail-aside">
           <div class="food-map-block">
-            <h2 class="detail-section-label head-black head-black--sm head-rule">Map</h2>
             <FoodLocator coords={data.coords} label={data.neighborhood} />
             <a class="continue-link aside-more-link" href={href('/food/')}>
               Back to food map <IconArrowRight />
@@ -392,6 +387,9 @@ const seoDescription = hasBody(entry)
     align-items: center;
     gap: var(--spacing-sm);
     font-size: var(--font-size-lg);
+    font-family: var(--font-serif);
+    color: var(--color-text);
+    font-weight: 400;
   }
 
   /* The unrated placeholder ("Not yet rated" / "Not yet visited") reads

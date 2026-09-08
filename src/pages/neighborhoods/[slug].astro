@@ -11,7 +11,7 @@ import NeighborhoodHero from '../../components/NeighborhoodHero.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
-import { resolveVerdict, resolveWriterState, verdictLabels } from '../../lib/verdict'
+import { resolveVerdict, verdictLabels } from '../../lib/verdict'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -271,9 +271,11 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
               )
             }
           </div>
+          
+          <Comments kind="neighborhood" slug={slug} title={title} />
 
           {
-            lastUpdated && (
+            hasWriteup && lastUpdated && (
               <Byline>
                 <Fragment slot="footer-meta">
                   <EntryDates created={entry?.data.created} updated={entry?.data.updated} />
@@ -284,7 +286,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
 
           {
             places.length > 0 && (
-              <RelatedList title="Food & Drink" class="related-cards">
+              <RelatedList title="Food & Drink">
                 {places.map((place) => (
                   <RelatedCard
                     href={href(`/food/${place.id}/`)}
@@ -292,11 +294,21 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                     meta={place.data.cuisine[0]}
                     description={place.data.description}
                     verdict={resolveVerdict(place.data)}
-                    unratedLabel={
-                      resolveVerdict(place.data)
-                        ? undefined
-                        : resolveWriterState(place.data).statement
-                    }
+                  />
+                ))}
+              </RelatedList>
+            )
+          }
+
+          {
+            attractions.length > 0 && (
+              <RelatedList title="Landmarks">
+                {attractions.map((spot) => (
+                  <RelatedCard
+                    href={spot.url}
+                    title={spot.name}
+                    description={spot.description}
+                    external
                   />
                 ))}
               </RelatedList>
@@ -334,22 +346,9 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
             )
           }
 
-          {
-            attractions.length > 0 && (
-              <RelatedList title="Landmarks">
-                {attractions.map((spot) => (
-                  <RelatedCard
-                    href={spot.url}
-                    title={spot.name}
-                    description={spot.description}
-                    external
-                  />
-                ))}
-              </RelatedList>
-            )
-          }
-
-          <div class="pane-aside">
+          <section class="pane-more">
+            <h2 class="pane-more-heading head-black head-rule">More</h2>
+            <div class="pane-aside">
             {
               nearbyNeighbors.length > 0 && (
                 <nav class="detail-links-section" aria-label="Nearby neighborhoods">
@@ -409,9 +408,8 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
               )
             }
             <NeighborhoodFacts tags={tags} />
-          </div>
-
-          <Comments kind="neighborhood" slug={slug} title={title} />
+            </div>
+          </section>
 
           <footer>
             <Backlinks links={backlinks} />
@@ -454,11 +452,17 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
   /* Rail / Links / Tags: quiet sections — stacked on phones; on wider screens
      Nearby Neighborhoods and Links pair up side by side with Tags spanning
      the full row beneath them. */
+  /* The "More" section heading mirrors the RelatedList voice; the grouped
+     blocks below it drop their own top margin (the heading spaces them). */
+  .pane-more-heading {
+    margin-block: var(--spacing-xl) var(--spacing-lg);
+  }
+
   .pane-aside {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xl);
-    margin-block: var(--spacing-xl);
+    margin-block: 0 var(--spacing-xl);
   }
 
   @media (min-width: 701px) {
