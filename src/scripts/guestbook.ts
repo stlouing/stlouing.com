@@ -196,25 +196,25 @@ function setupGuestbook(root: HTMLElement): void {
 // reader-supplied and must never pass through innerHTML.
 function buildEntry(entry: GuestbookEntry): HTMLLIElement {
   const item = document.createElement('li')
-  item.className = 'gb-entry'
+  item.className = 'feed-entry'
 
   const date = document.createElement('p')
-  date.className = 'gb-date eyebrow'
+  date.className = 'feed-date eyebrow'
   date.textContent = formatSignedDate(entry.created_at)
   item.append(date)
 
   const signer = document.createElement('p')
-  signer.className = 'gb-signer'
+  signer.className = 'feed-byline'
 
   const nameLabel = document.createElement('span')
-  nameLabel.className = 'gb-name title-serif'
+  nameLabel.className = 'feed-name title-serif'
   nameLabel.textContent = entry.name
   signer.append(nameLabel)
 
   item.append(signer)
 
   const message = document.createElement('p')
-  message.className = 'gb-message'
+  message.className = 'feed-message'
   message.textContent = entry.message
   item.append(message)
 

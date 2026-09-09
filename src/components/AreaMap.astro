@@ -5,8 +5,8 @@
 ---
 
 <div
-  class="neighborhood-map"
-  data-neighborhood-map
+  class="area-map"
+  data-area-map
   role="application"
   aria-label="Map of St. Louis neighborhoods — click a neighborhood to jump to it">
 </div>
@@ -14,8 +14,8 @@
 <button type="button" class="map-split-toggle btn-dark" data-map-split-toggle>View map</button>
 
 <script>
-  import { initNeighborhoodMap } from '../scripts/neighborhood-map'
-  initNeighborhoodMap()
+  import { initAreaMap } from '../scripts/area-map'
+  initAreaMap()
 
   const split = document.querySelector('[data-map-split]')
   const toggle = document.querySelector('[data-map-split-toggle]')
@@ -39,14 +39,14 @@
 
 <style>
   /* Fills its grid cell (the right pane of the .map-split layout). */
-  .neighborhood-map {
+  .area-map {
     height: 100%;
     min-height: 0;
     border-inline-start: 1px solid var(--color-line);
   }
 
   @media (max-width: 700px) {
-    .neighborhood-map {
+    .area-map {
       border-inline: 0;
     }
   }

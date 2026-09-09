@@ -2,7 +2,7 @@
 // The neighborhood page's map pane: the right half of the split-screen layout,
 // an interactive basemap with the neighborhood's boundary (dashed, in its
 // region color) and a clickable pin per mapped food spot (hover shows the name,
-// click opens a popup). src/scripts/neighborhood-hero.ts mounts the MapLibre
+// click opens a popup). src/scripts/map-pane.ts mounts the MapLibre
 // map; the spot list is baked in as JSON so the script needs no fetch. County
 // areas without a boundary polygon center on their coords instead. On phones
 // the pane stacks on top of the content at a fixed height (no view switcher).
@@ -29,8 +29,8 @@ const { slug, boundaryToken, coords, spots } = Astro.props
 ---
 
 <div
-  class="neighborhood-hero-pane"
-  data-neighborhood-hero
+  class="map-pane"
+  data-map-pane
   data-slug={slug}
   data-boundary-token={boundaryToken}
   data-coords={coords?.join(',')}
@@ -40,18 +40,18 @@ const { slug, boundaryToken, coords, spots } = Astro.props
 <script
   is:inline
   type="application/json"
-  data-neighborhood-hero-spots
+  data-map-pane-spots
   set:html={JSON.stringify(spots)}
 />
 
 <script>
-  import { initNeighborhoodHero } from '../scripts/neighborhood-hero'
-  initNeighborhoodHero()
+  import { initMapPane } from '../scripts/map-pane'
+  initMapPane()
 </script>
 
 <style>
   /* Fills its grid cell (the right pane of the .map-split layout). */
-  .neighborhood-hero-pane {
+  .map-pane {
     height: 100%;
     min-height: 0;
     border-inline-start: 1px solid var(--color-line);
@@ -59,7 +59,7 @@ const { slug, boundaryToken, coords, spots } = Astro.props
   }
 
   @media (max-width: 700px) {
-    .neighborhood-hero-pane {
+    .map-pane {
       border-inline: 0;
       border-block-end: 1px solid var(--color-line);
     }

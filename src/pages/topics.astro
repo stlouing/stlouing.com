@@ -23,14 +23,14 @@ const topics = sortTopics(published(await getCollection('topics')))
       <p class="entry-summary">Deep-dives into St. Louis food and culture</p>
       <div class="river-border-basic" aria-hidden="true"></div>
     </header>
-    <div class="topic-grid">
+    <div class="card-grid">
       {
         topics.map((topic) => (
-          <a class="topic-card hover-wash" href={href(`/${topic.id}/`)}>
-            {topic.data.category && <p class="topic-kicker eyebrow">{topic.data.category}</p>}
-            <h2 class="topic-title title-serif title-link">{topic.data.title}</h2>
-            {topic.data.description && <p class="topic-description desc-muted desc-muted--lg">{topic.data.description}</p>}
-            <p class="topic-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
+          <a class="card hover-wash" href={href(`/${topic.id}/`)}>
+            {topic.data.category && <p class="card-kicker eyebrow">{topic.data.category}</p>}
+            <h2 class="card-title title-serif title-link">{topic.data.title}</h2>
+            {topic.data.description && <p class="card-description desc-muted desc-muted--lg">{topic.data.description}</p>}
+            <p class="card-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
             <span class="continue-link">
               Continue reading <IconArrowRight />
             </span>
@@ -42,7 +42,7 @@ const topics = sortTopics(published(await getCollection('topics')))
 </BaseLayout>
 
 <style>
-  .topic-grid {
+  .card-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--spacing-md) var(--spacing-xl);
@@ -50,18 +50,18 @@ const topics = sortTopics(published(await getCollection('topics')))
   }
 
   @media (max-width: 1000px) {
-    .topic-grid {
+    .card-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 700px) {
-    .topic-grid {
+    .card-grid {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 
-  .topic-card {
+  .card {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -73,7 +73,7 @@ const topics = sortTopics(published(await getCollection('topics')))
     text-decoration: none;
   }
 
-  .topic-card::after {
+  .card::after {
     content: '';
     position: absolute;
     inset-block-end: 0;
@@ -82,7 +82,7 @@ const topics = sortTopics(published(await getCollection('topics')))
     border-block-end: 1px dotted var(--color-line-input);
   }
 
-  .topic-card::before {
+  .card::before {
     content: '';
     position: absolute;
     inset-block: var(--spacing-sm);
@@ -91,47 +91,47 @@ const topics = sortTopics(published(await getCollection('topics')))
     border-inline-start: 1px dotted var(--color-line-input);
   }
 
-  .topic-card:nth-child(3n + 1)::before {
+  .card:nth-child(3n + 1)::before {
     display: none;
   }
 
   @media (max-width: 1000px) {
-    .topic-card:nth-child(3n + 1)::before {
+    .card:nth-child(3n + 1)::before {
       display: block;
     }
 
-    .topic-card:nth-child(odd)::before {
+    .card:nth-child(odd)::before {
       display: none;
     }
   }
 
   @media (max-width: 700px) {
-    .topic-card:nth-child(n)::before {
+    .card:nth-child(n)::before {
       display: none;
     }
   }
 
-  .topic-title {
+  .card-title {
     margin-block: 0 var(--spacing-sm);
     font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
   }
 
-  .topic-card .continue-link {
+  .card .continue-link {
     display: block;
     margin-block-start: auto;
     padding-block-start: var(--spacing-sm);
     text-align: end;
   }
 
-  .topic-kicker {
+  .card-kicker {
     margin: 0 0 var(--spacing-xs);
   }
 
-  .topic-description {
+  .card-description {
     margin-block: var(--spacing-xs) 0;
   }
 
-  .topic-excerpt {
+  .card-excerpt {
     margin-block: var(--spacing-sm) var(--spacing-sm);
     font-family: var(--font-serif);
     font-size: var(--font-size-md);

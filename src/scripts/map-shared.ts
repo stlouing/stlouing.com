@@ -59,11 +59,17 @@ export function fitZoomFor(map: FramableMap, bounds: BoundsLike, padding: number
   return Math.log2(Math.min(scaleX, scaleY))
 }
 
-// Frame the default view on the City of St. Louis, biased so the city reads
-// anchored to its river instead of floating in the middle of the frame.
-// Instant (no fly-in) — this is initial framing, not a transition.
-export function frameCityView(map: FramableMap, padding: number): void {
+// Frame the default view on the City of St. Louis. With `anchorRiver` (the
+// Food map's default) the framing is biased so the city reads anchored to its
+// river instead of floating in the middle of the frame; without it the city
+// bounds sit centered (the Neighborhoods map). Instant (no fly-in) — this is
+// initial framing, not a transition.
+export function frameCityView(map: FramableMap, padding: number, anchorRiver = true): void {
   map.fitBounds(CITY_BOUNDS, { padding, animate: false })
+
+  if (!anchorRiver) {
+    return
+  }
 
   const visibleBounds = map.getBounds()
   const visibleLatSpan = visibleBounds.getNorth() - visibleBounds.getSouth()

@@ -10,7 +10,7 @@ import ReadersVerdict from '../../components/ReadersVerdict.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
 import SourceLink from '../../components/SourceLink.astro'
-import FoodLocator from '../../components/FoodLocator.astro'
+import Locator from '../../components/Locator.astro'
 import MyPick from '../../components/MyPick.astro'
 import Rating from '../../components/Rating.astro'
 import RelatedList from '../../components/RelatedList.astro'
@@ -38,7 +38,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data } = entry
 // The "My Review" stance: the verdict when rated, else a status-driven placeholder
-// ("Not yet rated" for a tried spot, "Not yet visited" otherwise). Drives the
+// ("Not yet rated" for a tried spot, "Unexplored" otherwise). Drives the
 // aside's My rating section.
 const writerState = resolveWriterState(data)
 // A friendly one-liner shown in a dashed note in place of the (empty) writeup on a
@@ -148,7 +148,7 @@ const seoDescription = hasBody(entry)
   ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
   ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}
   jsonLd={schema}>
-  <article class="page food-detail">
+  <article class="page detail-page">
     <Breadcrumbs trail={trail} />
 
     <header class="detail-pane-header">
@@ -165,7 +165,9 @@ const seoDescription = hasBody(entry)
               { 'is-unrated': !writerState.verdict },
             ]}>
             <Rating verdict={writerState.verdict} />
-            {writerState.verdict ? verdictLabels[writerState.verdict] : writerState.statement}
+            <span class="my-rating-word eyebrow">
+              {writerState.verdict ? verdictLabels[writerState.verdict] : writerState.statement}
+            </span>
           </span>
         </div>
         <ReadersVerdict slug={entry.id} title={data.title} />
@@ -188,7 +190,7 @@ const seoDescription = hasBody(entry)
           {
             data.photo && (
               <Image
-                class="food-photo"
+                class="detail-photo"
                 src={data.photo}
                 alt={`Photo of ${data.title}`}
                 widths={[400, 800]}
@@ -259,17 +261,17 @@ const seoDescription = hasBody(entry)
           </section>
         </div>
         <aside class="detail-aside">
-          <div class="food-map-block">
-            <FoodLocator coords={data.coords} label={data.neighborhood} />
+          <div>
+            <Locator coords={data.coords} label={data.neighborhood} />
             <a class="continue-link aside-more-link" href={href('/food/')}>
               Back to food map <IconArrowRight />
             </a>
           </div>
           {
             data.address && data.address.length > 0 && (
-              <div class="food-address-block">
+              <div>
                 <h2 class="detail-section-label head-black head-black--sm head-rule">Address</h2>
-                <address class="food-address">
+                <address class="address">
                   {data.address.map((line) => (
                     <span>{line}</span>
                   ))}
@@ -289,7 +291,7 @@ const seoDescription = hasBody(entry)
           {
             (data.url || data.instagram || googleMapsHref(data)) && (
               <>
-                <div class="detail-links-section">
+                <div>
                   <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
                   <div class="detail-links">
                     <SourceLink
@@ -344,13 +346,13 @@ const seoDescription = hasBody(entry)
 </script>
 
 <style>
-  .food-detail {
+  .detail-page {
     margin-block-end: var(--spacing-xl);
   }
 
   /* Breadcrumbs: left-aligned to match the header (the shared component
      centers them). */
-  .food-detail :global(.breadcrumbs) {
+  .detail-page :global(.breadcrumbs) {
     justify-content: flex-start;
     margin-block-start: var(--spacing-xl);
   }
@@ -367,36 +369,64 @@ const seoDescription = hasBody(entry)
     flex: 1 1 0;
   }
 
-  /* The food bar's cells (fleurs + vote pill + comment link) need more room
-     than the shared 560px floor — stack the comments cell a bit earlier. */
+  /* ≤640px of header width the bar folds into a column: each cell becomes a
+     label-left / value-right row between hairlines (the dotted side rules and
+     the shared value floor only make sense with the cells side by side). */
   @container (max-width: 640px) {
     .detail-pane-header .pane-stats {
-      flex-wrap: wrap;
-      row-gap: var(--spacing-lg);
+      flex-direction: column;
+      gap: 0;
+      padding-block: 0;
     }
 
-    .detail-pane-header .pane-stat-link {
-      flex-basis: 100%;
+    .detail-pane-header :global(.pane-stats > *) {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-md);
+      padding: var(--spacing-sm) 0;
       border-inline-start: 0;
-      padding-inline-start: 0;
+    }
+
+    .detail-pane-header :global(.pane-stats > * + *) {
+      border-block-start: 1px solid var(--color-line);
+    }
+
+    .detail-pane-header :global(.pane-stats .pane-stat-label) {
+      margin-block-end: 0;
+    }
+
+    .detail-pane-header :global(.pane-stats .pane-stat-value),
+    .detail-pane-header :global(.pane-stats .rv-pill) {
+      margin-block-start: 0;
+    }
+
+    /* The poll cell wraps so its status line can take a full row below. */
+    .detail-pane-header :global(.pane-stats .verdict-bar) {
+      flex-wrap: wrap;
+    }
+
+    .detail-pane-header :global(.pane-stats .rv-vote-status) {
+      flex-basis: 100%;
     }
   }
 
   .my-rating-line {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: var(--spacing-sm);
-    font-size: var(--font-size-lg);
-    font-family: var(--font-serif);
-    color: var(--color-text);
-    font-weight: 400;
   }
 
-  /* The unrated placeholder ("Not yet rated" / "Not yet visited") reads
+  /* The verdict word beside the fleurs, in a bold gold eyebrow voice. */
+  .my-rating-word {
+    font-weight: 700;
+    color: var(--color-accent-gold);
+  }
+
+  /* The unrated placeholder ("Not yet rated" / "Unexplored") reads
      quiet beside the empty fleurs. */
-  .my-rating-line.is-unrated {
-    font-size: var(--font-size-md);
-    font-weight: 400;
+  .my-rating-line.is-unrated .my-rating-word {
     color: var(--color-muted);
   }
 
@@ -405,7 +435,7 @@ const seoDescription = hasBody(entry)
     height: 1.25rem;
   }
 
-  .food-photo {
+  .detail-photo {
     display: block;
     width: 100%;
     height: auto;
@@ -414,7 +444,7 @@ const seoDescription = hasBody(entry)
     margin-block-end: var(--spacing-lg);
   }
 
-  .food-address {
+  .address {
     display: flex;
     flex-direction: column;
     font-family: var(--font-sans-serif);

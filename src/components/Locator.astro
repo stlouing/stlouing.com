@@ -13,25 +13,25 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
 
 {
   coords && (
-    <div class="food-locator">
+    <div class="locator">
       <div
-        class="food-locator-map"
-        data-food-locator
+        class="locator-map"
+        data-locator
         data-coords={coords.join(',')}
         role="img"
         aria-label={description}
       />
-      <span class="food-locator-tag">{label ?? 'Map'}</span>
+      <span class="locator-tag">{label ?? 'Map'}</span>
     </div>
   )
 }
 
 <style>
-  .food-locator {
+  .locator {
     position: relative;
   }
 
-  .food-locator-map {
+  .locator-map {
     position: relative;
     height: 220px;
     border: 1px solid var(--color-line);
@@ -46,7 +46,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
     overflow: hidden;
   }
 
-  .food-locator-tag {
+  .locator-tag {
     position: absolute;
     z-index: 500;
     left: var(--spacing-sm);
@@ -63,7 +63,7 @@ const description = label ? `Map showing this spot in ${label}` : 'Map showing t
 </style>
 
 <script>
-  const boxes = [...document.querySelectorAll<HTMLElement>('[data-food-locator]')]
+  const boxes = [...document.querySelectorAll<HTMLElement>('[data-locator]')]
 
   if (boxes.length) {
     const upgrade = (box: HTMLElement) => {

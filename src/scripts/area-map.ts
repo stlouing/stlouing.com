@@ -41,7 +41,7 @@ function forEachPosition(geometry: Geometry, fn: (position: Position) => void): 
  * Boundaries are one geojson source; hover + selection are driven by feature-state
  * so the GPU repaints without touching the DOM.
  */
-export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'): Promise<void> {
+export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
   const element = document.querySelector<HTMLElement>(selector)
   if (!element) {
     return
@@ -240,7 +240,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   // `anchor: 'bottom'` pins it ABOVE the pin so it never flips sides as you pan/near
   // edges; keepPopupInView pans the map to keep it on-screen instead.
   const popup = new maplibregl.Popup({
-    className: 'food-popup',
+    className: 'map-popup',
     closeButton: true,
     closeOnClick: false,
     anchor: 'bottom',
@@ -386,7 +386,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
   }
 
   // Explored neighborhoods (a writeup exists) get a filled, clickable region-colored
-  // pin marker that opens their popup; Not yet visited ones have none, so clicks fall
+  // pin marker that opens their popup; Unexplored ones have none, so clicks fall
   // through to the polygon.
   function addExploredMarkers(): void {
     for (const [slug, ids] of slugToFeatureIds) {
@@ -403,11 +403,11 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       }
 
       const element = document.createElement('div')
-      element.className = 'neighborhood-marker'
+      element.className = 'map-pin'
       // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke (which
       // sits half-outside the path edge) isn't clipped; the tip at path (12,32)
       // lands at pixel (14,34) in the padded box. `currentColor` fill — the pin
-      // color (and its theme swap) comes from the `.neighborhood-marker` CSS.
+      // color (and its theme swap) comes from the `.map-pin` CSS.
       element.innerHTML = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
 
       new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(center).addTo(map)
@@ -500,7 +500,7 @@ export async function initNeighborhoodMap(selector = '[data-neighborhood-map]'):
       // municipalities (Chesterfield, Clayton, Kirkwood, …) still render, but
       // they sit far west/south and must not drive the fit, or the city shrinks
       // to a corner.
-      frameCityView(map, 40)
+      frameCityView(map, 40, false)
     }
   }
 

@@ -76,14 +76,14 @@ const schema = articleSchema(
       <EntryDates created={data.created} updated={data.updated} />
     </Fragment>
     <Comments slot="comments" kind="topic" slug={entry.id} title={data.title} />
-    <div class:list={['topic-layout', 'reading-col', { 'topic-list': data.display === 'list' }]}>
+    <div class:list={['article-col', 'reading-col', { 'compact-article': data.display === 'list' }]}>
       <Content />
     </div>
   </Entry>
 </BaseLayout>
 
 <style>
-  .topic-layout {
+  .article-col {
     margin-block-start: var(--spacing-md);
   }
 </style>

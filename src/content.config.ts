@@ -31,7 +31,7 @@ const food = defineCollection({
       //                 existing file stays a `written` place with no change.
       //   tried       — I've been, no rating/writeup yet ("Haven't reviewed yet",
       //                 full-color pin).
-      //   want-to-try — on my list, not visited ("Not yet visited", grayed pin).
+      //   want-to-try — on my list, not visited ("Unexplored", grayed pin).
       //   suggested   — a reader/community spot I haven't visited; votable, grayed
       //                 pin. Same treatment as want-to-try, different provenance.
       // A place is "explored by me" when written or tried; grayed on the map otherwise.

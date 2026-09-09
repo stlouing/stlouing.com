@@ -88,7 +88,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--spacing-xl) var(--spacing-xl);
+    gap: var(--spacing-xl);
     padding-block: var(--spacing-xl);
   }
 
@@ -116,7 +116,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
   .footer-newsletter-title {
     margin: 0 0 var(--spacing-sm);
     font-family: var(--font-sans-serif);
-    font-weight: 600;
+    font-weight: 800;
     font-size: var(--font-size-xxl);
     line-height: 1.1;
     text-transform: uppercase;
@@ -149,14 +149,14 @@ import IconInstagram from '../assets/IconInstagram.astro'
   }
 
   :global(body:has([data-map])) .footer-inner,
-  :global(body:has([data-neighborhood-map])) .footer-inner,
-  :global(body:has([data-neighborhood-hero])) .footer-inner {
+  :global(body:has([data-area-map])) .footer-inner,
+  :global(body:has([data-map-pane])) .footer-inner {
     display: none;
   }
 
   :global(body:has([data-map])) .site-footer,
-  :global(body:has([data-neighborhood-map])) .site-footer,
-  :global(body:has([data-neighborhood-hero])) .site-footer {
+  :global(body:has([data-area-map])) .site-footer,
+  :global(body:has([data-map-pane])) .site-footer {
     position: relative;
     z-index: 2;
     margin-block-start: calc(-1 * var(--river-height));
@@ -164,14 +164,14 @@ import IconInstagram from '../assets/IconInstagram.astro'
   }
 
   :global(body:has([data-map])) .footer-bottom,
-  :global(body:has([data-neighborhood-map])) .footer-bottom,
-  :global(body:has([data-neighborhood-hero])) .footer-bottom {
+  :global(body:has([data-area-map])) .footer-bottom,
+  :global(body:has([data-map-pane])) .footer-bottom {
     pointer-events: auto;
   }
 
   :global(body:has([data-map])) .footer-bottom,
-  :global(body:has([data-neighborhood-map])) .footer-bottom,
-  :global(body:has([data-neighborhood-hero])) .footer-bottom {
+  :global(body:has([data-area-map])) .footer-bottom,
+  :global(body:has([data-map-pane])) .footer-bottom {
     border-block-start: 0;
     padding-block-start: 0;
   }
@@ -243,6 +243,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
       flex-direction: column;
       align-items: stretch;
       padding-block: var(--spacing-lg);
+      gap: 3rem;
     }
 
     .footer-name {

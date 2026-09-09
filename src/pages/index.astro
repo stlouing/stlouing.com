@@ -21,7 +21,7 @@ import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
 import GroupHeader from '../components/GroupHeader.astro'
 import GuestbookBadge from '../components/GuestbookBadge.astro'
-import FoodCard from '../components/FoodCard.astro'
+import PhotoCard from '../components/PhotoCard.astro'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconInstagram from '../assets/IconInstagram.astro'
@@ -194,8 +194,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           moreHref={href('/food/')}
           moreLabel="All restaurants & cafes"
         />
-        <div class="food-cards">
-          {featuredFood.map(({ place, teaser }) => <FoodCard place={place} teaser={teaser} />)}
+        <div class="photo-cards">
+          {featuredFood.map(({ place, teaser }) => <PhotoCard place={place} teaser={teaser} />)}
         </div>
       </section>
     </div>
@@ -222,9 +222,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         <WhatsNew />
       </div>
 
-      <div class="front-guestbook">
-        <GuestbookBadge />
-      </div>
     </div>
   </div>
 </BaseLayout>
@@ -409,8 +406,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .front-tagline {
     margin-block: 0 var(--spacing-sm);
-    font-family: var(--font-display-black);
-    font-weight: 400;
+    font-family: var(--font-sans-serif);
+    font-weight: 900;
     line-height: 1.25;
     font-size: var(--font-size-xl);
     letter-spacing: var(--letter-spacing-tight);
@@ -561,7 +558,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     color: var(--color-accent);
   }
 
-  .food-cards {
+  .photo-cards {
     margin-block-start: var(--spacing-sm);
   }
 

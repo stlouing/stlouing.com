@@ -16,7 +16,7 @@ const BOUNDARY_SOURCE_ID = 'neighborhood-boundary'
 const BOUNDARY_FILL_LAYER_ID = 'neighborhood-boundary-fill'
 const BOUNDARY_OUTLINE_LAYER_ID = 'neighborhood-boundary-outline'
 
-// A food spot baked into the page by NeighborhoodHero.astro. Coords are
+// A food spot baked into the page by MapPane.astro. Coords are
 // [lng, lat] (flipped from the food frontmatter's [lat, lng] at build).
 interface HeroSpot {
   title: string
@@ -178,7 +178,7 @@ function addSpotMarkers(
 }
 
 function readSpots(root: HTMLElement): HeroSpot[] {
-  const holder = root.parentElement?.querySelector('script[data-neighborhood-hero-spots]')
+  const holder = root.parentElement?.querySelector('script[data-map-pane-spots]')
   if (!holder?.textContent) {
     return []
   }
@@ -192,8 +192,8 @@ function readSpots(root: HTMLElement): HeroSpot[] {
   }
 }
 
-export function initNeighborhoodHero(): void {
-  const root = document.querySelector<HTMLElement>('[data-neighborhood-hero]')
+export function initMapPane(): void {
+  const root = document.querySelector<HTMLElement>('[data-map-pane]')
   if (!root) {
     return
   }
@@ -212,7 +212,7 @@ export function initNeighborhoodHero(): void {
 
   // One reused popup, food-map options verbatim (map.ts).
   const popup = new maplibregl.Popup({
-    className: 'food-popup',
+    className: 'map-popup',
     closeButton: true,
     closeOnClick: false,
     anchor: 'bottom',

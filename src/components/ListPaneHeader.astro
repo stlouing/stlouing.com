@@ -1,0 +1,21 @@
+---
+// The header bar of a map-split list pane (Food, Neighborhoods): the heavy
+// title + count on the left, page-specific actions (search, links) slotted on
+// the right. Styling lives in global.css (`.list-pane-header` …).
+interface Props {
+  title: string
+  count: number | string
+  // Wraps the count so filter.ts can update it live as filters apply.
+  live?: boolean
+}
+
+const { title, count, live = false } = Astro.props
+---
+
+<div class="list-pane-header">
+  <span class="pane-left">
+    <h1 class="pane-title head-black head-black--lg">{title}</h1>
+    <span class="pane-count">{live ? <span data-filter-count>{count}</span> : count}</span>
+  </span>
+  <slot />
+</div>

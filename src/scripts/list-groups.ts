@@ -19,9 +19,9 @@ const verdictKeys = new Set<string>(['loved', 'liked', 'neutral', 'not-for-me'])
  * chosen, by first letter (A / B / C). Headers always reflect the *visible* rows,
  * so they track filtering too. With JS off, the rows show as a plain flat list.
  */
-export function initFoodGroups(rootSelector = '[data-filter-root]'): void {
+export function initListGroups(rootSelector = '[data-filter-root]'): void {
   const root = document.querySelector<HTMLElement>(rootSelector)
-  const list = root?.querySelector<HTMLElement>('[data-food-rows]')
+  const list = root?.querySelector<HTMLElement>('[data-grouped-rows]')
   if (!root || !list) {
     return
   }

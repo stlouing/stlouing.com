@@ -26,44 +26,44 @@ const { kind, slug, title } = Astro.props
       data-slug={slug}
       aria-label={`Comments on ${title}`}
       hidden>
-      <div class="cm-head head-rule">
+      <div class="feed-head head-rule">
         <h2 class="head-black head-black--lg">Comments</h2>
-        <span class="cm-count" data-count />
+        <span class="feed-count" data-count />
       </div>
 
-      <section class="cm-form-panel" aria-label="Leave a comment">
-        <form class="cm-form" data-form>
+      <section aria-label="Leave a comment">
+        <form class="form-stack" data-form>
           <label class="field">
             <span>Name</span>
             <input type="text" data-name maxlength="80" autocomplete="name" required />
           </label>
           <label class="field">
             <span>Comment</span>
-            <textarea class="cm-textarea" data-message rows="4" maxlength="2000" required />
+            <textarea data-message rows="4" maxlength="2000" required />
           </label>
           {/* Honeypot - hidden from people, tempting to bots. Filled === silently dropped. */}
-          <div class="cm-hp" aria-hidden="true">
+          <div class="hp" aria-hidden="true">
             <label>
               Leave this field empty
               <input type="text" data-hp tabindex="-1" autocomplete="off" />
             </label>
           </div>
-          <div class="cm-form-actions">
+          <div class="form-actions">
             <button type="submit" class="btn btn-dark btn-compact" data-submit>
               Post
             </button>
-            <span class="cm-form-status" data-form-status role="status" aria-live="polite" />
+            <span class="form-status" data-form-status role="status" aria-live="polite" />
           </div>
         </form>
       </section>
 
-      <div class="cm-entries-block">
-        <ul class="cm-entries" data-entries />
-        <p class="cm-empty desc-muted" data-empty hidden>
+      <div>
+        <ul class="feed" data-entries />
+        <p class="feed-empty desc-muted" data-empty hidden>
           No comments yet.
         </p>
-        <p class="cm-load-status" data-load-status role="status" aria-live="polite" />
-        <button type="button" class="btn btn-outline btn-compact cm-older" data-older hidden>
+        <p class="form-status" data-load-status role="status" aria-live="polite" />
+        <button type="button" class="btn btn-outline btn-compact feed-older" data-older hidden>
           Show older comments
         </button>
       </div>
@@ -88,133 +88,5 @@ const { kind, slug, title } = Astro.props
     display: none;
   }
 
-  .cm-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--spacing-md);
-  }
 
-  .cm-head h2 {
-    margin: 0;
-    font-family: var(--font-display-black);
-    font-weight: 400;
-  }
-
-  .cm-count {
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xxs);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-muted);
-  }
-
-  .cm-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-
-  .cm-textarea {
-    padding: var(--spacing-sm);
-    background: var(--color-background);
-    color: var(--color-text);
-    border: 1px solid var(--color-line-input);
-    border-radius: var(--radius);
-    font-family: var(--font-serif);
-    font-size: var(--font-size-md);
-    line-height: 1.45;
-    resize: vertical;
-  }
-
-  .cm-textarea:focus {
-    outline: none;
-    border: 1px solid var(--color-accent-blue);
-    box-shadow: 0 0 0 1px var(--color-accent-blue);
-  }
-
-  .cm-hp {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-
-  .cm-form-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-
-  .cm-form-status,
-  .cm-load-status {
-    margin: 0;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xxs);
-    color: var(--color-accent);
-  }
-
-  .cm-form-status:empty,
-  .cm-load-status:empty {
-    display: none;
-  }
-
-  .cm-empty {
-    margin: 0;
-  }
-
-  .cm-older {
-    align-self: flex-start;
-    margin-block-start: var(--spacing-md);
-  }
-
-  .cm-older[hidden],
-  .cm-empty[hidden] {
-    display: none;
-  }
-
-  .cm-entries-block {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .cm-entries {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .cm-entries :global(.cm-entry) {
-    padding-block: var(--spacing-md);
-    border-block-end: 1px dotted var(--color-line-input);
-  }
-
-  .cm-entries :global(.cm-entry > p) {
-    margin: 0;
-  }
-
-  .cm-entries :global(.cm-date) {
-    margin-block-end: var(--spacing-xs);
-  }
-
-  .cm-entries :global(.cm-commenter) {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-  }
-
-  .cm-entries :global(.cm-name) {
-    display: inline;
-  }
-
-  .cm-entries :global(.cm-message) {
-    margin-block-start: var(--spacing-xs);
-    font-family: var(--font-serif);
-    font-size: var(--font-size-md);
-    line-height: 1.55;
-    color: var(--color-text);
-    overflow-wrap: anywhere;
-  }
 </style>

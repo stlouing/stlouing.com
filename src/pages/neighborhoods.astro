@@ -2,8 +2,9 @@
 import { getCollection } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import ListPaneHeader from '../components/ListPaneHeader.astro'
 import MapRow from '../components/MapRow.astro'
-import NeighborhoodMap from '../components/NeighborhoodMap.astro'
+import AreaMap from '../components/AreaMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { published, excerpt, hasBody, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import {
@@ -15,7 +16,7 @@ import {
 
 // The list shows every neighborhood; ones with a writeup are listed first (then
 // the rest, in their numbered order). Written rows render their writeup expanded;
-// the map highlights + scrolls to a given one (see neighborhood-map.ts).
+// the map highlights + scrolls to a given one (see area-map.ts).
 const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
 
@@ -113,12 +114,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
     </script>
     <div class="results">
       <article class="page content-pane map-list section-list">
-        <div class="list-pane-header">
-          <span class="pane-left">
-            <h1 class="pane-title head-black head-black--lg">Neighborhoods, Parks, & Cities</h1>
-            <span class="pane-count">{count}</span>
-          </span>
-        </div>
+        <ListPaneHeader title="Neighborhoods, Parks, & Cities" count={count} />
         <ul class="list">
           {
             listed.map((neighborhood, index) => {
@@ -203,7 +199,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
           }
         </ul>
       </article>
-      <NeighborhoodMap />
+      <AreaMap />
     </div>
   </div>
 </BaseLayout>

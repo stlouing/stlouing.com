@@ -156,7 +156,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   }
 
   // The teardrop pin (same shape as the neighborhood map's) — `currentColor`
-  // fill, so the pin color (and its theme swap) comes from the `.food-marker`
+  // fill, so the pin color (and its theme swap) comes from the `.map-pin`
   // CSS without any JS recoloring.
   const pinSvg =
     '<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>'
@@ -167,7 +167,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     // the marker element's transform (MapLibre owns that for positioning — same
     // reason the neighborhood pins scale their inner .marker-pin, not the marker).
     const element = document.createElement('div')
-    element.className = 'food-marker'
+    element.className = 'map-pin'
     const verdictClass = item.dataset.verdict
     if (verdictClass) {
       element.classList.add(`verdict-${verdictClass}`)
@@ -221,7 +221,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     // to keep it on-screen instead. The offset lifts it clear of the pin (which
     // rises ~34px from its tip) — matches the neighborhood map's popup offset.
     const popup = new maplibregl.Popup({
-      className: 'food-popup',
+      className: 'map-popup',
       closeButton: true,
       closeOnClick: false,
       anchor: 'bottom',

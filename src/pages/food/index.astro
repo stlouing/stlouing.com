@@ -4,6 +4,7 @@ import { getImage } from 'astro:assets'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
+import ListPaneHeader from '../../components/ListPaneHeader.astro'
 import MapRow from '../../components/MapRow.astro'
 import Rating from '../../components/Rating.astro'
 import IconSearch from '../../assets/IconSearch.astro'
@@ -17,7 +18,7 @@ import IconArrowRight from '../../assets/IconArrowRight.astro'
 
 // The list groups by verdict (Loved → Liked → Neutral) by default, or
 // alphabetically (A / B / C) via the sort control — the grouping itself is built
-// client-side by food-groups.ts. Every place appears now: rated spots keep their
+// client-side by list-groups.ts. Every place appears now: rated spots keep their
 // verdict group + color; un-rated spots (tried / want-to-try / suggested) group
 // under their status below the rated ones and read grayed on the map.
 const verdictRankLetter: Record<Verdict, string> = {
@@ -99,12 +100,8 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
     hasCoords={hasCoords}
     mapLabel="Map of food spots"
     emptyText="No places match those filters.">
-    <div class="map-list food-grouped">
-      <div class="list-pane-header">
-        <span class="pane-left">
-          <h1 class="pane-title head-black head-black--lg">Food</h1>
-          <span class="pane-count"><span data-filter-count>{count}</span></span>
-        </span>
+    <div class="map-list grouped-list">
+      <ListPaneHeader title="Food" count={count} live>
         <div class="pane-links">
           <label class="pane-search-wrap">
             <IconSearch />
@@ -118,8 +115,8 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
             />
           </label>
         </div>
-      </div>
-      <ul class="list" data-food-rows>
+      </ListPaneHeader>
+      <ul class="list" data-grouped-rows>
         {
           rows.map(({ place, verdict, groupKey, rankLetter, thumb }) => (
             <MapRow
@@ -196,9 +193,9 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
 </BaseLayout>
 
 <script>
-  import { initFoodGroups } from '../../scripts/food-groups'
+  import { initListGroups } from '../../scripts/list-groups'
 
-  initFoodGroups()
+  initListGroups()
 </script>
 
 <style>

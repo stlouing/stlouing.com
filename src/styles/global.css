@@ -3,8 +3,10 @@
 
   --color-background: white; /* #FAF8F6 */
 
-  --color-surface: color-mix(in srgb, var(--color-accent-gold) 10%, var(--color-background));
-  --color-surface-2: color-mix(in srgb, var(--color-accent-gold) 5%, var(--color-background));
+  --color-surface: #efefef;
+  --color-surface-2: #f6f6f6;
+
+  --color-panel: #fdf4d5;
 
   --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
 
@@ -48,8 +50,6 @@
   --font-sans-serif: 'Archivo', sans-serif;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  --font-display-black: 'Archivo Black', 'Arial Black', 'Helvetica Neue', sans-serif;
-
   --font-size-xxxs: 0.8125rem;
   --font-size-xxs: 0.8125rem;
   --font-size-xs: 0.875rem;
@@ -74,6 +74,8 @@
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --radius: 0;
+  --radius-input: 6px;
+  --radius-rounded: 16px;
 
   --list-photo-width: 33%;
   --card-photo-height: 9rem;
@@ -93,6 +95,8 @@
   --color-background: #22242a;
   --color-surface: #1a1c21;
   --color-surface-2: #292b33;
+
+  --color-panel: #1b1d22;
   --color-text-heading: #f3f1f7;
   --color-text: #e9e8ec;
   --color-text-article: #d4d3d8;
@@ -161,7 +165,25 @@ input,
 button,
 textarea,
 select {
+  border-radius: var(--radius-input);
   font: inherit;
+}
+
+textarea {
+  padding: var(--spacing-sm);
+  background: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-line-input);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  line-height: 1.45;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 1px var(--color-accent-blue);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -544,8 +566,7 @@ a.corridor-spot {
 
 .corridor-spot:hover .marker-pin,
 .corridor-spot:focus-visible .marker-pin,
-.neighborhood-marker:hover .marker-pin,
-.food-marker:hover .marker-pin {
+.map-pin:hover .marker-pin {
   transform: scale(1.12);
 }
 
@@ -758,7 +779,7 @@ a.wikipedia-link {
 }
 
 .list-pane-header .pane-count,
-.food-grouped li.group-header .group-count {
+.grouped-list li.group-header .group-count {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-xs);
   color: var(--color-muted);
@@ -902,7 +923,7 @@ main {
 }
 
 .body > p:first-of-type::first-letter,
-.body .topic-layout > p:first-of-type::first-letter {
+.body .article-col > p:first-of-type::first-letter {
   float: left;
   font-family: var(--font-display);
   font-size: 3.5em;
@@ -940,7 +961,7 @@ main {
   }
 }
 
-.body:has(.topic-layout),
+.body:has(.article-col),
 .body:has(.detail-layout) {
   max-width: none;
 }
@@ -976,7 +997,6 @@ select {
   background: var(--color-background);
   color: var(--color-text);
   border: 1px solid var(--color-line-input);
-  border-radius: var(--radius);
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
   font-weight: 400;
@@ -1009,7 +1029,7 @@ select {
   background: var(--color-background);
 }
 
-.neighborhood-map {
+.area-map {
   background: var(--color-background);
 }
 
@@ -1059,7 +1079,7 @@ body:has(.map-split) main > .wrap,
 
   /* The neighborhood detail split stays an even 50/50 — its left pane is an
      article with its own centered reading column, not a dense list. */
-  .map-split.neighborhood-split .results {
+  .map-split.detail-split .results {
     grid-template-columns: 50% 1fr;
   }
 }
@@ -1115,7 +1135,7 @@ body:has(.map-split) main > .wrap,
   fill: var(--color-surface);
 }
 
-.neighborhood-marker {
+.map-pin {
   cursor: pointer;
   color: var(--color-pin);
 }
@@ -1131,7 +1151,6 @@ body:has(.map-split) main > .wrap,
 
 .map-list .list-description {
   font-size: var(--font-size-sm);
-  margin-left: calc(var(--spacing-md) + 56px);
   margin-top: var(--spacing-shmedium);
 
   display: flow-root;
@@ -1156,31 +1175,6 @@ body:has(.map-split) main > .wrap,
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-}
-
-.map-list.food-grouped .list-description,
-.map-list.section-list .list-description {
-  margin-left: 0;
-}
-
-.map-list .list-description .place-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  row-gap: var(--spacing-xs);
-  margin-block-end: var(--spacing-sm);
-
-  &:last-child {
-    margin-block-end: 0;
-  }
-}
-
-.map-list.food-grouped .list-description .place-links,
-.map-list.section-list .list-description .place-links {
-  align-items: center;
-  column-gap: var(--spacing-md);
-  row-gap: var(--spacing-xs);
-  margin-block: var(--spacing-md) 0;
 }
 
 .map-list.section-list .number {
@@ -1258,7 +1252,7 @@ body:has(.map-split) main > .wrap,
 }
 
 .map-list .list-eyebrow .list-meta,
-.maplibregl-popup.food-popup .list-meta,
+.maplibregl-popup.map-popup .list-meta,
 .wikilink-card .list-meta {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
@@ -1269,6 +1263,7 @@ body:has(.map-split) main > .wrap,
 }
 
 .map-list .list-eyebrow {
+  line-height: 1.4;
   margin-block-end: 2px;
 }
 
@@ -1378,50 +1373,50 @@ body:has(.map-split) main > .wrap,
     grid-template-rows: 1fr;
   }
 
-  .map-split:not(.neighborhood-split)[data-view='map'] .content-pane {
+  .map-split:not(.detail-split)[data-view='map'] .content-pane {
     display: none;
   }
 
-  .map-split[data-view='content'] .neighborhood-map {
+  .map-split[data-view='content'] .area-map {
     display: none;
   }
 
   /* The neighborhood detail split has no mobile view switcher: the page
      unlocks and scrolls as a normal document, with the map as an in-flow
      banner on top that scrolls away with it. */
-  body:has(.map-split.neighborhood-split) {
+  body:has(.map-split.detail-split) {
     height: auto;
     overflow: visible;
   }
 
-  .map-split.neighborhood-split .results {
+  .map-split.detail-split .results {
     grid-template-rows: 300px auto;
   }
 
-  .map-split.neighborhood-split .neighborhood-hero-pane {
+  .map-split.detail-split .map-pane {
     grid-row: 1;
     height: 300px;
   }
 
-  .map-split.neighborhood-split .detail-pane {
+  .map-split.detail-split .detail-pane {
     grid-row: 2;
     overflow-y: visible;
   }
 }
 
-.food-grouped [data-verdict='loved'] {
+.grouped-list [data-verdict='loved'] {
   --verdict-color: var(--color-verdict-loved);
 }
 
-.food-grouped [data-verdict='liked'] {
+.grouped-list [data-verdict='liked'] {
   --verdict-color: var(--color-verdict-liked);
 }
 
-.food-grouped [data-verdict='neutral'] {
+.grouped-list [data-verdict='neutral'] {
   --verdict-color: var(--color-verdict-neutral);
 }
 
-.food-grouped [data-verdict='not-for-me'] {
+.grouped-list [data-verdict='not-for-me'] {
   --verdict-color: var(--color-verdict-notforme);
 }
 
@@ -1441,7 +1436,7 @@ body:has(.map-split) main > .wrap,
   --chip-color: var(--color-verdict-notforme);
 }
 
-/* The verdict-less placeholder ("Not yet rated" / "Not yet visited") — a
+/* The verdict-less placeholder ("Not yet rated" / "Unexplored") — a
    quiet outline beside the colored verdict pills. */
 .chip.verdict-unrated {
   --chip-color: var(--color-muted);
@@ -1580,7 +1575,7 @@ body:has(.map-split) main > .wrap,
   margin: 0;
 }
 
-[data-view='map'] .food-grouped .list-pane-header {
+[data-view='map'] .grouped-list .list-pane-header {
   position: sticky;
   top: 0;
   z-index: 6;
@@ -1608,7 +1603,7 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-.food-grouped .group-dot {
+.grouped-list .group-dot {
   width: 8px;
   height: 8px;
   border-radius: 2px;
@@ -1616,27 +1611,27 @@ body:has(.map-split) main > .wrap,
   flex-shrink: 0;
 }
 
-.food-grouped li.group-header .rating {
+.grouped-list li.group-header .rating {
   font-size: var(--font-size-md);
   flex-shrink: 0;
 }
 
-.food-grouped li.group-header .group-label {
+.grouped-list li.group-header .group-label {
   color: var(--color-text);
 }
 
-.food-grouped li.group-header.group-header-alpha {
+.grouped-list li.group-header.group-header-alpha {
   padding-block: var(--spacing-xs);
 }
 
-.food-grouped li.group-header.group-header-alpha .group-label {
+.grouped-list li.group-header.group-header-alpha .group-label {
   color: var(--color-accent-blue);
   font-size: var(--font-size-lg);
   font-family: var(--font-sans-serif);
   font-weight: 700;
 }
 
-.food-grouped li.group-header.group-header-status .group-label {
+.grouped-list li.group-header.group-header-status .group-label {
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
   font-weight: 400;
@@ -1645,7 +1640,7 @@ body:has(.map-split) main > .wrap,
   letter-spacing: 0;
 }
 
-.food-grouped .group-rule {
+.grouped-list .group-rule {
   flex: 1;
 }
 
@@ -1654,23 +1649,19 @@ body:has(.map-split) main > .wrap,
   border-block-end: none;
 }
 
-.food-grouped .list-description {
-  margin-left: 0;
-}
-
-[data-filter-root]:not([data-view='map']) .food-grouped .list-pane-header {
+[data-filter-root]:not([data-view='map']) .grouped-list .list-pane-header {
   background: var(--color-background);
   padding-inline: 0;
 }
 
 /* Only the start side resets — the end side must keep the reserved photo
    column from the li:has(.list-photo) rule above. */
-[data-filter-root]:not([data-view='map']) .food-grouped .list > li {
+[data-filter-root]:not([data-view='map']) .grouped-list .list > li {
   padding-inline-start: 0;
 }
 
 @media (max-width: 700px) {
-  [data-filter-root]:not([data-view='map']) .food-grouped .list > li.group-header {
+  [data-filter-root]:not([data-view='map']) .grouped-list .list > li.group-header {
     padding-inline-end: var(--spacing-md);
     margin-left: -1rem;
     margin-right: -1rem;
@@ -1754,7 +1745,7 @@ body:has([data-filter-root]) .masthead-nav {
   min-width: 0;
 }
 
-.food-popup .tip-address {
+.map-popup .popup-address {
   display: block;
   margin-block: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-sm);
@@ -1766,11 +1757,11 @@ body:has([data-filter-root]) .masthead-nav {
 
 /* The directions link reads as part of the address block, so the address hands
    its bottom margin down to the link. */
-.food-popup .tip-address:has(+ .tip-directions) {
+.map-popup .popup-address:has(+ .popup-directions) {
   margin-block-end: var(--spacing-xs);
 }
 
-.food-popup .tip-directions {
+.map-popup .popup-directions {
   display: inline-block;
   font-size: var(--font-size-sm);
   font-weight: 500;
@@ -1780,16 +1771,16 @@ body:has([data-filter-root]) .masthead-nav {
   text-underline-offset: 3px;
 }
 
-.food-popup .tip-directions:not(:last-of-type) {
+.map-popup .popup-directions:not(:last-of-type) {
   margin-block-end: var(--spacing-sm);
 }
 
-.food-popup .tip-directions:hover {
+.map-popup .popup-directions:hover {
   color: var(--color-accent-blue);
 }
 
 /* The pixel external-link arrow rides inline after the text, continue-link style. */
-.food-popup .tip-directions .icon {
+.map-popup .popup-directions .icon {
   display: inline;
   width: 12px;
   height: 12px;
@@ -1798,12 +1789,7 @@ body:has([data-filter-root]) .masthead-nav {
   color: inherit;
 }
 
-.food-marker {
-  cursor: pointer;
-  color: var(--color-pin);
-}
-
-.food-marker.is-selected .marker-pin-body {
+.map-pin.is-selected .marker-pin-body {
   stroke: var(--color-text);
 }
 
@@ -1837,20 +1823,20 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-.maplibregl-popup.food-popup .rating {
+.maplibregl-popup.map-popup .rating {
   display: inline-flex;
   align-items: center;
   gap: 3px;
   margin-bottom: var(--spacing-sm);
 }
 
-.maplibregl-popup.food-popup .rating-fleur {
+.maplibregl-popup.map-popup .rating-fleur {
   width: 1em;
   height: 1em;
   color: color-mix(in srgb, var(--color-accent-gold) 26%, transparent);
 }
 
-.maplibregl-popup.food-popup .rating-fleur.is-filled {
+.maplibregl-popup.map-popup .rating-fleur.is-filled {
   color: var(--color-accent-gold);
 }
 
@@ -1868,7 +1854,7 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration: none;
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-content {
+.maplibregl-popup.map-popup .maplibregl-popup-content {
   background: var(--color-background);
   color: var(--color-text);
 
@@ -1890,7 +1876,7 @@ body:has([data-filter-root]) .masthead-nav {
    content's padded box so the photo's edge-to-edge bleed still works, and the
    absolutely-positioned close button (a sibling) stays pinned while the body
    scrolls. */
-.maplibregl-popup.food-popup .popup-scroll {
+.maplibregl-popup.map-popup .popup-scroll {
   margin: calc(-1 * var(--spacing-md));
   padding: var(--spacing-md);
   max-height: max(220px, min(60vh, calc(100dvh - 260px)));
@@ -1898,7 +1884,7 @@ body:has([data-filter-root]) .masthead-nav {
   overscroll-behavior: contain;
 }
 
-.maplibregl-popup.food-popup .popup-photo {
+.maplibregl-popup.map-popup .popup-photo {
   height: var(--popup-photo-height);
   background-size: cover;
   background-position: center center;
@@ -1912,7 +1898,7 @@ body:has([data-filter-root]) .masthead-nav {
    remap resizes the box, the photo bleed, and all the text together. Literal
    values (not token references) so the remaps don't chain through each other. */
 @media (max-width: 700px) {
-  .maplibregl-popup.food-popup {
+  .maplibregl-popup.map-popup {
     --popup-photo-height: 110px;
     /* --spacing-shmedium: box padding + the scroll/photo bleed margins */
     --spacing-md: 0.75rem;
@@ -1927,7 +1913,7 @@ body:has([data-filter-root]) .masthead-nav {
     --font-size-xxs: 0.75rem;
   }
 
-  .maplibregl-popup.food-popup .rating {
+  .maplibregl-popup.map-popup .rating {
     margin-bottom: var(--spacing-xs);
   }
 }
@@ -1968,7 +1954,7 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-content h2 {
+.maplibregl-popup.map-popup .maplibregl-popup-content h2 {
   margin-block-start: 0;
   margin-block-end: var(--spacing-xs);
 
@@ -1977,7 +1963,7 @@ body:has([data-filter-root]) .masthead-nav {
   white-space: normal;
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-content h2 a {
+.maplibregl-popup.map-popup .maplibregl-popup-content h2 a {
   font-family: var(--font-serif);
   font-weight: 500;
   line-height: 1.2;
@@ -1985,7 +1971,7 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration: none;
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-content h2 a:hover {
+.maplibregl-popup.map-popup .maplibregl-popup-content h2 a:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color-accent);
@@ -1993,7 +1979,7 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-accent);
 }
 
-.maplibregl-popup.food-popup .tip-excerpt {
+.maplibregl-popup.map-popup .popup-excerpt {
   margin-block: var(--spacing-xs) 0;
   font-family: var(--font-serif);
   font-size: var(--font-size-sm);
@@ -2007,7 +1993,7 @@ body:has([data-filter-root]) .masthead-nav {
   overflow: hidden;
 }
 
-.maplibregl-popup.food-popup .popup-meta {
+.maplibregl-popup.map-popup .popup-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -2017,20 +2003,20 @@ body:has([data-filter-root]) .masthead-nav {
   padding-bottom: var(--spacing-xs);
 }
 
-.maplibregl-popup.food-popup button.list-meta {
+.maplibregl-popup.map-popup button.list-meta {
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
 }
 
-.maplibregl-popup.food-popup button.list-meta:hover {
+.maplibregl-popup.map-popup button.list-meta:hover {
   color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.maplibregl-popup.food-popup .popup-actions {
+.maplibregl-popup.map-popup .popup-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -2038,24 +2024,24 @@ body:has([data-filter-root]) .masthead-nav {
   margin-block-start: var(--spacing-sm);
 }
 
-.maplibregl-popup.food-popup .popup-actions .btn {
+.maplibregl-popup.map-popup .popup-actions .btn {
   flex: 1 0 auto;
   justify-content: center;
   color: var(--color-text);
 }
 
-.maplibregl-popup.food-popup .popup-actions .btn:hover {
+.maplibregl-popup.map-popup .popup-actions .btn:hover {
   color: var(--color-accent);
 }
 
-.maplibregl-popup.food-popup .popup-more-link {
+.maplibregl-popup.map-popup .popup-more-link {
   display: flex;
   justify-content: center;
   width: 100%;
   margin-block-start: var(--spacing-md);
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-close-button {
+.maplibregl-popup.map-popup .maplibregl-popup-close-button {
   top: var(--spacing-sm);
   right: var(--spacing-sm);
   padding: var(--spacing-xs) var(--spacing-sm);
@@ -2066,12 +2052,12 @@ body:has([data-filter-root]) .masthead-nav {
   border-radius: 0;
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-close-button:hover {
+.maplibregl-popup.map-popup .maplibregl-popup-close-button:hover {
   color: var(--color-text);
   background: var(--color-wash);
 }
 
-.maplibregl-popup.food-popup .maplibregl-popup-tip {
+.maplibregl-popup.map-popup .maplibregl-popup-tip {
   display: none;
 }
 
@@ -2123,22 +2109,22 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-.entry:has(.topic-layout) .entry-header {
+.entry:has(.article-col) .entry-header {
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
-.entry:has(.topic-layout) .entry-byline {
+.entry:has(.article-col) .entry-byline {
   display: flex;
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
 
-.entry:has(.topic-layout) .entry-bar .meta {
+.entry:has(.article-col) .entry-bar .meta {
   justify-content: center;
 }
 
-.entry:has(.topic-layout) > footer {
+.entry:has(.article-col) > footer {
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
@@ -2149,7 +2135,7 @@ body:has([data-filter-root]) .masthead-nav {
   max-width: 70ch;
 }
 
-.entry:has(.topic-layout) .entry-comments {
+.entry:has(.article-col) .entry-comments {
   max-width: var(--measure-reading);
   margin-inline: auto;
 }
@@ -2244,8 +2230,10 @@ body:has([data-filter-root]) .masthead-nav {
 /* The "haven't been yet" stub note on body-less pages: a dashed note with
    generous breathing room so the sparse page reads calm rather than empty. */
 .not-explored {
-  padding: var(--spacing-xl) var(--spacing-lg);
-  border: 1px dashed var(--color-line-input);
+  padding: var(--spacing-xl) var(--spacing-xl);
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-rounded);
+  color: var(--color-muted);
 }
 
 .not-explored p {
@@ -2383,9 +2371,13 @@ body:has([data-filter-root]) .masthead-nav {
   font-size: var(--font-size-md);
   font-weight: 400;
   color: var(--color-accent);
+
+  &.head-black {
+    font-size: var(--font-size-label);
+  }
 }
 
-.topic-list h2 {
+.compact-article h2 {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-lg);
 }
@@ -2500,8 +2492,8 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .head-black {
-  font-family: var(--font-display-black);
-  font-weight: 400;
+  font-family: var(--font-sans-serif);
+  font-weight: 900;
   font-size: var(--font-size-xl);
   line-height: 1;
   text-transform: uppercase;
@@ -2514,9 +2506,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .head-black.head-black--sm {
-  font-family: var(--font-sans-serif);
   font-size: var(--font-size-sm);
-  font-family: var(--font-sans-serif);
   font-weight: 700;
   letter-spacing: normal;
   padding-bottom: 3px;
@@ -2533,15 +2523,15 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 /* Aside section labels (My rating, Map, Address, My pick, the rail headers…)
-   speak in a muted voice: soft ink over a hairline rule instead of the full
+   speak in a muted voice: smaller and ruleless next to the full-weight
    head-black ink — the asides accompany the article, they don't compete.
    .pane-aside is the neighborhood split-pane's stacked equivalent. */
 .detail-aside .head-black--sm.head-rule,
 .pane-aside .head-black--sm.head-rule {
   /* color: var(--color-muted-2); */
   padding-bottom: 3px;
-  border-block-end: 1px solid var(--color-line);
   font-size: var(--font-size-xxs);
+  border-block-end: 0;
 }
 
 .eyebrow {
@@ -2648,7 +2638,6 @@ body:has([data-filter-root]) .masthead-nav {
   .related-cards .related-list .related-card .related-kicker {
     margin-block-end: var(--spacing-xs);
   }
-
 
   /* Only the kicker shares its line with the pinned chip — cap it so a long
      neighborhood name wraps instead of running underneath. */
@@ -2837,11 +2826,142 @@ button.title-link:hover {
 
 .panel {
   border: 2px solid var(--color-line-contrast);
-  background: var(--color-surface);
+  background: var(--color-panel);
   padding: var(--spacing-md);
 }
 
-.food-cards {
+/* The site's one form voice (guestbook, comments, contact): a .form-stack
+   column of .field rows, a .form-actions row (submit button + status line),
+   and an off-screen .hp honeypot. Textarea chrome is on the element itself
+   in the base layer. */
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* .form-stack sets display, which would otherwise override the hidden
+   attribute (the guestbook form swaps out after signing). */
+.form-stack[hidden] {
+  display: none;
+}
+
+.field > span {
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted-2);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.form-status {
+  margin: 0;
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-xxs);
+  color: var(--color-accent);
+}
+
+.form-status:empty {
+  display: none;
+}
+
+/* Honeypot field: off-screen for humans, tempting to bots. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* A feed of reader-submitted entries (guestbook signatures, comments): the
+   ruled .feed-head bar (title + .feed-count), then the .feed list of dotted-
+   divided entries built at runtime by guestbook.ts / comments.ts — each a
+   .feed-date eyebrow over the .feed-byline name row and the .feed-message.
+   Flat global rules on purpose: injected nodes never carry an Astro scope. */
+.feed-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.feed-head h2 {
+  margin: 0;
+}
+
+.feed-count {
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-xxs);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-muted);
+}
+
+.feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.feed-entry {
+  padding-block: var(--spacing-md);
+  border-block-end: 1px dotted var(--color-line-input);
+}
+
+.feed-entry > p {
+  margin: 0;
+}
+
+.feed-entry .feed-date {
+  margin-block-end: var(--spacing-xs);
+}
+
+.feed-byline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+/* The name keeps title-serif's lg/500 so it reads a level above the message. */
+.feed-name {
+  display: inline;
+}
+
+.feed-entry .feed-message {
+  margin-block-start: var(--spacing-xs);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  line-height: 1.55;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.feed-empty {
+  margin: var(--spacing-md) 0 0;
+}
+
+.feed-older {
+  align-self: flex-start;
+  margin-block-start: var(--spacing-md);
+}
+
+/* .btn sets display, which would otherwise override the hidden attribute. */
+.feed-older[hidden],
+.feed-empty[hidden] {
+  display: none;
+}
+
+.panel.transparent {
+  background: transparent;
+}
+
+.photo-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: 1fr;
@@ -2849,7 +2969,7 @@ button.title-link:hover {
 }
 
 @media (max-width: 700px) {
-  .food-cards {
+  .photo-cards {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
   }

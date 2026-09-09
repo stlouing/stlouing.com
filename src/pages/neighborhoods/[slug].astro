@@ -7,7 +7,7 @@ import Comments from '../../components/Comments.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
-import NeighborhoodHero from '../../components/NeighborhoodHero.astro'
+import MapPane from '../../components/MapPane.astro'
 import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
@@ -31,7 +31,7 @@ import {
 import neighborhoods from '../../data/neighborhoods.json'
 import Button from '../../components/Button.astro'
 import SourceLink from '../../components/SourceLink.astro'
-import NeighborhoodFacts from '../../components/NeighborhoodFacts.astro'
+import FactCards from '../../components/FactCards.astro'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconChart from '../../assets/IconChart.astro'
@@ -218,7 +218,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
   ogImage={sharePhoto ? rootRelative(sharePhoto.src) : undefined}
   ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
   ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}>
-  <div class="map-split neighborhood-split" data-map-split data-view="map">
+  <div class="map-split detail-split" data-map-split data-view="map">
     <div class="results">
       <article class="page content-pane detail-pane">
         <div class="detail-pane-inner">
@@ -370,7 +370,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                           class="btn-inline">
                           {rotation !== undefined && (
                             <span
-                              class:list={['neighbor-arrow', `neighbor-arrow--r${rotation}`]}
+                              class:list={['bearing-arrow', `bearing-arrow--r${rotation}`]}
                               aria-hidden="true">
                               <IconArrowRight />
                             </span>
@@ -407,7 +407,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                 </div>
               )
             }
-            <NeighborhoodFacts tags={tags} />
+            <FactCards tags={tags} />
             </div>
           </section>
 
@@ -417,7 +417,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
         </div>
       </article>
 
-      <NeighborhoodHero
+      <MapPane
         slug={slug}
         boundaryToken={boundaryToken}
         coords={info?.coords}
@@ -481,41 +481,41 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
 
   /* The compass arrow leading each neighbor row (the Links-bar icon spot):
      the pixel arrow icon rotated per direction. */
-  .neighbor-arrow {
+  .bearing-arrow {
     display: inline-flex;
     color: var(--color-muted);
   }
 
-  .neighbor-arrow :global(.icon) {
+  .bearing-arrow :global(.icon) {
     width: 14px;
     height: 14px;
   }
 
-  .neighbor-arrow--r45 :global(.icon) {
+  .bearing-arrow--r45 :global(.icon) {
     transform: rotate(45deg);
   }
 
-  .neighbor-arrow--r90 :global(.icon) {
+  .bearing-arrow--r90 :global(.icon) {
     transform: rotate(90deg);
   }
 
-  .neighbor-arrow--r135 :global(.icon) {
+  .bearing-arrow--r135 :global(.icon) {
     transform: rotate(135deg);
   }
 
-  .neighbor-arrow--r180 :global(.icon) {
+  .bearing-arrow--r180 :global(.icon) {
     transform: rotate(180deg);
   }
 
-  .neighbor-arrow--r225 :global(.icon) {
+  .bearing-arrow--r225 :global(.icon) {
     transform: rotate(225deg);
   }
 
-  .neighbor-arrow--r270 :global(.icon) {
+  .bearing-arrow--r270 :global(.icon) {
     transform: rotate(270deg);
   }
 
-  .neighbor-arrow--r315 :global(.icon) {
+  .bearing-arrow--r315 :global(.icon) {
     transform: rotate(315deg);
   }
 </style>

@@ -151,14 +151,14 @@ export function buildPopupHtml(config: PopupConfig): string {
   const metaHtml = metaInner ? `<div class="popup-meta list-eyebrow">${metaInner}</div>` : ''
 
   const addressHtml = addressLines.length
-    ? `<span class="tip-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
+    ? `<span class="popup-address">${addressLines.map(escapeHtml).join('<br>')}</span>`
     : ''
 
   const directionsHtml = directionsHref
-    ? `<a class="tip-directions" href="${directionsHref}" target="_blank" rel="noopener">View directions${DIRECTIONS_ICON}</a>`
+    ? `<a class="popup-directions" href="${directionsHref}" target="_blank" rel="noopener">View directions${DIRECTIONS_ICON}</a>`
     : ''
 
-  const excerptHtml = excerpt ? `<p class="tip-excerpt">${escapeHtml(excerpt)}</p>` : ''
+  const excerptHtml = excerpt ? `<p class="popup-excerpt">${escapeHtml(excerpt)}</p>` : ''
 
   const moreHtml = `<a class="btn btn-dark btn-compact popup-more-link" href="${link}">View more</a>`
 

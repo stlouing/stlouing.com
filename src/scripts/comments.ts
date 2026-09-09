@@ -235,25 +235,25 @@ function setupComments(root: HTMLElement): void {
 // is reader-supplied and must never pass through innerHTML.
 function buildEntry(entry: CommentEntry): HTMLLIElement {
   const item = document.createElement('li')
-  item.className = 'cm-entry'
+  item.className = 'feed-entry'
 
   const date = document.createElement('p')
-  date.className = 'cm-date eyebrow'
+  date.className = 'feed-date eyebrow'
   date.textContent = formatPostedDate(entry.created_at)
   item.append(date)
 
   const commenter = document.createElement('p')
-  commenter.className = 'cm-commenter'
+  commenter.className = 'feed-byline'
 
   const nameLabel = document.createElement('span')
-  nameLabel.className = 'cm-name title-serif'
+  nameLabel.className = 'feed-name title-serif'
   nameLabel.textContent = entry.name
   commenter.append(nameLabel)
 
   item.append(commenter)
 
   const message = document.createElement('p')
-  message.className = 'cm-message'
+  message.className = 'feed-message'
   message.textContent = entry.message
   item.append(message)
 
