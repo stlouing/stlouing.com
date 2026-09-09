@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content'
 import neighborhoodsData from '../data/neighborhoods.json'
 
+import imosPhoto from '../content/images/food/imos.jpeg'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
@@ -54,6 +55,8 @@ const FEATURED_FOOD_IDS = [
   'kishimoto-mendo',
   'nicky-slices',
   'dalies-smokehouse',
+  'woofies-hot-dogs',
+  'sultan',
 ]
 const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
   allFood.filter((place) => place.id === foodId),
@@ -63,6 +66,10 @@ const moreSections = [
   ...sections.filter((section) => section.group === 'lists'),
   ...sections.filter((section) => section.group === 'site' && !section.primary),
 ]
+
+const pizzaTopic = allTopics.find(
+  (topic) => topic.id === 'st-louis-style-pizza' && topic.id !== leadTopic?.id,
+)
 
 const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 
@@ -180,6 +187,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           {
             featuredFood.map(({ place, teaser }) => (
               <Card
+                class="card--lg"
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
                 description={place.data.description}
@@ -222,6 +230,23 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       <div class="front-whatsnew">
         <WhatsNew />
       </div>
+
+      <!-- {
+        pizzaTopic && (
+          <section class="front-feature">
+            <Heading>Pizza</Heading>
+            <Card
+              class="card--lg"
+              photo={imosPhoto}
+              href={href(`/${pizzaTopic.id}/`)}
+              title={pizzaTopic.data.title}
+              meta={pizzaTopic.data.category}
+              description={pizzaTopic.data.description}
+              excerpt={excerpt(pizzaTopic.body, PREVIEW_EXCERPT_CHARS)}
+            />
+          </section>
+        )
+      } -->
 
     </div>
   </div>
@@ -329,6 +354,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .rail-articles :global(.card-description) {
     font-style: normal;
   }
+
 
   .front-index-list {
     margin: 0;

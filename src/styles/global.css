@@ -710,16 +710,11 @@ a.more {
   pointer-events: auto;
 }
 
-.wikilink-card:has(.wikilink-card-photo) {
+.wikilink-card:has(.card-media) {
   width: 320px;
 }
 
-.wikilink-card-photo {
-  display: block;
-  width: 100%;
-  height: var(--card-photo-height);
-  object-fit: cover;
-  margin-block-end: var(--spacing-sm);
+.wikilink-card .card-media {
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
 }
@@ -1516,6 +1511,10 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration: none;
 }
 
+.maplibregl-popup.map-popup {
+  z-index: 3;
+}
+
 .maplibregl-popup.map-popup .maplibregl-popup-content {
   background: var(--color-background);
   color: var(--color-text);
@@ -2116,31 +2115,8 @@ a.card:hover::before {
   margin: 0;
 }
 
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-  row-gap: var(--spacing-xs);
-}
 
-.card-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-family: var(--font-sans-serif);
-  font-size: var(--font-size-xxs);
-  font-weight: 500;
-  color: var(--color-muted-2);
-  border: 1px solid var(--color-line);
-  padding: 1px var(--spacing-sm);
-  line-height: 1.4;
-  background: var(--color-surface);
-}
 
-.card-tag .icon {
-  width: 0.9em;
-  height: 0.9em;
-}
 
 .card .rating .rating-fleur {
   width: 0.95rem;
@@ -2163,7 +2139,7 @@ a.card:hover::before {
   border-block-end: 0;
 }
 
-.card-rows .card:has(.card-description, .card-tags) {
+.card-rows .card:has(.card-description) {
   align-items: flex-start;
 }
 
@@ -2183,7 +2159,6 @@ a.card:hover::before {
   .card-cells .card-rows {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 1fr;
     column-gap: var(--spacing-lg);
     overflow: visible;
   }
@@ -2194,7 +2169,7 @@ a.card:hover::before {
 
   .card-cells .card-rows .card {
     align-items: stretch;
-    padding: var(--spacing-md) 0 var(--spacing-lg);
+    padding: var(--spacing-md) 0;
     border: 0;
     border-block-end: 1px dotted var(--color-line-input);
   }
@@ -2203,10 +2178,6 @@ a.card:hover::before {
     border-block-end: 1px dotted var(--color-line-input);
   }
 
-  .card-cells .card-rows .card-tags {
-    margin-block-start: auto;
-    padding-block-start: var(--spacing-xs);
-  }
 
   .card-cells .card-rows .card > .rating {
     position: absolute;
@@ -2224,24 +2195,24 @@ a.card:hover::before {
   }
 }
 
-.photo-cards .card {
+.card--lg {
   gap: 0;
 }
 
-.photo-cards .card .title-serif {
+.card--lg .title-serif {
   font-size: var(--font-size-xl);
 }
 
-.photo-cards .card-meta {
+.card--lg .card-meta {
   line-height: 1.3;
   margin-block-end: 2px;
 }
 
-.photo-cards .card-media {
+.card--lg .card-media {
   margin-block-end: var(--spacing-xs);
 }
 
-.photo-cards .card-excerpt {
+.card--lg .card-excerpt {
   margin-block-start: var(--spacing-shmedium);
   display: -webkit-box;
   -webkit-box-orient: vertical;

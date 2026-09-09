@@ -46,7 +46,7 @@ export function initWikilinkPreviews(): void {
   }
 
   const card = document.createElement('div')
-  card.className = 'wikilink-card card'
+  card.className = 'wikilink-card card card--lg'
   card.setAttribute('role', 'tooltip')
   document.body.appendChild(card)
 
@@ -80,7 +80,7 @@ export function initWikilinkPreviews(): void {
     // doesn't reflow when the image finishes loading.
     if (preview.photo) {
       const photo = document.createElement('img')
-      photo.className = 'wikilink-card-photo'
+      photo.className = 'card-media'
       photo.src = preview.photo
       photo.alt = ''
       card.appendChild(photo)

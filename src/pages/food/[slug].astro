@@ -235,6 +235,9 @@ const seoDescription = hasBody(entry)
             }
           </section>
 
+          <footer>
+            <Backlinks links={mentionedIn} />
+          </footer>
         </div>
         <aside class="detail-aside">
           <div>
@@ -310,9 +313,6 @@ const seoDescription = hasBody(entry)
       </div>
     </div>
 
-    <footer>
-      <Backlinks links={mentionedIn} />
-    </footer>
   </article>
 </BaseLayout>
 

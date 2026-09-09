@@ -2,7 +2,6 @@
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
 import Rating from './Rating.astro'
-import TagIcon from './TagIcon.astro'
 import type { Verdict } from '../lib/verdict'
 
 interface Props {
@@ -14,7 +13,6 @@ interface Props {
   photo?: ImageMetadata
   photoAlt?: string
   verdict?: Verdict
-  tags?: string[]
   external?: boolean
   class?: string
 }
@@ -28,7 +26,6 @@ const {
   photo,
   photoAlt,
   verdict,
-  tags = [],
   external = false,
   class: className,
 } = Astro.props
@@ -70,18 +67,6 @@ const linkAttributes = href
     <span class="title-serif title-link">{title}</span>
     {description && <p class="card-description description">{description}</p>}
     {excerpt && <p class="card-excerpt excerpt">{excerpt}</p>}
-    {
-      tags.length > 0 && (
-        <span class="card-tags" aria-hidden="true">
-          {tags.map((tag) => (
-            <span class="card-tag">
-              <TagIcon tag={tag} />
-              {tag}
-            </span>
-          ))}
-        </span>
-      )
-    }
     <slot />
   </span>
   {verdict && <Rating verdict={verdict} />}

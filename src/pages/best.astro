@@ -47,7 +47,7 @@ const description = "The best of the St. Louis food I've tried, by category."
               <div class="best-cell">
                 <Subheading level={3}>{label.charAt(0).toUpperCase() + label.slice(1)}</Subheading>
                 <Card
-                  class="is-horizontal"
+                  class="is-horizontal card--lg"
                   href={href(`/food/${place.id}/`)}
                   title={place.data.title}
                   description={place.data.description}
