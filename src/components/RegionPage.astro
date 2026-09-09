@@ -103,14 +103,11 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 </BaseLayout>
 
 <style>
-  /* Breadcrumbs: left-aligned to match the header (the shared component
-     centers them). */
   .region-page :global(.breadcrumbs) {
     justify-content: flex-start;
     margin-block-start: var(--spacing-xl);
   }
 
-  /* Vibe tags as a calm uppercase line — no chip boxes, no icons. */
   .region-list :global(.related-tag) {
     border: 0;
     background: none;
@@ -123,7 +120,6 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
   .region-list :global(.related-tag .icon) {
     display: none;
   }
-
 
   .region-nav {
     display: flex;

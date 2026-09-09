@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import { Image, getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import AsideHeading from '../../components/AsideHeading.astro'
 import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
@@ -157,7 +158,7 @@ const seoDescription = hasBody(entry)
       <TagList tags={data.tags} />
       <div class="pane-stats">
         <div class="pane-stat">
-          <span class="pane-stat-label">My rating</span>
+          <span class="pane-stat-label eyebrow eyebrow--muted">My rating</span>
           <span
             class:list={[
               'pane-stat-value',
@@ -176,7 +177,7 @@ const seoDescription = hasBody(entry)
             reads "Leave a comment" until comments exist, then the live count. */
         }
         <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
-          <span class="pane-stat-label">Comments</span>
+          <span class="pane-stat-label eyebrow eyebrow--muted">Comments</span>
           <span class="pane-stat-value continue-link">
             <span data-comments-cell-value>Leave a comment</span>
           </span>
@@ -231,7 +232,7 @@ const seoDescription = hasBody(entry)
                     <RelatedCard
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
-                      meta={place.data.cuisine[0]}
+                      meta={cuisineLabel(place.data.cuisine[0])}
                       description={place.data.description}
                       verdict={verdict}
                     />
@@ -250,7 +251,6 @@ const seoDescription = hasBody(entry)
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={place.data.neighborhood}
-                      metaType="neighborhood"
                       description={place.data.description}
                       verdict={verdict}
                     />
@@ -270,7 +270,7 @@ const seoDescription = hasBody(entry)
           {
             data.address && data.address.length > 0 && (
               <div>
-                <h2 class="detail-section-label head-black head-black--sm head-rule">Address</h2>
+                <AsideHeading title="Address" />
                 <address class="address">
                   {data.address.map((line) => (
                     <span>{line}</span>
@@ -292,7 +292,7 @@ const seoDescription = hasBody(entry)
             (data.url || data.instagram || googleMapsHref(data)) && (
               <>
                 <div>
-                  <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
+                  <AsideHeading title="Links" />
                   <div class="detail-links">
                     <SourceLink
                       href={data.url}
@@ -350,16 +350,11 @@ const seoDescription = hasBody(entry)
     margin-block-end: var(--spacing-xl);
   }
 
-  /* Breadcrumbs: left-aligned to match the header (the shared component
-     centers them). */
   .detail-page :global(.breadcrumbs) {
     justify-content: flex-start;
     margin-block-start: var(--spacing-xl);
   }
 
-  /* The header bar's three cells: My rating / Your rating (the poll) /
-     Comments. Eyebrow labels sit on top, aligned across the bar; the content
-     rows pin to the cell bottoms so they share a floor. */
   .detail-pane-header .pane-stats {
     flex-wrap: wrap;
     row-gap: var(--spacing-md);
@@ -369,9 +364,6 @@ const seoDescription = hasBody(entry)
     flex: 1 1 0;
   }
 
-  /* ≤640px of header width the bar folds into a column: each cell becomes a
-     label-left / value-right row between hairlines (the dotted side rules and
-     the shared value floor only make sense with the cells side by side). */
   @container (max-width: 640px) {
     .detail-pane-header .pane-stats {
       flex-direction: column;
@@ -402,7 +394,6 @@ const seoDescription = hasBody(entry)
       margin-block-start: 0;
     }
 
-    /* The poll cell wraps so its status line can take a full row below. */
     .detail-pane-header :global(.pane-stats .verdict-bar) {
       flex-wrap: wrap;
     }
@@ -418,14 +409,11 @@ const seoDescription = hasBody(entry)
     gap: var(--spacing-sm);
   }
 
-  /* The verdict word beside the fleurs, in a bold gold eyebrow voice. */
   .my-rating-word {
     font-weight: 700;
     color: var(--color-accent-gold);
   }
 
-  /* The unrated placeholder ("Not yet rated" / "Unexplored") reads
-     quiet beside the empty fleurs. */
   .my-rating-line.is-unrated .my-rating-word {
     color: var(--color-muted);
   }

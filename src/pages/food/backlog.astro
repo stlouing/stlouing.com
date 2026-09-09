@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Heading from '../../components/Heading.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import rip from '../../data/rip.json'
 import { published } from '../../lib/content'
@@ -57,9 +58,10 @@ const description =
     {
       wishlist.length > 0 ? (
         <section>
-          <h2 class="head-black head-rule">
-            Haven't tried yet <span class="section-count">{wishlist.length}</span>
-          </h2>
+          <Heading>
+            Haven't tried yet
+            <span slot="aside" class="count">{wishlist.length}</span>
+          </Heading>
           <p class="description">
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
@@ -68,7 +70,7 @@ const description =
               <RelatedCard
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
-                metaParts={cardMeta(place.data)}
+                meta={cardMeta(place.data)}
                 description={place.data.description}
               />
             ))}
@@ -82,9 +84,10 @@ const description =
     {
       triedList.length > 0 && (
         <section>
-          <h2 class="head-black head-rule">
-            Tried, not yet rated <span class="section-count">{triedList.length}</span>
-          </h2>
+          <Heading>
+            Tried, not yet rated
+            <span slot="aside" class="count">{triedList.length}</span>
+          </Heading>
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
@@ -93,7 +96,7 @@ const description =
               <RelatedCard
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
-                metaParts={cardMeta(place.data)}
+                meta={cardMeta(place.data)}
                 description={place.data.description}
               />
             ))}
@@ -105,9 +108,10 @@ const description =
     {
       inMemoriam.length > 0 && (
         <section>
-          <h2 class="head-black head-rule">
-            RIP <span class="section-count">{inMemoriam.length}</span>
-          </h2>
+          <Heading>
+            RIP
+            <span slot="aside" class="count">{inMemoriam.length}</span>
+          </Heading>
           <p class="description">
             Restaurants I've visited that have closed down and no longer exist.
           </p>
@@ -115,7 +119,7 @@ const description =
             {inMemoriam.map((item) => (
               <RelatedCard
                 title={item.name}
-                metaParts={cardMeta(item)}
+                meta={cardMeta(item)}
                 description={item.note}
               />
             ))}
@@ -127,13 +131,6 @@ const description =
 </BaseLayout>
 
 <style>
-  .section-count {
-    margin-inline-start: var(--spacing-sm);
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-md);
-    font-weight: 400;
-    color: var(--color-muted);
-  }
 
   section {
     margin-block-start: var(--spacing-xl);

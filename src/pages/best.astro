@@ -49,7 +49,6 @@ const description = "The best of the St. Louis food I've tried, by category."
 
     <div class="detail-layout">
       <div class="detail-main">
-        <!-- <h2 class="best-mine head-black head-rule">My Favorites</h2> -->
         <div class="photo-cards">
           {
             awards.map(({ label, place, teaser }) => (
@@ -78,16 +77,12 @@ const description = "The best of the St. Louis food I've tried, by category."
     margin: 0 0 var(--spacing-lg);
   }
 
-  /* One horizontal card per row on this page (the homepage keeps the 2-up grid). */
   .photo-cards {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
     row-gap: var(--spacing-xl);
   }
 
-  /* Each grid cell opens with the award type as a newspaper section slug — the
-     eyebrow voice centered inside a hairline cut-off rule — so the label reads
-     as the divider between entries rather than competing with the card title. */
   .best-cell {
     display: flex;
     flex-direction: column;

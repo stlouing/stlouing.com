@@ -19,7 +19,8 @@ import { TAGLINE, SOCIALS } from '../lib/site'
 import Button from '../components/Button.astro'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
-import GroupHeader from '../components/GroupHeader.astro'
+import Heading from '../components/Heading.astro'
+import SectionHeading from '../components/SectionHeading.astro'
 import GuestbookBadge from '../components/GuestbookBadge.astro'
 import PhotoCard from '../components/PhotoCard.astro'
 import WhatsNew from '../components/WhatsNew.astro'
@@ -88,7 +89,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   <div class="front-page">
     <aside class="front-index" aria-label="Site index">
       <section class="front-index-topics">
-        <h2 class="rail-header head-black head-rule">Topics</h2>
+        <Heading>Topics</Heading>
         <ul class="rail-articles">
           {
             railTopics.map((topic) => (
@@ -107,7 +108,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         </ul>
       </section>
       <section class="front-index-more">
-        <h2 class="rail-header head-black head-rule">More</h2>
+        <Heading>More</Heading>
         <ul class="front-index-list">
           {
             moreSections.map((section) => (
@@ -189,7 +190,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       }
 
       <section class="front-food">
-        <GroupHeader
+        <SectionHeading
           title="Food"
           moreHref={href('/food/')}
           moreLabel="All restaurants & cafes"
@@ -202,7 +203,16 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
     <div class="front-rail">
       <section class="front-explore">
-        <GroupHeader title={exploreGroup?.label ?? ''} kicker={exploreGroup?.kicker} />
+        <Heading>
+          {exploreGroup?.label ?? ''}
+          {
+            exploreGroup?.kicker && (
+              <span slot="aside" class="eyebrow eyebrow--muted">
+                {exploreGroup.kicker}
+              </span>
+            )
+          }
+        </Heading>
         <List>
           {
             exploreSections.map((section) => (
@@ -307,14 +317,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     min-width: 0;
   }
 
-  /* The badge itself lives in GuestbookBadge.astro; the rail section just
-     spaces it between Topics and More. */
   .front-index-guestbook {
     margin-block: var(--spacing-md);
-  }
-
-  .rail-header {
-    margin: 0 0 var(--spacing-xs);
   }
 
   .rail-articles {

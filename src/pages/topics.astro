@@ -30,7 +30,7 @@ const topics = sortTopics(published(await getCollection('topics')))
             {topic.data.category && <p class="card-kicker eyebrow">{topic.data.category}</p>}
             <h2 class="card-title title-serif title-link">{topic.data.title}</h2>
             {topic.data.description && <p class="card-description desc-muted desc-muted--lg">{topic.data.description}</p>}
-            <p class="card-excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
+            <p class="card-excerpt excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
             <span class="continue-link">
               Continue reading <IconArrowRight />
             </span>
@@ -133,9 +133,5 @@ const topics = sortTopics(published(await getCollection('topics')))
 
   .card-excerpt {
     margin-block: var(--spacing-sm) var(--spacing-sm);
-    font-family: var(--font-serif);
-    font-size: var(--font-size-md);
-    color: var(--color-text);
-    line-height: 1.45;
   }
 </style>

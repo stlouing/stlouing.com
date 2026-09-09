@@ -1,0 +1,52 @@
+---
+// The ruled section header bar (Food, Explore, related lists): 800-weight
+// uppercase label on the left, an optional right-aligned continue-link
+// ("All restaurants & cafes") on the shared rule.
+import IconArrowRight from '../assets/IconArrowRight.astro'
+
+interface Props {
+  title: string
+  moreHref?: string
+  moreLabel?: string
+}
+
+const { title, moreHref, moreLabel = 'View all' } = Astro.props
+---
+
+<div class="section-heading">
+  <h2>{title}</h2>
+  {
+    moreHref && (
+      <a class="continue-link" href={moreHref}>
+        {moreLabel} <IconArrowRight />
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    margin-block: 0 var(--spacing-xs);
+    padding-block-end: var(--spacing-xs);
+    border-block-end: 2px solid var(--color-line-contrast);
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-family: var(--font-sans-serif);
+    font-size: var(--font-size-label);
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-heading);
+  }
+
+  .section-heading a {
+    flex-shrink: 0;
+  }
+</style>

@@ -6,8 +6,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import ListPaneHeader from '../../components/ListPaneHeader.astro'
 import MapRow from '../../components/MapRow.astro'
-import Rating from '../../components/Rating.astro'
 import IconSearch from '../../assets/IconSearch.astro'
+import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/content'
 import { cuisineLabel } from '../../lib/cuisine'
@@ -16,11 +16,11 @@ import { href } from '../../lib/url'
 import { resolveVerdict, verdictLabels, type Verdict } from '../../lib/verdict'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
 
-// The list groups by verdict (Loved → Liked → Neutral) by default, or
-// alphabetically (A / B / C) via the sort control — the grouping itself is built
-// client-side by list-groups.ts. Every place appears now: rated spots keep their
-// verdict group + color; un-rated spots (tried / want-to-try / suggested) group
-// under their status below the rated ones and read grayed on the map.
+// The list groups by verdict (Loved -> Liked -> Neutral) by default, or
+// alphabetically (A / B / C) via the sort control - the group headers are built
+// client-side by list-groups.ts. Un-rated spots (tried / want-to-try /
+// suggested) group under their status below the rated ones and read grayed on
+// the map.
 const verdictRankLetter: Record<Verdict, string> = {
   loved: 'a',
   liked: 'b',
@@ -142,8 +142,8 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 'data-cuisine': place.data.cuisine.join('|'),
                 'data-neighborhood': place.data.neighborhood ?? '',
                 'data-address': (place.data.address ?? []).join('\n'),
-                // data-verdict drives the Rating facet + group color, so it's set
-                // only for rated places; data-group is the grouping key for all.
+                // data-verdict drives the Rating facet, so it's set only for
+                // rated places; data-group is the grouping key for all.
                 ...(verdict ? { 'data-verdict': verdict } : {}),
                 // Far-flung spots opt out of the map's default framing (still pinned).
                 ...(place.data.excludeFromMapFit ? { 'data-exclude-fit': '' } : {}),
@@ -157,7 +157,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 'data-excerpt': hasBody(place) ? excerpt(place.body, PREVIEW_EXCERPT_CHARS) : '',
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
-                <span class="list-meta" slot="eyebrow">
+                <span class="eyebrow eyebrow--muted" slot="eyebrow">
                   {[...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)), place.data.neighborhood]
                     .filter(Boolean)
                     .map((part, partIndex) => (
@@ -176,7 +176,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 />
               )}
               {hasBody(place) && (
-                <div class="map-preview">{excerpt(place.body, PREVIEW_EXCERPT_CHARS)}</div>
+                <div class="map-preview excerpt">{excerpt(place.body, PREVIEW_EXCERPT_CHARS)}</div>
               )}
             </MapRow>
           ))

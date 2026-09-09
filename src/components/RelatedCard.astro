@@ -1,63 +1,38 @@
 ---
-// One row in a RelatedList: a leading mark (a cuisine emoji, or a line icon via
-// the `icon` slot) beside a column of an optional muted mono kicker (the meta)
-// over the serif name, plus an optional one-line description. Trailing slot holds
-// a stat, rating, or verdict, then a navigation affordance (a right arrow for
-// internal links, an external-link icon for outbound ones, nothing for non-links).
-import IconArrowRight from '../assets/IconArrowRight.astro'
-import IconExternalLink from '../assets/IconExternalLink.astro'
-import IconStar from '../assets/IconStar.astro'
+// One row in a RelatedList: an optional leading icon (via the `icon` slot)
+// beside a column of an optional muted kicker over the serif name, plus an
+// optional one-line description and tag chips. An optional verdict trails as
+// a fleur rating. Callers pass display-ready kicker text (map cuisine keys
+// through cuisineLabel() at the call site); an array renders its parts joined
+// by the shared hairline tick dividers.
 import Rating from './Rating.astro'
 import TagIcon from './TagIcon.astro'
-import { cuisineLabel } from '../lib/cuisine'
 import type { Verdict } from '../lib/verdict'
 
 interface Props {
   // When given, the row is a link; otherwise it renders as a plain row.
   href?: string
   title: string
-  // The kicker text above the name (cuisine, neighborhood, event date, …).
-  meta?: string
-  // The kicker as discrete parts instead, joined by the map lists' hairline
-  // tick dividers rather than punctuation. Wins over `meta` when present.
-  metaParts?: string[]
-  // How to render `meta`: 'cuisine' maps the key to its label; anything else is
-  // shown verbatim.
-  metaType?: 'cuisine' | 'neighborhood' | 'date' | 'text'
-  // Optional verdict, shown as a fleur rating before the trailing affordance;
-  // unrated places simply show nothing.
+  // The kicker above the name (cuisine, neighborhood, event date, …) — a
+  // string, or parts joined by hairline tick dividers.
+  meta?: string | string[]
+  // Optional verdict, shown as a trailing fleur rating; unrated places simply
+  // show nothing.
   verdict?: Verdict
-  // Optional right-aligned secondary stat (e.g. a neighborhood's population).
-  stat?: string
-  // Optional leading emoji (e.g. a cuisine glyph). Mutually exclusive with the
-  // `icon` slot.
-  emoji?: string
-  // Optional 0–10 score, rendered as a trailing accent star badge.
-  rating?: number
   // Optional one-line description beneath the name.
   description?: string
   // Optional vibe tags, rendered as small chips beneath the description. Plain
   // spans (not links), since the card itself may already be a link.
   tags?: string[]
-  // Open the link in a new tab (uses the external-link affordance).
+  // Open the link in a new tab.
   external?: boolean
 }
 
-const {
-  href,
-  title,
-  meta,
-  metaParts = [],
-  metaType = 'cuisine',
-  verdict,
-  stat,
-  emoji,
-  rating,
-  description,
-  tags = [],
-  external = false,
-} = Astro.props
+const { href, title, meta, verdict, description, tags = [], external = false } = Astro.props
 
+const metaParts = (Array.isArray(meta) ? meta : [meta]).filter(
+  (part): part is string => Boolean(part),
+)
 const hasIcon = Astro.slots.has('icon')
 const Tag = href ? 'a' : 'div'
 const linkAttributes = href
@@ -71,22 +46,15 @@ const linkAttributes = href
   class:list={['related-card', { 'has-description': description || tags.length > 0 }]}
   {...linkAttributes}>
   {
-    emoji && (
-      <span class="related-lead" aria-hidden="true">
-        {emoji}
-      </span>
-    )
-  }
-  {
     hasIcon && (
-      <span class="related-lead related-lead-icon" aria-hidden="true">
+      <span class="related-lead" aria-hidden="true">
         <slot name="icon" />
       </span>
     )
   }
   <span class="related-body">
     {
-      metaParts.length > 0 ? (
+      metaParts.length > 0 && (
         <span class="related-kicker eyebrow eyebrow--muted">
           {metaParts.map((part, partIndex) => (
             <>
@@ -95,13 +63,9 @@ const linkAttributes = href
             </>
           ))}
         </span>
-      ) : (
-        meta && (
-          <span class="related-kicker eyebrow eyebrow--muted">{metaType === 'cuisine' ? cuisineLabel(meta) : meta}</span>
-        )
       )
     }
-    <span class="related-title title-link">{title}</span>
+    <span class="title-serif title-link">{title}</span>
     {description && <p class="related-desc desc-muted">{description}</p>}
     {
       tags.length > 0 && (
@@ -116,23 +80,7 @@ const linkAttributes = href
       )
     }
   </span>
-  {stat && <span class="related-stat">{stat}</span>}
-  {
-    rating != null && (
-      <span class="related-rating">
-        <IconStar />
-        {rating}
-      </span>
-    )
-  }
   {verdict && <Rating verdict={verdict} />}
-  {
-    href && (
-      <span class="related-arrow" aria-hidden="true">
-        {external ? <IconExternalLink /> : <IconArrowRight />}
-      </span>
-    )
-  }
 </Tag>
 
 <style>
@@ -145,11 +93,6 @@ const linkAttributes = href
     border-block-end: 1px dotted var(--color-line-input);
     text-decoration: none;
     color: var(--color-text);
-  }
-
-  .related-lead,
-  .related-arrow {
-    display: none;
   }
 
   a.related-card::before {
@@ -177,22 +120,17 @@ const linkAttributes = href
   }
 
   .related-lead {
-    flex-shrink: 0;
-    font-size: var(--font-size-xl);
-    line-height: 1;
-  }
-
-  .related-lead-icon {
     display: inline-flex;
+    flex-shrink: 0;
   }
 
-  .related-lead-icon :global(.icon) {
+  .related-lead :global(.icon) {
     width: 1.25rem;
     height: 1.25rem;
     color: var(--color-accent);
   }
 
-  .related-card.has-description .related-lead-icon :global(.icon) {
+  .related-card.has-description .related-lead :global(.icon) {
     margin-block-start: 2px;
   }
 
@@ -242,41 +180,8 @@ const linkAttributes = href
     height: 0.9em;
   }
 
-  .related-rating {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    flex-shrink: 0;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-sm);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-    color: var(--color-accent);
-  }
-
-  .related-rating :global(.icon) {
-    width: 0.9em;
-    height: 0.9em;
-    color: var(--color-accent);
-    fill: currentColor;
-    stroke: currentColor;
-  }
-
-  /* Fleur rating sized up a touch from its inline default. */
   .related-card :global(.rating .rating-fleur) {
     width: 0.95rem;
     height: 0.95rem;
-  }
-
-  .related-stat {
-    flex-shrink: 0;
-    text-align: end;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--color-text);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
   }
 </style>

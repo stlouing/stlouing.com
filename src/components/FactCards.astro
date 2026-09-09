@@ -2,6 +2,7 @@
 // The neighborhood aside card: a "by the numbers" block (population, mapped food
 // spots) plus the vibe tags, kept out of the main column so the page doesn't open
 // on a wall of metadata. Renders nothing when there's no data at all.
+import AsideHeading from './AsideHeading.astro'
 import Chip from './Chip.astro'
 import TagIcon from './TagIcon.astro'
 import { href } from '../lib/url'
@@ -27,7 +28,7 @@ const hasCard = hasNumbers || hasVibe
     <aside class="side-card">
       {hasNumbers && (
         <div class="card-section card-numbers">
-          <h2 class="side-card-label head-black head-black--sm head-rule">By the numbers</h2>
+          <AsideHeading title="By the numbers" />
           <dl class="facts">
             {population != null && (
               <div class="fact">
@@ -47,7 +48,7 @@ const hasCard = hasNumbers || hasVibe
       )}
       {hasVibe && (
         <div class:list={['card-section', { 'has-divider': hasNumbers }]}>
-          <h2 class="side-card-label head-black head-black--sm head-rule">Tags</h2>
+          <AsideHeading title="Tags" />
           <div class="vibe-chips">
             {tags.map((tag) => (
               <Chip class="chip-blue" href={href(`/tags/${tagSlug(tag)}/`)}>
@@ -69,10 +70,6 @@ const hasCard = hasNumbers || hasVibe
 
   .card-section.has-divider {
     margin-block-start: var(--spacing-lg);
-  }
-
-  .side-card-label {
-    margin: 0 0 var(--spacing-sm);
   }
 
   .facts {
@@ -137,7 +134,7 @@ const hasCard = hasNumbers || hasVibe
       background: none;
     }
 
-    .card-numbers > .side-card-label,
+    .card-numbers > :global(.aside-heading),
     .fact-source {
       display: none;
     }
@@ -155,7 +152,6 @@ const hasCard = hasNumbers || hasVibe
       justify-content: flex-start;
       gap: 2px;
     }
-
 
     .fact dt {
       font-family: var(--font-sans-serif);

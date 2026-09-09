@@ -1,16 +1,11 @@
 :root {
   color-scheme: light;
 
-  --color-background: white; /* #FAF8F6 */
-
-  --color-surface: #efefef;
-  --color-surface-2: #f6f6f6;
-
-  --color-panel: #fdf4d5;
-
-  --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
-
   --measure-reading: 650px;
+  --color-background: white;  --color-surface: #efefef;
+  --color-surface-2: #f6f6f6;
+  --color-panel: #fdf4d5;
+  --color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-background));
   --color-text-heading: #070706;
   --color-text: #1b1a17;
   --color-text-article: #1d1d1c;
@@ -20,12 +15,10 @@
   --color-line-input: #a19e98;
   --color-line-contrast: #1b1a17;
   --color-accent: #a90b26;
-  --color-accent-2: #c70f2e;
   --color-pin: #c70f2e;
 
   --color-accent-blue: #2766ad;
 
-  /* Flag colors — pinned, never themed. */
   --color-flag-blue: #012773;
   --color-flag-yellow: #f5dc0f;
 
@@ -106,7 +99,6 @@
   --color-line-input: #5e5d63;
   --color-line-contrast: #45444b;
   --color-accent: #f67f93;
-  --color-accent-2: #f88c9e;
   --color-accent-blue: #84b0e6;
   --color-accent-gold: #dcc24f;
   --color-map-accent: #b59ae0;
@@ -514,10 +506,6 @@ tbody tr:last-child td {
   }
 }
 
-/* The article-leading overview map breaks out of the reading column to the
-   article-wrap content width (the wrap-article max minus its padding), clamped
-   to the viewport on small screens. Negative symmetric margins keep it centered
-   on the column. */
 .corridor-map.corridor-overview {
   --overview-width: min(
     calc(var(--measure-reading) + 2.5rem + 290px),
@@ -555,8 +543,6 @@ tbody tr:last-child td {
 .corridor-spot:hover,
 .corridor-spot:focus-visible {
   z-index: 2;
-  /* Re-pin the fill: the link pins are <a>s, and the global a:hover blue would
-     otherwise recolor the currentColor pin body. */
   color: var(--color-pin);
 }
 
@@ -743,27 +729,15 @@ a.wikipedia-link {
 }
 
 .wikilink-card-title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: var(--font-size-lg);
-  color: var(--color-text);
   margin-block-end: var(--spacing-sm);
-  line-height: 1.2;
 }
 
 .wikilink-card-excerpt {
   margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-muted-2);
-  line-height: 1.4;
 }
 
 .wikilink-card-description {
   margin-block: 0 var(--spacing-xs);
-  font-size: var(--font-size-md);
-  color: var(--color-muted-2);
-  line-height: 1.2;
-  font-weight: 400;
 }
 
 .wikilink-card-description:last-child {
@@ -776,14 +750,6 @@ a.wikipedia-link {
   align-items: baseline;
   gap: var(--spacing-xs);
   margin-block: 0 2px;
-}
-
-.list-pane-header .pane-count,
-.grouped-list li.group-header .group-count {
-  font-family: var(--font-sans-serif);
-  font-size: var(--font-size-xs);
-  color: var(--color-muted);
-  font-weight: 500;
 }
 
 .icon {
@@ -1077,8 +1043,6 @@ body:has(.map-split) main > .wrap,
     grid-template-columns: 480px 1fr;
   }
 
-  /* The neighborhood detail split stays an even 50/50 — its left pane is an
-     article with its own centered reading column, not a dense list. */
   .map-split.detail-split .results {
     grid-template-columns: 50% 1fr;
   }
@@ -1160,8 +1124,6 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-/* The row photo is a full-height cover panel pinned to the row's right edge;
-   the row reserves the column for it so no text runs underneath. */
 .map-list .list > li:has(.list-photo) {
   position: relative;
   padding-inline-end: calc(var(--list-photo-width) + var(--spacing-md));
@@ -1187,8 +1149,6 @@ body:has(.map-split) main > .wrap,
   -webkit-line-clamp: 3;
   line-clamp: 3;
   overflow: hidden;
-  line-height: 1.45;
-  font-size: var(--font-size-md);
 }
 
 .map-list .list {
@@ -1243,23 +1203,6 @@ body:has(.map-split) main > .wrap,
   flex-wrap: wrap;
   gap: var(--spacing-xs);
   margin-top: var(--spacing-xs);
-}
-
-.map-list .list-meta {
-  font-family: var(--font-serif);
-  font-size: var(--font-size-md);
-  color: var(--color-muted);
-}
-
-.map-list .list-eyebrow .list-meta,
-.maplibregl-popup.map-popup .list-meta,
-.wikilink-card .list-meta {
-  font-family: var(--font-sans-serif);
-  font-size: var(--font-size-xxs);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-  color: var(--color-muted);
 }
 
 .map-list .list-eyebrow {
@@ -1381,9 +1324,6 @@ body:has(.map-split) main > .wrap,
     display: none;
   }
 
-  /* The neighborhood detail split has no mobile view switcher: the page
-     unlocks and scrolls as a normal document, with the map as an in-flow
-     banner on top that scrolls away with it. */
   body:has(.map-split.detail-split) {
     height: auto;
     overflow: visible;
@@ -1402,123 +1342,6 @@ body:has(.map-split) main > .wrap,
     grid-row: 2;
     overflow-y: visible;
   }
-}
-
-.grouped-list [data-verdict='loved'] {
-  --verdict-color: var(--color-verdict-loved);
-}
-
-.grouped-list [data-verdict='liked'] {
-  --verdict-color: var(--color-verdict-liked);
-}
-
-.grouped-list [data-verdict='neutral'] {
-  --verdict-color: var(--color-verdict-neutral);
-}
-
-.grouped-list [data-verdict='not-for-me'] {
-  --verdict-color: var(--color-verdict-notforme);
-}
-
-.chip.verdict-loved {
-  --chip-color: var(--color-verdict-loved);
-}
-
-.chip.verdict-liked {
-  --chip-color: var(--color-verdict-liked);
-}
-
-.chip.verdict-neutral {
-  --chip-color: var(--color-verdict-neutral);
-}
-
-.chip.verdict-not-for-me {
-  --chip-color: var(--color-verdict-notforme);
-}
-
-/* The verdict-less placeholder ("Not yet rated" / "Unexplored") — a
-   quiet outline beside the colored verdict pills. */
-.chip.verdict-unrated {
-  --chip-color: var(--color-muted);
-  --chip-border: var(--color-line-input);
-}
-
-.chip.verdict-loved,
-.chip.verdict-liked,
-.chip.verdict-neutral,
-.chip.verdict-not-for-me,
-.chip.verdict-unrated {
-  border-radius: 0;
-}
-
-.verdict-card {
-  --verdict-disc-size: 2.25rem;
-  --verdict-glyph-size: 1.1rem;
-  --verdict-value-size: 1.75rem;
-
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid color-mix(in srgb, var(--verdict-color) 60%, transparent);
-  background: var(--color-surface);
-}
-
-.verdict-card.verdict-loved {
-  --verdict-color: var(--color-verdict-loved);
-}
-
-.verdict-card.verdict-liked {
-  --verdict-color: var(--color-verdict-liked);
-}
-
-.verdict-card.verdict-neutral {
-  --verdict-color: var(--color-verdict-neutral);
-}
-
-.verdict-card.verdict-not-for-me {
-  --verdict-color: var(--color-verdict-notforme);
-}
-
-.verdict-card .verdict-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: var(--verdict-disc-size);
-  height: var(--verdict-disc-size);
-  border-radius: 50%;
-  background: var(--verdict-color);
-
-  .icon {
-    width: var(--verdict-glyph-size);
-    height: var(--verdict-glyph-size);
-    color: var(--color-surface);
-  }
-}
-
-.verdict-card .verdict-card-text {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.verdict-card .verdict-card-label {
-  font-family: var(--font-sans-serif);
-  font-size: var(--font-size-xxs);
-  font-weight: 400;
-  letter-spacing: var(--letter-spacing);
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--verdict-color) 70%, var(--color-text));
-  line-height: 1;
-}
-
-.verdict-card .verdict-card-value {
-  font-family: var(--font-serif);
-  font-size: var(--verdict-value-size);
-  font-weight: 700;
-  line-height: 1;
-  color: var(--verdict-color);
 }
 
 .chip.is-filled {
@@ -1571,11 +1394,7 @@ body:has(.map-split) main > .wrap,
   gap: var(--spacing-sm);
 }
 
-.list-pane-header .pane-title {
-  margin: 0;
-}
-
-[data-view='map'] .grouped-list .list-pane-header {
+[data-view='map'] .map-list .list-pane-header {
   position: sticky;
   top: 0;
   z-index: 6;
@@ -1603,20 +1422,15 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-.grouped-list .group-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  background: var(--verdict-color, var(--color-muted));
-  flex-shrink: 0;
-}
-
 .grouped-list li.group-header .rating {
   font-size: var(--font-size-md);
   flex-shrink: 0;
 }
 
 .grouped-list li.group-header .group-label {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  font-weight: 400;
   color: var(--color-text);
 }
 
@@ -1625,19 +1439,13 @@ body:has(.map-split) main > .wrap,
 }
 
 .grouped-list li.group-header.group-header-alpha .group-label {
-  color: var(--color-accent-blue);
   font-size: var(--font-size-lg);
   font-family: var(--font-sans-serif);
   font-weight: 700;
 }
 
 .grouped-list li.group-header.group-header-status .group-label {
-  font-family: var(--font-serif);
-  font-size: var(--font-size-md);
-  font-weight: 400;
   color: var(--color-muted-2);
-  text-transform: none;
-  letter-spacing: 0;
 }
 
 .grouped-list .group-rule {
@@ -1649,19 +1457,17 @@ body:has(.map-split) main > .wrap,
   border-block-end: none;
 }
 
-[data-filter-root]:not([data-view='map']) .grouped-list .list-pane-header {
+[data-filter-root]:not([data-view='map']) .map-list .list-pane-header {
   background: var(--color-background);
   padding-inline: 0;
 }
 
-/* Only the start side resets — the end side must keep the reserved photo
-   column from the li:has(.list-photo) rule above. */
-[data-filter-root]:not([data-view='map']) .grouped-list .list > li {
+[data-filter-root]:not([data-view='map']) .map-list .list > li {
   padding-inline-start: 0;
 }
 
 @media (max-width: 700px) {
-  [data-filter-root]:not([data-view='map']) .grouped-list .list > li.group-header {
+  [data-filter-root]:not([data-view='map']) .map-list .list > li.group-header {
     padding-inline-end: var(--spacing-md);
     margin-left: -1rem;
     margin-right: -1rem;
@@ -1729,14 +1535,6 @@ body:has([data-filter-root]) .masthead-nav {
   display: none;
 }
 
-.active-filters .active-label {
-  font-family: var(--font-sans-serif);
-  color: var(--color-muted);
-  font-size: var(--font-size-xs);
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
 .active-filters .filter-chips {
   display: flex;
   flex: 1 1 auto;
@@ -1755,8 +1553,6 @@ body:has([data-filter-root]) .masthead-nav {
   line-height: 1.3;
 }
 
-/* The directions link reads as part of the address block, so the address hands
-   its bottom margin down to the link. */
 .map-popup .popup-address:has(+ .popup-directions) {
   margin-block-end: var(--spacing-xs);
 }
@@ -1779,7 +1575,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-accent-blue);
 }
 
-/* The pixel external-link arrow rides inline after the text, continue-link style. */
 .map-popup .popup-directions .icon {
   display: inline;
   width: 12px;
@@ -1870,12 +1665,6 @@ body:has([data-filter-root]) .masthead-nav {
   min-width: 260px;
 }
 
-/* The popup body scrolls inside itself when taller than the pane (photo
-   entries on phones) — without this, reading the rest takes a map gesture,
-   which closes the popup. Negative margins + matching padding rebuild the
-   content's padded box so the photo's edge-to-edge bleed still works, and the
-   absolutely-positioned close button (a sibling) stays pinned while the body
-   scrolls. */
 .maplibregl-popup.map-popup .popup-scroll {
   margin: calc(-1 * var(--spacing-md));
   padding: var(--spacing-md);
@@ -1892,24 +1681,13 @@ body:has([data-filter-root]) .masthead-nav {
   margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md)) var(--spacing-md);
 }
 
-/* Compact popups on phones, where the popup competes with the sticky chrome
-   for a small map pane: shorter photo banner, tighter padding, and the type
-   scale one notch down. Every popup rule reads these tokens, so the local
-   remap resizes the box, the photo bleed, and all the text together. Literal
-   values (not token references) so the remaps don't chain through each other. */
 @media (max-width: 700px) {
   .maplibregl-popup.map-popup {
     --popup-photo-height: 110px;
-    /* --spacing-shmedium: box padding + the scroll/photo bleed margins */
     --spacing-md: 0.75rem;
-    /* --font-size-label: the title + close button */
     --font-size-lg: 1.125rem;
-    /* --font-size-sm: the content base (and the 1em rating fleurs) */
     --font-size-md: 0.9375rem;
-    /* --font-size-xs: address, directions, excerpt */
     --font-size-sm: 0.875rem;
-    /* the cuisine | neighborhood chips — a notch below xxs/xxxs, which share
-       one value (0.8125rem) at the token layer */
     --font-size-xxs: 0.75rem;
   }
 
@@ -1963,29 +1741,8 @@ body:has([data-filter-root]) .masthead-nav {
   white-space: normal;
 }
 
-.maplibregl-popup.map-popup .maplibregl-popup-content h2 a {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--color-text-heading);
-  text-decoration: none;
-}
-
-.maplibregl-popup.map-popup .maplibregl-popup-content h2 a:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--color-accent);
-  text-underline-offset: 3px;
-  color: var(--color-accent);
-}
-
 .maplibregl-popup.map-popup .popup-excerpt {
   margin-block: var(--spacing-xs) 0;
-  font-family: var(--font-serif);
-  font-size: var(--font-size-sm);
-  font-weight: 400;
-  line-height: 1.45;
-  color: var(--color-text-article);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -2129,8 +1886,6 @@ body:has([data-filter-root]) .masthead-nav {
   margin-inline: auto;
 }
 
-/* Reader comments (the Entry `comments` slot) track the article column: the
-   plain .body cap by default, the centered reading column on topic pages. */
 .entry-comments {
   max-width: 70ch;
 }
@@ -2227,8 +1982,6 @@ body:has([data-filter-root]) .masthead-nav {
   border-block-end: 0;
 }
 
-/* The "haven't been yet" stub note on body-less pages: a dashed note with
-   generous breathing room so the sparse page reads calm rather than empty. */
 .not-explored {
   padding: var(--spacing-xl) var(--spacing-xl);
   border: 1px dashed var(--color-line);
@@ -2357,26 +2110,6 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
-.fact-section {
-  margin-block-start: var(--spacing-lg);
-}
-
-.fact-section h2 {
-  margin-block: 0 var(--spacing-xs);
-}
-
-.group-label {
-  margin-block-end: 0;
-  font-family: var(--font-serif);
-  font-size: var(--font-size-md);
-  font-weight: 400;
-  color: var(--color-accent);
-
-  &.head-black {
-    font-size: var(--font-size-label);
-  }
-}
-
 .compact-article h2 {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-lg);
@@ -2491,49 +2224,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-wrap: nowrap;
 }
 
-.head-black {
-  font-family: var(--font-sans-serif);
-  font-weight: 900;
-  font-size: var(--font-size-xl);
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-text-heading);
-}
-
-.head-black--lg {
-  font-size: var(--font-size-lg);
-}
-
-.head-black.head-black--sm {
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  letter-spacing: normal;
-  padding-bottom: 3px;
-}
-
-.body h2.head-black,
-.body h3.head-black {
-  color: var(--color-text-heading);
-}
-
-.head-rule {
-  padding-block-end: var(--spacing-xs);
-  border-block-end: 2px solid var(--color-line-contrast);
-}
-
-/* Aside section labels (My rating, Map, Address, My pick, the rail headers…)
-   speak in a muted voice: smaller and ruleless next to the full-weight
-   head-black ink — the asides accompany the article, they don't compete.
-   .pane-aside is the neighborhood split-pane's stacked equivalent. */
-.detail-aside .head-black--sm.head-rule,
-.pane-aside .head-black--sm.head-rule {
-  /* color: var(--color-muted-2); */
-  padding-bottom: 3px;
-  font-size: var(--font-size-xxs);
-  border-block-end: 0;
-}
-
 .eyebrow {
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-xxs);
@@ -2547,6 +2237,13 @@ body:has([data-filter-root]) .masthead-nav {
   color: var(--color-muted);
 }
 
+.count {
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
 .eyebrow-divider {
   display: inline-block;
   width: 1px;
@@ -2554,111 +2251,52 @@ body:has([data-filter-root]) .masthead-nav {
   background: var(--color-line-input);
 }
 
-/* Card-grid variant of RelatedList (`<RelatedList class="related-cards">`):
-   on wide screens the rows become bordered two-up cards instead of a dotted
-   list — the food page's "More …" callouts. Phones keep the row list. */
 @media (min-width: 701px) {
-  /* Gapless grid: spacing comes from cell padding, so the dotted rules meet
-     each other instead of floating short of the column lines. */
   .related-cards .related-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* Every row the same height (the tallest row sets it), so the dotted
-       lattice stays perfectly regular. */
     grid-auto-rows: 1fr;
-    gap: 0;
+    column-gap: var(--spacing-lg);
     overflow: visible;
   }
 
-  /* Open cells with a dotted rule beneath each (the topics-page voice), not
-     solid boxes. Cells stretch so the tag rows can pin to a shared floor. */
-  .related-cards .related-list :is(a, div).related-card {
+  .related-cards--three .related-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .related-cards .related-list .related-card {
     align-items: stretch;
-    padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg) 0;
+    padding: var(--spacing-md) 0 var(--spacing-lg);
     border: 0;
     border-block-end: 1px dotted var(--color-line-input);
   }
 
-  /* Tags sit on the cell floor so they line up across a row whatever the
-     description length. */
+  .related-cards .related-list .related-card:last-child {
+    border-block-end: 1px dotted var(--color-line-input);
+  }
+
   .related-cards .related-list .related-card .related-tags {
     margin-block-start: auto;
     padding-block-start: var(--spacing-xs);
   }
 
-  /* Dotted column rule between the two columns, with matching padding either
-     side of it. */
-  .related-cards .related-list > .related-card:nth-child(2n) {
-    border-inline-start: 1px dotted var(--color-line-input);
-    padding-inline-start: var(--spacing-md);
-  }
-
-  /* A lone cell closing the grid still gets its right-hand column rule (the
-     neighbor that would normally draw it doesn't exist). */
-  .related-cards .related-list > .related-card:nth-child(odd):last-child {
-    border-inline-end: 1px dotted var(--color-line-input);
-  }
-
-  /* Three-up variant (region pages): re-derive the column rules — every cell
-     except a row's first carries one. Written AFTER the two-up rule so the
-     tie on even cells resolves this way. */
-  .related-cards--three .related-list {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .related-cards--three .related-list > .related-card:nth-child(2n) {
-    border-inline-start: 0;
-    padding-inline-start: 0;
-  }
-
-  .related-cards--three .related-list > .related-card:not(:nth-child(3n + 1)) {
-    border-inline-start: 1px dotted var(--color-line-input);
-    padding-inline-start: var(--spacing-md);
-  }
-
-  /* Same closing rule for a short last row in the three-up (reset the two-up
-     odd rule first — its math doesn't apply here). */
-  .related-cards--three .related-list > .related-card:nth-child(odd):last-child {
-    border-inline-end: 0;
-  }
-
-  .related-cards--three .related-list > .related-card:last-child:not(:nth-child(3n)) {
-    border-inline-end: 1px dotted var(--color-line-input);
-  }
-
-  /* The verdict chip pins to the cell's top-right corner (the card is already
-     position: relative) so the name and description run the full cell width. */
-  .related-cards .related-list .related-card > :is(.chip, .rating) {
+  .related-cards .related-list .related-card > .rating {
     position: absolute;
     top: var(--spacing-md);
-    inset-inline-end: var(--spacing-md);
+    inset-inline-end: 0;
   }
 
-  /* Air between the kicker (cuisine/neighborhood) and the name. */
   .related-cards .related-list .related-card .related-kicker {
     margin-block-end: var(--spacing-xs);
-  }
-
-  /* Only the kicker shares its line with the pinned chip — cap it so a long
-     neighborhood name wraps instead of running underneath. */
-  .related-cards .related-list .related-card .related-kicker {
     max-width: calc(100% - 9.5rem);
   }
 
-  /* The row hover wash bleeds past the row edges by design; inside a bordered
-     card it must stay within the border. */
   .related-cards .related-list a.related-card::before {
     inset-inline: 0;
   }
 }
 
-/* Detail-page header voice (neighborhood + food detail pages): left-aligned
-   sans title in the masthead clamp, italic muted tagline, and a horizontal
-   stats bar of value-over-label cells between hairlines. */
 .detail-pane-header {
-  /* Snug under the breadcrumbs; a consistent xl hand-off to the content
-     (matching the stats bar's own bottom margin, so headers that end with a
-     bar and headers that don't leave the same gap). */
   margin-block: var(--spacing-sm) var(--spacing-xl);
 }
 
@@ -2693,25 +2331,16 @@ body:has([data-filter-root]) .masthead-nav {
   gap: 2px;
 }
 
-/* Dotted rule between the bar's sections. */
 .pane-stats > * + * {
   border-inline-start: 1px dotted var(--color-line-input);
   padding-inline-start: var(--spacing-md);
 }
 
-/* Muted eyebrow on top of each cell… */
 .pane-stat-label {
-  font-size: var(--font-size-xxs);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
   line-height: 1.2;
-  font-weight: 500;
-  color: var(--color-muted);
   margin-block-end: var(--spacing-xs);
 }
 
-/* …with the value beneath, pinned to the cell floor so values align across
-   cells of different content heights. */
 .pane-stat-value {
   margin: 0;
   margin-block-start: auto;
@@ -2726,8 +2355,6 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration: none;
 }
 
-/* The comments cell's value wears the continue-link voice ("Back to food
-   map"): serif underlined ink with the trailing pixel arrow. */
 .pane-stat-link .pane-stat-value {
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
@@ -2743,23 +2370,14 @@ body:has([data-filter-root]) .masthead-nav {
   text-decoration-color: var(--color-accent-blue);
 }
 
-/* .pane-stat sets display, which would otherwise override the hidden
-   attribute (the comments cell reveals once the backend answers). */
 .pane-stat-link[hidden] {
   display: none;
 }
 
-/* The bar responds to its CONTAINER, not the viewport — inside the
-   neighborhood split pane it can be narrow on a wide screen. Below ~640px of
-   available width the bar wraps and the comments cell takes its own
-   full-width line with no stray divider. */
 .detail-pane-header {
   container-type: inline-size;
 }
 
-/* Containment stops child margins collapsing into the header's own bottom
-   margin — zero the last child's margin or the hand-off gap doubles (the
-   header's xl margin alone is the spacing). */
 .detail-pane-header > :last-child {
   margin-block-end: 0;
 }
@@ -2777,8 +2395,7 @@ body:has([data-filter-root]) .masthead-nav {
   }
 }
 
-.title-serif,
-.related-title {
+.title-serif {
   display: block;
   font-family: var(--font-serif);
   font-size: var(--font-size-lg);
@@ -2794,6 +2411,13 @@ body:has([data-filter-root]) .masthead-nav {
   font-size: var(--font-size-md);
   line-height: 1.3;
   color: var(--color-muted);
+}
+
+.excerpt {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  line-height: 1.45;
+  color: var(--color-text);
 }
 
 .desc-muted--lg,
@@ -2830,18 +2454,12 @@ button.title-link:hover {
   padding: var(--spacing-md);
 }
 
-/* The site's one form voice (guestbook, comments, contact): a .form-stack
-   column of .field rows, a .form-actions row (submit button + status line),
-   and an off-screen .hp honeypot. Textarea chrome is on the element itself
-   in the base layer. */
 .form-stack {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-/* .form-stack sets display, which would otherwise override the hidden
-   attribute (the guestbook form swaps out after signing). */
 .form-stack[hidden] {
   display: none;
 }
@@ -2869,37 +2487,12 @@ button.title-link:hover {
   display: none;
 }
 
-/* Honeypot field: off-screen for humans, tempting to bots. */
 .hp {
   position: absolute;
   left: -9999px;
   width: 1px;
   height: 1px;
   overflow: hidden;
-}
-
-/* A feed of reader-submitted entries (guestbook signatures, comments): the
-   ruled .feed-head bar (title + .feed-count), then the .feed list of dotted-
-   divided entries built at runtime by guestbook.ts / comments.ts — each a
-   .feed-date eyebrow over the .feed-byline name row and the .feed-message.
-   Flat global rules on purpose: injected nodes never carry an Astro scope. */
-.feed-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-md);
-}
-
-.feed-head h2 {
-  margin: 0;
-}
-
-.feed-count {
-  font-family: var(--font-sans-serif);
-  font-size: var(--font-size-xxs);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing);
-  color: var(--color-muted);
 }
 
 .feed {
@@ -2928,7 +2521,6 @@ button.title-link:hover {
   gap: var(--spacing-sm);
 }
 
-/* The name keeps title-serif's lg/500 so it reads a level above the message. */
 .feed-name {
   display: inline;
 }
@@ -2951,7 +2543,6 @@ button.title-link:hover {
   margin-block-start: var(--spacing-md);
 }
 
-/* .btn sets display, which would otherwise override the hidden attribute. */
 .feed-older[hidden],
 .feed-empty[hidden] {
   display: none;

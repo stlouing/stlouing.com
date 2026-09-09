@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
 import neighborhoods from '../data/neighborhoods.json'
+import Heading from '../components/Heading.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
 
 // A human-readable map of the whole site, pulled live from the content
@@ -84,23 +85,23 @@ const groups: SitemapGroup[] = [
       {
         groups.map((group) => (
           <section class:list={['sitemap-section', { featured: group.featured }]}>
-            <h2 class="sitemap-head head-black head-black--lg head-rule">
-              <span class="sitemap-head-label">
-                {group.path ? (
-                  <a class="sitemap-label" href={href(group.path)}>
-                    {group.label}
-                  </a>
-                ) : (
-                  <span class="sitemap-label">{group.label}</span>
-                )}
-                {group.featured && (
-                  <span class="sitemap-map-badge">
-                    <IconMapPin /> Map
-                  </span>
-                )}
-                <span class="sitemap-count">{group.items.length}</span>
+            <Heading>
+              {group.path ? (
+                <a class="sitemap-label" href={href(group.path)}>
+                  {group.label}
+                </a>
+              ) : (
+                <span class="sitemap-label">{group.label}</span>
+              )}
+              {group.featured && (
+                <span class="sitemap-map-badge">
+                  <IconMapPin /> Map
+                </span>
+              )}
+              <span slot="aside" class="count">
+                {group.items.length}
               </span>
-            </h2>
+            </Heading>
             <ul class="sitemap-list">
               {group.items.map((entry) => (
                 <li>
@@ -124,12 +125,6 @@ const groups: SitemapGroup[] = [
     margin-block-start: var(--spacing-lg);
   }
 
-  .sitemap-head-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
-
   .sitemap-map-badge {
     display: inline-flex;
     align-items: center;
@@ -151,28 +146,15 @@ const groups: SitemapGroup[] = [
     width: 14px;
   }
 
-  .sitemap-head {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin: 0 0 var(--spacing-sm);
-  }
-
-  .sitemap-head a {
+  a.sitemap-label {
     color: var(--color-text-heading);
     text-decoration: none;
   }
 
-  .sitemap-head a:hover {
+  a.sitemap-label:hover {
     color: var(--color-accent-blue);
   }
 
-  .sitemap-count {
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-sm);
-    font-weight: 400;
-    color: var(--color-muted);
-  }
 
   .sitemap-list {
     margin: 0;

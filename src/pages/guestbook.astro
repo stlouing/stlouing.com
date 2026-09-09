@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Heading from '../components/Heading.astro'
 import { SUPABASE_ENABLED } from '../lib/site'
 
 const description = 'Sign your name and leave a note.'
@@ -58,10 +59,10 @@ const guestbookEnabled = SUPABASE_ENABLED
           </section>
 
           <section aria-label="Signatures">
-            <div class="feed-head head-rule">
-              <h2 class="head-black head-black--lg">Messages</h2>
-              <span class="feed-count" data-count />
-            </div>
+            <Heading>
+              Messages
+              <span slot="aside" class="count" data-count />
+            </Heading>
             <ul class="feed" data-entries />
             <p class="feed-empty desc-muted" data-empty hidden>
               None yet

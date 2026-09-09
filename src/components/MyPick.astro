@@ -2,6 +2,8 @@
 // A sidebar "My pick" card on a food page: the dish to order, with an optional
 // note. Driven by the optional `pick` field in the food schema; renders nothing
 // without one (the writeup author fills it in per place).
+import AsideHeading from './AsideHeading.astro'
+
 interface Props {
   pick: { name: string; note?: string }
 }
@@ -10,7 +12,7 @@ const { pick } = Astro.props
 ---
 
 <div class="my-pick">
-  <h2 class="my-pick-label head-black head-black--sm head-rule">My pick</h2>
+  <AsideHeading title="My pick" />
   <div class="pick">
     <div class="pick-body">
       <strong class="pick-name title-serif">{pick.name}</strong>
@@ -20,10 +22,6 @@ const { pick } = Astro.props
 </div>
 
 <style>
-  .my-pick-label {
-    margin: 0 0 var(--spacing-xs);
-  }
-
   .pick {
     display: flex;
     align-items: flex-start;

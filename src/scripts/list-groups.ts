@@ -39,15 +39,11 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
     header.className = 'group-header'
     header.dataset.groupHeader = ''
 
-    // Verdict headers carry their color (via [data-verdict]) and a leading dot.
-    // The other two kinds are tagged so each gets its own type: status-group
-    // headers (un-rated places) read like the pane title; letter headers read big
-    // + accent.
+    // Header kinds: verdict groups (rated places, tagged for the fleur rating),
+    // status groups (un-rated places), and big letter headers for the
+    // alphabetical sort.
     if (mode === 'verdict' && verdictKeys.has(key)) {
       header.dataset.verdict = key
-      // const dot = document.createElement('span')
-      // dot.className = 'group-dot'
-      // header.appendChild(dot)
     } else if (mode === 'verdict') {
       header.classList.add('group-header-status')
     } else {
@@ -59,11 +55,11 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
     label.textContent = mode === 'verdict' ? (groupLabels[key] ?? key) : key
 
     const countEl = document.createElement('span')
-    countEl.className = 'group-count'
+    countEl.className = 'count'
     countEl.textContent = String(count)
 
     // Both verdict + letter headers get a rule line that fills the row and pushes
-    // the count to the end (verdict headers also keep their leading dot).
+    // the count to the end.
     const rule = document.createElement('span')
     rule.className = 'group-rule'
 

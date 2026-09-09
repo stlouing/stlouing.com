@@ -51,17 +51,16 @@ export interface PopupConfig {
   sources?: PopupSource[]
 }
 
-// The cuisine / neighborhood / region meta, styled like the list rows'
-// `.list-headline .list-meta` — plain uppercase mono text, no emoji, no pill. A
+// The cuisine / neighborhood / region meta in the shared eyebrow voice. A
 // filterable value stays an interactive <button> (data-filter-set/value).
 function chipHtml(chip: PopupChip): string {
   const inner = escapeHtml(chip.label)
   if (chip.filterSet) {
     const value = escapeHtml(chip.filterValue ?? chip.label)
-    return `<button type="button" class="list-meta" data-filter-set="${escapeHtml(chip.filterSet)}" data-filter-value="${value}">${inner}</button>`
+    return `<button type="button" class="list-meta eyebrow eyebrow--muted" data-filter-set="${escapeHtml(chip.filterSet)}" data-filter-value="${value}">${inner}</button>`
   }
 
-  return `<span class="list-meta">${inner}</span>`
+  return `<span class="eyebrow eyebrow--muted">${inner}</span>`
 }
 
 // Inline 14×14 source icons (Lucide), matching the labeled links on the detail
@@ -125,7 +124,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<div class="popup-photo" style="background-image: url('${escapeHtml(photo)}')" aria-hidden="true"></div>`
     : ''
 
-  const titleHtml = `<h2><a href="${link}">${escapeHtml(title)}</a></h2>`
+  const titleHtml = `<h2><a class="title-serif title-link" href="${link}">${escapeHtml(title)}</a></h2>`
 
   // The rating, matching Rating.astro: four fleur-de-lis, filled to the verdict's
   // level (not-for-me = 1 … loved = 4), all four faded when unrated. The label
@@ -158,7 +157,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<a class="popup-directions" href="${directionsHref}" target="_blank" rel="noopener">View directions${DIRECTIONS_ICON}</a>`
     : ''
 
-  const excerptHtml = excerpt ? `<p class="popup-excerpt">${escapeHtml(excerpt)}</p>` : ''
+  const excerptHtml = excerpt ? `<p class="popup-excerpt excerpt">${escapeHtml(excerpt)}</p>` : ''
 
   const moreHtml = `<a class="btn btn-dark btn-compact popup-more-link" href="${link}">View more</a>`
 

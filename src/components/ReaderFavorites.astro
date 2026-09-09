@@ -66,9 +66,6 @@ const placeTitles = Object.fromEntries(food.map((place) => [place.id, place.data
 </script>
 
 <style>
-  /* The What's New panel voice. Rows are injected by reader-favorites.ts, so
-     their rules are flat :global() descendants (injected nodes never carry the
-     Astro scope class). */
   .reader-favorites[hidden] {
     display: none;
   }
@@ -104,7 +101,6 @@ const placeTitles = Object.fromEntries(food.map((place) => [place.id, place.data
     color: var(--color-muted);
   }
 
-  /* Quiet variant: the accent eyebrow voice in place of the serif masthead. */
   .reader-favorites--quiet .reader-favorites-title {
     font-family: var(--font-sans-serif);
     font-size: var(--font-size-xs);

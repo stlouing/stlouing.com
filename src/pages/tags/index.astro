@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Heading from '../../components/Heading.astro'
 import TagIcon from '../../components/TagIcon.astro'
 import { href } from '../../lib/url'
 import { cuisineLabel } from '../../lib/cuisine'
@@ -29,7 +30,7 @@ const groups = [
       {
         groups.map((group) => (
           <section>
-            <h2 class="tags-head head-black head-black--lg head-rule">{group.label}</h2>
+            <Heading>{group.label}</Heading>
             <ul class="tag-row">
               {group.tags.map(({ tag, count }) => (
                 <li>
@@ -49,9 +50,6 @@ const groups = [
 </BaseLayout>
 
 <style>
-  .tags-head {
-    margin-block: 0 var(--spacing-sm);
-  }
 
   .tag-groups {
     display: flex;

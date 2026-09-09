@@ -105,7 +105,7 @@ export function initWikilinkPreviews(): void {
           meta.appendChild(divider)
         }
         const label = document.createElement('span')
-        label.className = 'list-meta'
+        label.className = 'eyebrow eyebrow--muted'
         label.textContent = part
         meta.appendChild(label)
       })
@@ -113,21 +113,21 @@ export function initWikilinkPreviews(): void {
     }
 
     const title = document.createElement('div')
-    title.className = 'wikilink-card-title'
+    title.className = 'wikilink-card-title title-serif'
     title.textContent = preview.title
     card.appendChild(title)
 
     // Topic tagline, in the accent color.
     if (preview.description) {
       const description = document.createElement('p')
-      description.className = 'wikilink-card-description'
+      description.className = 'wikilink-card-description desc-muted'
       description.textContent = preview.description
       card.appendChild(description)
     }
 
     if (preview.excerpt) {
       const body = document.createElement('p')
-      body.className = 'wikilink-card-excerpt'
+      body.className = 'wikilink-card-excerpt excerpt'
       body.textContent = preview.excerpt
       card.appendChild(body)
     }

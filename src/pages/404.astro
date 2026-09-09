@@ -69,7 +69,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
             href={href(`/${field.id}/`)}
             title={field.data.title}
             meta="Article"
-            metaType="text"
             description={field.data.description}>
             <Icon name={field.data.icon} slot="icon" />
           </RelatedCard>
@@ -77,7 +76,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
             href={href(`/${regional.id}/`)}
             title={regional.data.title}
             meta="Article"
-            metaType="text"
             description={regional.data.description}>
             <Icon name={regional.data.icon} slot="icon" />
           </RelatedCard>
@@ -95,7 +93,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
               meta={[cuisineLabel(place.data.cuisine[0]), place.data.neighborhood]
                 .filter(Boolean)
                 .join(' / ')}
-              metaType="text"
               description={place.data.description ?? excerpt(place.body, PREVIEW_EXCERPT_CHARS)}
             />
           ))}
@@ -111,7 +108,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
               href={href(`/neighborhoods/${hood.id}/`)}
               title={hood.data.title}
               meta="Neighborhood"
-              metaType="text"
               description={hood.data.description ?? excerpt(hood.body, PREVIEW_EXCERPT_CHARS)}>
               <IconMapPin slot="icon" />
             </RelatedCard>

@@ -57,15 +57,10 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 <style>
   .action-bar {
     flex-wrap: wrap;
-    /* justify-content: space-between; */
     gap: var(--spacing-sm) var(--spacing-lg);
-    /* The consumer's own spacing follows the bar; don't stack the shared
-       pattern's bottom margin on top of it. */
     margin-block-end: 0;
   }
 
-  /* Plain text-and-icon actions, flush with the bar's edges — no pill
-     padding, no borders. */
   .action-bar > :global(.action-pill) {
     flex: 0 0 auto;
     padding: 0;
@@ -80,15 +75,11 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
     color: var(--color-accent-blue);
   }
 
-  /* This bar separates its actions with space, not the shared section
-     dividers. */
   .action-bar > :global(* + *) {
     border-inline-start: 0;
     padding-inline-start: 0;
   }
 
-  /* .btn sets display, which would otherwise override the hidden attribute
-     (the Comments pill reveals once the comments backend answers). */
   .action-bar > :global(.action-pill[hidden]) {
     display: none;
   }

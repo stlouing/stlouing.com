@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import AsideHeading from '../../components/AsideHeading.astro'
+import Heading from '../../components/Heading.astro'
 import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
@@ -12,6 +14,7 @@ import RelatedList from '../../components/RelatedList.astro'
 import RelatedCard from '../../components/RelatedCard.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { resolveVerdict, verdictLabels } from '../../lib/verdict'
+import { cuisineLabel } from '../../lib/cuisine'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -232,13 +235,13 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                 <div class="pane-stats">
                   {population != null && (
                     <div class="pane-stat">
-                      <span class="pane-stat-label">Population</span>
+                      <span class="pane-stat-label eyebrow eyebrow--muted">Population</span>
                       <span class="pane-stat-value">{population.toLocaleString('en-US')}</span>
                     </div>
                   )}
                   {places.length > 0 && (
                     <div class="pane-stat">
-                      <span class="pane-stat-label">Spots explored</span>
+                      <span class="pane-stat-label eyebrow eyebrow--muted">Spots explored</span>
                       <span class="pane-stat-value">{places.length}</span>
                     </div>
                   )}
@@ -246,7 +249,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                     the value reads "Leave a comment" until comments exist,
                     then the live count. */}
                   <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
-                    <span class="pane-stat-label">Comments</span>
+                    <span class="pane-stat-label eyebrow eyebrow--muted">Comments</span>
                     <span class="pane-stat-value continue-link">
                       <span data-comments-cell-value>Leave a comment</span>
                     </span>
@@ -291,7 +294,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                   <RelatedCard
                     href={href(`/food/${place.id}/`)}
                     title={place.data.title}
-                    meta={place.data.cuisine[0]}
+                    meta={cuisineLabel(place.data.cuisine[0])}
                     description={place.data.description}
                     verdict={resolveVerdict(place.data)}
                   />
@@ -323,7 +326,6 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                     href={href(`/walkable-st-louis/#${corridor.anchor}`)}
                     title={corridor.name}
                     meta={corridor.street}
-                    metaType="text"
                     description={`${corridor.from} to ${corridor.to}`}
                   />
                 ))}
@@ -338,7 +340,6 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                   <RelatedCard
                     title={festival.name}
                     meta={festival.when}
-                    metaType="date"
                     description={festival.blurb}
                   />
                 ))}
@@ -347,14 +348,12 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
           }
 
           <section class="pane-more">
-            <h2 class="pane-more-heading head-black head-rule">More</h2>
+            <Heading>More</Heading>
             <div class="pane-aside">
             {
               nearbyNeighbors.length > 0 && (
                 <nav class="detail-links-section" aria-label="Nearby neighborhoods">
-                  <h2 class="detail-section-label head-black head-black--sm head-rule">
-                    Nearby Neighborhoods
-                  </h2>
+                  <AsideHeading title="Nearby Neighborhoods" />
                   <div class="detail-links">
                     {nearbyNeighbors.map((neighbor) => {
                       // The pixel arrow points east at rest, so a compass bearing
@@ -386,7 +385,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
             {
               resourceLinks.length > 0 && (
                 <div class="detail-links-section">
-                  <h2 class="detail-section-label head-black head-black--sm head-rule">Links</h2>
+                  <AsideHeading title="Links" />
                   <div class="detail-links">
                     {resourceLinks.map((link) => {
                       const Icon = resourceIcons[link.label]
@@ -432,29 +431,18 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
     padding-block-end: calc(var(--spacing-xl) + var(--spacing-md));
   }
 
-  /* The pane's reading column: the article content sits in a centered measure
-     rather than spanning the full half-viewport pane. */
   .detail-pane-inner {
     max-width: calc(var(--measure-reading) + 2 * var(--spacing-lg));
     margin-inline: auto;
     padding-inline: var(--spacing-lg);
   }
 
-  /* Breadcrumbs: left-aligned in the pane (the shared component centers them). */
   .detail-pane :global(.breadcrumbs) {
     justify-content: flex-start;
     margin-block-start: var(--spacing-xl);
   }
 
-  /* The header voice (.detail-pane-header/.pane-stats) is a global pattern
-     shared with the food detail page. */
-
-  /* Rail / Links / Tags: quiet sections — stacked on phones; on wider screens
-     Nearby Neighborhoods and Links pair up side by side with Tags spanning
-     the full row beneath them. */
-  /* The "More" section heading mirrors the RelatedList voice; the grouped
-     blocks below it drop their own top margin (the heading spaces them). */
-  .pane-more-heading {
+  .pane-more :global(.heading) {
     margin-block: var(--spacing-xl) var(--spacing-lg);
   }
 
@@ -473,14 +461,11 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
       align-items: start;
     }
 
-    /* The Tags card is a component root (no page scope attribute). */
     .pane-aside > :global(.side-card) {
       grid-column: 1 / -1;
     }
   }
 
-  /* The compass arrow leading each neighbor row (the Links-bar icon spot):
-     the pixel arrow icon rotated per direction. */
   .bearing-arrow {
     display: inline-flex;
     color: var(--color-muted);

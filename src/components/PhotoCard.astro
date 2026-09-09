@@ -38,7 +38,7 @@ const { place, teaser, eyebrow, horizontal = false } = Astro.props
           <span class="photo-card-description desc-muted">{place.data.description}</span>
         )
       }
-      {teaser && <span class="photo-card-excerpt">{teaser}</span>}
+      {teaser && <span class="photo-card-excerpt excerpt">{teaser}</span>}
     </span>
   </a>
 </article>
@@ -61,7 +61,6 @@ const { place, teaser, eyebrow, horizontal = false } = Astro.props
     text-decoration: none;
   }
 
-  /* Vertical (default): the wrapper is invisible to layout. */
   .photo-card-text {
     display: contents;
   }
@@ -74,8 +73,6 @@ const { place, teaser, eyebrow, horizontal = false } = Astro.props
   }
 
   .photo-card-description {
-    font-size: var(--font-size-md);
-    line-height: 1.45;
     margin-bottom: var(--spacing-xs);
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -86,10 +83,6 @@ const { place, teaser, eyebrow, horizontal = false } = Astro.props
   }
 
   .photo-card-excerpt {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-md);
-    line-height: 1.45;
-    color: var(--color-text);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -97,8 +90,6 @@ const { place, teaser, eyebrow, horizontal = false } = Astro.props
     flex-shrink: 0;
   }
 
-  /* Horizontal: text column 2/3, photo 1/3 on the right, photo cropped to the
-     text column's height. Falls back to the vertical stack on phones. */
   @media (min-width: 601px) {
     .photo-card-link.is-horizontal {
       flex-direction: row;

@@ -2,7 +2,7 @@
 // A titled list of related entries (more food on a food page, the food + bordering
 // neighborhoods on a neighborhood page) — one row per item (see RelatedCard.astro),
 // under the shared front-page group-header row (optionally with a "View all" link).
-import GroupHeader from './GroupHeader.astro'
+import SectionHeading from './SectionHeading.astro'
 
 interface Props {
   title: string
@@ -18,20 +18,15 @@ const { title, class: className, moreHref, moreLabel } = Astro.props
 ---
 
 <section class:list={['related', className]}>
-  <GroupHeader title={title} moreHref={moreHref} moreLabel={moreLabel} />
+  <SectionHeading title={title} moreHref={moreHref} moreLabel={moreLabel} />
   <div class="related-list">
     <slot />
   </div>
 </section>
 
 <style>
-  .related {
-    margin-block-start: var(--spacing-lg);
-  }
-
-  /* The shared header row, spaced into the related-section rhythm. */
-  .related :global(.group-header) {
-    margin-block: var(--spacing-xl) var(--spacing-md);
+  .related :global(.section-heading) {
+    margin-block: var(--spacing-xl) 0;
   }
 
   .related-list {
