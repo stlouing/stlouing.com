@@ -51,6 +51,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
   .action-bar {
     flex-wrap: wrap;
     gap: var(--spacing-sm) var(--spacing-lg);
+    padding-block: var(--spacing-sm);
     margin-block-end: 0;
   }
 
@@ -60,7 +61,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
     border: 0;
     background: transparent;
     color: var(--color-text);
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm);
   }
 
   .action-bar > :global(.action-pill:hover) {
@@ -80,5 +81,10 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
   .action-bar > :global(.action-pill svg) {
     width: 16px;
     height: 16px;
+    color: var(--color-muted);
+  }
+
+  .action-bar > :global(.action-pill:hover svg) {
+    color: inherit;
   }
 </style>

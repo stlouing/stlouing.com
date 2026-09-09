@@ -145,6 +145,12 @@ import IconInstagram from '../assets/IconInstagram.astro'
     display: none;
   }
 
+  @media (max-width: 700px) {
+    :global(body:has(.map-split:not(.detail-split))) .site-footer {
+      display: none;
+    }
+  }
+
   :global(body:has([data-map])) .site-footer,
   :global(body:has([data-area-map])) .site-footer,
   :global(body:has([data-map-pane])) .site-footer {
@@ -234,7 +240,12 @@ import IconInstagram from '../assets/IconInstagram.astro'
       flex-direction: column;
       align-items: stretch;
       padding-block: var(--spacing-lg);
-      gap: 3rem;
+      gap: var(--spacing-lg);
+    }
+
+    .footer-newsletter {
+      border-block-start: 1px solid color-mix(in srgb, var(--footer-white) 30%, transparent);
+      padding-block-start: var(--spacing-lg);
     }
 
     .footer-name {
@@ -262,8 +273,5 @@ import IconInstagram from '../assets/IconInstagram.astro'
       margin-block-end: var(--spacing-shmedium);
     }
 
-    .footer-bottom {
-      padding-block: var(--spacing-sm);
-    }
   }
 </style>

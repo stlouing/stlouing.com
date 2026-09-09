@@ -45,7 +45,7 @@ const description = "The best of the St. Louis food I've tried, by category."
           {
             awards.map(({ label, place, teaser }) => (
               <div class="best-cell">
-                <Subheading level={3} title={label.charAt(0).toUpperCase() + label.slice(1)} />
+                <Subheading level={3}>{label.charAt(0).toUpperCase() + label.slice(1)}</Subheading>
                 <Card
                   class="is-horizontal"
                   href={href(`/food/${place.id}/`)}

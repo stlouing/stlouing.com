@@ -230,7 +230,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 <style>
   .front-page {
     --front-rail-left: 250px;
-    --front-rail-right: 300px;
+    --front-rail-right: 260px;
     --front-gap: var(--spacing-xl);
     position: relative;
     display: grid;
@@ -324,6 +324,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .rail-articles :global(.card) {
     padding-block: var(--spacing-shmedium);
+  }
+
+  .rail-articles :global(.card-description) {
+    font-style: normal;
   }
 
   .front-index-list {

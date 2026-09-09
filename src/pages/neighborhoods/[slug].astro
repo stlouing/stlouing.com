@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import AsideHeading from '../../components/AsideHeading.astro'
-import Heading from '../../components/Heading.astro'
+import Subheading from '../../components/Subheading.astro'
 import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
@@ -301,7 +301,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
           }
 
           <section class="pane-more">
-            <Heading>More</Heading>
+            <Subheading>More</Subheading>
             <div class="pane-aside">
             {
               nearbyNeighbors.length > 0 && (
@@ -393,7 +393,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
     margin-block-start: var(--spacing-xl);
   }
 
-  .pane-more :global(.heading) {
+  .pane-more :global(.subheading) {
     margin-block: var(--spacing-xl) var(--spacing-lg);
   }
 

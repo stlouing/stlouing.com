@@ -85,13 +85,13 @@ function sectionOf(area: { group?: string; type?: string }): string {
       {
         const split = document.currentScript.parentElement
         if (window.matchMedia('(max-width: 700px)').matches) {
-          split.dataset.view = 'content'
+          split.dataset.view = 'list'
         }
       }
     </script>
     <div class="results">
       <article class="page content-pane map-list section-list">
-        <ListPaneHeader title="Neighborhoods, Parks, & Cities" count={count} />
+        <ListPaneHeader title="Neighborhoods" count={count} />
         <ul class="list">
           {
             listed.map((neighborhood, index) => {

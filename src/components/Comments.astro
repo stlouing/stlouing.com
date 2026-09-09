@@ -1,5 +1,5 @@
 ---
-import Heading from './Heading.astro'
+import Subheading from './Subheading.astro'
 import { SUPABASE_ENABLED } from '../lib/site'
 
 interface Props {
@@ -21,10 +21,10 @@ const { kind, slug, title } = Astro.props
       data-slug={slug}
       aria-label={`Comments on ${title}`}
       hidden>
-      <Heading>
+      <Subheading>
         Comments
         <span slot="aside" class="count" data-count />
-      </Heading>
+      </Subheading>
 
       <section aria-label="Leave a comment">
         <form class="form-stack" data-form>

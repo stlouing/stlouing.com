@@ -25,24 +25,10 @@
   }
 
   toggle?.addEventListener('click', () => {
-    const nextView = split?.getAttribute('data-view') === 'map' ? 'content' : 'map'
+    const nextView = split?.getAttribute('data-view') === 'map' ? 'list' : 'map'
     split?.setAttribute('data-view', nextView)
     updateToggleLabel()
   })
 
   updateToggleLabel()
 </script>
-
-<style>
-  .area-map {
-    height: 100%;
-    min-height: 0;
-    border-inline-start: 1px solid var(--color-line);
-  }
-
-  @media (max-width: 700px) {
-    .area-map {
-      border-inline: 0;
-    }
-  }
-</style>

@@ -19,19 +19,6 @@ export function initFilterableMapPage(rootSelector = '[data-filter-root]'): void
 
   initFilter(rootSelector)
 
-  // Publish the sticky filter toolbar's live height as a CSS var so the list's
-  // sticky section headers can pin just beneath it (it's the only element fixed to
-  // the top of the scroll — the site + pane headers scroll away). Tracked so the
-  // offset stays right when the toolbar wraps to more rows on a narrow viewport.
-  const toolbar = root.querySelector<HTMLElement>('.secondary-header')
-  if (toolbar) {
-    const publishToolbarHeight = (): void => {
-      root.style.setProperty('--filter-toolbar-height', `${toolbar.offsetHeight}px`)
-    }
-    publishToolbarHeight()
-    new ResizeObserver(publishToolbarHeight).observe(toolbar)
-  }
-
   const floatingToggle = root.querySelector<HTMLButtonElement>('[data-map-split-toggle]')
   const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')]
 

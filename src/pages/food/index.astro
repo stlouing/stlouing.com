@@ -83,7 +83,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
     hasCoords={hasCoords}
     mapLabel="Map of food spots"
     emptyText="No places match those filters.">
-    <div class="map-list grouped-list">
+    <article class="page content-pane map-list grouped-list">
       <ListPaneHeader title="Food" count={count} live>
         <div class="pane-links">
           <label class="pane-search-wrap">
@@ -177,7 +177,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
         <span data-fleur="neutral"><Rating verdict="neutral" /></span>
         <span data-fleur="not-for-me"><Rating verdict="not-for-me" /></span>
       </div>
-    </div>
+    </article>
   </FilterMapPage>
 </BaseLayout>
 

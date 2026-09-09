@@ -42,7 +42,7 @@ const {
 } = Astro.props
 ---
 
-<div class={className} data-filter-root data-view="list">
+<div class:list={[className, 'map-split']} data-filter-root data-map-split data-view="list">
   <script is:inline>
     {
       const filterRoot = document.currentScript.parentElement

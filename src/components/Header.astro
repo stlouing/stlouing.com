@@ -165,6 +165,10 @@ const { variant = 'compact' } = Astro.props
     white-space: nowrap;
   }
 
+  .masthead-nav:not(.is-home) :global(.site-nav-inline) {
+    margin-block-start: 4px;
+  }
+
   .masthead-nav.is-home .masthead-brand {
     opacity: 0;
     visibility: hidden;
