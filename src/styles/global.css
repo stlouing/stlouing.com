@@ -1030,7 +1030,7 @@ body:has(.map-split) main > .wrap,
     display: block;
     position: fixed;
 
-    bottom: 50px;
+    bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1100;
