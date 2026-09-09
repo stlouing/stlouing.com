@@ -20,7 +20,7 @@ const { frontmatter } = Astro.props
       <div class="entry-bar">
         {frontmatter.title && <h1>{frontmatter.title}</h1>}
       </div>
-      {frontmatter.tagline && <p class="entry-summary">{frontmatter.tagline}</p>}
+      {frontmatter.tagline && <p class="description description--lg">{frontmatter.tagline}</p>}
       <div class="river-border-basic" aria-hidden="true"></div>
     </header>
     <div class="body reading-col">

@@ -6,7 +6,7 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Breadcrumbs from './Breadcrumbs.astro'
-import RelatedCard from './RelatedCard.astro'
+import Card from './Card.astro'
 import { published } from '../lib/content'
 import { href } from '../lib/url'
 import { regions, neighborhoodsInRegion } from '../lib/neighborhoods'
@@ -63,7 +63,7 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 
     <header class="detail-pane-header">
       <h1 class="detail-pane-title">{region.label}</h1>
-      <p class="entry-summary detail-pane-tagline">
+      <p class="description description--lg detail-pane-tagline">
         {count}
         {regionSlug === 'parks' ? 'parks' : 'neighborhoods'}
       </p>
@@ -81,14 +81,14 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
         )
       }
     </nav>
-    <div class="region-list related-cards related-cards--three">
-      <div class="related-list">
+    <div class="region-list card-cells card-cells--three">
+      <div class="card-rows">
         {
           sorted.map((neighborhood) => {
             const meta = metaBySlug.get(neighborhood.slug)
 
             return (
-              <RelatedCard
+              <Card
                 href={href(`/neighborhoods/${neighborhood.slug}/`)}
                 title={neighborhood.name}
                 description={meta?.description ?? ''}
@@ -106,19 +106,6 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
   .region-page :global(.breadcrumbs) {
     justify-content: flex-start;
     margin-block-start: var(--spacing-xl);
-  }
-
-  .region-list :global(.related-tag) {
-    border: 0;
-    background: none;
-    padding: 0;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    font-weight: 600;
-  }
-
-  .region-list :global(.related-tag .icon) {
-    display: none;
   }
 
   .region-nav {

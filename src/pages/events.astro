@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import RelatedList from '../components/RelatedList.astro'
-import RelatedCard from '../components/RelatedCard.astro'
+import CardList from '../components/CardList.astro'
+import Card from '../components/Card.astro'
 import IconCalendar from '../assets/IconCalendar.astro'
 import { href } from '../lib/url'
 import {
@@ -59,14 +59,14 @@ const description =
       <div class="entry-bar">
         <h1>Annual Events in St. Louis</h1>
       </div>
-      <p class="entry-summary">{description}</p>
+      <p class="description description--lg">{description}</p>
       <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
     <div class="reading-col">
       {
         byMonth.map((month) => (
-          <RelatedList title={month.label}>
+          <CardList title={month.label}>
             {month.events.map((event) => {
               const link = event.neighborhood
                 ? href(`/neighborhoods/${event.neighborhood}/`)
@@ -77,16 +77,16 @@ const description =
               const kickerParts = event.place ? [event.when, event.place] : [event.when]
 
               return (
-                <RelatedCard
+                <Card
                   href={link}
                   title={event.name}
                   meta={kickerParts}
                   description={event.blurb}>
                   <IconCalendar slot="icon" />
-                </RelatedCard>
+                </Card>
               )
             })}
-          </RelatedList>
+          </CardList>
         ))
       }
     </div>

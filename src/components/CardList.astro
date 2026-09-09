@@ -1,12 +1,12 @@
 ---
-// A titled list of related entries (more food on a food page, the food + bordering
-// neighborhoods on a neighborhood page) — one row per item (see RelatedCard.astro),
-// under the shared front-page group-header row (optionally with a "View all" link).
+// A titled list of Cards (more food on a food page, the food + bordering
+// neighborhoods on a neighborhood page, events, 404 suggestions) — a
+// SectionHeading over a `.card-rows` stack. Pass `class="card-cells"` (or
+// `card-cells card-cells--three`) for the wide-screen bordered grid variant.
 import SectionHeading from './SectionHeading.astro'
 
 interface Props {
   title: string
-  // Extra class for variants (e.g. the global `related-cards` two-up card grid).
   class?: string
   // When set, a "View all" continue-link renders beside the heading (e.g. the
   // filtered food list behind a "More in…" group).
@@ -17,19 +17,15 @@ interface Props {
 const { title, class: className, moreHref, moreLabel } = Astro.props
 ---
 
-<section class:list={['related', className]}>
+<section class:list={['card-list', className]}>
   <SectionHeading title={title} moreHref={moreHref} moreLabel={moreLabel} />
-  <div class="related-list">
+  <div class="card-rows">
     <slot />
   </div>
 </section>
 
 <style>
-  .related :global(.section-heading) {
+  .card-list :global(.section-heading) {
     margin-block: var(--spacing-xl) 0;
-  }
-
-  .related-list {
-    overflow: hidden;
   }
 </style>

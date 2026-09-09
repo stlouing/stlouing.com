@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import RelatedList from '../components/RelatedList.astro'
-import RelatedCard from '../components/RelatedCard.astro'
+import CardList from '../components/CardList.astro'
+import Card from '../components/Card.astro'
 import Icon from '../components/Icon.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
 import { href } from '../lib/url'
@@ -34,7 +34,7 @@ const neighborhoods = published(await getCollection('neighborhoods'))
       <div class="entry-bar">
         <h1>Page Not Found</h1>
       </div>
-      <p class="entry-summary">
+      <p class="description description--lg">
         That page doesn't exist (or it moved). Try these:
       </p>
       <div class="river-border-basic" aria-hidden="true"></div>
@@ -56,7 +56,7 @@ const neighborhoods = published(await getCollection('neighborhoods'))
           <span class="feature-body">
             <span class="feature-kicker eyebrow">Featured</span>
             <span class="feature-title">{pizza.data.title}</span>
-            {pizza.data.description && <span class="feature-desc">{pizza.data.description}</span>}
+            {pizza.data.description && <span class="description">{pizza.data.description}</span>}
           </span>
         </a>
       )
@@ -64,30 +64,30 @@ const neighborhoods = published(await getCollection('neighborhoods'))
 
     {
       regional && field && (
-        <RelatedList title="More reading">
-          <RelatedCard
+        <CardList title="More reading">
+          <Card
             href={href(`/${field.id}/`)}
             title={field.data.title}
             meta="Article"
             description={field.data.description}>
             <Icon name={field.data.icon} slot="icon" />
-          </RelatedCard>
-          <RelatedCard
+          </Card>
+          <Card
             href={href(`/${regional.id}/`)}
             title={regional.data.title}
             meta="Article"
             description={regional.data.description}>
             <Icon name={regional.data.icon} slot="icon" />
-          </RelatedCard>
-        </RelatedList>
+          </Card>
+        </CardList>
       )
     }
 
     {
       restaurants.length > 0 && (
-        <RelatedList title="Restaurants">
+        <CardList title="Restaurants">
           {restaurants.map((place) => (
-            <RelatedCard
+            <Card
               href={href(`/food/${place.id}/`)}
               title={place.data.title}
               meta={[cuisineLabel(place.data.cuisine[0]), place.data.neighborhood]
@@ -96,23 +96,23 @@ const neighborhoods = published(await getCollection('neighborhoods'))
               description={place.data.description ?? excerpt(place.body, PREVIEW_EXCERPT_CHARS)}
             />
           ))}
-        </RelatedList>
+        </CardList>
       )
     }
 
     {
       neighborhoods.length > 0 && (
-        <RelatedList title="Neighborhoods">
+        <CardList title="Neighborhoods">
           {neighborhoods.map((hood) => (
-            <RelatedCard
+            <Card
               href={href(`/neighborhoods/${hood.id}/`)}
               title={hood.data.title}
               meta="Neighborhood"
               description={hood.data.description ?? excerpt(hood.body, PREVIEW_EXCERPT_CHARS)}>
               <IconMapPin slot="icon" />
-            </RelatedCard>
+            </Card>
           ))}
-        </RelatedList>
+        </CardList>
       )
     }
 
@@ -163,11 +163,6 @@ const neighborhoods = published(await getCollection('neighborhoods'))
       font-size: var(--font-size-xl);
       font-weight: 700;
       line-height: 1.15;
-    }
-
-    .feature-desc {
-      color: var(--color-muted);
-      line-height: 1.4;
     }
 
     .home-link {

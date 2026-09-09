@@ -14,8 +14,8 @@ import SourceLink from '../../components/SourceLink.astro'
 import Locator from '../../components/Locator.astro'
 import MyPick from '../../components/MyPick.astro'
 import Rating from '../../components/Rating.astro'
-import RelatedList from '../../components/RelatedList.astro'
-import RelatedCard from '../../components/RelatedCard.astro'
+import CardList from '../../components/CardList.astro'
+import Card from '../../components/Card.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { published, excerpt, hasBody, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
@@ -154,7 +154,7 @@ const seoDescription = hasBody(entry)
 
     <header class="detail-pane-header">
       <h1 class="detail-pane-title">{data.title}</h1>
-      {data.description && <p class="entry-summary detail-pane-tagline">{data.description}</p>}
+      {data.description && <p class="description description--lg detail-pane-tagline">{data.description}</p>}
       <TagList tags={data.tags} />
       <div class="pane-stats">
         <div class="pane-stat">
@@ -224,12 +224,12 @@ const seoDescription = hasBody(entry)
           <section class="more-food">
             {
               relatedNeighborhood.length > 0 && (
-                <RelatedList
+                <CardList
                   title={`More in ${data.neighborhood}`}
-                  class="related-cards"
+                  class="card-cells"
                   moreHref={href(`/food/?neighborhood=${encodeURIComponent(data.neighborhood)}`)}>
                   {relatedNeighborhood.map(({ place, verdict }) => (
-                    <RelatedCard
+                    <Card
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={cuisineLabel(place.data.cuisine[0])}
@@ -237,17 +237,17 @@ const seoDescription = hasBody(entry)
                       verdict={verdict}
                     />
                   ))}
-                </RelatedList>
+                </CardList>
               )
             }
             {
               relatedCuisine.length > 0 && (
-                <RelatedList
+                <CardList
                   title={`More ${cuisineLabel(primaryCuisine)}`}
-                  class="related-cards"
+                  class="card-cells"
                   moreHref={href(`/food/?cuisine=${primaryCuisine}`)}>
                   {relatedCuisine.map(({ place, verdict }) => (
-                    <RelatedCard
+                    <Card
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={place.data.neighborhood}
@@ -255,7 +255,7 @@ const seoDescription = hasBody(entry)
                       verdict={verdict}
                     />
                   ))}
-                </RelatedList>
+                </CardList>
               )
             }
           </section>

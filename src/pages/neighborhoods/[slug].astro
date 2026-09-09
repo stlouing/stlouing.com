@@ -10,8 +10,8 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
 import MapPane from '../../components/MapPane.astro'
-import RelatedList from '../../components/RelatedList.astro'
-import RelatedCard from '../../components/RelatedCard.astro'
+import CardList from '../../components/CardList.astro'
+import Card from '../../components/Card.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { resolveVerdict, verdictLabels } from '../../lib/verdict'
 import { cuisineLabel } from '../../lib/cuisine'
@@ -229,7 +229,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
 
           <header class="detail-pane-header">
             <h1 class="detail-pane-title">{title}</h1>
-            {summary && <p class="entry-summary detail-pane-tagline">{summary}</p>}
+            {summary && <p class="description description--lg detail-pane-tagline">{summary}</p>}
             {
               (population != null || places.length > 0) && (
                 <div class="pane-stats">
@@ -289,9 +289,9 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
 
           {
             places.length > 0 && (
-              <RelatedList title="Food & Drink">
+              <CardList title="Food & Drink">
                 {places.map((place) => (
-                  <RelatedCard
+                  <Card
                     href={href(`/food/${place.id}/`)}
                     title={place.data.title}
                     meta={cuisineLabel(place.data.cuisine[0])}
@@ -299,51 +299,51 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                     verdict={resolveVerdict(place.data)}
                   />
                 ))}
-              </RelatedList>
+              </CardList>
             )
           }
 
           {
             attractions.length > 0 && (
-              <RelatedList title="Landmarks">
+              <CardList title="Landmarks">
                 {attractions.map((spot) => (
-                  <RelatedCard
+                  <Card
                     href={spot.url}
                     title={spot.name}
                     description={spot.description}
                     external
                   />
                 ))}
-              </RelatedList>
+              </CardList>
             )
           }
 
           {
             corridors.length > 0 && (
-              <RelatedList title="Walkable streets">
+              <CardList title="Walkable streets">
                 {corridors.map((corridor) => (
-                  <RelatedCard
+                  <Card
                     href={href(`/walkable-st-louis/#${corridor.anchor}`)}
                     title={corridor.name}
                     meta={corridor.street}
                     description={`${corridor.from} to ${corridor.to}`}
                   />
                 ))}
-              </RelatedList>
+              </CardList>
             )
           }
 
           {
             festivals.length > 0 && (
-              <RelatedList title="Annual events">
+              <CardList title="Annual events">
                 {festivals.map((festival) => (
-                  <RelatedCard
+                  <Card
                     title={festival.name}
                     meta={festival.when}
                     description={festival.blurb}
                   />
                 ))}
-              </RelatedList>
+              </CardList>
             )
           }
 

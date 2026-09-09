@@ -46,7 +46,7 @@ export function initWikilinkPreviews(): void {
   }
 
   const card = document.createElement('div')
-  card.className = 'wikilink-card'
+  card.className = 'wikilink-card card'
   card.setAttribute('role', 'tooltip')
   document.body.appendChild(card)
 
@@ -96,7 +96,7 @@ export function initWikilinkPreviews(): void {
     ]
     if (metaParts.length > 0) {
       const meta = document.createElement('div')
-      meta.className = 'wikilink-card-meta list-eyebrow'
+      meta.className = 'card-meta eyebrow eyebrow--muted'
       metaParts.forEach((part, partIndex) => {
         if (partIndex > 0) {
           const divider = document.createElement('span')
@@ -105,7 +105,6 @@ export function initWikilinkPreviews(): void {
           meta.appendChild(divider)
         }
         const label = document.createElement('span')
-        label.className = 'eyebrow eyebrow--muted'
         label.textContent = part
         meta.appendChild(label)
       })
@@ -113,21 +112,21 @@ export function initWikilinkPreviews(): void {
     }
 
     const title = document.createElement('div')
-    title.className = 'wikilink-card-title title-serif'
+    title.className = 'title-serif'
     title.textContent = preview.title
     card.appendChild(title)
 
     // Topic tagline, in the accent color.
     if (preview.description) {
       const description = document.createElement('p')
-      description.className = 'wikilink-card-description desc-muted'
+      description.className = 'card-description description'
       description.textContent = preview.description
       card.appendChild(description)
     }
 
     if (preview.excerpt) {
       const body = document.createElement('p')
-      body.className = 'wikilink-card-excerpt excerpt'
+      body.className = 'card-excerpt excerpt'
       body.textContent = preview.excerpt
       card.appendChild(body)
     }

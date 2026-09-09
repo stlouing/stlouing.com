@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Card from '../components/Card.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import { href } from '../lib/url'
 import { published, excerpt, sortTopics } from '../lib/content'
@@ -20,118 +21,39 @@ const topics = sortTopics(published(await getCollection('topics')))
       <div class="entry-bar">
         <h1>Topics</h1>
       </div>
-      <p class="entry-summary">Deep-dives into St. Louis food and culture</p>
+      <p class="description description--lg">Deep-dives into St. Louis food and culture</p>
       <div class="river-border-basic" aria-hidden="true"></div>
     </header>
-    <div class="card-grid">
-      {
-        topics.map((topic) => (
-          <a class="card hover-wash" href={href(`/${topic.id}/`)}>
-            {topic.data.category && <p class="card-kicker eyebrow">{topic.data.category}</p>}
-            <h2 class="card-title title-serif title-link">{topic.data.title}</h2>
-            {topic.data.description && <p class="card-description desc-muted desc-muted--lg">{topic.data.description}</p>}
-            <p class="card-excerpt excerpt">{excerpt(topic.body, TOPIC_EXCERPT_CHARS)}</p>
-            <span class="continue-link">
-              Continue reading <IconArrowRight />
-            </span>
-          </a>
-        ))
-      }
+    <div class="card-grid card-cells card-cells--three">
+      <div class="card-rows">
+        {
+          topics.map((topic) => (
+            <Card
+              href={href(`/${topic.id}/`)}
+              title={topic.data.title}
+              meta={topic.data.category}
+              description={topic.data.description}
+              excerpt={excerpt(topic.body, TOPIC_EXCERPT_CHARS)}>
+              <span class="continue-link">
+                Continue reading <IconArrowRight />
+              </span>
+            </Card>
+          ))
+        }
+      </div>
     </div>
   </article>
 </BaseLayout>
 
 <style>
   .card-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--spacing-md) var(--spacing-xl);
     margin-block-start: var(--spacing-md);
   }
 
-  @media (max-width: 1000px) {
-    .card-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 700px) {
-    .card-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding-block: var(--spacing-lg);
-    padding-inline: var(--spacing-md);
-    margin-inline: calc(-1 * var(--spacing-sm));
-    border-radius: var(--radius);
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .card::after {
-    content: '';
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline: var(--spacing-sm);
-    height: 0;
-    border-block-end: 1px dotted var(--color-line-input);
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    inset-block: var(--spacing-sm);
-    inset-inline-start: calc(-1 * var(--spacing-sm));
-    width: 0;
-    border-inline-start: 1px dotted var(--color-line-input);
-  }
-
-  .card:nth-child(3n + 1)::before {
-    display: none;
-  }
-
-  @media (max-width: 1000px) {
-    .card:nth-child(3n + 1)::before {
-      display: block;
-    }
-
-    .card:nth-child(odd)::before {
-      display: none;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .card:nth-child(n)::before {
-      display: none;
-    }
-  }
-
-  .card-title {
-    margin-block: 0 var(--spacing-sm);
-    font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
-  }
-
-  .card .continue-link {
+  .card-grid :global(.continue-link) {
     display: block;
     margin-block-start: auto;
     padding-block-start: var(--spacing-sm);
     text-align: end;
-  }
-
-  .card-kicker {
-    margin: 0 0 var(--spacing-xs);
-  }
-
-  .card-description {
-    margin-block: var(--spacing-xs) 0;
-  }
-
-  .card-excerpt {
-    margin-block: var(--spacing-sm) var(--spacing-sm);
   }
 </style>

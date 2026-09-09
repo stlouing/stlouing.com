@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Heading from '../../components/Heading.astro'
-import RelatedCard from '../../components/RelatedCard.astro'
+import Card from '../../components/Card.astro'
 import rip from '../../data/rip.json'
 import { published } from '../../lib/content'
 import { cuisineLabel } from '../../lib/cuisine'
@@ -32,7 +32,7 @@ const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(righ
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
 
 // The kicker parts: the cuisine label and neighborhood, whichever are present —
-// joined by the hairline tick divider inside RelatedCard, not punctuation.
+// joined by the hairline tick divider inside Card, not punctuation.
 const cardMeta = (item: CardData): string[] =>
   [
     item.cuisine && item.cuisine.length > 0 ? cuisineLabel(item.cuisine[0]) : null,
@@ -52,7 +52,7 @@ const description =
       <div class="entry-bar">
         <h1>The Backlog</h1>
       </div>
-      <p class="entry-summary">The running list of places I still need to get to.</p>
+      <p class="description description--lg">The running list of places I still need to get to.</p>
     </header>
 
     {
@@ -65,9 +65,9 @@ const description =
           <p class="description">
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
-          <div class="card-list">
+          <div class="card-grid card-rows">
             {wishlist.map((place) => (
-              <RelatedCard
+              <Card
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
                 meta={cardMeta(place.data)}
@@ -91,9 +91,9 @@ const description =
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
-          <div class="card-list">
+          <div class="card-grid card-rows">
             {triedList.map((place) => (
-              <RelatedCard
+              <Card
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
                 meta={cardMeta(place.data)}
@@ -115,9 +115,9 @@ const description =
           <p class="description">
             Restaurants I've visited that have closed down and no longer exist.
           </p>
-          <div class="card-list">
+          <div class="card-grid card-rows">
             {inMemoriam.map((item) => (
-              <RelatedCard
+              <Card
                 title={item.name}
                 meta={cardMeta(item)}
                 description={item.note}
@@ -136,24 +136,24 @@ const description =
     margin-block-start: var(--spacing-xl);
   }
 
-  .card-list {
+  .card-grid {
     display: grid;
     grid-template-columns: 1fr;
   }
 
   @media screen and (min-width: 700px) {
-    .card-list {
+    .card-grid {
       grid-template-columns: 1fr 1fr;
       column-gap: 4rem;
     }
 
-    .card-list :global(.related-card:last-child) {
+    .card-grid :global(.card:last-child) {
       border-block-end: 1px solid var(--color-line);
     }
   }
 
   @media screen and (min-width: 1000px) {
-    .card-list {
+    .card-grid {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
@@ -165,6 +165,5 @@ const description =
   .description {
     margin-block-start: 0;
     margin-block-end: var(--spacing-lg);
-    color: var(--color-muted-2);
   }
 </style>

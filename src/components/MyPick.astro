@@ -12,11 +12,11 @@ const { pick } = Astro.props
 ---
 
 <div class="my-pick">
-  <AsideHeading title="My pick" />
+  <AsideHeading title="My Pick" />
   <div class="pick">
     <div class="pick-body">
       <strong class="pick-name title-serif">{pick.name}</strong>
-      {pick.note && <p class="pick-note desc-muted">{pick.note}</p>}
+      {pick.note && <p class="pick-note description">{pick.note}</p>}
     </div>
   </div>
 </div>

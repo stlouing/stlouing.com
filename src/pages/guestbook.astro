@@ -17,7 +17,7 @@ const guestbookEnabled = SUPABASE_ENABLED
       <div class="entry-bar">
         <h1>Guestbook</h1>
       </div>
-      <p class="entry-summary">Passing through? Sign your name and leave a note.</p>
+      <p class="description description--lg">Passing through? Sign your name and leave a note.</p>
       <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
@@ -53,7 +53,7 @@ const guestbookEnabled = SUPABASE_ENABLED
                 <span class="form-status" data-sign-status role="status" aria-live="polite" />
               </div>
             </form>
-            <p class="signed-note desc-muted" data-signed-note hidden>
+            <p class="signed-note description" data-signed-note hidden>
               Thanks for signing!
             </p>
           </section>
@@ -64,7 +64,7 @@ const guestbookEnabled = SUPABASE_ENABLED
               <span slot="aside" class="count" data-count />
             </Heading>
             <ul class="feed" data-entries />
-            <p class="feed-empty desc-muted" data-empty hidden>
+            <p class="feed-empty description" data-empty hidden>
               None yet
             </p>
             <p class="form-status" data-load-status role="status" aria-live="polite" />

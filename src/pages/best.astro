@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import PhotoCard from '../components/PhotoCard.astro'
+import Card from '../components/Card.astro'
 import ReaderFavorites from '../components/ReaderFavorites.astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
+import { href } from '../lib/url'
 import { SUPABASE_ENABLED } from '../lib/site'
 import superlatives from '../data/superlatives.json'
 
@@ -43,7 +44,7 @@ const description = "The best of the St. Louis food I've tried, by category."
       <div class="entry-bar">
         <h1>The Best Food in St. Louis</h1>
       </div>
-      <p class="entry-summary">My subjective favorites and readers top-voted spots</p>
+      <p class="description description--lg">My subjective favorites and readers top-voted spots</p>
       <div class="river-border-basic" aria-hidden="true"></div>
     </header>
 
@@ -54,7 +55,14 @@ const description = "The best of the St. Louis food I've tried, by category."
             awards.map(({ label, place, teaser }) => (
               <div class="best-cell">
                 <h3 class="best-type eyebrow">{label}</h3>
-                <PhotoCard place={place} teaser={teaser} horizontal />
+                <Card
+                  class="is-horizontal"
+                  href={href(`/food/${place.id}/`)}
+                  title={place.data.title}
+                  description={place.data.description}
+                  excerpt={teaser}
+                  photo={place.data.photo}
+                />
               </div>
             ))
           }

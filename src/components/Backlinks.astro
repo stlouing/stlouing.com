@@ -1,7 +1,7 @@
 ---
 import { href } from '../lib/url'
-import RelatedList from './RelatedList.astro'
-import RelatedCard from './RelatedCard.astro'
+import CardList from './CardList.astro'
+import Card from './Card.astro'
 import type { Backlink } from '../lib/backlinks'
 
 interface Props {
@@ -23,12 +23,12 @@ const labelByCollection: Record<string, string> = {
 
 {
   links.length > 0 && (
-    <RelatedList title="Mentioned in">
+    <CardList title="Mentioned in">
       {links.map((link) => {
         const label = labelByCollection[link.collection] ?? link.collection
 
         return (
-          <RelatedCard
+          <Card
             href={href(link.url)}
             title={link.title}
             meta={label}
@@ -36,6 +36,6 @@ const labelByCollection: Record<string, string> = {
           />
         )
       })}
-    </RelatedList>
+    </CardList>
   )
 }

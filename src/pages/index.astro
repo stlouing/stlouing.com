@@ -22,7 +22,7 @@ import ListItem from '../components/ListItem.astro'
 import Heading from '../components/Heading.astro'
 import SectionHeading from '../components/SectionHeading.astro'
 import GuestbookBadge from '../components/GuestbookBadge.astro'
-import PhotoCard from '../components/PhotoCard.astro'
+import Card from '../components/Card.astro'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconInstagram from '../assets/IconInstagram.astro'
@@ -94,14 +94,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           {
             railTopics.map((topic) => (
               <li>
-                <a class="hover-wash" href={href(`/${topic.id}/`)}>
-                  <span class="rail-article-title title-serif title-link">{topic.data.title}</span>
-                  {topic.data.description && (
-                    <span class="rail-article-description desc-muted">
-                      {topic.data.description}
-                    </span>
-                  )}
-                </a>
+                <Card
+                  href={href(`/${topic.id}/`)}
+                  title={topic.data.title}
+                  description={topic.data.description}
+                />
               </li>
             ))
           }
@@ -177,7 +174,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
               <a href={href(`/${leadTopic.id}/`)}>{leadTopic.data.title}</a>
             </h2>
             {leadTopic.data.description && (
-              <p class="lead-deck desc-muted desc-muted--lg">{leadTopic.data.description}</p>
+              <p class="lead-deck description description--lg">{leadTopic.data.description}</p>
             )}
             {leadTeaser && <p class="lead-teaser">{leadTeaser}</p>}
             <p class="lead-meta">
@@ -196,7 +193,17 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           moreLabel="All restaurants & cafes"
         />
         <div class="photo-cards">
-          {featuredFood.map(({ place, teaser }) => <PhotoCard place={place} teaser={teaser} />)}
+          {
+            featuredFood.map(({ place, teaser }) => (
+              <Card
+                href={href(`/food/${place.id}/`)}
+                title={place.data.title}
+                description={place.data.description}
+                excerpt={teaser}
+                photo={place.data.photo}
+              />
+            ))
+          }
         </div>
       </section>
     </div>
@@ -335,17 +342,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     border-block-start: 1px dotted var(--color-line-input);
   }
 
-  .rail-articles a {
-    display: block;
-    padding: var(--spacing-shmedium) var(--spacing-sm);
-    margin-inline: calc(-1 * var(--spacing-sm));
-    color: var(--color-text-heading);
-    text-decoration: none;
-  }
-
-  .rail-article-description {
-    display: block;
-    margin-block-start: var(--spacing-xs);
+  .rail-articles :global(.card) {
+    padding-block: var(--spacing-shmedium);
   }
 
   .front-index-list {
