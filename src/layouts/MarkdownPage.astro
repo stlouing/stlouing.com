@@ -2,8 +2,6 @@
 import BaseLayout from './BaseLayout.astro'
 
 interface Props {
-  // `title` is the visible H1 + breadcrumb; `seoTitle` overrides just the <title>
-  // tag when it should read differently (e.g. About's SEO title differs from "About").
   frontmatter: { title?: string; seoTitle?: string; tagline?: string; description?: string }
 }
 

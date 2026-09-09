@@ -1,7 +1,4 @@
 ---
-// Clickable St. Louis neighborhood map (rendered by the Neighborhoods page).
-// Each boundary is numbered; clicking one reveals its writeup in the left pane.
-// The floating toggle is shown only on mobile, where it flips map <-> writeups.
 ---
 
 <div
@@ -20,7 +17,6 @@
   const split = document.querySelector('[data-map-split]')
   const toggle = document.querySelector('[data-map-split-toggle]')
 
-  // The label names the view the button switches TO.
   function updateToggleLabel(): void {
     const showingMap = split?.getAttribute('data-view') === 'map'
     if (toggle) {

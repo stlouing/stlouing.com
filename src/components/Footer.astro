@@ -1,13 +1,4 @@
 ---
-// The site footer: the city flag as a band — red field, the river ribbon on
-// top, the crest — carrying the site identity on the left and the newsletter
-// handoff on the right, plus a plain Newsletter link in the bottom bar (map
-// pages hide .footer-inner, so the bottom bar is their only newsletter entry
-// point). Subscribing has to FINISH on Substack (a static site can't post into
-// their signup API cross-origin, and their old `?email=` prefill is dead —
-// verified 2026-08-29), so both are honest links to `${NEWSLETTER_URL}/subscribe`
-// rather than an email input that would only pretend to subscribe (no iframe
-// widget, no tracking, works without JS).
 import { NEWSLETTER_URL, SITE_DESCRIPTION } from '../lib/site'
 import { href } from '../lib/url'
 import FleurDeLis from '../assets/FleurDeLis.astro'

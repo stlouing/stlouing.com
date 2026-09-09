@@ -3,13 +3,9 @@ import { sections } from '../lib/sections'
 import { href } from '../lib/url'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 
-// The masthead's newspaper section line — plain labels separated by tiny
-// fleurs-de-lis. The nameplate above is the way home, so there's no Home link.
 const items = sections.filter((section) => section.primary)
 const current = Astro.url.pathname
 
-// `target` already ends in a trailing slash (all section paths do), so a bare
-// startsWith cleanly matches both the section index and its child pages.
 const isActive = (path: string) => {
   const target = href(path)
 

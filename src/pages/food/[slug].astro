@@ -29,7 +29,6 @@ import IconMapPin from '../../assets/IconMapPin.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 import IconInstagram from '../../assets/IconInstagram.astro'
 
-// Every food entry gets a page (metadata only when there's no writeup yet).
 export async function getStaticPaths() {
   const places = published(await getCollection('food'))
 
@@ -38,12 +37,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { data } = entry
-// The "My Review" stance: the verdict when rated, else a status-driven placeholder
-// ("Not yet rated" for a tried spot, "Unexplored" otherwise). Drives the
-// aside's My rating section.
 const writerState = resolveWriterState(data)
-// A friendly one-liner shown in a dashed note in place of the (empty) writeup on a
-// body-less stub. Tried-but-unrated reads differently from never-visited.
 const stubNote =
   writerState.kind === 'pending'
     ? `I've been to ${data.title}, but I haven't written up a review yet.`
@@ -53,9 +47,6 @@ const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 const neighborhoodLink = await neighborhoodHref(data.neighborhood)
 
-// Social-share image: the place photo when there is one (resized to the
-// ~1200px social-card width, as JPEG since share crawlers don't all take
-// webp), else the per-entry ogImage override, else the site flag.
 const sharePhoto = data.photo
   ? await getImage({ src: data.photo, width: 1200, format: 'jpeg' })
   : undefined
@@ -71,8 +62,6 @@ const schema = restaurantSchema({
   rating: data.rating,
 })
 
-// Breadcrumb: Food / <neighborhood> / <cuisine>. The neighborhood links to its
-// page when one exists; the cuisine links to the filtered food list.
 const trail = [
   { label: 'Food', href: '/food/' },
   ...(data.neighborhood ? [{ label: data.neighborhood, href: neighborhoodLink ?? undefined }] : []),
@@ -81,9 +70,6 @@ const trail = [
     : []),
 ]
 
-// Related places for the "more food" footer: others in the same neighborhood, and
-// others sharing this place's primary cuisine (best-rated first, capped to one
-// card-grid row, and de-duped so a place shows in at most one group).
 const allFood = published(await getCollection('food'))
 const topRelated = (places: typeof allFood) =>
   [...places]
@@ -110,21 +96,14 @@ const relatedCuisine = primaryCuisine
     )
   : []
 
-// "Mentioned in" should only surface links not already shown in the related-food
-// groups above, so a place doesn't appear twice on the same page.
 const relatedIds = new Set([...relatedNeighborhood, ...relatedCuisine].map((item) => item.place.id))
 const mentionedIn = backlinks.filter(
   (backlink) => !(backlink.collection === 'food' && relatedIds.has(backlink.id)),
 )
 
-// SEO: a richer <title> (name + cuisine + city) than the bare breadcrumb name,
-// plus a per-page meta description — the writeup excerpt when there is one (a fuller
-// sentence than the short tagline), else the authored tagline, else the site default.
 const seoTitle = primaryCuisine
   ? `${data.title} - ${cuisineLabel(primaryCuisine)} in St. Louis`
   : `${data.title} in St. Louis`
-// For a body-less stub, the authored tagline alone ("Coffee bar") is too thin a
-// search snippet, so it's padded out with the cuisine + neighborhood.
 const locality = data.neighborhood ? `${data.neighborhood}, St. Louis` : 'St. Louis'
 const stubDescription = [
   data.description,
@@ -172,11 +151,7 @@ const seoDescription = hasBody(entry)
           </span>
         </div>
         <ReadersVerdict slug={entry.id} title={data.title} />
-        {
-          /* Revealed by comments.ts once the comments backend answers; the value
-            reads "Leave a comment" until comments exist, then the live count. */
-        }
-        <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
+                <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
           <span class="pane-stat-label eyebrow eyebrow--muted">Comments</span>
           <span class="pane-stat-value continue-link">
             <span data-comments-cell-value>Leave a comment</span>

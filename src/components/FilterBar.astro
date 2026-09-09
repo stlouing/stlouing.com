@@ -2,14 +2,11 @@
 interface Facet {
   label: string
   facet: string
-  // Plain values, or { value, label } when the display text differs from the
-  // matched value (e.g. verdict: value "loved" shown as "Loved").
   options: (string | { value: string; label: string })[]
 }
 
 interface SortOption {
   label: string
-  // "field:direction", e.g. "title:asc" or "rating:desc"; matches data-sort-<field>.
   value: string
 }
 
@@ -19,8 +16,6 @@ interface Props {
   facets: Facet[]
   searchPlaceholder?: string
   sorts?: SortOption[]
-  // Render the search field. A page can turn this off and host its own
-  // [data-filter-search] input elsewhere (the food page's pane header does).
   search?: boolean
 }
 

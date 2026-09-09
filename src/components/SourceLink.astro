@@ -1,9 +1,4 @@
 ---
-// A labeled external link to an entry's source (a hike's AllTrails page, a
-// place's Instagram or website, etc.). The label is derived from the host —
-// "AllTrails", "Instagram", or the bare domain — unless one is passed. Renders
-// nothing without an href. `variant`: outline (detail-page buttons, default) or
-// muted (plain-text links inside the Food/Neighborhood lists).
 import Button from './Button.astro'
 import { hostLabel } from '../lib/links'
 
@@ -11,8 +6,6 @@ interface Props {
   href?: string
   label?: string
   variant?: 'outline' | 'dark' | 'quiet'
-  // Tighter vertical padding for inline rows. On by default; pass `compact={false}`
-  // (with a `class` like "btn-inline") to strip the vertical padding entirely.
   compact?: boolean
   class?: string
 }

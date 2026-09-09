@@ -7,17 +7,12 @@ import neighborhoods from '../data/neighborhoods.json'
 import Heading from '../components/Heading.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
 
-// A human-readable map of the whole site, pulled live from the content
-// collections so it never drifts. (This is the people-facing index; the
-// machine-readable /sitemap.xml is separate.)
 const byTitle = (left: { data: { title: string } }, right: { data: { title: string } }): number =>
   left.data.title.localeCompare(right.data.title)
 
 const food = published(await getCollection('food')).sort(byTitle)
 const topics = published(await getCollection('topics')).sort(byTitle)
 
-// Every real neighborhood (skip the `ignored` rows folded into a merged one),
-// alphabetical for findability — each has a page, written or data-only.
 const hoods = neighborhoods
   .filter((neighborhood) => !('ignored' in neighborhood))
   .sort((left, right) => left.name.localeCompare(right.name))
@@ -29,7 +24,6 @@ interface Entry {
 interface SitemapGroup {
   label: string
   path?: string
-  // The marquee interactive maps — given a featured treatment below.
   featured?: boolean
   items: Entry[]
 }
@@ -154,7 +148,6 @@ const groups: SitemapGroup[] = [
   a.sitemap-label:hover {
     color: var(--color-accent-blue);
   }
-
 
   .sitemap-list {
     margin: 0;

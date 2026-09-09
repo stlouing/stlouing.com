@@ -90,9 +90,6 @@ const description = 'Send a note, a correction, or a recommendation.'
 </style>
 
 <script>
-  // Progressive enhancement: without JS the form does a native POST (Formspree
-  // shows its own confirmation). With JS we POST in the background and swap in an
-  // inline "thanks" so the visitor never leaves the page.
   const form = document.querySelector<HTMLFormElement>('.feedback-form')
   const status = form?.querySelector<HTMLElement>('[data-form-status]')
 

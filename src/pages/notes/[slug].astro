@@ -20,8 +20,6 @@ const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
 const permalink = new URL(`/notes/${entry.id}/`, siteOrigin).href
-// Meta description: the authored one, else an excerpt of the note itself — so a
-// note without a `description` never falls back to the site-wide default.
 const seoDescription = data.description ?? excerpt(entry.body, META_DESCRIPTION_CHARS)
 const schema = articleSchema(
   {

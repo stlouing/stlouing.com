@@ -14,8 +14,6 @@ const pizza = topics.find((topic) => topic.id === 'st-louis-style-pizza')
 const regional = topics.find((topic) => topic.id === 'regional-foods')
 const field = topics.find((topic) => topic.id === 'field-notes')
 
-// Surface the most-written restaurants + neighborhoods, so a lost visitor lands on
-// pages with real content rather than stubs. "Most written" = longest writeup body.
 const byBodyLength = (left: { body?: string }, right: { body?: string }) =>
   (right.body?.length ?? 0) - (left.body?.length ?? 0)
 const restaurants = published(await getCollection('food'))

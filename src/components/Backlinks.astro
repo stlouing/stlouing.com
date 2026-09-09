@@ -10,8 +10,6 @@ interface Props {
 
 const { links } = Astro.props
 
-// A singular kicker label per collection, so each "Mentioned in" row reads like
-// the other related lists. Topics are the fallback for any unmapped collection.
 const labelByCollection: Record<string, string> = {
   food: 'Food',
   hikes: 'Hike',

@@ -1,11 +1,7 @@
 ---
-// The header bar of a map-split list pane (Food, Neighborhoods): the heavy
-// title + count on the left, page-specific actions (search, links) slotted on
-// the right. Styling lives in global.css (`.list-pane-header` …).
 interface Props {
   title: string
   count: number | string
-  // Wraps the count so filter.ts can update it live as filters apply.
   live?: boolean
 }
 

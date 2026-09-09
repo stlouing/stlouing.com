@@ -9,9 +9,6 @@ import { published } from '../../lib/content'
 import { cuisineLabel } from '../../lib/cuisine'
 import { href } from '../../lib/url'
 
-// The wishlist + tried lists are first-class food entries carrying a `status`
-// (each has its own /food/<slug> page + map pin); this page just reads them back
-// out by status. RIP stays a plain data file — a closed place needs no page.
 interface FoodNote {
   name: string
   cuisine?: string[]
@@ -19,7 +16,6 @@ interface FoodNote {
   note?: string
 }
 
-// The card shape shared by a food entry's data and a plain RIP note.
 type CardData = { cuisine?: string[]; neighborhood?: string }
 
 const allFood = published(await getCollection('food'))
@@ -31,8 +27,6 @@ const triedList = allFood.filter((place) => place.data.status === 'tried').sort(
 const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(right.name)
 const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
 
-// The kicker parts: the cuisine label and neighborhood, whichever are present —
-// joined by the hairline tick divider inside Card, not punctuation.
 const cardMeta = (item: CardData): string[] =>
   [
     item.cuisine && item.cuisine.length > 0 ? cuisineLabel(item.cuisine[0]) : null,

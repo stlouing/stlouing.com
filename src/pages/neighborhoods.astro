@@ -14,14 +14,9 @@ import {
   normalizeName,
 } from '../lib/neighborhoods'
 
-// The list shows every neighborhood; ones with a writeup are listed first (then
-// the rest, in their numbered order). Written rows render their writeup expanded;
-// the map highlights + scrolls to a given one (see area-map.ts).
 const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
 
-// List-row thumbnails for neighborhoods that carry a photo (480px wide covers
-// the ~33%-of-pane box on 2x displays).
 const thumbBySlug = new Map<string, string>()
 for (const [slug, entry] of entryBySlug) {
   if (entry.data.photo) {
@@ -29,16 +24,10 @@ for (const [slug, entry] of entryBySlug) {
     thumbBySlug.set(slug, thumb.src)
   }
 }
-// Food spots per neighborhood (keyed by normalized name), for the map hover card.
 const foodByHood = await foodByNeighborhood()
 
-// "Written" means a real writeup body — not just that a markdown file exists. A
-// frontmatter-only entry (e.g. the Delmar Loop, which carries only its links)
-// renders no writeup, so it stays in "The rest" until prose is added.
 const isWritten = (slug: string) => hasBody(entryBySlug.get(slug) ?? {})
 
-// Neighborhoods with a writeup come first (stable sort keeps the numbered order
-// within each group).
 const listed = neighborhoods
   .filter((neighborhood) => !('ignored' in neighborhood))
   .sort((left, right) => Number(isWritten(right.slug)) - Number(isWritten(left.slug)))
@@ -46,10 +35,6 @@ const count = listed.length
 const writtenCount = listed.filter((neighborhood) => isWritten(neighborhood.slug)).length
 const restCount = listed.length - writtenCount
 
-// Per-neighborhood facts the map popup needs (area + resource links), stashed as
-// data attributes on each row so the client map can read them without re-deriving.
-// Default preview line for a neighborhood without a writeup, so an un-explored row
-// (and its map popup) reads as intentional rather than unfinished.
 const NOT_EXPLORED_EXCERPT = "I haven't explored this neighborhood yet."
 
 function popupData(slug: string, name: string, group: string) {
@@ -59,19 +44,13 @@ function popupData(slug: string, name: string, group: string) {
 
   return {
     area: group,
-    // Quick facts for the map hover card: residents + how many food spots I've
-    // mapped here (0 when none yet).
     population: neighborhoodPopulation(slug),
     spots: foodByHood.get(normalizeName(name))?.length ?? 0,
     official: hrefFor('Website'),
     wikipedia: hrefFor('Wikipedia'),
     city: hrefFor('St. Louis City'),
     mytownview: hrefFor('MyTownView'),
-    // The accent tagline (the manual description), shown in the popup + list row
-    // when one is set.
     tagline: entry?.data.description,
-    // Popup teaser: the writeup excerpt when there is one; otherwise a default
-    // "not explored yet" line so the card never reads as empty/unfinished.
     excerpt:
       entry?.body !== undefined && entry.body.length > 0
         ? excerpt(entry.body, PREVIEW_EXCERPT_CHARS)
@@ -79,8 +58,6 @@ function popupData(slug: string, name: string, group: string) {
   }
 }
 
-// The map "section" for an area — drives the colored dot on its list chip, using
-// the same precedence as the map's colorForArea (park → county → city region).
 function sectionOf(area: { group?: string; type?: string }): string {
   if (area.type === 'park') {
     return 'park'
@@ -124,13 +101,8 @@ function sectionOf(area: { group?: string; type?: string }): string {
                 : neighborhood.number
               const popup = popupData(neighborhood.slug, neighborhood.name, neighborhood.group)
               const section = sectionOf(neighborhood)
-              // The group's own region/county dot color (ignoring type), so a park
-              // popup can show its region chip alongside the green "Park" chip.
               const regionKey = sectionOf({ group: neighborhood.group })
               const entry = entryBySlug.get(neighborhood.slug)
-              // The list row shows at most 3 resource links: drop the City of St.
-              // Louis page (it stays on the detail page) so the row keeps Wikipedia,
-              // MyTownView, and the optional Website.
               const resourceLinks = written
                 ? neighborhoodResourceLinks(
                     neighborhood.slug,
@@ -142,8 +114,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
                     .slice(0, 3)
                 : []
 
-              // A section header sits above the first row of each group — the
-              // ones with a writeup, then the rest.
               const previous = listed[index - 1]
               const showHeader = index === 0 || written !== isWritten(previous.slug)
 

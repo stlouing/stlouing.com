@@ -11,8 +11,6 @@ export async function getStaticPaths() {
   const tags = await allTags()
   const items = await collectTagged()
 
-  // The route param is the hyphenated slug; the raw tag rides along as a prop
-  // for display and matching.
   return tags.map(({ tag }) => ({
     params: { tag: tagSlug(tag) },
     props: { tag, items: items.filter((item) => item.tags.includes(tag)) },
@@ -21,9 +19,6 @@ export async function getStaticPaths() {
 
 const { tag, items } = Astro.props
 
-// Group the matches by collection so a tag page reads as sections (Food,
-// Neighborhoods, …) rather than one undifferentiated list. `collection` values
-// come from collectTagged in mixed case, so map them to display names + an order.
 const COLLECTION_LABEL: Record<string, string> = {
   food: 'Food',
   Neighborhoods: 'Neighborhoods',

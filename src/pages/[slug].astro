@@ -11,9 +11,6 @@ import { getBacklinks } from '../lib/backlinks'
 import { articleSchema } from '../lib/schema'
 import { href } from '../lib/url'
 
-// Evergreen "Topics" entries live at flat top-level URLs. Their
-// slugs never collide with the standalone .md pages (about, changelog), which are
-// static routes and take precedence.
 export async function getStaticPaths() {
   const topics = published(await getCollection('topics'))
 
@@ -25,8 +22,6 @@ const { data } = entry
 const { Content } = await render(entry)
 const backlinks = await getBacklinks(entry.id)
 
-// Topics opt into the map figures by carrying their placeholders in their
-// markdown; only those pages load MapLibre.
 const hasBoundaryMap = (entry.body ?? '').includes('data-boundary-map')
 const hasCorridorMap = (entry.body ?? '').includes('data-corridor-map')
 

@@ -1,8 +1,4 @@
 ---
-// A place's rating as four fleur-de-lis, filled from its verdict: not-for-me = 1,
-// neutral = 2, liked = 3, loved = 4 (of 4). Filled fleur are gold; the rest faded.
-// With no verdict (not yet rated) all four render empty. Used inline in the Food
-// list rows (see food/index.astro) and the review bar's "My Rating".
 import FleurGlyph from '../assets/FleurGlyph.astro'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 
@@ -12,7 +8,6 @@ interface Props {
 
 const { verdict } = Astro.props
 
-// Filled count per verdict, out of the four levels.
 const filledByVerdict: Record<Verdict, number> = {
   'not-for-me': 1,
   neutral: 2,

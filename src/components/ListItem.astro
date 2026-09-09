@@ -1,18 +1,9 @@
 ---
-// One row of the shared `.list`. The entire row is a single link (when `href` is
-// given), so the whole thing is clickable with a hover highlight — like the
-// Card rows, rather than only the title being a link. The title and an
-// optional trailing meta share a space-between row; pass `meta` for a plain string
-// (count/date) or use the `meta` slot for semantic markup (e.g. <time>). The
-// description and any extra content (chips, collection labels) stack below via the
-// default slot. Pass an `icon` slot for a leading accent icon.
 interface Props {
   title: string
   href?: string
   meta?: string
   description?: string
-  // Fill the gap between the title and the meta with dot leaders (index-style
-  // "Title .......... 42" rows).
   leader?: boolean
 }
 

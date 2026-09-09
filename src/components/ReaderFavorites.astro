@@ -1,9 +1,4 @@
 ---
-// The reader-voted favorites panel — places ranked by readers' 👍 votes, live
-// from Supabase get_reader_ratings(). Shown in the /best aside ("Reader
-// Favorites") and the shared page sidebar ("Most popular"). The panel bakes a
-// slug → title map so the client script can name the winners, and stays hidden
-// until the RPC answers; without Supabase creds it renders nothing at all.
 import { getCollection } from 'astro:content'
 import { published } from '../lib/content'
 import { SUPABASE_ENABLED } from '../lib/site'
@@ -11,11 +6,8 @@ import FleurGlyph from '../assets/FleurGlyph.astro'
 
 interface Props {
   title?: string
-  // Optional italic line under the title (the sidebar's "reader votes" note).
   subtitle?: string
   maxRows?: number
-  // Quiet variant for the page sidebar: eyebrow title, no fleurs, no thumbs —
-  // /best keeps the full serif-and-fleurs panel.
   quiet?: boolean
 }
 

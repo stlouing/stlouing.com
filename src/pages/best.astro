@@ -13,8 +13,6 @@ interface Award {
   slug: string
 }
 
-// Hand-authored awards (src/data/superlatives.json) resolved against the food
-// collection, kept in the file's editorial order. Unresolvable slugs drop out.
 const food = published(await getCollection('food'))
 const foodBySlug = new Map(food.map((place) => [place.id, place]))
 const resolvedAwards = (superlatives as Award[]).flatMap((award) => {
@@ -23,16 +21,11 @@ const resolvedAwards = (superlatives as Award[]).flatMap((award) => {
   return place ? [{ ...award, place, teaser: excerpt(place.body ?? '', PREVIEW_EXCERPT_CHARS) }] : []
 })
 
-// Photo cards group together at the top so grid rows stay even; the JSON's
-// editorial order is kept within each group.
 const awards = [
   ...resolvedAwards.filter((award) => award.place.data.photo),
   ...resolvedAwards.filter((award) => !award.place.data.photo),
 ]
 
-// The Reader Favorites aside is live data (Supabase get_reader_ratings) —
-// ReaderFavorites renders nothing without creds, and the aside is gated too so
-// a credless build doesn't leave an empty right column.
 const readersEnabled = SUPABASE_ENABLED
 
 const description = "The best of the St. Louis food I've tried, by category."

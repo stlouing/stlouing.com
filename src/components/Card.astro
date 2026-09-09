@@ -1,14 +1,4 @@
 ---
-// The site's ONE preview card: optional photo or leading icon, eyebrow meta,
-// serif title, muted description, excerpt, tag chips, trailing verdict — used
-// by the related lists, the homepage food cards and topics rail, /best,
-// /topics, events, 404, and the backlog. Extra trailing content (a
-// continue-link) goes in the default slot at the end of the body.
-//
-// This component is pure markup: every rule lives in the CARD section of
-// global.css, because the map popups and wikilink hover cards are built at
-// runtime and share the same classes. Layout contexts (.card-rows,
-// .card-cells, .photo-cards, page grids) restyle the same anatomy.
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
 import Rating from './Rating.astro'
@@ -16,23 +6,15 @@ import TagIcon from './TagIcon.astro'
 import type { Verdict } from '../lib/verdict'
 
 interface Props {
-  // When given, the whole card is a link; otherwise it renders as a plain row.
   href?: string
   title: string
-  // The kicker above the title — a string, or parts joined by hairline ticks.
   meta?: string | string[]
-  // One-line muted description beneath the title.
   description?: string
-  // Writeup teaser in the shared excerpt voice.
   excerpt?: string
-  // Photo banner (astro:assets image from the entry frontmatter).
   photo?: ImageMetadata
   photoAlt?: string
-  // Trailing fleur rating; unrated cards simply show nothing.
   verdict?: Verdict
-  // Vibe tags as small chips (plain spans — the card itself may be a link).
   tags?: string[]
-  // Open the link in a new tab.
   external?: boolean
   class?: string
 }

@@ -1,15 +1,9 @@
 ---
-// The article masthead: left-aligned heavy sans headline over the page ground,
-// an optional lede, and the shared ActionBar (Share · Follow · Newsletter ·
-// Comments — no Feedback). Used by topic pages via Entry's `masthead` prop.
-// (The flag-blue field and river wave were retired 2026-09-07.)
 import ActionBar from './ActionBar.astro'
 
 interface Props {
   title: string
-  // Extra class for the h1 (topic pages pass p-name for the h-entry).
   headingClass?: string
-  // Small uppercase kicker above the title (topic pages pass their category).
   eyebrow?: string
   commentsAnchor?: boolean
 }

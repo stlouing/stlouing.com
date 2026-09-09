@@ -1,11 +1,4 @@
 ---
-// Light/dark switch. The theme attribute on <html> is set pre-paint by the
-// inline script in BaseLayout (so there's no flash); this button flips it and
-// persists the choice. The icon shows the CURRENT mode (sun in light mode,
-// moon in dark). Two flavors: 'dark' (default) is the solid ink block used in
-// the compact header; 'quiet' is a borderless text-voice control that blends
-// into the homepage masthead ear. SVGs are inlined so the scoped show/hide
-// styles below apply (Astro scoping doesn't reach into child component output).
 import Button from './Button.astro'
 
 interface Props {

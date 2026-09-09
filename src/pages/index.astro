@@ -31,18 +31,11 @@ const intro = `Welcome to St. Louing, my ongoing project to document living in S
 
 const allTopics = sortTopics(published(await getCollection('topics')))
 
-// The lead story: the most recently updated topic, skipping the pinned Field
-// Notes entry (a living index, not an article). The teaser is derived from the
-// topic's own prose, the same way /topics builds its excerpts.
 const leadTopic = allTopics.find((topic) => topic.id !== PINNED_TOPIC_ID)
 const leadTeaser = leadTopic ? excerpt(leadTopic.body, 420) : ''
 
-// The Topics rail skips the lead story — it's already the featured article.
 const railTopics = allTopics.filter((topic) => topic.id !== leadTopic?.id)
 
-// Progress report tallies for the intro sentence: restaurants actually
-// visited (written-up or tried, not the want-to-try backlog); neighborhoods
-// wandered mirrors the "explored" count.
 const allFood = published(await getCollection('food'))
 const allNeighborhoods = published(await getCollection('neighborhoods'))
 const visitedCount = allFood.filter((place) => isExplored(place.data.status)).length
@@ -51,16 +44,12 @@ const wanderedCount = allNeighborhoods.length
 const exploreGroup = groups.find((group) => group.id === 'explore')
 const exploreSections = sections.filter((section) => section.group === 'explore')
 
-// Dot-leader counts on the map rows: every listed place, and every listed
-// neighborhood — the same tallies the two pane headers show.
 const exploreCounts: Record<string, number> = {
   '/food/': allFood.length,
   '/neighborhoods/': neighborhoodsData.filter((neighborhood) => !('ignored' in neighborhood))
     .length,
 }
 
-// The food cards: a hand-picked four, shown in this order. Each id is a file
-// in src/content/food/ — edit the list to change the front page.
 const FEATURED_FOOD_IDS = [
   'pizzeria-da-gloria',
   'kishimoto-mendo',
@@ -71,10 +60,6 @@ const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
   allFood.filter((place) => place.id === foodId),
 ).map((place) => ({ place, teaser: excerpt(place.body, PREVIEW_EXCERPT_CHARS) }))
 
-// The left rail: the article index (all published topics, straight from the
-// collection so it grows as pieces publish), then a compact "More" section —
-// the list pages plus the non-primary site pages (About and Feedback already
-// live in the nav).
 const moreSections = [
   ...sections.filter((section) => section.group === 'lists'),
   ...sections.filter((section) => section.group === 'site' && !section.primary),

@@ -1,9 +1,4 @@
 ---
-// The article action bar (Share · Follow · Newsletter · Comments) in the same
-// stats-bar chrome as the food/neighborhood header bars: hairlines above and
-// below, dotted rules between sections (both from the shared .pane-stats
-// pattern). The Comments action ships hidden and is revealed by comments.ts
-// with the live count once the page's comments section answers.
 import ShareButton from './ShareButton.astro'
 import { NEWSLETTER_URL, SOCIALS } from '../lib/site'
 import IconInstagram from '../assets/IconInstagram.astro'
@@ -11,9 +6,7 @@ import IconMail from '../assets/IconMail.astro'
 import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
 
 interface Props {
-  // The page title, for the native share sheet.
   title: string
-  // Render the Comments action (pages that mount a comments section pass it).
   commentsAnchor?: boolean
 }
 

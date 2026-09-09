@@ -1,8 +1,4 @@
 ---
-// The What's New window: the latest changelog entries in a panel — serif title,
-// gold fleur trio, red date eyebrows — with a link to the full log. Shown in the
-// homepage right rail and the shared page sidebar. The Markdown body is rendered
-// (same as /updates) so links + emphasis in a change show here too.
 import { render } from 'astro:content'
 import { getChangelog } from '../lib/changelog'
 import { formatDate } from '../lib/dates'
@@ -10,8 +6,6 @@ import { href } from '../lib/url'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
-// The most recent updates, so a returning visitor can see the site is alive at
-// a glance. The full log lives at /updates.
 const latestUpdates = await Promise.all(
   (await getChangelog()).slice(0, 2).map(async (entry) => {
     const { Content } = await render(entry)

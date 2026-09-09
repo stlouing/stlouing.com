@@ -1,15 +1,7 @@
 ---
-// The neighborhood page's map pane: the right half of the split-screen layout,
-// an interactive basemap with the neighborhood's boundary (dashed, in its
-// region color) and a clickable pin per mapped food spot (hover shows the name,
-// click opens a popup). src/scripts/map-pane.ts mounts the MapLibre
-// map; the spot list is baked in as JSON so the script needs no fetch. County
-// areas without a boundary polygon center on their coords instead. On phones
-// the pane stacks on top of the content at a fixed height (no view switcher).
 interface HeroSpot {
   title: string
   url: string
-  // [lng, lat] — flipped from the food frontmatter's [lat, lng] by the page.
   coords: [number, number]
   cuisine?: string
   verdict?: { key: string; label: string }
@@ -18,9 +10,7 @@ interface HeroSpot {
 
 interface Props {
   slug: string
-  // The region's map-color token (e.g. --color-map-south) for the boundary.
   boundaryToken: string
-  // Fallback center [lat, lng] for areas without a boundary polygon.
   coords?: [number, number]
   spots: HeroSpot[]
 }

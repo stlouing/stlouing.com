@@ -1,14 +1,4 @@
 ---
-// The shared shell for a filterable list/map directory page (Food, Hikes): the
-// `[data-filter-root]` container, the sticky filter toolbar (filters/sort), the
-// results region with the map and empty state, and the progressive-enhancement
-// script. The list itself is passed as the default slot.
-//
-// Two view modes:
-// - default ("toggle"): a top List/Map ViewToggle, one pane at a time (Hikes).
-// - `floating`: no top toggle; desktop always shows both panes, mobile opens on
-//   the list and flips to the map via a floating bottom button (Food, matching
-//   the Neighborhoods page).
 import FilterBar from './FilterBar.astro'
 import ViewToggle from './ViewToggle.astro'
 import ClearFilters from './ClearFilters.astro'
@@ -35,11 +25,7 @@ interface Props {
   emptyText: string
   class?: string
   floating?: boolean
-  // Opt into marker clustering on the map (Food only) — emits data-map-cluster,
-  // which map.ts reads to gate its clustering codepath.
   cluster?: boolean
-  // Forwarded to FilterBar: render its search field (off when the page hosts
-  // its own [data-filter-search] input, e.g. the food pane header).
   search?: boolean
 }
 

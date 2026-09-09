@@ -8,7 +8,6 @@ import { tagGroups, tagSlug } from '../../lib/tags'
 
 const { cuisines, vibes, topics } = await tagGroups()
 
-// `kind` picks whether a leading vibe icon shows and how the label is cased.
 const groups = [
   { label: 'Cuisines', kind: 'cuisine', tags: cuisines },
   { label: 'Neighborhood vibes', kind: 'vibe', tags: vibes },

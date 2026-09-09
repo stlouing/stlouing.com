@@ -1,10 +1,4 @@
 ---
-// Public per-page comments (shown only when Supabase is configured), backed by
-// the RLS-locked `comments` table. Pages are keyed by (kind, slug) because
-// topic ids, food ids, and neighborhood slugs can collide. The whole section
-// ships `hidden` — src/scripts/comments.ts reveals it after the first
-// successful read, so a deploy that outruns the SQL setup (or an offline
-// visit) shows nothing rather than an error on every page.
 import Heading from './Heading.astro'
 import { SUPABASE_ENABLED } from '../lib/site'
 
@@ -42,8 +36,7 @@ const { kind, slug, title } = Astro.props
             <span>Comment</span>
             <textarea data-message rows="4" maxlength="2000" required />
           </label>
-          {/* Honeypot - hidden from people, tempting to bots. Filled === silently dropped. */}
-          <div class="hp" aria-hidden="true">
+                    <div class="hp" aria-hidden="true">
             <label>
               Leave this field empty
               <input type="text" data-hp tabindex="-1" autocomplete="off" />

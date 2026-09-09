@@ -48,10 +48,6 @@ const resourceIcons: Record<string, typeof IconExternalLink> = {
   'St. Louis City': IconLandmark,
 }
 
-// A page for EVERY real neighborhood, not just the ones with a writeup. Where a
-// markdown file exists its prose is rendered; otherwise the page still stands on
-// the computed data layer (region, borders, food, events, map), so no
-// neighborhood is a dead end.
 export async function getStaticPaths() {
   const entries = published(await getCollection('neighborhoods'))
   const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
@@ -69,28 +65,19 @@ const { entry } = Astro.props
 const info = neighborhoodInfo(slug)
 const title = info?.name ?? slug
 
-// Prose layer: present only when a markdown file with a real body backs this
-// neighborhood. Otherwise the page shows an explicit "not yet explored" stub.
 const rendered = entry ? await render(entry) : null
 const Content = rendered?.Content
 
-// Social-share image: the neighborhood photo when one is set (resized to the
-// ~1200px social-card width, as JPEG since share crawlers don't all take
-// webp); data-only pages fall back to the site flag.
 const sharePhoto = entry?.data.photo
   ? await getImage({ src: entry.data.photo, width: 1200, format: 'jpeg' })
   : undefined
 const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
-// The neighborhood's tags double as the "Tags" chips in the pane's aside
-// sections rather than a header tag row.
 const tags = entry?.data.tags ?? []
 
 const attractions = entry?.data.attractions ?? []
 
 const population = neighborhoodPopulation(slug)
-// Nearby neighborhoods: a manual `neighbors` list (frontmatter) for entries the
-// geo adjacency graph doesn't cover (county municipalities), else the computed set.
 const neighbors =
   entry?.data.neighbors && entry.data.neighbors.length > 0
     ? entry.data.neighbors.flatMap((neighborSlug) => {
@@ -100,9 +87,6 @@ const neighbors =
     : neighborsOf(slug)
 const festivals = festivalsIn(slug)
 
-// Walkable strips through this neighborhood, each linking to its Walkable
-// St. Louis section — shown only once the article itself is published (drafts
-// count in dev).
 const walkableStLouisLive = published(await getCollection('topics')).some(
   (topic) => topic.id === 'walkable-st-louis',
 )
@@ -111,8 +95,6 @@ const corridors = walkableStLouisLive ? corridorsIn(slug) : []
 const placesByNeighborhood = await foodByNeighborhood()
 const places = placesByNeighborhood.get(normalizeName(title)) ?? []
 
-// Which neighborhoods have a writeup, keyed by slug, so the Nearby
-// Neighborhoods rail can lead with explored ones.
 const writtenBySlug = new Map(
   published(await getCollection('neighborhoods')).map((neighborhoodEntry) => [
     neighborhoodEntry.id,
@@ -120,34 +102,19 @@ const writtenBySlug = new Map(
   ]),
 )
 
-// Show up to 5 nearby neighborhoods, explored ones first — not-yet-visited ones
-// only fill in when there aren't 5 explored neighbors to show.
 const exploredNeighbors = neighbors.filter((neighbor) => writtenBySlug.get(neighbor.slug))
 const notYetVisitedNeighbors = neighbors.filter((neighbor) => !writtenBySlug.get(neighbor.slug))
 const nearbyNeighbors = [...exploredNeighbors, ...notYetVisitedNeighbors].slice(0, 5)
 
-// External resources: the place's own site (if any), Wikipedia, and the
-// auto-generated City of St. Louis + MyTownView profiles — rendered as a button bar.
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
 const generated = neighborhoodGeneratedSummary(slug)
 
-// On-page summary under the title: the manual `description` tagline when set,
-// otherwise the generated line. Deliberately NOT the writeup excerpt — that just
-// repeats the opening paragraph rendered right below it.
 const tagline = entry?.data.description
 const summary = tagline ?? generated
 
-// The "Last walked" stat + byline timestamp: the last revision when set,
-// otherwise the created date. Only written neighborhoods carry dates.
 const lastUpdated = entry ? (entry.data.updated ?? entry.data.created) : undefined
 
-// SEO meta description: the writeup excerpt when there is one (a fuller sentence
-// than the short tagline); otherwise the generated line enriched with borders and
-// the reviewed-food count, prefixed by the authored tagline when one exists — so
-// data-only pages don't all share a near-identical short snippet. The generated
-// line gets whatever character budget the tagline leaves (the ". " join costs 2),
-// keeping the whole description inside the meta-description cap.
 const generatedBudget = META_DESCRIPTION_CHARS - (tagline ? tagline.length + 2 : 0)
 const metaDescription = hasWriteup
   ? excerpt(entry?.body, META_DESCRIPTION_CHARS)
@@ -155,11 +122,6 @@ const metaDescription = hasWriteup
       .filter(Boolean)
       .join('. ')
 
-// SEO title: "<name> - <kind> in St. Louis", so "St. Louis" is in the title for
-// search. Parks read "Park in St. Louis"; county municipalities (type 'city') and
-// other typed areas read "<name>, Missouri - <Type> in <region>" (e.g.
-// "Kirkwood, Missouri - City in St. Louis County") since county place names
-// aren't self-locating the way city neighborhoods are.
 let seoTitle: string | undefined
 if (info) {
   if (info.type === 'park') {
@@ -172,16 +134,12 @@ if (info) {
   }
 }
 
-// Breadcrumb stops at the region (the neighborhood name is already the page H1).
 const region = info ? regionOf(info) : undefined
 const trail = [
   { label: 'Neighborhoods', href: '/neighborhoods/' },
   ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}/` }] : []),
 ]
 
-// The map pane's food pins: every mapped spot in this neighborhood, coords
-// flipped to MapLibre's [lng, lat] order (food frontmatter stores [lat, lng]);
-// cuisine/verdict/tagline feed the click popup.
 const heroSpots = places.flatMap((place) => {
   const [lat, lng] = place.data.coords ?? []
   if (lat === undefined || lng === undefined) {
@@ -201,8 +159,6 @@ const heroSpots = places.flatMap((place) => {
   ]
 })
 
-// Boundary color for the map pane: the same region tokens the neighborhoods
-// index map paints its polygons with.
 const boundaryTokenByRegion: Record<string, string> = {
   'north-city': '--color-map-north',
   'central-corridor': '--color-map-central',
@@ -245,10 +201,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                       <span class="pane-stat-value">{places.length}</span>
                     </div>
                   )}
-                  {/* Revealed by comments.ts once the comments backend answers;
-                    the value reads "Leave a comment" until comments exist,
-                    then the live count. */}
-                  <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
+                                    <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
                     <span class="pane-stat-label eyebrow eyebrow--muted">Comments</span>
                     <span class="pane-stat-value continue-link">
                       <span data-comments-cell-value>Leave a comment</span>
@@ -356,8 +309,6 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
                   <AsideHeading title="Nearby Neighborhoods" />
                   <div class="detail-links">
                     {nearbyNeighbors.map((neighbor) => {
-                      // The pixel arrow points east at rest, so a compass bearing
-                      // (clockwise from north) becomes its CSS rotation by -90°.
                       const bearing = neighborBearing(slug, neighbor.slug)
                       const rotation = bearing === undefined ? undefined : (bearing + 270) % 360
 

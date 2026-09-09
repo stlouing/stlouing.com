@@ -1,8 +1,4 @@
 ---
-// Landing page for a neighborhood region (South City, Parks, …): a list of every
-// neighborhood in the region, linking to each detail page. Rendered by the thin
-// static routes under src/pages/neighborhoods/ (e.g. south-city.astro), which sit
-// above the dynamic [slug].astro and so don't collide with it.
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Breadcrumbs from './Breadcrumbs.astro'
@@ -22,8 +18,6 @@ if (!region) {
   throw new Error(`RegionPage: unknown region "${regionSlug}"`)
 }
 
-// Each neighborhood's tagline + vibe tags (and whether it has a writeup), keyed by
-// slug — the same data the "Nearby Neighborhoods" cards use.
 const metaBySlug = new Map(
   published(await getCollection('neighborhoods')).map((entry) => [
     entry.id,
@@ -35,9 +29,6 @@ const metaBySlug = new Map(
   ]),
 )
 
-// Neighborhoods with authored content first (an md file counts even when it's
-// frontmatter-only — description/tags/attractions are content, e.g. Forest
-// Park), alphabetical within each group.
 const members = neighborhoodsInRegion(regionSlug)
 const sorted = [...members].sort((left, right) => {
   const contentDelta = Number(metaBySlug.has(right.slug)) - Number(metaBySlug.has(left.slug))
@@ -49,11 +40,8 @@ const sorted = [...members].sort((left, right) => {
 })
 
 const count = members.length
-// "Central Corridor of St. Louis", but don't double up on a region that already
-// names the city (e.g. "St. Louis County").
 const seoTitle = region.label.includes('St. Louis') ? region.label : `${region.label} of St. Louis`
 const metaDescription = `Every neighborhood in ${region.label}, St. Louis — ${count} in all.`
-// Breadcrumb stops at the index — the region name is already the page H1 + tab.
 const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 ---
 

@@ -1,8 +1,4 @@
 ---
-// Central keyword -> icon registry. Content pages (e.g. topics) declare an
-// `icon:` keyword in their frontmatter and this resolves it to the matching
-// Lucide asset, so the whole icon vocabulary lives in one place instead of a
-// brittle per-id lookup. An unknown or missing keyword falls back to the book.
 import IconBook from '../assets/IconBook.astro'
 import IconNotebookPen from '../assets/IconNotebookPen.astro'
 import IconPizza from '../assets/IconPizza.astro'
@@ -28,12 +24,9 @@ import IconMessageCircleHeart from '../assets/IconMessageCircleHeart.astro'
 import IconFolderTree from '../assets/IconFolderTree.astro'
 
 interface Props {
-  // A keyword from the registry below. Unknown / undefined -> book.
   name?: string
 }
 
-// The icon vocabulary. Add a keyword here (and import its asset above) to make
-// it available to any `icon:` frontmatter field.
 const iconByKeyword: Record<string, typeof IconBook> = {
   book: IconBook,
   notebook: IconNotebookPen,

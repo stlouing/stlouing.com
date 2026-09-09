@@ -1,13 +1,4 @@
 ---
-// The one button/link primitive. Renders an <a> when `href` is set, otherwise a
-// <button>. Put the label (and any icon) in the default slot — the icon follows
-// the button's text color via the global `.btn .icon` rule.
-//
-// variant:
-//   outline (default) — bordered surface button (source links, CTAs)
-//   dark              — solid ink block
-//   quiet             — borderless text-voice control
-// compact: tighter vertical padding for inline rows.
 interface Props {
   href?: string
   variant?: 'outline' | 'quiet' | 'dark'

@@ -5,9 +5,6 @@ import { SUPABASE_ENABLED } from '../lib/site'
 
 const description = 'Sign your name and leave a note.'
 
-// Same gate as ReadersVerdict: the book only works when the site is built with
-// Supabase creds. Without them the page points at Feedback instead of rendering
-// a form that goes nowhere.
 const guestbookEnabled = SUPABASE_ENABLED
 ---
 
@@ -39,8 +36,7 @@ const guestbookEnabled = SUPABASE_ENABLED
                   required
                 />
               </label>
-              {/* Honeypot - hidden from people, tempting to bots. Filled === silently dropped. */}
-              <div class="hp" aria-hidden="true">
+                            <div class="hp" aria-hidden="true">
                 <label>
                   Leave this field empty
                   <input type="text" data-sign-hp tabindex="-1" autocomplete="off" />
