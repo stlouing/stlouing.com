@@ -3,7 +3,7 @@
  *
  * Single source of truth shared by the wikilink resolver (astro.config.mjs),
  * the backlinks index (lib/backlinks.ts), and the tag index (lib/tags.ts) so a
- * given entry always links to the same place. Every food / hike / neighborhood /
+ * given entry always links to the same place. Every food / neighborhood /
  * note entry has its own detail page at `/<collection>/<id>`; topics are
  * flattened to the site root (`/<id>`). Pass the result through href() / BASE
  * before use in markup.

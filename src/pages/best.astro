@@ -1,4 +1,6 @@
 ---
+import Subheading from '../components/Subheading.astro'
+import PageMasthead from '../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Card from '../components/Card.astro'
@@ -33,13 +35,9 @@ const description = "The best of the St. Louis food I've tried, by category."
 
 <BaseLayout article crumb="Best of" title="The Best Food in St. Louis" description={description}>
   <article class="page">
-    <header class="entry-header">
-      <div class="entry-bar">
-        <h1>The Best Food in St. Louis</h1>
-      </div>
-      <p class="description description--lg">My subjective favorites and readers top-voted spots</p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="The Best Food in St. Louis" wide>
+      <p slot="lede">My subjective favorites and readers top-voted spots</p>
+    </PageMasthead>
 
     <div class="detail-layout">
       <div class="detail-main">
@@ -47,7 +45,7 @@ const description = "The best of the St. Louis food I've tried, by category."
           {
             awards.map(({ label, place, teaser }) => (
               <div class="best-cell">
-                <h3 class="best-type eyebrow">{label}</h3>
+                <Subheading level={3} title={label.charAt(0).toUpperCase() + label.slice(1)} />
                 <Card
                   class="is-horizontal"
                   href={href(`/food/${place.id}/`)}
@@ -74,40 +72,26 @@ const description = "The best of the St. Louis food I've tried, by category."
 </BaseLayout>
 
 <style>
-  .best-mine {
-    margin: 0 0 var(--spacing-lg);
-  }
 
   .photo-cards {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
-    row-gap: var(--spacing-xl);
+    row-gap: var(--spacing-lg);
   }
 
   .best-cell {
     display: flex;
     flex-direction: column;
     min-width: 0;
-  }
-
-  .best-type {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin: 0 0 var(--spacing-sm);
-    line-height: 1;
-    color: var(--color-accent);
-  }
-
-  .best-type::before,
-  .best-type::after {
-    content: '';
-    flex: 1;
+    padding-block-end: var(--spacing-md);
     border-block-end: 1px solid var(--color-line);
   }
 
-  .best-cell :global(.photo-card) {
+  .best-cell:last-child {
+    border-block-end: 0;
+  }
+
+  .best-cell :global(.card) {
     flex: 1;
-    padding-block: var(--spacing-md);
   }
 </style>

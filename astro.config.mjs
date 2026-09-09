@@ -57,7 +57,7 @@ function buildTocGroups() {
 function buildWikiMap() {
   const map = new Map()
 
-  for (const collection of ['food', 'hikes', 'neighborhoods', 'notes', 'topics']) {
+  for (const collection of ['food', 'neighborhoods', 'notes', 'topics']) {
     const dir = path.join(contentRoot, collection)
     if (!fs.existsSync(dir)) {
       continue
@@ -142,7 +142,7 @@ function hasPublishedEntries(collection) {
     )
 }
 
-const unpublishedSections = ['hikes', 'notes'].filter(
+const unpublishedSections = ['notes'].filter(
   (collection) => !hasPublishedEntries(collection),
 )
 

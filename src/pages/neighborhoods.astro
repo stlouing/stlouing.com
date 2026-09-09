@@ -152,9 +152,15 @@ function sectionOf(area: { group?: string; type?: string }): string {
                         {section === 'park' ? 'Park' : neighborhood.group}
                       </span>
                     )}
+                    {popup.tagline && (
+                      <span class="description" slot="sub">
+                        {popup.tagline}
+                      </span>
+                    )}
                     {thumbBySlug.has(neighborhood.slug) && (
                       <div
                         class="list-photo"
+                        slot="photo"
                         style={`background-image: url(${thumbBySlug.get(neighborhood.slug)})`}
                         aria-hidden="true"
                       />

@@ -40,7 +40,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
 
   const scope: Element | Document = el.closest('[data-filter-root]') ?? document
 
-  // Marker clustering is opt-in per page (Food sets data-map-cluster; Hikes doesn't),
+  // Marker clustering is opt-in per page (via data-map-cluster),
   // so every clustering codepath below is gated on this flag.
   const clusterEnabled = el.dataset.mapCluster !== undefined
 
@@ -544,8 +544,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
   map.on('click', () => deselect())
 
   // Re-cluster after any camera change (pan, zoom, or programmatic fit/ease). One
-  // listener covers them all. Only registered when clustering is on, so the Hikes
-  // path adds nothing new.
+  // listener covers them all. Only registered when clustering is on.
   if (clusterEnabled) {
     map.on('moveend', renderClusters)
   }

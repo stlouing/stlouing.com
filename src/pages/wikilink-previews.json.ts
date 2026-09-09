@@ -78,7 +78,6 @@ export const GET: APIRoute = async () => {
       description: topic.data?.description,
     }
   }
-  add(await getCollection('hikes'))
   add(await getCollection('notes'))
   // Neighborhoods carry their tagline (e.g. The Grove → "St. Louis's LGBTQ
   // nightlife strip") so the card leads with it, like topics do.

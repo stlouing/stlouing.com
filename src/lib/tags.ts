@@ -35,15 +35,6 @@ export async function collectTagged(): Promise<TaggedItem[]> {
     })
   }
 
-  for (const entry of published(await getCollection('hikes'))) {
-    items.push({
-      title: entry.data.title,
-      tags: entry.data.tags,
-      collection: 'Hikes',
-      url: entryUrl('hikes', entry.id),
-      description: entry.data.area,
-    })
-  }
 
   for (const entry of published(await getCollection('notes'))) {
     items.push({
@@ -107,7 +98,7 @@ export interface TagGroups {
   topics: TagEntry[]
 }
 
-// Tags split by taxonomy for the /tags index: food cuisines, neighborhood/hike
+// Tags split by taxonomy for the /tags index: food cuisines, neighborhood
 // vibes, and topic/note tags — so the index reads as sections instead of one
 // jumbled cloud. Each tag lands in exactly one group (cuisine > vibe > topic).
 export async function tagGroups(): Promise<TagGroups> {
@@ -124,11 +115,6 @@ export async function tagGroups(): Promise<TagGroups> {
     }
   }
   for (const entry of published(await getCollection('neighborhoods'))) {
-    for (const value of entry.data.tags) {
-      vibe.add(value)
-    }
-  }
-  for (const entry of published(await getCollection('hikes'))) {
     for (const value of entry.data.tags) {
       vibe.add(value)
     }

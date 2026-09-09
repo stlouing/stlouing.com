@@ -62,24 +62,6 @@ const food = defineCollection({
     }),
 })
 
-const hikes = defineCollection({
-  loader: md('hikes'),
-  schema: z.object({
-    title: z.string(),
-    // Optional created / last-revised dates, consistent with the other
-    // collections (hikes don't join the feed, but carry them for uniformity).
-    created: z.coerce.date().optional(),
-    updated: z.coerce.date().optional(),
-    area: z.string().optional(),
-    distanceMiles: z.number().optional(),
-    difficulty: z.enum(['easy', 'moderate', 'hard']).optional(),
-    // The hike's AllTrails (or similar) page.
-    url: z.string().url().optional(),
-    ...coords,
-    ...taggable,
-  }),
-})
-
 const notes = defineCollection({
   loader: md('notes'),
   schema: z.object({
@@ -180,4 +162,4 @@ const changelog = defineCollection({
   schema: z.object({ date: z.coerce.date() }),
 })
 
-export const collections = { food, hikes, notes, neighborhoods, topics, changelog }
+export const collections = { food, notes, neighborhoods, topics, changelog }

@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Card from '../components/Card.astro'
@@ -15,13 +16,9 @@ const topics = sortTopics(published(await getCollection('topics')))
   title="Topics: Deep-Dives into St. Louis Food and Culture"
   description="Evergreen deep-dives into St. Louis food, drink, and culture, tended and updated over time.">
   <article class="page">
-    <header class="entry-header entry-header-with-flag">
-      <div class="entry-bar">
-        <h1>Topics</h1>
-      </div>
-      <p class="description description--lg">Deep-dives into St. Louis food and culture</p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="Topics" wide>
+      <p slot="lede">Deep-dives into St. Louis food and culture</p>
+    </PageMasthead>
     <div class="card-grid card-cells card-cells--three">
       <div class="card-rows">
         {
@@ -46,6 +43,19 @@ const topics = sortTopics(published(await getCollection('topics')))
 <style>
   .card-grid {
     margin-block-start: var(--spacing-md);
+  }
+
+  .card-grid :global(.card-meta) {
+    color: var(--color-accent);
+  }
+
+  .card-grid :global(.card .title-serif) {
+    font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
+  }
+
+  .card-grid :global(.card-description) {
+    font-size: var(--font-size-lg);
+    margin-block-end: var(--spacing-sm);
   }
 
   .card-grid :global(.continue-link) {

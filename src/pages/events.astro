@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import CardList from '../components/CardList.astro'
 import Card from '../components/Card.astro'
@@ -48,13 +49,9 @@ const description =
 
 <BaseLayout crumb="Annual Events" title="St. Louis Events by Month" description={description}>
   <article class="page">
-    <header class="entry-header reading-col">
-      <div class="entry-bar">
-        <h1>Annual Events in St. Louis</h1>
-      </div>
-      <p class="description description--lg">{description}</p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="Annual Events in St. Louis">
+      <p slot="lede">{description}</p>
+    </PageMasthead>
 
     <div class="reading-col">
       {

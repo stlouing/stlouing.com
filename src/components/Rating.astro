@@ -35,9 +35,10 @@ const label = verdict ? `Rating: ${verdictLabels[verdict]}, ${filled} of ${total
     vertical-align: -0.1em;
   }
 
-  .rating :global(.rating-fleur) {
+  :where(.rating) :global(.rating-fleur) {
     width: 0.85em;
     height: 0.85em;
+    max-width: none;
     color: color-mix(in srgb, var(--color-accent-gold) 26%, transparent);
   }
 

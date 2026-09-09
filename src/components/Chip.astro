@@ -2,19 +2,18 @@
 interface Props {
   href?: string
   class?: string
-  round?: boolean
 }
 
-const { href: chipHref, class: className, round = false, ...rest } = Astro.props
+const { href: chipHref, class: className, ...rest } = Astro.props
 ---
 
 {
   chipHref ? (
-    <a class:list={['chip', { round }, className]} href={chipHref} {...rest}>
+    <a class:list={['chip', className]} href={chipHref} {...rest}>
       <slot />
     </a>
   ) : (
-    <span class:list={['chip', { round }, className]} {...rest}>
+    <span class:list={['chip', className]} {...rest}>
       <slot />
     </span>
   )

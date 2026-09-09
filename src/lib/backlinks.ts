@@ -55,7 +55,6 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
 
   // Drafts shouldn't surface as a backlink source on a published page.
   add('food', published(await getCollection('food')))
-  add('hikes', published(await getCollection('hikes')))
   add('notes', published(await getCollection('notes')))
   add('neighborhoods', published(await getCollection('neighborhoods')))
   add('topics', published(await getCollection('topics')))

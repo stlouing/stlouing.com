@@ -39,6 +39,7 @@ const filterAttrs = filterable
   : {}
 
 const slotHtml = Astro.slots.has('default') ? (await Astro.slots.render('default')).trim() : ''
+const subHtml = Astro.slots.has('sub') ? (await Astro.slots.render('sub')).trim() : ''
 const showPanel = slotHtml.length > 0 || readMore
 ---
 
@@ -53,13 +54,8 @@ const showPanel = slotHtml.length > 0 || readMore
   <div class="list-headline">
     <a class="list-title title-serif title-link" href={href(detailHref)}>{title}</a>
   </div>
-  {
-    Astro.slots.has('sub') && (
-      <div class="list-sub">
-        <slot name="sub" />
-      </div>
-    )
-  }
+  <slot name="rating" />
+  {subHtml && <div><Fragment set:html={subHtml} /></div>}
   {
     showPanel && (
       <div class="list-description">
@@ -72,4 +68,5 @@ const showPanel = slotHtml.length > 0 || readMore
       </div>
     )
   }
+  <slot name="photo" />
 </li>

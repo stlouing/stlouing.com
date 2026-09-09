@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../../components/PageMasthead.astro'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import SectionHeading from '../../components/SectionHeading.astro'
 import List from '../../components/List.astro'
@@ -23,10 +24,9 @@ const COLLECTION_LABEL: Record<string, string> = {
   food: 'Food',
   Neighborhoods: 'Neighborhoods',
   Topics: 'Topics',
-  Hikes: 'Hikes',
   Notes: 'Notes',
 }
-const grouped = ['food', 'Neighborhoods', 'Topics', 'Hikes', 'Notes']
+const grouped = ['food', 'Neighborhoods', 'Topics', 'Notes']
   .map((collection) => ({
     label: COLLECTION_LABEL[collection] ?? collection,
     items: items.filter((item) => item.collection === collection),
@@ -38,13 +38,9 @@ const countLabel = `${items.length} ${items.length === 1 ? 'entry' : 'entries'}`
 
 <BaseLayout crumb={`#${tag}`} title={`Tags: ${cuisineLabel(tag)} - St. Louing`} noindex>
   <article class="page">
-    <header class="entry-header entry-header-with-flag reading-col">
-      <div class="entry-bar">
-        <h1>{`#${tag}`}</h1>
-      </div>
-      <p class="description description--lg">{countLabel}</p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title={`#${tag}`}>
+      <p slot="lede">{countLabel}</p>
+    </PageMasthead>
 
     <div class="reading-col">
       {

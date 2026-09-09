@@ -40,13 +40,6 @@ export const sections: Section[] = [
     icon: 'map-pin',
     description: `The 79 neighborhoods and 9 parks of St. Louis city, plus a few additional points of interest in the county`,
   },
-  // {
-  //   label: 'Hikes',
-  //   path: '/hikes',
-  //   group: 'explore',
-  //   description: 'Exploring the nature of Missouri',
-  // },
-
   {
     label: 'Topics',
     path: '/topics/',

@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Heading from '../components/Heading.astro'
 import { SUPABASE_ENABLED } from '../lib/site'
@@ -10,13 +11,9 @@ const guestbookEnabled = SUPABASE_ENABLED
 
 <BaseLayout article crumb="Guestbook" description={description}>
   <article class="page">
-    <header class="entry-header entry-header-with-flag reading-col">
-      <div class="entry-bar">
-        <h1>Guestbook</h1>
-      </div>
-      <p class="description description--lg">Passing through? Sign your name and leave a note.</p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="Guestbook">
+      <p slot="lede">Passing through? Sign your name and leave a note.</p>
+    </PageMasthead>
 
     {
       guestbookEnabled ? (

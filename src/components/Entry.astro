@@ -12,9 +12,7 @@ interface Props {
   backlinks?: Backlink[]
   permalink?: string
   share?: boolean
-  masthead?: boolean
   eyebrow?: string
-  riverBorder?: boolean
 }
 
 const {
@@ -23,37 +21,21 @@ const {
   backlinks = [],
   permalink,
   share = true,
-  masthead = false,
   eyebrow,
-  riverBorder = true,
 } = Astro.props
 const isArticle = Boolean(permalink)
 ---
 
 <article class:list={['entry', { 'h-entry': isArticle }]}>
-  <header
-    class:list={{ 'entry-header': !masthead, 'entry-header-with-flag': !masthead }}>
-    {
-      masthead ? (
-        <PageMasthead
-          title={title}
-          eyebrow={eyebrow}
-          headingClass={isArticle ? 'p-name' : undefined}
-          commentsAnchor={Astro.slots.has('comments')}>
-          <slot name="lede" slot="lede" />
-        </PageMasthead>
-      ) : (
-        <div class="entry-headline">
-          <h1 class:list={{ 'p-name': isArticle }}>{title}</h1>
-          <div class="entry-headline-sub">
-            <div class="entry-headline-lede">
-              <slot name="lede" />
-            </div>
-          </div>
-          {riverBorder && <div class="river-border-basic" aria-hidden="true" />}
-        </div>
-      )
-    }
+  <header>
+    <PageMasthead
+      title={title}
+      eyebrow={eyebrow}
+      actions
+      headingClass={isArticle ? 'p-name' : undefined}
+      commentsAnchor={Astro.slots.has('comments')}>
+      <slot name="lede" slot="lede" />
+    </PageMasthead>
 
     {
       (Astro.slots.has('meta') || tags.length > 0) && (
@@ -108,16 +90,3 @@ const isArticle = Boolean(permalink)
   </footer>
 </article>
 
-<style>
-  .entry-headline-sub {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
-
-  .entry-headline-lede {
-    min-width: 0;
-    max-width: var(--measure-reading);
-  }
-</style>

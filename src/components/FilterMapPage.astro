@@ -1,6 +1,5 @@
 ---
 import FilterBar from './FilterBar.astro'
-import ViewToggle from './ViewToggle.astro'
 import ClearFilters from './ClearFilters.astro'
 
 interface Facet {
@@ -24,7 +23,6 @@ interface Props {
   mapLabel: string
   emptyText: string
   class?: string
-  floating?: boolean
   cluster?: boolean
   search?: boolean
 }
@@ -40,42 +38,19 @@ const {
   mapLabel,
   emptyText,
   class: className,
-  floating = false,
   cluster = false,
 } = Astro.props
 ---
 
-<div
-  class={className}
-  data-filter-root
-  data-view="list"
-  data-view-mode={floating ? 'floating' : 'toggle'}
->
-  {
-    floating ? (
-      <script is:inline>
-        {
-          const filterRoot = document.currentScript.parentElement
-          filterRoot.dataset.view = window.matchMedia('(max-width: 700px)').matches
-            ? 'list'
-            : 'map'
-        }
-      </script>
-    ) : (
-      <script is:inline>
-        {
-          const filterRoot = document.currentScript.parentElement
-          const savedView = localStorage.getItem('list-map-view')
-          const defaultView = window.matchMedia('(max-width: 700px)').matches ? 'list' : 'map'
-          filterRoot.dataset.view =
-            savedView === 'list' || savedView === 'map' ? savedView : defaultView
-        }
-      </script>
-    )
-  }
+<div class={className} data-filter-root data-view="list">
+  <script is:inline>
+    {
+      const filterRoot = document.currentScript.parentElement
+      filterRoot.dataset.view = window.matchMedia('(max-width: 700px)').matches ? 'list' : 'map'
+    }
+  </script>
   <header class="secondary-header">
     <div class="wrap">
-      {hasCoords && !floating && <ViewToggle />}
       <FilterBar
         label={label}
         count={count}
@@ -99,7 +74,7 @@ const {
       )
     }
     {
-      hasCoords && floating && (
+      hasCoords && (
         <button type="button" class="map-split-toggle btn-dark" data-map-split-toggle>
           View map
         </button>

@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../../components/PageMasthead.astro'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Heading from '../../components/Heading.astro'
 import TagIcon from '../../components/TagIcon.astro'
@@ -17,13 +18,9 @@ const groups = [
 
 <BaseLayout title="Tags - St. Louing" noindex>
   <article class="page">
-    <header class="entry-header entry-header-with-flag reading-col">
-      <div class="entry-bar">
-        <h1>Tags</h1>
-      </div>
-      <p class="description description--lg">Browse everything by cuisine, neighborhood vibe, or topic.</p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="Tags">
+      <p slot="lede">Browse everything by cuisine, neighborhood vibe, or topic.</p>
+    </PageMasthead>
 
     <div class="tag-groups reading-col">
       {

@@ -67,7 +67,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
   ogImage="/og/food.png">
   <FilterMapPage
     class="food"
-    floating
     cluster
     label="places"
     count={count}
@@ -147,9 +146,20 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                     ))}
                 </span>
               )}
+              {verdict && (
+                <span class="list-rating" slot="rating">
+                  <Rating verdict={verdict} />
+                </span>
+              )}
+              {place.data.description && (
+                <span class="description" slot="sub">
+                  {place.data.description}
+                </span>
+              )}
               {thumb && (
                 <div
                   class="list-photo"
+                  slot="photo"
                   style={`background-image: url(${thumb.src})`}
                   aria-hidden="true"
                 />

@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { FEEDBACK_ENDPOINT } from '../lib/site'
 
@@ -7,15 +8,9 @@ const description = 'Send a note, a correction, or a recommendation.'
 
 <BaseLayout article crumb="Contact" description={description}>
   <article class="page">
-    <header class="entry-header entry-header-with-flag reading-col">
-      <div class="entry-bar">
-        <h1>Contact</h1>
-      </div>
-      <p class="description description--lg">
-        If you have a question, comment, or if I got something wrong, please reach out!
-      </p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="Contact">
+      <p slot="lede">If you have a question, comment, or if I got something wrong, please reach out!</p>
+    </PageMasthead>
 
     <div class="reading-col">
       {

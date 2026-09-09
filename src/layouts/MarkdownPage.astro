@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from './BaseLayout.astro'
 
 interface Props {
@@ -14,13 +15,9 @@ const { frontmatter } = Astro.props
   title={frontmatter.seoTitle}
   description={frontmatter.description}>
   <article class="page">
-    <header class="entry-header entry-header-with-flag reading-col">
-      <div class="entry-bar">
-        {frontmatter.title && <h1>{frontmatter.title}</h1>}
-      </div>
-      {frontmatter.tagline && <p class="description description--lg">{frontmatter.tagline}</p>}
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title={frontmatter.title}>
+      {frontmatter.tagline && <p slot="lede">{frontmatter.tagline}</p>}
+    </PageMasthead>
     <div class="body reading-col">
       <slot />
     </div>

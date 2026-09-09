@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
@@ -42,12 +43,9 @@ const description =
   title="The Backlog - St. Louis Restaurants To Try"
   description={description}>
   <article class="page">
-    <header class="entry-header">
-      <div class="entry-bar">
-        <h1>The Backlog</h1>
-      </div>
-      <p class="description description--lg">The running list of places I still need to get to.</p>
-    </header>
+    <PageMasthead title="The Backlog">
+      <p slot="lede">The running list of places I still need to get to.</p>
+    </PageMasthead>
 
     {
       wishlist.length > 0 ? (

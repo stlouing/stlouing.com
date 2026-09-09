@@ -1,4 +1,5 @@
 ---
+import PageMasthead from '../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import CardList from '../components/CardList.astro'
@@ -28,15 +29,9 @@ const neighborhoods = published(await getCollection('neighborhoods'))
 
 <BaseLayout crumb="Not found" title="Page Not Found" noindex>
   <article class="page notfound">
-    <header class="entry-header entry-header-with-flag">
-      <div class="entry-bar">
-        <h1>Page Not Found</h1>
-      </div>
-      <p class="description description--lg">
-        That page doesn't exist (or it moved). Try these:
-      </p>
-      <div class="river-border-basic" aria-hidden="true"></div>
-    </header>
+    <PageMasthead title="Page Not Found">
+      <p slot="lede">That page doesn't exist (or it moved). Try these:</p>
+    </PageMasthead>
 
     {
       pizza && (
