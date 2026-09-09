@@ -169,8 +169,13 @@ import IconInstagram from '../assets/IconInstagram.astro'
   :global(body:has([data-map])) .footer-bottom,
   :global(body:has([data-area-map])) .footer-bottom,
   :global(body:has([data-map-pane])) .footer-bottom {
-    border-block-start: 0;
     padding-block-start: 0;
+  }
+
+  :global(body:has([data-map])) .footer-bottom::before,
+  :global(body:has([data-area-map])) .footer-bottom::before,
+  :global(body:has([data-map-pane])) .footer-bottom::before {
+    display: none;
   }
 
   .site-footer {
@@ -184,9 +189,15 @@ import IconInstagram from '../assets/IconInstagram.astro'
     justify-content: space-between;
     gap: var(--spacing-md);
     padding-block: var(--spacing-md);
-    border-block-start: 1px solid color-mix(in srgb, var(--footer-white) 30%, transparent);
     font-family: var(--font-sans-serif);
     font-size: var(--font-size-xs);
+  }
+
+  .footer-bottom::before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: color-mix(in srgb, var(--footer-white) 30%, transparent);
   }
 
   .footer-made {
@@ -215,7 +226,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     align-items: center;
     gap: var(--spacing-xs);
     font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-xs);
     font-weight: 500;
     color: var(--footer-white);
     text-decoration-line: underline;
