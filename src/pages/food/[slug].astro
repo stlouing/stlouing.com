@@ -138,14 +138,9 @@ const seoDescription = hasBody(entry)
       <div class="pane-stats">
         <div class="pane-stat">
           <span class="pane-stat-label eyebrow eyebrow--muted">My rating</span>
-          <span
-            class:list={[
-              'pane-stat-value',
-              'my-rating-line',
-              { 'is-unrated': !writerState.verdict },
-            ]}>
+          <span class="pane-stat-value my-rating-line">
             <Rating verdict={writerState.verdict} />
-            <span class="my-rating-word eyebrow">
+            <span class:list={[writerState.verdict ? ['my-rating-word', 'eyebrow'] : 'description']}>
               {writerState.verdict ? verdictLabels[writerState.verdict] : writerState.statement}
             </span>
           </span>
@@ -344,10 +339,6 @@ const seoDescription = hasBody(entry)
   .my-rating-word {
     font-weight: 700;
     color: var(--color-accent-gold);
-  }
-
-  .my-rating-line.is-unrated .my-rating-word {
-    color: var(--color-muted);
   }
 
   .my-rating-line :global(.rating .rating-fleur) {
