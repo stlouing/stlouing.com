@@ -265,8 +265,8 @@ export function initMapPane(): void {
   map.on('click', () => popup.remove())
 
   // The pane is always visible at mount (desktop right half, mobile top strip),
-  // so the camera frames once on load; MapLibre's own trackResize covers
-  // window resizes after that.
+  // so the camera frames once; MapLibre's own trackResize covers window
+  // resizes after that.
   const frameView = (bounds: LngLatBoundsLike | undefined): void => {
     if (bounds) {
       // A touch looser than a tight fit, so the boundary sits in its
@@ -280,13 +280,20 @@ export function initMapPane(): void {
     }
   }
 
+  // Frame as soon as the boundary answers, NOT inside map 'load':
+  // cameraForBounds and the DOM markers only need the map transform, while
+  // 'load' waits for the full style + tiles — on mobile that gap left the
+  // badges sitting at default-camera positions for seconds.
+  const boundaryPromise = loadBoundary(slug)
+  void boundaryPromise.then((boundary) => {
+    frameView(heroBounds(boundary, spots))
+  })
+
   map.on('load', async () => {
-    const boundary = await loadBoundary(slug)
+    const boundary = await boundaryPromise
     if (boundary) {
       applyBoundaryLayers(map, boundary, boundaryToken)
     }
-
-    frameView(heroBounds(boundary, spots))
 
     watchThemeChanges(map, () => {
       if (boundary) {
