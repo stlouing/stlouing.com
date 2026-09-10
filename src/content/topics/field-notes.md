@@ -3,6 +3,7 @@ title: St. Louis Field Notes
 icon: notebook
 category: Culture
 description: My notes on St. Louis culture
+seoDescription: My field notes on St. Louis culture — regional foods, street name pronunciations, local slang, brick architecture, customs, and the city-county split.
 created: 2026-05-28
 updated: 2026-06-29
 ---

@@ -112,6 +112,9 @@ const topics = defineCollection({
     // An SEO-tuned <title> used when it should differ from the (shorter)
     // visible title — e.g. "The Great Divorce of St. Louis City and County".
     seoTitle: z.string().optional(),
+    // An SEO-tuned meta description used when the visible description (the
+    // lede under the title) is too short to make a useful search snippet.
+    seoDescription: z.string().optional(),
     // One-word subject label ("Food", "History") shown as the accent eyebrow
     // over the topic's card on /topics.
     category: z.string().optional(),

@@ -3,10 +3,11 @@ import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { FEEDBACK_ENDPOINT } from '../lib/site'
 
-const description = 'Send a note, a correction, or a recommendation.'
+const description =
+  'Send a note, a correction, or a recommendation to St. Louing, an independent guide to St. Louis food, neighborhoods, and culture.'
 ---
 
-<BaseLayout article crumb="Contact" description={description}>
+<BaseLayout article crumb="Contact" title="Contact - St. Louing" description={description}>
   <article class="page">
     <PageMasthead title="Contact">
       <p slot="lede">If you have a question, comment, or if I got something wrong, please reach out!</p>

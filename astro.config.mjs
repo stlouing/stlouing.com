@@ -96,10 +96,11 @@ function frontmatterField(file, field) {
 }
 
 // Map each dated page's URL path -> its W3C date, for sitemap <lastmod>. Notes
-// use their post date; topics use their "last tended" date.
+// use their post date; topics, food, and neighborhoods use their last-updated
+// date, falling back to the created date.
 function buildLastmod() {
   const map = new Map()
-  const add = (collection, field, urlFor) => {
+  const add = (collection, fields, urlFor) => {
     const dir = path.join(contentRoot, collection)
     if (!fs.existsSync(dir)) {
       return
@@ -109,7 +110,9 @@ function buildLastmod() {
       if (!file.endsWith('.md')) {
         continue
       }
-      const value = frontmatterField(path.join(dir, file), field)
+      const value = fields
+        .map((field) => frontmatterField(path.join(dir, file), field))
+        .find(Boolean)
 
       if (value) {
         map.set(urlFor(file.slice(0, -3)), value)
@@ -117,8 +120,10 @@ function buildLastmod() {
     }
   }
 
-  add('notes', 'created', (id) => `/notes/${id}`)
-  add('topics', 'updated', (id) => `/${id}`)
+  add('notes', ['created'], (id) => `/notes/${id}`)
+  add('topics', ['updated', 'created'], (id) => `/${id}`)
+  add('food', ['updated', 'created'], (id) => `/food/${id}`)
+  add('neighborhoods', ['updated', 'created'], (id) => `/neighborhoods/${id}`)
 
   return map
 }

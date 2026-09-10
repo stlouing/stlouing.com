@@ -31,7 +31,7 @@ const schema = articleSchema(
   {
     title: data.title,
     url: permalink,
-    description: data.description,
+    description: data.seoDescription ?? data.description,
     image: new URL(href(data.ogImage ?? '/og.png'), siteOrigin).href,
     published: (data.created ?? data.updated).toISOString(),
     updated: data.updated.toISOString(),
@@ -45,7 +45,7 @@ const schema = articleSchema(
   article
   crumb={data.title}
   title={data.seoTitle}
-  description={data.description}
+  description={data.seoDescription ?? data.description}
   ogImage={data.ogImage}
   ogType="article"
   publishedTime={(data.created ?? data.updated).toISOString()}

@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Card from '../components/Card.astro'
 import ReaderFavorites from '../components/ReaderFavorites.astro'
-import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
+import { published, excerpt, META_DESCRIPTION_CHARS, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import { href } from '../lib/url'
 import { SUPABASE_ENABLED } from '../lib/site'
 import superlatives from '../data/superlatives.json'
@@ -30,7 +30,17 @@ const awards = [
 
 const readersEnabled = SUPABASE_ENABLED
 
-const description = "The best of the St. Louis food I've tried, by category."
+const descriptionLead = 'My picks for the best food in St. Louis, by category: '
+const descriptionSuffix = ', and more.'
+const fittingLabels: string[] = []
+for (const award of resolvedAwards) {
+  const candidate = [...fittingLabels, award.label].join(', ')
+  if (descriptionLead.length + candidate.length + descriptionSuffix.length > META_DESCRIPTION_CHARS) {
+    break
+  }
+  fittingLabels.push(award.label)
+}
+const description = `${descriptionLead}${fittingLabels.join(', ')}${descriptionSuffix}`
 ---
 
 <BaseLayout article crumb="Best of" title="The Best Food in St. Louis" description={description}>

@@ -45,8 +45,7 @@ const rows = (
       return { place, verdict, groupKey, rankLetter, thumb }
     }),
   )
-)
-  .sort((left, right) => left.place.data.title.localeCompare(right.place.data.title))
+).sort((left, right) => left.place.data.title.localeCompare(right.place.data.title))
 
 const count = rows.length
 const cuisines = [...new Set(rows.flatMap((entry) => entry.place.data.cuisine))].sort()
@@ -58,11 +57,10 @@ const hasCoords = rows.some((entry) => entry.place.data.coords)
 const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[])
   .filter((value) => rows.some((entry) => entry.verdict === value))
   .map((value) => ({ value, label: verdictLabels[value] }))
-
 ---
 
 <BaseLayout
-  title="St. Louis Food Map - Restaurants & Cafes"
+  title="St. Louis Food Map"
   description="An interactive map of St. Louis restaurants and cafes, filterable by cuisine and neighborhood. Each place is rated by me and reviewed by the community."
   ogImage="/og/food.png">
   <FilterMapPage
@@ -124,7 +122,10 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
                 <span class="eyebrow eyebrow--muted" slot="eyebrow">
-                  {[...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)), place.data.neighborhood]
+                  {[
+                    ...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)),
+                    place.data.neighborhood,
+                  ]
                     .filter(Boolean)
                     .map((part, partIndex) => (
                       <>
@@ -174,4 +175,3 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
 
   initListGroups()
 </script>
-

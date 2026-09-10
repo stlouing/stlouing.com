@@ -110,6 +110,7 @@ const stubDescription = [
   primaryCuisine
     ? `${cuisineLabel(primaryCuisine)} in ${locality}`
     : `${data.title} in ${locality}`,
+  writerState.statement,
 ]
   .filter(Boolean)
   .join(' — ')

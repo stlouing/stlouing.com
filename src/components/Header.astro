@@ -38,7 +38,7 @@ const { variant = 'compact' } = Astro.props
 <div class:list={['masthead-nav', { 'is-home': variant === 'home' }]} data-header>
   <div class="wrap wrap-wide masthead-nav-inner">
     <a class="masthead-brand" href={href('/')}>
-      <img class="brand-flag" src={href('/flag-square.svg')} alt="" width="28" height="28" /> St. Louing
+      <img class="brand-mark" src={href('/logo.svg')} alt="" width="22" height="28" /> St. Louing
     </a>
     <Nav />
     <ThemeToggle variant="quiet" />
@@ -72,11 +72,6 @@ const { variant = 'compact' } = Astro.props
 </script>
 
 <style>
-  .masthead-brand :global(.brand-crest) {
-    width: 28px;
-    height: 28px;
-  }
-
   .masthead-ear {
     border-block-end: 1px solid var(--color-line-contrast);
   }
@@ -187,12 +182,10 @@ const { variant = 'compact' } = Astro.props
     text-underline-offset: 2px;
   }
 
-  .brand-flag {
-    width: 28px;
+  .brand-mark {
+    width: auto;
     height: 28px;
-    image-rendering: pixelated;
     flex-shrink: 0;
-    border-radius: 6px;
   }
 
   .masthead-double-rule {
