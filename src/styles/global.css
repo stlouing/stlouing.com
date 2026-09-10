@@ -2027,13 +2027,13 @@ body:has([data-filter-root]) .masthead-nav {
   border-color: color-mix(in srgb, var(--color-text-heading) 85%, var(--color-surface));
 }
 
-:root[data-theme='dark'] .btn-dark {
+:root[data-theme='dark'] .btn-dark:not(.map-split-toggle) {
   color: var(--color-text);
   background: var(--color-surface);
   border-color: var(--color-line-input);
 }
 
-:root[data-theme='dark'] .btn-dark:hover {
+:root[data-theme='dark'] .btn-dark:not(.map-split-toggle):hover {
   color: var(--color-accent);
   background: var(--color-surface);
   border-color: var(--color-accent);
