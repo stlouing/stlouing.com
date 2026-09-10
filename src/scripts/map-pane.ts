@@ -1,31 +1,24 @@
 // The neighborhood page's map pane: an interactive basemap filling the right
-// half of the split-screen layout, with the neighborhood's boundary drawn as a
-// dashed line in its region color and a pin for every food spot mapped to it.
-// Pins are DOM <a> markers (hover shows the name via the shared .corridor-spot
-// tooltip CSS); clicking one opens the food-map popup instead of navigating
-// (middle-click still opens the page). On phones the pane stacks on top of the
-// content at a fixed height, so the map is always visible at mount.
+// half of the split-screen layout, with the neighborhood's boundary drawn in
+// its region color and an icon badge for every mapped spot (food places plus
+// the authored spots.json categories). Badges are DOM markers colored by
+// data-category, their icon cloned from the SSR legend inside the pane (the
+// legend is the one icon source); hover shows the name via the shared
+// .corridor-spot tooltip CSS, and clicking opens the popup instead of
+// navigating (middle-click on a linked badge still opens its page). On phones
+// the pane stacks on top of the content at a fixed height, so the map is
+// always visible at mount.
 
 import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml } from './popup'
 import { keepPopupInView } from './map-shared'
+import type { MapSpot } from '../lib/spots'
 
 const BOUNDARY_SOURCE_ID = 'neighborhood-boundary'
 const BOUNDARY_FILL_LAYER_ID = 'neighborhood-boundary-fill'
 const BOUNDARY_OUTLINE_LAYER_ID = 'neighborhood-boundary-outline'
-
-// A food spot baked into the page by MapPane.astro. Coords are
-// [lng, lat] (flipped from the food frontmatter's [lat, lng] at build).
-interface HeroSpot {
-  title: string
-  url: string
-  coords: [number, number]
-  cuisine?: string
-  verdict?: { key: string; label: string }
-  tagline?: string
-}
 
 // The city shapefile names a few neighborhoods differently than the site does.
 // Same override map as the walkable overview (corridor-map.ts).
@@ -78,7 +71,7 @@ function extendWithGeometry(coordinates: unknown, extend: (point: [number, numbe
 
 function heroBounds(
   boundary: BoundaryFeature | undefined,
-  spots: HeroSpot[],
+  spots: MapSpot[],
 ): LngLatBoundsLike | undefined {
   let west = Infinity
   let south = Infinity
@@ -146,45 +139,68 @@ function applyBoundaryLayers(map: MapLibreMap, boundary: BoundaryFeature, token:
 
 function addSpotMarkers(
   map: MapLibreMap,
-  spots: HeroSpot[],
-  openPopup: (spot: HeroSpot) => void,
+  root: HTMLElement,
+  spots: MapSpot[],
+  openPopup: (spot: MapSpot, badge: HTMLElement) => void,
 ): void {
-  // The same teardrop pin as the corridor/food maps; currentColor fill, colored
-  // by the shared .corridor-spot CSS (--color-pin).
-  const pinSvg = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
+  const legend = root.querySelector<HTMLElement>('[data-map-legend]')
 
   for (const spot of spots) {
-    const element = document.createElement('a')
-    element.className = 'corridor-spot'
+    // A linked badge stays an <a> so middle-click / open-in-new-tab navigates;
+    // an unlinked one is a <button> so it's still keyboard-activatable.
+    const element = spot.url ? document.createElement('a') : document.createElement('button')
+    element.className = 'map-badge'
+    element.dataset.category = spot.category
     element.setAttribute('aria-label', spot.title)
-    element.href = import.meta.env.BASE_URL.replace(/\/$/, '') + spot.url
+    if (element instanceof HTMLAnchorElement && spot.url) {
+      element.href = spot.url
+      if (spot.external) {
+        element.target = '_blank'
+        element.rel = 'noopener'
+      }
+    }
+    if (element instanceof HTMLButtonElement) {
+      element.type = 'button'
+    }
 
-    element.innerHTML = pinSvg
+    // The circle visuals live on an inner body span (never the marker element
+    // itself — MapLibre positions that with an inline transform, which any CSS
+    // hover transform would fight), matching the .marker-pin pattern.
+    const body = document.createElement('span')
+    body.className = 'map-badge-body'
+
+    // The badge's glyph comes from the matching legend row — the legend is the
+    // one icon source, so markers and key can never disagree. Without a match
+    // the badge stays a plain colored dot.
+    const legendIcon = legend?.querySelector(`[data-legend-category="${spot.category}"] .icon`)
+    if (legendIcon) {
+      body.append(legendIcon.cloneNode(true))
+    }
+    element.append(body)
+
     const name = document.createElement('span')
     name.className = 'corridor-spot-name'
     name.textContent = spot.title
     element.append(name)
 
-    // A plain click opens the popup in place; the element stays an <a>, so
-    // middle-click / open-in-new-tab still navigates to the food page.
     element.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
       clickEvent.stopPropagation()
-      openPopup(spot)
+      openPopup(spot, element)
     })
 
-    new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(spot.coords).addTo(map)
+    new maplibregl.Marker({ element, anchor: 'center' }).setLngLat(spot.coords).addTo(map)
   }
 }
 
-function readSpots(root: HTMLElement): HeroSpot[] {
+function readSpots(root: HTMLElement): MapSpot[] {
   const holder = root.parentElement?.querySelector('script[data-map-pane-spots]')
   if (!holder?.textContent) {
     return []
   }
 
   try {
-    const parsed = JSON.parse(holder.textContent) as HeroSpot[]
+    const parsed = JSON.parse(holder.textContent) as MapSpot[]
 
     return Array.isArray(parsed) ? parsed : []
   } catch {
@@ -210,26 +226,38 @@ export function initMapPane(): void {
     attributionControl: { compact: true },
   })
 
-  // One reused popup, food-map options verbatim (map.ts).
+  // One reused popup, food-map options verbatim (map.ts) except the offset:
+  // the badge is a centered circle, not a 36px bottom-anchored pin.
   const popup = new maplibregl.Popup({
     className: 'map-popup',
     closeButton: true,
     closeOnClick: false,
     anchor: 'bottom',
     maxWidth: '330px',
-    offset: 38,
+    offset: 18,
     focusAfterOpen: false,
   })
 
-  const openSpotPopup = (spot: HeroSpot): void => {
+  let selectedBadge: HTMLElement | null = null
+  popup.on('close', () => {
+    selectedBadge?.classList.remove('is-selected')
+    selectedBadge = null
+  })
+
+  const openSpotPopup = (spot: MapSpot, badge: HTMLElement): void => {
     const popupHtml = buildPopupHtml({
       title: spot.title,
-      link: import.meta.env.BASE_URL.replace(/\/$/, '') + spot.url,
-      chips: spot.cuisine ? [{ label: spot.cuisine }] : [],
+      link: spot.url,
+      external: spot.external,
+      chips: spot.meta ? [{ label: spot.meta }] : [],
       verdict: spot.verdict,
-      showRating: Boolean(spot.verdict),
+      showRating: spot.category === 'food',
       excerpt: spot.tagline ?? '',
+      directionsHref: spot.directionsHref,
     })
+    selectedBadge?.classList.remove('is-selected')
+    selectedBadge = badge
+    badge.classList.add('is-selected')
     popup.setLngLat(spot.coords).setHTML(popupHtml).addTo(map)
     keepPopupInView(map, () => popup.getElement() ?? undefined)
   }
@@ -267,5 +295,5 @@ export function initMapPane(): void {
     })
   })
 
-  addSpotMarkers(map, spots, openSpotPopup)
+  addSpotMarkers(map, root, spots, openSpotPopup)
 }

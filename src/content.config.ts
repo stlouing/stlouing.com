@@ -99,24 +99,6 @@ const neighborhoods = defineCollection({
       // graph doesn't cover (e.g. St. Louis County municipalities). Overrides the
       // computed geographic neighbors when set.
       neighbors: z.array(z.string()).default([]),
-      // Signature attractions/landmarks (factual + optional, so a data-only
-      // neighborhood can still carry them without a writeup). Each is a name with
-      // an optional link + one-line description; a bare string is shorthand for
-      // name-only. Normalized to objects so consumers always get the same shape.
-      // Vibe descriptors (historic, walkable, …) live in `tags`.
-      attractions: z
-        .array(
-          z.union([
-            z.string(),
-            z.object({
-              name: z.string(),
-              url: z.string().url().optional(),
-              description: z.string().optional(),
-            }),
-          ]),
-        )
-        .transform((list) => list.map((item) => (typeof item === 'string' ? { name: item } : item)))
-        .optional(),
       ...taggable,
     }),
 })

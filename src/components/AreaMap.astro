@@ -1,4 +1,5 @@
 ---
+import { regions, regionTokenBySlug } from '../lib/neighborhoods'
 ---
 
 <div
@@ -6,6 +7,20 @@
   data-area-map
   role="application"
   aria-label="Map of St. Louis neighborhoods — click a neighborhood to jump to it">
+  <ul class="map-legend" role="list" aria-label="Map legend">
+    {
+      regions.map((region) => (
+        <li class="map-legend-item">
+          <span
+            class="map-legend-swatch"
+            style={`--badge-color: var(${regionTokenBySlug[region.slug]})`}
+            aria-hidden="true"
+          />
+          {region.label}
+        </li>
+      ))
+    }
+  </ul>
 </div>
 
 <button type="button" class="map-split-toggle btn-dark" data-map-split-toggle>View map</button>

@@ -1,0 +1,576 @@
+{
+  "affton": [
+    {
+      "name": "Grant's Farm",
+      "category": "landmark",
+      "url": "https://www.grantsfarm.com/",
+      "description": "The Busch family's free animal preserve and Clydesdale home, in the Grant's Farm area."
+    },
+    {
+      "name": "Ulysses S. Grant National Historic Site",
+      "category": "landmark",
+      "url": "https://www.nps.gov/ulsg/",
+      "description": "White Haven, the preserved farm home of Ulysses S. Grant, just off Gravois."
+    },
+    {
+      "name": "Gravois Road corridor",
+      "category": "landmark",
+      "description": "Affton's main commercial strip of long-running local businesses."
+    }
+  ],
+  "bevo-mill": [
+    {
+      "name": "Bevo Windmill",
+      "category": "landmark",
+      "description": "The 1917 windmill-shaped landmark Anheuser-Busch built, the neighborhood's namesake."
+    },
+    {
+      "name": "Little Bosnia",
+      "category": "landmark",
+      "description": "The heart of St. Louis's Bosnian community, with Balkan delis, bakeries, and butchers."
+    },
+    {
+      "name": "Gravois Avenue",
+      "category": "landmark",
+      "description": "The diagonal commercial corridor lined with Balkan restaurants and shops."
+    }
+  ],
+  "carondelet": [
+    {
+      "name": "Carondelet Park",
+      "category": "park",
+      "description": "The city's third-largest park, with lakes, a boathouse, and trails."
+    },
+    {
+      "name": "Carondelet Historical Society",
+      "category": "landmark",
+      "description": "In the old Des Peres School, site of the first U.S. public kindergarten."
+    },
+    {
+      "name": "Ivory Theatre",
+      "category": "landmark",
+      "description": "A community theatre in a restored 19th-century church."
+    }
+  ],
+  "central-west-end": [
+    {
+      "name": "Cathedral Basilica of St. Louis",
+      "category": "landmark",
+      "url": "https://cathedralstl.org",
+      "description": "A vast 1914 cathedral with one of the world's largest mosaic collections.",
+      "coords": [-90.2546, 38.6425]
+    },
+    {
+      "name": "World Chess Hall of Fame",
+      "category": "landmark",
+      "url": "https://worldchesshof.org",
+      "description": "A chess museum marked by the world's largest chess piece out front."
+    },
+    {
+      "name": "Euclid Avenue",
+      "category": "landmark",
+      "description": "The walkable spine of sidewalk cafes, restaurants, and shops."
+    },
+    {
+      "name": "Maryland Plaza",
+      "category": "landmark",
+      "description": "A historic shopping and dining plaza just off Euclid."
+    },
+    {
+      "name": "Forest Park",
+      "category": "park",
+      "url": "https://www.forestparkforever.org/",
+      "description": "The 1,300-acre park bordering the neighborhood's west side."
+    }
+  ],
+  "chesterfield": [
+    {
+      "name": "The District",
+      "category": "landmark",
+      "description": "An entertainment district with The Factory music venue, Topgolf, restaurants, and breweries."
+    },
+    {
+      "name": "Chesterfield Valley Outlets",
+      "category": "shop",
+      "description": "One of the region's largest outlet-shopping areas"
+    },
+    {
+      "name": "Faust Park",
+      "category": "park",
+      "description": "A county park with a restored antique carousel and a historic village."
+    },
+    {
+      "name": "Sophia M. Sachs Butterfly House",
+      "category": "landmark",
+      "description": "A Missouri Botanical Garden division in Faust Park with butterflies in free flight."
+    }
+  ],
+  "clayton": [
+    {
+      "name": "Shaw Park",
+      "category": "park",
+      "description": "Clayton's main park that has an ice rink, an aquatic center, tennis courts, and trails."
+    },
+    {
+      "name": "Saint Louis Art Fair",
+      "category": "landmark",
+      "url": "https://www.saintlouisartfair.com/",
+      "description": "One of the country's largest juried art fairs, held each September in downtown Clayton."
+    },
+    {
+      "name": "Oak Knoll Park",
+      "category": "park",
+      "description": "A quiet park known for its native post oaks and historic stone mansions."
+    },
+    {
+      "name": "County Seat & Business District",
+      "category": "landmark",
+      "description": "A high-rise downtown that houses St. Louis County government."
+    }
+  ],
+  "debaliviere-place": [
+    {
+      "name": "Kingsbury Place & Washington Terrace",
+      "category": "landmark",
+      "description": "Historic private streets with monumental stone entrance gates and the \"Awakening Spring\" fountain."
+    },
+    {
+      "name": "The DeBaliviere Strip",
+      "category": "landmark",
+      "description": "The neighborhood's historic commercial avenue."
+    },
+    {
+      "name": "Missouri History Museum",
+      "category": "landmark",
+      "url": "https://mohistory.org/",
+      "description": "A free museum in Forest Park tp the south."
+    },
+    {
+      "name": "Forest Park",
+      "category": "park",
+      "url": "https://www.forestparkforever.org/",
+      "description": "The 1,300-acre park bordering the neighborhood to the south."
+    }
+  ],
+  "delmar-loop": [
+    {
+      "name": "The Pageant",
+      "category": "landmark",
+      "url": "https://www.thepageant.com",
+      "description": "A 2,300-capacity concert hall hosting national touring acts."
+    },
+    {
+      "name": "Tivoli Theatre",
+      "category": "landmark",
+      "url": "https://visittheloop.com/",
+      "description": "A restored 1924 movie theatre showing indie films and classics."
+    },
+    {
+      "name": "St. Louis Walk of Fame",
+      "category": "landmark",
+      "description": "Brass sidewalk stars along Delmar honoring famous St. Louisans."
+    },
+    {
+      "name": "Moonrise Hotel",
+      "category": "landmark",
+      "description": "A space-themed hotel with a rooftop bar and a giant rotating moon."
+    }
+  ],
+  "dogtown": [
+    {
+      "name": "St. James the Greater Church",
+      "category": "landmark",
+      "url": "https://www.stjamesthegreater.org/",
+      "description": "The hilltop Irish Catholic parish, built by parishioners during the Depression."
+    },
+    {
+      "name": "Tamm Avenue",
+      "category": "landmark",
+      "description": "Dogtown's main street of neighborhood bars and restaurants."
+    },
+    {
+      "name": "Dogtown St. Patrick's Day Parade",
+      "category": "landmark",
+      "description": "The city's neighborhood St. Patrick's Day parade, an Irish tradition."
+    }
+  ],
+  "downtown": [
+    {
+      "name": "Gateway Arch",
+      "category": "landmark",
+      "url": "https://www.gatewayarch.com",
+      "description": "The tallest manmade arch in the world, and a national park."
+    },
+    {
+      "name": "City Museum",
+      "category": "landmark",
+      "url": "https://www.citymuseum.org",
+      "description": "A surreal playground of reclaimed architecture for kids and adults."
+    },
+    {
+      "name": "Busch Stadium",
+      "category": "landmark",
+      "url": "https://www.mlb.com/cardinals/ballpark",
+      "description": "Home of the St. Louis Cardinals."
+    },
+    {
+      "name": "Citygarden",
+      "category": "park",
+      "description": "A downtown sculpture park with fountains and public art."
+    },
+    {
+      "name": "Union Station",
+      "category": "landmark",
+      "url": "https://www.stlouisunionstation.com",
+      "description": "A grand 1894 train station, now a hotel with an aquarium and Ferris wheel."
+    }
+  ],
+  "forest-park": [
+    {
+      "name": "The St. Louis Zoo",
+      "category": "landmark",
+      "url": "https://www.stlzoo.org",
+      "description": "A free, world-class zoo with thousands of animals.",
+      "coords": [-90.2911, 38.6351]
+    },
+    {
+      "name": "The Muny",
+      "category": "landmark",
+      "url": "https://www.muny.org",
+      "description": "America's oldest and largest outdoor musical theatre, opened in 1917.",
+      "coords": [-90.2818, 38.6412]
+    },
+    {
+      "name": "Saint Louis Art Museum",
+      "category": "landmark",
+      "url": "https://www.slam.org",
+      "description": "A free encyclopedic art museum in a 1904 World's Fair palace.",
+      "coords": [-90.2944, 38.6394]
+    },
+    {
+      "name": "Missouri History Museum",
+      "category": "landmark",
+      "url": "https://mohistory.org",
+      "description": "A free museum of St. Louis and regional history.",
+      "coords": [-90.2864, 38.6454]
+    },
+    {
+      "name": "Saint Louis Science Center",
+      "category": "landmark",
+      "url": "https://www.slsc.org",
+      "description": "A free hands-on science museum and planetarium.",
+      "coords": [-90.2704, 38.6289]
+    }
+  ],
+  "kirkwood": [
+    {
+      "name": "Downtown Kirkwood",
+      "category": "landmark",
+      "description": "A walkable historic downtown of shops, restaurants, and cafes."
+    },
+    {
+      "name": "Kirkwood Train Station",
+      "category": "landmark",
+      "description": "An 1893 stone depot still served daily by Amtrak."
+    },
+    {
+      "name": "Kirkwood Farmers Market",
+      "category": "shop",
+      "description": "A year-round market at the center of downtown."
+    },
+    {
+      "name": "The Magic House",
+      "category": "landmark",
+      "url": "https://www.magichouse.org/",
+      "description": "The St. Louis Children's Museum, a longtime family favorite."
+    }
+  ],
+  "lafayette-square": [
+    {
+      "name": "Lafayette Park",
+      "category": "park",
+      "description": "A charming park with a lake and an iron bridge."
+    },
+    {
+      "name": "Victorian \"Painted Ladies\"",
+      "category": "landmark",
+      "description": "Grand restored Victorian mansions."
+    },
+    {
+      "name": "Benton Place",
+      "category": "landmark",
+      "description": "St. Louis's first private street, a gated enclave of Victorian homes."
+    }
+  ],
+  "lindenwood-park": [
+    {
+      "name": "Lindenwood Park",
+      "category": "park",
+      "description": "The neighborhood's city park, with a roller rink, baseball fields, and tennis courts."
+    },
+    {
+      "name": "Donut Drive-In",
+      "category": "landmark",
+      "description": "A 1950s Route 66-era donut and coffee stand on the neighborhood's Chippewa edge."
+    }
+  ],
+  "maplewood": [
+    {
+      "name": "Downtown Maplewood",
+      "category": "landmark",
+      "description": "A walkable retail strip of shops, restaurants, and bars."
+    },
+    {
+      "name": "Schlafly Bottleworks",
+      "category": "landmark",
+      "url": "https://www.schlafly.com/bottleworks",
+      "description": "An independently and locally owned brewer."
+    },
+    {
+      "name": "Saratoga Lanes",
+      "category": "landmark",
+      "description": "A historic second-floor bowling alley, one of the oldest still running in the region."
+    }
+  ],
+  "midtown": [
+    {
+      "name": "Cortex Innovation Community",
+      "category": "landmark",
+      "url": "https://www.cortexstl.org/",
+      "description": "A 200-acre tech and startup district, the region's innovation hub."
+    },
+    {
+      "name": "City Foundry STL",
+      "category": "landmark",
+      "url": "https://www.cityfoundrystl.com/",
+      "description": "A food hall, market, and entertainment complex in a restored 1920s foundry."
+    },
+    {
+      "name": "Grand Center Arts District",
+      "category": "landmark",
+      "url": "https://www.grandcenter.org/",
+      "description": "A dense arts district packing theatres, museums, and concert halls into a few blocks."
+    },
+    {
+      "name": "The Fabulous Fox Theatre",
+      "category": "landmark",
+      "url": "https://www.fabulousfox.com",
+      "description": "A lavishly restored 1929 movie palace, now a touring-Broadway and concert venue."
+    },
+    {
+      "name": "Powell Hall",
+      "category": "landmark",
+      "url": "https://www.slso.org",
+      "description": "Home of the St. Louis Symphony Orchestra, in a former 1925 movie palace."
+    },
+    {
+      "name": "The Sheldon",
+      "category": "landmark",
+      "url": "https://www.thesheldon.org/",
+      "description": "A 1912 concert hall and galleries renowned for its acoustics."
+    }
+  ],
+  "shaw": [
+    {
+      "name": "Missouri Botanical Garden",
+      "category": "park",
+      "url": "https://www.missouribotanicalgarden.org",
+      "description": "One of the world's great botanical gardens, home to the Climatron dome."
+    },
+    {
+      "name": "Tower Grove Park",
+      "category": "park",
+      "url": "https://www.towergrovepark.org",
+      "description": "A Victorian walking park with ornate pavilions along Shaw's southern edge."
+    },
+    {
+      "name": "Flora Place",
+      "category": "landmark",
+      "description": "A grand divided boulevard lined with historic mansions."
+    }
+  ],
+  "soulard": [
+    {
+      "name": "Soulard Farmers Market",
+      "category": "shop",
+      "description": "One of the oldest public markets in the country, open Wednesday through Saturday."
+    },
+    {
+      "name": "Soulard Mardi Gras",
+      "category": "landmark",
+      "description": "St. Louis's Mardi Gras celebration, one of the largest in the United States."
+    },
+    {
+      "name": "Anheuser-Busch Brewery",
+      "category": "landmark",
+      "url": "https://www.budweisertours.com/",
+      "description": "The historic Budweiser brewery and Clydesdale stables, just south of the neighborhood."
+    },
+    {
+      "name": "Historic taverns and live blues",
+      "category": "landmark",
+      "description": "A dense strip of 19th-century corner taverns and blues clubs."
+    }
+  ],
+  "southampton": [
+    {
+      "name": "Macklind Avenue Business District",
+      "category": "landmark",
+      "url": "https://macklindbdstl.com/",
+      "description": "A compact strip of locally owned shops, cafes, and restaurants."
+    },
+    {
+      "name": "Hampton Avenue",
+      "category": "landmark",
+      "description": "The commercial corridor along the neighborhood's western edge."
+    }
+  ],
+  "southwest-garden": [
+    {
+      "name": "Missouri Botanical Garden",
+      "category": "park",
+      "url": "https://www.missouribotanicalgarden.org/",
+      "description": "One of the nation's oldest botanical gardens, which borders the neighborhood."
+    },
+    {
+      "name": "Tower Grove Park",
+      "category": "park",
+      "description": "A Victorian walking park bordering the neighborhood to the east."
+    },
+    {
+      "name": "Sublette Park",
+      "category": "park",
+      "description": "A neighborhood park with 13 acres of green space, baseball fields, and courts."
+    },
+    {
+      "name": "Cunetto House of Pasta",
+      "category": "landmark",
+      "description": "A longtime Magnolia Avenue Italian institution the neighborhood is known for."
+    }
+  ],
+  "st-louis-hills": [
+    {
+      "name": "Francis Park",
+      "category": "park",
+      "description": "The neighborhood's central park, with a lily-pad lagoon, a walking loop, and beer garden."
+    },
+    {
+      "name": "Ted Drewes Frozen Custard",
+      "category": "landmark",
+      "description": "The iconic Route 66 frozen-custard stand on the neighborhood's Chippewa edge."
+    },
+    {
+      "name": "Willmore Park",
+      "category": "park",
+      "description": "A 100-acre park on the neighborhood's southern edge with lakes, trails, and a dog park."
+    }
+  ],
+  "the-grove": [
+    {
+      "name": "The Grove neon sign",
+      "category": "landmark",
+      "description": "The neighborhood's landmark neon entry sign arching over Manchester Avenue."
+    },
+    {
+      "name": "Manchester Avenue",
+      "category": "landmark",
+      "description": "The nightlife strip of bars, clubs, and restaurants."
+    }
+  ],
+  "the-hill": [
+    {
+      "name": "St. Ambrose Catholic Church",
+      "category": "landmark",
+      "description": "The 1926 parish church at the heart of the Italian neighborhood."
+    },
+    {
+      "name": "Berra Park",
+      "category": "park",
+      "description": "A neighborhood park named for Hill native Yogi Berra."
+    },
+    {
+      "name": "Italian-painted fire hydrants & crosswalks",
+      "category": "landmark",
+      "description": "Hydrants and crosswalks painted in the colors of the Italian flag."
+    }
+  ],
+  "tower-grove-park": [
+    {
+      "name": "Victorian Pavilions",
+      "category": "landmark",
+      "description": "Dozens of ornate 19th-century pavilions scattered across the park."
+    },
+    {
+      "name": "The Piper Palm House",
+      "category": "landmark",
+      "description": "A glass conservatory with a lily pond and a bandstand."
+    },
+    {
+      "name": "Tower Grove Farmers' Market",
+      "category": "shop",
+      "description": "A seasonal Saturday market from May to October for local produce and baked goods."
+    }
+  ],
+  "tower-grove-south": [
+    {
+      "name": "Tower Grove Park",
+      "category": "park",
+      "url": "https://www.towergrovepark.org",
+      "description": "A Victorian walking park with colorful pavilions and a Saturday farmers market."
+    },
+    {
+      "name": "South Grand Business District",
+      "category": "landmark",
+      "url": "https://www.southgrand.org/",
+      "description": "An international dining strip with Vietnamese, Ethiopian, Thai, and more."
+    },
+    {
+      "name": "Tower Grove Farmers' Market",
+      "category": "shop",
+      "description": "A popular Saturday farmers market held in Tower Grove Park."
+    }
+  ],
+  "university-city": [
+    {
+      "name": "Blueberry Hill",
+      "category": "landmark",
+      "url": "https://www.blueberryhill.com/",
+      "description": "Joe Edwards's landmark restaurant and music club, long tied to Chuck Berry."
+    },
+    {
+      "name": "City Hall & the Lion Gates",
+      "category": "landmark",
+      "description": "U. City's city hall and the ornamental lion gates marking the Loop's west end."
+    }
+  ],
+  "webster-groves": [
+    {
+      "name": "Old Webster & Old Orchard",
+      "category": "landmark",
+      "description": "Two walkable historic business districts of small shops and restaurants."
+    },
+    {
+      "name": "Webster University",
+      "category": "landmark",
+      "url": "https://www.webster.edu/",
+      "description": "A private university whose tree-lined campus anchors the city."
+    },
+    {
+      "name": "The Repertory Theatre of St. Louis",
+      "category": "landmark",
+      "url": "https://www.repstl.org/",
+      "description": "The region's regional theatre on the Webster campus."
+    },
+    {
+      "name": "Opera Theatre of St. Louis",
+      "category": "landmark",
+      "url": "https://opera-stl.org/",
+      "description": "An internationally renowned summer opera festival."
+    },
+    {
+      "name": "Blackburn Park",
+      "category": "park",
+      "description": "A popular neighborhood park with walking trails, picnic areas, and a lake."
+    }
+  ]
+}

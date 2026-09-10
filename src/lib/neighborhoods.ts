@@ -105,6 +105,16 @@ export const regions: Region[] = [
   { slug: 'parks', label: 'Parks' },
 ]
 
+// Region slug -> map color token, shared by the boundary paint on detail maps
+// and the map legends.
+export const regionTokenBySlug: Record<string, string> = {
+  'north-city': '--color-map-north',
+  'central-corridor': '--color-map-central',
+  'south-city': '--color-map-south',
+  'st-louis-county': '--color-map-county',
+  parks: '--color-map-park',
+}
+
 // The region a neighborhood belongs to: parks first (they span groups), then by group.
 export function regionOf(info: NeighborhoodInfo): Region {
   if (info.type === 'park') {

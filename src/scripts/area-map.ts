@@ -404,6 +404,7 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
 
       const element = document.createElement('div')
       element.className = 'map-pin'
+      element.dataset.region = regionKeyBySlug.get(slug) ?? 'central'
       // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke (which
       // sits half-outside the path edge) isn't clipped; the tip at path (12,32)
       // lands at pixel (14,34) in the padded box. `currentColor` fill — the pin

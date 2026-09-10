@@ -9,13 +9,6 @@ tags:
   - italian
   - walkable
   - residential
-attractions:
-  - name: St. Ambrose Catholic Church
-    description: The 1926 parish church at the heart of the Italian neighborhood.
-  - name: Berra Park
-    description: A neighborhood park named for Hill native Yogi Berra.
-  - name: Italian-painted fire hydrants & crosswalks
-    description: Hydrants and crosswalks painted in the colors of the Italian flag.
 ---
 
 The Hill is the Italian-American neighborhood in St. Louis. It has been called [America's Last Little Italy](https://www.youtube.com/watch?v=jvWa4euR-AA). The neighborhood is fiercely proud of its Italian heritage, with Italian flag banners posted all throughout the neighborhood, and fire hydrants and crosswalks painted in the Italian colors.

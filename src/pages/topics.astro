@@ -64,4 +64,26 @@ const topics = sortTopics(published(await getCollection('topics')))
     padding-block-start: var(--spacing-sm);
     text-align: end;
   }
+
+  @media (min-width: 701px) {
+    .card-grid :global(.card-rows) {
+      position: relative;
+    }
+
+    .card-grid :global(.card-rows::before),
+    .card-grid :global(.card-rows::after) {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      border-inline-start: 1px dotted var(--color-line-input);
+    }
+
+    .card-grid :global(.card-rows::before) {
+      inset-inline-start: calc((100% - 2 * var(--spacing-xl)) / 3 + var(--spacing-xl) / 2);
+    }
+
+    .card-grid :global(.card-rows::after) {
+      inset-inline-start: calc(((100% - 2 * var(--spacing-xl)) * 2) / 3 + (3 * var(--spacing-xl)) / 2);
+    }
+  }
 </style>

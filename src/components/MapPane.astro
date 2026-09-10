@@ -1,21 +1,19 @@
 ---
-interface HeroSpot {
-  title: string
-  url: string
-  coords: [number, number]
-  cuisine?: string
-  verdict?: { key: string; label: string }
-  tagline?: string
-}
+import Icon from './Icon.astro'
+import { spotCategories, type MapSpot, type SpotCategoryKey } from '../lib/spots'
 
 interface Props {
   slug: string
   boundaryToken: string
   coords?: [number, number]
-  spots: HeroSpot[]
+  spots: MapSpot[]
 }
 
 const { slug, boundaryToken, coords, spots } = Astro.props
+
+const legendCategories = (Object.keys(spotCategories) as SpotCategoryKey[]).filter((key) =>
+  spots.some((spot) => spot.category === key),
+)
 ---
 
 <div
@@ -25,7 +23,24 @@ const { slug, boundaryToken, coords, spots } = Astro.props
   data-boundary-token={boundaryToken}
   data-coords={coords?.join(',')}
   role="application"
-  aria-label={`Map of the neighborhood and its food spots`}>
+  aria-label={`Map of the neighborhood and its notable spots`}>
+  {
+    legendCategories.length > 0 && (
+      <ul class="map-legend" data-map-legend role="list" aria-label="Map legend">
+        {legendCategories.map((key) => (
+          <li class="map-legend-item" data-legend-category={key}>
+            <span
+              class="map-legend-swatch"
+              style={`--badge-color: var(${spotCategories[key].token})`}
+              aria-hidden="true">
+              <Icon name={spotCategories[key].icon} />
+            </span>
+            {spotCategories[key].label}
+          </li>
+        ))}
+      </ul>
+    )
+  }
 </div>
 <script
   is:inline

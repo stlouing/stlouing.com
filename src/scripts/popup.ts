@@ -20,9 +20,12 @@ export interface PopupSource {
 }
 
 export interface PopupConfig {
-  // Title text + the shared target for the title link and "View more".
+  // Title text + the shared target for the title link and "View more". Without
+  // a link the title renders as plain text and "View more" is omitted.
   title: string
-  link: string
+  link?: string
+  // Open the title link + "View more" in a new tab (an off-site spot page).
+  external?: boolean
   // A photo banner atop the popup (an entry with a picture): rendered as a
   // centered cover background, full width, fixed height (--popup-photo-height).
   photo?: string
@@ -109,7 +112,8 @@ const RATING_TOTAL = 4
 export function buildPopupHtml(config: PopupConfig): string {
   const {
     title,
-    link,
+    link = '',
+    external = false,
     photo = '',
     verdict,
     showRating = false,
@@ -124,7 +128,10 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<div class="popup-photo" style="background-image: url('${escapeHtml(photo)}')" aria-hidden="true"></div>`
     : ''
 
-  const titleHtml = `<h2><a class="title-serif title-link" href="${link}">${escapeHtml(title)}</a></h2>`
+  const targetAttrs = external ? ' target="_blank" rel="noopener"' : ''
+  const titleHtml = link
+    ? `<h2><a class="title-serif title-link" href="${link}"${targetAttrs}>${escapeHtml(title)}</a></h2>`
+    : `<h2><span class="title-serif">${escapeHtml(title)}</span></h2>`
 
   // The rating, matching Rating.astro: four fleur-de-lis, filled to the verdict's
   // level (not-for-me = 1 … loved = 4), all four faded when unrated. The label
@@ -159,7 +166,9 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   const excerptHtml = excerpt ? `<p class="popup-excerpt excerpt">${escapeHtml(excerpt)}</p>` : ''
 
-  const moreHtml = `<a class="btn btn-dark btn-compact popup-more-link" href="${link}">View more</a>`
+  const moreHtml = link
+    ? `<a class="btn btn-dark btn-compact popup-more-link" href="${link}"${targetAttrs}>View more</a>`
+    : ''
 
   const sourcesHtml = sources.length
     ? `<div class="popup-actions">${sources

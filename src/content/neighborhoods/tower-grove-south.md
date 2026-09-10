@@ -10,15 +10,6 @@ tags:
   - green
   - residential
   - international
-attractions:
-  - name: Tower Grove Park
-    url: https://www.towergrovepark.org
-    description: A Victorian walking park with colorful pavilions and a Saturday farmers market.
-  - name: South Grand Business District
-    url: https://www.southgrand.org/
-    description: An international dining strip with Vietnamese, Ethiopian, Thai, and more.
-  - name: Tower Grove Farmers' Market
-    description: A popular Saturday farmers market held in Tower Grove Park.
 ---
 
 Tower Grove South is the aptly named neighborhood just south of [[tower-grove-park|Tower Grove Park]]. The area is largely residential with two main business strips - one near the western edge along Morganford Rd, and one on the eastern edge along South Grand Blvd. There are a few cafes and bars scattered around the rest of the neighborhood.

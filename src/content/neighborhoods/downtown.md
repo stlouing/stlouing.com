@@ -8,21 +8,6 @@ tags:
   - sports
   - urban
   - walkable
-attractions:
-  - name: Gateway Arch
-    url: https://www.gatewayarch.com
-    description: The tallest manmade arch in the world, and a national park.
-  - name: City Museum
-    url: https://www.citymuseum.org
-    description: A surreal playground of reclaimed architecture for kids and adults.
-  - name: Busch Stadium
-    url: https://www.mlb.com/cardinals/ballpark
-    description: Home of the St. Louis Cardinals.
-  - name: Citygarden
-    description: A downtown sculpture park with fountains and public art.
-  - name: Union Station
-    url: https://www.stlouisunionstation.com
-    description: A grand 1894 train station, now a hotel with an aquarium and Ferris wheel.
 ---
 
 As a kid, I can remember crossing over the Mississippi river into St. Louis on road trips out west and saying, "Hey look, it's the Arch!" No matter where you are in St. Louis, you can probably see the Arch looming in the distance. The Arch is the biggest and most impressive monument in St. Louis, one of the most recognizable American monuments, and the biggest tourist activity to in Downtown St. Louis.

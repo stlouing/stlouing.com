@@ -15,6 +15,8 @@ import Card from '../../components/Card.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { resolveVerdict, verdictLabels } from '../../lib/verdict'
 import { cuisineLabel } from '../../lib/cuisine'
+import { googleMapsHref } from '../../lib/maps'
+import { spotsIn, spotCategories, type MapSpot } from '../../lib/spots'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { getBacklinks } from '../../lib/backlinks'
 import {
@@ -30,6 +32,7 @@ import {
   corridorsIn,
   neighborhoodResourceLinks,
   regionOf,
+  regionTokenBySlug,
 } from '../../lib/neighborhoods'
 import neighborhoods from '../../data/neighborhoods.json'
 import Button from '../../components/Button.astro'
@@ -75,7 +78,8 @@ const hasWriteup = Boolean(entry?.body && entry.body.trim())
 const backlinks = entry ? await getBacklinks(entry.id) : []
 const tags = entry?.data.tags ?? []
 
-const attractions = entry?.data.attractions ?? []
+const spots = spotsIn(slug)
+const isExternalUrl = (url: string) => /^https?:\/\//.test(url)
 
 const population = neighborhoodPopulation(slug)
 const neighbors =
@@ -140,7 +144,30 @@ const trail = [
   ...(region ? [{ label: region.label, href: `/neighborhoods/${region.slug}/` }] : []),
 ]
 
-const heroSpots = places.flatMap((place) => {
+const spotMapSpots: MapSpot[] = spots.flatMap((spot) => {
+  if (!spot.coords) {
+    return []
+  }
+  const external = Boolean(spot.url && isExternalUrl(spot.url))
+
+  return [
+    {
+      title: spot.name,
+      category: spot.category,
+      coords: spot.coords,
+      url: spot.url ? (external ? spot.url : href(spot.url)) : undefined,
+      external,
+      meta: spotCategories[spot.category].meta,
+      tagline: spot.description ?? '',
+      directionsHref: googleMapsHref({
+        title: spot.name,
+        coords: [spot.coords[1], spot.coords[0]],
+      }),
+    },
+  ]
+})
+
+const foodMapSpots: MapSpot[] = places.flatMap((place) => {
   const [lat, lng] = place.data.coords ?? []
   if (lat === undefined || lng === undefined) {
     return []
@@ -150,23 +177,19 @@ const heroSpots = places.flatMap((place) => {
   return [
     {
       title: place.data.title,
-      url: `/food/${place.id}/`,
+      category: 'food' as const,
+      url: href(`/food/${place.id}/`),
       coords: [lng, lat] as [number, number],
-      cuisine: place.data.cuisine[0],
+      meta: cuisineLabel(place.data.cuisine[0]),
       verdict: verdict ? { key: verdict, label: verdictLabels[verdict] } : undefined,
       tagline: place.data.description ?? '',
     },
   ]
 })
 
-const boundaryTokenByRegion: Record<string, string> = {
-  'north-city': '--color-map-north',
-  'central-corridor': '--color-map-central',
-  'south-city': '--color-map-south',
-  'st-louis-county': '--color-map-county',
-  parks: '--color-map-park',
-}
-const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-accent'
+const mapSpots = [...spotMapSpots, ...foodMapSpots]
+
+const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-accent'
 ---
 
 <BaseLayout
@@ -257,14 +280,15 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
           }
 
           {
-            attractions.length > 0 && (
-              <CardList title="Landmarks">
-                {attractions.map((spot) => (
+            spots.length > 0 && (
+              <CardList title="Notable spots">
+                {spots.map((spot) => (
                   <Card
-                    href={spot.url}
+                    href={spot.url ? (isExternalUrl(spot.url) ? spot.url : href(spot.url)) : undefined}
                     title={spot.name}
+                    meta={spotCategories[spot.category].meta}
                     description={spot.description}
-                    external
+                    external={Boolean(spot.url && isExternalUrl(spot.url))}
                   />
                 ))}
               </CardList>
@@ -371,7 +395,7 @@ const boundaryToken = boundaryTokenByRegion[region?.slug ?? ''] ?? '--color-map-
         slug={slug}
         boundaryToken={boundaryToken}
         coords={info?.coords}
-        spots={heroSpots}
+        spots={mapSpots}
       />
     </div>
   </div>
