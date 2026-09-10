@@ -6,7 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import FilterMapPage from '../../components/FilterMapPage.astro'
 import ListPaneHeader from '../../components/ListPaneHeader.astro'
 import MapRow from '../../components/MapRow.astro'
-import IconSearch from '../../assets/IconSearch.astro'
+import PaneSearch from '../../components/PaneSearch.astro'
 import Rating from '../../components/Rating.astro'
 import SourceLink from '../../components/SourceLink.astro'
 import { published, hasBody, excerpt, PREVIEW_EXCERPT_CHARS } from '../../lib/content'
@@ -85,19 +85,7 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
     emptyText="No places match those filters.">
     <article class="page content-pane map-list grouped-list">
       <ListPaneHeader title="Food" count={count} live>
-        <div class="pane-links">
-          <label class="pane-search-wrap">
-            <IconSearch />
-            <input
-              class="pane-search"
-              type="search"
-              placeholder="search by name, cuisine..."
-              autocomplete="off"
-              aria-label="Search places"
-              data-filter-search
-            />
-          </label>
-        </div>
+        <PaneSearch label="Search places" placeholder="search by name, cuisine..." />
       </ListPaneHeader>
       <ul class="list" data-grouped-rows>
         {
@@ -187,33 +175,3 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
   initListGroups()
 </script>
 
-<style>
-  .pane-links {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    flex: 1;
-    margin-inline-start: var(--spacing-lg);
-  }
-
-  .pane-search-wrap {
-    position: relative;
-    display: flex;
-    flex: 1;
-  }
-
-  .pane-search-wrap :global(.icon) {
-    position: absolute;
-    inset-inline-start: var(--spacing-sm);
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    pointer-events: none;
-  }
-
-  .pane-links .pane-search {
-    width: 100%;
-    padding-inline-start: calc(var(--spacing-sm) + 16px + var(--spacing-sm));
-  }
-</style>

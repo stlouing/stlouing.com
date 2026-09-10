@@ -953,7 +953,7 @@ select {
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 6px;
   margin: 0;
 }
 
@@ -1296,6 +1296,10 @@ body:has(.map-split) main > .wrap,
   top: 45px;
   z-index: 2;
   background: var(--color-surface-2);
+}
+
+[data-filter-root]:has([data-filter-search]:not(:placeholder-shown)) .section-head {
+  display: none;
 }
 
 .grouped-list li.group-header .rating {
@@ -2491,7 +2495,7 @@ button.title-link:hover {
 }
 
 .feed-entry {
-  padding-block: var(--spacing-md);
+  padding-block: var(--spacing-sm) var(--spacing-lg);
   border-block-end: 1px dotted var(--color-line-input);
 }
 
@@ -2510,12 +2514,21 @@ button.title-link:hover {
   gap: var(--spacing-sm);
 }
 
+.feed-byline .feed-date {
+  margin: 0;
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-xxs);
+  font-weight: 400;
+  color: var(--color-muted);
+  margin-left: var(--spacing-sm);
+}
+
 .feed-name {
   display: inline;
 }
 
 .feed-entry .feed-message {
-  margin-block-start: var(--spacing-xs);
+  margin-block-start: var(--spacing-sm);
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
   line-height: 1.55;
@@ -2523,8 +2536,26 @@ button.title-link:hover {
   overflow-wrap: anywhere;
 }
 
+.feed-reply {
+  margin-block-start: var(--spacing-base);
+  margin-inline-start: var(--spacing-md);
+  padding-inline-start: var(--spacing-md);
+  border-inline-start: 2px solid var(--color-accent);
+}
+
+.feed-reply > p {
+  margin: 0;
+}
+
+.feed-fleur {
+  width: 0.9rem;
+  height: 1rem;
+  max-width: none;
+  color: var(--color-accent);
+}
+
 .feed-empty {
-  margin: var(--spacing-md) 0 0;
+  margin: var(--spacing-md) 0 var(--spacing-sm);
 }
 
 .feed-older {

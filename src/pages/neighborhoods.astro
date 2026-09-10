@@ -2,8 +2,10 @@
 import { getCollection } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import ClearFilters from '../components/ClearFilters.astro'
 import ListPaneHeader from '../components/ListPaneHeader.astro'
 import MapRow from '../components/MapRow.astro'
+import PaneSearch from '../components/PaneSearch.astro'
 import AreaMap from '../components/AreaMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { published, excerpt, hasBody, PREVIEW_EXCERPT_CHARS } from '../lib/content'
@@ -80,7 +82,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
   crumb="Neighborhoods"
   title="St. Louis Neighborhood Map - City and County"
   description="A map and field guide to all 79 neighborhoods and 9 parks of the City of St. Louis, including local food, events, population, borders, and discoveries.">
-  <div class="map-split" data-map-split data-view="map">
+  <div class="map-split" data-filter-root data-map-split data-view="map">
     <script is:inline>
       {
         const split = document.currentScript.parentElement
@@ -91,7 +93,9 @@ function sectionOf(area: { group?: string; type?: string }): string {
     </script>
     <div class="results">
       <article class="page content-pane map-list section-list">
-        <ListPaneHeader title="Neighborhoods" count={count} />
+        <ListPaneHeader title="Neighborhoods" count={count} live>
+          <PaneSearch label="Search neighborhoods" placeholder="search by name, area..." />
+        </ListPaneHeader>
         <ul class="list">
           {
             listed.map((neighborhood, index) => {
@@ -130,7 +134,14 @@ function sectionOf(area: { group?: string; type?: string }): string {
                     title={neighborhood.name}
                     detailHref={`/neighborhoods/${neighborhood.slug}/`}
                     readMore={false}
-                    filterable={false}
+                    search={[
+                      neighborhood.name,
+                      section === 'park' ? 'Park' : '',
+                      neighborhood.group ?? '',
+                      popup.tagline ?? '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                     class={written ? 'is-written' : undefined}
                     attrs={{
                       'data-section': neighborhood.slug,
@@ -176,7 +187,17 @@ function sectionOf(area: { group?: string; type?: string }): string {
         </ul>
       </article>
       <AreaMap />
+      <p class="empty" data-filter-empty hidden>
+        No neighborhoods match.
+        <ClearFilters />
+      </p>
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  import { initFilter } from '../scripts/filter'
+
+  initFilter()
+</script>
 

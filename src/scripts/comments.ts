@@ -21,7 +21,21 @@ const PAGE_SIZE = 20
 const LINK_PATTERN =
   /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|info|biz|xyz|top|site|online|shop|club|io|ru)\b)/i
 
-type CommentEntry = { id: number; name: string; message: string; created_at: string; total: number }
+type CommentEntry = {
+  id: number
+  name: string
+  message: string
+  created_at: string
+  author_reply: string | null
+  author_reply_at: string | null
+  total: number
+}
+
+// The site's fleur-de-lis, referencing the #fleur-glyph symbol BaseLayout embeds
+// (the popup.ts pattern). Constant markup with no reader-supplied text, so
+// innerHTML is safe for it.
+const AUTHOR_FLEUR =
+  '<svg class="feed-fleur" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 192" fill="currentColor" aria-hidden="true"><use href="#fleur-glyph"/></svg>'
 
 type CommentsStore = {
   // The commenter's name, remembered after a successful post so the field is
@@ -207,7 +221,15 @@ function setupComments(root: HTMLElement): void {
 
       // The server accepted it — show it at the top right away rather than re-fetching.
       entriesList.prepend(
-        buildEntry({ id: 0, name, message, created_at: new Date().toISOString(), total: 0 }),
+        buildEntry({
+          id: 0,
+          name,
+          message,
+          created_at: new Date().toISOString(),
+          author_reply: null,
+          author_reply_at: null,
+          total: 0,
+        }),
       )
       shown += 1
       total += 1
@@ -237,11 +259,6 @@ function buildEntry(entry: CommentEntry): HTMLLIElement {
   const item = document.createElement('li')
   item.className = 'feed-entry'
 
-  const date = document.createElement('p')
-  date.className = 'feed-date eyebrow'
-  date.textContent = formatPostedDate(entry.created_at)
-  item.append(date)
-
   const commenter = document.createElement('p')
   commenter.className = 'feed-byline'
 
@@ -250,6 +267,8 @@ function buildEntry(entry: CommentEntry): HTMLLIElement {
   nameLabel.textContent = entry.name
   commenter.append(nameLabel)
 
+  commenter.append(buildDate(entry.created_at))
+
   item.append(commenter)
 
   const message = document.createElement('p')
@@ -257,7 +276,50 @@ function buildEntry(entry: CommentEntry): HTMLLIElement {
   message.textContent = entry.message
   item.append(message)
 
+  if (entry.author_reply) {
+    item.append(buildReply(entry.author_reply, entry.author_reply_at))
+  }
+
   return item
+}
+
+// The date beside the name in a byline row.
+function buildDate(isoDate: string): HTMLSpanElement {
+  const date = document.createElement('span')
+  date.className = 'feed-date'
+  date.textContent = formatPostedDate(isoDate)
+
+  return date
+}
+
+// The author's response, nested under its comment. The byline is always the
+// fleur mark + "St. Louing" — replies only exist when the author writes one;
+// readers have no path to this field.
+function buildReply(replyMessage: string, replyDate: string | null): HTMLDivElement {
+  const reply = document.createElement('div')
+  reply.className = 'feed-reply'
+
+  const author = document.createElement('p')
+  author.className = 'feed-byline'
+  author.innerHTML = AUTHOR_FLEUR
+
+  const authorName = document.createElement('span')
+  authorName.className = 'feed-name title-serif'
+  authorName.textContent = 'St. Louing'
+  author.append(authorName)
+
+  if (replyDate) {
+    author.append(buildDate(replyDate))
+  }
+
+  reply.append(author)
+
+  const message = document.createElement('p')
+  message.className = 'feed-message'
+  message.textContent = replyMessage
+  reply.append(message)
+
+  return reply
 }
 
 // Comment timestamps are real instants, not date-only frontmatter, so unlike the

@@ -26,31 +26,6 @@ const { kind, slug, title } = Astro.props
         <span slot="aside" class="count" data-count />
       </Subheading>
 
-      <section aria-label="Leave a comment">
-        <form class="form-stack" data-form>
-          <label class="field">
-            <span>Name</span>
-            <input type="text" data-name maxlength="80" autocomplete="name" required />
-          </label>
-          <label class="field">
-            <span>Comment</span>
-            <textarea data-message rows="4" maxlength="2000" required />
-          </label>
-                    <div class="hp" aria-hidden="true">
-            <label>
-              Leave this field empty
-              <input type="text" data-hp tabindex="-1" autocomplete="off" />
-            </label>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-dark btn-compact" data-submit>
-              Post
-            </button>
-            <span class="form-status" data-form-status role="status" aria-live="polite" />
-          </div>
-        </form>
-      </section>
-
       <div>
         <ul class="feed" data-entries />
         <p class="feed-empty description" data-empty hidden>
@@ -61,6 +36,32 @@ const { kind, slug, title } = Astro.props
           Show older comments
         </button>
       </div>
+
+      <section>
+        {/* <Subheading level={4}>Leave a comment</Subheading> */}
+        <form class="form-stack" data-form>
+          <label class="field">
+            <span>Name</span>
+            <input type="text" data-name maxlength="80" autocomplete="name" required />
+          </label>
+          <label class="field">
+            <span>Comment</span>
+            <textarea data-message rows="4" maxlength="2000" required />
+          </label>
+          <div class="hp" aria-hidden="true">
+            <label>
+              Leave this field empty
+              <input type="text" data-hp tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-dark btn-compact" data-submit>
+              Post Comment
+            </button>
+            <span class="form-status" data-form-status role="status" aria-live="polite" />
+          </div>
+        </form>
+      </section>
     </section>
   )
 }
@@ -82,4 +83,17 @@ const { kind, slug, title } = Astro.props
     display: none;
   }
 
+  .comments > :global(.subheading:first-child) {
+    margin-block-end: 0;
+    padding-block-end: var(--spacing-xs);
+    border-block-end: 2px solid var(--color-line-contrast);
+  }
+
+  .comments :global(.feed-entry:last-child) {
+    padding-block-end: var(--spacing-xl);
+  }
+
+  .comments > section {
+    margin-block-start: var(--spacing-md);
+  }
 </style>

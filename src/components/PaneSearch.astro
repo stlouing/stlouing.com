@@ -1,0 +1,46 @@
+---
+import IconSearch from '../assets/IconSearch.astro'
+
+interface Props {
+  label: string
+  placeholder: string
+}
+
+const { label, placeholder } = Astro.props
+---
+
+<label class="pane-search-wrap">
+  <IconSearch />
+  <input
+    class="pane-search"
+    type="search"
+    placeholder={placeholder}
+    autocomplete="off"
+    aria-label={label}
+    data-filter-search
+  />
+</label>
+
+<style>
+  .pane-search-wrap {
+    position: relative;
+    display: flex;
+    flex: 1;
+    margin-inline-start: var(--spacing-lg);
+  }
+
+  .pane-search-wrap :global(.icon) {
+    position: absolute;
+    inset-inline-start: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  .pane-search {
+    width: 100%;
+    padding-inline-start: calc(var(--spacing-sm) + 16px + var(--spacing-sm));
+  }
+</style>
