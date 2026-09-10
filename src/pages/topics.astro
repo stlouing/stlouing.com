@@ -68,6 +68,12 @@ const topics = sortTopics(published(await getCollection('topics')))
   @media (min-width: 701px) {
     .card-grid :global(.card-rows) {
       position: relative;
+      column-gap: 0;
+      margin-inline: calc(-1 * var(--spacing-md));
+    }
+
+    .card-grid :global(.card-rows .card) {
+      padding-inline: var(--spacing-md);
     }
 
     .card-grid :global(.card-rows::before),
@@ -79,11 +85,11 @@ const topics = sortTopics(published(await getCollection('topics')))
     }
 
     .card-grid :global(.card-rows::before) {
-      inset-inline-start: calc((100% - 2 * var(--spacing-xl)) / 3 + var(--spacing-xl) / 2);
+      inset-inline-start: calc(100% / 3);
     }
 
     .card-grid :global(.card-rows::after) {
-      inset-inline-start: calc(((100% - 2 * var(--spacing-xl)) * 2) / 3 + (3 * var(--spacing-xl)) / 2);
+      inset-inline-start: calc(200% / 3);
     }
   }
 </style>
