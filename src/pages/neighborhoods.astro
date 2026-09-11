@@ -9,12 +9,7 @@ import PaneSearch from '../components/PaneSearch.astro'
 import AreaMap from '../components/AreaMap.astro'
 import neighborhoods from '../data/neighborhoods.json'
 import { published, excerpt, hasBody, PREVIEW_EXCERPT_CHARS } from '../lib/content'
-import {
-  neighborhoodResourceLinks,
-  neighborhoodPopulation,
-  foodByNeighborhood,
-  normalizeName,
-} from '../lib/neighborhoods'
+import { neighborhoodResourceLinks } from '../lib/neighborhoods'
 
 const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
@@ -26,8 +21,6 @@ for (const [slug, entry] of entryBySlug) {
     thumbBySlug.set(slug, thumb.src)
   }
 }
-const foodByHood = await foodByNeighborhood()
-
 const isWritten = (slug: string) => hasBody(entryBySlug.get(slug) ?? {})
 
 const listed = neighborhoods
@@ -46,8 +39,6 @@ function popupData(slug: string, name: string, group: string) {
 
   return {
     area: group,
-    population: neighborhoodPopulation(slug),
-    spots: foodByHood.get(normalizeName(name))?.length ?? 0,
     official: hrefFor('Website'),
     wikipedia: hrefFor('Wikipedia'),
     city: hrefFor('St. Louis City'),
@@ -155,8 +146,6 @@ function sectionOf(area: { group?: string; type?: string }): string {
                       'data-tagline': popup.tagline ?? '',
                       'data-photo': thumbBySlug.get(neighborhood.slug) ?? '',
                       'data-excerpt': popup.excerpt ?? '',
-                      'data-population': popup.population ? String(popup.population) : '',
-                      'data-spots': String(popup.spots),
                     }}>
                     {neighborhood.group && (
                       <span class="eyebrow eyebrow--muted" slot="eyebrow">

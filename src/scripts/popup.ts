@@ -45,8 +45,7 @@ export interface PopupConfig {
   // Food only: the place's Google Maps link, rendered as a small
   // "View directions" link under the address.
   directionsHref?: string
-  // A one-line tagline (the entry's description). Accepted for compatibility
-  // but not rendered.
+  // A one-line tagline (the entry's description), in the shared description voice.
   tagline?: string
   // A short writeup teaser, clamped to a few lines by the popup CSS.
   excerpt?: string
@@ -120,6 +119,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     chips = [],
     addressLines = [],
     directionsHref = '',
+    tagline = '',
     excerpt = '',
     sources = [],
   } = config
@@ -164,6 +164,10 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<a class="popup-directions" href="${directionsHref}" target="_blank" rel="noopener">View directions${DIRECTIONS_ICON}</a>`
     : ''
 
+  const taglineHtml = tagline
+    ? `<p class="popup-tagline description">${escapeHtml(tagline)}</p>`
+    : ''
+
   const excerptHtml = excerpt ? `<p class="popup-excerpt excerpt">${escapeHtml(excerpt)}</p>` : ''
 
   const moreHtml = link
@@ -179,9 +183,9 @@ export function buildPopupHtml(config: PopupConfig): string {
         .join('')}</div>`
     : ''
 
-  // Order mirrors the list rows: the photo banner, rating, the eyebrow, then
-  // the serif title with the address (plus its directions link) and excerpt below.
-  // The .popup-scroll wrapper caps the popup's height on short viewports and
-  // scrolls internally (the close button, a sibling, stays pinned).
-  return `<div class="popup-scroll">${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${addressHtml}${directionsHtml}${excerptHtml}${moreHtml}</div>`
+  // Order mirrors the list rows: the photo banner, rating, the eyebrow, then the
+  // serif title with the description, address (plus its directions link) and
+  // excerpt below. The .popup-scroll wrapper caps the popup's height on short
+  // viewports and scrolls internally (the close button, a sibling, stays pinned).
+  return `<div class="popup-scroll">${photoHtml}${ratingHtml}${metaHtml}${titleHtml}${taglineHtml}${addressHtml}${directionsHtml}${excerptHtml}${moreHtml}</div>`
 }

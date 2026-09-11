@@ -10,7 +10,9 @@ const description =
 <BaseLayout article crumb="Contact" title="Contact - St. Louing" description={description}>
   <article class="page">
     <PageMasthead title="Contact">
-      <p slot="lede">If you have a question, comment, or if I got something wrong, please reach out!</p>
+      <p slot="lede">
+        If you have a question, comment, or if I got something wrong, please reach out!
+      </p>
     </PageMasthead>
 
     <div class="reading-col">
@@ -54,10 +56,13 @@ const description =
           </section>
         )
       }
-
-      <p class="feedback-alt">
-        Prefer email? <a href="mailto:hello+feedback@stlouing.com">hello@stlouing.com</a>
-      </p>
+      <div class="feedback-alt">
+        <p>
+          <strong>Email</strong>: <a href="mailto:hello+feedback@stlouing.com">hello@stlouing.com</a
+          >
+          <br /><strong>Instagram</strong>: <a href="https://instagram.com/st.louing">@st.louing</a>
+        </p>
+      </div>
     </div>
   </article>
 </BaseLayout>

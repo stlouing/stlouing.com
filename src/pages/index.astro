@@ -26,6 +26,7 @@ import Card from '../components/Card.astro'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconInstagram from '../assets/IconInstagram.astro'
+import FleurGlyph from '../assets/FleurGlyph.astro'
 
 const intro = `Welcome to St. Louing, my ongoing project to document living in St. Louis and learning to love it!`
 
@@ -229,6 +230,14 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
       <div class="front-whatsnew">
         <WhatsNew />
+        <div class="fake-ad">
+          <div class="fake-ad-header" aria-hidden="true">
+            <FleurGlyph />
+            <FleurGlyph />
+            <FleurGlyph />
+          </div>
+          <p class="fake-ad-copy">No ads</p>
+        </div>
       </div>
 
       <!-- {
@@ -331,6 +340,42 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .front-whatsnew {
     grid-area: whatsnew;
     min-width: 0;
+    display: grid;
+    gap: var(--spacing-lg);
+    align-content: start;
+  }
+
+  .fake-ad {
+    display: grid;
+    gap: var(--spacing-sm);
+    border: 2px solid var(--color-line-contrast);
+    text-align: center;
+  }
+
+  .fake-ad-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-block: var(--spacing-sm);
+    background: var(--color-text-heading);
+    color: var(--color-panel);
+  }
+
+  .fake-ad-header :global(svg) {
+    width: 0.7rem;
+    height: auto;
+  }
+
+  .fake-ad-copy {
+    margin: 0;
+    font-family: var(--font-sans-serif);
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 2;
+    transform: scaleY(2);
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 
   .rail-articles {

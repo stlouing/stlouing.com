@@ -118,7 +118,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 'data-photo': thumb?.src ?? '',
                 'data-instagram': place.data.instagram ?? '',
                 'data-tagline': place.data.description ?? '',
-                'data-excerpt': hasBody(place) ? excerpt(place.body, PREVIEW_EXCERPT_CHARS) : '',
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
                 <span class="eyebrow eyebrow--muted" slot="eyebrow">

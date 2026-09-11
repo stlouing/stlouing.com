@@ -3,8 +3,7 @@
 // its region color and an icon badge for every mapped spot (food places plus
 // the authored spots.json categories). Badges are DOM markers colored by
 // data-category, their icon cloned from the SSR legend inside the pane (the
-// legend is the one icon source); hover shows the name via the shared
-// .corridor-spot tooltip CSS, and clicking opens the popup instead of
+// legend is the one icon source); clicking opens the popup instead of
 // navigating (middle-click on a linked badge still opens its page). On phones
 // the pane stacks on top of the content at a fixed height, so the map is
 // always visible at mount.
@@ -177,11 +176,6 @@ function addSpotMarkers(
       body.append(legendIcon.cloneNode(true))
     }
     element.append(body)
-
-    const name = document.createElement('span')
-    name.className = 'corridor-spot-name'
-    name.textContent = spot.title
-    element.append(name)
 
     element.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()

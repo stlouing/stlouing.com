@@ -159,8 +159,8 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
   const map = createBasemapMap(element, { minZoom: 10, maxZoom: 13 })
 
   // Touch devices synthesize hover (mouseenter/mousemove) events on tap, which
-  // makes the hover card flicker and fights tap-to-open. Gate every hover behavior
-  // on a genuinely hover-capable pointer (a mouse), so mobile is tap-only.
+  // fights tap-to-open. Gate every hover behavior on a genuinely hover-capable
+  // pointer (a mouse), so mobile is tap-only.
   const canHover = window.matchMedia('(hover: hover)').matches
 
   let selectedSlug: string | null = null
@@ -255,74 +255,11 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     }
   })
 
-  // A lightweight hover card (name + region + population + food count) so the map
-  // reads without clicking each boundary. Its own popup instance, pointer-events
-  // off (CSS), and suppressed for the neighborhood whose full popup is already open.
-  const hoverTip = new maplibregl.Popup({
-    closeButton: false,
-    closeOnClick: false,
-    className: 'map-hover-tip',
-    anchor: 'bottom',
-    // Clear the explored-neighborhood pin (~34px tall) so the card sits above it
-    // rather than overlapping — matches the full popup's offset.
-    offset: 38,
-    // Let the no-wrap fact lines size the card instead of the default 240px cap.
-    maxWidth: 'none',
-    focusAfterOpen: false,
-  })
-
-  // Anchored to the neighborhood's center (not the cursor) and guarded by slug, so
-  // moving within a boundary doesn't rebuild/re-jitter the tip every frame.
-  let hoverTipSlug: string | null = null
-  function hideHoverTip(): void {
-    hoverTip.remove()
-    hoverTipSlug = null
-  }
-
-  function showHoverTip(slug: string): void {
-    if (!canHover || !slug || slug === selectedSlug) {
-      hideHoverTip()
-      return
-    }
-    if (slug === hoverTipSlug) {
-      return
-    }
-    const name = nameBySlug.get(slug)
-    const center = centerBySlug.get(slug)
-    if (!name || !center) {
-      hideHoverTip()
-      return
-    }
-    const row = rowFor(slug)
-    const population = Number(row?.dataset.population ?? '')
-    const spots = Number(row?.dataset.spots ?? '')
-    const facts = [
-      row?.dataset.area ?? '',
-      Number.isFinite(population) && population > 0
-        ? `${population.toLocaleString()} residents`
-        : '',
-      Number.isFinite(spots) && spots > 0
-        ? `${spots} food ${spots === 1 ? 'spot' : 'spots'} mapped`
-        : '',
-    ].filter(Boolean)
-    // Each data point on its own no-wrap line (see the .hover-tip-fact CSS).
-    const factsHtml = facts
-      .map((fact) => `<span class="hover-tip-fact">${escapeHtml(fact)}</span>`)
-      .join('')
-    hoverTip
-      .setLngLat(center)
-      .setHTML(`<span class="hover-tip-name">${escapeHtml(name)}</span>${factsHtml}`)
-      .addTo(map)
-    hoverTipSlug = slug
-  }
-
   function openPopupFor(slug: string, deferKeepInView = false): void {
     const center = centerBySlug.get(slug)
     if (!center) {
       return
     }
-    // The full popup supersedes the hover card.
-    hideHoverTip()
     popup.setLngLat(center).setHTML(popupHtmlFor(slug)).addTo(map)
     activate(slug)
     // Keep the popup clear of the sticky chrome + map edges (see map-shared). When a
@@ -425,14 +362,12 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
         if (slug !== selectedSlug) {
           setSlugState(slug, { hover: true })
         }
-        showHoverTip(slug)
       })
       element.addEventListener('mouseleave', () => {
         if (!canHover) {
           return
         }
         setSlugState(slug, { hover: false })
-        hideHoverTip()
       })
     }
   }
@@ -457,7 +392,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
       if (slug !== selectedSlug) {
         map.setFeatureState({ source: SOURCE_ID, id }, { hover: true })
       }
-      showHoverTip(slug)
       map.getCanvas().style.cursor = 'pointer'
     })
     map.on('mouseleave', FILL_LAYER, () => {
@@ -465,11 +399,9 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
         map.setFeatureState({ source: SOURCE_ID, id: hoveredId }, { hover: false })
       }
       hoveredId = null
-      hideHoverTip()
       map.getCanvas().style.cursor = ''
     })
     map.on('click', (event) => {
-      hideHoverTip()
       const hits = map.queryRenderedFeatures(event.point, { layers: [FILL_LAYER] })
       const slug = hits.length ? String(hits[0].properties?.slug ?? '') : ''
       if (slug) {

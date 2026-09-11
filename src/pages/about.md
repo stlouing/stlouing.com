@@ -6,6 +6,8 @@ tagline: My ongoing project to document St. Louis
 description: "St. Louing is an independent guide to the food and neighborhoods of St. Louis. It's a love letter to an underrated city, built in the spirit of the early internet."
 ---
 
+<img class="emblem" src="/logo.svg" alt="St. Louing logo" width="120" height="156" />
+
 Welcome! St. Louing is a personal project I created to document my experience living in St. Louis and learning to love it.
 
 I've been on a quest to find [the best food in St. Louis](/food/), and after realizing I've tried more [[st-louis-style-pizza|St. Louis-style pizza]] than anyone I know (and have strong opinions about it), I thought a website would be a fun medium to share everything I've discovered.
@@ -82,6 +84,8 @@ A few open-source projects this site relies on.
   - The place to discuss food in St. Louis.
 - [**St. Louis-MO.gov**](https://www.stlouis-mo.gov/)
   - Used for determining neighborhood boundaries and facts.
+- [**St. Louis Patina**](https://stlouispatina.com/)
+  - A blog detailing the beauty of St. Louis architecture.
 
 ## Etymology
 

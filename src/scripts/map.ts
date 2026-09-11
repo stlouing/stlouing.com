@@ -195,7 +195,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       google && { label: 'Google Maps', href: google },
     ].filter(Boolean) as PopupSource[]
 
-    const excerptText = item.dataset.excerpt ?? ''
     const verdictKey = item.dataset.verdict as Verdict | undefined
     const verdict =
       verdictKey && verdictKey in verdictLabels
@@ -211,7 +210,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       chips,
       addressLines: (item.dataset.address ?? '').split('\n').filter(Boolean),
       directionsHref: google,
-      excerpt: excerptText,
       sources,
     })
 
