@@ -9,7 +9,6 @@ interface Props {
   readMore?: boolean
   filterable?: boolean
   coords?: string
-  url?: string
   search?: string
   attrs?: Record<string, string>
   class?: string
@@ -22,7 +21,6 @@ const {
   readMore = true,
   filterable = true,
   coords = '',
-  url = '',
   search = '',
   attrs = {},
   class: className,
@@ -33,7 +31,6 @@ const filterAttrs = filterable
       'data-filter-item': '',
       'data-coords': coords,
       'data-title': title,
-      'data-url': url,
       'data-search': search,
     }
   : {}

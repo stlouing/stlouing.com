@@ -75,7 +75,7 @@
   --spacing-xl: 2rem;
   --radius: 0;
   --radius-input: 6px;
-  --radius-rounded: 16px;
+  --radius-rounded: 20px;
 
   --card-photo-height: 9rem;
   --list-photo-width: 8rem;
@@ -1558,43 +1558,12 @@ body:has([data-filter-root]) .masthead-nav {
 
 .map-popup .popup-address {
   display: block;
-  margin-block: var(--spacing-sm) var(--spacing-md);
+  margin-block: var(--spacing-sm);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-muted-2);
   white-space: nowrap;
   line-height: 1.4;
-}
-
-.map-popup .popup-address:has(+ .popup-directions) {
-  margin-block-end: var(--spacing-xs);
-}
-
-.map-popup .popup-directions {
-  display: inline-block;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-
-.map-popup .popup-directions:not(:last-of-type) {
-  margin-block-end: var(--spacing-sm);
-}
-
-.map-popup .popup-directions:hover {
-  color: var(--color-accent-blue);
-}
-
-.map-popup .popup-directions .icon {
-  display: inline;
-  width: 12px;
-  height: 12px;
-  margin-inline-start: var(--spacing-xs);
-  vertical-align: -0.125em;
-  color: inherit;
 }
 
 .map-pin.is-selected .marker-pin-body {
@@ -1686,7 +1655,7 @@ body:has([data-filter-root]) .masthead-nav {
   font-weight: 500;
   line-height: 1.2;
 
-  min-width: 260px;
+  width: 320px;
 }
 
 .maplibregl-popup.map-popup .popup-scroll {
@@ -1741,7 +1710,7 @@ body:has([data-filter-root]) .masthead-nav {
 .maplibregl-popup.map-popup .popup-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: var(--spacing-xs);
   margin-block: 0 var(--spacing-sm);
   border-bottom: 1px dotted var(--color-line-input);
@@ -1764,26 +1733,22 @@ body:has([data-filter-root]) .masthead-nav {
 .maplibregl-popup.map-popup .popup-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   margin-block-start: var(--spacing-sm);
+  border-top: 1px dotted var(--color-line-input);
+  padding-top: var(--spacing-md);
 }
 
 .maplibregl-popup.map-popup .popup-actions .btn {
-  flex: 1 0 auto;
   justify-content: center;
-  color: var(--color-text);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-rounded);
+  text-transform: none;
+  font-size: var(--font-size-sm);
 }
 
-.maplibregl-popup.map-popup .popup-actions .btn:hover {
-  color: var(--color-accent);
-}
-
-.maplibregl-popup.map-popup .popup-more-link {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-block-start: var(--spacing-md);
+.maplibregl-popup.map-popup .popup-actions .btn-outline {
+  background: transparent;
 }
 
 .maplibregl-popup.map-popup .maplibregl-popup-close-button {
@@ -1794,7 +1759,7 @@ body:has([data-filter-root]) .masthead-nav {
   line-height: 1;
   color: var(--color-muted);
   background: var(--color-background);
-  border-radius: 0;
+  border-radius: var(--radius-rounded);
 }
 
 .maplibregl-popup.map-popup .maplibregl-popup-close-button:hover {

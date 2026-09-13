@@ -2,7 +2,7 @@ import maplibregl from 'maplibre-gl'
 import type { ExpressionSpecification } from 'maplibre-gl'
 import type { Feature, FeatureCollection, Geometry, Position } from 'geojson'
 import { createBasemapMap, watchThemeChanges } from './basemap'
-import { buildPopupHtml, escapeHtml, type PopupChip, type PopupSource } from './popup'
+import { buildPopupHtml, escapeHtml, type PopupChip } from './popup'
 import { frameCityView, keepPopupInView } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
@@ -200,8 +200,8 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
   }
 
   // The boundary popup matches the Food map's (shared buildPopupHtml): the
-  // neighborhood name (linked to its page), an area chip, a writeup teaser, then
-  // resource buttons — read off the matching list row's data attributes.
+  // neighborhood name (linked to its page), an area chip and a writeup teaser —
+  // read off the matching list row's data attributes.
   function popupHtmlFor(slug: string): string {
     const name = nameBySlug.get(slug) ?? ''
     if (!slug) {
@@ -217,12 +217,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
       chips.push({ label: area })
     }
     const link = `${import.meta.env.BASE_URL}neighborhoods/${slug}/`
-    const sources = [
-      row?.dataset.wikipedia && { label: 'Wikipedia', href: row.dataset.wikipedia },
-      row?.dataset.mytownview && { label: 'MyTownView', href: row.dataset.mytownview },
-      row?.dataset.official && { label: 'Website', href: row.dataset.official },
-      row?.dataset.city && { label: 'St. Louis City', href: row.dataset.city },
-    ].filter(Boolean) as PopupSource[]
 
     return buildPopupHtml({
       title: name,
@@ -231,7 +225,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
       chips,
       tagline: row?.dataset.tagline ?? '',
       excerpt: row?.dataset.excerpt ?? '',
-      sources,
     })
   }
 
@@ -244,7 +237,7 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     closeButton: true,
     closeOnClick: false,
     anchor: 'bottom',
-    maxWidth: '330px',
+    maxWidth: '320px',
     // Lift the popup clear of the explored pin (which rises ~34px from its tip).
     offset: 38,
     focusAfterOpen: false,

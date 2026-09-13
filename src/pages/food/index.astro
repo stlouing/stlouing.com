@@ -94,7 +94,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
               detailHref={`/food/${place.id}/`}
               readMore={false}
               coords={place.data.coords?.join(',') ?? ''}
-              url={place.data.url ?? ''}
               search={[
                 place.data.title,
                 place.data.neighborhood,
@@ -116,7 +115,6 @@ const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[]
                 'data-sort-verdict': `${rankLetter}|${place.data.title.toLowerCase()}`,
                 'data-google': googleMapsHref(place.data),
                 'data-photo': thumb?.src ?? '',
-                'data-instagram': place.data.instagram ?? '',
                 'data-tagline': place.data.description ?? '',
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (

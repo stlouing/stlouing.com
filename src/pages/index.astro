@@ -236,7 +236,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             <FleurGlyph />
             <FleurGlyph />
           </div>
-          <p class="fake-ad-copy">No ads</p>
+          <div class="fake-ad-content">
+            <p>This site has</p>
+            <p class="fake-ad-copy">No ads</p>
+            <p>Enjoy your interruption-free browsing experience!</p>
+          </div>
         </div>
       </div>
 
@@ -256,7 +260,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           </section>
         )
       } -->
-
     </div>
   </div>
 </BaseLayout>
@@ -347,9 +350,16 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .fake-ad {
     display: grid;
-    gap: var(--spacing-sm);
     border: 2px solid var(--color-line-contrast);
     text-align: center;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .fake-ad-content {
+    padding: var(--spacing-md);
   }
 
   .fake-ad-header {
@@ -371,11 +381,10 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     margin: 0;
     font-family: var(--font-sans-serif);
     font-weight: 900;
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 2;
     transform: scaleY(2);
     text-transform: uppercase;
-    color: var(--color-accent);
   }
 
   .rail-articles {
@@ -399,7 +408,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .rail-articles :global(.card-description) {
     font-style: normal;
   }
-
 
   .front-index-list {
     margin: 0;

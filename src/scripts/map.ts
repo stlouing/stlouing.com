@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl'
 import Supercluster from 'supercluster'
 import { createBasemapMap, watchThemeChanges } from './basemap'
-import { buildPopupHtml, type PopupChip, type PopupSource } from './popup'
+import { buildPopupHtml, type PopupChip } from './popup'
 import { fitZoomFor, frameCityView, keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import { cuisineLabel } from '../lib/cuisine'
@@ -186,15 +186,6 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       chips.push({ label: neighborhood, filterSet: 'neighborhood', filterValue: neighborhood })
     }
 
-    const url = item.dataset.url ?? ''
-    const instagram = item.dataset.instagram ?? ''
-    const google = item.dataset.google ?? ''
-    const sources = [
-      url && { label: 'Website', href: url },
-      instagram && { label: 'Instagram', href: instagram },
-      google && { label: 'Google Maps', href: google },
-    ].filter(Boolean) as PopupSource[]
-
     const verdictKey = item.dataset.verdict as Verdict | undefined
     const verdict =
       verdictKey && verdictKey in verdictLabels
@@ -209,8 +200,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       showRating: true,
       chips,
       addressLines: (item.dataset.address ?? '').split('\n').filter(Boolean),
-      directionsHref: google,
-      sources,
+      directionsHref: item.dataset.google ?? '',
     })
 
     // closeOnClick:false — we manage closing (map-click + single-open) so the row
@@ -223,7 +213,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
       closeButton: true,
       closeOnClick: false,
       anchor: 'bottom',
-      maxWidth: '330px',
+      maxWidth: '320px',
       offset: 38,
       focusAfterOpen: false,
     }).setHTML(popupHtml)

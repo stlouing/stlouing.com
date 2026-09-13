@@ -227,7 +227,7 @@ export function initMapPane(): void {
     closeButton: true,
     closeOnClick: false,
     anchor: 'bottom',
-    maxWidth: '330px',
+    maxWidth: '320px',
     offset: 18,
     focusAfterOpen: false,
   })
