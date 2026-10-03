@@ -8,8 +8,6 @@ const HOST_LABELS: Record<string, string> = {
   'twitter.com': 'Twitter',
 }
 
-// A friendly label for an external URL, from its host (else the bare domain).
-// Shared by SourceLink (detail pages) and the map popups.
 export function hostLabel(url: string): string {
   try {
     const host = new URL(url).hostname.replace(/^www\./, '')

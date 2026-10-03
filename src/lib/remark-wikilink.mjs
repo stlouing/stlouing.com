@@ -2,12 +2,6 @@ import { visit } from 'unist-util-visit'
 
 const WIKILINK = /\[\[([^\]]+)\]\]/g
 
-/**
- * remark plugin: turns `[[target]]` and `[[target|Label]]` into links.
- * `target` is a content entry id; resolution + base-prefixing is delegated to
- * the `resolve(target) => url | null` function passed in options. Unresolved
- * links render as <span class="wikilink-broken"> so they're visible but flagged.
- */
 export function remarkWikiLink({ resolve }) {
   return (tree) => {
     visit(tree, 'text', (node, index, parent) => {
@@ -32,7 +26,6 @@ export function remarkWikiLink({ resolve }) {
           out.push({
             type: 'link',
             url,
-            // Tag for the hovercard script + carry the target id it looks up.
             data: { hProperties: { className: ['wikilink'], 'data-wikilink': target } },
             children: [{ type: 'text', value: label }],
           })

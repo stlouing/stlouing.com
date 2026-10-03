@@ -1,7 +1,5 @@
 import { verdictLabels } from '../lib/verdict'
 
-// The four verdicts carry a color dot; the status groups (un-rated places) read
-// neutral. Labels for the group headers keyed by data-group.
 const groupLabels: Record<string, string> = {
   ...verdictLabels,
   tried: 'Tried, not yet rated',
@@ -11,14 +9,6 @@ const groupLabels: Record<string, string> = {
 
 const verdictKeys = new Set<string>(['loved', 'liked', 'neutral', 'not-for-me'])
 
-/**
- * Grouped Food list enhancement (progressive). The list is a single flat `<ul>`
- * of `[data-filter-item]` rows; the shared filter (filter.ts) sorts + hides them
- * and dispatches `filter:changed`. This (re)builds the group-header rows on top:
- * by verdict (Loved / Liked / Fine, colored) or, when the "Alphabetical" sort is
- * chosen, by first letter (A / B / C). Headers always reflect the *visible* rows,
- * so they track filtering too. With JS off, the rows show as a plain flat list.
- */
 export function initListGroups(rootSelector = '[data-filter-root]'): void {
   const root = document.querySelector<HTMLElement>(rootSelector)
   const list = root?.querySelector<HTMLElement>('[data-grouped-rows]')
@@ -39,9 +29,6 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
     header.className = 'group-header'
     header.dataset.groupHeader = ''
 
-    // Header kinds: verdict groups (rated places, tagged for the fleur rating),
-    // status groups (un-rated places), and big letter headers for the
-    // alphabetical sort.
     if (mode === 'verdict' && verdictKeys.has(key)) {
       header.dataset.verdict = key
     } else if (mode === 'verdict') {
@@ -58,14 +45,9 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
     countEl.className = 'count'
     countEl.textContent = String(count)
 
-    // Both verdict + letter headers get a rule line that fills the row and pushes
-    // the count to the end.
     const rule = document.createElement('span')
     rule.className = 'group-rule'
 
-    // Verdict headers carry the matching fleur rating after the label — cloned from
-    // the hidden per-verdict templates the page renders (the Astro Rating component
-    // can't run in this client script).
     const fleur =
       mode === 'verdict' && verdictKeys.has(key)
         ? document.querySelector(`[data-fleur="${key}"] .rating`)?.cloneNode(true)
@@ -84,8 +66,6 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
       (row) => !row.hidden,
     )
 
-    // Rows arrive already sorted (filter.ts), so a group boundary is just a change
-    // in the current key from one row to the next.
     const groups: { key: string; rows: HTMLElement[] }[] = []
     for (const row of rows) {
       const key = mode === 'alpha' ? letterOf(row) : (row.dataset.group ?? '')

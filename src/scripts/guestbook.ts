@@ -1,8 +1,3 @@
-// Guestbook — the sign-the-book page, backed by Supabase (PostgREST). Same shape
-// as readers-verdict.ts: no third-party SDK, just fetch against the anon REST API,
-// which is safe because the table is RLS-locked behind SECURITY DEFINER functions.
-// Entries are public and render immediately; the server rate-limits and validates.
-
 import { browserId } from './browser-id'
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
@@ -11,9 +6,6 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 const STORE_KEY = 'stl_guestbook'
 const PAGE_SIZE = 20
 
-// Mirrors the server's no-links rule (sign_guestbook rejects URLs) so an honest
-// signer gets a clear message instead of a generic failure. Keep the two
-// patterns in sync — the SQL function is the real enforcement.
 const LINK_PATTERN =
   /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|info|biz|xyz|top|site|online|shop|club|io|ru)\b)/i
 
@@ -25,15 +17,9 @@ type GuestbookEntry = {
   total: number
 }
 
-type GuestbookStore = {
-  // Set after a successful signature: the form hides for this browser (the
-  // panel is skipped entirely on later visits).
-  signed?: boolean
-}
+type GuestbookStore = { signed?: boolean }
 
 export function initGuestbook(): void {
-  // Nothing to wire when the site was built without Supabase creds — the page
-  // renders a fallback line in that case, but guard anyway so a stray root is a no-op.
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return
   }
@@ -66,8 +52,6 @@ function setupGuestbook(root: HTMLElement): void {
     return
   }
 
-  // One signature per browser: after signing, the form swaps for the thanks
-  // line, and a returning signer doesn't see the panel at all.
   if (loadStore().signed && signPanel) {
     signPanel.hidden = true
   }
@@ -85,8 +69,6 @@ function setupGuestbook(root: HTMLElement): void {
     }
   }
 
-  // How many entries the list currently shows, and the server's total — together
-  // they drive the count line and whether "Show older" has anything left to fetch.
   let shown = 0
   let total = 0
 
@@ -122,7 +104,6 @@ function setupGuestbook(root: HTMLElement): void {
     renderCount()
   }
 
-  // First page. On failure keep the shell quiet except for one muted line.
   void loadPage().catch(() => {
     setStatus(loadStatus, "Couldn't load the guestbook.")
   })
@@ -144,7 +125,6 @@ function setupGuestbook(root: HTMLElement): void {
   })
 
   const sign = async (): Promise<void> => {
-    // Honeypot: a real person never fills the hidden field. Pretend success, do nothing.
     if (honeypot?.value) {
       markSigned()
 
@@ -174,7 +154,6 @@ function setupGuestbook(root: HTMLElement): void {
     try {
       await signGuestbook({ name, message })
 
-      // The server accepted it — show it at the top right away rather than re-fetching.
       entriesList.prepend(
         buildEntry({ id: 0, name, message, created_at: new Date().toISOString(), total: 0 }),
       )
@@ -192,8 +171,6 @@ function setupGuestbook(root: HTMLElement): void {
   }
 }
 
-// One <li> per signature, built with createElement/textContent only — entry text is
-// reader-supplied and must never pass through innerHTML.
 function buildEntry(entry: GuestbookEntry): HTMLLIElement {
   const item = document.createElement('li')
   item.className = 'feed-entry'
@@ -221,9 +198,6 @@ function buildEntry(entry: GuestbookEntry): HTMLLIElement {
   return item
 }
 
-// Guestbook timestamps are real instants, not date-only frontmatter, so unlike the
-// shared formatDate they render in the reader's own zone (a UTC pin would show
-// "tomorrow" for an evening signature in St. Louis).
 function formatSignedDate(isoDate: string): string {
   const parsed = new Date(isoDate)
   if (Number.isNaN(parsed.getTime())) {
@@ -234,7 +208,6 @@ function formatSignedDate(isoDate: string): string {
 }
 
 async function fetchEntries(offset: number): Promise<GuestbookEntry[]> {
-  // get_guestbook is a STABLE definer function, so it's callable over a cacheable GET.
   const url = `${SUPABASE_URL}/rest/v1/rpc/get_guestbook?p_limit=${PAGE_SIZE}&p_offset=${offset}`
   const response = await fetch(url, { headers: authHeaders() })
 
@@ -257,13 +230,10 @@ async function signGuestbook(input: { name: string; message: string }): Promise<
   }
 }
 
-// Anonymous access rides in the `apikey` header only (see readers-verdict.ts for
-// why there's no Bearer Authorization header).
 function authHeaders(): Record<string, string> {
   return { apikey: SUPABASE_ANON_KEY }
 }
 
-// The shared per-browser id (see browser-id.ts).
 function signerId(): string {
   return browserId()
 }
@@ -304,7 +274,5 @@ function safeGet(key: string): string | null {
 function safeSet(key: string, value: string): void {
   try {
     window.localStorage.setItem(key, value)
-  } catch {
-    // Storage blocked (private mode / disabled) — nothing to persist.
-  }
+  } catch {}
 }

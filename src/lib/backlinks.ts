@@ -2,11 +2,6 @@ import { getCollection } from 'astro:content'
 import { published } from './content'
 import { entryUrl } from './entry-url.mjs'
 
-/**
- * Backlinks ("mentioned in"): scans every collection entry's body for
- * `[[wikilinks]]` and builds a reverse map of target id -> the entries that
- * link to it. Powers the "Mentioned in" list on detail pages.
- */
 export interface Backlink {
   id: string
   title: string
@@ -53,7 +48,6 @@ async function buildMap(): Promise<Map<string, Backlink[]>> {
     }
   }
 
-  // Drafts shouldn't surface as a backlink source on a published page.
   add('food', published(await getCollection('food')))
   add('notes', published(await getCollection('notes')))
   add('neighborhoods', published(await getCollection('neighborhoods')))

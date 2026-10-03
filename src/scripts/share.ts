@@ -1,6 +1,3 @@
-// Share control: the native share sheet where it exists (mobile), with a
-// copy-the-link fallback otherwise (desktop). Wires every [data-share] button —
-// no third-party scripts, no tracking; the OS/clipboard does all the work.
 const COPIED_MS = 1500
 
 export function initShare(): void {
@@ -10,7 +7,6 @@ export function initShare(): void {
   }
 }
 
-// Prefer the canonical URL (clean, no query/hash) over the raw location.
 function pageUrl(): string {
   const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
 
@@ -24,20 +20,15 @@ async function share(button: HTMLButtonElement): Promise<void> {
   if (navigator.share) {
     try {
       await navigator.share({ title, url })
-    } catch {
-      // The user dismissed the share sheet — nothing to do.
-    }
+    } catch {}
 
     return
   }
 
-  // Desktop fallback: copy the link and flash a "Copied" state.
   try {
     await navigator.clipboard.writeText(url)
     flashCopied(button)
-  } catch {
-    // Clipboard unavailable (insecure context / blocked) — nothing to do.
-  }
+  } catch {}
 }
 
 function flashCopied(button: HTMLButtonElement): void {

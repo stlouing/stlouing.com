@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import rehypeSlug from 'rehype-slug'
@@ -11,18 +10,11 @@ import { rehypeTableScroll } from './src/lib/rehype-table-scroll.mjs'
 import { rehypeArticleToc } from './src/lib/rehype-article-toc.mjs'
 import { entryUrl } from './src/lib/entry-url.mjs'
 
-// Base path: "/" for a custom domain; set to "/stlouing.com" for a GitHub Pages
-// project site. Internal links use import.meta.env.BASE_URL via src/lib/url.ts.
 const BASE = '/'
 
 const contentRoot = fileURLToPath(new URL('./src/content', import.meta.url))
 const dataRoot = fileURLToPath(new URL('./src/data', import.meta.url))
 
-// Region label for each walkable-corridor article section, derived from the
-// corridor data: every corridor names its heading anchor and its neighborhoods,
-// and every neighborhood carries its map group. A strip straddling the city
-// line files under its city-side group — only an all-county strip reads as
-// St. Louis County. The contents index (rehype-article-toc) groups by these.
 function buildTocGroups() {
   const { corridors } = JSON.parse(fs.readFileSync(path.join(dataRoot, 'corridors.json'), 'utf8'))
   const neighborhoods = JSON.parse(
@@ -51,9 +43,6 @@ function buildTocGroups() {
   return groupsByAnchor
 }
 
-// Map every content entry id -> its canonical URL (the same one used by the
-// backlinks and tag indexes, via the shared entryUrl helper). Rebuilt when the
-// config reloads (restart dev to pick up brand-new link targets).
 function buildWikiMap() {
   const map = new Map()
 
@@ -77,7 +66,6 @@ function buildWikiMap() {
 
 const wikiMap = buildWikiMap()
 
-// Read a single frontmatter field's raw value from a Markdown file.
 function frontmatterField(file, field) {
   const frontmatter = fs.readFileSync(file, 'utf8').match(/^---\n([\s\S]*?)\n---/)
   if (!frontmatter) {
@@ -95,9 +83,6 @@ function frontmatterField(file, field) {
     .replace(/^['"]|['"]$/g, '')
 }
 
-// Map each dated page's URL path -> its W3C date, for sitemap <lastmod>. Notes
-// use their post date; topics, food, and neighborhoods use their last-updated
-// date, falling back to the created date.
 function buildLastmod() {
   const map = new Map()
   const add = (collection, fields, urlFor) => {
@@ -130,10 +115,6 @@ function buildLastmod() {
 
 const lastmodByPath = buildLastmod()
 
-// True when a collection has at least one non-draft entry. An all-draft (or
-// empty) collection is an unpublished section, and its index page is kept out
-// of the sitemap below (the page itself also renders noindex).
-/** @param {string} collection */
 function hasPublishedEntries(collection) {
   const dir = path.join(contentRoot, collection)
   if (!fs.existsSync(dir)) {
@@ -147,11 +128,8 @@ function hasPublishedEntries(collection) {
     )
 }
 
-const unpublishedSections = ['notes'].filter(
-  (collection) => !hasPublishedEntries(collection),
-)
+const unpublishedSections = ['notes'].filter((collection) => !hasPublishedEntries(collection))
 
-// Resolve a wikilink target id to a base-prefixed URL, or null if unknown.
 function resolve(target) {
   const url = wikiMap.get(target)
 
@@ -164,20 +142,12 @@ function resolve(target) {
   return BASE.endsWith('/') ? BASE + clean : `${BASE}/${clean}`
 }
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://stlouing.com',
-  // Directory builds on GitHub Pages are served at a trailing-slash URL and 301
-  // the slashless form, so keep every route + internal link on the slash form.
   trailingSlash: 'always',
-  // The "Backlog" page used to live at /food/want-to-try; keep old links alive.
   redirects: { '/food/want-to-try/': '/food/backlog/' },
   integrations: [
     sitemap({
-      // Tag/aggregation pages are noindex (see BaseLayout `noindex`), so keep them
-      // out of the sitemap too — a sitemap entry says "index this", which would
-      // contradict the page's own noindex signal. Same for the index page of a
-      // section whose collection is all drafts (an unpublished section).
       filter: (page) =>
         !page.includes('/tags/') &&
         !unpublishedSections.some((section) => page.includes(`/${section}/`)),
@@ -196,8 +166,6 @@ export default defineConfig({
     remarkPlugins: [[remarkWikiLink, { resolve }]],
     rehypePlugins: [
       rehypeSlug,
-      // After slug (it links to the generated heading ids), before autolink
-      // (so it reads heading text without the appended "#" anchor).
       [rehypeArticleToc, { groups: buildTocGroups() }],
       [
         rehypeAutolinkHeadings,

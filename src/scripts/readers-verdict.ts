@@ -1,33 +1,19 @@
-// Readers' Verdict — a per-restaurant 👍/👎 poll backed by Supabase (PostgREST).
-// A browser identifies itself with a random voter_id kept in localStorage, so it votes
-// once per place (re-votable, upserted server-side) and the tally is live. No
-// third-party SDK — just fetch against the anon REST API, which is safe because
-// the table is RLS-locked behind cast_vote(). Public discussion lives in the
-// separate Comments section (comments.ts); the old private-note form is gone.
-
 import { browserId } from './browser-id'
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
-// All reader state lives under ONE localStorage key: a stable browser id plus a
-// per-slug record. One object instead of a key per place. (Older stores may
-// still carry `noted`/`collapsed` flags from the retired note form — harmless.)
 const STORE_KEY = 'stl_reader'
 
 type Counts = { likes: number; dislikes: number }
 
 type Choice = 'like' | 'dislike'
 
-// One place's remembered state; absent fields mean "no". Purely a client-side
-// convenience (the vote also lives server-side under the voter id).
 type PlaceState = { vote?: Choice }
 
 type ReaderStore = { voterId?: string; places?: Record<string, PlaceState> }
 
 export function initReadersVerdict(): void {
-  // Nothing to wire when the site was built without Supabase creds — the component
-  // renders nothing in that case, but guard anyway so a stray root is a no-op.
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return
   }
@@ -55,16 +41,11 @@ function setupWidget(root: HTMLElement): void {
     return
   }
 
-  // The browser's remembered choice for this place (drives the active state + "you voted").
   let choice = readChoice(slug)
   let counts: Counts = { likes: 0, dislikes: 0 }
-  // Whether we've shown real server counts yet, and whether a vote this session already
-  // produced the authoritative tally (so a late initial fetch mustn't clobber it).
   let loaded = false
   let votedThisSession = false
 
-  // Paint the active side of the pill, the counts (never a bare "0"), and the pre-vote
-  // nudge. Counts stay blank (the `:empty` rule hides them) until a server read lands.
   const render = (): void => {
     likeButton.classList.toggle('is-active', choice === 'like')
     dislikeButton.classList.toggle('is-active', choice === 'dislike')
@@ -78,7 +59,6 @@ function setupWidget(root: HTMLElement): void {
       dislikeCount.textContent = loaded && counts.dislikes > 0 ? String(counts.dislikes) : ''
     }
 
-    // The nudge is hidden once this browser has voted.
     if (cta) {
       if (choice) {
         cta.hidden = true
@@ -93,11 +73,8 @@ function setupWidget(root: HTMLElement): void {
     }
   }
 
-  // One vote each: casting locks this browser in. Optimistically flips + disables the
-  // buttons, then trusts the tallies the server returns.
   const vote = async (next: Choice): Promise<void> => {
     if (choice) {
-      // Already voted — locked in.
       return
     }
 
@@ -113,7 +90,6 @@ function setupWidget(root: HTMLElement): void {
       loaded = true
       render()
     } catch {
-      // Never reached the server — roll back so a transient failure stays retryable.
       choice = null
       clearChoice(slug)
       likeButton.disabled = false
@@ -135,8 +111,6 @@ function setupWidget(root: HTMLElement): void {
     void vote('dislike')
   })
 
-  // Wire up: enable the buttons only if this browser hasn't voted yet; a returning
-  // voter stays locked in. Then load live counts.
   if (!choice) {
     likeButton.disabled = false
     dislikeButton.disabled = false
@@ -145,8 +119,6 @@ function setupWidget(root: HTMLElement): void {
 
   void fetchCounts(slug)
     .then((live) => {
-      // A vote already gave us the authoritative tally — don't clobber it with a read
-      // that was in flight before the vote landed.
       if (votedThisSession) {
         return
       }
@@ -155,13 +127,10 @@ function setupWidget(root: HTMLElement): void {
       loaded = true
       render()
     })
-    .catch(() => {
-      // Offline / creds wrong — keep the zeroed shell rather than erroring in the reader's face.
-    })
+    .catch(() => {})
 }
 
 async function fetchCounts(slug: string): Promise<Counts> {
-  // get_counts is a STABLE definer function, so it's callable over a cacheable GET.
   const url = `${SUPABASE_URL}/rest/v1/rpc/get_counts?p_slug=${encodeURIComponent(slug)}`
   const response = await fetch(url, { headers: authHeaders() })
 
@@ -174,7 +143,6 @@ async function fetchCounts(slug: string): Promise<Counts> {
   return toCounts(rows[0])
 }
 
-// A vote: create-or-switch the caller's row. Returns the fresh tallies.
 async function castVote(input: { slug: string; liked: boolean }): Promise<Counts> {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/cast_vote`, {
     method: 'POST',
@@ -191,10 +159,6 @@ async function castVote(input: { slug: string; liked: boolean }): Promise<Counts
   return toCounts(rows[0])
 }
 
-// Anonymous access rides in the `apikey` header only. This works for both the newer
-// sb_publishable_… key (which isn't a JWT, so it must NOT go in a Bearer Authorization
-// header) and the legacy anon JWT. PostgREST falls back to the anon role when there's no
-// user token, which is exactly what our SECURITY DEFINER functions are granted to.
 function authHeaders(): Record<string, string> {
   return { apikey: SUPABASE_ANON_KEY }
 }
@@ -202,8 +166,6 @@ function authHeaders(): Record<string, string> {
 function toCounts(row: { likes: number | null; dislikes: number | null } | undefined): Counts {
   return { likes: Number(row?.likes ?? 0), dislikes: Number(row?.dislikes ?? 0) }
 }
-
-// --- The single-object store (STORE_KEY) --------------------------------------
 
 function loadStore(): ReaderStore {
   const raw = safeGet(STORE_KEY)
@@ -214,8 +176,6 @@ function loadStore(): ReaderStore {
   try {
     const parsed = JSON.parse(raw) as ReaderStore
 
-    // Only a plain object is a valid store; anything else (null, array, scalar
-    // from external tampering) resets to empty so writes still persist.
     return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
   } catch {
     return {}
@@ -230,8 +190,6 @@ function readPlace(slug: string): PlaceState {
   return loadStore().places?.[slug] ?? {}
 }
 
-// Merge a patch into one place's record. Falsy fields are pruned so the object
-// stays tidy, and a place that empties out is dropped entirely.
 function patchPlace(slug: string, patch: PlaceState): void {
   const store = loadStore()
   const places = store.places ?? {}
@@ -251,8 +209,6 @@ function patchPlace(slug: string, patch: PlaceState): void {
   saveStore(store)
 }
 
-// The shared per-browser id (see browser-id.ts); the store's legacy voterId
-// field is adopted by it, so pre-unification voters keep their identity.
 function voterId(): string {
   return browserId()
 }
@@ -288,7 +244,5 @@ function safeGet(key: string): string | null {
 function safeSet(key: string, value: string): void {
   try {
     window.localStorage.setItem(key, value)
-  } catch {
-    // Storage blocked (private mode / disabled) — nothing to persist.
-  }
+  } catch {}
 }

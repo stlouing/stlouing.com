@@ -7,8 +7,6 @@ const SOURCE_ID = 'divorce-boundaries'
 const FILL_LAYER_ID = 'divorce-boundaries-fill'
 const LINE_LAYER_ID = 'divorce-boundaries-line'
 
-// Census TIGERweb county boundaries (GEOID 29510 city, 29189 county),
-// simplified to ~30m so the river edge stays crisp at article-figure sizes.
 const collection = boundaries as FeatureCollection
 
 function boundsOf(features: FeatureCollection): LngLatBoundsLike {
@@ -38,26 +36,17 @@ function boundsOf(features: FeatureCollection): LngLatBoundsLike {
   ]
 }
 
-// City red and county blue, read live from the map-color tokens so the figure
-// follows the light/dark theme like the neighborhood map does.
 function readBoundaryColors(): { city: string; county: string } {
   const styles = getComputedStyle(document.documentElement)
   const readColor = (token: string, fallback: string) =>
     styles.getPropertyValue(token).trim() || fallback
 
   return {
-    // Stable colors, not region tokens — the region palette can rotate, but
-    // this map's city-red / county-blue coding shouldn't move with it.
     city: readColor('--color-map-corridor', '#c0392b'),
     county: readColor('--color-accent-blue', '#2766ad'),
   }
 }
 
-/**
- * The Great Divorce boundary figure: St. Louis City's frozen border drawn inside
- * the county that surrounds it. The article markdown supplies the placeholder
- * element; this mounts the themed basemap into it and overlays both boundaries.
- */
 export function initBoundaryMap(selector = '[data-boundary-map]'): void {
   const element = document.querySelector<HTMLElement>(selector)
   if (!element) {
@@ -65,7 +54,6 @@ export function initBoundaryMap(selector = '[data-boundary-map]'): void {
   }
 
   const map = createBasemapMap(element, {
-    // Inline in a scrolling article: plain scroll moves the page, not the map.
     cooperativeGestures: true,
     attributionControl: { compact: true },
     minZoom: 8,
@@ -93,8 +81,6 @@ export function initBoundaryMap(selector = '[data-boundary-map]'): void {
       source: SOURCE_ID,
       paint: {
         'fill-color': colorByFips as never,
-        // The city reads as the highlighted subject; the county as its quieter
-        // surrounding context.
         'fill-opacity': ['match', ['get', 'fips'], '29510', 0.25, 0.08] as never,
       },
     })
@@ -115,6 +101,5 @@ export function initBoundaryMap(selector = '[data-boundary-map]'): void {
     map.fitBounds(boundsOf(collection), { padding: 20, duration: 0 })
   })
 
-  // Re-apply after a theme toggle swaps the basemap style (colors differ per theme).
   watchThemeChanges(map, () => applyBoundaryLayers())
 }

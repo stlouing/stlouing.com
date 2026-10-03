@@ -4,33 +4,20 @@ import { getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 
-// Small map of `id -> { title, excerpt, ... }` for every linkable (published)
-// entry, fetched once by the wikilink hovercard script
-// (src/scripts/wikilink-preview.ts) and cached. The hover preview reuses the
-// shared on-screen preview length. Food entries also carry cuisine + neighborhood
-// so the card can show them, which is especially useful for places with no writeup.
-
 interface Preview {
   title: string
   excerpt: string
-  // Food only.
   cuisine?: string[]
   neighborhood?: string
-  // Any entry: its tags, shown in the card's eyebrow meta row.
   tags?: string[]
-  // Food, topics + neighborhoods: the curated tagline.
   description?: string
-  // Entries with a photo: a card-sized rendition shown atop the hovercard.
   photo?: string
 }
 
-// Only carry a tag list that has something in it — keeps the payload lean.
 function presentTags(tags: string[] | undefined): string[] | undefined {
   return tags && tags.length > 0 ? tags : undefined
 }
 
-// Card-sized rendition of an entry photo (640px wide covers the 320px card on
-// 2x displays); webp is fine since the hovercard is display-only.
 async function cardPhoto(photo: ImageMetadata | undefined): Promise<string | undefined> {
   if (!photo) {
     return undefined
@@ -79,8 +66,6 @@ export const GET: APIRoute = async () => {
     }
   }
   add(await getCollection('notes'))
-  // Neighborhoods carry their tagline (e.g. The Grove → "St. Louis's LGBTQ
-  // nightlife strip") so the card leads with it, like topics do.
   for (const neighborhood of published(await getCollection('neighborhoods'))) {
     previews[neighborhood.id] = {
       title: neighborhood.data.title,

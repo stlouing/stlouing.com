@@ -1,21 +1,12 @@
-// Wikipedia-style hovercards for resolved `[[wikilinks]]` (marked `a.wikilink`
-// with a `data-wikilink` id by remark-wikilink). Desktop only: on hover/focus
-// for ~1s, fetch the shared preview map once and show a small title + excerpt
-// card near the link. Touch / coarse-pointer devices just follow the link.
-
 import { cuisineLabel } from '../lib/cuisine'
 
 interface Preview {
   title: string
   excerpt: string
-  // Food only: cuisines + neighborhood.
   cuisine?: string[]
   neighborhood?: string
-  // Any entry: its tags.
   tags?: string[]
-  // Food, topics + neighborhoods: the curated tagline, shown in the accent color.
   description?: string
-  // Entries with a photo: a card-sized rendition shown atop the card.
   photo?: string
 }
 
@@ -27,7 +18,6 @@ export function initWikilinkPreviews(): void {
   if (links.length === 0) {
     return
   }
-  // Pointer-based devices only; touch just navigates on tap.
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     return
   }
@@ -59,7 +49,6 @@ export function initWikilinkPreviews(): void {
     const cardRect = card.getBoundingClientRect()
     const margin = 8
     const left = Math.max(margin, Math.min(rect.left, window.innerWidth - cardRect.width - margin))
-    // Below by default; flip above when there isn't room and there is above.
     const below = rect.bottom + 6
     const above = rect.top - cardRect.height - 6
     const top =
@@ -76,8 +65,6 @@ export function initWikilinkPreviews(): void {
     }
     card.textContent = ''
 
-    // Entry photo atop the card. The box height is fixed in CSS, so the card
-    // doesn't reflow when the image finishes loading.
     if (preview.photo) {
       const photo = document.createElement('img')
       photo.className = 'card-media'
@@ -86,9 +73,6 @@ export function initWikilinkPreviews(): void {
       card.appendChild(photo)
     }
 
-    // Entry metadata — cuisines, neighborhood, tags — in the muted mono
-    // eyebrow voice the list rows and map popups use, tick-divided, riding
-    // above the title as its kicker (the list-row order).
     const metaParts = [
       ...(preview.cuisine ?? []).map((cuisine) => cuisineLabel(cuisine)),
       ...(preview.neighborhood ? [preview.neighborhood] : []),
@@ -116,7 +100,6 @@ export function initWikilinkPreviews(): void {
     title.textContent = preview.title
     card.appendChild(title)
 
-    // Topic tagline, in the accent color.
     if (preview.description) {
       const description = document.createElement('p')
       description.className = 'card-description description'
@@ -158,7 +141,6 @@ export function initWikilinkPreviews(): void {
     link.addEventListener('blur', scheduleHide)
   }
 
-  // Moving onto the card keeps it open (so the excerpt is readable).
   card.addEventListener('mouseenter', () => window.clearTimeout(hideTimer))
   card.addEventListener('mouseleave', scheduleHide)
   window.addEventListener('scroll', hide, { passive: true })

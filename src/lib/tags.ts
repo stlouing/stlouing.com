@@ -4,15 +4,12 @@ import { entryUrl } from './entry-url.mjs'
 
 export interface TaggedItem {
   title: string
-  url: string // root-relative; pass through href() before use
+  url: string
   collection: string
   tags: string[]
-  // A short line for the tag page: the entry's tagline, else a body excerpt.
   description?: string
 }
 
-// The one-line summary shown under a result on a tag page: prefer the authored
-// tagline (`description`), else a trimmed excerpt of the writeup.
 function summarize(entry: { data: { description?: string }; body?: string }): string | undefined {
   if (entry.data.description) {
     return entry.data.description
@@ -27,14 +24,12 @@ export async function collectTagged(): Promise<TaggedItem[]> {
   for (const entry of published(await getCollection('food'))) {
     items.push({
       title: entry.data.title,
-      // cuisines are browsable like tags (click "bbq" → /tags/bbq)
       tags: [...new Set([...entry.data.cuisine, ...entry.data.tags])],
       collection: 'food',
       url: entryUrl('food', entry.id),
       description: summarize(entry),
     })
   }
-
 
   for (const entry of published(await getCollection('notes'))) {
     items.push({
@@ -69,13 +64,10 @@ export async function collectTagged(): Promise<TaggedItem[]> {
   return items
 }
 
-// URL slug for a tag, so a multi-word tag ("hot dogs") links to /tags/hot-dogs/
-// rather than a URL with a literal space in it. Display keeps the raw tag.
 export function tagSlug(tag: string): string {
   return tag.toLowerCase().replace(/\s+/g, '-')
 }
 
-// Unique tags with counts, alphabetically.
 export async function allTags(): Promise<{ tag: string; count: number }[]> {
   const counts = new Map<string, number>()
   for (const item of await collectTagged()) {
@@ -98,9 +90,6 @@ export interface TagGroups {
   topics: TagEntry[]
 }
 
-// Tags split by taxonomy for the /tags index: food cuisines, neighborhood
-// vibes, and topic/note tags — so the index reads as sections instead of one
-// jumbled cloud. Each tag lands in exactly one group (cuisine > vibe > topic).
 export async function tagGroups(): Promise<TagGroups> {
   const cuisine = new Set<string>()
   const vibe = new Set<string>()
@@ -132,7 +121,6 @@ export async function tagGroups(): Promise<TagGroups> {
 
   const counts = new Map((await allTags()).map((item) => [item.tag, item.count]))
   const toEntry = (tag: string): TagEntry => ({ tag, count: counts.get(tag) ?? 0 })
-  // Busiest tags first within each group, then alphabetical.
   const byCount = (left: TagEntry, right: TagEntry): number => {
     return right.count - left.count || left.tag.localeCompare(right.tag)
   }

@@ -1,6 +1,3 @@
-// Build a Google Maps "search" link for a place from its name + address (or, as
-// a fallback, its coordinates). Generated at render time so the link never has
-// to be hardcoded in each entry's frontmatter.
 export function googleMapsHref(place: {
   title: string
   address?: string[]

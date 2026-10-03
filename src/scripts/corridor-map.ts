@@ -12,12 +12,6 @@ const ENDPOINTS_LAYER_ID = 'corridor-endpoint-dots'
 const LABELS_SOURCE_ID = 'corridor-labels'
 const LABELS_LAYER_ID = 'corridor-label-text'
 
-// Walkable St. Louis article figures: one small basemap per placeholder with
-// the street segment drawn as a bold line, dots marking its start and end. A
-// placeholder may list several corridor ids (space-separated) to draw them on
-// one shared map — e.g. Cherokee's main strip + Antique Row — in which case
-// each segment also gets a text label (`label`, falling back to `name`).
-// Geometry is extracted from OpenStreetMap (ODbL) — see src/data/corridors.json.
 interface Corridor {
   id: string
   name: string
@@ -34,10 +28,6 @@ const corridors = new Map<string, Corridor>(
   (corridorData.corridors as Corridor[]).map((corridor) => [corridor.id, corridor]),
 )
 
-// Hand-picked spots along a strip (src/data/corridor-spots.json, keyed by
-// corridor id): a dot + name marker on the strip's map, linking to the spot's
-// page when it has one. Coords are [lng, lat] like the corridor lines (note:
-// food frontmatter stores [lat, lng] — flip when copying from there).
 interface Spot {
   name: string
   coords: number[]
@@ -46,16 +36,8 @@ interface Spot {
 
 const spotsByCorridor = corridorSpots as Record<string, Spot[]>
 
-// The same teardrop pin the neighborhood map uses (padded viewBox so the ring
-// stroke isn't clipped); `currentColor` fill — the pin color (and its theme
-// swap) comes from the `.corridor-spot` CSS.
 const pinSvg = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
 
-// Spot coords are building positions (review frontmatter / OSM POIs), often a
-// storefront-depth off the street centerline — visible as a zigzag on short,
-// tightly-zoomed strips like DeMun. Snap each pin onto the nearest point of
-// the strip's line when it's within a storefront's distance; anything farther
-// is genuinely off-strip and keeps its true position.
 const SNAP_METERS = 75
 
 function snapToLines(point: [number, number], group: Corridor[]): [number, number] {
@@ -96,9 +78,6 @@ function addSpotMarkers(map: MapLibreMap, group: Corridor[]): void {
     if (spots.length === 0) {
       continue
     }
-    // Orientation per corridor, not per map: two parallel north-south strips
-    // (Tower Grove South) make a WIDE combined bbox, but each line is still
-    // vertical and needs sideways pins.
     const horizontal = isMostlyNorthSouth([corridor])
 
     for (const spot of spots) {
@@ -110,8 +89,6 @@ function addSpotMarkers(map: MapLibreMap, group: Corridor[]): void {
       }
 
       element.innerHTML = pinSvg
-      // The name renders as a hover/focus tooltip above the pin (always-visible
-      // labels overlapped when spots cluster).
       const name = document.createElement('span')
       name.className = 'corridor-spot-name'
       name.textContent = spot.name
@@ -155,9 +132,6 @@ function boundsOf(group: Corridor[]): LngLatBoundsLike {
   ]
 }
 
-// On a mostly north-south strip (Grand, Hampton, Euclid…) an upright pin's
-// body stands right on top of the vertical line; those maps lay their pins
-// sideways instead, so only the tip touches the line.
 function isMostlyNorthSouth(group: Corridor[]): boolean {
   const [[west, south], [east, north]] = boundsOf(group) as [[number, number], [number, number]]
   const metersPerDegree = Math.cos((((south + north) / 2) * Math.PI) / 180)
@@ -165,8 +139,6 @@ function isMostlyNorthSouth(group: Corridor[]): boolean {
   return north - south > (east - west) * metersPerDegree
 }
 
-// Line color from the map tokens so the figures follow the light/dark theme;
-// the halo separates the endpoint dots and label text from what's beneath them.
 function readCorridorColors(): { line: string; halo: string } {
   const styles = getComputedStyle(document.documentElement)
   const readColor = (token: string, fallback: string) =>
@@ -211,7 +183,6 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
     })
 
     if (labeled) {
-      // One label per segment, floated above its midpoint.
       map.addSource(LABELS_SOURCE_ID, {
         type: 'geojson',
         data: {
@@ -268,7 +239,6 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
       source: LABELS_SOURCE_ID,
       layout: {
         'text-field': ['get', 'label'],
-        // A font stack the Protomaps basemap glyphs actually ship.
         'text-font': ['Noto Sans Medium'],
         'text-size': 12,
         'text-anchor': 'bottom',
@@ -279,8 +249,6 @@ function applyCorridorLayers(map: MapLibreMap, group: Corridor[]): void {
   }
 }
 
-// A generated figcaption naming the pinned spots — the visible, touch-friendly
-// twin of the hover tooltips, linked where a spot has a page.
 function appendSpotCaption(element: HTMLElement, group: Corridor[]): void {
   const spots = group.flatMap((corridor) => spotsByCorridor[corridor.id] ?? [])
   const figure = element.closest('figure')
@@ -306,15 +274,11 @@ function appendSpotCaption(element: HTMLElement, group: Corridor[]): void {
   figure.append(caption)
 }
 
-// A mounted figure and what teardown must release.
 interface MountedMap {
   map: MapLibreMap
   disposeTheme: () => void
 }
 
-// The camera frame for a section map: the corridor lines PLUS the section's
-// pins, so a spot set back from the strip (Soulard's grid bars) can't fall
-// outside the visible frame.
 function figureBounds(group: Corridor[]): LngLatBoundsLike {
   let west = Infinity
   let south = Infinity
@@ -343,28 +307,21 @@ function figureBounds(group: Corridor[]): LngLatBoundsLike {
 
 function mountCorridorMap(element: HTMLElement, group: Corridor[]): MountedMap {
   const map = createBasemapMap(element, {
-    // A figure, not an explorer: no pan/zoom, so scrolling the article never
-    // fights the map.
     interactive: false,
     attributionControl: { compact: true },
   })
 
   map.on('load', () => {
     applyCorridorLayers(map, group)
-    // A good zoom level looser than a tight fit, so each strip sits in its
-    // surrounding street grid rather than filling the frame edge to edge.
     const camera = map.cameraForBounds(figureBounds(group), { padding: 36 })
     if (camera) {
       map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 14) - 1.25 })
     }
   })
 
-  // DOM markers, so they stay clickable on this non-interactive map.
   addSpotMarkers(map, group)
   appendSpotCaption(element, group)
 
-  // Re-apply after a theme toggle swaps the basemap style (the pins recolor
-  // themselves — their fill is a CSS token).
   const disposeTheme = watchThemeChanges(map, () => {
     applyCorridorLayers(map, group)
   })
@@ -407,8 +364,6 @@ function applyOverviewLayers(
       },
     })
 
-    // One name label per section (corridors sharing an anchor — Cherokee's two
-    // segments — get a single label), floated above the line's midpoint.
     const labeledAnchors = new Set<string>()
     map.addSource(LABELS_SOURCE_ID, {
       type: 'geojson',
@@ -467,8 +422,6 @@ function applyOverviewLayers(
     paint: { 'line-color': lineColor, 'line-width': 3.5, 'line-opacity': 0.85 },
   })
 
-  // A fat invisible twin of the line layer, so the strips are clickable
-  // without pixel-hunting a 3px line.
   map.addLayer({
     id: OVERVIEW_HIT_LAYER_ID,
     type: 'line',
@@ -494,7 +447,6 @@ function applyOverviewLayers(
 function mountOverviewMap(element: HTMLElement): MountedMap {
   const group = [...corridors.values()]
   const map = createBasemapMap(element, {
-    // Inline in a scrolling article: plain scroll moves the page, not the map.
     cooperativeGestures: true,
     attributionControl: { compact: true },
   })
@@ -507,7 +459,6 @@ function mountOverviewMap(element: HTMLElement): MountedMap {
     map.fitBounds(boundsOf(group), { padding: 28, duration: 0 })
   })
 
-  // Clicking a strip jumps to its section.
   map.on('click', OVERVIEW_HIT_LAYER_ID, (event) => {
     const anchor = event.features?.[0]?.properties?.anchor
     if (typeof anchor === 'string' && anchor.length > 0) {

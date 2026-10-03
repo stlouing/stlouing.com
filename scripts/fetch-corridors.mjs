@@ -1,39 +1,15 @@
-// Extracts the Walkable St. Louis corridor polylines from OpenStreetMap (Overpass
-// API) into src/data/corridors.json (committed; rerun only when a strip's
-// extent changes). For each corridor: resolve the two endpoint intersections
-// (nodes shared by the corridor street and a cross street), fetch every highway
-// way with the street's name near the extent, project all points onto the
-// start->end axis, keep the ones between the endpoints, and average them into
-// ~25 m buckets along the axis (which also collapses divided carriageways into
-// a single centerline).
-//
-//   node scripts/fetch-corridors.mjs             # all corridors
-//   node scripts/fetch-corridors.mjs bevo demun  # just these, merged into the file
-//
-// The output is ODbL-attributed OpenStreetMap data; the site's maps already
-// carry the OSM credit.
-
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-// Override with OVERPASS_URL=… when the main instance rate-bans (mirrors:
-// overpass.kumi.systems, overpass.osm.ch).
 const OVERPASS_URL = process.env.OVERPASS_URL ?? 'https://overpass-api.de/api/interpreter'
 const OUTPUT_PATH = fileURLToPath(new URL('../src/data/corridors.json', import.meta.url))
 
-// `center` is an approximate corridor midpoint, only used to scope Overpass
-// searches. `anchor` is the article heading id the strip links to (update it if
-// the heading in walkable-st-louis.md is renamed); `neighborhoods` are the site
-// slugs the strip runs through (drives the neighborhood-page cross-links).
 const corridors = [
   {
     id: 'the-grove',
     name: 'The Grove',
     street: 'Manchester Avenue',
     streetNames: ['Manchester Avenue'],
-    // The strip runs between the two lighted GROVE arches over Manchester. The
-    // east one is mapped in OSM (a gantry by Rehab); the west one isn't, so its
-    // coord is estimated at the Taylor corner by Platypus.
     from: { label: 'west arch', coord: [38.62625, -90.2621] },
     to: { label: 'east arch', coord: [38.627942, -90.24989] },
     center: [38.627, -90.2565],
@@ -47,7 +23,6 @@ const corridors = [
     street: 'Cherokee Street',
     streetNames: ['Cherokee Street'],
     from: { label: 'Jefferson', names: ['South Jefferson Avenue', 'Jefferson Avenue'] },
-    // West of Nebraska the strip quiets down well before Gravois.
     to: { label: 'Nebraska', names: ['Nebraska Avenue'] },
     center: [38.594, -90.229],
     anchor: 'cherokee-street',
@@ -55,9 +30,6 @@ const corridors = [
     website: 'https://cherokeestreet.com/',
   },
   {
-    // Drawn on the same map figure as `cherokee` (both ids on one placeholder);
-    // `label` is the short text drawn along the line there, and the anchor
-    // points at the shared "Cherokee Street" section.
     id: 'cherokee-antique-row',
     name: 'Cherokee Antique Row',
     label: 'Antique Row',
@@ -93,8 +65,6 @@ const corridors = [
     neighborhoods: ['tower-grove-south', 'tower-grove-east'],
   },
   {
-    // The second Tower Grove South strip, drawn on the same section map as
-    // South Grand (both ids on one placeholder).
     id: 'morganford',
     name: 'Morganford',
     street: 'Morganford Road',
@@ -120,8 +90,6 @@ const corridors = [
     neighborhoods: ['st-louis-hills', 'southampton', 'princeton-heights'],
   },
   {
-    // Southampton's other walkable node, drawn on the same section map as
-    // Hampton (both ids on one placeholder).
     id: 'macklind',
     name: 'Macklind',
     street: 'Macklind Avenue',
@@ -149,8 +117,6 @@ const corridors = [
     name: 'Bevo',
     street: 'Gravois Avenue',
     streetNames: ['Gravois Avenue', 'Gravois Road'],
-    // Extends northeast of the mill to Delor — the Bosnian bakery/grill cluster
-    // (Zlatno Zito, Ehsani's, Majeed) sits between Morganford and Taft.
     from: { label: 'Taft', names: ['Taft Avenue'] },
     to: { label: 'Christy', names: ['Christy Boulevard', 'Christy Avenue'] },
     center: [38.581, -90.269],
@@ -162,12 +128,7 @@ const corridors = [
     name: 'The Delmar Loop',
     street: 'Delmar Boulevard',
     streetNames: ['Delmar Boulevard'],
-    // Trinity's OSM ways end just shy of Delmar's carriageways (no shared
-    // node), so the junction is pinned by coordinate instead.
     from: { label: 'Leland', names: ['Leland Avenue'] },
-    // East end trimmed to the block past the Pageant / Delmar Hall — the strip
-    // effectively ends there, well before DeBaliviere.
-    // Ends just past the Pageant / Delmar Hall block (mid-block; no cross street).
     to: { label: 'the Pageant', coord: [38.65513, -90.2965] },
     center: [38.656, -90.304],
     anchor: 'the-delmar-loop',
@@ -196,7 +157,6 @@ const corridors = [
     name: 'Carondelet',
     street: 'South Broadway',
     streetNames: ['South Broadway'],
-    // North end at Blow St, just past Bar:PM — the strip's action stops there.
     from: { label: 'Blow', names: ['Blow Street'] },
     to: { label: 'Steins', names: ['West Steins Street', 'East Steins Street', 'Steins Street'] },
     center: [38.55, -90.247],
@@ -204,7 +164,6 @@ const corridors = [
     neighborhoods: ['carondelet', 'patch'],
   },
   {
-    // One word historically: the Southtown Famous-Barr gave the corner its name.
     id: 'south-town',
     name: 'Southtown',
     street: 'South Kingshighway',
@@ -221,7 +180,6 @@ const corridors = [
     street: 'Manchester Road',
     streetNames: ['Manchester Road', 'Manchester Avenue'],
     from: { label: 'Big Bend', names: ['South Big Bend Boulevard', 'Big Bend Boulevard'] },
-    // Extended past Marshall so the 7100-7300 blocks (Michael's, Tiffany's) stay on the line.
     to: { label: 'Bellevue', names: ['Bellevue Avenue', 'South Bellevue Avenue'] },
     center: [38.612, -90.32],
     anchor: 'maplewood',
@@ -229,8 +187,6 @@ const corridors = [
     website: 'https://www.maplewoodmo.gov/',
   },
   {
-    // Webster Groves' other district, drawn on the same section map as Old
-    // Orchard (both ids on one placeholder). Gore Ave is its cross-spine.
     id: 'old-webster',
     name: 'Old Webster',
     street: 'Lockwood Avenue',
@@ -243,7 +199,6 @@ const corridors = [
     website: 'https://www.webstergrovesmo.gov/',
   },
   {
-    // Downtown Kirkwood around the 1893 train station.
     id: 'kirkwood',
     name: 'Kirkwood',
     street: 'Kirkwood Road',
@@ -256,7 +211,6 @@ const corridors = [
     website: 'https://www.downtownkirkwood.com/',
   },
   {
-    // The Park Avenue storefront row facing Lafayette Park.
     id: 'lafayette-square',
     name: 'Lafayette Square',
     street: 'Park Avenue',
@@ -269,9 +223,6 @@ const corridors = [
     website: 'https://lafayettesquare.org/',
   },
   {
-    // Old Webster's cross-spine up Gore (Rolling Ridge Nursery, Telva). Drawn
-    // on the Webster Groves map; no neighborhoods so it doesn't duplicate the
-    // section's cross-link cards.
     id: 'gore',
     name: 'Gore Avenue',
     label: 'Gore',
@@ -290,8 +241,6 @@ const corridors = [
     neighborhoods: [],
   },
   {
-    // Like the Hill, Soulard is a grid; 12th is the representative spine
-    // (McGurk's and Pizzeoli sit on it), pins scatter to true positions.
     id: 'soulard',
     name: 'Soulard',
     street: 'South 12th Street',
@@ -304,8 +253,6 @@ const corridors = [
     website: 'https://www.soulard.org/',
   },
   {
-    // The Clayton & Tamm junction in Dogtown: Pat Connolly at the Oakland
-    // corner, Seamus McDaniel's mid-strip.
     id: 'dogtown',
     name: 'Dogtown',
     street: 'Tamm Avenue',
@@ -317,8 +264,6 @@ const corridors = [
     neighborhoods: ['dogtown'],
   },
   {
-    // The east-west bar of the Dogtown cross, meeting Tamm at the Clayton &
-    // Tamm junction. No neighborhoods so it doesn't duplicate the cross-link.
     id: 'dogtown-clayton',
     name: 'Dogtown',
     label: 'Clayton Ave',
@@ -331,8 +276,6 @@ const corridors = [
     neighborhoods: [],
   },
   {
-    // Shaw's 39th Street node (Tee Rak, Ices Plain & Fancy), running down to
-    // the park edge at Magnolia.
     id: 'shaw',
     name: 'Shaw',
     street: 'South 39th Street',
@@ -344,8 +287,6 @@ const corridors = [
     neighborhoods: ['shaw'],
   },
   {
-    // The downtown loft/nightlife strip; Tucker (12th) is the Downtown /
-    // Downtown West line, so the extent spans both.
     id: 'washington-avenue',
     name: 'Washington Avenue',
     street: 'Washington Avenue',
@@ -358,8 +299,6 @@ const corridors = [
     website: 'https://www.washaveretail.com/',
   },
   {
-    // The stadium entertainment block: Clark runs along Busch Stadium's north
-    // edge with Ballpark Village fronting it across the street.
     id: 'ballpark-village',
     name: 'Ballpark Village',
     street: 'Clark Avenue',
@@ -372,7 +311,6 @@ const corridors = [
     website: 'https://www.stlballparkvillage.com/',
   },
   {
-    // The Old Orchard business district of Webster Groves.
     id: 'big-bend',
     name: 'Old Orchard',
     street: 'Big Bend Boulevard',
@@ -396,7 +334,6 @@ async function overpass(query) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          // overpass-api.de rejects UA-less requests (406); identify ourselves.
           'User-Agent': 'stlouing-corridors/1.0 (street extract for stlouing.com)',
         },
         body: `data=${encodeURIComponent(query)}`,
@@ -409,8 +346,6 @@ async function overpass(query) {
 
     if (response.ok) {
       const result = await response.json()
-      // A 200 with a remark and no elements is a soft failure (server-side
-      // kill timer under load) — retry it like an error status.
       if (result.elements.length === 0 && result.remark) {
         console.warn(`  overpass remark (${result.remark.slice(0, 60)}…), attempt ${attempt}/3`)
         await sleep(8000 * attempt)
@@ -431,11 +366,6 @@ const nameRegex = (names) => `^(${names.join('|')})$`
 const bboxAround = ([lat, lng], margin) =>
   `${lat - margin},${lng - margin * 1.25},${lat + margin},${lng + margin * 1.25}`
 
-// Nodes shared by the corridor street and one cross street = the intersection.
-// Divided junctions share several nodes; average them into one point. An
-// endpoint with a `coord` falls back to it when no shared node exists — or is
-// taken directly when it has no cross-street names at all (e.g. the Grove's
-// arches, which sit mid-block).
 async function resolveEndpoint(corridor, endpoint) {
   if (!endpoint.names && endpoint.coord) {
     const [lat, lng] = endpoint.coord
@@ -491,7 +421,6 @@ out geom;`
   return points
 }
 
-// Equirectangular meters around the corridor midpoint — plenty for <5 km spans.
 function metricProjector(latitudeOrigin) {
   const metersPerLat = 110970
   const metersPerLng = Math.cos((latitudeOrigin * Math.PI) / 180) * 111320
@@ -534,7 +463,6 @@ function buildLine(points, start, end) {
     return null
   }
 
-  // Pin the drawn line exactly to the resolved intersections.
   line[0] = [start.lng, start.lat]
   line[line.length - 1] = [end.lng, end.lat]
 
@@ -544,8 +472,6 @@ function buildLine(points, start, end) {
   }
 }
 
-// With ids as arguments, only those corridors are re-fetched; everything else
-// is carried over from the existing corridors.json.
 const onlyIds = process.argv.slice(2)
 const targets =
   onlyIds.length > 0 ? corridors.filter((corridor) => onlyIds.includes(corridor.id)) : corridors
@@ -556,9 +482,7 @@ if (onlyIds.length > 0) {
     for (const entry of JSON.parse(readFileSync(OUTPUT_PATH, 'utf8')).corridors) {
       existing.set(entry.id, entry)
     }
-  } catch {
-    // No prior file — full fetch semantics.
-  }
+  } catch {}
 }
 
 const problems = []
@@ -602,7 +526,6 @@ for (const corridor of targets) {
   existing.set(corridor.id, {
     id: corridor.id,
     name: corridor.name,
-    // Optional fields; JSON.stringify drops the undefined ones.
     label: corridor.label,
     street: corridor.street,
     from: corridor.from.label,
@@ -614,7 +537,6 @@ for (const corridor of targets) {
   })
 }
 
-// Emit in canonical corridor order regardless of fetch order.
 const output = corridors.map((corridor) => existing.get(corridor.id)).filter(Boolean)
 
 writeFileSync(

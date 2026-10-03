@@ -6,16 +6,9 @@ export interface Section {
   group: Group
   primary?: boolean
   description?: string
-  // Icon keyword from the shared <Icon> registry, shown beside the label in the
-  // primary nav and the homepage lists.
   icon?: string
 }
 
-// Homepage groups, in display order. 'notes' is intentionally omitted for now —
-// it has no content yet, so the section stays defined (its page + feed work) but
-// isn't surfaced on the homepage or in the nav until there are posts.
-// `kicker` is the right-justified caption shown opposite the label in the
-// homepage group headers.
 export const groups: { id: Group; label?: string; kicker?: string }[] = [
   { id: 'explore', label: 'Maps' },
   { id: 'topics', label: 'Topics' },
@@ -49,7 +42,6 @@ export const sections: Section[] = [
     description: "Field notes and deep dives on what I've learned.",
   },
 
-  // Lists: my subjective picks and running lists.
   {
     label: 'The Best Food in St. Louis',
     path: '/best/',
@@ -78,7 +70,6 @@ export const sections: Section[] = [
     icon: 'folder-tree',
     description: 'An index of every page on the site.',
   },
-  // Hidden until it has posts (omitted from `groups` above and not `primary`).
   { label: 'Notes', path: '/notes/', group: 'notes' },
 
   {

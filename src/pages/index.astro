@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content'
 import neighborhoodsData from '../data/neighborhoods.json'
 
-import imosPhoto from '../content/images/food/imos.jpeg'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
 import { href } from '../lib/url'
@@ -67,10 +66,6 @@ const moreSections = [
   ...sections.filter((section) => section.group === 'lists'),
   ...sections.filter((section) => section.group === 'site' && !section.primary),
 ]
-
-const pizzaTopic = allTopics.find(
-  (topic) => topic.id === 'st-louis-style-pizza' && topic.id !== leadTopic?.id,
-)
 
 const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 
@@ -244,22 +239,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         </div>
       </div>
 
-      <!-- {
-        pizzaTopic && (
-          <section class="front-feature">
-            <Heading>Pizza</Heading>
-            <Card
-              class="card--lg"
-              photo={imosPhoto}
-              href={href(`/${pizzaTopic.id}/`)}
-              title={pizzaTopic.data.title}
-              meta={pizzaTopic.data.category}
-              description={pizzaTopic.data.description}
-              excerpt={excerpt(pizzaTopic.body, PREVIEW_EXCERPT_CHARS)}
-            />
-          </section>
-        )
-      } -->
     </div>
   </div>
 </BaseLayout>

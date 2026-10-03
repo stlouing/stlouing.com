@@ -1,9 +1,3 @@
-// One stable anonymous id per browser, shared by every Supabase-backed feature
-// (readers-verdict votes, guestbook signatures, whatever comes next) so the
-// same visitor is one identity across tables. Kept behind try/catch so
-// private-mode storage denial can't break the features — a fresh id per call
-// just means the server treats the browser as new.
-
 const ID_KEY = 'stl_browser_id'
 
 export function browserId(): string {
@@ -13,7 +7,6 @@ export function browserId(): string {
       return existing
     }
 
-    // Browsers that voted before the id was unified keep their reader identity.
     const created = legacyVoterId() ?? crypto.randomUUID()
     window.localStorage.setItem(ID_KEY, created)
 

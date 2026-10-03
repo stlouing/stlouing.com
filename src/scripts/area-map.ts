@@ -6,17 +6,12 @@ import { buildPopupHtml, escapeHtml, type PopupChip } from './popup'
 import { frameCityView, keepPopupInView } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
 
-// Join boundaries to the page's sections by the official NHD_NUM (unique), so
-// the map and the generated sections always share one slug — no re-slugifying.
-// `ignored` rows are absorbed neighborhoods (e.g. the pieces of Dogtown) kept
-// only as data; skip them so they don't shadow the merged entry's number.
 const byNumber = new Map(
   neighborhoods
     .filter((neighborhood) => !('ignored' in neighborhood))
     .map((neighborhood) => [neighborhood.number, neighborhood]),
 )
 
-// Walk every [lng, lat] coordinate of a Polygon/MultiPolygon feature.
 function forEachPosition(geometry: Geometry, fn: (position: Position) => void): void {
   if (geometry.type === 'Polygon') {
     for (const ring of geometry.coordinates) {
@@ -35,12 +30,6 @@ function forEachPosition(geometry: Geometry, fn: (position: Position) => void): 
   }
 }
 
-/**
- * Clickable St. Louis neighborhood map (MapLibre GL / WebGL). Draws each official
- * boundary, and on click expands that neighborhood's writeup in the left pane.
- * Boundaries are one geojson source; hover + selection are driven by feature-state
- * so the GPU repaints without touching the DOM.
- */
 export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
   const element = document.querySelector<HTMLElement>(selector)
   if (!element) {
@@ -49,9 +38,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
 
   type RegionKey = 'north' | 'central' | 'south' | 'county' | 'park'
 
-  // Section colors, read live from the CSS map-color tokens (they differ light/dark).
-  // The three St. Louis City regions (North yellow, Central red, South violet); St.
-  // Louis County is blue; parks are green by `type`, regardless of region.
   function readRegionColors(): Record<RegionKey, string> {
     const styles = getComputedStyle(document.documentElement)
     const readColor = (token: string, fallback: string) =>
@@ -83,8 +69,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     return 'central'
   }
 
-  // Fill/line color as a MapLibre `match` on each feature's region key, so the whole
-  // basemap recolors with one setPaintProperty when the theme toggles.
   let regionColors = readRegionColors()
   function regionColorExpression(): ExpressionSpecification {
     return [
@@ -120,10 +104,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     return rows.find((row) => row.dataset.section === slug)
   }
 
-  // Preprocess the boundaries: give each feature a stable numeric id (for
-  // feature-state), stamp its region color + slug + name into its properties (so
-  // the paint expressions and click handler read them straight off the feature),
-  // and collect per-slug centers/bounds + the whole-city bounds for framing.
   const SOURCE_ID = 'neighborhoods'
   const FILL_LAYER = 'neighborhoods-fill'
   const LINE_LAYER = 'neighborhoods-line'
@@ -158,9 +138,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
 
   const map = createBasemapMap(element, { minZoom: 10, maxZoom: 13 })
 
-  // Touch devices synthesize hover (mouseenter/mousemove) events on tap, which
-  // fights tap-to-open. Gate every hover behavior on a genuinely hover-capable
-  // pointer (a mouse), so mobile is tap-only.
   const canHover = window.matchMedia('(hover: hover)').matches
 
   let selectedSlug: string | null = null
@@ -172,9 +149,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     }
   }
 
-  // Selection follows the boundary's popup (open = selected), mirroring the Food
-  // map: opening highlights the boundary (feature-state), marks its row active,
-  // and scrolls that row to the top of the pane; closing clears all three.
   function activate(slug: string): void {
     if (selectedSlug === slug) {
       return
@@ -199,9 +173,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     selectedSlug = null
   }
 
-  // The boundary popup matches the Food map's (shared buildPopupHtml): the
-  // neighborhood name (linked to its page), an area chip and a writeup teaser —
-  // read off the matching list row's data attributes.
   function popupHtmlFor(slug: string): string {
     const name = nameBySlug.get(slug) ?? ''
     if (!slug) {
@@ -228,17 +199,12 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     })
   }
 
-  // One reused popup. Opening it for a slug re-anchors + refills it; the single
-  // instance means only one is ever open. Its close event clears the selection.
-  // `anchor: 'bottom'` pins it ABOVE the pin so it never flips sides as you pan/near
-  // edges; keepPopupInView pans the map to keep it on-screen instead.
   const popup = new maplibregl.Popup({
     className: 'map-popup',
     closeButton: true,
     closeOnClick: false,
     anchor: 'bottom',
     maxWidth: '320px',
-    // Lift the popup clear of the explored pin (which rises ~34px from its tip).
     offset: 38,
     focusAfterOpen: false,
   })
@@ -255,9 +221,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     }
     popup.setLngLat(center).setHTML(popupHtmlFor(slug)).addTo(map)
     activate(slug)
-    // Keep the popup clear of the sticky chrome + map edges (see map-shared). When a
-    // list click is panning to this neighborhood, wait for the pan to end so the
-    // nudge doesn't fight the animation.
     const getPopupEl = () => popup.getElement() ?? undefined
     if (deferKeepInView) {
       map.once('moveend', () => keepPopupInView(map, getPopupEl))
@@ -266,9 +229,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     }
   }
 
-  // Add (or re-add, after a theme-driven setStyle) the boundary source + fill/line
-  // layers. fill/line opacity + width come from feature-state so hover/selection
-  // repaint on the GPU. Re-applies the current selection after a style reload.
   function addBoundaryLayers(): void {
     if (!map.getSource(SOURCE_ID)) {
       map.addSource(SOURCE_ID, { type: 'geojson', data: geojson })
@@ -309,15 +269,11 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
         },
       })
     }
-    // Feature-state is cleared by a style reload; restore the live selection.
     if (selectedSlug) {
       setSlugState(selectedSlug, { selected: true })
     }
   }
 
-  // Explored neighborhoods (a writeup exists) get a filled, clickable region-colored
-  // pin marker that opens their popup; Unexplored ones have none, so clicks fall
-  // through to the polygon.
   function addExploredMarkers(): void {
     for (const [slug, ids] of slugToFeatureIds) {
       if (ids.length === 0) {
@@ -335,10 +291,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
       const element = document.createElement('div')
       element.className = 'map-pin'
       element.dataset.region = regionKeyBySlug.get(slug) ?? 'central'
-      // viewBox is padded 2px beyond the 24×32 path so the 2px ring stroke (which
-      // sits half-outside the path edge) isn't clipped; the tip at path (12,32)
-      // lands at pixel (14,34) in the padded box. `currentColor` fill — the pin
-      // color (and its theme swap) comes from the `.map-pin` CSS.
       element.innerHTML = `<svg class="marker-pin" viewBox="-2 -2 28 36" width="28" height="36" fill="none" aria-hidden="true"><path class="marker-pin-body" d="M12 0C5.383 0 0 5.383 0 12c0 9 12 20 12 20s12-11 12-20c0-6.617-5.383-12-12-12z" fill="currentColor" /><circle class="marker-pin-dot" cx="12" cy="12" r="4.5" /></svg>`
 
       new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(center).addTo(map)
@@ -347,7 +299,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
         event.stopPropagation()
         openPopupFor(slug)
       })
-      // Hovering the marker previews its boundary, like hovering the polygon.
       element.addEventListener('mouseenter', () => {
         if (!canHover) {
           return
@@ -365,8 +316,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     }
   }
 
-  // Boundary hover (feature-state) + click-to-open. A single map-level click opens
-  // the boundary under the pointer or, on empty space, closes the popup.
   function addBoundaryInteractions(): void {
     map.on('mousemove', FILL_LAYER, (event) => {
       if (!canHover) {
@@ -405,34 +354,21 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     })
   }
 
-  // The row title is a plain link to the neighborhood's detail page (like the Food
-  // list), so clicking one in the list navigates there; the map's own polygons and
-  // pins still open the in-place popup. `split` drives the map-pane observer below.
   const split = document.querySelector('[data-map-split]')
 
-  // Deep-link support: /neighborhoods#slug selects + frames that neighborhood on
-  // load; otherwise frame the whole City of St. Louis.
   function frameInitialView(): void {
     const initialSlug = location.hash.slice(1)
     if (initialSlug && slugToFeatureIds.has(initialSlug)) {
       activate(initialSlug)
       const selectedBounds = boundsBySlug.get(initialSlug)
       if (selectedBounds) {
-        // Instant on initial load — no fly-in.
         map.fitBounds(selectedBounds, { padding: 40, maxZoom: 13, animate: false })
       }
     } else {
-      // Frame the City of St. Louis (shared with the Food map). The county
-      // municipalities (Chesterfield, Clayton, Kirkwood, …) still render, but
-      // they sit far west/south and must not drive the fit, or the city shrinks
-      // to a corner.
       frameCityView(map, 40, false)
     }
   }
 
-  // On mobile the page opens on the reading pane, so the map starts hidden and
-  // would measure a zero-size container. Only frame once it actually has a size; if
-  // it's hidden at load, wait for the first switch to the map pane, then re-measure.
   let framed = false
   function frameWhenSized(): void {
     if (framed || element?.clientHeight === 0) {
@@ -457,9 +393,6 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
     addBoundaryLayers()
     addBoundaryInteractions()
     addExploredMarkers()
-    // A theme swap carries the boundary source/layers onto the new style via
-    // transformStyle (see basemap.ts); once it lands, recolor the boundaries + pins
-    // from the new theme's CSS map-color tokens (the paint/SVG had the old values).
     watchThemeChanges(map, () => {
       regionColors = readRegionColors()
       if (map.getLayer(FILL_LAYER)) {

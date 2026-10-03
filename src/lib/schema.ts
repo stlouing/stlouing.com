@@ -1,6 +1,3 @@
-// Builders for schema.org JSON-LD. Each returns a plain object that BaseLayout
-// serializes into a <script type="application/ld+json">. BreadcrumbList is built
-// in BaseLayout from the breadcrumb trail; the rest are passed in per page.
 import { SITE_TITLE, SITE_DESCRIPTION } from './site'
 
 const CONTEXT = 'https://schema.org'
@@ -22,7 +19,6 @@ interface ArticleInput {
   published?: string
   updated?: string
   tags?: string[]
-  // Absolute URL of the social-share image (per-page, else the site flag).
   image?: string
 }
 
@@ -42,8 +38,6 @@ export function articleSchema(input: ArticleInput, site: URL) {
   }
 }
 
-// "Valley Park, MO 63088" -> structured locality/region/postal; otherwise the
-// whole address as a single streetAddress.
 function postalAddress(lines: string[]) {
   const match = lines[1]?.match(/^(.+?),\s*([A-Za-z]{2})\s+(\d{5})/)
   if (match) {
@@ -67,14 +61,10 @@ interface RestaurantInput {
   coords?: [number, number]
   cuisine?: string[]
   rating?: number
-  // Absolute URL of the social-share image (per-page, else the site flag).
   image?: string
 }
 
 export function restaurantSchema(input: RestaurantInput) {
-  // The reviewed entity. No rating is embedded here: an AggregateRating built from
-  // the site's single own score is self-serving and violates Google's structured
-  // data guidelines (aggregates are meant to summarize many collected ratings).
   const restaurant = {
     '@type': 'Restaurant',
     name: input.name,
@@ -87,15 +77,10 @@ export function restaurantSchema(input: RestaurantInput) {
     servesCuisine: input.cuisine?.length ? input.cuisine : undefined,
   }
 
-  // An unrated place is just the Restaurant node (still useful for name, address,
-  // and cuisine).
   if (typeof input.rating !== 'number') {
     return { '@context': CONTEXT, ...restaurant }
   }
 
-  // A rated place is the author's single Review of that restaurant — the shape
-  // Google prescribes for a review site (Review with the place as itemReviewed),
-  // so the 0–10 score reads as one authored opinion, not a crowd aggregate.
   return {
     '@context': CONTEXT,
     '@type': 'Review',

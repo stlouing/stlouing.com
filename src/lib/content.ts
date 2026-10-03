@@ -6,10 +6,6 @@ export function published<
   return entries.filter((entry) => !entry.data.draft)
 }
 
-// Topics list order, shared by /topics and the homepage column: "St. Louis Field
-// Notes" is pinned to the top as the section's living index, then everything else
-// by most-recently-updated — so it stays first even when another topic is newer.
-// Exported so the homepage can skip the pinned index when picking a lead story.
 export const PINNED_TOPIC_ID = 'field-notes'
 export function sortTopics<Entry extends { id: string; data: { updated: Date } }>(
   entries: Entry[],
@@ -26,34 +22,26 @@ export function sortTopics<Entry extends { id: string; data: { updated: Date } }
   })
 }
 
-// True when an entry has real body content (HTML comments ignored).
 export function hasBody(entry: { body?: string }): boolean {
   const text = (entry.body ?? '').replace(/<!--[\s\S]*?-->/g, '').trim()
 
   return text.length > 0
 }
 
-// Excerpt lengths, so the two intents are set in one place rather than as magic
-// numbers across pages. PREVIEW is the shorter, on-screen teaser (list rows, map
-// popups, card previews); META is tuned for the SEO <meta name="description">,
-// where Google renders ~150–160 characters.
 export const PREVIEW_EXCERPT_CHARS = 120
 export const META_DESCRIPTION_CHARS = 150
 
-// A plain-text excerpt of a Markdown body: strips code, wikilinks, markdown
-// syntax, and HTML, then truncates on a word boundary. Used as the fallback for
-// feed/list descriptions when an entry has no authored `description`.
 export function excerpt(body: string | undefined, max = 160): string {
   const text = (body ?? '')
-    .replace(/```[\s\S]*?```/g, ' ') // fenced code blocks
-    .replace(/<!--[\s\S]*?-->/g, ' ') // HTML comments
-    .replace(/<figure[\s\S]*?<\/figure>/gi, ' ') // figures (image + caption) aren't prose
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<figure[\s\S]*?<\/figure>/gi, ' ')
     .replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (_match, target, label) => label ?? target)
-    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // markdown links/images -> text
-    .replace(/^[>#\s]*/gm, '') // leading blockquote/heading markers
-    .replace(/^[-*+]\s+/gm, '') // leading list markers
-    .replace(/[*_`~]/g, '') // inline emphasis/code
-    .replace(/<[^>]+>/g, ' ') // stray HTML tags
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^[>#\s]*/gm, '')
+    .replace(/^[-*+]\s+/gm, '')
+    .replace(/[*_`~]/g, '')
+    .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
 

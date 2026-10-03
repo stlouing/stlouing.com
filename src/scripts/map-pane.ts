@@ -1,13 +1,3 @@
-// The neighborhood page's map pane: an interactive basemap filling the right
-// half of the split-screen layout, with the neighborhood's boundary drawn in
-// its region color and an icon badge for every mapped spot (food places plus
-// the authored spots.json categories). Badges are DOM markers colored by
-// data-category, their icon cloned from the SSR legend inside the pane (the
-// legend is the one icon source); clicking opens the popup instead of
-// navigating (middle-click on a linked badge still opens its page). On phones
-// the pane stacks on top of the content at a fixed height, so the map is
-// always visible at mount.
-
 import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
@@ -20,7 +10,6 @@ const BOUNDARY_SOURCE_ID = 'neighborhood-boundary'
 const BOUNDARY_FILL_LAYER_ID = 'neighborhood-boundary-fill'
 const BOUNDARY_OUTLINE_LAYER_ID = 'neighborhood-boundary-outline'
 
-// Walk a Polygon/MultiPolygon's coordinates and extend the bbox with each point.
 function extendWithGeometry(coordinates: unknown, extend: (point: [number, number]) => void): void {
   if (!Array.isArray(coordinates)) {
     return
@@ -68,8 +57,6 @@ function heroBounds(
   ]
 }
 
-// Boundary paint from the page's region token (baked as data-boundary-token),
-// re-read on theme swaps so the color follows light/dark.
 function readBoundaryColor(token: string): string {
   const styles = getComputedStyle(document.documentElement)
 
@@ -112,8 +99,6 @@ function addSpotMarkers(
   const legend = root.querySelector<HTMLElement>('[data-map-legend]')
 
   for (const spot of spots) {
-    // A linked badge stays an <a> so middle-click / open-in-new-tab navigates;
-    // an unlinked one is a <button> so it's still keyboard-activatable.
     const element = spot.url ? document.createElement('a') : document.createElement('button')
     element.className = 'map-badge'
     element.dataset.category = spot.category
@@ -129,15 +114,9 @@ function addSpotMarkers(
       element.type = 'button'
     }
 
-    // The circle visuals live on an inner body span (never the marker element
-    // itself — MapLibre positions that with an inline transform, which any CSS
-    // hover transform would fight), matching the .marker-pin pattern.
     const body = document.createElement('span')
     body.className = 'map-badge-body'
 
-    // The badge's glyph comes from the matching legend row — the legend is the
-    // one icon source, so markers and key can never disagree. Without a match
-    // the badge stays a plain colored dot.
     const legendIcon = legend?.querySelector(`[data-legend-category="${spot.category}"] .icon`)
     if (legendIcon) {
       body.append(legendIcon.cloneNode(true))
@@ -178,7 +157,6 @@ export function initMapPane(): void {
   const slug = root.dataset.slug ?? ''
   const boundaryToken = root.dataset.boundaryToken ?? '--color-map-accent'
   const spots = readSpots(root)
-  // Fallback center [lat, lng] for areas without a boundary polygon.
   const fallbackCoords = (root.dataset.coords ?? '').split(',').map(Number)
 
   const map = createBasemapMap(root, {
@@ -187,8 +165,6 @@ export function initMapPane(): void {
     attributionControl: { compact: true },
   })
 
-  // One reused popup, food-map options verbatim (map.ts) except the offset:
-  // the badge is a centered circle, not a 36px bottom-anchored pin.
   const popup = new maplibregl.Popup({
     className: 'map-popup',
     closeButton: true,
@@ -225,13 +201,8 @@ export function initMapPane(): void {
 
   map.on('click', () => popup.remove())
 
-  // The pane is always visible at mount (desktop right half, mobile top strip),
-  // so the camera frames once; MapLibre's own trackResize covers window
-  // resizes after that.
   const frameView = (bounds: LngLatBoundsLike | undefined): void => {
     if (bounds) {
-      // A touch looser than a tight fit, so the boundary sits in its
-      // surrounding street grid.
       const camera = map.cameraForBounds(bounds, { padding: 48 })
       if (camera) {
         map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 13) - 0.15 })
@@ -241,10 +212,6 @@ export function initMapPane(): void {
     }
   }
 
-  // Frame as soon as the boundary answers, NOT inside map 'load':
-  // cameraForBounds and the DOM markers only need the map transform, while
-  // 'load' waits for the full style + tiles — on mobile that gap left the
-  // badges sitting at default-camera positions for seconds.
   const boundaryPromise = boundaryFor(slug)
   void boundaryPromise.then((boundary) => {
     frameView(heroBounds(boundary, spots))

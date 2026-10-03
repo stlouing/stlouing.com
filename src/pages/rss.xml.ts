@@ -5,17 +5,9 @@ import { getCollection, render } from 'astro:content'
 import { published, excerpt } from '../lib/content'
 import { SITE_TITLE, SITE_DESCRIPTION } from '../lib/site'
 
-// Combined feed: chronological notes, the evergreen Topics (dated by when each
-// was last tended), dated Food reviews, and dated Neighborhood writeups — newest
-// first. Each item carries a short description (authored, else a generated
-// excerpt) plus the full rendered body. Food + Neighborhood entries without a
-// `date` are left out of the feed.
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://stlouing.com')
   const origin = site.href.replace(/\/$/, '')
-  // Make in-content links absolute: root-relative ("/...") against the origin, and
-  // bare "#fragment" anchors against the item's own page (a feed has no base URL,
-  // so a relative "#x" is invalid in content:encoded).
   const absolutize = (html: string, path: string) =>
     html
       .replace(/(href|src)="\//g, `$1="${origin}/`)
@@ -56,7 +48,6 @@ export async function GET(context: APIContext) {
     }),
   )
 
-  // Food reviews only join the feed once dated (the feed is chronological).
   const food = published(await getCollection('food')).filter((place) => place.data.created)
   const foodItems = await Promise.all(
     food.map(async (place) => {
@@ -73,9 +64,6 @@ export async function GET(context: APIContext) {
     }),
   )
 
-  // Neighborhood writeups join the feed once dated, mirroring Food. The summary
-  // falls back to the authored `description` (which data-only entries carry)
-  // before a body excerpt.
   const neighborhoods = published(await getCollection('neighborhoods')).filter(
     (neighborhood) => neighborhood.data.created,
   )
@@ -103,8 +91,6 @@ export async function GET(context: APIContext) {
     description: SITE_DESCRIPTION,
     site,
     items,
-    // Advertise the feed's own canonical URL (atom:self), per feed-validator best
-    // practice — helps aggregators dedupe and re-find the feed.
     xmlns: { atom: 'http://www.w3.org/2005/Atom' },
     customData: `<atom:link href="${origin}/rss.xml" rel="self" type="application/rss+xml" />`,
   })

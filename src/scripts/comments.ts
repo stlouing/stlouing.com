@@ -1,11 +1,3 @@
-// Comments — per-page reader comments on topic, food, and neighborhood pages,
-// backed by Supabase (PostgREST). Same shape as guestbook.ts: no third-party
-// SDK, just fetch against the anon REST API, which is safe because the table is
-// RLS-locked behind SECURITY DEFINER functions. Comments are public and render
-// immediately; the server rate-limits and validates. Pages are keyed by
-// (kind, slug) because topic ids, food ids, and neighborhood slugs are separate
-// namespaces that can collide.
-
 import { browserId } from './browser-id'
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
@@ -14,10 +6,6 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 const STORE_KEY = 'stl_comments'
 const PAGE_SIZE = 20
 
-// Mirrors the server's no-links rule (add_comment rejects URLs) so an honest
-// commenter gets a clear message instead of a generic failure. Keep the two
-// patterns in sync — the SQL function (scripts/db/comments.sql, in the private
-// parent folder) is the real enforcement.
 const LINK_PATTERN =
   /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|info|biz|xyz|top|site|online|shop|club|io|ru)\b)/i
 
@@ -31,23 +19,12 @@ type CommentEntry = {
   total: number
 }
 
-// The site's fleur-de-lis, referencing the #fleur-glyph symbol BaseLayout embeds
-// (the popup.ts pattern). Constant markup with no reader-supplied text, so
-// innerHTML is safe for it.
 const AUTHOR_FLEUR =
   '<svg class="feed-fleur" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 192" fill="currentColor" aria-hidden="true"><use href="#fleur-glyph"/></svg>'
 
-type CommentsStore = {
-  // The commenter's name, remembered after a successful post so the field is
-  // prefilled next time. Multiple comments per browser are allowed — a comment
-  // thread is a conversation, so there is no guestbook-style one-post gate.
-  name?: string
-}
+type CommentsStore = { name?: string }
 
 export function initComments(): void {
-  // Nothing to wire when the site was built without Supabase creds — the
-  // component renders nothing in that case, but guard anyway so a stray root
-  // is a no-op.
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return
   }
@@ -82,19 +59,10 @@ function setupComments(root: HTMLElement): void {
     return
   }
 
-  // The page's "Comments" anchor — the masthead pill on topic pages (label
-  // carries the whole count text) or the neighborhood stats-bar cell (a bare
-  // number in [data-comments-count]). One comments section per page, so
-  // document-wide queries are safe. Ships hidden, revealed with the section.
   const anchorLink = document.querySelector<HTMLElement>('[data-comments-link]')
   const anchorLabel = document.querySelector<HTMLElement>('[data-comments-link-label]')
   const anchorCellValue = document.querySelector<HTMLElement>('[data-comments-cell-value]')
 
-  // Jump, don't glide: the site's global `scroll-behavior: smooth` animates
-  // anchor jumps, and on a long article the ride to the foot of the page is
-  // slow enough that browsers abandon it partway. Suspend smooth scrolling for
-  // this one click — the browser then jumps instantly, with the hash, :target,
-  // and scroll-margin behavior all intact.
   anchorLink?.addEventListener('click', () => {
     const pageElement = document.documentElement
     pageElement.style.scrollBehavior = 'auto'
@@ -103,15 +71,11 @@ function setupComments(root: HTMLElement): void {
     })
   })
 
-  // A returning commenter gets their name back.
   const rememberedName = loadStore().name
   if (nameInput && rememberedName && !nameInput.value) {
     nameInput.value = rememberedName
   }
 
-  // How many comments the list currently shows, and the server's total —
-  // together they drive the count line and whether "Show older" has anything
-  // left to fetch.
   let shown = 0
   let total = 0
 
@@ -155,9 +119,6 @@ function setupComments(root: HTMLElement): void {
     renderCount()
   }
 
-  // First page. The whole section ships hidden and only reveals once the read
-  // works, so a build deployed before the SQL exists (or an offline visit)
-  // shows nothing rather than an error line on every page of the site.
   void loadPage()
     .then(() => {
       root.hidden = false
@@ -165,9 +126,7 @@ function setupComments(root: HTMLElement): void {
         anchorLink.hidden = false
       }
     })
-    .catch(() => {
-      // RPC missing / offline — the section (and the anchor pill) stays hidden.
-    })
+    .catch(() => {})
 
   olderButton?.addEventListener('click', () => {
     olderButton.disabled = true
@@ -186,7 +145,6 @@ function setupComments(root: HTMLElement): void {
   })
 
   const post = async (): Promise<void> => {
-    // Honeypot: a real person never fills the hidden field. Pretend success, do nothing.
     if (honeypot?.value) {
       if (messageInput) {
         messageInput.value = ''
@@ -219,7 +177,6 @@ function setupComments(root: HTMLElement): void {
     try {
       await addComment({ kind, slug, name, message })
 
-      // The server accepted it — show it at the top right away rather than re-fetching.
       entriesList.prepend(
         buildEntry({
           id: 0,
@@ -253,8 +210,6 @@ function setupComments(root: HTMLElement): void {
   }
 }
 
-// One <li> per comment, built with createElement/textContent only — comment text
-// is reader-supplied and must never pass through innerHTML.
 function buildEntry(entry: CommentEntry): HTMLLIElement {
   const item = document.createElement('li')
   item.className = 'feed-entry'
@@ -283,7 +238,6 @@ function buildEntry(entry: CommentEntry): HTMLLIElement {
   return item
 }
 
-// The date beside the name in a byline row.
 function buildDate(isoDate: string): HTMLSpanElement {
   const date = document.createElement('span')
   date.className = 'feed-date'
@@ -292,9 +246,6 @@ function buildDate(isoDate: string): HTMLSpanElement {
   return date
 }
 
-// The author's response, nested under its comment. The byline is always the
-// fleur mark + "St. Louing" — replies only exist when the author writes one;
-// readers have no path to this field.
 function buildReply(replyMessage: string, replyDate: string | null): HTMLDivElement {
   const reply = document.createElement('div')
   reply.className = 'feed-reply'
@@ -322,9 +273,6 @@ function buildReply(replyMessage: string, replyDate: string | null): HTMLDivElem
   return reply
 }
 
-// Comment timestamps are real instants, not date-only frontmatter, so unlike the
-// shared formatDate they render in the reader's own zone (a UTC pin would show
-// "tomorrow" for an evening comment in St. Louis).
 function formatPostedDate(isoDate: string): string {
   const parsed = new Date(isoDate)
   if (Number.isNaN(parsed.getTime())) {
@@ -335,7 +283,6 @@ function formatPostedDate(isoDate: string): string {
 }
 
 async function fetchEntries(kind: string, slug: string, offset: number): Promise<CommentEntry[]> {
-  // get_comments is a STABLE definer function, so it's callable over a cacheable GET.
   const url =
     `${SUPABASE_URL}/rest/v1/rpc/get_comments` +
     `?p_kind=${encodeURIComponent(kind)}&p_slug=${encodeURIComponent(slug)}` +
@@ -372,13 +319,10 @@ async function addComment(input: {
   }
 }
 
-// Anonymous access rides in the `apikey` header only (see readers-verdict.ts for
-// why there's no Bearer Authorization header).
 function authHeaders(): Record<string, string> {
   return { apikey: SUPABASE_ANON_KEY }
 }
 
-// The shared per-browser id (see browser-id.ts).
 function commenterId(): string {
   return browserId()
 }
@@ -419,7 +363,5 @@ function safeGet(key: string): string | null {
 function safeSet(key: string, value: string): void {
   try {
     window.localStorage.setItem(key, value)
-  } catch {
-    // Storage blocked (private mode / disabled) — nothing to persist.
-  }
+  } catch {}
 }
