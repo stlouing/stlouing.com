@@ -1,6 +1,7 @@
 import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
+import { boundariesFor, type BoundaryFeature } from './boundaries'
 import corridorData from '../data/corridors.json'
 import corridorSpots from '../data/corridor-spots.json'
 
@@ -376,40 +377,6 @@ const OVERVIEW_FILL_LAYER_ID = 'corridor-overview-fill'
 const OVERVIEW_OUTLINE_LAYER_ID = 'corridor-overview-outline'
 const OVERVIEW_HIT_LAYER_ID = 'corridor-overview-hit'
 
-const siteSlugByCitySlug: Record<string, string> = {
-  'forest-park-southeast': 'the-grove',
-  'skinker-debaliviere': 'delmar-loop',
-}
-
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-
-interface BoundaryFeature {
-  type: 'Feature'
-  properties: Record<string, unknown> | null
-  geometry: { type: string; coordinates: unknown }
-}
-
-async function loadInvolvedBoundaries(group: Corridor[]): Promise<BoundaryFeature[]> {
-  const wanted = new Set(group.flatMap((corridor) => corridor.neighborhoods ?? []))
-
-  try {
-    const response = await fetch(`${import.meta.env.BASE_URL}stl-neighborhoods.geojson`)
-    const boundaries = (await response.json()) as { features: BoundaryFeature[] }
-
-    return boundaries.features.filter((feature) => {
-      const citySlug = slugify(String(feature.properties?.NHD_NAME ?? ''))
-
-      return wanted.has(siteSlugByCitySlug[citySlug] ?? citySlug)
-    })
-  } catch {
-    return []
-  }
-}
-
 function applyOverviewLayers(
   map: MapLibreMap,
   group: Corridor[],
@@ -533,7 +500,9 @@ function mountOverviewMap(element: HTMLElement): MountedMap {
   })
 
   map.on('load', async () => {
-    const boundaries = await loadInvolvedBoundaries(group)
+    const boundaries = await boundariesFor(
+      group.flatMap((corridor) => corridor.neighborhoods ?? []),
+    )
     applyOverviewLayers(map, group, boundaries)
     map.fitBounds(boundsOf(group), { padding: 28, duration: 0 })
   })

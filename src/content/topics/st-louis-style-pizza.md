@@ -25,10 +25,10 @@ My first experiences with STL-style pizza were not the best, and initially I was
 
 Here's a subjective rated list of the places I've tried. I would say the top three or four are all vying for first place at the moment.
 
-1. **[[farottos|Farotto's]]** - A pizza with extra-extra-thin buttery, flaky crust, a slightly sweet sauce, and quality ingredients. Just don't get Jimmy's favorite (shrimp and bacon...why??). This is my place of choice to take out of town visitors, as the rest of the food is also great.
+1. **[[faraci|Faraci Pizza]]** - Rectangular pizza, sliced provel, and a crispy, yeasty crust.
 1. **[[bonos-pizzeria|Bono's Pizzeria]]**: Crispy, thin, tavern-esque pizza with light sauce and Provel.
+1. **[[farottos|Farotto's]]** - A pizza with extra-extra-thin buttery, flaky crust, a slightly sweet sauce, and quality ingredients. Just don't get Jimmy's favorite (shrimp and bacon...why??). This is my place of choice to take out of town visitors, as the rest of the food is also great.
 1. **[[pirrones|Pirrone's Pizzeria]]** - It's a bit out of the way from the city itself, but worth a visit. Pirrone's makes a rectangular pizza with a crispy, buttery crust, where the cheese and sauce blend to make an orange mix.
-1. **[[faraci|Faraci Pizza]]** - Similar to Pirrone's in size and shape, with a more bready, yeasty crust.
 1. **[[salvage-yard|Salvage Yard]]** - A solid choice for a standard STL-style.
 1. **Imo's Pizza** - By far the most famous and infamous pizza in town, Imo's is THE St. Louis pizza chain and the only STL-style many people have ever tried. Imo's has a mass-produced flavor to it, unlike the home-style vibes of a lot of other spots. The quality also varies a lot from location to location. It can be okay, but not the best representation of pizza in the area, in my opinion. Sometimes I do specifically crave an Imo's pizza, though.
 1. **[[failonis|Failoni's]]** - A brick-oven pizza with a very crisp cracker-like crust. (I believe this also counts as Uncle Leo's pizza, as they're under the same ownership, but I haven't tried it to confirm.)

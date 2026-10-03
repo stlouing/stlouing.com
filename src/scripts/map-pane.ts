@@ -11,6 +11,7 @@
 import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
+import { boundaryFor, type BoundaryFeature } from './boundaries'
 import { buildPopupHtml } from './popup'
 import { keepPopupInView } from './map-shared'
 import type { MapSpot } from '../lib/spots'
@@ -18,40 +19,6 @@ import type { MapSpot } from '../lib/spots'
 const BOUNDARY_SOURCE_ID = 'neighborhood-boundary'
 const BOUNDARY_FILL_LAYER_ID = 'neighborhood-boundary-fill'
 const BOUNDARY_OUTLINE_LAYER_ID = 'neighborhood-boundary-outline'
-
-// The city shapefile names a few neighborhoods differently than the site does.
-// Same override map as the walkable overview (corridor-map.ts).
-const siteSlugByCitySlug: Record<string, string> = {
-  'forest-park-southeast': 'the-grove',
-  'skinker-debaliviere': 'delmar-loop',
-}
-
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-
-interface BoundaryFeature {
-  type: 'Feature'
-  properties: Record<string, unknown> | null
-  geometry: { type: string; coordinates: unknown }
-}
-
-async function loadBoundary(slug: string): Promise<BoundaryFeature | undefined> {
-  try {
-    const response = await fetch(`${import.meta.env.BASE_URL}stl-neighborhoods.geojson`)
-    const boundaries = (await response.json()) as { features: BoundaryFeature[] }
-
-    return boundaries.features.find((feature) => {
-      const citySlug = slugify(String(feature.properties?.NHD_NAME ?? ''))
-
-      return (siteSlugByCitySlug[citySlug] ?? citySlug) === slug
-    })
-  } catch {
-    return undefined
-  }
-}
 
 // Walk a Polygon/MultiPolygon's coordinates and extend the bbox with each point.
 function extendWithGeometry(coordinates: unknown, extend: (point: [number, number]) => void): void {
@@ -278,7 +245,7 @@ export function initMapPane(): void {
   // cameraForBounds and the DOM markers only need the map transform, while
   // 'load' waits for the full style + tiles — on mobile that gap left the
   // badges sitting at default-camera positions for seconds.
-  const boundaryPromise = loadBoundary(slug)
+  const boundaryPromise = boundaryFor(slug)
   void boundaryPromise.then((boundary) => {
     frameView(heroBounds(boundary, spots))
   })

@@ -1098,7 +1098,6 @@ body:has(.map-split) main > .wrap,
 .map-badge {
   --badge-size: 30px;
   --badge-icon-size: 16px;
-  position: relative;
   display: block;
   width: var(--badge-size);
   height: var(--badge-size);
