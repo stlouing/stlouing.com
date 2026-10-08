@@ -37,6 +37,7 @@ export interface MapSpot {
   verdict?: { key: string; label: string }
   tagline?: string
   directionsHref?: string
+  photo?: string
 }
 
 export function spotsIn(slug: string): Spot[] {

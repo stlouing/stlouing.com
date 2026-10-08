@@ -23,6 +23,8 @@ import ListItem from '../components/ListItem.astro'
 import Heading from '../components/Heading.astro'
 import SectionHeading from '../components/SectionHeading.astro'
 import Card from '../components/Card.astro'
+import PromoCard from '../components/PromoCard.astro'
+import bestPromoPhoto from '../content/images/food/kishimoto/kishi3.jpg'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconInstagram from '../assets/IconInstagram.astro'
@@ -54,21 +56,23 @@ const exploreCounts: Record<string, number> = {
 }
 
 const FEATURED_FOOD_IDS = [
-  'pizzeria-da-gloria',
-  'kishimoto-mendo',
-  'nicky-slices',
-  'dalies-smokehouse',
-  'woofies-hot-dogs',
-  'sultan',
   'teerak-thai',
   'grand-pied',
+  'kishimoto-mendo',
+  'dalies-smokehouse',
+  'nicky-slices',
+  'pizzeria-da-gloria',
+  'woofies-hot-dogs',
+  'sultan',
 ]
 const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
   allFood.filter((place) => place.id === foodId),
 ).map((place) => ({ place, teaser: excerpt(place.body, PREVIEW_EXCERPT_CHARS) }))
 
+const bestSection = sections.find((section) => section.path === '/best/')
+
 const moreSections = [
-  ...sections.filter((section) => section.group === 'lists'),
+  ...sections.filter((section) => section.group === 'lists' && section !== bestSection),
   ...sections.filter((section) => section.group === 'site' && !section.primary),
 ]
 
@@ -94,6 +98,21 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           }
         </div>
       </section>
+      {
+        bestSection && (
+          <section class="front-index-best">
+            <PromoCard
+              href={href(bestSection.path)}
+              title={bestSection.label}
+              meta={groups.find((group) => group.id === bestSection.group)?.label}
+              description={bestSection.description}
+              photo={bestPromoPhoto}
+              photoAlt="Inside Kishimoto Mendo"
+              linkLabel="View all"
+            />
+          </section>
+        )
+      }
       <section class="front-index-more">
         <Heading>More</Heading>
         <ul class="front-index-list divided-list">
@@ -195,7 +214,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           {
             featuredFood.map(({ place, teaser }) => (
               <Card
-                class="card--lg"
+                class="card--lg card--tall-photo"
                 href={href(`/food/${place.id}/`)}
                 title={place.data.title}
                 description={place.data.description}
@@ -247,22 +266,19 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
         </div>
         {
           promotedTopic && (
-            <Card
+            <PromoCard
               href={href(`/${promotedTopic.id}/`)}
               title={promotedTopic.data.title}
               meta={promotedTopic.data.category}
               description={promotedTopic.data.description}
               excerpt={excerpt(promotedTopic.body, TOPIC_PROMO_EXCERPT_CHARS)}
               photo={promotedTopic.data.photo}
-              photoAlt={promotedTopic.data.photoCaption}>
-              <span class="continue-link">
-                Continue reading <IconArrowRight />
-              </span>
-            </Card>
+              photoAlt={promotedTopic.data.photoCaption}
+              linkLabel="Continue reading"
+            />
           )
         }
       </div>
-
     </div>
   </div>
 </BaseLayout>
@@ -374,7 +390,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-transform: uppercase;
   }
 
-  .rail-articles {
+  .rail-articles,
+  .front-index-best {
     margin-block-end: var(--spacing-lg);
   }
 

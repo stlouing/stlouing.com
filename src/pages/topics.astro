@@ -25,6 +25,7 @@ const topics = sortTopics(published(await getCollection('topics')))
           topics.map((topic) => (
             <Card
               class="card--xl"
+              accentMeta
               href={href(`/${topic.id}/`)}
               title={topic.data.title}
               meta={topic.data.category}
@@ -42,10 +43,6 @@ const topics = sortTopics(published(await getCollection('topics')))
 </BaseLayout>
 
 <style>
-  .card-grid :global(.card-meta) {
-    color: var(--color-accent);
-  }
-
   .card-grid :global(.continue-link) {
     display: block;
     margin-block-start: auto;

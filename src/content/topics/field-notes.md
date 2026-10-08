@@ -2,7 +2,7 @@
 title: St. Louis Field Notes
 icon: notebook
 category: Culture
-description: All my miscellaneous notes on St. Louis slang and customs are documented here, from pronouncing Carondelet to defining a hoosier.
+description: Miscellaneous notes on St. Louis slang and customs, from pronouncing Carondelet to defining a hoosier.
 seoDescription: 'My field notes on St. Louis culture: regional foods, street name pronunciations, local slang, brick architecture, local customs, and the city-county split.'
 created: 2026-05-28
 updated: 2026-06-29

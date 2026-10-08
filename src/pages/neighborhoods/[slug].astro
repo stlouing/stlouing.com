@@ -167,25 +167,33 @@ const spotMapSpots: MapSpot[] = spots.flatMap((spot) => {
   ]
 })
 
-const foodMapSpots: MapSpot[] = places.flatMap((place) => {
-  const [lat, lng] = place.data.coords ?? []
-  if (lat === undefined || lng === undefined) {
-    return []
-  }
-  const verdict = resolveVerdict(place.data)
+const foodMapSpots: MapSpot[] = (
+  await Promise.all(
+    places.map(async (place) => {
+      const [lat, lng] = place.data.coords ?? []
+      if (lat === undefined || lng === undefined) {
+        return []
+      }
+      const verdict = resolveVerdict(place.data)
+      const thumb = place.data.photo
+        ? await getImage({ src: place.data.photo, width: 480, format: 'webp' })
+        : undefined
 
-  return [
-    {
-      title: place.data.title,
-      category: 'food' as const,
-      url: href(`/food/${place.id}/`),
-      coords: [lng, lat] as [number, number],
-      meta: cuisineLabel(place.data.cuisine[0]),
-      verdict: verdict ? { key: verdict, label: verdictLabels[verdict] } : undefined,
-      tagline: place.data.description ?? '',
-    },
-  ]
-})
+      return [
+        {
+          title: place.data.title,
+          category: 'food' as const,
+          url: href(`/food/${place.id}/`),
+          coords: [lng, lat] as [number, number],
+          meta: cuisineLabel(place.data.cuisine[0]),
+          verdict: verdict ? { key: verdict, label: verdictLabels[verdict] } : undefined,
+          tagline: place.data.description ?? '',
+          photo: thumb?.src,
+        },
+      ]
+    }),
+  )
+).flat()
 
 const mapSpots = [...spotMapSpots, ...foodMapSpots]
 

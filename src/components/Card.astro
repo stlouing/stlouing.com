@@ -8,6 +8,7 @@ interface Props {
   href?: string
   title: string
   meta?: string | string[]
+  accentMeta?: boolean
   description?: string
   excerpt?: string
   photo?: ImageMetadata
@@ -22,6 +23,7 @@ const {
   href,
   title,
   meta,
+  accentMeta = false,
   description,
   excerpt,
   photo,
@@ -66,7 +68,7 @@ const linkAttributes = href
   <span class="card-body">
     {
       metaParts.length > 0 && (
-        <span class="card-meta eyebrow eyebrow--muted">
+        <span class:list={['card-meta', 'eyebrow', { 'eyebrow--muted': !accentMeta }]}>
           {metaParts.map((part, partIndex) => (
             <>
               {partIndex > 0 && <span class="eyebrow-divider" aria-hidden="true" />}

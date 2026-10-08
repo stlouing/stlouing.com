@@ -191,6 +191,7 @@ export function initMapPane(): void {
       showRating: spot.category === 'food',
       excerpt: spot.tagline ?? '',
       directionsHref: spot.directionsHref,
+      photo: spot.photo ?? '',
     })
     selectedBadge?.classList.remove('is-selected')
     selectedBadge = badge
