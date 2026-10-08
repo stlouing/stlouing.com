@@ -26,7 +26,7 @@ const legendCategories = (Object.keys(spotCategories) as SpotCategoryKey[]).filt
   aria-label={`Map of the neighborhood and its notable spots`}>
   {
     legendCategories.length > 0 && (
-      <ul class="map-legend" data-map-legend role="list" aria-label="Map legend">
+      <ul class="map-legend map-overlay" data-map-legend role="list" aria-label="Map legend">
         {legendCategories.map((key) => (
           <li class="map-legend-item" data-legend-category={key}>
             <span

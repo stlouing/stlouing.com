@@ -63,20 +63,22 @@ const neighborhoods = defineCollection({
 
 const topics = defineCollection({
   loader: md('topics'),
-  schema: z.object({
-    title: z.string(),
-    seoTitle: z.string().optional(),
-    seoDescription: z.string().optional(),
-    category: z.string().optional(),
-    description: z.string().optional(),
-    icon: z.string().optional(),
-    ogImage: z.string().optional(),
-    leadImage: z.string().optional(),
-    updated: z.coerce.date(),
-    created: z.coerce.date().optional(),
-    display: z.enum(['article', 'list']).default('article'),
-    ...taggable,
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      seoTitle: z.string().optional(),
+      seoDescription: z.string().optional(),
+      category: z.string().optional(),
+      description: z.string().optional(),
+      icon: z.string().optional(),
+      ogImage: z.string().optional(),
+      photo: image().optional(),
+      photoCaption: z.string().optional(),
+      updated: z.coerce.date(),
+      created: z.coerce.date().optional(),
+      display: z.enum(['article', 'list']).default('article'),
+      ...taggable,
+    }),
 })
 
 const changelog = defineCollection({

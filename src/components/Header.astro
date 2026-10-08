@@ -18,10 +18,8 @@ const { variant = 'compact' } = Astro.props
       <header class="masthead-home">
         <div class="masthead-ear">
           <div class="wrap wrap-wide masthead-ear-line eyebrow eyebrow--muted">
-            <span class="masthead-ear-left">
-              <span>An Independent Guide</span>
-            </span>
-            <span class="masthead-ear-right">
+            <span>An Independent Guide</span>
+            <span class="masthead-ear-group">
               <span>St. Louis, Missouri</span>
               <FleurGlyph class="ear-fleur" />
               <span>Est. 2026</span>
@@ -29,7 +27,7 @@ const { variant = 'compact' } = Astro.props
           </div>
         </div>
         <div class="wrap wrap-wide nameplate">
-          <h1 class="nameplate-title">St. Louing</h1>
+          <h1 class="nameplate-title title-display">St. Louing</h1>
         </div>
       </header>
     </>
@@ -37,11 +35,11 @@ const { variant = 'compact' } = Astro.props
 }
 <div class:list={['masthead-nav', { 'is-home': variant === 'home' }]} data-header>
   <div class="wrap wrap-wide masthead-nav-inner">
-    <a class="masthead-brand" href={href('/')}>
+    <a class="masthead-brand title-display title-link" href={href('/')}>
       <img class="brand-mark" src={href('/logo.svg')} alt="" width="32" height="32" /> St. Louing
     </a>
     <Nav />
-    <ThemeToggle variant="quiet" />
+    <ThemeToggle />
   </div>
   <div class="masthead-double-rule"></div>
 </div>
@@ -84,24 +82,14 @@ const { variant = 'compact' } = Astro.props
     padding-block: var(--spacing-xs);
   }
 
-  .masthead-ear-left {
+  .masthead-ear-group {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-  }
-
-  .masthead-ear-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
     gap: var(--spacing-sm);
   }
 
   .masthead-ear-line :global(.ear-fleur) {
     width: 0.55em;
-    height: auto;
-    flex-shrink: 0;
-    color: var(--color-accent-gold);
   }
 
   .nameplate {
@@ -115,12 +103,7 @@ const { variant = 'compact' } = Astro.props
 
   .nameplate-title {
     margin: 0;
-    font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 1;
     font-size: clamp(3rem, 1.5rem + 7vw, 6.5rem);
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
   .masthead-nav {
@@ -152,11 +135,7 @@ const { variant = 'compact' } = Astro.props
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    color: var(--color-text-heading);
-    text-decoration: none;
-    font-family: var(--font-display);
     font-size: var(--font-size-xl);
-    font-weight: 400;
     white-space: nowrap;
   }
 
@@ -167,19 +146,12 @@ const { variant = 'compact' } = Astro.props
   .masthead-nav.is-home .masthead-brand {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.15s ease;
+    transition: opacity var(--duration-fast) ease;
   }
 
   .masthead-nav.is-home.is-stuck .masthead-brand {
     opacity: 1;
     visibility: visible;
-  }
-
-  .masthead-brand:hover {
-    color: var(--color-text-heading);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
   }
 
   .brand-mark {
@@ -193,8 +165,8 @@ const { variant = 'compact' } = Astro.props
     border-block-start: 4px solid var(--color-line-contrast);
     border-block-end: 1px solid var(--color-line-contrast);
     transition:
-      height 0.15s ease,
-      border-block-start-width 0.15s ease;
+      height var(--duration-fast) ease,
+      border-block-start-width var(--duration-fast) ease;
   }
 
   .masthead-nav.is-stuck .masthead-double-rule {

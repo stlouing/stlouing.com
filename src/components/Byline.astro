@@ -4,7 +4,7 @@ import FleurGlyph from '../assets/FleurGlyph.astro'
 
 {
   Astro.slots.has('footer-meta') && (
-    <p class="entry-byline">
+    <p class="entry-byline description">
       <span class="entry-byline-fleur">
         <FleurGlyph />
       </span>
@@ -21,16 +21,12 @@ import FleurGlyph from '../assets/FleurGlyph.astro'
     align-items: baseline;
     gap: var(--spacing-sm);
     margin-block: var(--spacing-lg) var(--spacing-sm);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--font-size-md);
     color: var(--color-muted-2);
   }
 
   .entry-byline-fleur {
     display: inline-flex;
     align-self: center;
-    color: var(--color-accent-gold);
   }
 
   .entry-byline-fleur :global(svg) {

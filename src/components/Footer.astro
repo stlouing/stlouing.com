@@ -11,7 +11,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
   <div class="wrap wrap-wide footer-inner">
     <div class="footer-identity">
       <FleurDeLis class="footer-crest" />
-      <p class="footer-name">St. Louing</p>
+      <p class="footer-name title-display">St. Louing</p>
       <p class="footer-description">{SITE_DESCRIPTION}</p>
     </div>
     <div class="footer-newsletter">
@@ -56,20 +56,19 @@ import IconInstagram from '../assets/IconInstagram.astro'
 
 <style>
   .site-footer {
-    --footer-red: #c70f2e;
     --footer-yellow: #f5dc0f;
     --footer-white: #ffffff;
-    --footer-ink: #1b1a17;
+    --footer-rule: color-mix(in srgb, var(--footer-white) 30%, transparent);
     margin-block-start: var(--spacing-xl);
+    padding-block-end: env(safe-area-inset-bottom, 0);
     background: linear-gradient(
       to bottom,
       transparent var(--river-height),
-      var(--footer-red) var(--river-height)
+      var(--color-footer) var(--river-height)
     );
   }
 
   .river-border {
-    height: var(--river-height);
     pointer-events: none;
   }
 
@@ -95,11 +94,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
 
   .footer-name {
     margin: 0 0 var(--spacing-sm);
-    font-family: var(--font-display);
-    font-weight: 400;
     font-size: 2.75rem;
-    line-height: 1;
-    letter-spacing: var(--letter-spacing-tight);
     color: var(--footer-white);
   }
 
@@ -138,47 +133,29 @@ import IconInstagram from '../assets/IconInstagram.astro'
     margin-block-start: var(--spacing-md);
   }
 
-  :global(body:has([data-map])) .footer-inner,
-  :global(body:has([data-area-map])) .footer-inner,
-  :global(body:has([data-map-pane])) .footer-inner {
-    display: none;
+  :global(body:is(:has([data-map]), :has([data-area-map]), :has([data-map-pane]))) {
+    .footer-inner,
+    .footer-bottom::before {
+      display: none;
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      margin-block-start: calc(-1 * var(--river-height));
+      pointer-events: none;
+    }
+
+    .footer-bottom {
+      padding-block-start: 0;
+      pointer-events: auto;
+    }
   }
 
   @media (max-width: 700px) {
     :global(body:has(.map-split:not(.detail-split))) .site-footer {
       display: none;
     }
-  }
-
-  :global(body:has([data-map])) .site-footer,
-  :global(body:has([data-area-map])) .site-footer,
-  :global(body:has([data-map-pane])) .site-footer {
-    position: relative;
-    z-index: 2;
-    margin-block-start: calc(-1 * var(--river-height));
-    pointer-events: none;
-  }
-
-  :global(body:has([data-map])) .footer-bottom,
-  :global(body:has([data-area-map])) .footer-bottom,
-  :global(body:has([data-map-pane])) .footer-bottom {
-    pointer-events: auto;
-  }
-
-  :global(body:has([data-map])) .footer-bottom,
-  :global(body:has([data-area-map])) .footer-bottom,
-  :global(body:has([data-map-pane])) .footer-bottom {
-    padding-block-start: 0;
-  }
-
-  :global(body:has([data-map])) .footer-bottom::before,
-  :global(body:has([data-area-map])) .footer-bottom::before,
-  :global(body:has([data-map-pane])) .footer-bottom::before {
-    display: none;
-  }
-
-  .site-footer {
-    padding-block-end: env(safe-area-inset-bottom, 0);
   }
 
   .footer-bottom {
@@ -196,7 +173,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     content: '';
     width: 100%;
     height: 1px;
-    background: color-mix(in srgb, var(--footer-white) 30%, transparent);
+    background: var(--footer-rule);
   }
 
   .footer-made {
@@ -208,9 +185,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
   }
 
   .footer-made :global(.icon) {
-    width: 1rem;
-    height: 1rem;
-    color: var(--footer-white);
     margin: 0 0.2rem;
   }
 
@@ -224,8 +198,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xs);
     font-weight: 500;
     color: var(--footer-white);
     text-decoration-line: underline;
@@ -234,7 +206,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     text-underline-offset: 4px;
   }
 
-  .footer-links :global(.icon) {
+  .footer-bottom :global(.icon) {
     width: 1rem;
     height: 1rem;
     color: inherit;
@@ -258,7 +230,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     }
 
     .footer-newsletter {
-      border-block-start: 1px solid color-mix(in srgb, var(--footer-white) 30%, transparent);
+      border-block-start: 1px solid var(--footer-rule);
       padding-block-start: var(--spacing-lg);
     }
 

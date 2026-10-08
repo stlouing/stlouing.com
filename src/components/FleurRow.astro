@@ -1,0 +1,28 @@
+---
+import FleurGlyph from '../assets/FleurGlyph.astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<div class:list={['fleur-row', className]} aria-hidden="true">
+  <FleurGlyph />
+  <FleurGlyph />
+  <FleurGlyph />
+</div>
+
+<style>
+  .fleur-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .fleur-row :global(.fleur) {
+    width: 0.6rem;
+  }
+</style>

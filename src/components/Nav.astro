@@ -20,7 +20,7 @@ const isActive = (path: string) => {
         {index > 0 && <FleurGlyph class="nav-fleur" />}
         <a
           href={href(section.path)}
-          class={`nav-section-${section.label.toLowerCase()}`}
+          class={`nav-section-${section.label.toLowerCase()} title-link`}
           aria-current={isActive(section.path) ? 'page' : undefined}>
           {section.label}
         </a>
@@ -39,33 +39,21 @@ const isActive = (path: string) => {
     row-gap: var(--spacing-xs);
     font-family: var(--font-sans-serif);
     font-size: var(--font-size-sm);
+  }
 
-    a {
-      color: var(--color-text);
-      text-decoration: none;
-      font-weight: 500;
+  :global(.site-nav-inline a) {
+    color: var(--color-text);
+    font-weight: 500;
+  }
 
-      &:hover {
-        color: var(--color-accent-blue);
-        text-decoration: underline;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
-      }
-
-      &[aria-current='page'] {
-        color: var(--color-text-heading);
-        font-weight: 600;
-        text-decoration: underline;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
-      }
-    }
+  .site-nav-inline a[aria-current='page'] {
+    color: var(--color-text-heading);
+    font-weight: 600;
+    text-decoration-line: underline;
   }
 
   .site-nav-inline :global(.nav-fleur) {
     width: 0.6em;
-    height: auto;
-    color: var(--color-accent-gold);
   }
 
   @media (max-width: 700px) {

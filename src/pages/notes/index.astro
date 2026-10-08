@@ -14,7 +14,7 @@ const notes = published(await getCollection('notes')).sort(
 ---
 
 <BaseLayout title="Notes - St. Louing" noindex={notes.length === 0}>
-  <article class="page">
+  <article>
     <PageMasthead title="Notes" />
     <List>
       {

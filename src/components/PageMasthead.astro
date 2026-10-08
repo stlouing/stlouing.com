@@ -21,31 +21,25 @@ const {
 ---
 
 <div class="page-masthead">
-  <div class="masthead-field">
-    <div class:list={['masthead-inner', { 'has-actions': actions, 'is-wide': wide }]}>
-      <div class="masthead-heading">
-        {eyebrow && <p class="masthead-eyebrow eyebrow">{eyebrow}</p>}
-        <h1 class:list={['masthead-title', headingClass]}>{title}</h1>
-      </div>
-      {
-        Astro.slots.has('lede') && (
-          <div class="masthead-lede">
-            <slot name="lede" />
-          </div>
-        )
-      }
-      {actions && <ActionBar title={title} commentsAnchor={commentsAnchor} />}
+  <div class:list={['masthead-inner', { 'has-actions': actions, 'is-wide': wide }]}>
+    <div class="masthead-heading">
+      {eyebrow && <p class="masthead-eyebrow eyebrow">{eyebrow}</p>}
+      <h1 class:list={['masthead-title', 'title-page', headingClass]}>{title}</h1>
     </div>
+    {
+      Astro.slots.has('lede') && (
+        <div class="masthead-lede description description--lg">
+          <slot name="lede" />
+        </div>
+      )
+    }
+    {actions && <ActionBar title={title} commentsAnchor={commentsAnchor} />}
   </div>
 </div>
 
 <style>
   .page-masthead {
     margin-block-end: var(--spacing-xl);
-  }
-
-  .masthead-field {
-    background: none;
   }
 
   .masthead-inner {
@@ -80,21 +74,11 @@ const {
 
   .masthead-title {
     margin: 0;
-    font-family: var(--font-sans-serif);
-    font-weight: 700;
-    font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem);
-    line-height: 1.1;
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text-heading);
   }
 
   .masthead-lede {
     max-width: var(--measure-reading);
-    font-size: var(--font-size-lg);
     line-height: 1.4;
-    font-weight: 400;
-    font-style: italic;
-    color: var(--color-muted);
   }
 
   .masthead-lede :global(p) {

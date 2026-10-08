@@ -12,6 +12,7 @@ interface Props {
   excerpt?: string
   photo?: ImageMetadata
   photoAlt?: string
+  photoSizes?: string
   verdict?: Verdict
   external?: boolean
   class?: string
@@ -25,6 +26,7 @@ const {
   excerpt,
   photo,
   photoAlt,
+  photoSizes = '(min-width: 700px) 520px, 100vw',
   verdict,
   external = false,
   class: className,
@@ -43,7 +45,17 @@ const linkAttributes = href
 ---
 
 <Tag class:list={['card', className]} {...linkAttributes}>
-  {photo && <Image class="card-media" src={photo} alt={photoAlt ?? title} width={520} />}
+  {
+    photo && (
+      <Image
+        class="card-media"
+        src={photo}
+        alt={photoAlt ?? title}
+        widths={[520, 1040]}
+        sizes={photoSizes}
+      />
+    )
+  }
   {
     hasIcon && (
       <span class="card-icon" aria-hidden="true">

@@ -1,6 +1,6 @@
 ---
 title: Dalie's Smokehouse
-photo: ../images/food/dalies.jpeg
+photo: ../images/food/dalies/dalies2.jpg
 created: 2026-07-16
 status: tried
 rating: 9
@@ -20,7 +20,7 @@ I think Dalie's is currently my favorite spot for BBQ in St. Louis. The smoked w
 
 ![](../images/food/dalies/dalies1.jpg)
 
-![](../images/food/dalies/dalies2.jpg)
+![](../images/food/dalies.jpeg)
 
 ![](../images/food/dalies/dalies3.jpg)
 

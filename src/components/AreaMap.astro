@@ -7,7 +7,7 @@ import { regions, regionTokenBySlug } from '../lib/neighborhoods'
   data-area-map
   role="application"
   aria-label="Map of St. Louis neighborhoods — click a neighborhood to jump to it">
-  <ul class="map-legend" role="list" aria-label="Map legend">
+  <ul class="map-legend map-overlay" role="list" aria-label="Map legend">
     {
       regions.map((region) => (
         <li class="map-legend-item">

@@ -129,11 +129,11 @@ const seoDescription = hasBody(entry)
   ogImageWidth={sharePhoto ? Number(sharePhoto.attributes.width) : undefined}
   ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}
   jsonLd={schema}>
-  <article class="page detail-page">
+  <article class="detail-page">
     <Breadcrumbs trail={trail} />
 
     <header class="detail-pane-header">
-      <h1 class="detail-pane-title">{data.title}</h1>
+      <h1 class="detail-pane-title title-page">{data.title}</h1>
       {data.description && <p class="description description--lg detail-pane-tagline">{data.description}</p>}
       <TagList tags={data.tags} />
       <div class="pane-stats">
@@ -162,7 +162,7 @@ const seoDescription = hasBody(entry)
           {
             data.photo && (
               <Image
-                class="detail-photo"
+                class="detail-photo photo-frame"
                 src={data.photo}
                 alt={`Photo of ${data.title}`}
                 widths={[400, 800]}
@@ -322,15 +322,6 @@ const seoDescription = hasBody(entry)
     margin-block-end: var(--spacing-xl);
   }
 
-  .detail-page :global(.breadcrumbs) {
-    justify-content: flex-start;
-    margin-block-start: var(--spacing-xl);
-  }
-
-  .detail-pane-header .pane-stats :global(.verdict-bar) {
-    flex: 1 1 0;
-  }
-
   .my-rating-line {
     display: flex;
     align-items: flex-end;
@@ -348,11 +339,7 @@ const seoDescription = hasBody(entry)
   }
 
   .detail-photo {
-    display: block;
     width: 100%;
-    height: auto;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
     margin-block-end: var(--spacing-lg);
   }
 

@@ -46,11 +46,11 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 ---
 
 <BaseLayout crumb={region.label} title={seoTitle} description={metaDescription}>
-  <article class="page region-page">
+  <article>
     <Breadcrumbs trail={trail} />
 
     <header class="detail-pane-header">
-      <h1 class="detail-pane-title">{region.label}</h1>
+      <h1 class="detail-pane-title title-page">{region.label}</h1>
       <p class="description description--lg detail-pane-tagline">
         {count}
         {regionSlug === 'parks' ? 'parks' : 'neighborhoods'}
@@ -90,11 +90,6 @@ const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 </BaseLayout>
 
 <style>
-  .region-page :global(.breadcrumbs) {
-    justify-content: flex-start;
-    margin-block-start: var(--spacing-xl);
-  }
-
   .region-nav {
     display: flex;
     flex-wrap: wrap;

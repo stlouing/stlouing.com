@@ -14,7 +14,7 @@ const { frontmatter } = Astro.props
   crumb={frontmatter.title}
   title={frontmatter.seoTitle}
   description={frontmatter.description}>
-  <article class="page">
+  <article>
     <PageMasthead title={frontmatter.title}>
       {frontmatter.tagline && <p slot="lede">{frontmatter.tagline}</p>}
     </PageMasthead>

@@ -11,7 +11,7 @@ const guestbookEnabled = SUPABASE_ENABLED
 ---
 
 <BaseLayout article crumb="Guestbook" title="Guestbook - St. Louing" description={description}>
-  <article class="page">
+  <article>
     <PageMasthead title="Guestbook">
       <p slot="lede">Passing through? Sign your name and leave a note.</p>
     </PageMasthead>
@@ -68,7 +68,7 @@ const guestbookEnabled = SUPABASE_ENABLED
           </section>
         </div>
       ) : (
-        <p class="closed-note reading-col">Guestbook closed.</p>
+        <p class="reading-col">Guestbook closed.</p>
       )
     }
   </article>
@@ -84,15 +84,10 @@ const guestbookEnabled = SUPABASE_ENABLED
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xl);
-    margin-block-start: var(--spacing-lg);
   }
 
   .signed-note {
     margin: 0;
     text-align: center;
-  }
-
-  .closed-note {
-    margin-block-start: var(--spacing-lg);
   }
 </style>

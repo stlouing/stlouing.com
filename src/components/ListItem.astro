@@ -23,7 +23,7 @@ const hasIcon = Astro.slots.has('icon')
     }
     <span class="list-item-body">
       <div class="list-row">
-        <span class="list-title">{title}</span>
+        <span class="list-title title-link">{title}</span>
         {leader && <span class="list-leader" aria-hidden="true"></span>}
         {meta && <span class="list-meta">{meta}</span>}
         <slot name="meta" />
@@ -66,13 +66,6 @@ const hasIcon = Astro.slots.has('icon')
     height: 1rem;
     margin-block-start: 2px;
     color: var(--list-icon-color, var(--color-accent));
-  }
-
-  a.list-item:hover .list-title {
-    color: var(--list-hover-color, var(--color-accent));
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
   }
 
   .list-row {

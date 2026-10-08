@@ -83,7 +83,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
       }
     </script>
     <div class="results">
-      <article class="page content-pane map-list section-list">
+      <article class="content-pane map-list">
         <ListPaneHeader title="Neighborhoods" count={count} live>
           <PaneSearch label="Search neighborhoods" placeholder="search by name, area..." />
         </ListPaneHeader>
@@ -116,7 +116,7 @@ function sectionOf(area: { group?: string; type?: string }): string {
                 <Fragment>
                   {showHeader && (
                     <li class="section-head">
-                      <span class="section-label">{written ? 'Explored' : 'Not Explored'}</span>
+                      <span>{written ? 'Explored' : 'Not Explored'}</span>
                       <span class="count">{written ? writtenCount : restCount}</span>
                     </li>
                   )}

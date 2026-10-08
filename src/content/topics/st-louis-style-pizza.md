@@ -2,18 +2,13 @@
 title: St. Louis-style Pizza
 icon: pizza
 category: Food
+photo: ../images/food/faraci/faraci1.jpg
+photoCaption: Pepperoni and sausage from Faraci Pizza
 description: Discovering, explaining, and ranking St. Louis's unique regional pizza style
 ogImage: /og/st-louis-style-pizza.png
 created: 2026-05-31
-updated: 2026-07-06
+updated: 2026-10-08
 ---
-
-<figure class="figure full">
-
-![St. Louis-style pizza from Imo's](../images/stl-pizza/imos.png)
-
-<figcaption>St. Louis-style pizza from Imo's</figcaption>
-</figure>
 
 St. Louis-style pizza is a regional variation of pizza that is ubiquitous across the entire St. Louis metro area. For many, the pizza style is synonymous with Imo's, a local chain that has locations in all the far reaches of Missouri and southern Illinois, but many local pizza places all around St. Louis make their own variation of this unique pizza style.
 
@@ -38,16 +33,16 @@ Here's a subjective rated list of the places I've tried. I would say the top thr
 
 You can vote for your own favorites on each page! I'd love to see how my rankings compare with the community's.
 
-<figure class="figure full">
-
-![Pepperoni and sausage from Faraci Pizza](../images/stl-pizza/faraci.png)
-
-<figcaption>Pepperoni and sausage from Faraci Pizza</figcaption>
-</figure>
-
 So I've tried a variety of fan favorites around the city, but I'm always open to new suggestions. A few I have yet to try are Affton Pizza Company, Angelo's, Kevin's Place, and plenty more.
 
 ## What is an STL-style Pizza?
+
+<figure class="figure full">
+
+![St. Louis-style pizza from Imo's](../images/stl-pizza/imos.png)
+
+<figcaption>St. Louis-style pizza from Imo's</figcaption>
+</figure>
 
 ### Cheese
 

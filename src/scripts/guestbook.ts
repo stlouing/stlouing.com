@@ -191,7 +191,7 @@ function buildEntry(entry: GuestbookEntry): HTMLLIElement {
   item.append(signer)
 
   const message = document.createElement('p')
-  message.className = 'feed-message'
+  message.className = 'feed-message excerpt'
   message.textContent = entry.message
   item.append(message)
 

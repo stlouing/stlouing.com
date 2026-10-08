@@ -8,7 +8,7 @@ const description =
 ---
 
 <BaseLayout article crumb="Contact" title="Contact - St. Louing" description={description}>
-  <article class="page">
+  <article>
     <PageMasthead title="Contact">
       <p slot="lede">
         If you have a question, comment, or if I got something wrong, please reach out!
@@ -18,7 +18,7 @@ const description =
     <div class="reading-col">
       {
         FEEDBACK_ENDPOINT && (
-          <section class="feedback-panel" aria-label="Contact form">
+          <section aria-label="Contact form">
             <form class="feedback-form form-stack" method="POST" action={FEEDBACK_ENDPOINT}>
               <label class="field">
                 <span>Your note</span>
@@ -68,10 +68,6 @@ const description =
 </BaseLayout>
 
 <style>
-  .feedback-panel {
-    margin-block-start: var(--spacing-lg);
-  }
-
   .optional {
     font-size: var(--font-size-xs);
     color: var(--color-muted);

@@ -45,6 +45,8 @@ It's not exactly a style of regional food, but it's worth mentioning.
 
 ### BBQ
 
+![Dalie's Smokehouse](../images/food/dalies/dalies2.jpg)
+
 BBQ in St. Louis is another contentious topic, with many arguing about what the style is and if it exists at all. Some say St. Louis-style is a mix between Kansas City BBQ and Memphis BBQ.
 
 Here's what I've observed: I've been to around a dozen BBQ spots in St. Louis so far, and I can say pork is king here. Pappy's is the most famous for their ribs, and it's well deserved. You'll see pork steak on the menu at Beast BBQ, and most backyard BBQs. I would recommend against getting brisket, particularly if you're a fan of Texas brisket, as the style is not really found here. (O'B'Que's in Chesterfield is the closest I've found.)

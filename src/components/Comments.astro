@@ -21,7 +21,7 @@ const { kind, slug, title } = Astro.props
       data-slug={slug}
       aria-label={`Comments on ${title}`}
       hidden>
-      <Subheading>
+      <Subheading ruled>
         Comments
         <span slot="aside" class="count" data-count />
       </Subheading>
@@ -76,16 +76,6 @@ const { kind, slug, title } = Astro.props
     flex-direction: column;
     gap: var(--spacing-md);
     margin-block-start: var(--spacing-xl);
-  }
-
-  .comments[hidden] {
-    display: none;
-  }
-
-  .comments > :global(.subheading:first-child) {
-    margin-block-end: 0;
-    padding-block-end: var(--spacing-xs);
-    border-block-end: 2px solid var(--color-line-contrast);
   }
 
   .comments :global(.feed-entry:last-child) {

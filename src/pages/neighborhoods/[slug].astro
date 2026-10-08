@@ -202,12 +202,12 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
   ogImageHeight={sharePhoto ? Number(sharePhoto.attributes.height) : undefined}>
   <div class="map-split detail-split" data-map-split data-view="map">
     <div class="results">
-      <article class="page content-pane detail-pane">
+      <article class="content-pane detail-pane">
         <div class="detail-pane-inner">
           <Breadcrumbs trail={trail} />
 
           <header class="detail-pane-header">
-            <h1 class="detail-pane-title">{title}</h1>
+            <h1 class="detail-pane-title title-page">{title}</h1>
             {summary && <p class="description description--lg detail-pane-tagline">{summary}</p>}
             {
               (population != null || places.length > 0) && (
@@ -329,7 +329,7 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
             <div class="pane-aside">
             {
               nearbyNeighbors.length > 0 && (
-                <nav class="detail-links-section" aria-label="Nearby neighborhoods">
+                <nav aria-label="Nearby neighborhoods">
                   <AsideHeading title="Nearby Neighborhoods" />
                   <div class="detail-links">
                     {nearbyNeighbors.map((neighbor) => {
@@ -344,7 +344,8 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
                           class="btn-inline">
                           {rotation !== undefined && (
                             <span
-                              class:list={['bearing-arrow', `bearing-arrow--r${rotation}`]}
+                              class="bearing-arrow"
+                              style={`--rotation: ${rotation}deg`}
                               aria-hidden="true">
                               <IconArrowRight />
                             </span>
@@ -359,7 +360,7 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
             }
             {
               resourceLinks.length > 0 && (
-                <div class="detail-links-section">
+                <div>
                   <AsideHeading title="Links" />
                   <div class="detail-links">
                     {resourceLinks.map((link) => {
@@ -402,19 +403,10 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
 </BaseLayout>
 
 <style>
-  .detail-pane {
-    padding-block-end: calc(var(--spacing-xl) + var(--spacing-md));
-  }
-
   .detail-pane-inner {
     max-width: calc(var(--measure-reading) + 2 * var(--spacing-lg));
     margin-inline: auto;
     padding-inline: var(--spacing-lg);
-  }
-
-  .detail-pane :global(.breadcrumbs) {
-    justify-content: flex-start;
-    margin-block-start: var(--spacing-xl);
   }
 
   .pane-more :global(.subheading) {
@@ -449,33 +441,6 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
   .bearing-arrow :global(.icon) {
     width: 14px;
     height: 14px;
-  }
-
-  .bearing-arrow--r45 :global(.icon) {
-    transform: rotate(45deg);
-  }
-
-  .bearing-arrow--r90 :global(.icon) {
-    transform: rotate(90deg);
-  }
-
-  .bearing-arrow--r135 :global(.icon) {
-    transform: rotate(135deg);
-  }
-
-  .bearing-arrow--r180 :global(.icon) {
-    transform: rotate(180deg);
-  }
-
-  .bearing-arrow--r225 :global(.icon) {
-    transform: rotate(225deg);
-  }
-
-  .bearing-arrow--r270 :global(.icon) {
-    transform: rotate(270deg);
-  }
-
-  .bearing-arrow--r315 :global(.icon) {
-    transform: rotate(315deg);
+    transform: rotate(var(--rotation));
   }
 </style>

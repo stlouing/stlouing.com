@@ -28,7 +28,7 @@ const neighborhoods = published(await getCollection('neighborhoods'))
 ---
 
 <BaseLayout crumb="Not found" title="Page Not Found" noindex>
-  <article class="page notfound">
+  <article>
     <PageMasthead title="Page Not Found">
       <p slot="lede">That page doesn't exist (or it moved). Try these:</p>
     </PageMasthead>
@@ -48,7 +48,7 @@ const neighborhoods = published(await getCollection('neighborhoods'))
           )}
           <span class="feature-body">
             <span class="feature-kicker eyebrow">Featured</span>
-            <span class="feature-title">{pizza.data.title}</span>
+            <span class="feature-title title-link">{pizza.data.title}</span>
             {pizza.data.description && <span class="description">{pizza.data.description}</span>}
           </span>
         </a>
@@ -129,17 +129,8 @@ const neighborhoods = published(await getCollection('neighborhoods'))
       color: var(--color-text);
     }
 
-    .feature:hover .feature-title {
-      color: var(--color-accent);
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 2px;
-    }
-
     .feature-img {
-      display: block;
       width: 100%;
-      height: auto;
       aspect-ratio: 1200 / 630;
       object-fit: cover;
       border-radius: var(--radius);

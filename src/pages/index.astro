@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
+import { Image } from 'astro:assets'
 import neighborhoodsData from '../data/neighborhoods.json'
 
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -25,7 +26,7 @@ import Card from '../components/Card.astro'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconInstagram from '../assets/IconInstagram.astro'
-import FleurGlyph from '../assets/FleurGlyph.astro'
+import FleurRow from '../components/FleurRow.astro'
 
 const intro = `Welcome to St. Louing, my ongoing project to document living in St. Louis and learning to love it!`
 
@@ -35,6 +36,8 @@ const leadTopic = allTopics.find((topic) => topic.id !== PINNED_TOPIC_ID)
 const leadTeaser = leadTopic ? excerpt(leadTopic.body, 420) : ''
 
 const railTopics = allTopics.filter((topic) => topic.id !== leadTopic?.id)
+const promotedTopic = allTopics.find((topic) => topic.id === 'walkable-st-louis')
+const TOPIC_PROMO_EXCERPT_CHARS = 250
 
 const allFood = published(await getCollection('food'))
 const allNeighborhoods = published(await getCollection('neighborhoods'))
@@ -57,6 +60,8 @@ const FEATURED_FOOD_IDS = [
   'dalies-smokehouse',
   'woofies-hot-dogs',
   'sultan',
+  'teerak-thai',
+  'grand-pied',
 ]
 const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
   allFood.filter((place) => place.id === foodId),
@@ -77,28 +82,26 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     <aside class="front-index" aria-label="Site index">
       <section class="front-index-topics">
         <Heading>Topics</Heading>
-        <ul class="rail-articles">
+        <div class="rail-articles card-rows">
           {
             railTopics.map((topic) => (
-              <li>
-                <Card
-                  href={href(`/${topic.id}/`)}
-                  title={topic.data.title}
-                  description={topic.data.description}
-                />
-              </li>
+              <Card
+                href={href(`/${topic.id}/`)}
+                title={topic.data.title}
+                description={topic.data.description}
+              />
             ))
           }
-        </ul>
+        </div>
       </section>
       <section class="front-index-more">
         <Heading>More</Heading>
-        <ul class="front-index-list">
+        <ul class="front-index-list divided-list">
           {
             moreSections.map((section) => (
               <li>
                 <a class="hover-wash" href={href(section.path)}>
-                  <span class="front-index-label title-link">{section.label}</span>
+                  <span class="title-link">{section.label}</span>
                 </a>
               </li>
             ))
@@ -114,7 +117,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
                   <span class="instagram-tile" aria-hidden="true">
                     <IconInstagram />
                   </span>
-                  <span class="front-index-label title-link">st.louing</span>
+                  <span class="title-link">st.louing</span>
                 </a>
               </li>
             )
@@ -146,24 +149,33 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       {
         leadTopic && (
           <section class="front-lead">
-            {leadTopic.data.leadImage && (
+            {leadTopic.data.photo && (
               <a
                 class="lead-figure"
                 href={href(`/${leadTopic.id}/`)}
                 aria-hidden="true"
                 tabindex="-1">
-                <img src={href(leadTopic.data.leadImage)} alt="" width="1200" height="800" />
+                <Image
+                  class="photo-frame"
+                  src={leadTopic.data.photo}
+                  alt=""
+                  widths={[600, 1200]}
+                  loading="eager"
+                  sizes="(min-width: 1000px) 600px, 100vw"
+                />
               </a>
             )}
-            <p class="section-label lead-kicker">Featured</p>
+            <p class="lead-kicker eyebrow">Featured</p>
             <p class="lead-dateline eyebrow">{formatDate(leadTopic.data.updated)}</p>
             <h2 class="lead-headline">
-              <a href={href(`/${leadTopic.id}/`)}>{leadTopic.data.title}</a>
+              <a class="title-display title-link" href={href(`/${leadTopic.id}/`)}>
+                {leadTopic.data.title}
+              </a>
             </h2>
             {leadTopic.data.description && (
               <p class="lead-deck description description--lg">{leadTopic.data.description}</p>
             )}
-            {leadTeaser && <p class="lead-teaser">{leadTeaser}</p>}
+            {leadTeaser && <p class="lead-teaser drop-cap">{leadTeaser}</p>}
             <p class="lead-meta">
               <Button href={href(`/${leadTopic.id}/`)} variant="dark" compact>
                 Read more <IconArrowRight />
@@ -225,18 +237,30 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
       <div class="front-whatsnew">
         <WhatsNew />
-        <div class="fake-ad">
-          <div class="fake-ad-header" aria-hidden="true">
-            <FleurGlyph />
-            <FleurGlyph />
-            <FleurGlyph />
-          </div>
-          <div class="fake-ad-content">
+        <div class="ad-box no-ads">
+          <FleurRow class="ad-box-header" />
+          <div class="ad-box-content">
             <p>This site has</p>
-            <p class="fake-ad-copy">No ads</p>
+            <p class="no-ads-copy">No ads</p>
             <p>Enjoy your interruption-free browsing experience!</p>
           </div>
         </div>
+        {
+          promotedTopic && (
+            <Card
+              href={href(`/${promotedTopic.id}/`)}
+              title={promotedTopic.data.title}
+              meta={promotedTopic.data.category}
+              description={promotedTopic.data.description}
+              excerpt={excerpt(promotedTopic.body, TOPIC_PROMO_EXCERPT_CHARS)}
+              photo={promotedTopic.data.photo}
+              photoAlt={promotedTopic.data.photoCaption}>
+              <span class="continue-link">
+                Continue reading <IconArrowRight />
+              </span>
+            </Card>
+          )
+        }
       </div>
 
     </div>
@@ -296,40 +320,43 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .front-index {
     grid-area: index;
-    min-width: 0;
   }
 
   .front-intro {
     grid-area: intro;
-    min-width: 0;
   }
 
-  .front-lead {
-    grid-area: lead;
-    min-width: 0;
-  }
-
-  .front-food {
-    grid-area: food;
-    min-width: 0;
-  }
-
-  .front-explore {
-    grid-area: explore;
+  .front-index,
+  .front-intro,
+  .front-lead,
+  .front-food,
+  .front-explore,
+  .front-whatsnew {
     min-width: 0;
   }
 
   .front-whatsnew {
-    grid-area: whatsnew;
-    min-width: 0;
     display: grid;
     gap: var(--spacing-lg);
     align-content: start;
   }
 
-  .fake-ad {
+  .ad-box {
     display: grid;
     border: 2px solid var(--color-line-contrast);
+  }
+
+  .ad-box-content {
+    padding: var(--spacing-md);
+  }
+
+  .ad-box :global(.ad-box-header) {
+    --fleur-color: var(--color-panel);
+    padding-block: var(--spacing-sm);
+    background: var(--color-text-heading);
+  }
+
+  .no-ads {
     text-align: center;
 
     p {
@@ -337,26 +364,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     }
   }
 
-  .fake-ad-content {
-    padding: var(--spacing-md);
-  }
-
-  .fake-ad-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding-block: var(--spacing-sm);
-    background: var(--color-text-heading);
-    color: var(--color-panel);
-  }
-
-  .fake-ad-header :global(svg) {
-    width: 0.7rem;
-    height: auto;
-  }
-
-  .fake-ad-copy {
+  .no-ads-copy {
     margin: 0;
     font-family: var(--font-sans-serif);
     font-weight: 900;
@@ -367,39 +375,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .rail-articles {
-    margin: 0 0 var(--spacing-lg);
-    padding: 0;
-    list-style: none;
-  }
-
-  .rail-articles li {
-    margin: 0;
-  }
-
-  .rail-articles li + li {
-    border-block-start: 1px dotted var(--color-line-input);
-  }
-
-  .rail-articles :global(.card) {
-    padding-block: var(--spacing-shmedium);
+    margin-block-end: var(--spacing-lg);
   }
 
   .rail-articles :global(.card-description) {
     font-style: normal;
-  }
-
-  .front-index-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .front-index-list li {
-    margin: 0;
-  }
-
-  .front-index-list li + li {
-    border-block-start: 1px dotted var(--color-line-input);
   }
 
   .front-index-list a {
@@ -461,9 +441,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .introduction {
     max-width: 65ch;
-    font-size: var(--font-size-md);
     margin-block: 0;
-    color: var(--color-text);
   }
 
   .stat {
@@ -485,10 +463,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .lead-figure img {
-    display: block;
     width: 100%;
-    height: auto;
-    border: 1px solid var(--color-line);
   }
 
   .lead-kicker {
@@ -500,38 +475,13 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .lead-dateline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xs);
     margin-block: 0 var(--spacing-sm);
-  }
-
-  .lead-dateline :global(.icon) {
-    width: 0.9rem;
-    height: 0.9rem;
-    color: var(--color-accent);
   }
 
   .lead-headline {
     margin-block: 0 var(--spacing-xs);
-    font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 1.1;
+    line-height: 1.05;
     font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
-    text-wrap: balance;
-  }
-
-  .lead-headline a {
-    color: var(--color-text-heading);
-    text-decoration: none;
-  }
-
-  .lead-headline a:hover {
-    color: var(--color-accent-blue);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
   }
 
   .lead-deck {
@@ -549,39 +499,15 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     columns: 2;
     column-gap: var(--spacing-xl);
     column-rule: 1px dotted var(--color-line-input);
-  }
-
-  .lead-teaser::first-letter {
-    float: left;
-    font-family: var(--font-display);
-    font-size: 4.4em;
-    line-height: 0.75;
-    padding-inline-end: var(--spacing-sm);
-    padding-block-start: 0.04em;
-    color: var(--color-text-heading);
+    --drop-cap-size: 4.4em;
+    --drop-cap-line-height: 0.75;
+    --drop-cap-gap: var(--spacing-sm);
   }
 
   .lead-meta {
     display: flex;
     justify-content: flex-end;
     margin-block: 0;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xs);
-  }
-
-  .front-explore {
-    --list-hover-color: var(--color-accent-blue);
-  }
-
-  .front-explore :global(.list-title) {
-    text-decoration-line: none;
-    text-decoration-thickness: 2px;
-    text-decoration-color: var(--color-muted);
-    text-underline-offset: 3px;
-  }
-
-  .front-explore :global(a.list-item:hover .list-title) {
-    text-underline-offset: 3px;
   }
 
   .front-explore :global(.list-item .list-description) {
@@ -590,16 +516,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   }
 
   .front-explore :global(.list-item .list-title) {
-    font-family: var(--font-sans-serif);
     font-size: var(--font-size-lg);
   }
 
   .front-explore :global(.list-meta) {
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
     letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
   }
 
   .photo-cards {
@@ -653,9 +574,20 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       display: contents;
     }
 
-    .front-page::before,
-    .front-page::after {
-      display: none;
+    .front-lead {
+      grid-area: lead;
+    }
+
+    .front-food {
+      grid-area: food;
+    }
+
+    .front-explore {
+      grid-area: explore;
+    }
+
+    .front-whatsnew {
+      grid-area: whatsnew;
     }
 
     .lead-teaser {

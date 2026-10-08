@@ -42,7 +42,7 @@ const description =
   crumb="The Backlog"
   title="The Backlog - St. Louis Restaurants To Try"
   description={description}>
-  <article class="page">
+  <article>
     <PageMasthead title="The Backlog" wide>
       <p slot="lede">The running list of places I still need to get to.</p>
     </PageMasthead>
@@ -57,15 +57,17 @@ const description =
           <p class="description">
             Here's a list of places I'm interested in trying but haven't gotten to visit yet.
           </p>
-          <div class="card-grid card-rows">
-            {wishlist.map((place) => (
-              <Card
-                href={href(`/food/${place.id}/`)}
-                title={place.data.title}
-                meta={cardMeta(place.data)}
-                description={place.data.description}
-              />
-            ))}
+          <div class="card-cells card-cells--three">
+            <div class="card-rows">
+              {wishlist.map((place) => (
+                <Card
+                  href={href(`/food/${place.id}/`)}
+                  title={place.data.title}
+                  meta={cardMeta(place.data)}
+                  description={place.data.description}
+                />
+              ))}
+            </div>
           </div>
         </section>
       ) : (
@@ -83,15 +85,17 @@ const description =
           <p class="description">
             Places I've tried but haven't had time to make a write-up for them yet.
           </p>
-          <div class="card-grid card-rows">
-            {triedList.map((place) => (
-              <Card
-                href={href(`/food/${place.id}/`)}
-                title={place.data.title}
-                meta={cardMeta(place.data)}
-                description={place.data.description}
-              />
-            ))}
+          <div class="card-cells card-cells--three">
+            <div class="card-rows">
+              {triedList.map((place) => (
+                <Card
+                  href={href(`/food/${place.id}/`)}
+                  title={place.data.title}
+                  meta={cardMeta(place.data)}
+                  description={place.data.description}
+                />
+              ))}
+            </div>
           </div>
         </section>
       )
@@ -107,14 +111,16 @@ const description =
           <p class="description">
             Restaurants I've visited that have closed down and no longer exist.
           </p>
-          <div class="card-grid card-rows">
-            {inMemoriam.map((item) => (
-              <Card
-                title={item.name}
-                meta={cardMeta(item)}
-                description={item.note}
-              />
-            ))}
+          <div class="card-cells card-cells--three">
+            <div class="card-rows">
+              {inMemoriam.map((item) => (
+                <Card
+                  title={item.name}
+                  meta={cardMeta(item)}
+                  description={item.note}
+                />
+              ))}
+            </div>
           </div>
         </section>
       )
@@ -126,32 +132,6 @@ const description =
 
   section {
     margin-block-start: var(--spacing-xl);
-  }
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  @media screen and (min-width: 700px) {
-    .card-grid {
-      grid-template-columns: 1fr 1fr;
-      column-gap: 4rem;
-    }
-
-    .card-grid :global(.card:last-child) {
-      border-block-end: 1px solid var(--color-line);
-    }
-  }
-
-  @media screen and (min-width: 1000px) {
-    .card-grid {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-  }
-
-  section h2 {
-    margin: 0 0 var(--spacing-xs);
   }
 
   .description {

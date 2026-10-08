@@ -5,6 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
 import neighborhoods from '../data/neighborhoods.json'
+import Chip from '../components/Chip.astro'
 import Heading from '../components/Heading.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
 
@@ -69,25 +70,25 @@ const groups: SitemapGroup[] = [
   crumb="Sitemap"
   title="All St. Louing Content"
   description="A human-readable map of everything on St. Louing: every restaurant review, neighborhood page, article, list, and reference on the site.">
-  <article class="page">
+  <article>
     <PageMasthead title="Sitemap" wide />
 
     <div class="body">
       {
         groups.map((group) => (
-          <section class:list={['sitemap-section', { featured: group.featured }]}>
+          <section class="sitemap-section">
             <Heading>
               {group.path ? (
-                <a class="sitemap-label" href={href(group.path)}>
+                <a class="sitemap-label title-link" href={href(group.path)}>
                   {group.label}
                 </a>
               ) : (
                 <span class="sitemap-label">{group.label}</span>
               )}
               {group.featured && (
-                <span class="sitemap-map-badge">
+                <Chip class="sitemap-map-badge chip--accent eyebrow">
                   <IconMapPin /> Map
-                </span>
+                </Chip>
               )}
               <span slot="aside" class="count">
                 {group.items.length}
@@ -116,34 +117,13 @@ const groups: SitemapGroup[] = [
     margin-block-start: var(--spacing-lg);
   }
 
-  .sitemap-map-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: 2px var(--spacing-xs);
-    border: 1px solid var(--color-accent);
-    border-radius: 20px;
-    font-family: var(--font-sans-serif);
-    font-size: var(--font-size-xxs);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing);
-    color: var(--color-accent);
-  }
-
-  .sitemap-map-badge :global(.icon) {
-    color: var(--color-accent);
+  :global(.sitemap-map-badge .icon) {
     height: 14px;
     width: 14px;
   }
 
-  a.sitemap-label {
+  :global(a.sitemap-label) {
     color: var(--color-text-heading);
-    text-decoration: none;
-  }
-
-  a.sitemap-label:hover {
-    color: var(--color-accent-blue);
   }
 
   .sitemap-list {
@@ -159,13 +139,4 @@ const groups: SitemapGroup[] = [
     break-inside: avoid;
   }
 
-  .sitemap-list a {
-    text-decoration: none;
-  }
-
-  .sitemap-list a:hover {
-    text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-thickness: 2px;
-  }
 </style>

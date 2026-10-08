@@ -5,8 +5,10 @@
   { "label": "ramen", "slug": "kishimoto-mendo" },
   { "label": "steak taco", "slug": "el-jarocho" },
   { "label": "ribs", "slug": "pappys" },
+  { "label": "smoked wings", "slug": "dalies-smokehouse" },
   { "label": "reuben sandwich", "slug": "blues-city-deli" },
   { "label": "butter chicken", "slug": "tikka-tangy" },
   { "label": "chai tea", "slug": "telva-at-the-ridge" },
-  { "label": "pad kee mao", "slug": "teerak-thai" }
+  { "label": "pad kee mao", "slug": "teerak-thai" },
+  { "label": "pancakes", "slug": "grand-pied" }
 ]

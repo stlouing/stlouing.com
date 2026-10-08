@@ -14,12 +14,17 @@ const { title, commentsAnchor = false } = Astro.props
 const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 ---
 
-<div class="pane-stats action-bar">
-  <ShareButton title={title} label="Share" variant="outline" compact class="action-pill" />
+<div class="action-bar">
+  <ShareButton
+    title={title}
+    label="Share"
+    variant="quiet"
+    class="btn-quiet--plain btn-muted-icon"
+  />
   {
     instagram && (
       <a
-        class="btn btn-outline btn-compact action-pill"
+        class="btn btn-quiet btn-quiet--plain btn-muted-icon"
         href={instagram.url}
         target="_blank"
         rel="noopener">
@@ -30,7 +35,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
   {
     NEWSLETTER_URL && (
       <a
-        class="btn btn-outline btn-compact action-pill"
+        class="btn btn-quiet btn-quiet--plain btn-muted-icon"
         href={`${NEWSLETTER_URL}/subscribe`}
         target="_blank"
         rel="noopener">
@@ -40,7 +45,11 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
   }
   {
     commentsAnchor && (
-      <a class="btn btn-outline btn-compact action-pill" href="#comments" data-comments-link hidden>
+      <a
+        class="btn btn-quiet btn-quiet--plain btn-muted-icon"
+        href="#comments"
+        data-comments-link
+        hidden>
         <IconMessageCircleHeart /> <span data-comments-link-label>Comments</span>
       </a>
     )
@@ -49,42 +58,10 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
 
 <style>
   .action-bar {
+    display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-sm) var(--spacing-lg);
     padding-block: var(--spacing-sm);
-    margin-block-end: 0;
-  }
-
-  .action-bar > :global(.action-pill) {
-    flex: 0 0 auto;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--color-text);
-    font-size: var(--font-size-sm);
-  }
-
-  .action-bar > :global(.action-pill:hover) {
-    background: transparent;
-    color: var(--color-accent-blue);
-  }
-
-  .action-bar > :global(* + *) {
-    border-inline-start: 0;
-    padding-inline-start: 0;
-  }
-
-  .action-bar > :global(.action-pill[hidden]) {
-    display: none;
-  }
-
-  .action-bar > :global(.action-pill svg) {
-    width: 16px;
-    height: 16px;
-    color: var(--color-muted);
-  }
-
-  .action-bar > :global(.action-pill:hover svg) {
-    color: inherit;
+    border-block: 1px solid var(--color-line);
   }
 </style>

@@ -5,7 +5,8 @@ seoTitle: Most Walkable Streets in St. Louis
 icon: map
 category: Neighborhoods
 ogImage: /og/walkable-st-louis.png
-leadImage: /og/walkable-st-louis-lead.jpg
+photo: ../images/topics/shaw.jpg
+photoCaption: Tee Rak Thai in the Shaw neighborhood
 created: 2026-08-19
 updated: 2026-08-30
 ---

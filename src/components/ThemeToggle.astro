@@ -1,16 +1,11 @@
 ---
 import Button from './Button.astro'
 
-interface Props {
-  variant?: 'dark' | 'quiet'
-}
-
-const { variant = 'dark' } = Astro.props
 ---
 
 <Button
-  variant={variant}
-  class="theme-toggle"
+  variant="quiet"
+  class="theme-toggle btn-quiet--plain"
   data-theme-toggle
   aria-label="Toggle dark mode"
   aria-pressed="false">
@@ -47,35 +42,6 @@ const { variant = 'dark' } = Astro.props
     svg {
       width: 18px;
       height: 18px;
-    }
-  }
-
-  :global(.theme-toggle.btn-quiet:hover) {
-    color: var(--color-accent-blue);
-    text-decoration: none;
-  }
-
-  :global(.theme-toggle.btn-dark) {
-    height: 36px;
-    padding: 0 var(--spacing-sm);
-    justify-content: center;
-    gap: var(--spacing-sm);
-    flex-shrink: 0;
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  @media (max-width: 700px) {
-    :global(.theme-toggle.btn-dark) {
-      height: 30px;
-
-      svg {
-        width: 18px;
-        height: 18px;
-      }
     }
   }
 

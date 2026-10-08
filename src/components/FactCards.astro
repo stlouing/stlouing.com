@@ -58,10 +58,6 @@ const hasCard = hasNumbers || hasVibe
 }
 
 <style>
-  .side-card {
-    padding: 0;
-  }
-
   .card-section.has-divider {
     margin-block-start: var(--spacing-lg);
   }
@@ -70,7 +66,6 @@ const hasCard = hasNumbers || hasVibe
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
 
   .fact {
@@ -121,13 +116,6 @@ const hasCard = hasNumbers || hasVibe
   }
 
   @media (max-width: 899px) {
-    .side-card {
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: none;
-    }
-
     .card-numbers > :global(.aside-heading),
     .fact-source {
       display: none;
@@ -135,8 +123,6 @@ const hasCard = hasNumbers || hasVibe
 
     .facts {
       flex-direction: row;
-      flex-wrap: nowrap;
-      gap: 0;
     }
 
     .fact {

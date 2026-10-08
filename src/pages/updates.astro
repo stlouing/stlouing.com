@@ -18,20 +18,20 @@ const updates = await Promise.all(
 ---
 
 <BaseLayout crumb="Updates" title="What's New in St. Louing" description={description}>
-  <article class="page">
+  <article>
     <PageMasthead title="What's New">
       <p slot="lede">A running log of what I've added and changed</p>
     </PageMasthead>
 
     <div class="reading-col">
-      <ol class="updates">
+      <ol class="updates divided-list">
         {
           updates.map(({ date, Content }) => (
             <li class="update">
-              <time class="update-date eyebrow" datetime={date.toISOString()}>
+              <time class="update-date eyebrow nowrap" datetime={date.toISOString()}>
                 {formatDate(date)}
               </time>
-              <div class="update-changes">
+              <div class="changelog-body">
                 <Content />
               </div>
             </li>
@@ -46,9 +46,6 @@ const updates = await Promise.all(
   .updates {
     display: grid;
     grid-template-columns: max-content 1fr;
-    margin: var(--spacing-xl) 0 0;
-    padding: 0;
-    list-style: none;
   }
 
   .update {
@@ -57,43 +54,14 @@ const updates = await Promise.all(
     grid-template-columns: subgrid;
     column-gap: var(--spacing-lg);
     padding-block: var(--spacing-lg);
-    border-block-start: 1px dotted var(--color-line);
   }
 
   .update:first-child {
-    border-block-start: 0;
     padding-block-start: 0;
   }
 
   .update-date {
-    text-wrap: nowrap;
     padding-block-start: 2px;
-  }
-
-  .update-changes {
-    color: var(--color-text);
-    line-height: 1.55;
-  }
-
-  .update-changes :global(ul) {
-    margin: 0;
-    padding-inline-start: var(--spacing-lg);
-  }
-
-  .update-changes :global(li) {
-    margin-block: 0;
-  }
-
-  .update-changes :global(p) {
-    margin-block: 0;
-  }
-
-  .update-changes :global(p + p) {
-    margin-block-start: var(--spacing-sm);
-  }
-
-  .update-changes :global(a:hover) {
-    text-decoration-line: underline;
   }
 
   @media (max-width: 700px) {

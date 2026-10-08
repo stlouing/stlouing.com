@@ -61,6 +61,7 @@ function buildRow(rating: ReaderRating, title: string): HTMLLIElement {
   const item = document.createElement('li')
 
   const nameLink = document.createElement('a')
+  nameLink.className = 'title-link'
   nameLink.href = `/food/${rating.slug}/`
   nameLink.textContent = title
   item.append(nameLink)

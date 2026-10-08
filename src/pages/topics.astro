@@ -15,7 +15,7 @@ const topics = sortTopics(published(await getCollection('topics')))
 <BaseLayout
   title="St. Louis Deep Dives"
   description="Evergreen deep-dives into St. Louis food, drink, and culture, tended and updated over time.">
-  <article class="page">
+  <article>
     <PageMasthead title="Topics" wide>
       <p slot="lede">Deep-dives into St. Louis food and culture</p>
     </PageMasthead>
@@ -24,6 +24,7 @@ const topics = sortTopics(published(await getCollection('topics')))
         {
           topics.map((topic) => (
             <Card
+              class="card--xl"
               href={href(`/${topic.id}/`)}
               title={topic.data.title}
               meta={topic.data.category}
@@ -41,21 +42,8 @@ const topics = sortTopics(published(await getCollection('topics')))
 </BaseLayout>
 
 <style>
-  .card-grid {
-    margin-block-start: 0;
-  }
-
   .card-grid :global(.card-meta) {
     color: var(--color-accent);
-  }
-
-  .card-grid :global(.card .title-serif) {
-    font-size: clamp(1.375rem, 1.2rem + 1vw, var(--font-size-xxxl));
-  }
-
-  .card-grid :global(.card-description) {
-    font-size: var(--font-size-lg);
-    margin-block-end: var(--spacing-md);
   }
 
   .card-grid :global(.continue-link) {
@@ -85,10 +73,21 @@ const topics = sortTopics(published(await getCollection('topics')))
     }
 
     .card-grid :global(.card-rows::before) {
+      inset-inline-start: 50%;
+    }
+
+    .card-grid :global(.card-rows::after) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .card-grid :global(.card-rows::before) {
       inset-inline-start: calc(100% / 3);
     }
 
     .card-grid :global(.card-rows::after) {
+      display: block;
       inset-inline-start: calc(200% / 3);
     }
   }
