@@ -153,20 +153,26 @@ Unmatched names are listed at the end of the run.
 
 ## Which data files are required
 
-Only `src/data/neighborhoods.json` and `src/data/neighborhood-geo.json` are
-required. Every other file in `src/data/` powers one optional feature and can be
-deleted; that feature just disappears:
+Nothing in `src/data/` is required. Each file powers one feature and can be
+deleted; that feature just disappears.
 
-| File                                    | Feature                                          |
-| --------------------------------------- | ------------------------------------------------ |
-| `corridors.json`, `corridor-spots.json` | walkable corridor maps                           |
-| `spots.json`                            | notable spots on neighborhood pages              |
-| `festivals.json`                        | events page and neighborhood festivals           |
-| `best-food.json`                        | the Best Food picks (category → restaurant slug) |
-| `rip.json`                              | closed restaurants on the backlog page           |
-| `neighborhood-population.json`          | population on neighborhood pages                 |
-| `neighborhood-population-aliases.json`  | name mapping for the population script           |
-| `city-county-boundaries.json`           | the city/county boundary article figure          |
+Deleting `neighborhoods.json` turns off neighborhoods entirely: no
+`/neighborhoods/` pages, no nav link, no boundary lines on the Food map, and food
+pages stop linking to a neighborhood. The Food map still works on the basemap
+alone, which is all a food-only site needs (step 1 below). Steps 2–4 are only for
+neighborhood pages.
+
+| File                                          | Feature                                          |
+| --------------------------------------------- | ------------------------------------------------ |
+| `neighborhoods.json`, `neighborhood-geo.json` | neighborhood pages (see steps 2–4)               |
+| `corridors.json`, `corridor-spots.json`       | walkable corridor maps                           |
+| `spots.json`                                  | notable spots on neighborhood pages              |
+| `festivals.json`                              | events page and neighborhood festivals           |
+| `best-food.json`                              | the Best Food picks (category → restaurant slug) |
+| `rip.json`                                    | closed restaurants on the backlog page           |
+| `neighborhood-population.json`                | population on neighborhood pages                 |
+| `neighborhood-population-aliases.json`        | name mapping for the population script           |
+| `city-county-boundaries.json`                 | the city/county boundary article figure          |
 
 ## Attribution
 

@@ -6,6 +6,7 @@ import CardList from '../components/CardList.astro'
 import Card from '../components/Card.astro'
 import IconCalendar from '../assets/IconCalendar.astro'
 import { href } from '../lib/url'
+import { NEIGHBORHOODS_ENABLED } from '../lib/neighborhood-data'
 import {
   allFestivals,
   festivalMonthIndex,
@@ -59,9 +60,10 @@ const description =
         byMonth.map((month) => (
           <CardList title={month.label}>
             {month.events.map((event) => {
-              const link = event.neighborhood
-                ? href(`/neighborhoods/${event.neighborhood}/`)
-                : undefined
+              const link =
+                NEIGHBORHOODS_ENABLED && event.neighborhood
+                  ? href(`/neighborhoods/${event.neighborhood}/`)
+                  : undefined
               const kickerParts = event.place ? [event.when, event.place] : [event.when]
 
               return (

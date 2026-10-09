@@ -6,6 +6,7 @@ import { fitZoomFor, frameCityView, keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import { cuisineLabel } from '../lib/cuisine'
 import { MAP_CENTER, NEIGHBORHOOD_BOUNDARIES_FILE } from '../../site.config.mjs'
+import { NEIGHBORHOODS_ENABLED } from '../lib/neighborhood-data'
 
 type LeafProps = { itemIndex: number }
 
@@ -43,6 +44,10 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     getComputedStyle(document.documentElement).getPropertyValue('--color-muted-2').trim() ||
     '#6f6b61'
   function addBoundaryLayer(): void {
+    if (!NEIGHBORHOODS_ENABLED) {
+      return
+    }
+
     if (!map.getSource(BOUNDARY_SOURCE)) {
       map.addSource(BOUNDARY_SOURCE, {
         type: 'geojson',

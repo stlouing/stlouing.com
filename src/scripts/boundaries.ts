@@ -1,4 +1,4 @@
-import neighborhoods from '../data/neighborhoods.json'
+import { NEIGHBORHOODS_ENABLED, neighborhoodRecords as neighborhoods } from '../lib/neighborhood-data'
 import { NEIGHBORHOOD_BOUNDARIES_FILE } from '../../site.config.mjs'
 
 export interface BoundaryFeature {
@@ -16,6 +16,10 @@ const numberBySlug = new Map(
 let featuresPromise: Promise<BoundaryFeature[]> | null = null
 
 function loadFeatures(): Promise<BoundaryFeature[]> {
+  if (!NEIGHBORHOODS_ENABLED) {
+    return Promise.resolve([])
+  }
+
   if (!featuresPromise) {
     featuresPromise = fetch(`${import.meta.env.BASE_URL}${NEIGHBORHOOD_BOUNDARIES_FILE}`)
       .then((response) => response.json() as Promise<{ features: BoundaryFeature[] }>)

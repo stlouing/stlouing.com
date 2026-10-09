@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets'
-import neighborhoodsData from '../data/neighborhoods.json'
+import { NEIGHBORHOODS_ENABLED, neighborhoodRecords } from '../lib/neighborhood-data'
 
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { sections, groups } from '../lib/sections'
@@ -58,8 +58,7 @@ const exploreSections = sections.filter((section) => section.group === 'explore'
 
 const exploreCounts: Record<string, number> = {
   '/food/': allFood.length,
-  '/neighborhoods/': neighborhoodsData.filter((neighborhood) => !('ignored' in neighborhood))
-    .length,
+  '/neighborhoods/': neighborhoodRecords.filter((neighborhood) => !neighborhood.ignored).length,
 }
 
 const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
@@ -146,7 +145,14 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       <p class="introduction">
         {HOME_INTRO}
         <br /><br />
-        <strong>Explored</strong>: <span class="stat">{wanderedCount}</span> neighborhoods and
+        <strong>Explored</strong>:
+        {
+          NEIGHBORHOODS_ENABLED && (
+            <>
+              <span class="stat">{wanderedCount}</span> neighborhoods and
+            </>
+          )
+        }
         <span class="stat">{visitedCount}</span> restaurants so far! <a
           class="continue-link"
           href={href('/about/')}

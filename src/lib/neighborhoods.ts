@@ -1,11 +1,14 @@
 import { CITY } from './site'
 import { getCollection } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
-import neighborhoods from '../data/neighborhoods.json'
-import geo from '../data/neighborhood-geo.json'
+import { neighborhoodRecords as neighborhoods } from './neighborhood-data'
 import { optionalData } from './optional-data'
 import { published } from './content'
 
+const geo = optionalData<{ shapes: Record<string, string>; adjacency: Record<string, string[]> }>(
+  import.meta.glob('../data/neighborhood-geo.json', { eager: true, import: 'default' }),
+  { shapes: {}, adjacency: {} },
+)
 const festivals = optionalData<unknown[]>(
   import.meta.glob('../data/festivals.json', { eager: true, import: 'default' }),
   [],
@@ -33,16 +36,6 @@ const slugByName = new Map(
     .map((neighborhood) => [normalizeName(neighborhood.name), neighborhood.slug]),
 )
 
-let pageSlugs: Set<string> | null = null
-async function neighborhoodPageSlugs(): Promise<Set<string>> {
-  if (!pageSlugs) {
-    const entries = published(await getCollection('neighborhoods'))
-    pageSlugs = new Set(entries.map((entry) => entry.id))
-  }
-
-  return pageSlugs
-}
-
 export async function neighborhoodHref(name: string | undefined): Promise<string | null> {
   if (!name) {
     return null
@@ -53,9 +46,7 @@ export async function neighborhoodHref(name: string | undefined): Promise<string
     return null
   }
 
-  const slugs = await neighborhoodPageSlugs()
-
-  return slugs.has(slug) ? `/neighborhoods/${slug}/` : `/neighborhoods/${slug}/`
+  return `/neighborhoods/${slug}/`
 }
 
 export interface NeighborhoodInfo {

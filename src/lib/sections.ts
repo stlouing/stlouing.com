@@ -1,4 +1,5 @@
 import { CITY, SUPABASE_ENABLED } from './site'
+import { NEIGHBORHOODS_ENABLED } from './neighborhood-data'
 export type Group = 'explore' | 'lists' | 'notes' | 'topics' | 'site'
 
 export interface Section {
@@ -26,14 +27,18 @@ export const sections: Section[] = [
     icon: 'utensils',
     description: `An interactive map of my favorite spots across the ${CITY} metro, filterable by cuisine, rating, and neighborhood`,
   },
-  {
-    label: 'Neighborhoods',
-    path: '/neighborhoods/',
-    group: 'explore',
-    primary: true,
-    icon: 'map-pin',
-    description: `The 79 neighborhoods and 9 parks of ${CITY} city, plus a few additional points of interest in the county`,
-  },
+  ...(NEIGHBORHOODS_ENABLED
+    ? [
+        {
+          label: 'Neighborhoods',
+          path: '/neighborhoods/',
+          group: 'explore' as const,
+          primary: true,
+          icon: 'map-pin',
+          description: `The 79 neighborhoods and 9 parks of ${CITY} city, plus a few additional points of interest in the county`,
+        },
+      ]
+    : []),
   {
     label: 'Topics',
     path: '/topics/',

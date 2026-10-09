@@ -6,7 +6,7 @@ A personal website documenting the food, neighborhoods, and culture of St. Louis
 
 ## TL;DR
 
-- Includes a [food](/food/) map and [neighborhood](/neighborhoods/) map, both have individual slugs that interlink (restuarants within a neighborhood, similar types of restaurants, etc.) and long-form [topics](/topics/) page.
+- Includes a [food](https://stlouing.com/food/) map and [neighborhood](https://stlouing.com/neighborhoods/) map, both have individual slugs that interlink (restuarants within a neighborhood, similar types of restaurants, etc.) and long-form [topics](https://stlouing.com/topics/) page.
 
 ## Stack
 
@@ -33,12 +33,13 @@ Requires Node `>=22.12`.
 
 - Edit `site.config.mjs` with your site name, domain, city, and map bounds.
 - Replace `src/content/` and `src/pages/about.md` with your own writing.
-- Replace `src/data/neighborhoods.json` with your neighborhoods; delete any other `src/data/` file you don't need.
-- Put your neighborhood boundaries GeoJSON in `public/`, with a number on each feature in `NHD_NUM`.
+- Delete any `src/data/` file you don't need; each one only powers its own feature.
+- For a food map only, delete `src/data/neighborhoods.json` and the neighborhood pages disappear.
+- For neighborhood pages, replace `src/data/neighborhoods.json` and put your boundaries GeoJSON in `public/` (number each feature in `NHD_NUM`).
 - Install the map tools with `brew install pmtiles tippecanoe`.
 - Build the basemap with `npm run build:basemap -- 20261008` (any recent date from build.protomaps.com).
-- Generate neighborhood shapes and neighbors with `npm run build:geo`.
-- Optionally add populations with `npm run build:population -- --csv populations.csv`.
+- With neighborhoods, generate their shapes and neighbors with `npm run build:geo`.
+- With neighborhoods, optionally add populations with `npm run build:population -- --csv populations.csv`.
 - Swap the logo, favicons, and social images in `public/` and `src/assets/`.
 - Update `public/CNAME`, `public/robots.txt`, the `package.json` name, and `LICENSE`.
 - See [MAPS.md](MAPS.md) for the details on any map step.

@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { href } from '../lib/url'
 import { published } from '../lib/content'
-import neighborhoods from '../data/neighborhoods.json'
+import { NEIGHBORHOODS_ENABLED, neighborhoodRecords as neighborhoods } from '../lib/neighborhood-data'
 import Chip from '../components/Chip.astro'
 import Heading from '../components/Heading.astro'
 import IconMapPin from '../assets/IconMapPin.astro'
@@ -17,7 +17,7 @@ const food = published(await getCollection('food')).sort(byTitle)
 const topics = published(await getCollection('topics')).sort(byTitle)
 
 const hoods = neighborhoods
-  .filter((neighborhood) => !('ignored' in neighborhood))
+  .filter((neighborhood) => !neighborhood.ignored)
   .sort((left, right) => left.name.localeCompare(right.name))
 
 interface Entry {
@@ -55,15 +55,19 @@ const groups: SitemapGroup[] = [
     featured: true,
     items: food.map((place) => ({ title: place.data.title, path: `/food/${place.id}/` })),
   },
-  {
-    label: 'Neighborhoods',
-    path: '/neighborhoods/',
-    featured: true,
-    items: hoods.map((neighborhood) => ({
-      title: neighborhood.name,
-      path: `/neighborhoods/${neighborhood.slug}/`,
-    })),
-  },
+  ...(NEIGHBORHOODS_ENABLED
+    ? [
+        {
+          label: 'Neighborhoods',
+          path: '/neighborhoods/',
+          featured: true,
+          items: hoods.map((neighborhood) => ({
+            title: neighborhood.name,
+            path: `/neighborhoods/${neighborhood.slug}/`,
+          })),
+        },
+      ]
+    : []),
 ]
 ---
 

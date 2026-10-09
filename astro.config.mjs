@@ -19,14 +19,13 @@ const dataRoot = fileURLToPath(new URL('./src/data', import.meta.url))
 
 function buildTocGroups() {
   const corridorsPath = path.join(dataRoot, 'corridors.json')
-  if (!fs.existsSync(corridorsPath)) {
+  const neighborhoodsPath = path.join(dataRoot, 'neighborhoods.json')
+  if (!fs.existsSync(corridorsPath) || !fs.existsSync(neighborhoodsPath)) {
     return {}
   }
 
   const { corridors } = JSON.parse(fs.readFileSync(corridorsPath, 'utf8'))
-  const neighborhoods = JSON.parse(
-    fs.readFileSync(path.join(dataRoot, 'neighborhoods.json'), 'utf8'),
-  )
+  const neighborhoods = JSON.parse(fs.readFileSync(neighborhoodsPath, 'utf8'))
   const groupBySlug = new Map(
     neighborhoods.map((neighborhood) => [neighborhood.slug, neighborhood.group]),
   )
@@ -142,12 +141,31 @@ function supabaseConfigured(command) {
   return Boolean(env.PUBLIC_SUPABASE_URL && env.PUBLIC_SUPABASE_ANON_KEY)
 }
 
+const neighborhoodsConfigured = fs.existsSync(path.join(dataRoot, 'neighborhoods.json'))
+
+function injectNeighborhoodRoutes(injectRoute) {
+  injectRoute({ pattern: '/neighborhoods', entrypoint: './src/routes/neighborhoods.astro' })
+
+  for (const file of fs.readdirSync(
+    fileURLToPath(new URL('./src/routes/neighborhoods', import.meta.url)),
+  )) {
+    injectRoute({
+      pattern: `/neighborhoods/${file.replace(/\.astro$/, '')}`,
+      entrypoint: `./src/routes/neighborhoods/${file}`,
+    })
+  }
+}
+
 const optionalRoutes = {
   name: 'optional-routes',
   hooks: {
     'astro:config:setup': ({ command, injectRoute }) => {
       if (supabaseConfigured(command)) {
         injectRoute({ pattern: '/guestbook', entrypoint: './src/routes/guestbook.astro' })
+      }
+
+      if (neighborhoodsConfigured) {
+        injectNeighborhoodRoutes(injectRoute)
       }
     },
   },

@@ -4,7 +4,7 @@ import type { Feature, FeatureCollection, Geometry, Position } from 'geojson'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, escapeHtml, type PopupChip } from './popup'
 import { frameCityView, keepPopupInView } from './map-shared'
-import neighborhoods from '../data/neighborhoods.json'
+import { neighborhoodRecords as neighborhoods } from '../lib/neighborhood-data'
 import { NEIGHBORHOOD_BOUNDARIES_FILE } from '../../site.config.mjs'
 
 const byNumber = new Map(
