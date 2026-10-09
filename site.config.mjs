@@ -29,6 +29,20 @@ export const SOCIALS = [
   { label: 'Twitter', url: 'https://x.com/stlouing' },
 ]
 
+export const PINNED_TOPIC_ID = 'field-notes'
+export const PROMOTED_TOPIC_ID = 'walkable-st-louis'
+export const CORRIDORS_TOPIC_ID = 'walkable-st-louis'
+export const FEATURED_FOOD_IDS = [
+  'teerak-thai',
+  'grand-pied',
+  'kishimoto-mendo',
+  'dalies-smokehouse',
+  'nicky-slices',
+  'pizzeria-da-gloria',
+  'woofies-hot-dogs',
+  'sultan',
+]
+
 export const MAP_CENTER = [-90.2, 38.627]
 export const CITY_BOUNDS = [
   [-90.32049, 38.53298],

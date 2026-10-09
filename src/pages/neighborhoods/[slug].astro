@@ -1,5 +1,5 @@
 ---
-import { CITY, REGION, SUPABASE_ENABLED } from '../../lib/site'
+import { CITY, CORRIDORS_TOPIC_ID, REGION, SUPABASE_ENABLED } from '../../lib/site'
 import { getCollection, render } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
@@ -93,7 +93,7 @@ const neighbors =
 const festivals = festivalsIn(slug)
 
 const walkableStLouisLive = published(await getCollection('topics')).some(
-  (topic) => topic.id === 'walkable-st-louis',
+  (topic) => topic.id === CORRIDORS_TOPIC_ID,
 )
 const corridors = walkableStLouisLive ? corridorsIn(slug) : []
 

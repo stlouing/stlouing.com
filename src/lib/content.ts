@@ -1,3 +1,5 @@
+import { PINNED_TOPIC_ID } from '../../site.config.mjs'
+
 export function published<
   T extends { id: string; body?: string; data: { title?: string; draft?: boolean | undefined } },
 >(entries: T[]): T[] {
@@ -6,7 +8,8 @@ export function published<
   return entries.filter((entry) => !entry.data.draft)
 }
 
-export const PINNED_TOPIC_ID = 'field-notes'
+export { PINNED_TOPIC_ID }
+
 export function sortTopics<Entry extends { id: string; data: { updated: Date } }>(
   entries: Entry[],
 ): Entry[] {

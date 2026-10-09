@@ -16,7 +16,16 @@ import {
 import { isExplored } from '../lib/verdict'
 import { formatDate } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
-import { HOME_INTRO, INSTAGRAM_HANDLE, SITE_DOMAIN, SITE_NAME, SOCIALS, TAGLINE } from '../lib/site'
+import {
+  FEATURED_FOOD_IDS,
+  HOME_INTRO,
+  INSTAGRAM_HANDLE,
+  PROMOTED_TOPIC_ID,
+  SITE_DOMAIN,
+  SITE_NAME,
+  SOCIALS,
+  TAGLINE,
+} from '../lib/site'
 import Button from '../components/Button.astro'
 import List from '../components/List.astro'
 import ListItem from '../components/ListItem.astro'
@@ -24,7 +33,7 @@ import Heading from '../components/Heading.astro'
 import SectionHeading from '../components/SectionHeading.astro'
 import Card from '../components/Card.astro'
 import PromoCard from '../components/PromoCard.astro'
-import bestPromoPhoto from '../content/images/food/kishimoto/kishi3.jpg'
+import bestPromoPhoto from '../assets/best-promo.jpg'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import IconInstagram from '../assets/IconInstagram.astro'
@@ -37,7 +46,7 @@ const leadTopic = allTopics.find((topic) => topic.id !== PINNED_TOPIC_ID)
 const leadTeaser = leadTopic ? excerpt(leadTopic.body, 420) : ''
 
 const railTopics = allTopics.filter((topic) => topic.id !== leadTopic?.id)
-const promotedTopic = allTopics.find((topic) => topic.id === 'walkable-st-louis')
+const promotedTopic = allTopics.find((topic) => topic.id === PROMOTED_TOPIC_ID)
 const TOPIC_PROMO_EXCERPT_CHARS = 250
 
 const allFood = published(await getCollection('food'))
@@ -54,16 +63,6 @@ const exploreCounts: Record<string, number> = {
     .length,
 }
 
-const FEATURED_FOOD_IDS = [
-  'teerak-thai',
-  'grand-pied',
-  'kishimoto-mendo',
-  'dalies-smokehouse',
-  'nicky-slices',
-  'pizzeria-da-gloria',
-  'woofies-hot-dogs',
-  'sultan',
-]
 const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
   allFood.filter((place) => place.id === foodId),
 ).map((place) => ({ place, teaser: excerpt(place.body, PREVIEW_EXCERPT_CHARS) }))
@@ -106,7 +105,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
               meta={groups.find((group) => group.id === bestSection.group)?.label}
               description={bestSection.description}
               photo={bestPromoPhoto}
-              photoAlt="Inside Kishimoto Mendo"
+              photoAlt="Outside Kishimoto Mendo"
               linkLabel="View all"
             />
           </section>
