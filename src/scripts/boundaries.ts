@@ -1,4 +1,5 @@
 import neighborhoods from '../data/neighborhoods.json'
+import { NEIGHBORHOOD_BOUNDARIES_FILE } from '../../site.config.mjs'
 
 export interface BoundaryFeature {
   type: 'Feature'
@@ -16,7 +17,7 @@ let featuresPromise: Promise<BoundaryFeature[]> | null = null
 
 function loadFeatures(): Promise<BoundaryFeature[]> {
   if (!featuresPromise) {
-    featuresPromise = fetch(`${import.meta.env.BASE_URL}stl-neighborhoods.geojson`)
+    featuresPromise = fetch(`${import.meta.env.BASE_URL}${NEIGHBORHOOD_BOUNDARIES_FILE}`)
       .then((response) => response.json() as Promise<{ features: BoundaryFeature[] }>)
       .then((collection) => collection.features)
       .catch(() => [])

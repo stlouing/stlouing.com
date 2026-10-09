@@ -14,7 +14,13 @@ import Footer from '../components/Footer.astro'
 import JsonLd from '../components/JsonLd.astro'
 import { href } from '../lib/url'
 import { sections } from '../lib/sections'
-import { SITE_DESCRIPTION, SOCIALS } from '../lib/site'
+import {
+  DEFAULT_SOCIAL_IMAGE_ALT,
+  DEFAULT_TITLE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SOCIALS,
+} from '../lib/site'
 
 interface Props {
   home?: boolean
@@ -32,7 +38,6 @@ interface Props {
   noindex?: boolean
 }
 
-const SITE_NAME = 'St. Louing'
 const {
   home = false,
   article = false,
@@ -77,12 +82,12 @@ if (segments.length >= 1) {
 
 const leaf = trail.length > 1 ? trail[trail.length - 1].label : undefined
 const titleLeaf = title ?? leaf
-const pageTitle = titleLeaf ?? `${SITE_NAME}: Food, Neighborhoods, and Culture of St. Louis`
+const pageTitle = titleLeaf ?? DEFAULT_TITLE
 
 const metaDescription = description ?? SITE_DESCRIPTION
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
 const socialImage = new URL(href(ogImage ?? '/og.png?v=2'), Astro.site ?? Astro.url.origin).href
-const socialImageAlt = ogImage ? (crumb ?? SITE_NAME) : `${SITE_NAME} - the St. Louis flag`
+const socialImageAlt = ogImage ? (crumb ?? SITE_NAME) : DEFAULT_SOCIAL_IMAGE_ALT
 
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
 const breadcrumbSchema =

@@ -1,4 +1,5 @@
 ---
+import { CITY } from '../lib/site'
 import PageMasthead from '../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -13,11 +14,11 @@ const topics = sortTopics(published(await getCollection('topics')))
 ---
 
 <BaseLayout
-  title="St. Louis Deep Dives"
-  description="Evergreen deep-dives into St. Louis food, drink, and culture, tended and updated over time.">
+  title={`${CITY} Deep Dives`}
+  description={`Evergreen deep-dives into ${CITY} food, drink, and culture, tended and updated over time.`}>
   <article>
     <PageMasthead title="Topics" wide>
-      <p slot="lede">Deep-dives into St. Louis food and culture</p>
+      <p slot="lede">Deep-dives into {CITY} food and culture</p>
     </PageMasthead>
     <div class="card-grid card-cells card-cells--three">
       <div class="card-rows">

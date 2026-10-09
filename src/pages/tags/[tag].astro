@@ -1,4 +1,5 @@
 ---
+import { SITE_NAME } from '../../lib/site'
 import PageMasthead from '../../components/PageMasthead.astro'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import SectionHeading from '../../components/SectionHeading.astro'
@@ -36,7 +37,7 @@ const grouped = ['food', 'Neighborhoods', 'Topics', 'Notes']
 const countLabel = `${items.length} ${items.length === 1 ? 'entry' : 'entries'}`
 ---
 
-<BaseLayout crumb={`#${tag}`} title={`Tags: ${cuisineLabel(tag)} - St. Louing`} noindex>
+<BaseLayout crumb={`#${tag}`} title={`Tags: ${cuisineLabel(tag)} - ${SITE_NAME}`} noindex>
   <article>
     <PageMasthead title={`#${tag}`}>
       <p slot="lede">{countLabel}</p>

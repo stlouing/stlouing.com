@@ -1,12 +1,11 @@
+import { CITY_BOUNDS as CONFIGURED_CITY_BOUNDS } from '../../site.config.mjs'
+
 interface PannableMap {
   getContainer(): HTMLElement
   panBy(offset: [number, number], options?: { animate?: boolean }): void
 }
 
-export const CITY_BOUNDS: [[number, number], [number, number]] = [
-  [-90.32049, 38.53298],
-  [-90.17505, 38.77434],
-]
+export const CITY_BOUNDS = CONFIGURED_CITY_BOUNDS as [[number, number], [number, number]]
 
 interface BoundsLike {
   getWest(): number

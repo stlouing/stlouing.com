@@ -3,10 +3,10 @@ import type { APIContext } from 'astro'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { getCollection, render } from 'astro:content'
 import { published, excerpt } from '../lib/content'
-import { SITE_TITLE, SITE_DESCRIPTION } from '../lib/site'
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '../lib/site'
 
 export async function GET(context: APIContext) {
-  const site = context.site ?? new URL('https://stlouing.com')
+  const site = context.site ?? new URL(SITE_URL)
   const origin = site.href.replace(/\/$/, '')
   const absolutize = (html: string, path: string) =>
     html
@@ -87,7 +87,7 @@ export async function GET(context: APIContext) {
   )
 
   return rss({
-    title: SITE_TITLE,
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
     site,
     items,

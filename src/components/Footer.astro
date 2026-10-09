@@ -1,5 +1,12 @@
 ---
-import { NEWSLETTER_URL, SITE_DESCRIPTION } from '../lib/site'
+import {
+  CITY_SHORT,
+  INSTAGRAM_HANDLE,
+  NEWSLETTER_BLURB,
+  NEWSLETTER_URL,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+} from '../lib/site'
 import { href } from '../lib/url'
 import FleurDeLis from '../assets/FleurDeLis.astro'
 import IconHeart from '../assets/IconHeart.astro'
@@ -11,17 +18,14 @@ import IconInstagram from '../assets/IconInstagram.astro'
   <div class="wrap wrap-wide footer-inner">
     <div class="footer-identity">
       <FleurDeLis class="footer-crest" />
-      <p class="footer-name title-display">St. Louing</p>
+      <p class="footer-name title-display">{SITE_NAME}</p>
       <p class="footer-description">{SITE_DESCRIPTION}</p>
     </div>
-    <div class="footer-newsletter">
-      <p class="footer-newsletter-title">Newsletter</p>
-      <p class="footer-description">
-        I'm always wandering St. Louis! Sign up if you want infrequent updates from the site. No
-        ads, no spam.
-      </p>
-      {
-        NEWSLETTER_URL && (
+    {
+      NEWSLETTER_URL && (
+        <div class="footer-newsletter">
+          <p class="footer-newsletter-title">Newsletter</p>
+          <p class="footer-description">{NEWSLETTER_BLURB}</p>
           <a
             class="btn btn-dark btn-compact newsletter-link"
             href={`${NEWSLETTER_URL}/subscribe`}
@@ -29,13 +33,13 @@ import IconInstagram from '../assets/IconInstagram.astro'
             rel="noopener">
             Subscribe
           </a>
-        )
-      }
-    </div>
+        </div>
+      )
+    }
   </div>
   <div class="wrap wrap-wide footer-bottom">
     <span class="footer-made">
-      Made with <IconHeart /> in STL
+      Made with <IconHeart /> in {CITY_SHORT}
     </span>
     <nav class="footer-links" aria-label="Footer">
       {
@@ -46,9 +50,12 @@ import IconInstagram from '../assets/IconInstagram.astro'
         )
       }
       <a href={href('/contact/')}>Contact</a>
-      <a class="footer-instagram" href="https://www.instagram.com/st.louing" target="_blank">
+      <a
+        class="footer-instagram"
+        href={`https://www.instagram.com/${INSTAGRAM_HANDLE}`}
+        target="_blank">
         <IconInstagram />
-        st.louing
+        {INSTAGRAM_HANDLE}
       </a>
     </nav>
   </div>

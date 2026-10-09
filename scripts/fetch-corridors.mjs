@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { SITE_DOMAIN } from '../site.config.mjs'
 
 const OVERPASS_URL = process.env.OVERPASS_URL ?? 'https://overpass-api.de/api/interpreter'
 const OUTPUT_PATH = fileURLToPath(new URL('../src/data/corridors.json', import.meta.url))
@@ -334,7 +335,7 @@ async function overpass(query) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': 'stlouing-corridors/1.0 (street extract for stlouing.com)',
+          'User-Agent': `${SITE_DOMAIN}-corridors/1.0 (street extract for ${SITE_DOMAIN})`,
         },
         body: `data=${encodeURIComponent(query)}`,
       })

@@ -3,12 +3,14 @@ import sitemap from '@astrojs/sitemap'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import fs from 'node:fs'
+import { loadEnv } from 'vite'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { remarkWikiLink } from './src/lib/remark-wikilink.mjs'
 import { rehypeTableScroll } from './src/lib/rehype-table-scroll.mjs'
 import { rehypeArticleToc } from './src/lib/rehype-article-toc.mjs'
 import { entryUrl } from './src/lib/entry-url.mjs'
+import { SITE_URL } from './site.config.mjs'
 
 const BASE = '/'
 
@@ -128,6 +130,24 @@ function hasPublishedEntries(collection) {
     )
 }
 
+function supabaseConfigured(command) {
+  const mode = command === 'dev' ? 'development' : 'production'
+  const env = loadEnv(mode, process.cwd(), 'PUBLIC_')
+
+  return Boolean(env.PUBLIC_SUPABASE_URL && env.PUBLIC_SUPABASE_ANON_KEY)
+}
+
+const optionalRoutes = {
+  name: 'optional-routes',
+  hooks: {
+    'astro:config:setup': ({ command, injectRoute }) => {
+      if (supabaseConfigured(command)) {
+        injectRoute({ pattern: '/guestbook', entrypoint: './src/routes/guestbook.astro' })
+      }
+    },
+  },
+}
+
 const unpublishedSections = ['notes'].filter((collection) => !hasPublishedEntries(collection))
 
 function resolve(target) {
@@ -143,10 +163,11 @@ function resolve(target) {
 }
 
 export default defineConfig({
-  site: 'https://stlouing.com',
+  site: SITE_URL,
   trailingSlash: 'always',
   redirects: { '/food/want-to-try/': '/food/backlog/' },
   integrations: [
+    optionalRoutes,
     sitemap({
       filter: (page) =>
         !page.includes('/tags/') &&

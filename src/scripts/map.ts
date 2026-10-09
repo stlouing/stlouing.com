@@ -5,6 +5,7 @@ import { buildPopupHtml, type PopupChip } from './popup'
 import { fitZoomFor, frameCityView, keepPopupInView } from './map-shared'
 import { verdictLabels, type Verdict } from '../lib/verdict'
 import { cuisineLabel } from '../lib/cuisine'
+import { MAP_CENTER, NEIGHBORHOOD_BOUNDARIES_FILE } from '../../site.config.mjs'
 
 type LeafProps = { itemIndex: number }
 
@@ -45,7 +46,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
     if (!map.getSource(BOUNDARY_SOURCE)) {
       map.addSource(BOUNDARY_SOURCE, {
         type: 'geojson',
-        data: `${import.meta.env.BASE_URL}stl-neighborhoods.geojson`,
+        data: `${import.meta.env.BASE_URL}${NEIGHBORHOOD_BOUNDARIES_FILE}`,
       })
     }
     if (!map.getLayer(BOUNDARY_LINE)) {
@@ -377,7 +378,7 @@ export function initMap(mapSelector = '[data-map]'): MapApi | undefined {
         }
         map.fitBounds(allBounds, { padding: 30, maxZoom: 12, animate })
       } else {
-        map.jumpTo({ center: [-90.2, 38.627], zoom: 11 })
+        map.jumpTo({ center: MAP_CENTER as [number, number], zoom: 11 })
       }
       viewInitialized = true
     }

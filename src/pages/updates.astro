@@ -1,11 +1,12 @@
 ---
+import { SITE_NAME } from '../lib/site'
 import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { render } from 'astro:content'
 import { getChangelog } from '../lib/changelog'
 import { formatDate } from '../lib/dates'
 
-const description = "What's new on St. Louing — the running log of updates, newest first."
+const description = `What's new on ${SITE_NAME} — the running log of updates, newest first.`
 
 const entries = await getChangelog()
 const updates = await Promise.all(
@@ -17,7 +18,7 @@ const updates = await Promise.all(
 )
 ---
 
-<BaseLayout crumb="Updates" title="What's New in St. Louing" description={description}>
+<BaseLayout crumb="Updates" title={`What's New in ${SITE_NAME}`} description={description}>
   <article>
     <PageMasthead title="What's New">
       <p slot="lede">A running log of what I've added and changed</p>

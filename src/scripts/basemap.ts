@@ -3,6 +3,7 @@ import maplibregl from 'maplibre-gl'
 import type { MapOptions, StyleSpecification } from 'maplibre-gl'
 import { Protocol } from 'pmtiles'
 import { layers, namedFlavor } from '@protomaps/basemaps'
+import { BASEMAP_FILE, MAP_CENTER } from '../../site.config.mjs'
 
 let protocolRegistered = false
 function registerPmtilesProtocol(): void {
@@ -17,7 +18,7 @@ function registerPmtilesProtocol(): void {
 const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 const protomapsAttribution = `<a href="https://protomaps.com">Protomaps</a> ${osmAttribution}`
 
-const localPmtilesUrl = `${import.meta.env.BASE_URL}stl.pmtiles`
+const localPmtilesUrl = `${import.meta.env.BASE_URL}${BASEMAP_FILE}`
 const protomapsTilesUrl = import.meta.env.PUBLIC_PMTILES_URL || localPmtilesUrl
 
 const glyphsUrl = 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf'
@@ -53,7 +54,7 @@ export function createBasemapMap(
   const map = new maplibregl.Map({
     container,
     style: buildBasemapStyle(),
-    center: [-90.2, 38.627],
+    center: MAP_CENTER as [number, number],
     zoom: 11,
     dragRotate: false,
     pitchWithRotate: false,

@@ -1,0 +1,85 @@
+---
+import PageMasthead from '../components/PageMasthead.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Heading from '../components/Heading.astro'
+import { CITY, SITE_NAME } from '../lib/site'
+
+const description =
+  `An old-internet guestbook for ${SITE_NAME} — sign your name and leave a note alongside other readers of this independent ${CITY} guide.`
+---
+
+<BaseLayout article crumb="Guestbook" title={`Guestbook - ${SITE_NAME}`} description={description}>
+  <article>
+    <PageMasthead title="Guestbook">
+      <p slot="lede">Passing through? Sign your name and leave a note.</p>
+    </PageMasthead>
+
+    <div class="guestbook reading-col" data-guestbook>
+      <section class="panel" aria-label="Sign the guestbook" data-sign-panel>
+        <form class="form-stack" data-sign-form>
+          <label class="field">
+            <span>Name</span>
+            <input type="text" data-sign-name maxlength="80" autocomplete="name" required />
+          </label>
+          <label class="field">
+            <span>Message</span>
+            <textarea
+              data-sign-message
+              rows="4"
+              maxlength="1000"
+              required
+            />
+          </label>
+                        <div class="hp" aria-hidden="true">
+            <label>
+              Leave this field empty
+              <input type="text" data-sign-hp tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-dark btn-compact" data-sign-submit>
+              Sign
+            </button>
+            <span class="form-status" data-sign-status role="status" aria-live="polite" />
+          </div>
+        </form>
+        <p class="signed-note description" data-signed-note hidden>
+          Thanks for signing!
+        </p>
+      </section>
+
+      <section aria-label="Signatures">
+        <Heading>
+          Messages
+          <span slot="aside" class="count" data-count />
+        </Heading>
+        <ul class="feed" data-entries />
+        <p class="feed-empty description" data-empty hidden>
+          None yet
+        </p>
+        <p class="form-status" data-load-status role="status" aria-live="polite" />
+        <button type="button" class="btn btn-outline btn-compact feed-older" data-older hidden>
+          Show older entries
+        </button>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  import { initGuestbook } from '../scripts/guestbook'
+  initGuestbook()
+</script>
+
+<style>
+  .guestbook {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+  }
+
+  .signed-note {
+    margin: 0;
+    text-align: center;
+  }
+</style>

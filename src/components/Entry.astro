@@ -4,6 +4,7 @@ import Backlinks from './Backlinks.astro'
 import Byline from './Byline.astro'
 import PageMasthead from './PageMasthead.astro'
 import { href } from '../lib/url'
+import { SITE_NAME, SUPABASE_ENABLED } from '../lib/site'
 import type { Backlink } from '../lib/backlinks'
 
 interface Props {
@@ -24,6 +25,7 @@ const {
   eyebrow,
 } = Astro.props
 const isArticle = Boolean(permalink)
+const hasComments = SUPABASE_ENABLED && Astro.slots.has('comments')
 ---
 
 <article class:list={['entry', { 'h-entry': isArticle }]}>
@@ -33,7 +35,7 @@ const isArticle = Boolean(permalink)
       eyebrow={eyebrow}
       actions
       headingClass={isArticle ? 'p-name' : undefined}
-      commentsAnchor={Astro.slots.has('comments')}>
+      commentsAnchor={hasComments}>
       <slot name="lede" slot="lede" />
     </PageMasthead>
 
@@ -56,7 +58,7 @@ const isArticle = Boolean(permalink)
             Permalink
           </a>
           <a class="p-author h-card" rel="author" href={href('/')} hidden>
-            St. Louing
+            {SITE_NAME}
           </a>
         </>
       )
@@ -78,7 +80,7 @@ const isArticle = Boolean(permalink)
   }
 
   {
-    Astro.slots.has('comments') && (
+    hasComments && (
       <div class="entry-comments">
         <slot name="comments" />
       </div>

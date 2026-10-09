@@ -1,4 +1,5 @@
 ---
+import { CITY } from '../../lib/site'
 import PageMasthead from '../../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 
@@ -35,12 +36,12 @@ const cardMeta = (item: CardData): string[] =>
   ].filter(Boolean) as string[]
 
 const description =
-  "Places in St. Louis I haven't been to yet, plus a few that I haven't gotten around to writing about yet."
+  `Places in ${CITY} I haven't been to yet, plus a few that I haven't gotten around to writing about yet.`
 ---
 
 <BaseLayout
   crumb="The Backlog"
-  title="The Backlog - St. Louis Restaurants To Try"
+  title={`The Backlog - ${CITY} Restaurants To Try`}
   description={description}>
   <article>
     <PageMasthead title="The Backlog" wide>

@@ -1,4 +1,5 @@
 ---
+import { CITY, SUPABASE_ENABLED } from '../../lib/site'
 import { getCollection } from 'astro:content'
 import { getImage } from 'astro:assets'
 
@@ -57,11 +58,15 @@ const hasCoords = rows.some((entry) => entry.place.data.coords)
 const verdictOptions = (['loved', 'liked', 'neutral', 'not-for-me'] as Verdict[])
   .filter((value) => rows.some((entry) => entry.verdict === value))
   .map((value) => ({ value, label: verdictLabels[value] }))
+const description = [
+  `An interactive map of ${CITY} restaurants and cafes, filterable by cuisine and neighborhood.`,
+  SUPABASE_ENABLED ? 'Each place is rated by me and reviewed by the community.' : 'Each place is rated by me.',
+].join(' ')
 ---
 
 <BaseLayout
-  title="St. Louis Food Map"
-  description="An interactive map of St. Louis restaurants and cafes, filterable by cuisine and neighborhood. Each place is rated by me and reviewed by the community."
+  title={`${CITY} Food Map`}
+  description={description}
   ogImage="/og/food.png">
   <FilterMapPage
     class="food"

@@ -1,3 +1,4 @@
+import { SITE_NAME } from '../../site.config.mjs'
 import { browserId } from './browser-id'
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
@@ -256,7 +257,7 @@ function buildReply(replyMessage: string, replyDate: string | null): HTMLDivElem
 
   const authorName = document.createElement('span')
   authorName.className = 'feed-name title-serif'
-  authorName.textContent = 'St. Louing'
+  authorName.textContent = SITE_NAME
   author.append(authorName)
 
   if (replyDate) {

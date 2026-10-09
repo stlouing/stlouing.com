@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Rebuilds public/stl.pmtiles: extracts the St. Louis metro from a Protomaps
-# daily planet build, then strips it to the layers the site's MapLibre style
-# actually renders. Docs live in the private workspace (docs/protomaps-basemap.md).
+# Rebuilds the basemap (BASEMAP_FILE in site.config.mjs): extracts the metro
+# area from a Protomaps daily planet build, then strips it to the layers the
+# site's MapLibre style actually renders. See MAPS.md.
 #
 # Usage: scripts/build-basemap.sh 20260901
 #   (pick a date from https://build.protomaps.com)
@@ -19,12 +19,17 @@ for tool in pmtiles tile-join; do
 done
 
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
+config_value() {
+  node --input-type=module -e "import * as config from '${repo_root}/site.config.mjs'; console.log([].concat(config.$1).join(','))"
+}
+basemap_file="$(config_value BASEMAP_FILE)"
+basemap_bounds="$(config_value BASEMAP_BOUNDS)"
 extract_path="$(mktemp -d)/stl-extract.pmtiles"
 
-# The metro bounding box (west,south,east,north): roughly Wentzville to Festus
-# to the Illinois inner suburbs to Alton. maxzoom 14 overzooms cleanly past z14.
+# The bounding box (west,south,east,north) comes from BASEMAP_BOUNDS in
+# site.config.mjs. maxzoom 14 overzooms cleanly past z14.
 pmtiles extract "https://build.protomaps.com/${build_date}.pmtiles" "${extract_path}" \
-  --bbox=-90.95,38.18,-89.85,38.95 \
+  --bbox="${basemap_bounds}" \
   --maxzoom=14
 
 # Layer allowlist: an earlier cut dropped buildings/pois entirely and filtered
@@ -33,9 +38,9 @@ pmtiles extract "https://build.protomaps.com/${build_date}.pmtiles" "${extract_p
 # not worth the bytes at city scale). No -j filter.
 tile-join -f -pk \
   -l earth -l water -l roads -l boundaries -l places -l landuse -l buildings -l pois \
-  -o "${repo_root}/public/stl.pmtiles" "${extract_path}"
+  -o "${repo_root}/public/${basemap_file}" "${extract_path}"
 
 rm -f "${extract_path}"
-echo "Built public/stl.pmtiles:"
-du -h "${repo_root}/public/stl.pmtiles"
-echo "Production reads PUBLIC_PMTILES_URL — upload the new file to the Supabase bucket yourself."
+echo "Built public/${basemap_file}:"
+du -h "${repo_root}/public/${basemap_file}"
+echo "Production reads PUBLIC_PMTILES_URL — upload the new file to your storage bucket yourself."

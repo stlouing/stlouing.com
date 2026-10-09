@@ -1,4 +1,5 @@
 ---
+import { CITY } from '../lib/site'
 import { regions, regionTokenBySlug } from '../lib/neighborhoods'
 ---
 
@@ -6,7 +7,7 @@ import { regions, regionTokenBySlug } from '../lib/neighborhoods'
   class="area-map"
   data-area-map
   role="application"
-  aria-label="Map of St. Louis neighborhoods — click a neighborhood to jump to it">
+  aria-label={`Map of ${CITY} neighborhoods — click a neighborhood to jump to it`}>
   <ul class="map-legend map-overlay" role="list" aria-label="Map legend">
     {
       regions.map((region) => (

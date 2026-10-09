@@ -1,4 +1,5 @@
 ---
+import { CITY, REGION, SUPABASE_ENABLED } from '../../lib/site'
 import { getCollection, render } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
@@ -129,12 +130,12 @@ const metaDescription = hasWriteup
 let seoTitle: string | undefined
 if (info) {
   if (info.type === 'park') {
-    seoTitle = `${title} - Park in St. Louis`
+    seoTitle = `${title} - Park in ${CITY}`
   } else if (info.type) {
     const kind = `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} in ${info.group}`
-    seoTitle = `${title}, Missouri - ${kind}`
+    seoTitle = `${title}, ${REGION} - ${kind}`
   } else {
-    seoTitle = `${title} - Neighborhood in St. Louis`
+    seoTitle = `${title} - Neighborhood in ${CITY}`
   }
 }
 
@@ -232,12 +233,16 @@ const boundaryToken = regionTokenBySlug[region?.slug ?? ''] ?? '--color-map-acce
                       <span class="pane-stat-value">{places.length}</span>
                     </div>
                   )}
-                                    <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
-                    <span class="pane-stat-label eyebrow eyebrow--muted">Comments</span>
-                    <span class="pane-stat-value continue-link">
-                      <span data-comments-cell-value>Leave a comment</span>
-                    </span>
-                  </a>
+                  {
+                    SUPABASE_ENABLED && (
+                      <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
+                        <span class="pane-stat-label eyebrow eyebrow--muted">Comments</span>
+                        <span class="pane-stat-value continue-link">
+                          <span data-comments-cell-value>Leave a comment</span>
+                        </span>
+                      </a>
+                    )
+                  }
                 </div>
               )
             }

@@ -1,4 +1,5 @@
 ---
+import { CITY } from '../lib/site'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Breadcrumbs from './Breadcrumbs.astro'
@@ -40,8 +41,8 @@ const sorted = [...members].sort((left, right) => {
 })
 
 const count = members.length
-const seoTitle = region.label.includes('St. Louis') ? region.label : `${region.label} of St. Louis`
-const metaDescription = `Every neighborhood in ${region.label}, St. Louis — ${count} in all.`
+const seoTitle = region.label.includes(CITY) ? region.label : `${region.label} of ${CITY}`
+const metaDescription = `Every neighborhood in ${region.label}, ${CITY} - ${count} in all.`
 const trail = [{ label: 'Neighborhoods', href: '/neighborhoods/' }]
 ---
 

@@ -7,7 +7,7 @@ import Card from '../components/Card.astro'
 import ReaderFavorites from '../components/ReaderFavorites.astro'
 import { published, excerpt, META_DESCRIPTION_CHARS, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import { href } from '../lib/url'
-import { SUPABASE_ENABLED } from '../lib/site'
+import { CITY, SUPABASE_ENABLED } from '../lib/site'
 import superlatives from '../data/superlatives.json'
 
 interface Award {
@@ -30,7 +30,7 @@ const awards = [
 
 const readersEnabled = SUPABASE_ENABLED
 
-const descriptionLead = 'My picks for the best food in St. Louis, by category: '
+const descriptionLead = `My picks for the best food in ${CITY}, by category: `
 const descriptionSuffix = ', and more.'
 const fittingLabels: string[] = []
 for (const award of resolvedAwards) {
@@ -43,19 +43,21 @@ for (const award of resolvedAwards) {
 const description = `${descriptionLead}${fittingLabels.join(', ')}${descriptionSuffix}`
 ---
 
-<BaseLayout crumb="Best of" title="The Best Food in St. Louis" description={description}>
+<BaseLayout crumb="Best of" title={`The Best Food in ${CITY}`} description={description}>
   <article>
-    <PageMasthead title="The Best Food in St. Louis" wide>
-      <p slot="lede">My subjective favorites and readers top-voted spots</p>
+    <PageMasthead title={`The Best Food in ${CITY}`} wide>
+      <p slot="lede">
+        My subjective favorites{readersEnabled && ' and readers top-voted spots'}
+      </p>
     </PageMasthead>
 
-    <div class="detail-layout detail-layout--wide">
+    <div class:list={[{ 'detail-layout detail-layout--wide': readersEnabled }]}>
       <div class="detail-main">
         <div class="best-list">
           {
             awards.map(({ label, place, teaser }) => (
               <section class="best-entry">
-                <Subheading level={4}>{label.charAt(0).toUpperCase() + label.slice(1)}</Subheading>
+                <Subheading level={3}>{label.charAt(0).toUpperCase() + label.slice(1)}</Subheading>
                 <Card
                   class="card--lg card--xl"
                   href={href(`/food/${place.id}/`)}

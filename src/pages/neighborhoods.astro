@@ -1,4 +1,5 @@
 ---
+import { CITY } from '../lib/site'
 import { getCollection } from 'astro:content'
 import { getImage } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -71,8 +72,8 @@ function sectionOf(area: { group?: string; type?: string }): string {
 
 <BaseLayout
   crumb="Neighborhoods"
-  title="St. Louis Neighborhood Map"
-  description="A map and field guide to all 79 neighborhoods and 9 parks of the City of St. Louis, including local food, events, population, borders, and discoveries.">
+  title={`${CITY} Neighborhood Map`}
+  description={`A map and field guide to all 79 neighborhoods and 9 parks of the City of ${CITY}, including local food, events, population, borders, and discoveries.`}>
   <div class="map-split" data-filter-root data-map-split data-view="map">
     <script is:inline>
       {

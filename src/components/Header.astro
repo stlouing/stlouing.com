@@ -3,6 +3,7 @@ import Nav from './Nav.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import FleurGlyph from '../assets/FleurGlyph.astro'
 import { href } from '../lib/url'
+import { CITY, FOUNDED_YEAR, REGION, SITE_NAME } from '../lib/site'
 
 interface Props {
   trail: Array<any>
@@ -20,14 +21,14 @@ const { variant = 'compact' } = Astro.props
           <div class="wrap wrap-wide masthead-ear-line eyebrow eyebrow--muted">
             <span>An Independent Guide</span>
             <span class="masthead-ear-group">
-              <span>St. Louis, Missouri</span>
+              <span>{CITY}, {REGION}</span>
               <FleurGlyph class="ear-fleur" />
-              <span>Est. 2026</span>
+              <span>Est. {FOUNDED_YEAR}</span>
             </span>
           </div>
         </div>
         <div class="wrap wrap-wide nameplate">
-          <h1 class="nameplate-title title-display">St. Louing</h1>
+          <h1 class="nameplate-title title-display">{SITE_NAME}</h1>
         </div>
       </header>
     </>
@@ -36,7 +37,7 @@ const { variant = 'compact' } = Astro.props
 <div class:list={['masthead-nav', { 'is-home': variant === 'home' }]} data-header>
   <div class="wrap wrap-wide masthead-nav-inner">
     <a class="masthead-brand title-display title-link" href={href('/')}>
-      <img class="brand-mark" src={href('/logo.svg')} alt="" width="32" height="32" /> St. Louing
+      <img class="brand-mark" src={href('/logo.svg')} alt="" width="32" height="32" /> {SITE_NAME}
     </a>
     <Nav />
     <ThemeToggle />

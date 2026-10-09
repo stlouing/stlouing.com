@@ -1,3 +1,4 @@
+import { CITY, SUPABASE_ENABLED } from './site'
 export type Group = 'explore' | 'lists' | 'notes' | 'topics' | 'site'
 
 export interface Section {
@@ -23,7 +24,7 @@ export const sections: Section[] = [
     group: 'explore',
     primary: true,
     icon: 'utensils',
-    description: `An interactive map of my favorite spots across the St. Louis metro, filterable by cuisine, rating, and neighborhood`,
+    description: `An interactive map of my favorite spots across the ${CITY} metro, filterable by cuisine, rating, and neighborhood`,
   },
   {
     label: 'Neighborhoods',
@@ -31,7 +32,7 @@ export const sections: Section[] = [
     group: 'explore',
     primary: true,
     icon: 'map-pin',
-    description: `The 79 neighborhoods and 9 parks of St. Louis city, plus a few additional points of interest in the county`,
+    description: `The 79 neighborhoods and 9 parks of ${CITY} city, plus a few additional points of interest in the county`,
   },
   {
     label: 'Topics',
@@ -43,14 +44,14 @@ export const sections: Section[] = [
   },
 
   {
-    label: 'The Best Food in St. Louis',
+    label: `The Best Food in ${CITY}`,
     path: '/best/',
     group: 'lists',
     icon: 'award',
     description: 'My favorite restaurants and cafes so far!',
   },
   {
-    label: 'Annual Events in St. Louis',
+    label: `Annual Events in ${CITY}`,
     path: '/events/',
     group: 'lists',
     icon: 'calendar',
@@ -87,13 +88,17 @@ export const sections: Section[] = [
     icon: 'tags',
     description: 'Browse everything by topic.',
   },
-  {
-    label: 'Guestbook',
-    path: '/guestbook/',
-    group: 'site',
-    icon: 'notebook',
-    description: 'Sign your name and leave a note.',
-  },
+  ...(SUPABASE_ENABLED
+    ? [
+        {
+          label: 'Guestbook',
+          path: '/guestbook/',
+          group: 'site' as const,
+          icon: 'notebook',
+          description: 'Sign your name and leave a note.',
+        },
+      ]
+    : []),
   {
     label: 'Contact',
     path: '/contact/',

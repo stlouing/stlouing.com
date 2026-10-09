@@ -1,4 +1,4 @@
-import { SITE_TITLE, SITE_DESCRIPTION } from './site'
+import { SITE_NAME, SITE_DESCRIPTION } from './site'
 
 const CONTEXT = 'https://schema.org'
 
@@ -6,7 +6,7 @@ export function websiteSchema(site: URL) {
   return {
     '@context': CONTEXT,
     '@type': 'WebSite',
-    name: SITE_TITLE,
+    name: SITE_NAME,
     url: site.href,
     description: SITE_DESCRIPTION,
   }
@@ -33,8 +33,8 @@ export function articleSchema(input: ArticleInput, site: URL) {
     datePublished: input.published,
     dateModified: input.updated ?? input.published,
     keywords: input.tags?.length ? input.tags.join(', ') : undefined,
-    author: { '@type': 'Person', name: SITE_TITLE, url: site.href },
-    publisher: { '@type': 'Organization', name: SITE_TITLE, url: site.href },
+    author: { '@type': 'Person', name: SITE_NAME, url: site.href },
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: site.href },
   }
 }
 
@@ -86,6 +86,6 @@ export function restaurantSchema(input: RestaurantInput) {
     '@type': 'Review',
     itemReviewed: restaurant,
     reviewRating: { '@type': 'Rating', ratingValue: input.rating, bestRating: 10, worstRating: 0 },
-    author: { '@type': 'Person', name: SITE_TITLE },
+    author: { '@type': 'Person', name: SITE_NAME },
   }
 }

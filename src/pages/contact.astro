@@ -1,13 +1,20 @@
 ---
 import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { FEEDBACK_ENDPOINT } from '../lib/site'
+import {
+  CITY,
+  CONTACT_EMAIL,
+  FEEDBACK_EMAIL,
+  FEEDBACK_ENDPOINT,
+  INSTAGRAM_HANDLE,
+  SITE_NAME,
+} from '../lib/site'
 
 const description =
-  'Send a note, a correction, or a recommendation to St. Louing, an independent guide to St. Louis food, neighborhoods, and culture.'
+  `Send a note, a correction, or a recommendation to ${SITE_NAME}, an independent guide to ${CITY} food, neighborhoods, and culture.`
 ---
 
-<BaseLayout article crumb="Contact" title="Contact - St. Louing" description={description}>
+<BaseLayout article crumb="Contact" title={`Contact - ${SITE_NAME}`} description={description}>
   <article>
     <PageMasthead title="Contact">
       <p slot="lede">
@@ -37,7 +44,7 @@ const description =
                 <input type="email" name="email" autocomplete="email" />
               </label>
 
-              <input type="hidden" name="_subject" value="St. Louing feedback" />
+              <input type="hidden" name="_subject" value={`${SITE_NAME} feedback`} />
 
               <p class="hp" aria-hidden="true">
                 <label>
@@ -58,9 +65,10 @@ const description =
       }
       <div class="feedback-alt">
         <p>
-          <strong>Email</strong>: <a href="mailto:hello+feedback@stlouing.com">hello@stlouing.com</a
+          <strong>Email</strong>: <a href={`mailto:${FEEDBACK_EMAIL}`}>{CONTACT_EMAIL}</a
           >
-          <br /><strong>Instagram</strong>: <a href="https://instagram.com/st.louing">@st.louing</a>
+          <br /><strong>Instagram</strong>:
+          <a href={`https://instagram.com/${INSTAGRAM_HANDLE}`}>@{INSTAGRAM_HANDLE}</a>
         </p>
       </div>
     </div>

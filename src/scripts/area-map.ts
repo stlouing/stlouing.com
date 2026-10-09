@@ -5,6 +5,7 @@ import { createBasemapMap, watchThemeChanges } from './basemap'
 import { buildPopupHtml, escapeHtml, type PopupChip } from './popup'
 import { frameCityView, keepPopupInView } from './map-shared'
 import neighborhoods from '../data/neighborhoods.json'
+import { NEIGHBORHOOD_BOUNDARIES_FILE } from '../../site.config.mjs'
 
 const byNumber = new Map(
   neighborhoods
@@ -90,7 +91,7 @@ export async function initAreaMap(selector = '[data-area-map]'): Promise<void> {
 
   let geojson: FeatureCollection
   try {
-    const response = await fetch(`${import.meta.env.BASE_URL}stl-neighborhoods.geojson`)
+    const response = await fetch(`${import.meta.env.BASE_URL}${NEIGHBORHOOD_BOUNDARIES_FILE}`)
     if (!response.ok) {
       return
     }

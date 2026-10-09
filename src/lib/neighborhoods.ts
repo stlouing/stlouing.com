@@ -1,3 +1,4 @@
+import { CITY } from './site'
 import { getCollection } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
 import neighborhoods from '../data/neighborhoods.json'
@@ -181,7 +182,7 @@ export function neighborhoodGeneratedSummary(slug: string): string | undefined {
     return `${info.name}, a ${info.type} in ${info.group}`
   }
 
-  return `Neighborhood #${info.numberLabel ?? info.number}, in St. Louis's ${info.group}`
+  return `Neighborhood #${info.numberLabel ?? info.number}, in ${CITY}'s ${info.group}`
 }
 
 function joinNames(names: string[]): string {
@@ -208,7 +209,7 @@ export function neighborhoodMetaDescription(
 
   const opening = info.type
     ? `${info.name} is a ${info.type} in ${info.group}`
-    : `${info.name} is neighborhood #${info.numberLabel ?? info.number} in St. Louis's ${info.group}`
+    : `${info.name} is neighborhood #${info.numberLabel ?? info.number} in ${CITY}'s ${info.group}`
   const borderNames = neighbors.slice(0, 3).map((neighbor) => neighbor.name)
   const borderClause = borderNames.length > 0 ? `, bordering ${joinNames(borderNames)}` : ''
   const foodClause =

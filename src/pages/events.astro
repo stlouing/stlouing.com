@@ -1,4 +1,5 @@
 ---
+import { CITY } from '../lib/site'
 import PageMasthead from '../components/PageMasthead.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import CardList from '../components/CardList.astro'
@@ -44,12 +45,12 @@ for (const event of events) {
 }
 
 const description =
-  'A calendar of annual festivals, parades, and celebrations across St. Louis neighborhoods.'
+  `A calendar of annual festivals, parades, and celebrations across ${CITY} neighborhoods.`
 ---
 
-<BaseLayout crumb="Annual Events" title="St. Louis Events by Month" description={description}>
+<BaseLayout crumb="Annual Events" title={`${CITY} Events by Month`} description={description}>
   <article>
-    <PageMasthead title="Annual Events in St. Louis">
+    <PageMasthead title={`Annual Events in ${CITY}`}>
       <p slot="lede">{description}</p>
     </PageMasthead>
 
