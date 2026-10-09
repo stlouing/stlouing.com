@@ -6,7 +6,7 @@ A personal website documenting the food, neighborhoods, and culture of St. Louis
 
 ## TL;DR
 
-- Includes a **[food](/food/) map and **[neighborhood](/neighborhoods/)** map, both have individual slugs that interlink (restuarants within a neighborhood, similar types of restaurants, etc.) and long-form **[topics](/topics/)\*\* page.
+- Includes a [food](/food/) map and [neighborhood](/neighborhoods/) map, both have individual slugs that interlink (restuarants within a neighborhood, similar types of restaurants, etc.) and long-form [topics](/topics/) page.
 
 ## Stack
 
