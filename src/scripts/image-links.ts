@@ -10,6 +10,7 @@ export function initImageLinks(): void {
     const link = document.createElement('a')
     link.className = 'image-link'
     link.href = fullSizeSource
+    link.setAttribute('aria-label', image.alt ? `View full size: ${image.alt}` : 'View full-size image')
     image.replaceWith(link)
     link.append(image)
   }

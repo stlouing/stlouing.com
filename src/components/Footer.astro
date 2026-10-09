@@ -50,13 +50,17 @@ import IconInstagram from '../assets/IconInstagram.astro'
         )
       }
       <a href={href('/contact/')}>Contact</a>
-      <a
-        class="footer-instagram"
-        href={`https://www.instagram.com/${INSTAGRAM_HANDLE}`}
-        target="_blank">
-        <IconInstagram />
-        {INSTAGRAM_HANDLE}
-      </a>
+      {
+        INSTAGRAM_HANDLE && (
+          <a
+            class="footer-instagram"
+            href={`https://www.instagram.com/${INSTAGRAM_HANDLE}`}
+            target="_blank">
+            <IconInstagram />
+            {INSTAGRAM_HANDLE}
+          </a>
+        )
+      }
     </nav>
   </div>
 </footer>

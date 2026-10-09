@@ -31,18 +31,13 @@ Requires Node `>=22.12`.
 
 ## Start your own city
 
-- Edit `site.config.mjs` with your site name, domain, city, and map bounds.
-- Replace `src/content/` and `src/pages/about.md` with your own writing.
-- Delete any `src/data/` file you don't need; each one only powers its own feature.
-- For a food map only, delete `src/data/neighborhoods.json` and the neighborhood pages disappear.
-- For neighborhood pages, replace `src/data/neighborhoods.json` and put your boundaries GeoJSON in `public/` (number each feature in `NHD_NUM`).
 - Install the map tools with `brew install pmtiles tippecanoe`.
-- Build the basemap with `npm run build:basemap -- 20261008` (any recent date from build.protomaps.com).
-- With neighborhoods, generate their shapes and neighbors with `npm run build:geo`.
-- With neighborhoods, optionally add populations with `npm run build:population -- --csv populations.csv`.
-- Swap the logo, favicons, and social images in `public/` and `src/assets/`.
+- Run `npm run setup` and answer the prompts: it clears the St. Louis content and data, fills in `site.config.mjs`, and builds your city's map.
+- Check `site.config.mjs` and add any other socials or copy changes.
+- Write your About page in `src/pages/about.md` and add food posts to `src/content/food/`.
+- Swap the logo, favicons, and `public/og.png` for your own.
 - Update `public/CNAME`, `public/robots.txt`, the `package.json` name, and `LICENSE`.
-- See [MAPS.md](MAPS.md) for the details on any map step.
+- For neighborhood pages, follow [MAPS.md](MAPS.md).
 
 ## Optional services
 

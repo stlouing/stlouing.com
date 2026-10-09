@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content'
 import { getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import { published, excerpt, PREVIEW_EXCERPT_CHARS } from '../lib/content'
+import { NEIGHBORHOODS_ENABLED } from '../lib/neighborhood-data'
 
 interface Preview {
   title: string
@@ -66,7 +67,8 @@ export const GET: APIRoute = async () => {
     }
   }
   add(await getCollection('notes'))
-  for (const neighborhood of published(await getCollection('neighborhoods'))) {
+  const neighborhoods = NEIGHBORHOODS_ENABLED ? published(await getCollection('neighborhoods')) : []
+  for (const neighborhood of neighborhoods) {
     previews[neighborhood.id] = {
       title: neighborhood.data.title,
       excerpt: excerpt(neighborhood.body, PREVIEW_EXCERPT_CHARS),

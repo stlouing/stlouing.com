@@ -3,13 +3,16 @@
 # area from a Protomaps daily planet build, then strips it to the layers the
 # site's MapLibre style actually renders. See MAPS.md.
 #
-# Usage: scripts/build-basemap.sh 20260901
-#   (pick a date from https://build.protomaps.com)
+# Usage: npm run build:basemap                (yesterday's build)
+#        npm run build:basemap -- 20260901    (a specific date from build.protomaps.com)
+# To switch cities, use npm run setup -- --city "Edinburgh" instead.
 #
 # Prereqs: pmtiles (brew install pmtiles) and tile-join (brew install tippecanoe).
 set -euo pipefail
 
-build_date="${1:?Usage: scripts/build-basemap.sh YYYYMMDD (see https://build.protomaps.com)}"
+repo_root="$(cd "$(dirname "$0")/.." && pwd)"
+build_date="${1:-$(date -u -v-1d +%Y%m%d 2>/dev/null || date -u -d yesterday +%Y%m%d)}"
+echo "Using Protomaps build ${build_date}"
 
 for tool in pmtiles tile-join; do
   if ! command -v "${tool}" >/dev/null; then
@@ -18,7 +21,6 @@ for tool in pmtiles tile-join; do
   fi
 done
 
-repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 config_value() {
   node --input-type=module -e "import * as config from '${repo_root}/site.config.mjs'; console.log([].concat(config.$1).join(','))"
 }

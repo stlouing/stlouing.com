@@ -31,7 +31,9 @@ const topics = sortTopics(published(await getCollection('topics')))
               title={topic.data.title}
               meta={topic.data.category}
               description={topic.data.description}
-              excerpt={excerpt(topic.body, TOPIC_EXCERPT_CHARS)}>
+              excerpt={excerpt(topic.body, TOPIC_EXCERPT_CHARS)}
+              photo={topic.data.photo}
+              photoAlt={topic.data.photoCaption}>
               <span class="continue-link">
                 Continue reading <IconArrowRight />
               </span>
@@ -44,6 +46,10 @@ const topics = sortTopics(published(await getCollection('topics')))
 </BaseLayout>
 
 <style>
+  .card-grid :global(.card-rows .card) {
+    flex-direction: column;
+  }
+
   .card-grid :global(.continue-link) {
     display: block;
     margin-block-start: auto;

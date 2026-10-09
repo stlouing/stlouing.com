@@ -52,7 +52,11 @@ function buildTocGroups() {
 function buildWikiMap() {
   const map = new Map()
 
-  for (const collection of ['food', 'neighborhoods', 'notes', 'topics']) {
+  const collections = fs.existsSync(path.join(dataRoot, 'neighborhoods.json'))
+    ? ['food', 'neighborhoods', 'notes', 'topics']
+    : ['food', 'notes', 'topics']
+
+  for (const collection of collections) {
     const dir = path.join(contentRoot, collection)
     if (!fs.existsSync(dir)) {
       continue

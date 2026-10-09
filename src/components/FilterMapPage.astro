@@ -19,7 +19,6 @@ interface Props {
   searchPlaceholder?: string
   facets: Facet[]
   sorts?: SortOption[]
-  hasCoords: boolean
   mapLabel: string
   emptyText: string
   class?: string
@@ -34,7 +33,6 @@ const {
   search,
   facets,
   sorts,
-  hasCoords,
   mapLabel,
   emptyText,
   class: className,
@@ -68,18 +66,10 @@ const {
 
   <div class="results">
     <slot />
-    {
-      hasCoords && (
-        <div class="map" data-map data-map-cluster={cluster ? '' : undefined} aria-label={mapLabel} />
-      )
-    }
-    {
-      hasCoords && (
-        <button type="button" class="map-split-toggle btn-dark" data-map-split-toggle>
-          View map
-        </button>
-      )
-    }
+    <div class="map" data-map data-map-cluster={cluster ? '' : undefined} aria-label={mapLabel} />
+    <button type="button" class="map-split-toggle btn-dark" data-map-split-toggle>
+      View map
+    </button>
     <p class="empty" data-filter-empty hidden>
       {emptyText}
       <ClearFilters />

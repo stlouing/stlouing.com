@@ -46,7 +46,7 @@ const leadTeaser = leadTopic ? excerpt(leadTopic.body, 420) : ''
 
 const railTopics = allTopics.filter((topic) => topic.id !== leadTopic?.id)
 const promotedTopic = allTopics.find((topic) => topic.id === PROMOTED_TOPIC_ID)
-const TOPIC_PROMO_EXCERPT_CHARS = 250
+const TOPIC_PROMO_EXCERPT_CHARS = 200
 
 const allFood = published(await getCollection('food'))
 const allNeighborhoods = published(await getCollection('neighborhoods'))
@@ -66,6 +66,32 @@ const featuredFood = FEATURED_FOOD_IDS.flatMap((foodId) =>
 ).map((place) => ({ place, teaser: excerpt(place.body, PREVIEW_EXCERPT_CHARS) }))
 
 const bestSection = sections.find((section) => section.path === '/best/')
+
+const promos = [
+  ...(bestSection
+    ? [
+        {
+          href: href(bestSection.path),
+          title: bestSection.label,
+          meta: groups.find((group) => group.id === bestSection.group)?.label,
+          description: bestSection.description,
+          linkLabel: 'View all',
+        },
+      ]
+    : []),
+  ...(promotedTopic
+    ? [
+        {
+          href: href(`/${promotedTopic.id}/`),
+          title: promotedTopic.data.title,
+          meta: promotedTopic.data.category,
+          description: promotedTopic.data.description,
+          excerpt: excerpt(promotedTopic.body, TOPIC_PROMO_EXCERPT_CHARS),
+          linkLabel: 'Continue reading',
+        },
+      ]
+    : []),
+]
 
 const moreSections = [
   ...sections.filter((section) => section.group === 'lists' && section !== bestSection),
@@ -94,19 +120,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           }
         </div>
       </section>
-      {
-        bestSection && (
-          <section class="front-index-best">
-            <PromoCard
-              href={href(bestSection.path)}
-              title={bestSection.label}
-              meta={groups.find((group) => group.id === bestSection.group)?.label}
-              description={bestSection.description}
-              linkLabel="View all"
-            />
-          </section>
-        )
-      }
       <section class="front-index-more">
         <Heading>More</Heading>
         <ul class="front-index-list divided-list">
@@ -265,18 +278,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             <p>Enjoy your interruption-free browsing experience!</p>
           </div>
         </div>
-        {
-          promotedTopic && (
-            <PromoCard
-              href={href(`/${promotedTopic.id}/`)}
-              title={promotedTopic.data.title}
-              meta={promotedTopic.data.category}
-              description={promotedTopic.data.description}
-              excerpt={excerpt(promotedTopic.body, TOPIC_PROMO_EXCERPT_CHARS)}
-              linkLabel="Continue reading"
-            />
-          )
-        }
+        {promos.map((promo) => <PromoCard {...promo} />)}
       </div>
     </div>
   </div>
@@ -389,8 +391,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     text-transform: uppercase;
   }
 
-  .rail-articles,
-  .front-index-best {
+  .rail-articles {
     margin-block-end: var(--spacing-lg);
   }
 

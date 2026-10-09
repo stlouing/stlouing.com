@@ -20,20 +20,36 @@ City-wide map settings live in `site.config.mjs`:
 
 The basemap is generated, not committed (it's ~30 MB and gitignored).
 
-1. In `site.config.mjs`, set `BASEMAP_BOUNDS` to a `[west, south, east, north]`
-   box around your metro area and `BASEMAP_FILE` to a filename. Keep the box
-   tight; the file size grows with the area. Central Edinburgh is about 8 MB,
-   greater St. Louis about 30 MB.
-2. Install the tools: `brew install pmtiles tippecanoe`.
-3. Pick a recent daily build date from <https://build.protomaps.com> and run:
+1. Install the tools: `brew install pmtiles tippecanoe`.
+2. Set your city and build its basemap. On a fresh copy of the site, run the
+   setup script, which also clears out the St. Louis content:
 
    ```sh
-   npm run build:basemap -- 20261008
+   npm run setup
    ```
 
-   This downloads just your box from that day's planet build at zoom 0–14
-   (it takes seconds, not the whole planet), keeps only the layers the style
-   draws, and writes `public/<BASEMAP_FILE>`. `npm run dev` reads it from there.
+   It asks for the city (or takes it from `--city "Edinburgh"`), looks it up on
+   OpenStreetMap's geocoder (Nominatim), shows the match and any other places
+   with that name so you can give a more specific one, then asks for the
+   region, site name, domain and socials, each with a suggestion you can accept
+   with Enter. It writes everything into `site.config.mjs`, including
+   `MAP_CENTER`, `CITY_BOUNDS`, `BASEMAP_BOUNDS` (the city padded by 25% so the
+   surroundings show) and `BASEMAP_FILE`, then builds the basemap.
+
+   To change just the map bounds without touching content, run
+   `node scripts/set-city-bounds.mjs "Edinburgh"`, or edit the four values by
+   hand, then `npm run build:basemap`.
+
+3. To rebuild later without changing the city, run:
+
+   ```sh
+   npm run build:basemap
+   ```
+
+   It downloads just your box from yesterday's Protomaps planet build at zoom
+   0–14 (seconds, not the whole planet), keeps only the layers the style draws,
+   and writes `public/<BASEMAP_FILE>`. `npm run dev` reads it from there. To use
+   a specific day, pass its date: `npm run build:basemap -- 20261008`.
 
 4. For production, upload the file to any static host that supports HTTP range
    requests (an S3/R2/Supabase Storage bucket works) and set

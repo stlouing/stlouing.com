@@ -1851,10 +1851,13 @@ body:has([data-filter-root]) .masthead-nav {
   flex-shrink: 0;
 }
 
-.btn-outline:hover,
-.btn-outline.is-copied {
+.btn-outline:hover {
   color: var(--color-text-heading);
   border-color: var(--color-text-heading);
+}
+
+.btn.is-copied {
+  color: var(--color-accent-blue);
 }
 
 .btn-dark,
@@ -1910,7 +1913,8 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .btn-muted-icon:hover .icon,
-.btn-muted-icon.is-active .icon {
+.btn-muted-icon.is-active .icon,
+.btn-muted-icon.is-copied .icon {
   color: inherit;
 }
 

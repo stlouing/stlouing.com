@@ -4,6 +4,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { getCollection, render } from 'astro:content'
 import { published, excerpt } from '../lib/content'
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '../lib/site'
+import { NEIGHBORHOODS_ENABLED } from '../lib/neighborhood-data'
 
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL(SITE_URL)
@@ -64,9 +65,11 @@ export async function GET(context: APIContext) {
     }),
   )
 
-  const neighborhoods = published(await getCollection('neighborhoods')).filter(
-    (neighborhood) => neighborhood.data.created,
-  )
+  const neighborhoods = NEIGHBORHOODS_ENABLED
+    ? published(await getCollection('neighborhoods')).filter(
+        (neighborhood) => neighborhood.data.created,
+      )
+    : []
   const neighborhoodItems = await Promise.all(
     neighborhoods.map(async (neighborhood) => {
       const { Content } = await render(neighborhood)

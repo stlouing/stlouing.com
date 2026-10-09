@@ -67,8 +67,15 @@ const description =
         <p>
           <strong>Email</strong>: <a href={`mailto:${FEEDBACK_EMAIL}`}>{CONTACT_EMAIL}</a
           >
-          <br /><strong>Instagram</strong>:
-          <a href={`https://instagram.com/${INSTAGRAM_HANDLE}`}>@{INSTAGRAM_HANDLE}</a>
+          {
+            INSTAGRAM_HANDLE && (
+              <>
+                <br />
+                <strong>Instagram</strong>:
+                <a href={`https://instagram.com/${INSTAGRAM_HANDLE}`}>@{INSTAGRAM_HANDLE}</a>
+              </>
+            )
+          }
         </p>
       </div>
     </div>
