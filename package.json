@@ -15,6 +15,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "clean": "rm -f .astro/data-store.json node_modules/.astro/data-store.json",
+    "build:basemap": "scripts/build-basemap.sh",
+    "build:geo": "node scripts/build-neighborhood-geo.mjs",
+    "build:population": "node scripts/build-neighborhood-population.mjs",
     "prettier": "prettier . --write"
   },
   "dependencies": {

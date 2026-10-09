@@ -138,7 +138,7 @@
       "old-north-st-louis",
       "st-louis-place"
     ],
-    "wydown-skinker": ["dogtown", "forest-park", "delmar-loop"],
+    "wydown-skinker": ["delmar-loop", "dogtown", "forest-park"],
     "covenant-blu-grand-center": [
       "central-west-end",
       "greater-ville",
@@ -232,8 +232,8 @@
     "west-end": [
       "academy",
       "debaliviere-place",
-      "hamilton-heights",
       "delmar-loop",
+      "hamilton-heights",
       "visitation-park"
     ],
     "greater-ville": [
@@ -606,17 +606,17 @@
     "forest-park": [
       "central-west-end",
       "debaliviere-place",
+      "delmar-loop",
       "dogtown",
       "kings-oak",
-      "delmar-loop",
       "the-grove",
       "wydown-skinker"
     ],
     "debaliviere-place": [
       "academy",
       "central-west-end",
-      "forest-park",
       "delmar-loop",
+      "forest-park",
       "visitation-park",
       "west-end"
     ],

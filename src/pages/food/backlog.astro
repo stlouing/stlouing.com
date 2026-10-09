@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Heading from '../../components/Heading.astro'
 import Card from '../../components/Card.astro'
-import rip from '../../data/rip.json'
+import { optionalData } from '../../lib/optional-data'
 import { published } from '../../lib/content'
 import { cuisineLabel } from '../../lib/cuisine'
 import { href } from '../../lib/url'
@@ -27,7 +27,11 @@ const wishlist = allFood.filter((place) => place.data.status === 'want-to-try').
 const triedList = allFood.filter((place) => place.data.status === 'tried').sort(byTitle)
 
 const byName = (left: FoodNote, right: FoodNote) => left.name.localeCompare(right.name)
-const inMemoriam = (rip as FoodNote[]).slice().sort(byName)
+const rip = optionalData<FoodNote[]>(
+  import.meta.glob('../../data/rip.json', { eager: true, import: 'default' }),
+  [],
+)
+const inMemoriam = rip.slice().sort(byName)
 
 const cardMeta = (item: CardData): string[] =>
   [

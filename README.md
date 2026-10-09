@@ -31,25 +31,27 @@ Requires Node `>=22.12`.
 
 ## Start your own city
 
-Update the following:
+- Edit `site.config.mjs` with your site name, domain, city, and map bounds.
+- Replace `src/content/` and `src/pages/about.md` with your own writing.
+- Replace `src/data/neighborhoods.json` with your neighborhoods; delete any other `src/data/` file you don't need.
+- Put your neighborhood boundaries GeoJSON in `public/`, with a number on each feature in `NHD_NUM`.
+- Install the map tools with `brew install pmtiles tippecanoe`.
+- Build the basemap with `npm run build:basemap -- 20261008` (any recent date from build.protomaps.com).
+- Generate neighborhood shapes and neighbors with `npm run build:geo`.
+- Optionally add populations with `npm run build:population -- --csv populations.csv`.
+- Swap the logo, favicons, and social images in `public/` and `src/assets/`.
+- Update `public/CNAME`, `public/robots.txt`, the `package.json` name, and `LICENSE`.
+- See [MAPS.md](MAPS.md) for the details on any map step.
 
-1. **`site.config.mjs`**
-2. **Content** — replace `src/content/`, `src/pages/about.md`, and `src/data/`.
-3. **Maps** — see [MAPS.md](MAPS.md).
-4. **Branding** — `public/logo.svg`, `public/og.png`, `public/og/`, the favicons, and `src/assets/`.
-5. **Static files** — `public/CNAME`, `public/robots.txt`, `package.json` `name`, `LICENSE`, and this README.
+## Optional services
 
-### Optional services
+Set these in `.env` (see `.env.example`). Anything left unset is hidden from the site.
 
-All of these are `PUBLIC_*` build variables (see `.env.example`).
-
-| Variable                                           | Turns on                                                                  |
-| -------------------------------------------------- | ------------------------------------------------------------------------- |
-| `PUBLIC_SUPABASE_URL` + `PUBLIC_SUPABASE_ANON_KEY` | comments, guestbook (page and nav link), reader ratings, Reader Favorites |
-| `PUBLIC_FORMSPREE_URL`                             | the contact form                                                          |
-| `PUBLIC_NEWSLETTER_URL`                            | newsletter signup in the footer and article action bar                    |
-| `PUBLIC_ANALYTICS_URL`                             | GoatCounter analytics                                                     |
-| `PUBLIC_PMTILES_URL`                               | the hosted basemap (otherwise `public/<BASEMAP_FILE>` is used)            |
+- `PUBLIC_SUPABASE_URL` + `PUBLIC_SUPABASE_ANON_KEY` turn on comments, the guestbook, and reader ratings.
+- `PUBLIC_FORMSPREE_URL` turns on the contact form.
+- `PUBLIC_NEWSLETTER_URL` turns on newsletter signup.
+- `PUBLIC_ANALYTICS_URL` turns on GoatCounter analytics.
+- `PUBLIC_PMTILES_URL` serves the basemap from a host instead of `public/`.
 
 ## License
 

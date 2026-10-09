@@ -2,8 +2,16 @@ import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
 import { boundariesFor, type BoundaryFeature } from './boundaries'
-import corridorData from '../data/corridors.json'
-import corridorSpots from '../data/corridor-spots.json'
+import { optionalData } from '../lib/optional-data'
+
+const corridorData = optionalData<{ corridors: unknown[] }>(
+  import.meta.glob('../data/corridors.json', { eager: true, import: 'default' }),
+  { corridors: [] },
+)
+const corridorSpots = optionalData<Record<string, unknown[]>>(
+  import.meta.glob('../data/corridor-spots.json', { eager: true, import: 'default' }),
+  {},
+)
 
 const SOURCE_ID = 'corridor'
 const LINE_LAYER_ID = 'corridor-line'

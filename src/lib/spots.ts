@@ -1,4 +1,9 @@
-import spotsData from '../data/spots.json'
+import { optionalData } from './optional-data'
+
+const spotsData = optionalData<Record<string, unknown[]>>(
+  import.meta.glob('../data/spots.json', { eager: true, import: 'default' }),
+  {},
+)
 
 export const spotCategories = {
   landmark: {

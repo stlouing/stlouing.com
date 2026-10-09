@@ -1,5 +1,4 @@
 ---
-import type { ImageMetadata } from 'astro'
 import Card from './Card.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 
@@ -9,24 +8,19 @@ interface Props {
   meta?: string
   description?: string
   excerpt?: string
-  photo?: ImageMetadata
-  photoAlt?: string
   linkLabel: string
 }
 
-const { href, title, meta, description, excerpt, photo, photoAlt, linkLabel } = Astro.props
+const { href, title, meta, description, excerpt, linkLabel } = Astro.props
 ---
 
 <Card
-  class="card--tall-photo card--promo"
   accentMeta
   href={href}
   title={title}
   meta={meta}
   description={description}
-  excerpt={excerpt}
-  photo={photo}
-  photoAlt={photoAlt}>
+  excerpt={excerpt}>
   <span class="continue-link">
     {linkLabel} <IconArrowRight />
   </span>

@@ -1,7 +1,12 @@
 import type { FeatureCollection, Position } from 'geojson'
 import type { LngLatBoundsLike } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
-import boundaries from '../data/city-county-boundaries.json'
+import { optionalData } from '../lib/optional-data'
+
+const boundaries = optionalData<unknown>(
+  import.meta.glob('../data/city-county-boundaries.json', { eager: true, import: 'default' }),
+  { type: 'FeatureCollection', features: [] },
+)
 
 const SOURCE_ID = 'divorce-boundaries'
 const FILL_LAYER_ID = 'divorce-boundaries-fill'

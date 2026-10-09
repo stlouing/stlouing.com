@@ -18,7 +18,12 @@ const contentRoot = fileURLToPath(new URL('./src/content', import.meta.url))
 const dataRoot = fileURLToPath(new URL('./src/data', import.meta.url))
 
 function buildTocGroups() {
-  const { corridors } = JSON.parse(fs.readFileSync(path.join(dataRoot, 'corridors.json'), 'utf8'))
+  const corridorsPath = path.join(dataRoot, 'corridors.json')
+  if (!fs.existsSync(corridorsPath)) {
+    return {}
+  }
+
+  const { corridors } = JSON.parse(fs.readFileSync(corridorsPath, 'utf8'))
   const neighborhoods = JSON.parse(
     fs.readFileSync(path.join(dataRoot, 'neighborhoods.json'), 'utf8'),
   )

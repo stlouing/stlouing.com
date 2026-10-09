@@ -2212,10 +2212,6 @@ a.card:hover::before {
   --card-photo-height: 12rem;
 }
 
-.card--promo .card-media {
-  margin-block-end: var(--spacing-sm);
-}
-
 @media (max-width: 700px) {
   .card--tall-photo .card-media {
     height: auto;

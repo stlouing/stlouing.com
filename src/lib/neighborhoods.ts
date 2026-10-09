@@ -3,17 +3,28 @@ import { getCollection } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
 import neighborhoods from '../data/neighborhoods.json'
 import geo from '../data/neighborhood-geo.json'
-import festivals from '../data/festivals.json'
-import corridorData from '../data/corridors.json'
-import population from '../data/neighborhood-population.json'
+import { optionalData } from './optional-data'
 import { published } from './content'
+
+const festivals = optionalData<unknown[]>(
+  import.meta.glob('../data/festivals.json', { eager: true, import: 'default' }),
+  [],
+)
+const corridorData = optionalData<{ corridors: unknown[] }>(
+  import.meta.glob('../data/corridors.json', { eager: true, import: 'default' }),
+  { corridors: [] },
+)
+const population = optionalData<Record<string, number>>(
+  import.meta.glob('../data/neighborhood-population.json', { eager: true, import: 'default' }),
+  {},
+)
 
 export function normalizeName(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
 export function wikipediaHref(name: string): string {
-  return `https://en.wikipedia.org/wiki/${name.replace(/ /g, '_')},_St._Louis`
+  return `https://en.wikipedia.org/wiki/${`${name}, ${CITY}`.replace(/ /g, '_')}`
 }
 
 const slugByName = new Map(
@@ -170,7 +181,7 @@ export function neighborBearing(fromSlug: string, toSlug: string): number | unde
 }
 
 export function neighborhoodPopulation(slug: string): number | undefined {
-  return (population as Record<string, number>)[slug]
+  return population[slug]
 }
 
 export function neighborhoodGeneratedSummary(slug: string): string | undefined {

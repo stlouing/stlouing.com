@@ -8,7 +8,7 @@ import ReaderFavorites from '../components/ReaderFavorites.astro'
 import { published, excerpt, META_DESCRIPTION_CHARS, PREVIEW_EXCERPT_CHARS } from '../lib/content'
 import { href } from '../lib/url'
 import { CITY, SUPABASE_ENABLED } from '../lib/site'
-import superlatives from '../data/superlatives.json'
+import { optionalData } from '../lib/optional-data'
 
 interface Award {
   label: string
@@ -17,7 +17,11 @@ interface Award {
 
 const food = published(await getCollection('food'))
 const foodBySlug = new Map(food.map((place) => [place.id, place]))
-const resolvedAwards = (superlatives as Award[]).flatMap((award) => {
+const bestFoodPicks = optionalData<Award[]>(
+  import.meta.glob('../data/best-food.json', { eager: true, import: 'default' }),
+  [],
+)
+const resolvedAwards = bestFoodPicks.flatMap((award) => {
   const place = foodBySlug.get(award.slug)
 
   return place ? [{ ...award, place, teaser: excerpt(place.body ?? '', PREVIEW_EXCERPT_CHARS) }] : []

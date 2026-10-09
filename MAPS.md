@@ -20,17 +20,20 @@ City-wide map settings live in `site.config.mjs`:
 
 The basemap is generated, not committed (it's ~30 MB and gitignored).
 
-1. Set `BASEMAP_BOUNDS` to a box around your metro area. Keep it tight; the file
-   size grows with the area.
+1. In `site.config.mjs`, set `BASEMAP_BOUNDS` to a `[west, south, east, north]`
+   box around your metro area and `BASEMAP_FILE` to a filename. Keep the box
+   tight; the file size grows with the area. Central Edinburgh is about 8 MB,
+   greater St. Louis about 30 MB.
 2. Install the tools: `brew install pmtiles tippecanoe`.
 3. Pick a recent daily build date from <https://build.protomaps.com> and run:
 
    ```sh
-   scripts/build-basemap.sh 20260906
+   npm run build:basemap -- 20261008
    ```
 
-   This extracts your box at zoom 0–14 and keeps only the layers the style
-   draws, writing `public/<BASEMAP_FILE>`. `npm run dev` reads it from there.
+   This downloads just your box from that day's planet build at zoom 0–14
+   (it takes seconds, not the whole planet), keeps only the layers the style
+   draws, and writes `public/<BASEMAP_FILE>`. `npm run dev` reads it from there.
 
 4. For production, upload the file to any static host that supports HTTP range
    requests (an S3/R2/Supabase Storage bucket works) and set
@@ -71,17 +74,61 @@ there with your city's.
 
 ## 4. Derived neighborhood data
 
-Two files are derived from the boundaries and committed, so the site build never
-does geometry work:
+Two files are generated and committed, so the site build never does geometry
+work or network calls.
 
-- **`src/data/neighborhood-geo.json`** — `viewBox`, plus `shapes` (one SVG path
-  string per slug, all projected into that shared viewBox, used for the small
-  inline locator maps) and `adjacency` (slug → bordering slugs, used for
-  "Nearby neighborhoods").
-- **`src/data/neighborhood-population.json`** — slug → population. Optional;
-  neighborhoods without an entry just don't show a population.
+### Shapes and neighbors
 
-Regenerate both whenever the boundaries or the roster change.
+```sh
+npm run build:geo
+```
+
+Writes **`src/data/neighborhood-geo.json`**: a `viewBox`, `shapes` (one SVG path
+per slug, all projected into that viewBox, used for the small inline locator
+maps) and `adjacency` (slug → bordering slugs, used for "Nearby neighborhoods").
+Two neighborhoods count as neighbors when their boundaries share a vertex.
+
+It reads `public/<NEIGHBORHOOD_BOUNDARIES_FILE>` and joins each feature to
+`neighborhoods.json` by number. Rows with `coords` (places pinned by a point, not
+a shape) are left out. Options:
+
+- `--boundaries <path>` — a different GeoJSON file
+- `--number-property <name>` — the feature property holding the number
+  (default `NHD_NUM`), if your source file uses another name
+- `--width <pixels>` — viewBox width (default `1000`)
+
+```sh
+npm run build:geo -- --boundaries data/edinburgh-areas.geojson --number-property AREA_ID
+```
+
+Rerun whenever the boundaries or the roster change.
+
+### Population
+
+```sh
+npm run build:population
+```
+
+Writes **`src/data/neighborhood-population.json`** (slug → population). It's
+optional: neighborhoods without an entry just don't show a population. Sources:
+
+- `--wikipedia "<page title>"` — reads the first table on a Wikipedia page
+  whose rows start with a linked neighborhood name followed by a population.
+  Defaults to `List of neighborhoods of <CITY>`.
+- `--csv <path>` — a CSV with a header row and `name,population` rows, for
+  cities where Wikipedia has no such table.
+
+Names are matched loosely (case and punctuation ignored). When the source uses a
+different name than the site, map the slug to the source name, or a list of
+names to add together, in `src/data/neighborhood-population-aliases.json`:
+
+```json
+{ "the-grove": "Forest Park Southeast", "dogtown": ["Cheltenham", "Franz Park"] }
+```
+
+Rows with a `type` (parks, outlying towns) and names the source can't match keep
+whatever value the file already had, so hand-entered numbers survive a rerun.
+Unmatched names are listed at the end of the run.
 
 ## 5. Places on the map
 
@@ -103,6 +150,23 @@ Regenerate both whenever the boundaries or the roster change.
 | -------------------------------------------------------------------------------- | ------------ |
 | `corridors.json`, `corridor-spots.json`, `spots.json`, `site.config.mjs`         | `[lng, lat]` |
 | `neighborhoods.json` `coords`, food frontmatter `coords`, corridor script points | `[lat, lng]` |
+
+## Which data files are required
+
+Only `src/data/neighborhoods.json` and `src/data/neighborhood-geo.json` are
+required. Every other file in `src/data/` powers one optional feature and can be
+deleted; that feature just disappears:
+
+| File                                    | Feature                                          |
+| --------------------------------------- | ------------------------------------------------ |
+| `corridors.json`, `corridor-spots.json` | walkable corridor maps                           |
+| `spots.json`                            | notable spots on neighborhood pages              |
+| `festivals.json`                        | events page and neighborhood festivals           |
+| `best-food.json`                        | the Best Food picks (category → restaurant slug) |
+| `rip.json`                              | closed restaurants on the backlog page           |
+| `neighborhood-population.json`          | population on neighborhood pages                 |
+| `neighborhood-population-aliases.json`  | name mapping for the population script           |
+| `city-county-boundaries.json`           | the city/county boundary article figure          |
 
 ## Attribution
 
