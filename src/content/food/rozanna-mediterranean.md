@@ -10,4 +10,5 @@ address:
   - Manchester, MO 63011
 coords: [38.5956881, -90.5221298]
 url: https://rozannastl.com
+instagram: https://www.instagram.com/rozannastl
 ---

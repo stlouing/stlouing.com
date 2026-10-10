@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63143
 coords: [38.616172, -90.310454]
 url: https://www.michaelsstl.com
+instagram: https://www.instagram.com/michaelsbarandgrill
 ---

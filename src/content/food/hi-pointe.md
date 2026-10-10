@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63117
 coords: [38.6321264, -90.305616]
 url: https://hipointedrivein.com
+instagram: https://www.instagram.com/hipointedrivein
 ---

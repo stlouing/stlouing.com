@@ -10,4 +10,5 @@ address:
   - Maplewood, MO 63143
 coords: [38.61301, -90.31485]
 url: https://www.schlafly.com/bottleworks
+instagram: https://www.instagram.com/schlaflybottleworks
 ---

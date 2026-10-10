@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63104
 coords: [38.6087267, -90.2089818]
 url: https://www.pizzeoli.com
+instagram: https://www.instagram.com/pizzeoli
 ---

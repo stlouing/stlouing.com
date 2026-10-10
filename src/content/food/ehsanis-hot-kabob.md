@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63116
 coords: [38.5842713, -90.2634975]
 url: https://ehsanishotkabob.com
+instagram: https://www.instagram.com/ehsanis.hotkabob
 ---

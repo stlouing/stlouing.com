@@ -10,4 +10,5 @@ address:
   - Brentwood, MO 63144
 coords: [38.6275, -90.3375]
 url: https://www.maileestl.com
+instagram: https://www.instagram.com/maileestl
 ---

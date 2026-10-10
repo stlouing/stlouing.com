@@ -10,4 +10,5 @@ address:
   - Maplewood, MO 63143
 coords: [38.6120379, -90.3219281]
 url: https://www.sideprojectbrewing.com
+instagram: https://www.instagram.com/sideprojectbrew
 ---

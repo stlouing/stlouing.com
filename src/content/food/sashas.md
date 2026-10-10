@@ -10,4 +10,5 @@ address:
   - Clayton, MO 63105
 coords: [38.6384633, -90.3075824]
 url: https://www.sashaswinebar.com
+instagram: https://www.instagram.com/sashasdemun
 ---

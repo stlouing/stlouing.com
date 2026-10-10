@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63110
 coords: [38.6192256, -90.2560907]
 url: https://indo-stl.com
+instagram: https://www.instagram.com/indo.stl
 ---

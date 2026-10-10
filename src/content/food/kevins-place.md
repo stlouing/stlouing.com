@@ -9,5 +9,5 @@ address:
   - 2111 Cherokee St
   - St. Louis, MO 63118
 coords: [38.5930662, -90.2225664]
-url: https://kevins-place.com
+url: https://kevinsplace.restaurants-us.com/
 ---

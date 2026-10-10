@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63110
 coords: [38.6267616, -90.2605822]
 url: https://www.urbanchestnut.com
+instagram: https://www.instagram.com/urbanchestnut
 ---

@@ -10,4 +10,5 @@ address:
   - Olivette, MO 63132
 coords: [38.6736941, -90.3818646]
 url: https://www.greatheartbrewing.com
+instagram: https://www.instagram.com/greatheartbrewing
 ---

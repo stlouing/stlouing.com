@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63110
 coords: [38.602647, -90.261605]
 url: https://songbirdstl.com
+instagram: https://www.instagram.com/songbird.stl
 ---

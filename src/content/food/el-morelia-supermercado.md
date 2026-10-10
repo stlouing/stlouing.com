@@ -10,4 +10,5 @@ address:
   - Bridgeton, MO 63044
 coords: [38.7457983, -90.4256566]
 url: https://elmoreliasuperstl.com
+instagram: https://www.instagram.com/el_moreliastl
 ---

@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63104
 coords: [38.6148499, -90.1976108]
 url: https://www.4handsbrewery.com
+instagram: https://www.instagram.com/4handsbrewingco
 ---

@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63104
 coords: [38.6080222, -90.227243]
 url: https://www.littlefoxstl.com
+instagram: https://www.instagram.com/littlefoxstl
 ---

@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63108
 coords: [38.6398569, -90.2621034]
 url: https://www.havanascuisine.com
+instagram: https://www.instagram.com/havanas.cuisine
 ---

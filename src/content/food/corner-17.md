@@ -10,4 +10,5 @@ address:
   - University City, MO 63130
 coords: [38.6562843, -90.3064642]
 url: https://corner17usa.com
+instagram: https://www.instagram.com/corner17
 ---

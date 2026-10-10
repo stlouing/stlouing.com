@@ -10,4 +10,5 @@ address:
   - St. Louis, MO 63108
 coords: [38.637953, -90.24655]
 url: https://shortwave.coffee
+instagram: https://www.instagram.com/shortwavecoffee
 ---

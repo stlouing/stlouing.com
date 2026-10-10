@@ -10,4 +10,5 @@ address:
   - Florissant, MO 63033
 coords: [38.7829034, -90.3151061]
 url: https://pirronespizzaflorissant.com
+instagram: https://www.instagram.com/pirronespizzeria
 ---

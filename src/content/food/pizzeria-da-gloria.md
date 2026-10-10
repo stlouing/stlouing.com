@@ -12,6 +12,7 @@ address:
   - St. Louis, MO 63110
 coords: [38.6160623, -90.2726585]
 url: https://www.pizzeriadagloria.com
+instagram: https://www.instagram.com/pizzeriadagloria
 pick:
   name: Meatball
   note: Beef meatballs, ricotta, basil, breadcrumbs, pecorino romano

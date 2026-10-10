@@ -11,4 +11,5 @@ address:
 coords: [38.8902775, -90.185146]
 excludeFromMapFit: true
 url: https://www.obslices.com
+instagram: https://www.instagram.com/obslices
 ---
