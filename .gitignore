@@ -1,5 +1,6 @@
 # build output
 dist/
+
 # generated types
 .astro/
 
@@ -19,9 +20,11 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
+# JetBrains settings folder
 .idea/
-.vscode
+
+# VS Code settings folder
+.vscode/
 
 # self-hosted map tiles — kept local for dev, served from object storage in production
 public/*.pmtiles
