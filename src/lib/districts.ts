@@ -4,13 +4,42 @@ import type { Feature, Polygon } from 'geojson'
 import { published } from './content'
 import { hullAroundPoints, type LngLat } from './geo'
 import { neighborhoodRecords } from './neighborhood-data'
-import { districtStreets } from './neighborhoods'
+import {
+  districtNeighborhoods,
+  districtStreets,
+  neighborhoodInfo,
+  regionOf,
+  regionTokenBySlug,
+} from './neighborhoods'
 import { allSpots, type Spot } from './spots'
 import { STREET_SPOT_RANGE_METERS } from './street-spots'
 
 export interface DistrictPlaces {
   places: CollectionEntry<'food'>[]
   spots: Spot[]
+}
+
+export interface DistrictPart {
+  slug: string
+  name: string
+  token: string
+}
+
+export function districtParts(slug: string): DistrictPart[] {
+  return districtNeighborhoods(slug).flatMap((areaSlug) => {
+    const info = neighborhoodInfo(areaSlug)
+    if (!info) {
+      return []
+    }
+
+    return [
+      {
+        slug: areaSlug,
+        name: info.name,
+        token: regionTokenBySlug[regionOf(info).slug] ?? '--color-map-accent',
+      },
+    ]
+  })
 }
 
 export async function districtPlaces(slug: string): Promise<DistrictPlaces> {

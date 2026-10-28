@@ -4,6 +4,7 @@ import BadgeIcons from './BadgeIcons.astro'
 import ReadersVerdictTemplate from './ReadersVerdictTemplate.astro'
 import SuggestSpot from './SuggestSpot.astro'
 import type { Feature, Polygon } from 'geojson'
+import type { DistrictPart } from '../lib/districts'
 import {
   categoryLegendItems,
   spotCategories,
@@ -18,10 +19,10 @@ interface Props {
   coords?: [number, number]
   spots: MapSpot[]
   boundary?: Feature<Polygon>
-  partSlugs?: string[]
+  districtParts?: DistrictPart[]
 }
 
-const { slug, name, boundaryToken, coords, spots, boundary, partSlugs } = Astro.props
+const { slug, name, boundaryToken, coords, spots, boundary, districtParts } = Astro.props
 
 const legendCategories = (Object.keys(spotCategories) as SpotCategoryKey[]).filter((key) =>
   spots.some((spot) => spot.category === key),
@@ -34,7 +35,6 @@ const legendCategories = (Object.keys(spotCategories) as SpotCategoryKey[]).filt
   data-slug={slug}
   data-boundary-token={boundaryToken}
   data-coords={coords?.join(',')}
-  data-part-slugs={partSlugs?.join(' ')}
   role="application"
   aria-label={`Map of the neighborhood and its notable spots`}>
   <MapLegend items={categoryLegendItems(legendCategories)} />
@@ -55,6 +55,16 @@ const legendCategories = (Object.keys(spotCategories) as SpotCategoryKey[]).filt
       type="application/json"
       data-map-pane-boundary
       set:html={JSON.stringify(boundary)}
+    />
+  )
+}
+{
+  districtParts && districtParts.length > 0 && (
+    <script
+      is:inline
+      type="application/json"
+      data-map-pane-district-parts
+      set:html={JSON.stringify(districtParts)}
     />
   )
 }

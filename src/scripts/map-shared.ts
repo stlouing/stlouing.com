@@ -41,6 +41,51 @@ function replaceCloseGlyph(popup: maplibregl.Popup): void {
 
 export const SHEET_QUERY = '(max-width: 700px)'
 
+export interface MountedMap {
+  map: { remove(): void }
+  disposeTheme: () => void
+}
+
+export function observeMapElements(
+  elements: Iterable<HTMLElement>,
+  mount: (element: HTMLElement) => MountedMap | undefined,
+): void {
+  const mounted = new Map<Element, MountedMap>()
+
+  const mountObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting && !mounted.has(entry.target)) {
+          const state = mount(entry.target as HTMLElement)
+          if (state) {
+            mounted.set(entry.target, state)
+          }
+        }
+      }
+    },
+    { rootMargin: '600px 0px' },
+  )
+
+  const teardownObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const state = mounted.get(entry.target)
+        if (!entry.isIntersecting && state) {
+          state.disposeTheme()
+          state.map.remove()
+          mounted.delete(entry.target)
+        }
+      }
+    },
+    { rootMargin: '1800px 0px' },
+  )
+
+  for (const element of elements) {
+    mountObserver.observe(element)
+    teardownObserver.observe(element)
+  }
+}
+
 export function readPayload<Payload>(selector: string, fallback: Payload): Payload {
   const holder = document.querySelector(selector)
   if (!holder?.textContent) {

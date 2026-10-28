@@ -321,7 +321,7 @@ export function officialNames(slug: string): string[] {
 
 export interface OfficialNamesLine {
   label: string
-  names: string
+  names: string[]
 }
 
 export function officialNamesLine(slug: string): OfficialNamesLine | undefined {
@@ -333,7 +333,7 @@ export function officialNamesLine(slug: string): OfficialNamesLine | undefined {
   const noun = names.length > 1 ? 'City neighborhoods' : 'City neighborhood'
   const numbers = String(info.numberLabel ?? info.number).replace('-', '–')
 
-  return { label: `${noun} ${numbers}:`, names: joinNames(names) }
+  return { label: `${noun} ${numbers}`, names }
 }
 
 export interface Festival {

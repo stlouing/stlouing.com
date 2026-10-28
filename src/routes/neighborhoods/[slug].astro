@@ -56,7 +56,7 @@ import {
   regionTokenBySlug,
   type Street,
 } from '../../lib/neighborhoods'
-import { districtBoundary, districtPlaces } from '../../lib/districts'
+import { districtBoundary, districtParts, districtPlaces } from '../../lib/districts'
 import neighborhoods from '../../data/neighborhoods.json'
 import Button from '../../components/Button.astro'
 import IconArrowRight from '../../assets/IconArrowRight.astro'
@@ -250,13 +250,15 @@ const schema = placeSchema(
             <h1 class="detail-pane-title title-page">{title}</h1>
             {summary && <p class="description description--lg detail-pane-tagline">{summary}</p>}
             {
-              officialLine && (
-                <PaneKicker label={officialLine.label}>{officialLine.names}</PaneKicker>
-              )
-            }
-            {
-              (isDistrict || innerDistricts.length > 0 || resourceLinks.length > 0) && (
+              (officialLine || isDistrict || innerDistricts.length > 0 || resourceLinks.length > 0) && (
                 <div class="detail-pane-facts">
+                  {officialLine && (
+                    <PaneKicker label={officialLine.label} muted>
+                      {officialLine.names.map((name) => (
+                        <span>{name}</span>
+                      ))}
+                    </PaneKicker>
+                  )}
                   {isDistrict && (
                     <PaneKicker
                       label={neighbors.length === 1 ? 'Neighborhood' : 'Neighborhoods'}
@@ -500,7 +502,7 @@ const schema = placeSchema(
         coords={info?.coords}
         spots={mapSpots}
         boundary={districtShape}
-        partSlugs={isDistrict ? districtAreas : undefined}
+        districtParts={isDistrict ? districtParts(slug) : undefined}
       />
     </div>
   </div>

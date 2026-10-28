@@ -7,7 +7,7 @@ import { optionalData } from '../lib/optional-data'
 import { projectOntoLine, type LngLat } from '../lib/geo'
 import { badgeIconNode, categorySwatchNode } from './popup'
 import { stackBadges } from './map-badges'
-import { readPayload } from './map-shared'
+import { observeMapElements, readPayload, type MountedMap } from './map-shared'
 
 const streetData = optionalData<{ streets: unknown[] }>(
   import.meta.glob('../data/streets.json', { eager: true, import: 'default' }),
@@ -310,11 +310,6 @@ function appendSpotCaption(element: HTMLElement, group: Street[]): void {
   figure.append(caption)
 }
 
-interface MountedMap {
-  map: MapLibreMap
-  disposeTheme: () => void
-}
-
 function figureBounds(group: Street[]): LngLatBoundsLike {
   let west = Infinity
   let south = Infinity
@@ -520,47 +515,12 @@ export function initStreetMaps(selector = '[data-street-map], [data-street-overv
     return
   }
 
-  const mounted = new Map<Element, MountedMap>()
-
-  const mount = (element: HTMLElement) => {
+  observeMapElements(elements, (element) => {
     if (element.hasAttribute('data-street-overview')) {
-      mounted.set(element, mountOverviewMap(element))
-
-      return
+      return mountOverviewMap(element)
     }
     const group = streetsFor(element)
-    if (group.length > 0) {
-      mounted.set(element, mountStreetMap(element, group))
-    }
-  }
 
-  const mountObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting && !mounted.has(entry.target)) {
-          mount(entry.target as HTMLElement)
-        }
-      }
-    },
-    { rootMargin: '600px 0px' },
-  )
-
-  const teardownObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        const state = mounted.get(entry.target)
-        if (!entry.isIntersecting && state) {
-          state.disposeTheme()
-          state.map.remove()
-          mounted.delete(entry.target)
-        }
-      }
-    },
-    { rootMargin: '1800px 0px' },
-  )
-
-  for (const element of elements) {
-    mountObserver.observe(element)
-    teardownObserver.observe(element)
-  }
+    return group.length > 0 ? mountStreetMap(element, group) : undefined
+  })
 }

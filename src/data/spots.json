@@ -460,6 +460,15 @@
     "coords": [-90.23472, 38.63808]
   },
   {
+    "name": "Saint Louis University",
+    "category": "landmark",
+    "neighborhoods": ["midtown"],
+    "url": "https://www.slu.edu/",
+    "description": "A Jesuit university founded in 1818, with the first business, law and medicine schools west of the Mississippi.",
+    "address": "1 N Grand Blvd",
+    "coords": [-90.23185, 38.63536]
+  },
+  {
     "name": "City Foundry STL",
     "category": "landmark",
     "neighborhoods": ["midtown"],

@@ -1,115 +1,24 @@
 import maplibregl from 'maplibre-gl'
 import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
 import { createBasemapMap, watchThemeChanges } from './basemap'
-import { boundariesFor, boundaryFor, officialPartsFor, type BoundaryFeature } from './boundaries'
+import { boundaryFor, officialPartsFor, type BoundaryFeature } from './boundaries'
+import {
+  applyColoredAreas,
+  applyDashedPieces,
+  applyOutlinedArea,
+  coloredAreasFor,
+  featureBounds,
+  readMapColor,
+} from './boundary-layers'
 import { BADGE_POPUP_OFFSET, bindRowHover, createMapPopup, settlePopup } from './map-shared'
 import { createBadge, spotPopupHtml, stackBadges } from './map-badges'
 import { bindLegendCollapse, bindLegendToggles } from './map-legend'
+import type { DistrictPart } from '../lib/districts'
 import type { MapSpot } from '../lib/spots'
 
-const BOUNDARY_SOURCE_ID = 'neighborhood-boundary'
-const BOUNDARY_FILL_LAYER_ID = 'neighborhood-boundary-fill'
-const BOUNDARY_OUTLINE_LAYER_ID = 'neighborhood-boundary-outline'
-const PARTS_SOURCE_ID = 'neighborhood-parts'
-const PARTS_LINE_LAYER_ID = 'neighborhood-parts-line'
-const PARTS_LABEL_LAYER_ID = 'neighborhood-parts-label'
-
-function extendWithGeometry(coordinates: unknown, extend: (point: [number, number]) => void): void {
-  if (!Array.isArray(coordinates)) {
-    return
-  }
-  if (coordinates.length === 2 && typeof coordinates[0] === 'number') {
-    extend(coordinates as [number, number])
-
-    return
-  }
-  for (const nested of coordinates) {
-    extendWithGeometry(nested, extend)
-  }
-}
-
-function heroBounds(
-  boundary: BoundaryFeature | undefined,
-  spots: MapSpot[],
-): LngLatBoundsLike | undefined {
-  let west = Infinity
-  let south = Infinity
-  let east = -Infinity
-  let north = -Infinity
-
-  const extend = ([lng, lat]: [number, number]) => {
-    west = Math.min(west, lng)
-    south = Math.min(south, lat)
-    east = Math.max(east, lng)
-    north = Math.max(north, lat)
-  }
-
-  if (boundary) {
-    extendWithGeometry(boundary.geometry.coordinates, extend)
-  }
-  for (const spot of spots) {
-    extend(spot.coords)
-  }
-
-  if (!Number.isFinite(west)) {
-    return undefined
-  }
-
-  return [
-    [west, south],
-    [east, north],
-  ]
-}
-
-function readBoundaryColor(token: string): string {
-  const styles = getComputedStyle(document.documentElement)
-
-  return styles.getPropertyValue(token).trim() || '#c70f2e'
-}
-
-function applyPartsLayers(map: MapLibreMap, parts: BoundaryFeature[], color: string): void {
-  const halo = readBoundaryColor('--color-background')
-
-  if (map.getLayer(PARTS_LINE_LAYER_ID)) {
-    map.setPaintProperty(PARTS_LINE_LAYER_ID, 'line-color', color)
-    map.setPaintProperty(PARTS_LABEL_LAYER_ID, 'text-color', color)
-    map.setPaintProperty(PARTS_LABEL_LAYER_ID, 'text-halo-color', halo)
-
-    return
-  }
-
-  map.addSource(PARTS_SOURCE_ID, {
-    type: 'geojson',
-    data: { type: 'FeatureCollection', features: parts } as never,
-  })
-
-  map.addLayer({
-    id: PARTS_LINE_LAYER_ID,
-    type: 'line',
-    source: PARTS_SOURCE_ID,
-    paint: {
-      'line-color': color,
-      'line-width': 1.25,
-      'line-opacity': 0.7,
-      'line-dasharray': [2, 2],
-    },
-  })
-
-  map.addLayer({
-    id: PARTS_LABEL_LAYER_ID,
-    type: 'symbol',
-    source: PARTS_SOURCE_ID,
-    layout: {
-      'text-field': ['get', 'NHD_NAME'],
-      'text-font': ['Noto Sans Medium'],
-      'text-size': 11,
-      'text-transform': 'uppercase',
-      'text-letter-spacing': 0.08,
-      'text-max-width': 8,
-    },
-    paint: { 'text-color': color, 'text-halo-color': halo, 'text-halo-width': 1.5 },
-  })
-}
+const BOUNDARY_PREFIX = 'neighborhood-boundary'
+const PARTS_PREFIX = 'neighborhood-parts'
+const DISTRICT_PARTS_PREFIX = 'district-parts'
 
 function applyBoundaryLayers(
   map: MapLibreMap,
@@ -117,31 +26,11 @@ function applyBoundaryLayers(
   parts: BoundaryFeature[],
   token: string,
 ): void {
-  const color = readBoundaryColor(token)
+  const color = readMapColor(token)
 
-  if (map.getLayer(BOUNDARY_FILL_LAYER_ID)) {
-    map.setPaintProperty(BOUNDARY_FILL_LAYER_ID, 'fill-color', color)
-    map.setPaintProperty(BOUNDARY_OUTLINE_LAYER_ID, 'line-color', color)
-  } else {
-    map.addSource(BOUNDARY_SOURCE_ID, { type: 'geojson', data: boundary as never })
-
-    map.addLayer({
-      id: BOUNDARY_FILL_LAYER_ID,
-      type: 'fill',
-      source: BOUNDARY_SOURCE_ID,
-      paint: { 'fill-color': color, 'fill-opacity': 0.08 },
-    })
-
-    map.addLayer({
-      id: BOUNDARY_OUTLINE_LAYER_ID,
-      type: 'line',
-      source: BOUNDARY_SOURCE_ID,
-      paint: { 'line-color': color, 'line-width': 2.5, 'line-opacity': 0.85 },
-    })
-  }
-
+  applyOutlinedArea(map, BOUNDARY_PREFIX, boundary, color)
   if (parts.length > 0) {
-    applyPartsLayers(map, parts, color)
+    applyDashedPieces(map, PARTS_PREFIX, parts, color)
   }
 }
 
@@ -194,6 +83,12 @@ function readSpots(root: HTMLElement): MapSpot[] {
 
 function readBoundary(root: HTMLElement): BoundaryFeature | undefined {
   return readPayload(root, 'script[data-map-pane-boundary]') as BoundaryFeature | undefined
+}
+
+function readDistrictParts(root: HTMLElement): DistrictPart[] {
+  const parsed = readPayload(root, 'script[data-map-pane-district-parts]')
+
+  return Array.isArray(parsed) ? (parsed as DistrictPart[]) : []
 }
 
 export function initMapPane(): void {
@@ -263,23 +158,38 @@ export function initMapPane(): void {
   const drawnBoundary = readBoundary(root)
   const boundaryPromise = drawnBoundary ? Promise.resolve(drawnBoundary) : boundaryFor(slug)
   void boundaryPromise.then((boundary) => {
-    frameView(heroBounds(boundary, spots))
+    frameView(
+      featureBounds(
+        boundary ? [boundary] : [],
+        spots.map((spot) => spot.coords),
+      ),
+    )
   })
 
-  const partSlugs = (root.dataset.partSlugs ?? '').split(' ').filter(Boolean)
-  const partsPromise = partSlugs.length > 0 ? boundariesFor(partSlugs) : officialPartsFor(slug)
+  const districtParts = readDistrictParts(root)
+  const partsPromise: Promise<BoundaryFeature[]> =
+    districtParts.length > 0 ? Promise.resolve([]) : officialPartsFor(slug)
+  const districtPartsPromise = coloredAreasFor(districtParts)
 
   map.on('load', async () => {
-    const [boundary, parts] = await Promise.all([boundaryPromise, partsPromise])
-    if (boundary) {
-      applyBoundaryLayers(map, boundary, parts, boundaryToken)
-    }
-
-    watchThemeChanges(map, () => {
+    const [boundary, parts, districtPartLayers] = await Promise.all([
+      boundaryPromise,
+      partsPromise,
+      districtPartsPromise,
+    ])
+    const drawBoundaries = (): void => {
       if (boundary) {
         applyBoundaryLayers(map, boundary, parts, boundaryToken)
       }
-    })
+      if (districtPartLayers.length > 0) {
+        applyColoredAreas(map, DISTRICT_PARTS_PREFIX, districtPartLayers, {
+          beneathLayerId: `${BOUNDARY_PREFIX}-fill`,
+        })
+      }
+    }
+
+    drawBoundaries()
+    watchThemeChanges(map, drawBoundaries)
   })
 
   bindCardHover(addSpotMarkers(map, spots, openSpotPopup))

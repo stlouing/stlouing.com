@@ -10,7 +10,6 @@ interface Preview {
   excerpt: string
   kind?: 'neighborhood'
   cuisine?: string[]
-  neighborhood?: string
   description?: string
   photo?: string
 }
@@ -32,7 +31,6 @@ export const GET: APIRoute = async () => {
       title: place.data?.title,
       excerpt: excerpt(place.body, PREVIEW_EXCERPT_CHARS),
       cuisine: place.data?.cuisine,
-      neighborhood: place.data?.neighborhood,
       description: place.data?.description,
       photo: await cardPhoto(place.data?.photo),
     }

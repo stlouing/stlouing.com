@@ -5,7 +5,6 @@ interface Preview {
   excerpt: string
   kind?: 'neighborhood'
   cuisine?: string[]
-  neighborhood?: string
   description?: string
   photo?: string
 }
@@ -50,11 +49,12 @@ export function initWikilinkPreviews(): void {
     const rect = link.getBoundingClientRect()
     const cardRect = card.getBoundingClientRect()
     const margin = 8
-    const left = Math.max(margin, Math.min(rect.left, window.innerWidth - cardRect.width - margin))
+    const pageWidth = document.documentElement.clientWidth
+    const pageHeight = document.documentElement.clientHeight
+    const left = Math.max(margin, Math.min(rect.left, pageWidth - cardRect.width - margin))
     const below = rect.bottom + 6
     const above = rect.top - cardRect.height - 6
-    const top =
-      below + cardRect.height > window.innerHeight - margin && above > margin ? above : below
+    const top = below + cardRect.height > pageHeight - margin && above > margin ? above : below
     card.style.left = `${left + window.scrollX}px`
     card.style.top = `${top + window.scrollY}px`
   }
@@ -78,10 +78,7 @@ export function initWikilinkPreviews(): void {
     const kindEyebrow = preview.kind ? KIND_EYEBROW[preview.kind] : undefined
     const metaParts = kindEyebrow
       ? [kindEyebrow]
-      : [
-          ...(preview.cuisine ?? []).map((cuisine) => cuisineLabel(cuisine)),
-          ...(preview.neighborhood ? [preview.neighborhood] : []),
-        ]
+      : (preview.cuisine ?? []).map((cuisine) => cuisineLabel(cuisine))
     if (metaParts.length > 0) {
       const meta = document.createElement('div')
       meta.className = kindEyebrow ? 'card-meta eyebrow' : 'card-meta eyebrow eyebrow--muted'
@@ -121,9 +118,23 @@ export function initWikilinkPreviews(): void {
     card.classList.add('is-visible')
   }
 
+  function park(): void {
+    card.style.left = '0px'
+    card.style.top = '0px'
+  }
+
+  card.addEventListener('transitionend', () => {
+    if (!card.classList.contains('is-visible')) {
+      park()
+    }
+  })
+
   function hide(): void {
     card.classList.remove('is-visible')
     current = null
+    if (getComputedStyle(card).transitionDuration === '0s') {
+      park()
+    }
   }
 
   function scheduleShow(link: HTMLAnchorElement): void {

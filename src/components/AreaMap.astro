@@ -1,0 +1,16 @@
+---
+import type { AreaMapArea } from '../lib/area-maps'
+
+interface Props {
+  areas: AreaMapArea[]
+}
+
+const { areas } = Astro.props
+---
+
+<script type="application/json" data-area-maps set:html={JSON.stringify(areas)} />
+
+<script>
+  import { initAreaMaps } from '../scripts/area-map'
+  initAreaMaps()
+</script>

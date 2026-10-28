@@ -531,11 +531,13 @@ tbody tr:last-child td {
   break-inside: avoid;
 }
 
+.area-map-figure,
 .boundary-map-figure,
 .street-map-figure {
   margin: var(--spacing-lg) 0;
 }
 
+.area-map,
 .boundary-map,
 .street-map {
   height: var(--inline-map-height);
@@ -549,12 +551,88 @@ tbody tr:last-child td {
   --inline-map-height: 420px;
 }
 
+.area-map {
+  --inline-map-height: 340px;
+  position: relative;
+}
+
+.area-map.area-map--city {
+  --inline-map-height: 640px;
+}
+
+.area-map:has(.area-map-link:hover) {
+  border-color: var(--color-text-heading);
+}
+
+.area-map-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.area-map-link:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: -2px;
+}
+
+.map-key {
+  display: grid;
+  gap: var(--spacing-sm);
+  margin-block: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-rounded);
+
+  > p {
+    margin: 0;
+  }
+}
+
+.map-key-rows {
+  display: grid;
+  gap: var(--spacing-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-sm);
+
+  > li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin: 0;
+  }
+}
+
+.map-key-swatch {
+  --swatch-color: var(--key-color, var(--color-map-district));
+  flex-shrink: 0;
+  width: var(--spacing-xl);
+  height: var(--spacing-base);
+  border: 3px solid var(--swatch-color);
+  border-radius: var(--radius-input);
+  background: color-mix(in srgb, var(--swatch-color) 18%, transparent);
+}
+
+.map-key-swatch--dashed {
+  --key-color: var(--color-muted);
+  border-width: 2px;
+  border-style: dashed;
+  background: transparent;
+}
+
 .street-map {
   --inline-map-height: 300px;
 }
 
 .street-map.street-overview {
   --inline-map-height: 460px;
+}
+
+.street-map.street-overview,
+.area-map.area-map--city {
   --overview-width: min(var(--measure-article), calc(100vw - 2 * var(--spacing-md)));
   width: var(--overview-width);
   margin-inline: calc((100% - var(--overview-width)) / 2);
@@ -563,6 +641,14 @@ tbody tr:last-child td {
 @media (max-width: 700px) {
   .boundary-map {
     --inline-map-height: 320px;
+  }
+
+  .area-map {
+    --inline-map-height: 260px;
+  }
+
+  .area-map.area-map--city {
+    --inline-map-height: 420px;
   }
 
   .street-map {
@@ -835,11 +921,13 @@ main {
 .body .article-col > p:first-of-type::first-letter {
   float: left;
   font-family: var(--font-display);
-  font-size: var(--drop-cap-size, 3.5em);
+  font-size: var(--drop-cap-size, 4rem);
   line-height: var(--drop-cap-line-height, 0.8);
   padding-inline-end: var(--drop-cap-gap, var(--spacing-xs));
   padding-block-start: 0.04em;
   color: var(--color-text-heading);
+  margin-right: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
 }
 
 .body {
@@ -955,7 +1043,7 @@ body:has(.map-split) main > .wrap,
   }
 }
 
-@media screen and (min-width: 1500px) {
+@media screen and (min-width: 1800px) {
   .map-split .results {
     --list-pane-width: 530px;
     --list-photo-width: 153px;
@@ -1053,7 +1141,7 @@ body:has(.map-split) main > .wrap,
     color: var(--color-flag-yellow);
   }
 
-  .map-actions .suggest-spot-plus {
+  .map-actions .pill-button-badge {
     width: auto;
     height: auto;
     background: none;
@@ -1424,49 +1512,63 @@ body:has(.map-split) main > .wrap,
   overscroll-behavior: contain;
 }
 
-.suggest-spot {
-  --suggest-button-bottom: var(--spacing-lg);
-  --suggest-button-height: 2.75rem;
-  position: absolute;
-  inset-block-end: var(--suggest-button-bottom);
-  inset-inline-end: var(--spacing-sm);
-  z-index: 3;
+.pill-button {
+  --pill-button-height: 2.75rem;
+  --pill-button-badge-size: 1.75rem;
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
-  height: var(--suggest-button-height);
+  height: var(--pill-button-height);
   padding: 0 var(--spacing-md) 0 var(--spacing-sm);
   border: 1px solid color-mix(in srgb, var(--color-bar-text) 30%, transparent);
   border-radius: var(--radius-pill);
-  box-shadow: var(--box-shadow);
   background: var(--color-bar-background);
   font: inherit;
   font-family: var(--font-sans-serif);
   font-size: var(--font-size-md);
   font-weight: 700;
   color: var(--color-bar-text);
+  text-decoration: none;
   cursor: pointer;
 }
 
-.suggest-spot:hover {
+.pill-button:hover {
   background: color-mix(in srgb, var(--color-bar-background) 85%, var(--color-bar-text));
 }
 
-.suggest-spot-plus {
+a.pill-button:hover {
+  color: var(--color-bar-text);
+}
+
+.pill-button-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: var(--pill-button-badge-size);
+  height: var(--pill-button-badge-size);
   border-radius: var(--radius-pill);
   background: var(--color-flag-yellow);
   color: var(--color-flag-blue);
 }
 
-.suggest-spot-plus .icon {
+.pill-button-badge .icon {
   width: 1rem;
   height: 1rem;
   color: inherit;
+}
+
+.pill-button-mark {
+  width: auto;
+  height: var(--pill-button-badge-size);
+}
+
+.suggest-spot {
+  --suggest-button-bottom: var(--spacing-lg);
+  position: absolute;
+  inset-block-end: var(--suggest-button-bottom);
+  inset-inline-end: var(--spacing-sm);
+  z-index: 3;
+  box-shadow: var(--box-shadow);
 }
 
 .suggest-dialog {
@@ -1600,7 +1702,7 @@ a.category-chip:hover {
     inset-block-end: 2rem;
     inset-inline-end: var(--spacing-md);
     z-index: 1100;
-    width: var(--suggest-button-height);
+    width: var(--pill-button-height);
     padding: 0;
     justify-content: center;
   }

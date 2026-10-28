@@ -317,6 +317,14 @@
     "coords": [38.6631, -90.5771]
   },
   {
+    "number": 102,
+    "name": "Richmond Heights",
+    "slug": "richmond-heights",
+    "group": "St. Louis County",
+    "type": "city",
+    "coords": [38.6309, -90.3331]
+  },
+  {
     "number": 97,
     "name": "Delmar Loop",
     "slug": "delmar-loop",
