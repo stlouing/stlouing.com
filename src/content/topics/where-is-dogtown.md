@@ -27,7 +27,7 @@ Here's a link to the full neighborhood map with restaurants, coffee shops, landm
   </a>
 </p>
 
-### Defining the maps
+### Defining the map
 
 <figure class="area-map-figure">
   <div class="area-map area-map--city" data-area-map="city"></div>
@@ -202,20 +202,28 @@ Personally, I haven't explored these neighborhoods too much yet, so it's easy fo
 
 Many other popular neighborhoods in the city are known by their official name. The Hill, Soulard, Lafayette Square, Shaw, and Central West End are all official names. Some are shortened slightly, as people often call "Bevo Mill" simply "Bevo".
 
-There are some additional business districts I didn't make pages for yet like Southtown located along Kingshighway near North Hampton, and the Macklind restaurant strip in Southampton.
+## Other Districts
+
+There are some additional business districts I didn't make pages for yet like:
+
+- Southtown located along Kingshighway near North Hampton
+- [Macklind Business District](https://macklindbdstl.com/) in Southampton
+- [Wash Ave](https://washingtonavenue.com/) in Downtown
+- [Midtown Alley](https://www.midtownalley.com/) in Midtown
+- [Laclede's Landing](https://www.midtownalley.com/) in Downtown
 
 ## Counties
 
-I included University City, Clayton, Maplewood, Richmond Heights, Affton, Kirkwood, and a few other towns on the map. I still have a lot of work to do to complete all the write-ups and exploration of areas, but I think the culture of the St. Louis region extends past its official bounds in both directions and I wanted to be able to capture that, not just restaurants and points of interest in the city itself.
+I included University City, Clayton, Maplewood, Richmond Heights, Affton, Kirkwood, and a few other towns on the map. I still have a lot of work to do to complete all the write-ups and exploration of areas, but I think the culture of the whole St. Louis region extends across the city-county line in both directions and I wanted to be able to capture that.
 
-If you're going on a St. Louis-style pizza tour, you should go way north to Pirrone's and way west to [[faraci|Faraci's]].
+If you're going on a St. Louis-style pizza tour, you should go way north to Pirrone's and way west to [[faraci|Faraci's]], for example, both of which aren't located in the city.
 
 ## Conclusion
 
 **tl;dr**:
 
-- there are some well-known areas of St. Louis, such as The Grove, Cherokee, and Delmar Loop that people are more likely to say than the neighborhoods they belong to
-- there are other neighborhoods, like the four-ish that make up Dogtown, that informally get grouped together
+- places like The Grove, Cherokee, and Delmar Loop aren't neighborhoods, and I wanted to find a way to display them on the map so someone could search by those names
+- places like Dogtown are not officially defined, but rather a group of neighborhoods under one colloquial name
 
 People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well. I'm always open to hearing your thoughts.
 

@@ -1,4 +1,4 @@
-import type { GeoJSONSource, LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
+import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl'
 import { boundaryFor, type BoundaryFeature } from './boundaries'
 
 export interface ColoredArea {
@@ -89,7 +89,7 @@ function extendWithGeometry(coordinates: unknown, extend: (point: [number, numbe
 export function featureBounds(
   features: BoundaryFeature[],
   points: [number, number][] = [],
-): LngLatBoundsLike | undefined {
+): Bounds | undefined {
   let west = Infinity
   let south = Infinity
   let east = -Infinity
@@ -282,14 +282,30 @@ function centroidLatitude(ring: Position[]): number {
   return weighted / (6 * ringArea(ring))
 }
 
-export function labelPoint(feature: BoundaryFeature): Position | undefined {
+export type Bounds = [Position, Position]
+
+export interface LabelPlacement {
+  within?: Bounds
+  avoid?: BoundaryFeature[]
+}
+
+type Span = [number, number]
+
+const LABEL_SCANLINES = 15
+const LABEL_EDGE_MARGIN = 0.12
+const LABEL_AVOID_MARGIN = 0.08
+const LABEL_AVOID_HEIGHT = 0.05
+const LABEL_CENTER_PREFERENCE = 0.6
+
+function largestRing(feature: BoundaryFeature): Position[] | undefined {
   const [ring] = outerRings(feature).sort(
     (first, second) => Math.abs(ringArea(second)) - Math.abs(ringArea(first)),
   )
-  if (!ring) {
-    return undefined
-  }
-  const latitude = centroidLatitude(ring)
+
+  return ring
+}
+
+function insideSpans(ring: Position[], latitude: number): Span[] {
   const crossings = ring
     .flatMap(([lng, lat], index) => {
       const [nextLng, nextLat] = ring[(index + 1) % ring.length]
@@ -300,22 +316,113 @@ export function labelPoint(feature: BoundaryFeature): Position | undefined {
       return [lng + ((latitude - lat) * (nextLng - lng)) / (nextLat - lat)]
     })
     .sort((first, second) => first - second)
-  let widest: { span: number; center: number } | undefined
+  const spans: Span[] = []
   for (let index = 0; index + 1 < crossings.length; index += 2) {
-    const span = crossings[index + 1] - crossings[index]
-    if (!widest || span > widest.span) {
-      widest = { span, center: (crossings[index] + crossings[index + 1]) / 2 }
+    spans.push([crossings[index], crossings[index + 1]])
+  }
+
+  return spans
+}
+
+function clipSpan([start, end]: Span, [low, high]: Span): Span[] {
+  const clippedStart = Math.max(start, low)
+  const clippedEnd = Math.min(end, high)
+
+  return clippedEnd > clippedStart ? [[clippedStart, clippedEnd]] : []
+}
+
+interface AvoidMargins {
+  lng: number
+  lat: number
+}
+
+function spanPiecesOutside(
+  span: Span,
+  latitude: number,
+  avoidRings: Position[][],
+  margins: AvoidMargins,
+): Span[] {
+  const blocked = avoidRings.flatMap((ring) =>
+    [latitude - margins.lat, latitude, latitude + margins.lat].flatMap((scanLatitude) =>
+      insideSpans(ring, scanLatitude),
+    ),
+  )
+
+  return blocked.reduce<Span[]>(
+    (pieces, [blockStart, blockEnd]) =>
+      pieces.flatMap(([start, end]) => [
+        ...clipSpan([start, end], [start, blockStart - margins.lng]),
+        ...clipSpan([start, end], [blockEnd + margins.lng, end]),
+      ]),
+    [span],
+  )
+}
+
+function widestSpanPoint(ring: Position[]): Position | undefined {
+  const latitude = centroidLatitude(ring)
+  const [widest] = insideSpans(ring, latitude).sort(
+    (first, second) => second[1] - second[0] - (first[1] - first[0]),
+  )
+
+  return widest ? [(widest[0] + widest[1]) / 2, latitude] : undefined
+}
+
+export function labelPoint(
+  feature: BoundaryFeature,
+  { within, avoid = [] }: LabelPlacement = {},
+): Position | undefined {
+  const ring = largestRing(feature)
+  if (!ring) {
+    return undefined
+  }
+  if (!within && avoid.length === 0) {
+    return widestSpanPoint(ring)
+  }
+
+  const latitudes = ring.map(([, lat]) => lat)
+  let south = Math.min(...latitudes)
+  let north = Math.max(...latitudes)
+  let lngRange: Span = [-Infinity, Infinity]
+  const margins: AvoidMargins = { lng: 0, lat: 0 }
+  if (within) {
+    const [[west, withinSouth], [east, withinNorth]] = within
+    const latMargin = (withinNorth - withinSouth) * LABEL_EDGE_MARGIN
+    const lngMargin = (east - west) * LABEL_EDGE_MARGIN
+    south = Math.max(south, withinSouth + latMargin)
+    north = Math.min(north, withinNorth - latMargin)
+    lngRange = [west + lngMargin, east - lngMargin]
+    margins.lng = (east - west) * LABEL_AVOID_MARGIN
+    margins.lat = (withinNorth - withinSouth) * LABEL_AVOID_HEIGHT
+  }
+  const avoidRings = avoid.flatMap((avoidFeature) => {
+    const avoidRing = largestRing(avoidFeature)
+
+    return avoidRing ? [avoidRing] : []
+  })
+  const middle = (south + north) / 2
+  let best: { score: number; point: Position } | undefined
+  for (let step = 1; step <= LABEL_SCANLINES; step++) {
+    const latitude = south + ((north - south) * step) / (LABEL_SCANLINES + 1)
+    const centering = 1 - (LABEL_CENTER_PREFERENCE * Math.abs(latitude - middle)) / (north - south)
+    const pieces = insideSpans(ring, latitude)
+      .flatMap((span) => clipSpan(span, lngRange))
+      .flatMap((span) => spanPiecesOutside(span, latitude, avoidRings, margins))
+    for (const [start, end] of pieces) {
+      const score = (end - start) * centering
+      if (!best || score > best.score) {
+        best = { score, point: [(start + end) / 2, latitude] }
+      }
     }
   }
 
-  return widest ? [widest.center, latitude] : undefined
+  return best?.point ?? widestSpanPoint(ring)
 }
 
-function areaLabelPoints(areas: ColoredArea[]) {
+function areaLabelPoints(areas: ColoredArea[], placement: LabelPlacement) {
   return {
     type: 'FeatureCollection',
     features: areas.flatMap(({ name, token, boundary }) => {
-      const point = name ? labelPoint(boundary) : undefined
+      const point = name ? labelPoint(boundary, placement) : undefined
       if (!point) {
         return []
       }
@@ -345,17 +452,20 @@ function coloredAreasData(areas: ColoredArea[]) {
 export interface ColoredAreaOptions {
   beneathLayerId?: string
   labelPlacement?: 'line' | 'point'
+  labelWithin?: Bounds
+  labelAvoid?: BoundaryFeature[]
 }
 
 export function applyColoredAreas(
   map: MapLibreMap,
   prefix: string,
   areas: ColoredArea[],
-  { beneathLayerId, labelPlacement = 'line' }: ColoredAreaOptions = {},
+  { beneathLayerId, labelPlacement = 'line', labelWithin, labelAvoid }: ColoredAreaOptions = {},
 ): void {
   const data = coloredAreasData(areas)
   const labelId = `${prefix}-label`
   const labelSourceId = labelPlacement === 'point' ? `${prefix}-label-points` : prefix
+  const labelPlacementOptions: LabelPlacement = { within: labelWithin, avoid: labelAvoid }
   const halo = readMapColor('--color-background')
   const source = map.getSource(prefix) as GeoJSONSource | undefined
 
@@ -363,7 +473,7 @@ export function applyColoredAreas(
     source.setData(data as never)
     const labelSource = map.getSource(labelSourceId) as GeoJSONSource | undefined
     if (labelSource && labelSource !== source) {
-      labelSource.setData(areaLabelPoints(areas) as never)
+      labelSource.setData(areaLabelPoints(areas, labelPlacementOptions) as never)
     }
     map.setPaintProperty(labelId, 'text-halo-color', halo)
 
@@ -399,7 +509,10 @@ export function applyColoredAreas(
   )
 
   if (labelSourceId !== prefix) {
-    map.addSource(labelSourceId, { type: 'geojson', data: areaLabelPoints(areas) as never })
+    map.addSource(labelSourceId, {
+      type: 'geojson',
+      data: areaLabelPoints(areas, labelPlacementOptions) as never,
+    })
   }
 
   map.addLayer({

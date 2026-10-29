@@ -12,16 +12,20 @@ import { CITY } from './site'
 
 export type AreaMapKind = 'district' | 'grouped' | 'neighborhood' | 'city'
 
+export type TooltipSide = 'above' | 'below' | 'left' | 'right'
+
 export interface AreaMapRegion {
   number: number
   token: string
   name?: string
   slug?: string
+  tooltipSide?: TooltipSide
 }
 
 export interface AreaMapDistrict {
   name: string
   boundary: Feature<Polygon>
+  tooltipSide: TooltipSide
 }
 
 export interface AreaMapArea {
@@ -42,6 +46,19 @@ const regionToken = (info: NeighborhoodInfo) =>
 
 const isGroupedPage = (slug: string) => officialNames(slug).length > 1
 
+const CITY_TOOLTIP_SIDES: Record<string, TooltipSide> = {
+  'delmar-loop': 'left',
+  dogtown: 'left',
+  'the-grove': 'below',
+  midtown: 'above',
+  downtown: 'right',
+  'south-grand': 'left',
+  'cherokee-street': 'right',
+  carondelet: 'right',
+}
+
+const tooltipSideFor = (slug: string): TooltipSide => CITY_TOOLTIP_SIDES[slug] ?? 'above'
+
 async function cityArea(): Promise<AreaMapArea> {
   const regions = neighborhoodRecords.flatMap((row) => {
     const info = neighborhoodInfo(row.slug)
@@ -51,12 +68,17 @@ async function cityArea(): Promise<AreaMapArea> {
 
     const region: AreaMapRegion = { number: info.number, token: regionToken(info) }
 
-    return [isGroupedPage(row.slug) ? { ...region, name: info.name, slug: row.slug } : region]
+    return [
+      isGroupedPage(row.slug)
+        ? { ...region, name: info.name, slug: row.slug, tooltipSide: tooltipSideFor(row.slug) }
+        : region,
+    ]
   })
   const districts = (await districtBoundaries()).flatMap((boundary) => {
-    const info = neighborhoodInfo(String(boundary.properties?.slug ?? ''))
+    const slug = String(boundary.properties?.slug ?? '')
+    const info = neighborhoodInfo(slug)
 
-    return info ? [{ name: info.name, boundary }] : []
+    return info ? [{ name: info.name, boundary, tooltipSide: tooltipSideFor(slug) }] : []
   })
 
   return {

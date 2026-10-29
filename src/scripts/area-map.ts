@@ -12,11 +12,14 @@ import {
   applyOutlinedArea,
   coloredAreasFor,
   featureBounds,
+  labelPoint,
   readMapColor,
+  type Bounds,
   type ColoredArea,
 } from './boundary-layers'
 import { observeMapElements, readPayload, type MountedMap } from './map-shared'
-import type { AreaMapArea } from '../lib/area-maps'
+import { addMapTooltip } from './map-tooltip'
+import type { AreaMapArea, TooltipSide } from '../lib/area-maps'
 
 const REGIONS_PREFIX = 'area-regions'
 const DISTRICT_PREFIX = 'area-district'
@@ -41,13 +44,19 @@ interface AreaPieces {
   labeled: boolean
 }
 
+interface AreaTooltip {
+  name: string
+  point: [number, number]
+  side: TooltipSide
+}
+
 interface AreaGeometry {
   regions: ColoredArea[]
   districts: AreaShape[]
   grouped: AreaPieces[]
+  tooltips: AreaTooltip[]
   framed: BoundaryFeature[]
   cityView: boolean
-  labelPlacement: 'line' | 'point'
 }
 
 async function geometryFor(areas: AreaMapArea[]): Promise<AreaGeometry> {
@@ -55,9 +64,9 @@ async function geometryFor(areas: AreaMapArea[]): Promise<AreaGeometry> {
     regions: [],
     districts: [],
     grouped: [],
+    tooltips: [],
     framed: [],
     cityView: false,
-    labelPlacement: 'point',
   }
 
   for (const area of areas) {
@@ -65,8 +74,15 @@ async function geometryFor(areas: AreaMapArea[]): Promise<AreaGeometry> {
       const regionByNumber = new Map((area.regions ?? []).map((region) => [region.number, region]))
       for (const feature of await neighborhoodFeatures()) {
         const region = regionByNumber.get(Number(feature.properties?.NHD_NUM))
-        if (region) {
-          geometry.regions.push({ name: region.name ?? '', token: region.token, boundary: feature })
+        if (!region) {
+          continue
+        }
+        geometry.regions.push({ name: '', token: region.token, boundary: feature })
+        if (region.name && region.tooltipSide) {
+          const point = labelPoint(feature)
+          if (point) {
+            geometry.tooltips.push({ name: region.name, point, side: region.tooltipSide })
+          }
         }
       }
       for (const region of area.regions ?? []) {
@@ -79,18 +95,17 @@ async function geometryFor(areas: AreaMapArea[]): Promise<AreaGeometry> {
         }
       }
       for (const district of area.districts ?? []) {
-        geometry.districts.push({
-          name: district.name,
-          token: area.token,
-          boundary: district.boundary,
-        })
+        geometry.districts.push({ name: '', token: area.token, boundary: district.boundary })
+        const point = labelPoint(district.boundary)
+        if (point) {
+          geometry.tooltips.push({ name: district.name, point, side: district.tooltipSide })
+        }
       }
       geometry.cityView = true
       continue
     }
 
     if (area.kind === 'district') {
-      geometry.labelPlacement = 'line'
       geometry.regions.push(...(await coloredAreasFor(area.parts ?? [])))
       if (area.district) {
         geometry.districts.push({ name: area.name, token: area.token, boundary: area.district })
@@ -121,10 +136,21 @@ async function geometryFor(areas: AreaMapArea[]): Promise<AreaGeometry> {
   return geometry
 }
 
+function visibleBounds(map: MapLibreMap): Bounds {
+  const bounds = map.getBounds()
+
+  return [
+    [bounds.getWest(), bounds.getSouth()],
+    [bounds.getEast(), bounds.getNorth()],
+  ]
+}
+
 function drawAreas(map: MapLibreMap, geometry: AreaGeometry): void {
   if (geometry.regions.length > 0) {
     applyColoredAreas(map, REGIONS_PREFIX, geometry.regions, {
-      labelPlacement: geometry.labelPlacement,
+      labelPlacement: 'point',
+      labelWithin: visibleBounds(map),
+      labelAvoid: geometry.districts.map(({ boundary }) => boundary),
     })
   }
 
@@ -151,6 +177,26 @@ function areaPageLink(area: AreaMapArea): HTMLAnchorElement {
   return link
 }
 
+function frameCamera(map: MapLibreMap, geometry: AreaGeometry): void {
+  if (geometry.cityView) {
+    const camera = map.cameraForBounds(CITY_FRAME_BOUNDS, { padding: CITY_FRAME_PADDING })
+    if (camera) {
+      map.jumpTo({ center: camera.center, zoom: camera.zoom })
+    }
+
+    return
+  }
+
+  const bounds = featureBounds(geometry.framed)
+  if (bounds) {
+    const zoomOut = geometry.districts.length > 0 ? DISTRICT_FRAME_ZOOM_OUT : AREA_FRAME_ZOOM_OUT
+    const camera = map.cameraForBounds(bounds, { padding: 32 })
+    if (camera) {
+      map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 13) - zoomOut })
+    }
+  }
+}
+
 function mountAreaMap(element: HTMLElement, areas: AreaMapArea[]): MountedMap {
   const map = createBasemapMap(element, {
     interactive: false,
@@ -160,25 +206,9 @@ function mountAreaMap(element: HTMLElement, areas: AreaMapArea[]): MountedMap {
 
   map.on('load', async () => {
     const geometry = await geometryPromise
+    frameCamera(map, geometry)
     drawAreas(map, geometry)
-
-    if (geometry.cityView) {
-      const camera = map.cameraForBounds(CITY_FRAME_BOUNDS, { padding: CITY_FRAME_PADDING })
-      if (camera) {
-        map.jumpTo({ center: camera.center, zoom: camera.zoom })
-      }
-
-      return
-    }
-
-    const bounds = featureBounds(geometry.framed)
-    if (bounds) {
-      const zoomOut = geometry.districts.length > 0 ? DISTRICT_FRAME_ZOOM_OUT : AREA_FRAME_ZOOM_OUT
-      const camera = map.cameraForBounds(bounds, { padding: 32 })
-      if (camera) {
-        map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 13) - zoomOut })
-      }
-    }
+    geometry.tooltips.forEach(({ name, point, side }) => addMapTooltip(map, name, point, side))
   })
 
   const disposeTheme = watchThemeChanges(map, () => {
