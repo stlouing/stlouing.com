@@ -269,16 +269,16 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(1.75rem, 1.4rem + 1vw, 3rem);
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 3rem);
 }
 
 h2 {
-  font-size: clamp(1.625rem, 1.4rem + 1vw, 2rem);
+  font-size: clamp(1.625rem, 1.5rem + 1vw, 2rem);
   margin-bottom: var(--spacing-md);
 }
 
 h3 {
-  font-size: clamp(1.3125rem, 1.2rem + 0.7vw, 1.6rem);
+  font-size: clamp(1.3125rem, 1.4rem + 0.7vw, 1.8rem);
   margin-bottom: var(--spacing-md);
   color: var(--color-accent);
 }
