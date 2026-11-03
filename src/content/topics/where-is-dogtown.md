@@ -67,7 +67,7 @@ I'm hoping that it might particularly be helpful for visitors and transplants wh
 
 Some of the most popular places to visit in St. Louis are business districts that run along a major street. In some cases, they're contained entirely within a neighborhood's boundaries, and in other cases they straddle the line or cross between multiple neighborhoods. Here are a few that I documented.
 
-The districts I've outlined here are loosely based on what I've observed, but St. Louis also has Community Improvement Districts (CIDs) that inform some of these decisions. The Grove, Cherokee Street, South Grand, and the city side of the Loop each have a CID, which usually ves around a tax to pay for cleanup, security, events, etc. in those areas.
+The districts I've outlined here are loosely based on what I've observed, but St. Louis also has Community Improvement Districts (CIDs) that inform some of these decisions. The Grove, Cherokee Street, South Grand, and the city side of the Loop each have a CID, which are used to pay for cleanup, security, events, etc. in those areas.
 
 [Here's the map](https://geoportal2.stlouis-mo.gov/portal/apps/mapviewer/index.html?webmap=65306ea748514677911c0c850caa4989) of the local taxing districts. Interestingly, a lot of the official CID boundaries overlap with my [[walkable-st-louis|Most Walkable Neighborhoods in St. Louis]] article, such as the intersection in Dogtown, Bevo, and Southtown.
 
