@@ -3604,6 +3604,11 @@ button.title-link:hover {
     translate: 0 0;
   }
 
+  [data-tooltip]:hover,
+  [data-tooltip]:focus-visible {
+    z-index: 1;
+  }
+
   [data-tooltip]:hover::after,
   [data-tooltip]:focus-visible::after {
     display: block;

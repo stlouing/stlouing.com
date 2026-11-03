@@ -355,13 +355,5 @@
     "group": "South City",
     "type": "district",
     "streets": ["south-town"]
-  },
-  {
-    "number": 104,
-    "name": "Grand Center",
-    "slug": "grand-center",
-    "group": "Central Corridor",
-    "type": "district",
-    "streets": ["grand-center", "grand-center-washington"]
   }
 ]

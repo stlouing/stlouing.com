@@ -121,23 +121,7 @@ Although the city-county line is a major division for the St. Louis region due t
   <div class="area-map" data-area-map="southtown"></div>
 </figure>
 
-Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as Southtown. There was once a department store there called Southtown Famous-Barr, giving the area its name.
-
-### Grand Center
-
-<figure class="area-map-figure">
-  <div class="area-map" data-area-map="grand-center"></div>
-</figure>
-
-[[grand-center|Grand Center]] is the city's theatre and arts district, with the Fabulous Fox, Powell Hall, and the Sheldon. It sits in the official neighborhood of Covenant Blu-Grand Center, but the whole area is often informally referred to as Midtown, being between Central West End and Downtown.
-
-<small>Pattern: Business district within one neighborhood.</small>
-
----
-
-<small>Source: [Built St. Louis](https://www.builtstlouis.net/midtown/05a.html): "This section of Grand Avenue might be considered the main drag of Midtown, its central core. It is certainly the portion which has retained the strongest sense of an urban environment; it also contains one of the city's crowning jewels, the magnificently restored Fox Theater."</small>
-
-<small>Source: [Fox Theatre (St. Louis) on Wikipedia](<https://en.wikipedia.org/wiki/Fox_Theatre_(St._Louis)>): "Also known as "The Fabulous Fox", it is situated in the arts district of the Grand Center area in Midtown St. Louis, one block north of Saint Louis University."</small>
+Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as [[southtown|Southtown]]. There was once a department store there called Southtown Famous-Barr, giving the area its name.
 
 ## Grouped Neighborhoods
 
@@ -195,7 +179,7 @@ The last 50 years have surely made the two areas distinct to the residents that 
   <div class="area-map" data-area-map="dutchtown mount-pleasant marine-villa gravois-park"></div>
 </figure>
 
-Dutchtown is a neighborhood South City. I have yet included the concept of "Greater Dutchtown" on the map, but a few neighborhood organizations such as DutchtownSTL.org and Dutchtown South Community Corporation include the four neighborhoods of Gravois Park, Mount Pleasant, Marine Villa, and Dutchtown itself within their purview.
+Dutchtown is a neighborhood in South City. I haven't included the concept of "Greater Dutchtown" on the map, but a few neighborhood organizations such as DutchtownSTL.org and Dutchtown South Community Corporation include the four neighborhoods of Gravois Park, Mount Pleasant, Marine Villa, and Dutchtown itself within their purview, so I'm mentioning it here.
 
 While walking along Cherokee Street, I noticed a sign that said "You are in Dutchtown" while in the Marine Villa neighborhood, so it seems whoever places the signs as well either agreed with Dutchtown informally reaching beyond its official bounds, or just made a mistake.
 
@@ -209,13 +193,17 @@ Personally, I haven't explored these neighborhoods too much yet, so it's easy fo
 
 ## Other Neighborhoods
 
-Many other popular neighborhoods in the city are known by their official name. The Hill, Soulard, Lafayette Square, Shaw, and Central West End are all official names. Some are shortened slightly, as people often call "Bevo Mill" simply "Bevo".
+Many other popular neighborhoods in the city are known by their official name. The Hill, Soulard, Lafayette Square, Shaw, and Central West End are all official names. Some are shortened slightly, as people often call Bevo Mill simply Bevo, or Covenant Blu-Grand Center as just Grand Center.
+
+Another one I was thinking about is that between Midtown, Central West End, and Grand Center, they sometimes all get grouped into Midtown. For example, The Cortex is in CWE and the Fabulous Fox is in Grand Center, but I've heard both referred to as being in Midtown before.
 
 ## Counties
 
 I included University City, Clayton, Maplewood, Richmond Heights, Affton, Kirkwood, and a few other towns on the map. I still have a lot of work to do to complete all the write-ups and exploration of areas, but I think the culture of the whole St. Louis region extends across the city-county line in both directions and I wanted to be able to capture that.
 
-If you're going on a St. Louis-style pizza tour, you should go way north to Pirrone's and way west to [[faraci|Faraci's]], for example, both of which aren't located in the city.
+If you're going on a St. Louis-style pizza tour, you should go way north to [[pirrones|Pirrone's]] and way west to [[faraci|Faraci's]], for example, both of which aren't located in the city.
+
+The different areas of the county are loosely grouped together as North County, West County, and South County, and often colloquially referred to with those names.
 
 ## Conclusion
 

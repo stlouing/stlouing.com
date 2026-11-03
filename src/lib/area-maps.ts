@@ -41,7 +41,6 @@ const CITY_TOOLTIP_SIDES: Record<string, TooltipSide> = {
   'delmar-loop': 'left',
   dogtown: 'left',
   'the-grove': 'below',
-  'grand-center': 'above',
   downtown: 'right',
   'south-grand': 'right',
   'cherokee-street': 'below',
