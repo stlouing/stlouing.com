@@ -1,5 +1,5 @@
 ---
-title: Where Is Dogtown? Mapping Districts and Unofficial Neighborhoods in St. Louis
+title: Where Is Dogtown? Mapping Local Names in St. Louis
 icon: notebook
 category: Neighborhoods
 pinned: true
@@ -13,11 +13,11 @@ photoInArticle: false
 ogImage: /og/where-is-dogtown-og.png
 ---
 
-When I first moved to St. Louis, I quickly picked up the names of places around the city: we'd go to Seamus McDaniel’s in Dogtown, or The Gramophone in The Grove. As I explored the city more and began mapping it for this project, I discovered there are several names you won't find on an official neighborhood map.
+When I first moved to St. Louis, I quickly picked up the names of places faround the city: we'd go to Seamus McDaniel’s in Dogtown, or The Gramophone in The Grove. As I explored the city more and began mapping it for this project, I discovered there are several names you won't find on an official neighborhood map.
 
 St. Louis has 79 official neighborhoods with clearly defined boundaries, but the way people refer to areas can be more casual. For this site, I was looking for a way to build a map that respects the official neighborhood boundaries while exposing the informal names people use as well.
 
-Someone new to St. Louis might want to know what restaurants to check out in The Grove but not know to look in Forest Park Southeast yet. They might have been told to go check out Cherokee, which crosses multiple boundaries, or The Loop, which crosses the city-county line.
+Someone new to St. Louis might want to know what restaurants to check out in The Grove but not know to look in Forest Park Southeast yet. They might have been told to go check out Cherokee, which crosses multiple boundaries, or The Loop, which crosses the city-county line. And Dogtown isn't one neighborhood, but a group of neighborhoods south of Forest Park ([more on that below](#dogtown)).
 
 Here's a link to the full neighborhood map with restaurants, coffee shops, landmarks, museums, book and game stores, markets, parks, and write-ups. In the rest of this article, I'll explain some of the additions and variations I made to the map.
 
@@ -28,7 +28,7 @@ Here's a link to the full neighborhood map with restaurants, coffee shops, landm
   </a>
 </p>
 
-### Defining the map
+## About the Map
 
 <figure class="area-map-figure">
   <div class="area-map area-map--city" data-area-map="city"></div>
@@ -47,31 +47,38 @@ Here's a link to the full neighborhood map with restaurants, coffee shops, landm
   </ul>
 </div>
 
-I used the map on [NextSTL](https://nextstl.com/2016/07/stl-400k-add-residents-st-louis-city/) to first define and color code north city, south city, and the central corridor for the map.
-
-I also wanted to include some inner-ring suburbs, as they're a big part of the St. Louis experience. [[the-great-divorce|The Great Divorce]] prevented St. Louis from annexing its surrounding towns since the 1800s, so places like Maplewood, University City, and Clayton which might otherwise have been absorbed into the city are completely politically separate now. Nonetheless, visiting the shops and restaurants in those areas is a common experience for city residents.
-
-For anything that wasn't a full neighborhood or group of neighborhoods, I overlaid a "district" boundary.
-
 ### Mapped by one resident
 
 A few other cities have had surveys to crowdsource opinions about neighborhood boundaries, such as The University of Chicago’s Chicago Neighborhood Project, [Chicago Neighborhoods, Mapped By Residents: Here’s Where Locals Think Official Boundaries Should Be](https://www.preservationchicago.org/chicago-neighborhoods-mapped-by-residents-heres-where-locals-think-official-boundaries-should-be/) and The New York Times [An Extremely Detailed Map of New York City Neighborhoods](https://www.nytimes.com/interactive/2023/upshot/extremely-detailed-nyc-neighborhood-map.html).
 
-I think because St. Louis already has legally defined boundaries, no one has ever sent out a survey for vibes (unless you count Hoodmaps). The [St. Louis Neighborhood Map](/neighborhoods/) found on this site is just one person's attempt to create an informal map.
+I think because St. Louis already has legally defined boundaries, no one has ever sent out a survey for vibes (unless you count [Hoodmaps](https://hoodmaps.com/st-louis-neighborhood-map)). The map on this site is just one person's attempt to create an informal map.
 
-As a disclaimer, anything that isn't officially defined is a matter of opinion. I am not trying to take away from the identity of any neighborhood, but just document some of what I discovered over a few years of living in, exploring, and researching St. Louis.
+As a disclaimer, anything that isn't officially defined is a matter of opinion. I am not trying to take away from the identity of any neighborhood, but just document some of what I discovered over a few years of living in, exploring, and researching St. Louis. If there's anything I missed or got wrong, I'd love to learn about it and update the map and article!
 
-I'm hoping that it might particularly be helpful for visitors and transplants who don't know where everything is yet, particularly around things locals might take as a given. If there's anything I missed or got wrong, I'd love to learn about it and update the map and article!
+### Defining the map
+
+I used the map on [NextSTL](https://nextstl.com/2016/07/stl-400k-add-residents-st-louis-city/) to first define and color code north city, south city, and the central corridor for the map.
+
+I also wanted to include some inner-ring suburbs, as they're a big part of the St. Louis experience. [[the-great-divorce|The Great Divorce]] prevented St. Louis from annexing its surrounding towns since the 1800s, so places like Maplewood, University City, and Clayton which might otherwise have been absorbed into the city are completely politically separate now. Nonetheless, visiting the shops and restaurants in those areas is a common experience for city residents.
+
+On top of the official boundaries, I added two things:
+
+- **Districts**: for anything that wasn't a full neighborhood or group of neighborhoods, such as a business strip, I overlaid a "district" boundary.
+- **Grouped sets**: for areas where several official neighborhoods go by one name, I combined them into one region, with a dashed line between each official neighborhood.
 
 ## Districts
 
 Some of the most popular places to visit in St. Louis are business districts that run along a major street. In some cases, they're contained entirely within a neighborhood's boundaries, and in other cases they straddle the line or cross between multiple neighborhoods. Here are a few that I documented.
 
+On this site, each place in a district is labeled with both the official **neighborhood** it's in and the **district** it belongs to. For example, [[sultan|Sultan]] is in the neighborhood of Forest Park Southeast and the district of The Grove, and [[el-torito|Taqueria Hectorito]] is in Benton Park West and the Cherokee Street district.
+
 The districts I've outlined here are loosely based on what I've observed, but St. Louis also has Community Improvement Districts (CIDs) that inform some of these decisions. The Grove, Cherokee Street, South Grand, and the city side of the Loop each have a CID, which are used to pay for cleanup, security, events, etc. in those areas.
 
 [Here's the map](https://geoportal2.stlouis-mo.gov/portal/apps/mapviewer/index.html?webmap=65306ea748514677911c0c850caa4989) of the local taxing districts. Interestingly, a lot of the official CID boundaries overlap with my [[walkable-st-louis|Most Walkable Neighborhoods in St. Louis]] article, such as the intersection in Dogtown, Bevo, and Southtown.
 
-<small>Sources: [City of St. Louis, Community Improvement Districts dataset](https://www.stlouis-mo.gov/data/datasets/dataset.cfm?id=58) and [St. Louis Public Radio, 2017](https://stlpr.org/economy-business/2017-01-30/community-improvement-districts-from-multi-block-business-districts-to-a-starbucks), on how CIDs are funded.</small>
+---
+
+<small>Sources: [City of St. Louis Community Improvement Districts](https://www.stlouis-mo.gov/data/datasets/dataset.cfm?id=58) and [St. Louis Public Radio, 2017](https://stlpr.org/economy-business/2017-01-30/community-improvement-districts-from-multi-block-business-districts-to-a-starbucks).</small>
 
 ### The Grove
 
@@ -81,35 +88,9 @@ The districts I've outlined here are loosely based on what I've observed, but St
 
 [[the-grove|The Grove]], famous for being St. Louis's LGBTQ nightlife strip, is an example of a business district that is contained within a neighborhood. It runs down Manchester from Kingshighway to Vandeventer and is clearly defined by the two Grove signs on the east and west ends. The neighborhood is Forest Park Southeast.
 
-On this site, restaurants in The Grove such as [[sultan|Sultan]] are labeled as being in the **neighborhood** of Forest Park Southeast and the **district** of The Grove.
-
-This is a neighborhood where the identity of the district informally extends to the whole area. Most of the homes in Forest Park Southeast are not in the Grove strip and some residents might object to the framing.
+This is also a neighborhood where the identity of the district informally extends to the whole area. Most of the homes in Forest Park Southeast are not in the Grove strip and some residents might object to the framing.
 
 <small>Pattern: Business district within one neighborhood.</small>
-
-### Cherokee Street
-
-<figure class="area-map-figure">
-  <div class="area-map" data-area-map="cherokee-street"></div>
-</figure>
-
-[[cherokee-street|Cherokee Street]] - part Hispanic community, part antique row - is a business district that runs through four neighborhoods: Gravois Park, Benton Park West, Benton Park, and Marine Villa. (To make things even more confusing, there's a sign that says "You are in Dutchtown" along Cherokee - you're not. Or are you?)
-
-For each restaurant within this district, such as [[el-torito|Taqueria Hectorito]], I list the neighborhood it's in (Benton Park West) as well as mentioning it's in the Cherokee Street district.
-
-<small>Pattern: Business district crossing multiple neighborhoods.</small>
-
-### Delmar Loop
-
-<figure class="area-map-figure">
-  <div class="area-map" data-area-map="delmar-loop"></div>
-</figure>
-
-[[delmar-loop|The Delmar Loop]], a major tourist attraction in St. Louis and one of the "10 Great Streets in America" according to [The American Planning Association](https://www.planning.org/greatplaces/streets/2007/delmarloop.htm), is a business district that crosses over the city-county line. The west side is in University City, which is part of St. Louis County, and the east side is in Skinker DeBaliviere and West End, city neighborhoods.
-
-Although the city-county line is a major division for the St. Louis region due to St. Louis's independent city status with frozen borders, we can see that commerce easily crosses the border, connecting the two regions.
-
-<small>Pattern: Business district crossing city-county lines.</small>
 
 ### South Grand
 
@@ -131,9 +112,31 @@ Along Kingshighway in South City there's a strip of restaurants owned by Garcia 
 
 <small>Pattern: Business district where four neighborhoods meet.</small>
 
+### Cherokee Street
+
+<figure class="area-map-figure">
+  <div class="area-map" data-area-map="cherokee-street"></div>
+</figure>
+
+[[cherokee-street|Cherokee Street]] - part Hispanic community, part antique row - is a business district that runs through four neighborhoods: Gravois Park, Benton Park West, Benton Park, and Marine Villa. (To make things even more confusing, there's a sign along Cherokee that says "You are in Dutchtown." More on that in [Greater Dutchtown](#greater-dutchtown).)
+
+<small>Pattern: Business district crossing multiple neighborhoods.</small>
+
+### Delmar Loop
+
+<figure class="area-map-figure">
+  <div class="area-map" data-area-map="delmar-loop"></div>
+</figure>
+
+[[delmar-loop|The Delmar Loop]], a major tourist attraction in St. Louis and one of the "10 Great Streets in America" according to [The American Planning Association](https://www.planning.org/greatplaces/streets/2007/delmarloop.htm), is a business district that crosses over the city-county line. The west side is in University City, which is part of St. Louis County, and the east side is in Skinker DeBaliviere and West End, city neighborhoods.
+
+Although the city-county line is a major division for the St. Louis region, the Loop shows that commerce easily crosses the border, connecting the two regions.
+
+<small>Pattern: Business district crossing city-county lines.</small>
+
 ## Grouped Neighborhoods
 
-In some instances, groups of neighborhoods are informally referred to by a single name with fuzzy boundaries.
+In some instances, groups of neighborhoods are informally referred to by a single name with fuzzy boundaries. On the map, each of these is one region that encompasses the official neighborhoods, with a dashed boundary line between each one.
 
 ### Dogtown
 
@@ -143,9 +146,9 @@ In some instances, groups of neighborhoods are informally referred to by a singl
 
 [[dogtown|Dogtown]] is the neighborhood I named this article for, as it's the most obvious example of an informal neighborhood being formed of a grouped set of neighborhoods. There are a few community and merchant organizations all using the Dogtown name, so I've used the Dogtown United claim of Clayton-Tamm, Franz Park, Hi-Pointe, Cheltenham, and the eastern portion of Ellendale.
 
-For mapping purposes, I've created one region that encompasses the official neighborhoods, with a dashed boundary line between each one.
-
 The city's list of Community Improvement Districts even includes a Dogtown CID, though it's marked inactive.
+
+<small>Pattern: Several neighborhoods under one name.</small>
 
 ---
 
@@ -163,6 +166,8 @@ I've combined Downtown and Downtown West into a unified [[downtown|Downtown]] id
 
 The urban fabric is continuous across both sides of Downtown, so I wanted to group them both together to make it easier to find related things to do.
 
+<small>Pattern: Two adjacent neighborhoods treated as one.</small>
+
 ### Carondelet
 
 <figure class="area-map-figure">
@@ -175,6 +180,8 @@ The whole area used to be called Carondelet and was its own independent city sep
 
 The last 50 years have surely made the two areas distinct to the residents that live there, but for the purposes of my map I am grouping them together for all the restaurants, breweries, and bars.
 
+<small>Pattern: Former city split into two neighborhoods, still called by one name.</small>
+
 ---
 
 <small>Source: [Patch, St. Louis on Wikipedia](https://en.wikipedia.org/wiki/Patch,_St._Louis): "The Patch neighborhood forms the southern tip of the Carondelet neighborhood".</small>
@@ -183,15 +190,19 @@ The last 50 years have surely made the two areas distinct to the residents that 
 
 <small>Source: [St. Louis Patina](https://stlouispatina.com/patch-or-southern-carondelet/): "An eclectic area of South City, the official City of St. Louis neighborhood name for this area is Patch. However, many people I talk to simply consider this Carondelet, if the very southern tip of it."</small>
 
-### Greater Dutchtown?
+## Groupings Not on the Map
+
+A couple of other groupings came up while I was mapping, but I left the neighborhoods independent on the map.
+
+### Greater Dutchtown
 
 <figure class="area-map-figure">
   <div class="area-map" data-area-map="dutchtown mount-pleasant marine-villa gravois-park"></div>
 </figure>
 
-Dutchtown is a neighborhood in South City. I haven't included the concept of "Greater Dutchtown" on the map, but a few neighborhood organizations such as DutchtownSTL.org and Dutchtown South Community Corporation include the four neighborhoods of Gravois Park, Mount Pleasant, Marine Villa, and Dutchtown itself within their purview, so I'm mentioning it here.
+Dutchtown is a neighborhood in South City. A few neighborhood organizations such as DutchtownSTL.org and Dutchtown South Community Corporation include the four neighborhoods of Gravois Park, Mount Pleasant, Marine Villa, and Dutchtown itself within their purview.
 
-While walking along Cherokee Street, I noticed a sign that said "You are in Dutchtown" while in the Marine Villa neighborhood, so it seems whoever places the signs as well either agreed with Dutchtown informally reaching beyond its official bounds, or just made a mistake.
+While walking along Cherokee Street, I noticed a sign that said "You are in Dutchtown" while in the Marine Villa neighborhood, so it seems whoever places the signs either agreed with Dutchtown informally reaching beyond its official bounds, or just made a mistake.
 
 Personally, I haven't explored these neighborhoods too much yet, so it's easy for me to group them all together, but people who live there have stronger opinions. Since I had pushback, I just left all the neighborhoods on the map independent, but wanted to include it in this article for completeness.
 
@@ -201,38 +212,44 @@ Personally, I haven't explored these neighborhoods too much yet, so it's easy fo
 
 <small>Source: [Dutchtown South Community Corporation](https://www.dutchtownsouth.org/place-based): "Dutchtown South Community Corporation supports four vibrant neighborhoods in South St. Louis City: Dutchtown, Gravois Park, Marine Villa, Mt. Pleasant."</small>
 
-## Other Neighborhoods
+### Midtown
+
+Between Midtown, Central West End, and Grand Center, places sometimes all get grouped into Midtown. For example, The Cortex is mostly in Central West End and the Fabulous Fox is in Grand Center, but I've heard both referred to as being in Midtown before.
+
+## Known by Official Names
 
 Many other popular neighborhoods in the city are known by their official name. The Hill, Soulard, Lafayette Square, Shaw, and Central West End are all official names. Some are shortened slightly, as people often call Bevo Mill simply Bevo, or Covenant Blu-Grand Center as just Grand Center.
 
 Official names can change, too. Botanical Heights was called McRee Town until it was renamed as part of a redevelopment plan in the early 2000s.
 
+---
+
 <small>Source: [Missouri Historical Society, Gerard Connolly Collection](https://mohistory.mobiusconsortium.org/repositories/3/resources/621): McRee Town was renamed Botanical Heights as part of a rehabilitation plan.</small>
 
-Another one I was thinking about is that between Midtown, Central West End, and Grand Center, they sometimes all get grouped into Midtown. For example, The Cortex is mostly in Central West End and the Fabulous Fox is in Grand Center, but I've heard both referred to as being in Midtown before.
-
-## Counties
-
-I included University City, Clayton, Maplewood, Richmond Heights, Affton, Kirkwood, and a few other towns on the map. I still have a lot of work to do to complete all the write-ups and exploration of areas, but I think the culture of the whole St. Louis region extends across the city-county line in both directions and I wanted to be able to capture that.
-
-If you're going on a St. Louis-style pizza tour, you should go way north to [[pirrones|Pirrone's]] and way west to [[faraci|Faraci's]], for example, both of which aren't located in the city.
+## St. Louis County
 
 The different areas of the county are loosely grouped together as North County, West County, and South County, and often colloquially referred to with those names.
 
+I included University City, Clayton, Maplewood, Richmond Heights, Affton, Kirkwood, and a few other towns on the map. If you're going on a St. Louis-style pizza tour, for example, you should go way north to [[pirrones|Pirrone's]] and way west to [[faraci|Faraci's]], both of which aren't located in the city.
+
+I still have a lot of work to do to complete all the write-ups and exploration of the county.
+
 ## Conclusion
 
-**tl;dr**:
+**In summary**:
 
-- places like The Grove, Cherokee, and Delmar Loop aren't neighborhoods, and I wanted to find a way to display them on the map so someone could search by those names
-- places like Dogtown are not officially defined, but rather a group of neighborhoods under one colloquial name
+- places like The Grove, Cherokee, and Delmar Loop aren't neighborhoods, so I outlined them as districts that can be searched by name
+- places like Dogtown and Carondelet are not officially defined, but rather a group of neighborhoods under one colloquial name
+- most other neighborhoods go by their official names, sometimes shortened
+- the map extends into inner-ring suburbs in St. Louis County, because the culture of the region crosses the city-county line
 
 <div data-area-table></div>
 
-People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well. I'm always open to hearing your thoughts.
+People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well.
 
 If you liked this article, you also might like [[walkable-st-louis|St. Louis's Most Walkable Neighborhoods]], a set of twenty-three walkable areas in St. Louis across the city and inner-ring suburbs, also with maps and major points of interest.
 
-Once again, you can check out the neighborhood map to find restaurants, coffee shops, landmarks, museums, book and game stores, markets, and more right here:
+Once again, you can check out the neighborhood map right here:
 
 <p>
   <a class="pill-button" href="/neighborhoods/">
