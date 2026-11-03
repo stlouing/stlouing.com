@@ -67,7 +67,7 @@ I'm hoping that it might particularly be helpful for visitors and transplants wh
 
 Some of the most popular places to visit in St. Louis are business districts that run along a major street. In some cases, they're contained entirely within a neighborhood's boundaries, and in other cases they straddle the line or cross between multiple neighborhoods. Here are a few that I documented.
 
-The districts I've outlined here are loosely based on what I've observed, but St. Louis also has Community Improvement Districts (CIDs) that inform some of these decisions. The Grove, Cherokee Street, South Grand, and the city side of the Loop each have a CID, which usually revoles around a tax to pay for cleanup, security, events, etc. in those areas.
+The districts I've outlined here are loosely based on what I've observed, but St. Louis also has Community Improvement Districts (CIDs) that inform some of these decisions. The Grove, Cherokee Street, South Grand, and the city side of the Loop each have a CID, which usually ves around a tax to pay for cleanup, security, events, etc. in those areas.
 
 [Here's the map](https://geoportal2.stlouis-mo.gov/portal/apps/mapviewer/index.html?webmap=65306ea748514677911c0c850caa4989) of the local taxing districts. Interestingly, a lot of the official CID boundaries overlap with my [[walkable-st-louis|Most Walkable Neighborhoods in St. Louis]] article, such as the intersection in Dogtown, Bevo, and Southtown.
 
@@ -127,7 +127,7 @@ Although the city-county line is a major division for the St. Louis region due t
   <div class="area-map" data-area-map="southtown"></div>
 </figure>
 
-Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as [[southtown|Southtown]]. There was once a department store there called Southtown Famous-Barr, giving the area its name.
+Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as [[southtown|Southtown]]. There was once a department store there called Southtown Famous-Barr, which I assume is where the name came from, but I don't have any data to back that up.
 
 <small>Pattern: Business district where four neighborhoods meet.</small>
 
@@ -143,7 +143,7 @@ In some instances, groups of neighborhoods are informally referred to by a singl
 
 [[dogtown|Dogtown]] is the neighborhood I named this article for, as it's the most obvious example of an informal neighborhood being formed of a grouped set of neighborhoods. There are a few community and merchant organizations all using the Dogtown name, so I've used the Dogtown United claim of Clayton-Tamm, Franz Park, Hi-Pointe, Cheltenham, and the eastern portion of Ellendale.
 
-For mapping purposes, I've created one region that encompasses the four official neighborhoods, with a dashed boundary line between each one.
+For mapping purposes, I've created one region that encompasses the official neighborhoods, with a dashed boundary line between each one.
 
 The city's list of Community Improvement Districts even includes a Dogtown CID, though it's marked inactive.
 
