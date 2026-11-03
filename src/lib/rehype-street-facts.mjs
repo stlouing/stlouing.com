@@ -1,12 +1,6 @@
+import { element, neighborhoodLinker, separated, text } from './hast-nodes.mjs'
+
 const STREET_MAP = /\bdata-street-map="([^"]+)"/
-
-function text(value) {
-  return { type: 'text', value }
-}
-
-function element(tagName, properties, children) {
-  return { type: 'element', tagName, properties, children }
-}
 
 function streetIdsIn(node) {
   if (node.type === 'raw') {
@@ -50,10 +44,6 @@ function routesOf(streets) {
   return routes
 }
 
-function separated(nodes) {
-  return nodes.flatMap((node, index) => (index === 0 ? [node] : [text(', '), node]))
-}
-
 function factItem(label, children) {
   return element('li', {}, [text(`${label}: `), ...children])
 }
@@ -67,17 +57,7 @@ export function rehypeStreetFacts(options = {}) {
   const rows = options.neighborhoods ?? []
   const rowBySlug = new Map(rows.map((row) => [row.slug, row]))
   const districts = rows.filter((row) => row.type === 'district')
-  const hasEntry = options.hasEntry ?? (() => false)
-  const base = options.base ?? '/'
-
-  const placeLink = (slug, name) => {
-    const href = `${base}neighborhoods/${slug}/`
-    const properties = hasEntry(slug)
-      ? { href, className: ['wikilink'], dataWikilink: slug }
-      : { href }
-
-    return element('a', properties, [text(name)])
-  }
+  const placeLink = neighborhoodLinker(options)
 
   const factsFor = (ids) => {
     const streets = ids.flatMap((id) => (streetById.has(id) ? [streetById.get(id)] : []))

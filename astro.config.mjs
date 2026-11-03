@@ -9,8 +9,9 @@ import { remarkWikiLink } from './src/lib/remark-wikilink.mjs'
 import { rehypeTableScroll } from './src/lib/rehype-table-scroll.mjs'
 import { rehypeArticleToc } from './src/lib/rehype-article-toc.mjs'
 import { rehypeStreetFacts } from './src/lib/rehype-street-facts.mjs'
+import { rehypeAreaTable } from './src/lib/rehype-area-table.mjs'
 import { entryUrl } from './src/lib/entry-url.mjs'
-import { SITE_URL } from './site.config.mjs'
+import { NEIGHBORHOOD_PARTS_FILE, SITE_URL } from './site.config.mjs'
 
 const BASE = '/'
 
@@ -25,6 +26,14 @@ function readData(file, fallback) {
 
 const streetRows = readData('streets.json', { streets: [] }).streets
 const neighborhoodRows = readData('neighborhoods.json', [])
+
+function readPartRows() {
+  const filePath = fileURLToPath(new URL(`./public/${NEIGHBORHOOD_PARTS_FILE}`, import.meta.url))
+
+  return fs.existsSync(filePath)
+    ? JSON.parse(fs.readFileSync(filePath, 'utf8')).features.map((feature) => feature.properties)
+    : []
+}
 
 function buildTocGroups() {
   const groupBySlug = new Map(
@@ -234,6 +243,14 @@ function resolve(target) {
   return BASE.endsWith('/') ? BASE + clean : `${BASE}/${clean}`
 }
 
+const rosterOptions = {
+  streets: streetRows,
+  neighborhoods: neighborhoodRows,
+  parts: readPartRows(),
+  hasEntry: (slug) => wikiMap.get(slug) === entryUrl('neighborhoods', slug),
+  base: BASE,
+}
+
 export default defineConfig({
   site: SITE_URL,
   trailingSlash: 'always',
@@ -262,15 +279,8 @@ export default defineConfig({
     remarkPlugins: [[remarkWikiLink, { resolve }]],
     rehypePlugins: [
       rehypeSlug,
-      [
-        rehypeStreetFacts,
-        {
-          streets: streetRows,
-          neighborhoods: neighborhoodRows,
-          hasEntry: (slug) => wikiMap.get(slug) === entryUrl('neighborhoods', slug),
-          base: BASE,
-        },
-      ],
+      [rehypeStreetFacts, rosterOptions],
+      [rehypeAreaTable, rosterOptions],
       [rehypeArticleToc, { groups: buildTocGroups() }],
       [
         rehypeAutolinkHeadings,

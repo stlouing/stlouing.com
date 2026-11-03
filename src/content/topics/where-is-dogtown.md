@@ -42,7 +42,7 @@ Here's a link to the full neighborhood map with restaurants, coffee shops, landm
     <li><span class="map-key-swatch" style="--key-color: var(--color-map-south)" aria-hidden="true"></span><span><strong>South City</strong> neighborhood</span></li>
     <li><span class="map-key-swatch" style="--key-color: var(--color-map-county)" aria-hidden="true"></span><span><strong>St. Louis County</strong> town</span></li>
     <li><span class="map-key-swatch" style="--key-color: var(--color-map-park)" aria-hidden="true"></span><span><strong>Park</strong></span></li>
-    <li><span class="map-key-swatch" aria-hidden="true"></span><span><strong>District</strong>: a popular strip outlined by this site, not an official boundary</span></li>
+    <li><span class="map-key-swatch" aria-hidden="true"></span><span><strong>District</strong>: a popular strip outlined by this site, not an official neighborhood boundary</span></li>
     <li><span class="map-key-swatch map-key-swatch--dashed" aria-hidden="true"></span><span>Official neighborhood inside a <strong>grouped set</strong></span></li>
   </ul>
 </div>
@@ -66,6 +66,12 @@ I'm hoping that it might particularly be helpful for visitors and transplants wh
 ## Districts
 
 Some of the most popular places to visit in St. Louis are business districts that run along a major street. In some cases, they're contained entirely within a neighborhood's boundaries, and in other cases they straddle the line or cross between multiple neighborhoods. Here are a few that I documented.
+
+The districts I've outlined here are loosely based on what I've observed, but St. Louis also has Community Improvement Districts (CIDs) that inform some of these decisions. The Grove, Cherokee Street, South Grand, and the city side of the Loop each have a CID, which usually revoles around a tax to pay for cleanup, security, events, etc. in those areas.
+
+[Here's the map](https://geoportal2.stlouis-mo.gov/portal/apps/mapviewer/index.html?webmap=65306ea748514677911c0c850caa4989) of the local taxing districts. Interestingly, a lot of the official CID boundaries overlap with my [[walkable-st-louis|Most Walkable Neighborhoods in St. Louis]] article, such as the intersection in Dogtown, Bevo, and Southtown.
+
+<small>Sources: [City of St. Louis, Community Improvement Districts dataset](https://www.stlouis-mo.gov/data/datasets/dataset.cfm?id=58) and [St. Louis Public Radio, 2017](https://stlpr.org/economy-business/2017-01-30/community-improvement-districts-from-multi-block-business-districts-to-a-starbucks), on how CIDs are funded.</small>
 
 ### The Grove
 
@@ -123,6 +129,8 @@ Although the city-county line is a major division for the St. Louis region due t
 
 Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as [[southtown|Southtown]]. There was once a department store there called Southtown Famous-Barr, giving the area its name.
 
+<small>Pattern: Business district where four neighborhoods meet.</small>
+
 ## Grouped Neighborhoods
 
 In some instances, groups of neighborhoods are informally referred to by a single name with fuzzy boundaries.
@@ -135,7 +143,9 @@ In some instances, groups of neighborhoods are informally referred to by a singl
 
 [[dogtown|Dogtown]] is the neighborhood I named this article for, as it's the most obvious example of an informal neighborhood being formed of a grouped set of neighborhoods. There are a few community and merchant organizations all using the Dogtown name, so I've used the Dogtown United claim of Clayton-Tamm, Franz Park, Hi-Pointe, Cheltenham, and the eastern portion of Ellendale.
 
-For mapping purposes, I've created one region that encompasses the four official neighborhoods, with a dashed boundary line between each one. I'll note that I left off the small region of Ellendale since it was harder to determine where to split the neighborhood further, which might change if someone complains or I get around to fixing it.
+For mapping purposes, I've created one region that encompasses the four official neighborhoods, with a dashed boundary line between each one.
+
+The city's list of Community Improvement Districts even includes a Dogtown CID, though it's marked inactive.
 
 ---
 
@@ -195,7 +205,11 @@ Personally, I haven't explored these neighborhoods too much yet, so it's easy fo
 
 Many other popular neighborhoods in the city are known by their official name. The Hill, Soulard, Lafayette Square, Shaw, and Central West End are all official names. Some are shortened slightly, as people often call Bevo Mill simply Bevo, or Covenant Blu-Grand Center as just Grand Center.
 
-Another one I was thinking about is that between Midtown, Central West End, and Grand Center, they sometimes all get grouped into Midtown. For example, The Cortex is in CWE and the Fabulous Fox is in Grand Center, but I've heard both referred to as being in Midtown before.
+Official names can change, too. Botanical Heights was called McRee Town until it was renamed as part of a redevelopment plan in the early 2000s.
+
+<small>Source: [Missouri Historical Society, Gerard Connolly Collection](https://mohistory.mobiusconsortium.org/repositories/3/resources/621): McRee Town was renamed Botanical Heights as part of a rehabilitation plan.</small>
+
+Another one I was thinking about is that between Midtown, Central West End, and Grand Center, they sometimes all get grouped into Midtown. For example, The Cortex is mostly in Central West End and the Fabulous Fox is in Grand Center, but I've heard both referred to as being in Midtown before.
 
 ## Counties
 
@@ -211,6 +225,8 @@ The different areas of the county are loosely grouped together as North County, 
 
 - places like The Grove, Cherokee, and Delmar Loop aren't neighborhoods, and I wanted to find a way to display them on the map so someone could search by those names
 - places like Dogtown are not officially defined, but rather a group of neighborhoods under one colloquial name
+
+<div data-area-table></div>
 
 People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well. I'm always open to hearing your thoughts.
 
