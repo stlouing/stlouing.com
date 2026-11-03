@@ -225,11 +225,13 @@ The eastern wing of Cherokee St. is a vintage shopping district known as the [an
 
 ## Southtown
 
+![](../images/food/buds/buds1.jpg)
+
 <figure class="street-map-figure">
   <div class="street-map" data-street-map="south-town"></div>
 </figure>
 
-[[buds-pizza-and-beer|Bud's Pizza and Beer]] is one of my favorite spots for a classic slice in St. Louis, and every time I visited I noticed a couple of obelisks and signs denoting "Southtown". Due to my research on this site, I knew "Southtown" was not an official St. Louis neighborhood, so I was curious.
+[[buds-pizza-and-beer|Bud's Pizza and Beer]] is one of my favorite spots for a classic slice in St. Louis, and every time I visited I noticed a couple of obelisks and signs denoting "Southtown". Due to my research on this site, I knew Southtown was not an official St. Louis neighborhood, so I was curious.
 
 It seems there used to be a Southtown Famous-Barr department store at Kingshighway & Chippewa that was demolished in the '90s that gave the area its name.
 

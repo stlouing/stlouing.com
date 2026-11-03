@@ -1,6 +1,8 @@
 ---
 title: Southtown
 created: 2026-11-02
+description: Restaurants and bars in South City
+photo: ../images/food/buds/buds1.jpg
 ---
 
 [[buds-pizza-and-beer|Bud's Pizza and Beer]] is one of my favorite spots for a classic slice in St. Louis, and every time I visited I noticed a couple of obelisks and signs denoting "Southtown". Due to my research on this site, I knew Southtown was not an official St. Louis neighborhood, so I was curious.
