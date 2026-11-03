@@ -239,7 +239,7 @@ I still have a lot of work to do to complete all the write-ups and exploration o
 **In summary**:
 
 - places like The Grove, Cherokee, and Delmar Loop aren't neighborhoods, so I outlined them as districts that can be searched by name
-- places like Dogtown and Carondelet are not officially defined, but rather a group of neighborhoods under one colloquial name
+- places like Dogtown are not officially defined, but rather a group of neighborhoods under one colloquial name
 - most other neighborhoods go by their official names, sometimes shortened
 - the map extends into inner-ring suburbs in St. Louis County, because the culture of the region crosses the city-county line
 
