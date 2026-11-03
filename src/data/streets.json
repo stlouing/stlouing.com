@@ -996,6 +996,148 @@
         [-90.334661, 38.594584],
         [-90.334134, 38.594938]
       ]
+    },
+    {
+      "id": "maryland-plaza",
+      "name": "Maryland Plaza",
+      "road": "Maryland Plaza",
+      "from": "Euclid",
+      "to": "the end of the plaza",
+      "anchor": "central-west-end",
+      "neighborhoods": ["central-west-end"],
+      "query": {
+        "roadNames": ["Maryland Plaza", "Maryland Avenue"],
+        "from": { "coord": [38.6452, -90.2612] },
+        "to": { "coord": [38.645, -90.2635] },
+        "center": [38.6451, -90.2623]
+      },
+      "line": [
+        [-90.2612, 38.6452],
+        [-90.261609, 38.644754],
+        [-90.262393, 38.644913],
+        [-90.262914, 38.645053],
+        [-90.263183, 38.645097],
+        [-90.2635, 38.645]
+      ]
+    },
+    {
+      "id": "lacledes-landing",
+      "name": "Laclede's Landing",
+      "road": "North 2nd Street",
+      "from": "the Eads Bridge",
+      "to": "Laclede's Landing Boulevard",
+      "anchor": "lacledes-landing",
+      "neighborhoods": ["downtown"],
+      "query": {
+        "roadNames": ["North 2nd Street"],
+        "from": { "coord": [38.6296, -90.1845] },
+        "to": { "coord": [38.6314, -90.1843] },
+        "center": [38.6305, -90.1844]
+      },
+      "line": [
+        [-90.1845, 38.6296],
+        [-90.184579, 38.630087],
+        [-90.184444, 38.630802],
+        [-90.184419, 38.63092],
+        [-90.1843, 38.6314]
+      ]
+    },
+    {
+      "id": "grand-center",
+      "name": "Grand Center",
+      "label": "Grand Blvd",
+      "road": "Grand Boulevard",
+      "from": "Olive",
+      "to": "Delmar",
+      "anchor": "grand-center",
+      "neighborhoods": ["covenant-blu-grand-center"],
+      "query": {
+        "roadNames": ["North Grand Boulevard", "Grand Boulevard"],
+        "from": { "names": ["Olive Street"] },
+        "to": { "names": ["Delmar Boulevard"] },
+        "center": [38.6395, -90.2315]
+      },
+      "line": [
+        [-90.232192, 38.638166],
+        [-90.23188, 38.638598],
+        [-90.231743, 38.63879],
+        [-90.231438, 38.639192],
+        [-90.231359, 38.639296],
+        [-90.231018, 38.639764],
+        [-90.230942, 38.63987],
+        [-90.230755, 38.640131],
+        [-90.230663, 38.640258],
+        [-90.23031, 38.640742]
+      ]
+    },
+    {
+      "id": "grand-center-washington",
+      "name": "Grand Center",
+      "label": "Washington Blvd",
+      "road": "Washington Boulevard",
+      "from": "Grand",
+      "to": "Spring",
+      "anchor": "grand-center",
+      "neighborhoods": ["covenant-blu-grand-center"],
+      "query": {
+        "roadNames": ["Washington Boulevard"],
+        "from": { "names": ["North Grand Boulevard", "Grand Boulevard"] },
+        "to": { "names": ["North Spring Avenue", "Spring Avenue"] },
+        "center": [38.6399, -90.2338]
+      },
+      "line": [
+        [-90.231375, 38.639273],
+        [-90.231605, 38.639416],
+        [-90.231905, 38.639549],
+        [-90.23255, 38.639832],
+        [-90.232747, 38.639919],
+        [-90.233357, 38.640186],
+        [-90.233509, 38.640253],
+        [-90.233871, 38.640412],
+        [-90.234132, 38.640526],
+        [-90.2351, 38.640951]
+      ]
+    },
+    {
+      "id": "midtown-alley",
+      "name": "Midtown Alley",
+      "road": "Locust Street",
+      "from": "Leffingwell",
+      "to": "Theresa",
+      "anchor": "midtown-alley",
+      "neighborhoods": ["midtown", "covenant-blu-grand-center"],
+      "query": {
+        "roadNames": ["Locust Street"],
+        "from": { "names": ["North Leffingwell Avenue", "Leffingwell Avenue"] },
+        "to": { "names": ["North Theresa Avenue", "Theresa Avenue"] },
+        "center": [38.6348, -90.2258]
+      },
+      "line": [
+        [-90.217985, 38.634998],
+        [-90.218206, 38.635044],
+        [-90.21849, 38.635104],
+        [-90.218829, 38.635176],
+        [-90.219102, 38.635233],
+        [-90.219743, 38.635366],
+        [-90.219869, 38.635392],
+        [-90.220298, 38.635481],
+        [-90.220861, 38.635597],
+        [-90.221671, 38.635766],
+        [-90.221774, 38.635787],
+        [-90.223035, 38.636049],
+        [-90.223351, 38.636114],
+        [-90.223466, 38.636138],
+        [-90.224143, 38.636279],
+        [-90.225294, 38.636518],
+        [-90.225689, 38.6366],
+        [-90.226349, 38.636736],
+        [-90.226531, 38.636774],
+        [-90.227053, 38.636884],
+        [-90.227893, 38.637057],
+        [-90.228255, 38.637132],
+        [-90.228801, 38.637245],
+        [-90.229661, 38.637424]
+      ]
     }
   ]
 }

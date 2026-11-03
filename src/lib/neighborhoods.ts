@@ -104,6 +104,10 @@ export function regionOf(info: NeighborhoodInfo): Region {
   return { slug: REGION_SLUG_BY_GROUP[info.group] ?? '', label: info.group }
 }
 
+export function regionToken(info: NeighborhoodInfo): string {
+  return regionTokenBySlug[regionOf(info).slug] ?? '--color-map-accent'
+}
+
 export function hasNeighborhoodShape(slug: string): boolean {
   return slug in (geo.shapes as Record<string, string>)
 }

@@ -2,19 +2,22 @@
 import BadgeIcons from './BadgeIcons.astro'
 import type { Feature, Polygon } from 'geojson'
 import type { StreetSpot } from '../lib/street-spots'
+import type { StreetRegion } from '../scripts/street-map'
 
 interface Props {
   spots: Record<string, StreetSpot[]>
-  districts: Feature<Polygon>[]
+  areas: Feature<Polygon>[]
+  regions: Record<string, StreetRegion>
 }
 
-const { spots, districts } = Astro.props
+const { spots, areas, regions } = Astro.props
 ---
 
 <BadgeIcons />
 
 <script type="application/json" data-street-spots set:html={JSON.stringify(spots)} />
-<script type="application/json" data-street-districts set:html={JSON.stringify(districts)} />
+<script type="application/json" data-street-areas set:html={JSON.stringify(areas)} />
+<script type="application/json" data-street-regions set:html={JSON.stringify(regions)} />
 
 <script>
   import { initStreetMaps } from '../scripts/street-map'

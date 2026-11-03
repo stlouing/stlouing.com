@@ -47,7 +47,7 @@ function readBoundaryColors(): { city: string; county: string } {
     styles.getPropertyValue(token).trim() || fallback
 
   return {
-    city: readColor('--color-map-street', '#c0392b'),
+    city: readColor('--color-map-city', '#c0392b'),
     county: readColor('--color-accent-blue', '#2766ad'),
   }
 }

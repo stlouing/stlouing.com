@@ -87,17 +87,6 @@ export async function boundaryFor(slug: string): Promise<BoundaryFeature | undef
   )
 }
 
-export async function boundariesFor(slugs: Iterable<string>): Promise<BoundaryFeature[]> {
-  const numbers = numbersFor(slugs)
-  if (numbers.size === 0) {
-    return []
-  }
-
-  const features = await loadFeatures()
-
-  return features.filter((feature) => numbers.has(Number(feature.properties?.NHD_NUM)))
-}
-
 export function neighborhoodFeatures(): Promise<BoundaryFeature[]> {
   return loadFeatures()
 }

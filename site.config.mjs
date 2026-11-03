@@ -42,7 +42,7 @@ export const FEATURED_FOOD_IDS = [
   'kishimoto-mendo',
   'dalies-smokehouse',
   'nicky-slices',
-  'pizzeria-da-gloria',
+  'buds-pizza-and-beer',
   'woofies-hot-dogs',
   'sultan',
 ]

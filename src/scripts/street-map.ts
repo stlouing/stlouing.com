@@ -1,8 +1,13 @@
 import maplibregl from 'maplibre-gl'
-import type { LngLatBoundsLike, Map as MapLibreMap } from 'maplibre-gl'
+import type { LngLatBoundsLike, Map as MapLibreMap, MapGeoJSONFeature } from 'maplibre-gl'
 import type { Feature, Polygon } from 'geojson'
 import { createBasemapMap, watchThemeChanges } from './basemap'
-import { boundariesFor, type BoundaryFeature } from './boundaries'
+import {
+  applyColoredAreas,
+  coloredAreasFor,
+  visibleBounds,
+  type ColoredArea,
+} from './boundary-layers'
 import { optionalData } from '../lib/optional-data'
 import { projectOntoLine, type LngLat } from '../lib/geo'
 import { badgeIconNode, categorySwatchNode } from './popup'
@@ -20,9 +25,11 @@ const ENDPOINTS_SOURCE_ID = 'street-endpoints'
 const ENDPOINTS_LAYER_ID = 'street-endpoint-dots'
 const LABELS_SOURCE_ID = 'street-labels'
 const LABELS_LAYER_ID = 'street-label-text'
-const DISTRICT_SOURCE_ID = 'street-district'
-const DISTRICT_FILL_LAYER_ID = 'street-district-fill'
-const DISTRICT_OUTLINE_LAYER_ID = 'street-district-outline'
+const AREA_SOURCE_ID = 'street-area'
+const AREA_FILL_LAYER_ID = 'street-area-fill'
+const AREA_OUTLINE_LAYER_ID = 'street-area-outline'
+const STREET_REGIONS_PREFIX = 'street-regions'
+const OVERVIEW_REGIONS_PREFIX = 'street-overview-regions'
 
 interface Street {
   id: string
@@ -47,13 +54,31 @@ interface Spot {
   link?: string
 }
 
-const spotsByStreet = readPayload<Record<string, Spot[]>>('script[data-street-spots]', {})
-const districtShapes = readPayload<Feature<Polygon>[]>('script[data-street-districts]', [])
+export interface StreetRegion {
+  name: string
+  token: string
+}
 
-function districtShapesFor(group: Street[]): Feature<Polygon>[] {
+const spotsByStreet = readPayload<Record<string, Spot[]>>('script[data-street-spots]', {})
+const areaShapes = readPayload<Feature<Polygon>[]>('script[data-street-areas]', [])
+const regionBySlug = readPayload<Record<string, StreetRegion>>('script[data-street-regions]', {})
+
+function regionAreasFor(group: Street[], labeled: boolean): Promise<ColoredArea[]> {
+  const slugs = [...new Set(group.flatMap((street) => street.neighborhoods))]
+
+  return coloredAreasFor(
+    slugs.flatMap((slug) => {
+      const region = regionBySlug[slug]
+
+      return region ? [{ slug, name: labeled ? region.name : '', token: region.token }] : []
+    }),
+  )
+}
+
+function areaShapesFor(group: Street[]): Feature<Polygon>[] {
   const streetIds = new Set(group.map((street) => street.id))
 
-  return districtShapes.filter((shape) =>
+  return areaShapes.filter((shape) =>
     ((shape.properties?.streets as string[] | undefined) ?? []).some((streetId) =>
       streetIds.has(streetId),
     ),
@@ -145,32 +170,54 @@ function boundsOf(group: Street[]): LngLatBoundsLike {
   ]
 }
 
-function readStreetColors(): { line: string; halo: string; label: string; district: string } {
+function readStreetColors(): { line: string; halo: string; label: string; area: string } {
   const styles = getComputedStyle(document.documentElement)
   const readColor = (token: string, fallback: string) =>
     styles.getPropertyValue(token).trim() || fallback
 
   return {
-    line: readColor('--color-map-street', '#c0392b'),
+    line: readColor('--color-text-heading', '#070706'),
     halo: readColor('--color-background', '#f3efe7'),
     label: readColor('--color-text', '#1b1a17'),
-    district: readColor('--color-map-district', '#1b1a17'),
+    area: readColor('--color-map-district', '#1b1a17'),
   }
+}
+
+function applyAreaLayers(map: MapLibreMap, shapes: Feature<Polygon>[], color: string): void {
+  if (shapes.length === 0) {
+    return
+  }
+  if (map.getLayer(AREA_OUTLINE_LAYER_ID)) {
+    map.setPaintProperty(AREA_FILL_LAYER_ID, 'fill-color', color)
+    map.setPaintProperty(AREA_OUTLINE_LAYER_ID, 'line-color', color)
+
+    return
+  }
+
+  map.addSource(AREA_SOURCE_ID, {
+    type: 'geojson',
+    data: { type: 'FeatureCollection', features: shapes },
+  })
+  map.addLayer({
+    id: AREA_FILL_LAYER_ID,
+    type: 'fill',
+    source: AREA_SOURCE_ID,
+    paint: { 'fill-color': color, 'fill-opacity': 0.08 },
+  })
+  map.addLayer({
+    id: AREA_OUTLINE_LAYER_ID,
+    type: 'line',
+    source: AREA_SOURCE_ID,
+    paint: { 'line-color': color, 'line-width': 2, 'line-opacity': 0.8 },
+  })
 }
 
 function applyStreetLayers(map: MapLibreMap, group: Street[]): void {
   const colors = readStreetColors()
   const labeled = group.length > 1
-  const districts = districtShapesFor(group)
+  applyAreaLayers(map, areaShapesFor(group), colors.area)
 
   if (!map.getSource(SOURCE_ID)) {
-    if (districts.length > 0) {
-      map.addSource(DISTRICT_SOURCE_ID, {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: districts },
-      })
-    }
-
     map.addSource(SOURCE_ID, {
       type: 'geojson',
       data: {
@@ -216,10 +263,6 @@ function applyStreetLayers(map: MapLibreMap, group: Street[]): void {
   }
 
   if (map.getLayer(LINE_LAYER_ID)) {
-    if (map.getLayer(DISTRICT_OUTLINE_LAYER_ID)) {
-      map.setPaintProperty(DISTRICT_FILL_LAYER_ID, 'fill-color', colors.district)
-      map.setPaintProperty(DISTRICT_OUTLINE_LAYER_ID, 'line-color', colors.district)
-    }
     map.setPaintProperty(LINE_LAYER_ID, 'line-color', colors.line)
     map.setPaintProperty(ENDPOINTS_LAYER_ID, 'circle-color', colors.line)
     map.setPaintProperty(ENDPOINTS_LAYER_ID, 'circle-stroke-color', colors.halo)
@@ -229,21 +272,6 @@ function applyStreetLayers(map: MapLibreMap, group: Street[]): void {
     }
 
     return
-  }
-
-  if (districts.length > 0) {
-    map.addLayer({
-      id: DISTRICT_FILL_LAYER_ID,
-      type: 'fill',
-      source: DISTRICT_SOURCE_ID,
-      paint: { 'fill-color': colors.district, 'fill-opacity': 0.08 },
-    })
-    map.addLayer({
-      id: DISTRICT_OUTLINE_LAYER_ID,
-      type: 'line',
-      source: DISTRICT_SOURCE_ID,
-      paint: { 'line-color': colors.district, 'line-width': 2, 'line-opacity': 0.8 },
-    })
   }
 
   map.addLayer({
@@ -329,7 +357,7 @@ function figureBounds(group: Street[]): LngLatBoundsLike {
       extend(spot.coords)
     }
   }
-  for (const shape of districtShapesFor(group)) {
+  for (const shape of areaShapesFor(group)) {
     shape.geometry.coordinates[0].forEach(extend)
   }
 
@@ -345,59 +373,59 @@ function mountStreetMap(element: HTMLElement, group: Street[]): MountedMap {
     attributionControl: { compact: true },
   })
 
-  map.on('load', () => {
-    applyStreetLayers(map, group)
+  const areasPromise = regionAreasFor(group, true)
+  const drawRegions = (areas: ColoredArea[]) =>
+    applyColoredAreas(map, STREET_REGIONS_PREFIX, areas, {
+      labelPlacement: 'point',
+      labelWithin: visibleBounds(map),
+      labelAvoid: areaShapesFor(group),
+    })
+
+  map.on('load', async () => {
     const camera = map.cameraForBounds(figureBounds(group), { padding: 36 })
     if (camera) {
       map.jumpTo({ center: camera.center, zoom: (camera.zoom ?? 14) - 0.25 })
     }
+    drawRegions(await areasPromise)
+    applyStreetLayers(map, group)
   })
 
   addSpotMarkers(map, group)
   appendSpotCaption(element, group)
 
   const disposeTheme = watchThemeChanges(map, () => {
-    applyStreetLayers(map, group)
+    void areasPromise.then((areas) => {
+      drawRegions(areas)
+      applyStreetLayers(map, group)
+    })
   })
 
   return { map, disposeTheme }
 }
 
-const OVERVIEW_BOUNDARIES_SOURCE_ID = 'street-overview-boundaries'
-const OVERVIEW_FILL_LAYER_ID = 'street-overview-fill'
-const OVERVIEW_OUTLINE_LAYER_ID = 'street-overview-outline'
-const OVERVIEW_HIT_LAYER_ID = 'street-overview-hit'
+function areaAnchor(feature: MapGeoJSONFeature | undefined): string | undefined {
+  const streetIds: unknown =
+    typeof feature?.properties?.streets === 'string'
+      ? JSON.parse(feature.properties.streets)
+      : feature?.properties?.streets
+  if (!Array.isArray(streetIds)) {
+    return undefined
+  }
 
-function applyOverviewLayers(
-  map: MapLibreMap,
-  group: Street[],
-  boundaries: BoundaryFeature[],
-): void {
+  return streets.get(String(streetIds[0]))?.anchor
+}
+
+function applyOverviewLayers(map: MapLibreMap, group: Street[]): void {
   const styles = getComputedStyle(document.documentElement)
   const readColor = (token: string, fallback: string) =>
     styles.getPropertyValue(token).trim() || fallback
-  const lineColor = readColor('--color-map-street', '#c0392b')
-  const polygonColor = readColor('--color-map-accent', '#6a47a6')
+  const areaColor = readColor('--color-map-district', '#1b1a17')
   const haloColor = readColor('--color-background', '#f3efe7')
   const labelColor = readColor('--color-text', '#1b1a17')
 
-  if (!map.getSource(SOURCE_ID)) {
-    map.addSource(OVERVIEW_BOUNDARIES_SOURCE_ID, {
-      type: 'geojson',
-      data: { type: 'FeatureCollection', features: boundaries as never },
-    })
-    map.addSource(SOURCE_ID, {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: group.map((street) => ({
-          type: 'Feature',
-          properties: { anchor: street.anchor },
-          geometry: { type: 'LineString', coordinates: street.line },
-        })),
-      },
-    })
+  applyAreaLayers(map, areaShapes, areaColor)
 
+  if (!map.getSource(LABELS_SOURCE_ID)) {
     const labeledAnchors = new Set<string>()
     map.addSource(LABELS_SOURCE_ID, {
       type: 'geojson',
@@ -424,44 +452,12 @@ function applyOverviewLayers(
     })
   }
 
-  if (map.getLayer(LINE_LAYER_ID)) {
-    map.setPaintProperty(LINE_LAYER_ID, 'line-color', lineColor)
-    map.setPaintProperty(OVERVIEW_FILL_LAYER_ID, 'fill-color', polygonColor)
-    map.setPaintProperty(OVERVIEW_OUTLINE_LAYER_ID, 'line-color', polygonColor)
+  if (map.getLayer(LABELS_LAYER_ID)) {
     map.setPaintProperty(LABELS_LAYER_ID, 'text-color', labelColor)
     map.setPaintProperty(LABELS_LAYER_ID, 'text-halo-color', haloColor)
 
     return
   }
-
-  map.addLayer({
-    id: OVERVIEW_FILL_LAYER_ID,
-    type: 'fill',
-    source: OVERVIEW_BOUNDARIES_SOURCE_ID,
-    paint: { 'fill-color': polygonColor, 'fill-opacity': 0.08 },
-  })
-
-  map.addLayer({
-    id: OVERVIEW_OUTLINE_LAYER_ID,
-    type: 'line',
-    source: OVERVIEW_BOUNDARIES_SOURCE_ID,
-    paint: { 'line-color': polygonColor, 'line-width': 1, 'line-opacity': 0.5 },
-  })
-
-  map.addLayer({
-    id: LINE_LAYER_ID,
-    type: 'line',
-    source: SOURCE_ID,
-    layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: { 'line-color': lineColor, 'line-width': 3.5, 'line-opacity': 0.85 },
-  })
-
-  map.addLayer({
-    id: OVERVIEW_HIT_LAYER_ID,
-    type: 'line',
-    source: SOURCE_ID,
-    paint: { 'line-width': 16, 'line-opacity': 0 },
-  })
 
   map.addLayer({
     id: LABELS_LAYER_ID,
@@ -485,26 +481,35 @@ function mountOverviewMap(element: HTMLElement): MountedMap {
     attributionControl: { compact: true },
   })
 
+  const areasPromise = regionAreasFor(group, false)
+  const drawRegions = (areas: ColoredArea[]) =>
+    applyColoredAreas(map, OVERVIEW_REGIONS_PREFIX, areas, { labelPlacement: 'point' })
+
   map.on('load', async () => {
-    const boundaries = await boundariesFor(group.flatMap((street) => street.neighborhoods ?? []))
-    applyOverviewLayers(map, group, boundaries)
+    drawRegions(await areasPromise)
+    applyOverviewLayers(map, group)
     map.fitBounds(boundsOf(group), { padding: 28, duration: 0 })
   })
 
-  map.on('click', OVERVIEW_HIT_LAYER_ID, (event) => {
-    const anchor = event.features?.[0]?.properties?.anchor
-    if (typeof anchor === 'string' && anchor.length > 0) {
+  map.on('click', AREA_FILL_LAYER_ID, (event) => {
+    const anchor = areaAnchor(event.features?.[0])
+    if (anchor) {
       window.location.hash = anchor
     }
   })
-  map.on('mouseenter', OVERVIEW_HIT_LAYER_ID, () => {
+  map.on('mouseenter', AREA_FILL_LAYER_ID, () => {
     map.getCanvas().style.cursor = 'pointer'
   })
-  map.on('mouseleave', OVERVIEW_HIT_LAYER_ID, () => {
+  map.on('mouseleave', AREA_FILL_LAYER_ID, () => {
     map.getCanvas().style.cursor = ''
   })
 
-  const disposeTheme = watchThemeChanges(map, () => applyOverviewLayers(map, group, []))
+  const disposeTheme = watchThemeChanges(map, () => {
+    void areasPromise.then((areas) => {
+      drawRegions(areas)
+      applyOverviewLayers(map, group)
+    })
+  })
 
   return { map, disposeTheme }
 }

@@ -1,12 +1,13 @@
 ---
 title: Bud's Pizza & Beer
 description: Cozy pizza joint with my favorite t-ravs
-photo: ../images/food/buds.jpeg
+photo: ../images/food/buds/buds3.jpg
 created: 2026-06-23
-updated: 2026-07-22
+updated: 2026-11-02
 rating: 8.5
 cuisine: ['pizza']
 neighborhood: north-hampton
+district: southtown
 address:
   - 3805 S Kingshighway Blvd
   - St. Louis, MO 63109
@@ -18,8 +19,16 @@ pick:
   note: Homemade, my favorite in St. Louis
 ---
 
-After my favorite New York-style pizza place in town closed down, I was on the lookout for a good pizza place. I heard of Bud's Pizza and Beer being comparable, so I went to check it out, and it did not disappoint! The ambiance is great, it has cozy vintage vibes, plenty of seating, and I've always had good service here.
+After my favorite New York-style pizza place in town closed down (Pie Guy), I was on the lookout for a good pizza place. I heard of Bud's Pizza and Beer being comparable, so I went to check it out, and it did not disappoint! The ambiance is great, it has cozy vintage vibes, plenty of seating, and I've always had good service here.
 
 The appetizers are all excellent. The wings are good, the meatballs are good, the beer nugs are good, and the homemade toasted ravioli is the best I've had in the entire Metro area.
 
 Although I would consider the pizza more of just a standard "pizza" than New York style, the quality of the ingredients and the cook on the pizza are all top notch, and I highly recommend it as a place to take a group, get a bunch of apps, and share a pizza or two.
+
+They recently removed Giardiniera from the menu though, which makes me sad.
+
+![](../images/food/buds/buds2.jpg)
+
+![](../images/food/buds/buds5.jpg)
+
+![](../images/food/buds/buds1.jpg)

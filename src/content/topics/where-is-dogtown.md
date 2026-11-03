@@ -1,11 +1,12 @@
 ---
-title: Where Is Dogtown? Mapping St. Louis’s Unofficial Neighborhoods and Districts
+title: Where Is Dogtown? Mapping Districts and Unofficial Neighborhoods in St. Louis
 icon: notebook
 category: Neighborhoods
 pinned: true
 description: How local names like Dogtown and The Grove fit onto St. Louis’s official neighborhood map
 seoDescription: 'Where is Dogtown, The Grove, or the Delmar Loop? An informal St. Louis neighborhood map of districts and local names over the 79 official neighborhoods.'
 created: 2026-10-28
+updated: 2026-11-02
 photo: ../images/topics/where-is-dogtown-map.png
 photoCaption: A few St. Louis neighborhoods and districts
 photoInArticle: false
@@ -114,6 +115,30 @@ Although the city-county line is a major division for the St. Louis region due t
 
 <small>Pattern: Business district straddling the line of two neighborhoods.</small>
 
+### Southtown
+
+<figure class="area-map-figure">
+  <div class="area-map" data-area-map="southtown"></div>
+</figure>
+
+Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as Southtown. There was once a department store there called Southtown Famous-Barr, giving the area its name.
+
+### Grand Center
+
+<figure class="area-map-figure">
+  <div class="area-map" data-area-map="grand-center"></div>
+</figure>
+
+[[grand-center|Grand Center]] is the city's theatre and arts district, with the Fabulous Fox, Powell Hall, and the Sheldon. It sits in the official neighborhood of Covenant Blu-Grand Center, but the whole area is often informally referred to as Midtown, being between Central West End and Downtown.
+
+<small>Pattern: Business district within one neighborhood.</small>
+
+---
+
+<small>Source: [Built St. Louis](https://www.builtstlouis.net/midtown/05a.html): "This section of Grand Avenue might be considered the main drag of Midtown, its central core. It is certainly the portion which has retained the strongest sense of an urban environment; it also contains one of the city's crowning jewels, the magnificently restored Fox Theater."</small>
+
+<small>Source: [Fox Theatre (St. Louis) on Wikipedia](<https://en.wikipedia.org/wiki/Fox_Theatre_(St._Louis)>): "Also known as "The Fabulous Fox", it is situated in the arts district of the Grand Center area in Midtown St. Louis, one block north of Saint Louis University."</small>
+
 ## Grouped Neighborhoods
 
 In some instances, groups of neighborhoods are informally referred to by a single name with fuzzy boundaries.
@@ -143,22 +168,6 @@ For mapping purposes, I've created one region that encompasses the four official
 I've combined Downtown and Downtown West into a unified [[downtown|Downtown]] identity. Union Station (and the Aquarium), Energizer Park, and City Museum are all technically in Downtown West, but people just say they're going Downtown to see a soccer game or go to the aquarium.
 
 The urban fabric is continuous across both sides of Downtown, so I wanted to group them both together to make it easier to find related things to do.
-
-### Midtown
-
-<figure class="area-map-figure">
-  <div class="area-map" data-area-map="midtown"></div>
-</figure>
-
-[[midtown|Midtown]] is a theatre, arts and innovation district in the city. It is one of the areas of the city that is currently experiencing growth. For the map, I've combined Midtown and Covenant Blu-Grand Center into one Midtown identity. Although the Grand Center neighborhood is where most of the theatre district is located, the whole area is often informally referred to as Midtown, being between Central West End and Downtown.
-
-The [Cortex Innovation District](https://www.cortexstl.org/images/uploads/content/Cortex_Walking_Map_One-side_January2025.pdf) is sometimes referred to as being in Midtown, but much of it is located in Central West End. I assume this is because it's on the opposite side of the neighborhood as Euclid Avenue, the main business district in CWE. I've included it on the map for Midtown even though it's outside of the boundaries.
-
----
-
-<small>Source: [Built St. Louis](https://www.builtstlouis.net/midtown/05a.html): "This section of Grand Avenue might be considered the main drag of Midtown, its central core. It is certainly the portion which has retained the strongest sense of an urban environment; it also contains one of the city's crowning jewels, the magnificently restored Fox Theater."</small>
-
-<small>Source: [Fox Theatre (St. Louis) on Wikipedia](<https://en.wikipedia.org/wiki/Fox_Theatre_(St._Louis)>): "Also known as "The Fabulous Fox", it is situated in the arts district of the Grand Center area in Midtown St. Louis, one block north of Saint Louis University."</small>
 
 ### Carondelet
 
@@ -201,17 +210,6 @@ Personally, I haven't explored these neighborhoods too much yet, so it's easy fo
 ## Other Neighborhoods
 
 Many other popular neighborhoods in the city are known by their official name. The Hill, Soulard, Lafayette Square, Shaw, and Central West End are all official names. Some are shortened slightly, as people often call "Bevo Mill" simply "Bevo".
-
-## Other Districts
-
-There are some additional business districts I didn't make pages for yet like:
-
-- Southtown located along Kingshighway near North Hampton
-- [Macklind Business District](https://macklindbdstl.com/) in Southampton
-- [Wash Ave](https://washingtonavenue.com/) in Downtown
-- [Midtown Alley](https://www.midtownalley.com/) along Locust St. in Midtown
-- [Laclede's Landing](https://www.midtownalley.com/) in Downtown
-- Morganford in Tower Grove South
 
 ## Counties
 

@@ -7,7 +7,7 @@ import BoundaryMap from '../components/BoundaryMap.astro'
 import Comments from '../components/Comments.astro'
 import StreetMap from '../components/StreetMap.astro'
 import { streetSpotsByStreet } from '../lib/street-spots'
-import { districtBoundaries } from '../lib/districts'
+import { streetAreas } from '../lib/districts'
 import Entry from '../components/Entry.astro'
 import EntryDates from '../components/EntryDates.astro'
 import { published, topicDate } from '../lib/content'
@@ -16,7 +16,7 @@ import { areaMapAreas, areaMapSlugs } from '../lib/area-maps'
 import { articleSchema } from '../lib/schema'
 import { href } from '../lib/url'
 import { isoDate } from '../lib/dates'
-import { neighborhoodInfo, allStreets } from '../lib/neighborhoods'
+import { neighborhoodInfo, allStreets, regionToken } from '../lib/neighborhoods'
 
 export async function getStaticPaths() {
   const topics = published(await getCollection('topics'))
@@ -33,10 +33,18 @@ const hasBoundaryMap = (entry.body ?? '').includes('data-boundary-map')
 const hasStreetMap = (entry.body ?? '').includes('data-street-map')
 const areaMaps = await areaMapAreas(areaMapSlugs(entry.body))
 const streetSpots = hasStreetMap ? await streetSpotsByStreet() : {}
-const streetDistricts = hasStreetMap ? await districtBoundaries() : []
+const streetAreaShapes = hasStreetMap ? await streetAreas(streetSpots) : []
 const aboutSlugs = hasStreetMap
   ? [...new Set(allStreets().flatMap((street) => street.neighborhoods))]
   : []
+
+const streetRegions = Object.fromEntries(
+  aboutSlugs.flatMap((slug) => {
+    const info = neighborhoodInfo(slug)
+
+    return info ? [[slug, { name: info.name, token: regionToken(info) }]] : []
+  }),
+)
 
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
 const permalink = new URL(`/${entry.id}/`, siteOrigin).href
@@ -73,7 +81,11 @@ const schema = articleSchema(
   modifiedTime={modifiedDate}
   jsonLd={schema}>
   {hasBoundaryMap && <BoundaryMap />}
-  {hasStreetMap && <StreetMap spots={streetSpots} districts={streetDistricts} />}
+  {
+    hasStreetMap && (
+      <StreetMap spots={streetSpots} areas={streetAreaShapes} regions={streetRegions} />
+    )
+  }
   {areaMaps.length > 0 && <AreaMap areas={areaMaps} />}
   <Entry
     title={data.title}

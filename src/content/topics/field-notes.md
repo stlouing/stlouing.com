@@ -53,9 +53,13 @@ Many homes throughout the city are early 20th century brick-built homes, and ent
 
 St. Louis is not the most walkable city, but all the areas I've discovered that have walkable points of interest have been documented in [[walkable-st-louis|St. Louis's Most Walkable Neighborhoods]].
 
+## Biking
+
+On the [STL Urbanists](https://stlurbanists.org/community-projects) website, you can find a Safe Bike Route Map. They also have a public transportation map.
+
 ### Business Districts
 
-I've carved out a spot in the map for major business districts of the area such as [[the-grove|The Grove]], [[cherokee-street|Cherokee Street]], and [[south-grand|South Grand]].
+I've carved out a spot in the map for major business districts of the area such as [[the-grove|The Grove]], [[cherokee-street|Cherokee Street]], and [[south-grand|South Grand]]. You can read more at [[where-is-dogtown|Where Is Dogtown? Mapping Districts and Unofficial Neighborhoods in St. Louis]].
 
 ## Free Attractions
 

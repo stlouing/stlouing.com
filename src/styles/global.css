@@ -45,7 +45,7 @@
   --color-map-park: #2e7d4a;
   --color-map-district: var(--color-text-heading);
 
-  --color-map-street: #c70f2e;
+  --color-map-city: #c70f2e;
 
   --color-spot-landmark: var(--color-map-county);
   --color-spot-museum: #1f8a8a;
@@ -144,7 +144,7 @@
   --color-map-accent: #b59ae0;
   --color-map-south: #e6877a;
   --color-map-park: #7ec98a;
-  --color-map-street: #f88c9e;
+  --color-map-city: #f88c9e;
   --color-spot-records: #f0a052;
   --color-spot-museum: #5fc3c3;
   --color-spot-mural: #e08ad0;

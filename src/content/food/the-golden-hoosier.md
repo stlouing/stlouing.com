@@ -1,10 +1,12 @@
 ---
 title: The Golden Hoosier
 created: 2026-10-13
+updated: 2026-11-02
 status: tried
 description: South City bar with a Prohibition-era Art Deco bar and comedy shows
 cuisine: ['bar', 'burgers']
 neighborhood: north-hampton
+district: southtown
 address:
   - 3707 S Kingshighway Blvd
   - St. Louis, MO 63109

@@ -1,13 +1,7 @@
 import type { Feature, Polygon } from 'geojson'
 import { districtBoundaries, districtBoundary, districtParts, type DistrictPart } from './districts'
 import { neighborhoodRecords } from './neighborhood-data'
-import {
-  neighborhoodInfo,
-  officialNames,
-  regionOf,
-  regionTokenBySlug,
-  type NeighborhoodInfo,
-} from './neighborhoods'
+import { neighborhoodInfo, officialNames, regionToken } from './neighborhoods'
 import { CITY } from './site'
 
 export type AreaMapKind = 'district' | 'grouped' | 'neighborhood' | 'city'
@@ -41,20 +35,18 @@ export interface AreaMapArea {
 
 export const CITY_AREA_SLUG = 'city'
 
-const regionToken = (info: NeighborhoodInfo) =>
-  regionTokenBySlug[regionOf(info).slug] ?? '--color-map-accent'
-
 const isGroupedPage = (slug: string) => officialNames(slug).length > 1
 
 const CITY_TOOLTIP_SIDES: Record<string, TooltipSide> = {
   'delmar-loop': 'left',
   dogtown: 'left',
   'the-grove': 'below',
-  midtown: 'above',
+  'grand-center': 'above',
   downtown: 'right',
-  'south-grand': 'left',
-  'cherokee-street': 'right',
+  'south-grand': 'right',
+  'cherokee-street': 'below',
   carondelet: 'right',
+  southtown: 'above',
 }
 
 const tooltipSideFor = (slug: string): TooltipSide => CITY_TOOLTIP_SIDES[slug] ?? 'above'

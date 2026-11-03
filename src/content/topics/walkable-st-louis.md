@@ -10,7 +10,7 @@ ogImage: /og/walkable-st-louis.png
 photo: ../images/topics/shaw.jpg
 photoCaption: Tee Rak Thai in the Shaw neighborhood
 created: 2026-08-19
-updated: 2026-10-12
+updated: 2026-11-01
 ---
 
 One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch and the main business district, but isn't the place most people spend their time.
@@ -21,9 +21,18 @@ I've been on a mission to discover all these walkable spots around the city and 
 
 In this article, I'm using _walkable_ to mean an area that is interesting to walk around and explore, with plenty of shops, restaurants, and other businesses along it. I haven't factored in livability factors such as proximity to public transportation or groceries, though I plan to update this article in the future to include them.
 
+To view the full combined neighborhood map, you can click here:
+
+<p>
+  <a class="pill-button" href="/neighborhoods/">
+    <img class="pill-button-mark" src="/logo-outlined.svg" alt="" width="22" height="28" />
+    Explore the Neighborhood Map
+  </a>
+</p>
+
 ## Overview
 
-This is a map of all the walkable St. Louis streets you'll see throughout the article. Click on a title to scroll to the relevant section.
+This is a map of all the walkable St. Louis streets you'll see throughout the article.
 
 <figure class="street-map-figure">
   <div class="street-map street-overview" data-street-overview></div>
@@ -31,12 +40,23 @@ This is a map of all the walkable St. Louis streets you'll see throughout the ar
 
 <small>The shaded areas denote the official neighborhoods, the lines are the highlighted streets.</small>
 
+<div class="map-key">
+  <p class="eyebrow eyebrow--muted">Legend</p>
+  <ul class="map-key-rows" aria-label="Legend">
+    <li><span class="map-key-swatch" style="--key-color: var(--color-map-north)" aria-hidden="true"></span><span><strong>North City</strong> neighborhood</span></li>
+    <li><span class="map-key-swatch" style="--key-color: var(--color-map-central)" aria-hidden="true"></span><span><strong>Central Corridor</strong> neighborhood</span></li>
+    <li><span class="map-key-swatch" style="--key-color: var(--color-map-south)" aria-hidden="true"></span><span><strong>South City</strong> neighborhood</span></li>
+    <li><span class="map-key-swatch" style="--key-color: var(--color-map-county)" aria-hidden="true"></span><span><strong>St. Louis County</strong> town</span></li>
+    <li><span class="map-key-swatch" aria-hidden="true"></span><span><strong>Walkable area</strong>: the street and the places along it</span></li>
+  </ul>
+</div>
+
 <div data-article-toc></div>
 
 ## Central West End
 
 <figure class="street-map-figure">
-  <div class="street-map" data-street-map="euclid"></div>
+  <div class="street-map" data-street-map="euclid maryland-plaza"></div>
 </figure>
 
 Central West End is one of the most dense and urban neighborhoods outside of Downtown. Euclid is the main retail strip that runs through the neighborhood. The street is lined with large, opulent lanterns, giving the area a nice glow at night.
@@ -44,6 +64,8 @@ Central West End is one of the most dense and urban neighborhoods outside of Dow
 There are a good amount of late night food options and bars/clubs along Euclid. Tikka Tangy and Taste of Lebanon are a few of my favorite restaurants in the area. Updown, the arcade bar, is at the end of the line.
 
 One of St. Louis's independent bookstores, [Left Bank Books](https://left-bank.com/), can be found here. There is also the World Chess Hall of Fame (with the world's largest chess piece), representing St. Louis as a world chess capital.
+
+Just off Euclid, Maryland Plaza is a short street of restaurants and boutiques around a small square, running west toward the Chase Park Plaza.
 
 Euclid is just a few short blocks from Forest Park, the proximity of which is a huge pro for the neighborhood. It's also a relatively bike-friendly area.
 
@@ -141,7 +163,9 @@ There are a lot of interesting things to see on the street - the St. Louis Walk 
 
 Notably, there is a concentration of very good Asian cuisine along Delmar, including my favorite ramen in the world, [[kishimoto-mendo|Kishimoto Mendo]]. The original Salt & Smoke BBQ and Fitz's are here, and Vintage Vinyl is a great spot to browse for vinyl records.
 
-## Washington Avenue
+## Downtown
+
+### Washington Avenue
 
 <figure class="street-map-figure">
   <div class="street-map" data-street-map="washington-avenue"></div>
@@ -153,13 +177,39 @@ It's always worth mentioning City Museum, one of the most unique and interesting
 
 Being downtown, it's as walkable as it gets, and one of the areas most likely to have a lot of foot traffic during the day.
 
-## Ballpark Village
+### Ballpark Village
 
 <figure class="street-map-figure">
   <div class="street-map" data-street-map="ballpark-village"></div>
 </figure>
 
 Right next to Busch Stadium is Ballpark Village, a string of bars and restaurants surrounding a central entertainment district. It's a hub for people to hang out before a ball game or concert.
+
+### Laclede's Landing
+
+<figure class="street-map-figure">
+  <div class="street-map" data-street-map="lacledes-landing"></div>
+</figure>
+
+Laclede's Landing sits on the riverfront just north of the Arch, across the Eads Bridge. It's a few blocks of cobblestone streets and warehouses from the late 1800s, which are now restaurants and bars, and it's the remaining piece of the city's 19th-century commercial riverfront.
+
+## Midtown
+
+### Grand Center
+
+<figure class="street-map-figure">
+  <div class="street-map" data-street-map="grand-center grand-center-washington"></div>
+</figure>
+
+Grand Center is the city's arts district, just north of Saint Louis University. The Fabulous Fox Theatre and Powell Hall, home of the St. Louis Symphony, are on Grand, and The Sheldon, the Pulitzer Arts Foundation and the Contemporary Art Museum are a short walk west on Washington.
+
+### Midtown Alley
+
+<figure class="street-map-figure">
+  <div class="street-map" data-street-map="midtown-alley"></div>
+</figure>
+
+Midtown Alley is the stretch of Locust Street east of Grand that was once the city's automotive row. [[pappys|Pappy's Smokehouse]] is nearby.
 
 ## Cherokee Street
 
@@ -172,7 +222,6 @@ Right next to Busch Stadium is Ballpark Village, a string of bars and restaurant
 Cherokee St. is an arts district and commercial center in St. Louis. There are several restaurants, panaderias, and Mexican groceries along Cherokee. Although St. Louis does not have the most significant Hispanic neighborhood compared to other American cities, I'm glad there's a main area to go to get good Mexican food, bakery items, and other goods. The Cinco de Mayo festival in St. Louis also happens along Cherokee.
 
 The eastern wing of Cherokee St. is a vintage shopping district known as the [antique row](https://cherokeeantiquerow.net/), with spots like Hammond's Antiques and Books and Elder's Antiques and a vinyl record store. This whole area is all small, family-owned storefronts with no chains and has a very eclectic, artistic vibe.
-
 
 ## Southtown
 

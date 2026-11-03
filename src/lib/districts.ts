@@ -2,14 +2,14 @@ import { getCollection } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
 import type { Feature, Polygon } from 'geojson'
 import { published } from './content'
-import { hullAroundPoints, type LngLat } from './geo'
+import { hullAroundPoints, metersBetween, type LngLat } from './geo'
 import { neighborhoodRecords } from './neighborhood-data'
 import {
+  allStreets,
   districtNeighborhoods,
   districtStreets,
   neighborhoodInfo,
-  regionOf,
-  regionTokenBySlug,
+  regionToken,
 } from './neighborhoods'
 import { allSpots, type Spot } from './spots'
 import { STREET_SPOT_RANGE_METERS } from './street-spots'
@@ -32,13 +32,7 @@ export function districtParts(slug: string): DistrictPart[] {
       return []
     }
 
-    return [
-      {
-        slug: areaSlug,
-        name: info.name,
-        token: regionTokenBySlug[regionOf(info).slug] ?? '--color-map-accent',
-      },
-    ]
+    return [{ slug: areaSlug, name: info.name, token: regionToken(info) }]
   })
 }
 
@@ -82,4 +76,58 @@ export async function districtBoundaries(): Promise<Feature<Polygon>[]> {
   const boundaries = await Promise.all(neighborhoodRecords.map((row) => districtBoundary(row.slug)))
 
   return boundaries.filter((boundary): boundary is Feature<Polygon> => Boolean(boundary))
+}
+
+type StreetEntry = ReturnType<typeof allStreets>[number]
+
+function streetsTouch(street: StreetEntry, other: StreetEntry): boolean {
+  return (
+    street.anchor === other.anchor &&
+    street.line.some((point) =>
+      other.line.some(
+        (otherPoint) =>
+          metersBetween(point as LngLat, otherPoint as LngLat) <= 2 * STREET_SPOT_RANGE_METERS,
+      ),
+    )
+  )
+}
+
+function touchingGroups(streets: StreetEntry[]): StreetEntry[][] {
+  const groups: StreetEntry[][] = []
+  for (const street of streets) {
+    const touching = groups.filter((group) => group.some((member) => streetsTouch(member, street)))
+    const merged = [...touching.flat(), street]
+    groups.splice(0, groups.length, ...groups.filter((group) => !touching.includes(group)), merged)
+  }
+
+  return groups
+}
+
+export async function streetAreas(
+  spotsByStreet: Record<string, { coords: LngLat }[]>,
+): Promise<Feature<Polygon>[]> {
+  const districts = await districtBoundaries()
+  const covered = new Set(
+    districts.flatMap((district) => (district.properties?.streets as string[] | undefined) ?? []),
+  )
+  const streetHulls: Feature<Polygon>[] = touchingGroups(
+    allStreets().filter((street) => !covered.has(street.id)),
+  ).map((group) => ({
+    type: 'Feature',
+    properties: { streets: group.map((street) => street.id) },
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        hullAroundPoints(
+          group.flatMap((street) => [
+            ...street.line,
+            ...(spotsByStreet[street.id] ?? []).map((spot) => spot.coords),
+          ]),
+          STREET_SPOT_RANGE_METERS,
+        ),
+      ],
+    },
+  }))
+
+  return [...districts, ...streetHulls]
 }

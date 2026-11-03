@@ -14,7 +14,7 @@ import {
   featureBounds,
   labelPoint,
   readMapColor,
-  type Bounds,
+  visibleBounds,
   type ColoredArea,
 } from './boundary-layers'
 import { observeMapElements, readPayload, type MountedMap } from './map-shared'
@@ -134,15 +134,6 @@ async function geometryFor(areas: AreaMapArea[]): Promise<AreaGeometry> {
   }
 
   return geometry
-}
-
-function visibleBounds(map: MapLibreMap): Bounds {
-  const bounds = map.getBounds()
-
-  return [
-    [bounds.getWest(), bounds.getSouth()],
-    [bounds.getEast(), bounds.getNorth()],
-  ]
 }
 
 function drawAreas(map: MapLibreMap, geometry: AreaGeometry): void {

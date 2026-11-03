@@ -284,6 +284,15 @@ function centroidLatitude(ring: Position[]): number {
 
 export type Bounds = [Position, Position]
 
+export function visibleBounds(map: MapLibreMap): Bounds {
+  const bounds = map.getBounds()
+
+  return [
+    [bounds.getWest(), bounds.getSouth()],
+    [bounds.getEast(), bounds.getNorth()],
+  ]
+}
+
 export interface LabelPlacement {
   within?: Bounds
   avoid?: BoundaryFeature[]

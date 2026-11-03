@@ -66,13 +66,7 @@
     "ignored": true,
     "mergedInto": "downtown"
   },
-  {
-    "number": 37,
-    "name": "Midtown",
-    "slug": "midtown",
-    "group": "Central Corridor",
-    "numberLabel": "37, 77"
-  },
+  { "number": 37, "name": "Midtown", "slug": "midtown", "group": "Central Corridor" },
   {
     "number": 38,
     "name": "Central West End",
@@ -191,9 +185,7 @@
     "number": 77,
     "name": "Covenant Blu-Grand Center",
     "slug": "covenant-blu-grand-center",
-    "group": "Central Corridor",
-    "ignored": true,
-    "mergedInto": "midtown"
+    "group": "Central Corridor"
   },
   { "number": 78, "name": "Hamilton Heights", "slug": "hamilton-heights", "group": "North City" },
   { "number": 79, "name": "North Riverfront", "slug": "north-riverfront", "group": "North City" },
@@ -355,5 +347,21 @@
     "group": "South City",
     "type": "district",
     "streets": ["south-grand"]
+  },
+  {
+    "number": 103,
+    "name": "Southtown",
+    "slug": "southtown",
+    "group": "South City",
+    "type": "district",
+    "streets": ["south-town"]
+  },
+  {
+    "number": 104,
+    "name": "Grand Center",
+    "slug": "grand-center",
+    "group": "Central Corridor",
+    "type": "district",
+    "streets": ["grand-center", "grand-center-washington"]
   }
 ]

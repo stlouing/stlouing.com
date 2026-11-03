@@ -408,7 +408,8 @@
   {
     "name": "The Fabulous Fox Theatre",
     "category": "landmark",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "url": "https://www.fabulousfox.com",
     "description": "A lavishly restored 1929 movie palace, now a touring-Broadway and concert venue.",
     "address": "527 N Grand Blvd",
@@ -417,7 +418,8 @@
   {
     "name": "Powell Hall",
     "category": "landmark",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "url": "https://www.slso.org",
     "description": "Home of the St. Louis Symphony Orchestra, in a former 1925 movie palace.",
     "address": "718 N Grand Blvd",
@@ -426,7 +428,8 @@
   {
     "name": "The Sheldon",
     "category": "landmark",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "url": "https://www.thesheldon.org/",
     "description": "A 1912 concert hall and galleries renowned for its acoustics.",
     "address": "3648 Washington Blvd",
@@ -435,7 +438,8 @@
   {
     "name": "Pulitzer Arts Foundation",
     "category": "museum",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "url": "https://pulitzerarts.org",
     "description": "A free art museum in a Tadao Ando building.",
     "address": "3716 Washington Blvd",
@@ -444,7 +448,8 @@
   {
     "name": "Contemporary Art Museum St. Louis",
     "category": "museum",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "url": "https://camstl.org",
     "description": "A free contemporary art museum.",
     "address": "3750 Washington Blvd",
@@ -453,7 +458,7 @@
   {
     "name": "Saint Louis University Museum of Art",
     "category": "museum",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
     "url": "https://www.slu.edu/sluma",
     "description": "Founded in 2002 in a Beaux Arts building; modern masters, the Jesuit collection and Chihuly glass.",
     "address": "3663 Lindell Blvd",
@@ -498,7 +503,8 @@
   {
     "name": "Walls Off Washington",
     "category": "mural",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "url": "https://kranzbergartsfoundation.org",
     "description": "More than 20 murals commissioned by the Kranzberg Arts Foundation along Washington Avenue, opened in 2022.",
     "address": "3333 Washington Ave",
@@ -507,7 +513,8 @@
   {
     "name": "St. Louis Honey Bears by fnnch",
     "category": "mural",
-    "neighborhoods": ["midtown"],
+    "neighborhoods": ["covenant-blu-grand-center"],
+    "district": "grand-center",
     "description": "A 35-by-50-foot mural of honey bears on the Centene Center for the Arts, unveiled in 2019.",
     "address": "3547 Olive St",
     "coords": [-90.23111, 38.63801]
