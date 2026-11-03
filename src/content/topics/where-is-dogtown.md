@@ -13,7 +13,7 @@ photoInArticle: false
 ogImage: /og/where-is-dogtown-og.png
 ---
 
-When I first moved to St. Louis, I quickly picked up the names of places faround the city: we'd go to Seamus McDaniel’s in Dogtown, or The Gramophone in The Grove. As I explored the city more and began mapping it for this project, I discovered there are several names you won't find on an official neighborhood map.
+When I first moved to St. Louis, I quickly picked up the names of various places around the city - we'd go to Seamus McDaniel’s in Dogtown, or The Gramophone in The Grove. As I explored the city more and began mapping it for this project, I discovered there are several names you won't find on an official neighborhood map.
 
 St. Louis has 79 official neighborhoods with clearly defined boundaries, but the way people refer to areas can be more casual. For this site, I was looking for a way to build a map that respects the official neighborhood boundaries while exposing the informal names people use as well.
 
