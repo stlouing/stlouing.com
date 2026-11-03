@@ -534,7 +534,7 @@
       "from": "Fyler",
       "to": "Devonshire",
       "anchor": "southtown",
-      "neighborhoods": ["north-hampton", "southampton", "tower-grove-south"],
+      "neighborhoods": ["bevo-mill", "north-hampton", "southampton", "tower-grove-south"],
       "query": {
         "roadNames": ["South Kingshighway Boulevard", "Kingshighway Boulevard"],
         "from": { "names": ["Fyler Avenue", "Arsenal Street"] },
@@ -1007,16 +1007,16 @@
       "neighborhoods": ["central-west-end"],
       "query": {
         "roadNames": ["Maryland Plaza", "Maryland Avenue"],
-        "from": { "coord": [38.6452, -90.2612] },
+        "from": { "coord": [38.64475, -90.26161] },
         "to": { "coord": [38.645, -90.2635] },
         "center": [38.6451, -90.2623]
       },
       "line": [
-        [-90.2612, 38.6452],
-        [-90.261609, 38.644754],
+        [-90.26161, 38.64475],
         [-90.262393, 38.644913],
-        [-90.262914, 38.645053],
-        [-90.263183, 38.645097],
+        [-90.262832, 38.645004],
+        [-90.262994, 38.645086],
+        [-90.263218, 38.645091],
         [-90.2635, 38.645]
       ]
     },

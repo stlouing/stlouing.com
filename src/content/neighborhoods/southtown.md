@@ -1,6 +1,7 @@
 ---
 title: Southtown
 created: 2026-11-02
+updated: 2026-11-03
 description: Restaurants and bars in South City
 photo: ../images/food/buds/buds1.jpg
 ---
@@ -9,4 +10,4 @@ photo: ../images/food/buds/buds1.jpg
 
 It seems there used to be a Southtown Famous-Barr department store at Kingshighway & Chippewa that was demolished in the '90s that gave the area its name.
 
-Now, there are new restaurants and bars filling up the space, such as the Golden Hoosier and Himalayan Yeti. It's honestly not the most walkable area of the city due to Kingshighway being such a busy street, but I can see the area getting more and more built up [as Garcia Properties is working on revializing it](https://www.stlmag.com/business/garcia-properties-south-kingshighway/).
+Now, there are new restaurants and bars filling up the space, such as the Golden Hoosier and Himalayan Yeti. It's honestly not the most walkable area of the city due to Kingshighway being such a busy street, but I can see the area getting more and more built up [as Garcia Properties is working on revitalizing it](https://www.stlmag.com/business/garcia-properties-south-kingshighway/).

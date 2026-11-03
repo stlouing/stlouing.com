@@ -6,7 +6,7 @@ pinned: true
 description: How local names like Dogtown and The Grove fit onto St. Louis’s official neighborhood map
 seoDescription: 'Where is Dogtown, The Grove, or the Delmar Loop? An informal St. Louis neighborhood map of districts and local names over the 79 official neighborhoods.'
 created: 2026-10-28
-updated: 2026-11-02
+updated: 2026-11-03
 photo: ../images/topics/where-is-dogtown-map.png
 photoCaption: A few St. Louis neighborhoods and districts
 photoInArticle: false
@@ -226,7 +226,7 @@ If you're going on a St. Louis-style pizza tour, you should go way north to Pirr
 
 People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well. I'm always open to hearing your thoughts.
 
-If you liked this article, you also might like [[walkable-st-louis|St. Louis's Most Walkable Neighborhoods]], a set of twenty walkable areas in St. Louis across the city and inner-ring suburbs, also with maps and major points of interest.
+If you liked this article, you also might like [[walkable-st-louis|St. Louis's Most Walkable Neighborhoods]], a set of twenty-three walkable areas in St. Louis across the city and inner-ring suburbs, also with maps and major points of interest.
 
 Once again, you can check out the neighborhood map to find restaurants, coffee shops, landmarks, museums, book and game stores, markets, and more right here:
 

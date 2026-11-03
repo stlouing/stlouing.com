@@ -383,6 +383,7 @@ const mytownviewSlug: Record<string, string> = { 'forest-park-southeast': 'fores
 const wikipediaTitleBySlug: Record<string, string | null> = {
   'bellefontainecalvary-cemetery': null,
   'carondelet-park': 'Carondelet Park',
+  'covenant-blu-grand-center': 'Grand Center Arts District, St. Louis',
   'fairground-park': 'Fairground Park (St. Louis)',
   'jeff-vanderlou': 'JeffVanderLou, St. Louis',
   'mark-twain-i-70-industrial': 'Mark Twain/I-70 Industrial, St. Louis',

@@ -1205,6 +1205,7 @@
     "name": "Greetings from St. Louis",
     "category": "mural",
     "neighborhoods": ["north-hampton"],
+    "district": "southtown",
     "description": "Vintage postcard-style mural of St. Louis landmarks.",
     "address": "3537 S Kingshighway Blvd",
     "coords": [-90.2717, 38.59467]
