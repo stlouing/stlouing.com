@@ -19,6 +19,8 @@ St. Louis has 79 official neighborhoods with clearly defined boundaries, but the
 
 Someone new to St. Louis might want to know what restaurants to check out in The Grove but not know to look in Forest Park Southeast yet. They might have been told to go check out Cherokee, which crosses multiple boundaries, or The Loop, which crosses the city-county line. And Dogtown isn't one neighborhood, but a group of neighborhoods south of Forest Park ([more on that below](#dogtown)).
 
+The reason I made these changes on the map is so you can view the whole map and click on related groups together, for example on a Cherokee specific page, instead of having to click between four neighborhoods to see everything on Cherokee.
+
 Here's a link to the full neighborhood map with restaurants, coffee shops, landmarks, museums, book and game stores, markets, parks, and write-ups. In the rest of this article, I'll explain some of the additions and variations I made to the map.
 
 <p>
