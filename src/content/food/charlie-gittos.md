@@ -1,7 +1,7 @@
 ---
 title: Charlie Gitto's
 created: 2026-07-16
-rating: 4
+rating: 3.5
 description: The Hill Italian classic
 cuisine: ['italian']
 neighborhood: the-hill

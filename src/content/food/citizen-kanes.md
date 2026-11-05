@@ -1,7 +1,7 @@
 ---
 title: Citizen Kane's
 created: 2026-11-05
-rating: 3.5
+rating: 3
 description: Family-owned classic steakhouse
 cuisine: ['american']
 neighborhood: kirkwood
