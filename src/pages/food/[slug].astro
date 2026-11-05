@@ -24,7 +24,6 @@ import { published, excerpt, hasBody, foodStatus, META_DESCRIPTION_CHARS } from 
 import { isoDate } from '../../lib/dates'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref, neighborhoodName, placeLocality } from '../../lib/neighborhoods'
-import { resolveWriterState } from '../../lib/rating'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineLabel, cuisinePlacePhrase } from '../../lib/cuisine'
@@ -41,9 +40,8 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { data } = entry
-const writerState = resolveWriterState({ ...data, status: foodStatus(entry) })
 const stubNote =
-  writerState.kind === 'pending'
+  foodStatus(entry) === 'tried'
     ? `I've been to ${data.title}, but I haven't written up a review yet.`
     : `I haven't made it to ${data.title} yet, but it's on my list to try.`
 const lastUpdated = data.updated ?? data.created
@@ -171,7 +169,6 @@ const stubDescription = [
   primaryCuisine
     ? `${cuisineLabel(primaryCuisine)} in ${locality}`
     : `${data.title} in ${locality}`,
-  writerState.statement,
 ]
   .filter(Boolean)
   .join(' — ')
@@ -209,8 +206,7 @@ const seoDescription = hasBody(entry)
         <div class="pane-stat">
           <span class="pane-stat-label eyebrow eyebrow--muted">My rating</span>
           <span class="pane-stat-value my-rating-line">
-            <Rating rating={writerState.rating} />
-            {writerState.statement && <span class="description">{writerState.statement}</span>}
+            <Rating rating={data.rating} />
           </span>
         </div>
         <ReaderVote slug={entry.id} title={data.title} />
@@ -423,16 +419,12 @@ const seoDescription = hasBody(entry)
   @media (max-width: 899px) {
     .detail-aside {
       order: -1;
-      padding-block-end: var(--spacing-lg);
       border-block-end: 1px solid var(--color-line);
     }
   }
 
   .my-rating-line {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-xs);
   }
 
   .my-rating-line :global(.rating .rating-fleur) {

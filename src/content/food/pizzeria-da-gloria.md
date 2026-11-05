@@ -1,10 +1,11 @@
 ---
 title: Pizzeria da Gloria
 created: 2026-08-19
+updated: 2026-11-05
 photo: ../images/food/pizzeriadagloria.jpeg
 rating: 5
 description: Wood-fired Neapolitan-style pizza
-cuisine: ['pizza']
+cuisine: ['pizza', 'italian']
 neighborhood: the-hill
 address:
   - 2024 Marconi Ave

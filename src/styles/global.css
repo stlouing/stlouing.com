@@ -3862,7 +3862,7 @@ button.title-link:hover {
 }
 
 .feed-empty {
-  margin: var(--spacing-md) 0 var(--spacing-sm);
+  margin: 0;
 }
 
 .feed-older {

@@ -23,24 +23,6 @@ export function ratingLabel(rating: number | undefined): string {
 
 export type FoodStatus = 'written' | 'tried' | 'want-to-try'
 
-export interface WriterState {
-  statement?: string
-  rating?: number
-  kind?: 'pending' | 'unvisited'
-}
-
-export function resolveWriterState(data: { rating?: number; status?: FoodStatus }): WriterState {
-  if (typeof data.rating === 'number') {
-    return { rating: data.rating }
-  }
-
-  if (data.status === 'tried') {
-    return { statement: 'Not yet rated', kind: 'pending' }
-  }
-
-  return { statement: 'Unexplored', kind: 'unvisited' }
-}
-
 export function isExplored(status: FoodStatus = 'written'): boolean {
   return status === 'written' || status === 'tried'
 }

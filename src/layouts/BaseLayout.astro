@@ -80,11 +80,17 @@ if (segments.length >= 1) {
   }
 }
 
+function escapeForLinkPreview(value: string): string {
+  return value.replace(/&(?! )/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
+}
+
 const leaf = trail.length > 1 ? trail[trail.length - 1].label : undefined
 const titleLeaf = title ?? leaf
 const pageTitle = titleLeaf ?? DEFAULT_TITLE
 
 const metaDescription = description ?? SITE_DESCRIPTION
+const previewTitle = escapeForLinkPreview(pageTitle)
+const previewDescription = escapeForLinkPreview(metaDescription)
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
 const socialImage = new URL(href(ogImage ?? '/og.png?v=2'), Astro.site ?? Astro.url.origin).href
 const socialImageAlt = ogImage ? (crumb ?? SITE_NAME) : DEFAULT_SOCIAL_IMAGE_ALT
@@ -141,8 +147,8 @@ const analyticsUrl = analyticsBase
     <link rel="icon" href={href('/favicon.ico')} sizes="48x48" />
     <link rel="icon" type="image/png" href={href('/favicon.png')} sizes="144x144" />
     <link rel="icon" type="image/svg+xml" href={href('/favicon.svg')} />
-    <title>{pageTitle}</title>
-    <meta name="description" content={metaDescription} />
+    <title set:html={previewTitle}></title>
+    <Fragment set:html={`<meta name="description" content="${previewDescription}" />`} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href={href('/rss.xml')} />
@@ -151,8 +157,8 @@ const analyticsUrl = analyticsBase
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={metaDescription} />
+    <Fragment set:html={`<meta property="og:title" content="${previewTitle}" />`} />
+    <Fragment set:html={`<meta property="og:description" content="${previewDescription}" />`} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content={String(ogImageWidth)} />

@@ -1,9 +1,10 @@
 ---
 title: Gioia's Deli
 created: 2026-07-16
+updated: 2026-11-05
 status: tried
 description: Famous Hot salami sandwiches
-cuisine: ['sandwiches']
+cuisine: ['sandwiches', 'italian']
 neighborhood: the-hill
 address:
   - 1934 Macklind Ave
