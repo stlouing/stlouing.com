@@ -1842,6 +1842,16 @@ a.category-chip:hover {
     border-radius: var(--radius-rounded);
     animation: none;
   }
+
+  .sheet-dialog .map-sheet-handle {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  body:has(.sheet-dialog[open]) {
+    overflow: hidden;
+  }
 }
 
 @keyframes map-sheet-rise {

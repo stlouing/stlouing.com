@@ -2,6 +2,7 @@
 import '@fontsource/archivo/400.css'
 import { getCollection } from 'astro:content'
 
+import FleurGlyph from '../assets/FleurGlyph.astro'
 import IconX from '../assets/IconX.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ClearFilters from '../components/ClearFilters.astro'
@@ -63,92 +64,94 @@ const sortOptions = [
   title={`${CITY} Food & Coffee Explorer`}
   description={`${CITY} restaurant, coffee, and bar explorer. A database of spots to search, filter by type and location, and sort by rating or votes.`}>
   <div class="table-page" data-filter-table>
-    <header class="page-bar">
-      <div class="wrap wrap-wide page-bar-inner">
-        <MastheadBrand />
-        <PaneSearch
-          label="Search places"
-          placeholder="Search by name, cuisine..."
-          narrowPlaceholder={`Search ${places.length} spots`}
-        />
-        <div class="bar-anchor bar-anchor--pushed">
-          <button
-            type="button"
-            class="page-bar-link"
-            data-info-open
-            aria-haspopup="dialog"
-            aria-label="What is this?">
-            <span class="wide-only">What is this?</span>
-            <span class="narrow-only">?</span>
-          </button>
-          <dialog class="map-sheet sheet-dialog" data-info-dialog aria-labelledby="info-title">
+    <div class="page-nav">
+      <header class="page-bar">
+        <div class="wrap wrap-wide page-bar-inner">
+          <MastheadBrand />
+          <PaneSearch
+            label="Search places"
+            placeholder="Search by name, cuisine..."
+            narrowPlaceholder={`Search by name, cuisine...`}
+          />
+          <div class="bar-anchor bar-anchor--pushed">
             <button
               type="button"
-              class="close-button map-sheet-close"
-              data-sheet-close
-              aria-label="Close">
-              <IconX />
+              class="page-bar-link"
+              data-info-open
+              aria-haspopup="dialog"
+              aria-label="What is this?">
+              <span class="wide-only">What is this?</span>
+              <span class="narrow-only">?</span>
             </button>
-            <div class="map-sheet-body">
-              <div class="popup-scroll">
-                <div class="sheet-title" id="info-title">
-                  <span class="title-serif">What is this?</span>
+            <dialog class="map-sheet sheet-dialog" data-info-dialog aria-labelledby="info-title">
+              <button
+                type="button"
+                class="close-button map-sheet-close"
+                data-sheet-close
+                aria-label="Close">
+                <IconX />
+              </button>
+              <div class="map-sheet-body">
+                <div class="popup-scroll">
+                  <div class="sheet-title" id="info-title">
+                    <span class="title-serif">What is this?</span>
+                  </div>
+                  <p class="sheet-lede description">
+                    An explorer for St. Louis food and coffee, built from the places I've tried or
+                    want to try. It's a fun personal project for me to keep track of where I've been,
+                    but it's not an exhaustive list of all restaurants.
+                  </p>
+                  <p class="sheet-lede description">
+                    Click into any spot for its website, address, Instagram, and review. You can also
+                    vote on your favorites.
+                  </p>
+                  <p class="sheet-lede description">
+                    For a higher fidelity version with photographs I've taken and an interactive map, <strong
+                      ><a href={href('/food/')}>click here</a></strong
+                    >.
+                  </p>
+                  <p class="sheet-lede description">
+                    I hope it's useful and you discover something new! :)
+                  </p>
                 </div>
-                <p class="sheet-lede description">
-                  An explorer for St. Louis food and coffee, built from the places I've tried or
-                  want to try. It's a fun personal project for me to keep track of where I've been,
-                  but it's not an exhaustive list of all restaurants.
-                </p>
-                <p class="sheet-lede description">
-                  Click into any spot for its website, address, Instagram, and review. You can also
-                  vote on your favorites.
-                </p>
-                <p class="sheet-lede description">
-                  For a higher fidelity version with photographs I've taken and an interactive map, <strong
-                    ><a href={href('/food/')}>click here</a></strong
-                  >.
-                </p>
-                <p class="sheet-lede description">
-                  I hope it's useful and you discover something new! :)
-                </p>
               </div>
-            </div>
-          </dialog>
+            </dialog>
+          </div>
+          <ThemeToggle />
+          <div class="bar-anchor">
+            <SuggestSpot category="food" subject="list" />
+          </div>
         </div>
-        <ThemeToggle />
-        <div class="bar-anchor">
-          <SuggestSpot category="food" subject="list" />
+      </header>
+      <h1 class="visually-hidden">St. Louis Food & Coffee</h1>
+      <div class="filter-band">
+        <div class="wrap wrap-wide filter-row">
+          <span class="wide-only">
+            <strong data-filter-count>{places.length}</strong>
+            <span data-count-noun>spots</span>:
+          </span>
+          <select data-filter-facet="cuisine" aria-label="Type">
+            <option value="" data-narrow-label="Any type">Any type</option>
+            {cuisines.map((cuisine) => <option value={cuisine}>{cuisineLabel(cuisine)}</option>)}
+          </select>
+          <span class="wide-only">in</span>
+          <select data-filter-facet="neighborhood" aria-label="Location">
+            <option value="">Any location</option>
+            <optgroup label="Districts">
+              {districts.map((district) => <option value={district.slug}>{district.name}</option>)}
+            </optgroup>
+            <optgroup label="Neighborhoods and Towns">
+              {
+                neighborhoods.map((neighborhood) => (
+                  <option value={neighborhood.slug}>{neighborhood.name}</option>
+                ))
+              }
+            </optgroup>
+          </select>
+          <span class="wide-only">sorted by</span>
+          <PaneSort options={sortOptions} />
+          <ClearFilters variant="text" />
         </div>
-      </div>
-    </header>
-    <h1 class="visually-hidden">St. Louis Food & Coffee</h1>
-    <div class="filter-band">
-      <div class="wrap wrap-wide filter-row">
-        <span class="wide-only">
-          <strong data-filter-count>{places.length}</strong>
-          <span data-count-noun>spots</span>:
-        </span>
-        <select data-filter-facet="cuisine" aria-label="Type">
-          <option value="" data-narrow-label="Any type">Any type</option>
-          {cuisines.map((cuisine) => <option value={cuisine}>{cuisineLabel(cuisine)}</option>)}
-        </select>
-        <span class="wide-only">in</span>
-        <select data-filter-facet="neighborhood" aria-label="Location">
-          <option value="">Any location</option>
-          <optgroup label="Districts">
-            {districts.map((district) => <option value={district.slug}>{district.name}</option>)}
-          </optgroup>
-          <optgroup label="Neighborhoods and Towns">
-            {
-              neighborhoods.map((neighborhood) => (
-                <option value={neighborhood.slug}>{neighborhood.name}</option>
-              ))
-            }
-          </optgroup>
-        </select>
-        <span class="wide-only">sorted by</span>
-        <PaneSort options={sortOptions} />
-        <ClearFilters variant="text" />
       </div>
     </div>
     <div class="wrap wrap-wide">
@@ -207,6 +210,7 @@ const sortOptions = [
                   </td>
                   <td role="cell" class="rating-cell">
                     {rating}
+                    {rating && <FleurGlyph class="rating-fleur" />}
                   </td>
                   {SUPABASE_ENABLED && (
                     <td role="cell" class="score-cell">
@@ -273,7 +277,8 @@ const sortOptions = [
   .table-page {
     --color-raised: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-text));
     --control-height: calc(var(--spacing-xl) - var(--spacing-xxs));
-    --filter-band-height: calc(var(--control-height) + 2 * var(--spacing-xs));
+    --page-bar-height: calc(var(--spacing-xl) + 2 * var(--spacing-xs));
+    --page-nav-height: calc(var(--page-bar-height) + var(--control-height) + 2 * var(--spacing-xs));
     font-family: var(--font-sans-serif);
   }
 
@@ -287,7 +292,14 @@ const sortOptions = [
     font-family: inherit;
   }
 
+  .page-nav {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+  }
+
   .page-bar {
+    --bar-control-border: color-mix(in srgb, var(--color-bar-text) 45%, transparent);
     position: relative;
     z-index: 4;
     background: var(--color-bar-background);
@@ -298,6 +310,7 @@ const sortOptions = [
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+    min-height: var(--page-bar-height);
     padding-block: var(--spacing-xs);
   }
 
@@ -322,7 +335,7 @@ const sortOptions = [
     box-sizing: border-box;
     height: var(--control-height);
     padding-block: 0;
-    border: 1px solid color-mix(in srgb, var(--color-bar-text) 45%, transparent);
+    border: 1px solid var(--bar-control-border);
     background: var(--color-bar-background-sub);
     color: var(--color-bar-text);
   }
@@ -401,9 +414,6 @@ const sortOptions = [
   }
 
   .filter-band {
-    position: sticky;
-    top: 0;
-    z-index: 3;
     background: var(--color-surface-2);
   }
 
@@ -460,7 +470,7 @@ const sortOptions = [
 
   thead {
     position: sticky;
-    top: var(--filter-band-height);
+    top: var(--page-nav-height);
     z-index: 2;
     border-block: 1px solid var(--color-line-input);
     background: var(--color-background);
@@ -529,6 +539,26 @@ const sortOptions = [
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     text-align: end;
+  }
+
+  /* .rating-cell :global(.rating-fleur) {
+    display: none;
+  } */
+
+  .rating-cell {
+    display: flex;
+    grid-area: rating;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-xxs);
+  }
+
+  .rating-cell :global(.rating-fleur) {
+    display: block;
+    flex-shrink: 0;
+    width: var(--font-size-xxs);
+    height: var(--font-size-xxs);
+    color: var(--color-accent-gold);
   }
 
   .name-cell,
@@ -700,6 +730,10 @@ const sortOptions = [
   }
 
   @media (max-width: 700px) {
+    .page-bar {
+      --control-height: calc(var(--spacing-xl) + var(--spacing-xs));
+    }
+
     .page-bar-inner {
       gap: var(--spacing-sm);
     }
@@ -712,9 +746,25 @@ const sortOptions = [
       max-width: none;
     }
 
-    .page-bar-link {
-      font-size: var(--font-size-md);
+    .page-bar-link,
+    .page-bar :global(.btn-quiet.theme-toggle) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: var(--control-height);
+      height: var(--control-height);
+      padding: 0;
+      border: 1px solid var(--bar-control-border);
+      border-radius: var(--radius-input);
+      background: var(--color-bar-background-sub);
+      font-size: var(--font-size-lg);
       text-decoration-line: none;
+    }
+
+    .page-bar-link:hover,
+    .page-bar :global(.btn-quiet.theme-toggle:hover) {
+      color: var(--color-bar-text);
     }
 
     .table-page :global(.suggest-spot) {
@@ -748,7 +798,7 @@ const sortOptions = [
     }
 
     table {
-      --rating-width: var(--spacing-xl);
+      --rating-width: var(--spacing-xxl);
     }
 
     thead {
@@ -771,10 +821,6 @@ const sortOptions = [
 
     td {
       padding: 0;
-    }
-
-    .rating-cell {
-      grid-area: rating;
     }
 
     .name-cell {

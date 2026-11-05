@@ -1,3 +1,5 @@
+import { bindSwipeToClose } from './sheet-swipe'
+
 interface SheetDialogOptions {
   dialog: HTMLDialogElement
   opener: HTMLElement
@@ -18,6 +20,11 @@ export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialog
   })
 
   dialog.querySelector('[data-sheet-close]')?.addEventListener('click', () => dialog.close())
+
+  const body = dialog.querySelector<HTMLElement>('.map-sheet-body')
+  if (body) {
+    bindSwipeToClose(dialog, body, () => dialog.close())
+  }
 
   if (onClose) {
     dialog.addEventListener('close', onClose)
