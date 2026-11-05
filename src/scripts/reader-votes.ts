@@ -215,6 +215,14 @@ function voterId(): string {
   return browserId()
 }
 
+export function readChoices(): Record<string, Choice> {
+  const entries = Object.entries(loadStore().places ?? {}).flatMap(([slug, place]) =>
+    place.vote === 'like' || place.vote === 'dislike' ? [[slug, place.vote] as const] : [],
+  )
+
+  return Object.fromEntries(entries)
+}
+
 export function readChoice(slug: string): Choice | null {
   const vote = readPlace(slug).vote
 

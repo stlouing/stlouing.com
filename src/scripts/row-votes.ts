@@ -1,4 +1,11 @@
-import { castVote, clearChoice, readChoice, writeChoice, type Choice } from './reader-votes'
+import {
+  castVote,
+  clearChoice,
+  readChoice,
+  readChoices,
+  writeChoice,
+  type Choice,
+} from './reader-votes'
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
@@ -30,8 +37,9 @@ export function initRowVotes(): void {
     }, STATUS_DURATION_MS)
   }
 
+  const choices = readChoices()
   for (const row of rows) {
-    renderChoice(row, readChoice(row.dataset.slug ?? ''))
+    renderChoice(row, choices[row.dataset.slug ?? ''] ?? null)
     setBusy(row, false)
   }
 

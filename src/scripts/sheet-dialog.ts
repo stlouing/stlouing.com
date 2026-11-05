@@ -1,21 +1,27 @@
-export function initInfoDialog(): void {
-  const dialog = document.querySelector<HTMLDialogElement>('[data-info-dialog]')
-  const opener = document.querySelector<HTMLButtonElement>('[data-info-open]')
-  if (!dialog || !opener) {
-    return
-  }
+interface SheetDialogOptions {
+  dialog: HTMLDialogElement
+  opener: HTMLElement
+  onOpen?: () => void
+  onClose?: () => void
+}
 
+export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialogOptions): void {
   opener.addEventListener('click', () => {
     if (dialog.open) {
       dialog.close()
-    } else {
-      dialog.show()
+
+      return
     }
+
+    dialog.show()
+    onOpen?.()
   })
 
-  dialog.querySelector('[data-info-close]')?.addEventListener('click', () => {
-    dialog.close()
-  })
+  dialog.querySelector('[data-sheet-close]')?.addEventListener('click', () => dialog.close())
+
+  if (onClose) {
+    dialog.addEventListener('close', onClose)
+  }
 
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && dialog.open) {

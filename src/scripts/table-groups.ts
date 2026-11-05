@@ -18,9 +18,11 @@ function buildHeaderRow(label: string, count: number, columns: number): HTMLTabl
   const row = document.createElement('tr')
   row.className = 'group-row'
   row.dataset.groupRow = ''
+  row.setAttribute('role', 'row')
 
   const cell = document.createElement('th')
   cell.scope = 'colgroup'
+  cell.setAttribute('role', 'rowheader')
   cell.colSpan = columns
   cell.textContent = label
 

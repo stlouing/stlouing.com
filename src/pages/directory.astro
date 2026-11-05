@@ -21,23 +21,14 @@ const places = published(await getCollection('food')).sort((left, right) =>
   left.data.title.localeCompare(right.data.title),
 )
 
-const DOGTOWN = 'dogtown'
-const CARONDELET = 'carondelet'
-
 function namedArea(slug: string | undefined): OfficialPart | undefined {
   return slug ? { slug, name: neighborhoodName(slug) } : undefined
 }
 
 function placeLocation({ neighborhood, district, coords }: (typeof places)[number]['data']) {
-  const dogtownPart = neighborhood === DOGTOWN ? officialPartAt(DOGTOWN, coords) : undefined
-  if (dogtownPart) {
-    return { area: dogtownPart, district: namedArea(DOGTOWN) }
-  }
-
-  const carondeletPart =
-    neighborhood === CARONDELET ? officialPartAt(CARONDELET, coords) : undefined
-  if (carondeletPart && carondeletPart.slug !== CARONDELET) {
-    return { area: carondeletPart, district: namedArea(CARONDELET) }
+  const officialPart = neighborhood ? officialPartAt(neighborhood, coords) : undefined
+  if (officialPart && officialPart.slug !== neighborhood) {
+    return { area: officialPart, district: namedArea(neighborhood) }
   }
 
   return { area: namedArea(neighborhood), district: namedArea(district) }
@@ -90,11 +81,11 @@ const sortOptions = [
             <span class="wide-only">What is this?</span>
             <span class="narrow-only">?</span>
           </button>
-          <dialog class="map-sheet suggest-dialog" data-info-dialog aria-labelledby="info-title">
+          <dialog class="map-sheet sheet-dialog" data-info-dialog aria-labelledby="info-title">
             <button
               type="button"
               class="close-button map-sheet-close"
-              data-info-close
+              data-sheet-close
               aria-label="Close">
               <IconX />
             </button>
@@ -103,16 +94,16 @@ const sortOptions = [
                 <div class="sheet-title" id="info-title">
                   <span class="title-serif">What is this?</span>
                 </div>
-                <p class="suggest-lede description">
+                <p class="sheet-lede description">
                   An explorer for St. Louis food and coffee, built from the places I've tried or
-                  want to try.
+                  want to try. Purely a fun personal project. :)
                 </p>
-                <p class="suggest-lede description">
-                  Click into any spot for its website, address, Instagram, and my writeup. You can
-                  also vote on your favorites.
+                <p class="sheet-lede description">
+                  Click into any spot for its website, address, Instagram, and review. You can also
+                  vote on your favorites.
                 </p>
-                <p class="suggest-lede description">
-                  For a higher fidelity version with photographs and a map, <strong
+                <p class="sheet-lede description">
+                  For a higher fidelity version with photographs I've taken and an interactive map, <strong
                     ><a href={href('/food/')}>click here</a></strong
                   >.
                 </p>
@@ -157,23 +148,23 @@ const sortOptions = [
       </div>
     </div>
     <div class="wrap wrap-wide">
-      <table>
-        <thead>
-          <tr>
-            <th class="name-cell">Name</th>
-            <th class="type-cell">Type</th>
-            <th class="area-cell"> Location</th>
-            <th class="rating-cell">My Rating</th>
+      <table role="table">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" class="name-cell">Name</th>
+            <th role="columnheader" class="type-cell">Type</th>
+            <th role="columnheader" class="area-cell"> Location</th>
+            <th role="columnheader" class="rating-cell">My Rating</th>
             {
               SUPABASE_ENABLED && (
-                <th class="score-cell" title="Been here? What did you think?">
+                <th role="columnheader" class="score-cell" title="Been here? What did you think?">
                   Votes
                 </th>
               )
             }
           </tr>
         </thead>
-        <tbody>
+        <tbody role="rowgroup">
           {
             locatedPlaces.map(({ place, area, district }) => {
               const { title, cuisine, rating } = place.data
@@ -183,6 +174,7 @@ const sortOptions = [
 
               return (
                 <tr
+                  role="row"
                   data-filter-item
                   data-slug={place.id}
                   data-search={[title, areaName, districtName, type].join(' ')}
@@ -193,11 +185,13 @@ const sortOptions = [
                   data-group-name={areaName}
                   data-sort-rating={rating}
                   data-sort-score="0">
-                  <td class="name-cell">
+                  <td role="cell" class="name-cell">
                     <a href={`/food/${place.id}/`}>{title}</a>
                   </td>
-                  <td class="type-cell">{type}</td>
-                  <td class="area-cell">
+                  <td role="cell" class="type-cell">
+                    {type}
+                  </td>
+                  <td role="cell" class="area-cell">
                     <span class="eyebrow-divider narrow-only" aria-hidden="true" />
                     {areaName}
                     {districtName && (
@@ -207,9 +201,11 @@ const sortOptions = [
                       </span>
                     )}
                   </td>
-                  <td class="rating-cell">{rating}</td>
+                  <td role="cell" class="rating-cell">
+                    {rating}
+                  </td>
                   {SUPABASE_ENABLED && (
-                    <td class="score-cell">
+                    <td role="cell" class="score-cell">
                       <span class="vote-control">
                         <button
                           type="button"
@@ -253,7 +249,7 @@ const sortOptions = [
 <script>
   import { initFilter } from '../scripts/filter'
   import { initFilterSentence } from '../scripts/filter-sentence'
-  import { initInfoDialog } from '../scripts/info-dialog'
+  import { bindSheetDialog } from '../scripts/sheet-dialog'
   import { initRowVotes } from '../scripts/row-votes'
   import { initTableGroups } from '../scripts/table-groups'
 
@@ -261,7 +257,12 @@ const sortOptions = [
   initFilter('[data-filter-table]')
   initTableGroups('[data-filter-table]')
   initRowVotes()
-  initInfoDialog()
+
+  const infoDialog = document.querySelector<HTMLDialogElement>('[data-info-dialog]')
+  const infoOpener = document.querySelector<HTMLElement>('[data-info-open]')
+  if (infoDialog && infoOpener) {
+    bindSheetDialog({ dialog: infoDialog, opener: infoOpener })
+  }
 </script>
 
 <style>
@@ -687,10 +688,10 @@ const sortOptions = [
       position: relative;
     }
 
-    .table-page :global(.suggest-dialog) {
+    .table-page :global(.sheet-dialog) {
       position: absolute;
       inset: calc(100% + var(--spacing-xs)) 0 auto auto;
-      width: 420px;
+      width: var(--sheet-width);
     }
   }
 

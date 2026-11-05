@@ -3,6 +3,7 @@
     "number": 1,
     "name": "Carondelet",
     "slug": "carondelet",
+    "showsOfficialParts": true,
     "numberLabel": "1, 2",
     "group": "South City"
   },
@@ -84,6 +85,7 @@
     "number": 98,
     "name": "Dogtown",
     "slug": "dogtown",
+    "showsOfficialParts": true,
     "numberLabel": "41-44",
     "group": "Central Corridor"
   },

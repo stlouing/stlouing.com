@@ -30,11 +30,11 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
         </span>
         <span class="suggest-spot-label">Suggest</span>
       </button>
-      <dialog class="map-sheet suggest-dialog" data-suggest-dialog aria-labelledby="suggest-title">
+      <dialog class="map-sheet sheet-dialog" data-suggest-dialog aria-labelledby="suggest-title">
         <button
           type="button"
           class="close-button map-sheet-close"
-          data-suggest-close
+          data-sheet-close
           aria-label="Close">
           <IconX />
         </button>
@@ -47,7 +47,7 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
               <div class="sheet-title">
                 <span class="title-serif">Thanks for the tip!</span>
               </div>
-              <p class="suggest-lede description">
+              <p class="sheet-lede description">
                 Know someone who'd like this {subject}? Help spread the word! I'm always updating it
                 and adding more spots.
               </p>
@@ -57,7 +57,7 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
               <div class="sheet-title" id="suggest-title">
                 <span class="title-serif">Know somewhere I missed?</span>
               </div>
-              <p class="suggest-lede description">
+              <p class="sheet-lede description">
                 Add a place you love and help someone else find it.
               </p>
               <form class="suggest-form form-stack" method="POST" action={FEEDBACK_ENDPOINT}>
@@ -111,6 +111,7 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
 
 <script>
   import { bindFeedbackForm } from '../scripts/feedback-form'
+  import { bindSheetDialog } from '../scripts/sheet-dialog'
 
   const dialog = document.querySelector<HTMLDialogElement>('[data-suggest-dialog]')
   const opener = document.querySelector<HTMLButtonElement>('[data-suggest-open]')
@@ -124,33 +125,19 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
 
   if (dialog && opener && form && status && ask && thanks) {
-    opener.addEventListener('click', () => {
-      if (dialog.open) {
-        dialog.close()
-
-        return
-      }
-      dialog.show()
-      if (finePointer.matches) {
-        form.querySelector<HTMLInputElement>('input[name="place"]')?.focus()
-      }
-    })
-    dialog.querySelector('[data-suggest-close]')?.addEventListener('click', () => dialog.close())
-    dialog.addEventListener('close', () => {
-      ask.hidden = false
-      thanks.hidden = true
-      status.textContent = ''
-    })
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && dialog.open) {
-        dialog.close()
-      }
-    })
-    document.addEventListener('pointerdown', (event) => {
-      const target = event.target as Node
-      if (dialog.open && !dialog.contains(target) && !opener.contains(target)) {
-        dialog.close()
-      }
+    bindSheetDialog({
+      dialog,
+      opener,
+      onOpen: () => {
+        if (finePointer.matches) {
+          form.querySelector<HTMLInputElement>('input[name="place"]')?.focus()
+        }
+      },
+      onClose: () => {
+        ask.hidden = false
+        thanks.hidden = true
+        status.textContent = ''
+      },
     })
 
     bindFeedbackForm(form, status, {

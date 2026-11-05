@@ -103,6 +103,7 @@
   --river-height: 32px;
   --pane-header-height: 45px;
   --aside-width: 290px;
+  --sheet-width: 420px;
   --list-pane-width: 480px;
   --detail-gap: 2.5rem;
   --measure-article: calc(var(--measure-reading) + var(--detail-gap) + var(--aside-width));
@@ -1685,7 +1686,7 @@ a.pill-button:hover {
   box-shadow: var(--box-shadow);
 }
 
-.suggest-dialog {
+.sheet-dialog {
   width: 100%;
   max-width: none;
   margin: 0;
@@ -1693,11 +1694,11 @@ a.pill-button:hover {
   border-block-end: 0;
 }
 
-.suggest-dialog:not([open]) {
+.sheet-dialog:not([open]) {
   display: none;
 }
 
-.suggest-lede {
+.sheet-lede {
   margin-block: 0 var(--spacing-md);
 }
 
@@ -1829,14 +1830,14 @@ a.category-chip:hover {
 }
 
 @media (min-width: 701px) {
-  .suggest-dialog {
+  .sheet-dialog {
     --suggest-button-bottom: var(--spacing-lg);
     --suggest-button-height: 2.75rem;
     position: absolute;
     inset: auto var(--spacing-sm)
       calc(var(--suggest-button-bottom) + var(--suggest-button-height) + var(--spacing-sm)) auto;
     z-index: 4;
-    width: min(420px, calc(100% - 2 * var(--spacing-sm)));
+    width: min(var(--sheet-width), calc(100% - 2 * var(--spacing-sm)));
     border: 1px solid var(--color-line);
     border-radius: var(--radius-rounded);
     animation: none;
@@ -2090,8 +2091,8 @@ a.category-chip:hover {
 
 .map-list .list-rating .rating-fleur,
 .card .rating .rating-fleur {
-  width: 0.95rem;
-  height: 0.95rem;
+  width: var(--font-size-xxs);
+  height: var(--font-size-xxs);
 }
 
 .map-list .list-photo {
@@ -2602,11 +2603,11 @@ body:has([data-filter-root]) .masthead-nav {
   line-height: 1.15;
 }
 
-.suggest-dialog .map-sheet-body .popup-meta {
+.sheet-dialog .map-sheet-body .popup-meta {
   margin-block-end: var(--spacing-sm);
 }
 
-.suggest-dialog .map-sheet-body .popup-scroll .sheet-title {
+.sheet-dialog .map-sheet-body .popup-scroll .sheet-title {
   margin-block-end: var(--spacing-xs);
 }
 

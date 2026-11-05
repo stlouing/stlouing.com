@@ -1,8 +1,5 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
 import type { Feature, MultiPolygon, Polygon, Position } from 'geojson'
 
-import { NEIGHBORHOOD_PARTS_FILE } from '../../site.config.mjs'
 import { neighborhoodRecords } from './neighborhood-data'
 
 type PartFeature = Feature<Polygon | MultiPolygon, { NHD_NAME: string; NHD_NUM: number | string }>
@@ -12,15 +9,15 @@ export interface OfficialPart {
   name: string
 }
 
-let cachedParts: PartFeature[] | undefined
+const partFiles = import.meta.glob<string>('/public/*-neighborhood-parts.geojson', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
 
-function loadParts(): PartFeature[] {
-  cachedParts ??= JSON.parse(
-    readFileSync(resolve(process.cwd(), 'public', NEIGHBORHOOD_PARTS_FILE), 'utf8'),
-  ).features as PartFeature[]
-
-  return cachedParts
-}
+const parts = Object.values(partFiles).flatMap(
+  (file) => (JSON.parse(file) as { features: PartFeature[] }).features,
+)
 
 function isInsideRing([longitude, latitude]: Position, ring: Position[]): boolean {
   let inside = false
@@ -54,7 +51,7 @@ export function officialPartAt(
   coords: [number, number] | undefined,
 ): OfficialPart | undefined {
   const group = neighborhoodRecords.find((row) => row.slug === groupedSlug)
-  if (!group || !coords) {
+  if (!group?.showsOfficialParts || !coords) {
     return undefined
   }
 
@@ -62,7 +59,7 @@ export function officialPartAt(
     .filter((row) => row.mergedInto === groupedSlug)
     .map((row) => row.number)
   const [latitude, longitude] = coords
-  const part = loadParts().find(
+  const part = parts.find(
     (feature) =>
       [...memberNumbers, group.number].includes(Number(feature.properties.NHD_NUM)) &&
       isInsideGeometry([longitude, latitude], feature.geometry),
