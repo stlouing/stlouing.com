@@ -1,7 +1,7 @@
 ---
 title: La Vallesana
 created: 2026-10-13
-status: tried
+rating: 3
 description: Cherokee Street Mexican restaurant
 cuisine: ['mexican']
 neighborhood: benton-park-west

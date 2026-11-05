@@ -1,9 +1,10 @@
 ---
 title: Thai Sawadee
 created: 2026-07-16
+updated: 2026-11-04
 status: tried
 description: Longtime Thai favorite
-cuisine: ['thai']
+cuisine: ['thai', 'asian']
 neighborhood: chesterfield
 address:
   - 171 Hilltown Village Center

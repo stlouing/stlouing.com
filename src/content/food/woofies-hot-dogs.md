@@ -4,7 +4,7 @@ description: A perfect Chicago dog and smash burger
 photo: ../images/food/woofies.jpeg
 created: 2026-06-23
 updated: 2026-07-22
-rating: 9
+rating: 4.5
 cuisine: ['hot dogs']
 neighborhood: overland
 address:

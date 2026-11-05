@@ -2,7 +2,8 @@
 title: Louie
 description: An upscale Italian restaurant
 created: 2026-06-23
-rating: 9.5
+updated: 2026-11-05
+rating: 5
 cuisine: ['italian']
 neighborhood: clayton
 address:
@@ -20,4 +21,4 @@ Louie has good vibes, great food and an excellent location. It's right on the st
 
 My partner and I went to Louie for an anniversary dinner and had a great time. The service was fantastic, as well as the food - particularly the bread and focaccia, a personal favorite. They also get burrata flown in from Italy, so that was a treat.
 
-I also had the pizza, which I would probably rate a 9/10 - very good, but probably not the best in the whole city. Overall it was a great experience and a great place to go for a celebration.
+I also had the pizza, which I would probably rate a 4.5/5 - very good, but probably not the best in the whole city. Overall it was a great experience and a great place to go for a celebration.

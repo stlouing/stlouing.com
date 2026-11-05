@@ -2,8 +2,9 @@
 title: Taste of Lebanon
 description: Hookah and Lebanese food
 created: 2026-06-23
-rating: 8.5
-cuisine: ['middle eastern']
+updated: 2026-11-05
+rating: 4.5
+cuisine: ['middle eastern', 'mediterranean']
 neighborhood: central-west-end
 address:
   - 331 N Euclid Ave

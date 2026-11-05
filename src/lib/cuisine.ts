@@ -40,7 +40,7 @@ const CUISINE_ICONS: Record<string, string> = {
   american: 'utensils',
   asian: 'bowl-chopsticks',
   bakery: 'baguette',
-  balkan: 'sausage',
+  balkan: 'grill',
   bar: 'cocktail',
   bbq: 'grill',
   breakfast: 'fried-egg',
@@ -48,6 +48,7 @@ const CUISINE_ICONS: Record<string, string> = {
   burgers: 'burger',
   cafe: 'coffee',
   chinese: 'dumpling',
+  coffee: 'coffee',
   dessert: 'ice-cream',
   european: 'chef-hat',
   'fried chicken': 'canary',
@@ -57,6 +58,7 @@ const CUISINE_ICONS: Record<string, string> = {
   italian: 'cheese',
   korean: 'bowl-chopsticks',
   'latin american': 'avocado',
+  mediterranean: 'salad',
   mexican: 'pepper',
   'middle eastern': 'grill',
   pizza: 'pizza',
@@ -64,7 +66,7 @@ const CUISINE_ICONS: Record<string, string> = {
   sandwiches: 'bread',
   spanish: 'wine-glass',
   sushi: 'fish',
-  thai: 'lemon',
+  thai: 'bowl-chopsticks',
   vietnamese: 'soup',
 }
 

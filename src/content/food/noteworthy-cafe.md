@@ -1,9 +1,10 @@
 ---
 title: Noteworthy Café & Culture
 created: 2026-08-30
-status: tried
+updated: 2026-11-04
+rating: 5
 description: Piano-themed coffee shop
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: central-west-end
 address:
   - 504 N Newstead Ave

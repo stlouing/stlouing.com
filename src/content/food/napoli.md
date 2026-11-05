@@ -2,7 +2,7 @@
 title: Napoli
 created: 2026-07-16
 status: tried
-rating: 6.5
+rating: 3.5
 description: Old-school Italian
 cuisine: ['italian']
 neighborhood: town-and-country

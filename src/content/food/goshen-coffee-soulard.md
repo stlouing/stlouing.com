@@ -1,9 +1,10 @@
 ---
 title: Goshen Coffee
 created: 2026-10-12
+updated: 2026-11-04
 status: want-to-try
 description: Soulard café of the Illinois roaster
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: soulard
 address:
   - 910 Geyer Ave

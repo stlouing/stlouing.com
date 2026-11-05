@@ -1,11 +1,11 @@
 ---
 title: Good Strangers
 created: 2026-10-17
-status: tried
-rating: 9
+updated: 2026-11-04
+rating: 4.5
 description: Coffee shop with Tex-Mex and Mediterranean bites
 photo: ../images/food/good-strangers/good1.jpg
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: gravois-park
 district: cherokee-street
 address:

@@ -89,7 +89,7 @@ export function restaurantSchema(input: RestaurantInput) {
     '@context': CONTEXT,
     '@type': 'Review',
     itemReviewed: restaurant,
-    reviewRating: { '@type': 'Rating', ratingValue: input.rating, bestRating: 10, worstRating: 0 },
+    reviewRating: { '@type': 'Rating', ratingValue: input.rating, bestRating: 5, worstRating: 1 },
     datePublished: input.published,
     dateModified: input.updated ?? input.published,
     author: { '@type': 'Person', name: SITE_NAME },

@@ -1,9 +1,10 @@
 ---
 title: Well Met Café
 created: 2026-10-12
+updated: 2026-11-04
 status: want-to-try
 description: Panini, espresso and cocktail café
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: shaw
 address:
   - 4100 Shenandoah Ave

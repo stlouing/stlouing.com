@@ -1,7 +1,7 @@
 ---
 title: Taj Palace
 created: 2026-07-16
-status: tried
+rating: 3
 description: North Indian cooking
 cuisine: ['indian']
 neighborhood: chesterfield

@@ -1,9 +1,10 @@
 ---
 title: Hartford Coffee Company
 created: 2026-10-12
+updated: 2026-11-04
 status: want-to-try
 description: Neighborhood café roasting its own beans since 2004
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: tower-grove-south
 address:
   - 3974 Hartford St

@@ -17,14 +17,8 @@ import { googleMapsHref } from '../../lib/maps'
 import { toMapSpots } from '../../lib/map-spots'
 import { itemListSchema } from '../../lib/schema'
 import { neighborhoodName, neighborhoodPopups } from '../../lib/neighborhoods'
-import { resolveVerdict, type Verdict } from '../../lib/verdict'
+import { RATING_MAX } from '../../lib/rating'
 
-const verdictRankLetter: Record<Verdict, string> = {
-  loved: 'a',
-  liked: 'b',
-  neutral: 'c',
-  'not-for-me': 'd',
-}
 const statusRankLetter: Record<'tried' | 'want-to-try', string> = {
   tried: 'e',
   'want-to-try': 'f',
@@ -35,16 +29,17 @@ const all = published(await getCollection('food'))
 const rows = (
   await Promise.all(
     all.map(async (place) => {
-      const verdict = resolveVerdict(place.data)
-      const groupKey = verdict ?? foodStatus(place)
-      const rankLetter = verdict
-        ? verdictRankLetter[verdict]
-        : (statusRankLetter[foodStatus(place) as keyof typeof statusRankLetter] ?? 'h')
+      const { rating } = place.data
+      const groupKey = rating === undefined ? foodStatus(place) : String(Math.floor(rating))
+      const rankLetter =
+        rating === undefined
+          ? (statusRankLetter[foodStatus(place) as keyof typeof statusRankLetter] ?? 'h')
+          : String(2 * (RATING_MAX - rating)).padStart(2, '0')
       const thumb = place.data.photo
         ? await getImage({ src: place.data.photo, width: 480, format: 'webp' })
         : undefined
 
-      return { place, verdict, groupKey, rankLetter, thumb }
+      return { place, groupKey, rankLetter, thumb }
     }),
   )
 ).sort((left, right) =>
@@ -54,6 +49,9 @@ const rows = (
 )
 
 const count = rows.length
+const ratingGroups = [
+  ...new Set(rows.flatMap(({ place }) => Math.floor(place.data.rating ?? 0) || [])),
+]
 const cuisines = [...new Set(rows.flatMap((entry) => entry.place.data.cuisine))].sort((left, right) =>
   cuisineLabel(left).localeCompare(cuisineLabel(right)),
 )
@@ -91,14 +89,14 @@ const schema = itemListSchema(
         <PaneSearch label="Search places" placeholder="search by name, cuisine..." />
         <PaneSort
           options={[
-            { label: 'Rating', value: 'verdict:asc' },
+            { label: 'Rating', value: 'rating:asc' },
             { label: 'A–Z', value: 'name:asc' },
           ]}
         />
       </ListPaneHeader>
       <ul class="list" data-grouped-rows>
         {
-          rows.map(({ place, verdict, groupKey, rankLetter, thumb }) => (
+          rows.map(({ place, groupKey, rankLetter, thumb }) => (
             <MapRow
               id={place.id}
               title={place.data.title}
@@ -120,7 +118,7 @@ const schema = itemListSchema(
                 'data-cuisine': place.data.cuisine.join('|'),
                 'data-group': groupKey,
                 'data-sort-name': place.data.title.toLowerCase(),
-                'data-sort-verdict': `${rankLetter}|${place.data.title.toLowerCase()}`,
+                'data-sort-rating': `${rankLetter}|${place.data.title.toLowerCase()}`,
               }}>
               {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
                 <span class="eyebrow eyebrow--muted" slot="eyebrow">
@@ -137,9 +135,9 @@ const schema = itemListSchema(
                     ))}
                 </span>
               )}
-              {verdict && (
+              {place.data.rating !== undefined && (
                 <span class="list-rating" slot="rating">
-                  <Rating verdict={verdict} />
+                  <Rating rating={place.data.rating} />
                 </span>
               )}
               {place.data.description && (
@@ -163,10 +161,7 @@ const schema = itemListSchema(
         }
       </ul>
       <div class="fleur-templates" hidden>
-        <span data-fleur="loved"><Rating verdict="loved" /></span>
-        <span data-fleur="liked"><Rating verdict="liked" /></span>
-        <span data-fleur="neutral"><Rating verdict="neutral" /></span>
-        <span data-fleur="not-for-me"><Rating verdict="not-for-me" /></span>
+        {ratingGroups.map((value) => <span data-fleur={value}><Rating rating={value} /></span>)}
       </div>
     </article>
     <CityMap

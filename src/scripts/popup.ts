@@ -1,3 +1,4 @@
+import { fleurFills, ratingLabel, type FleurFill } from '../lib/rating'
 export function escapeHtml(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
@@ -13,7 +14,7 @@ export interface PopupConfig {
   link?: string
   external?: boolean
   photo?: string
-  verdict?: { key: string; label: string }
+  rating?: number
   showRating?: boolean
   chips?: PopupChip[]
   addressLines?: string[]
@@ -62,11 +63,11 @@ function categorySwatchHtml(category: string, iconName?: string): string {
   return categorySwatchNode(category, iconName).outerHTML
 }
 
-function readersVerdictHtml(slug: string, title: string): string {
+function readerVoteHtml(slug: string, title: string): string {
   const template = document.querySelector<HTMLTemplateElement>(
-    'template[data-readers-verdict-template]',
+    'template[data-reader-vote-template]',
   )
-  const widget = template?.content.querySelector<HTMLElement>('[data-readers-verdict]')
+  const widget = template?.content.querySelector<HTMLElement>('[data-reader-vote]')
   if (!widget) {
     return ''
   }
@@ -96,8 +97,13 @@ function fleurGlyph(className: string): string {
   return `<svg class="${className}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 192" fill="currentColor" aria-hidden="true"><use href="#fleur-glyph"/></svg>`
 }
 
-const RATING_FILLED: Record<string, number> = { 'not-for-me': 1, neutral: 2, liked: 3, loved: 4 }
-const RATING_TOTAL = 4
+function fleurHtml(fill: FleurFill): string {
+  if (fill === 'half') {
+    return `<span class="rating-half">${fleurGlyph('rating-fleur')}${fleurGlyph('rating-fleur is-filled')}</span>`
+  }
+
+  return fleurGlyph(fill === 'full' ? 'rating-fleur is-filled' : 'rating-fleur')
+}
 
 export function buildPopupHtml(config: PopupConfig): string {
   const {
@@ -105,7 +111,7 @@ export function buildPopupHtml(config: PopupConfig): string {
     link = '',
     external = false,
     photo = '',
-    verdict,
+    rating,
     showRating = false,
     chips = [],
     addressLines = [],
@@ -129,17 +135,11 @@ export function buildPopupHtml(config: PopupConfig): string {
     ? `<h2><a class="title-serif title-link" href="${link}"${targetAttrs}>${escapeHtml(title)}</a></h2>`
     : `<h2><span class="title-serif">${escapeHtml(title)}</span></h2>`
 
-  const filled = verdict ? (RATING_FILLED[verdict.key] ?? 0) : 0
-  const ratingLabel = verdict
-    ? `Rating: ${escapeHtml(verdict.label)}, ${filled} of ${RATING_TOTAL}`
-    : 'Not yet rated'
   const ratingHtml =
-    verdict || showRating
-      ? `<span class="rating" role="img" aria-label="${ratingLabel}">${Array.from(
-          { length: RATING_TOTAL },
-          (_unused, index) =>
-            fleurGlyph(index < filled ? 'rating-fleur is-filled' : 'rating-fleur'),
-        ).join('')}</span>`
+    rating !== undefined || showRating
+      ? `<span class="rating" role="img" aria-label="${ratingLabel(rating)}">${fleurFills(rating)
+          .map(fleurHtml)
+          .join('')}</span>`
       : ''
 
   const metaInner = chips
@@ -166,7 +166,7 @@ export function buildPopupHtml(config: PopupConfig): string {
 
   const excerptHtml = excerpt ? `<p class="popup-excerpt excerpt">${escapeHtml(excerpt)}</p>` : ''
 
-  const votesHtml = voteSlug ? readersVerdictHtml(voteSlug, title) : ''
+  const votesHtml = voteSlug ? readerVoteHtml(voteSlug, title) : ''
 
   const moreHtml =
     link && viewMore ? `<a class="btn btn-dark" href="${link}"${targetAttrs}>View more</a>` : ''

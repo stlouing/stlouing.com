@@ -1,7 +1,7 @@
 ---
 title: Great Heart Brewing Co
 created: 2026-08-19
-status: tried
+rating: 4
 description: European-style bierhall and brewery
 cuisine: ['brewery']
 neighborhood: olivette

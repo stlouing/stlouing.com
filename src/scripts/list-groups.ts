@@ -1,12 +1,17 @@
-import { verdictLabels } from '../lib/verdict'
-
-const groupLabels: Record<string, string> = {
-  ...verdictLabels,
-  tried: 'Tried, not yet rated',
+const statusLabels: Record<string, string> = {
+  tried: 'Tried',
   'want-to-try': 'Want to try',
 }
 
-const verdictKeys = new Set<string>(['loved', 'liked', 'neutral', 'not-for-me'])
+export function letterOf(row: HTMLElement): string {
+  const first = (row.dataset.sortName ?? '').charAt(0).toUpperCase()
+
+  return /[A-Z]/.test(first) ? first : '#'
+}
+
+function isRatingKey(key: string): boolean {
+  return /^[0-9]/.test(key)
+}
 
 export function initListGroups(rootSelector = '[data-filter-root]'): void {
   const root = document.querySelector<HTMLElement>(rootSelector)
@@ -17,28 +22,20 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
 
   const sortSelect = root.querySelector<HTMLSelectElement>('[data-filter-sort]')
 
-  const letterOf = (row: HTMLElement): string => {
-    const first = (row.dataset.sortName ?? '').charAt(0).toUpperCase()
-
-    return /[A-Z]/.test(first) ? first : '#'
-  }
-
-  const buildHeader = (mode: 'verdict' | 'alpha', key: string, count: number): HTMLLIElement => {
+  const buildHeader = (mode: 'rating' | 'alpha', key: string, count: number): HTMLLIElement => {
     const header = document.createElement('li')
     header.className = 'group-header'
     header.dataset.groupHeader = ''
 
-    if (mode === 'verdict' && verdictKeys.has(key)) {
-      header.dataset.verdict = key
-    } else if (mode === 'verdict') {
-      header.classList.add('group-header-status')
-    } else {
+    if (mode === 'alpha') {
       header.classList.add('group-header-alpha')
+    } else if (!isRatingKey(key)) {
+      header.classList.add('group-header-status')
     }
 
     const label = document.createElement('span')
     label.className = 'group-label'
-    label.textContent = mode === 'verdict' ? (groupLabels[key] ?? key) : key
+    label.textContent = mode === 'rating' ? (statusLabels[key] ?? key) : key
 
     const countEl = document.createElement('span')
     countEl.className = 'count'
@@ -48,7 +45,7 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
     rule.className = 'group-rule'
 
     const fleur =
-      mode === 'verdict' && verdictKeys.has(key)
+      mode === 'rating' && isRatingKey(key)
         ? document.querySelector(`[data-fleur="${key}"] .rating`)?.cloneNode(true)
         : null
 
@@ -60,7 +57,8 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
   function rebuild(): void {
     list?.querySelectorAll('[data-group-header]').forEach((header) => header.remove())
 
-    const mode = (sortSelect?.value ?? '').startsWith('name') ? 'alpha' : 'verdict'
+    const mode = (sortSelect?.value ?? '').startsWith('name') ? 'alpha' : 'rating'
+    list.dataset.groupMode = mode
     const rows = [...list.querySelectorAll<HTMLElement>('[data-filter-item]')].filter(
       (row) => !row.hidden,
     )

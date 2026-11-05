@@ -2,7 +2,7 @@
 title: Pizzeria da Gloria
 created: 2026-08-19
 photo: ../images/food/pizzeriadagloria.jpeg
-rating: 9.5
+rating: 5
 description: Wood-fired Neapolitan-style pizza
 cuisine: ['pizza']
 neighborhood: the-hill

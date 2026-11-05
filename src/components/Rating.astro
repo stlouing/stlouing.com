@@ -1,29 +1,26 @@
 ---
 import FleurGlyph from '../assets/FleurGlyph.astro'
-import { verdictLabels, type Verdict } from '../lib/verdict'
+import { fleurFills, ratingLabel } from '../lib/rating'
 
 interface Props {
-  verdict?: Verdict
+  rating?: number
 }
 
-const { verdict } = Astro.props
-
-const filledByVerdict: Record<Verdict, number> = {
-  'not-for-me': 1,
-  neutral: 2,
-  liked: 3,
-  loved: 4,
-}
-const total = 4
-const filled = verdict ? filledByVerdict[verdict] : 0
-const label = verdict ? `Rating: ${verdictLabels[verdict]}, ${filled} of ${total}` : 'Not yet rated'
+const { rating } = Astro.props
 ---
 
-<span class="rating" role="img" aria-label={label}>
+<span class="rating" role="img" aria-label={ratingLabel(rating)}>
   {
-    Array.from({ length: total }, (_, index) => (
-      <FleurGlyph class:list={['rating-fleur', { 'is-filled': index < filled }]} />
-    ))
+    fleurFills(rating).map((fill) =>
+      fill === 'half' ? (
+        <span class="rating-half">
+          <FleurGlyph class="rating-fleur" />
+          <FleurGlyph class="rating-fleur is-filled" />
+        </span>
+      ) : (
+        <FleurGlyph class:list={['rating-fleur', { 'is-filled': fill === 'full' }]} />
+      ),
+    )
   }
 </span>
 

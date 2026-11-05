@@ -5,7 +5,7 @@ photo: ../images/food/faraci/faraci1.jpg
 created: 2026-07-05
 updated: 2026-10-03
 cuisine: ['pizza']
-rating: 9.5
+rating: 5
 neighborhood: ellisville
 address:
   - 15430 Manchester Rd #3029

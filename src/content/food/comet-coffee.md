@@ -1,10 +1,10 @@
 ---
 title: Comet Coffee
 created: 2026-07-16
-updated: 2026-07-17
+updated: 2026-11-04
 status: tried
 description: Airy coffee bar with pastries
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: southwest-garden
 address:
   - 4474 Shaw Blvd

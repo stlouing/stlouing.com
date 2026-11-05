@@ -1,0 +1,26 @@
+---
+import { SITE_NAME } from '../lib/site'
+import { href } from '../lib/url'
+---
+
+<a class="masthead-brand title-display title-link" href={href('/')}>
+  <img class="brand-mark" src={href('/logo-outlined.svg')} alt="" width="32" height="32" />
+  <span class="brand-name">{SITE_NAME}</span>
+</a>
+
+<style>
+  .masthead-brand {
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-xl);
+    white-space: nowrap;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+</style>

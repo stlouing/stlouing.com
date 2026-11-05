@@ -1,7 +1,7 @@
 ---
 title: Beast Craft BBQ
 created: 2026-07-16
-status: tried
+rating: 4
 description: Craft barbecue, smoked sausage, and pork steaks
 cuisine: ['bbq']
 neighborhood: belleville

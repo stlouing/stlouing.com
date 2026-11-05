@@ -65,6 +65,38 @@ function legendFacet(legend: HTMLElement): Facet {
   }
 }
 
+function selectFacet(select: HTMLSelectElement): Facet {
+  const key = select.dataset.filterFacet ?? ''
+  const isActive = () => select.value !== ''
+  const assign = (value: string) => {
+    select.value = value
+    if (select.selectedIndex < 0) {
+      select.value = ''
+    }
+  }
+
+  return {
+    key,
+    isActive,
+    matches: (item) => !isActive() || itemValues(item, key).includes(select.value),
+    read: (params) => {
+      assign(params.get(key) ?? '')
+    },
+    write: (params) => {
+      if (isActive()) {
+        params.set(key, select.value)
+      }
+    },
+    set: assign,
+    clear: () => {
+      select.value = ''
+    },
+    bind: (onChange) => {
+      select.addEventListener('change', onChange)
+    },
+  }
+}
+
 export function initFilter(rootSelector = '[data-filter-root]'): void {
   const root = document.querySelector<HTMLElement>(rootSelector)
   if (!root) {
@@ -73,7 +105,10 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
 
   const form = root.querySelector<HTMLFormElement>('form')
   const search = root.querySelector<HTMLInputElement>('[data-filter-search]')
-  const facets = [...root.querySelectorAll<HTMLElement>('[data-map-legend]')].map(legendFacet)
+  const facets = [
+    ...[...root.querySelectorAll<HTMLElement>('[data-map-legend]')].map(legendFacet),
+    ...[...root.querySelectorAll<HTMLSelectElement>('[data-filter-facet]')].map(selectFacet),
+  ]
   const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')]
   const count = root.querySelector<HTMLElement>('[data-filter-count]')
   const empty = root.querySelector<HTMLElement>('[data-filter-empty]')

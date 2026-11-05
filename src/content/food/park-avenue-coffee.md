@@ -2,9 +2,10 @@
 title: Park Avenue Coffee
 description: Local coffee roaster and gooey butter cake specialist
 created: 2026-07-05
-cuisine: ['cafe']
+updated: 2026-11-04
+cuisine: ['cafe', 'coffee']
 neighborhood: lafayette-square
-rating: 9.5
+rating: 5
 address:
   - 1919 Park Ave
   - St. Louis, MO 63104

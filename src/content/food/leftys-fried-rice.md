@@ -1,9 +1,10 @@
 ---
 title: Lefty's Fried Rice
 created: 2026-07-16
+updated: 2026-11-04
 status: want-to-try
 description: Chinese-American comfort food
-cuisine: ['chinese']
+cuisine: ['chinese', 'asian']
 neighborhood: benton-park
 address:
   - 3000 S Jefferson Ave

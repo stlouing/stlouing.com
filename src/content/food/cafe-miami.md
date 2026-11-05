@@ -1,9 +1,10 @@
 ---
 title: Cafe Miami
 created: 2026-10-12
+updated: 2026-11-04
 status: want-to-try
 description: Cuban coffee, colada and sandwiches
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: soulard
 address:
   - 2022 S 12th St

@@ -2,8 +2,9 @@
 title: Menya Rui
 description: Shoyu ramen worth waiting in line for
 created: 2026-06-23
-rating: 9
-cuisine: ['ramen']
+updated: 2026-11-04
+rating: 4.5
+cuisine: ['ramen', 'asian']
 neighborhood: lindenwood-park
 address:
   - 3453 Hampton Ave

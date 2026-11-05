@@ -19,9 +19,6 @@ const { note } = Astro.props
   }
   <p class="description">{note}</p>
   <slot name="links" />
-  <div class="action-buttons">
-    <Button href={href('/about/#contact')} variant="dark">Give suggestions</Button>
-  </div>
 </section>
 
 <style>

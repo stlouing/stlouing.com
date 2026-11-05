@@ -1,10 +1,10 @@
 ---
 title: Anthonino's Taverna
 created: 2026-06-23
-updated: 2026-07-07
+updated: 2026-11-05
 description: Greek and Italian food on the Hill
-rating: 7
-cuisine: ['italian', 'greek']
+rating: 3.5
+cuisine: ['italian', 'greek', 'mediterranean']
 neighborhood: the-hill
 address:
   - 2225 Macklind Ave

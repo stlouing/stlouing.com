@@ -1,7 +1,7 @@
 ---
 title: Sugarfire
 created: 2026-07-16
-status: tried
+rating: 2.5
 description: Famous St. Louis barbecue
 cuisine: ['bbq']
 neighborhood: olivette

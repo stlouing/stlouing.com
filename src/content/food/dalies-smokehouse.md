@@ -2,7 +2,7 @@
 title: Dalie's Smokehouse
 photo: ../images/food/dalies/dalies2.jpg
 created: 2026-07-16
-rating: 9
+rating: 4.5
 description: Barbecue from the Pappy's/Bogart's crew
 cuisine: ['bbq']
 neighborhood: valley-park

@@ -1,7 +1,7 @@
 ---
 import MapLegend from './MapLegend.astro'
 import BadgeIcons from './BadgeIcons.astro'
-import ReadersVerdictTemplate from './ReadersVerdictTemplate.astro'
+import ReaderVoteTemplate from './ReaderVoteTemplate.astro'
 import SuggestSpot from './SuggestSpot.astro'
 import type { Feature, Polygon } from 'geojson'
 import type { DistrictPart } from '../lib/districts'
@@ -41,7 +41,7 @@ const legendCategories = (Object.keys(spotCategories) as SpotCategoryKey[]).filt
   <SuggestSpot where={name} />
 </div>
 <BadgeIcons />
-<ReadersVerdictTemplate />
+<ReaderVoteTemplate />
 <script
   is:inline
   type="application/json"

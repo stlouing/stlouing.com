@@ -4,7 +4,7 @@ description: Cozy pizza joint with my favorite t-ravs
 photo: ../images/food/buds/buds3.jpg
 created: 2026-06-23
 updated: 2026-11-02
-rating: 8.5
+rating: 4.5
 cuisine: ['pizza']
 neighborhood: north-hampton
 district: southtown

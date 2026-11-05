@@ -84,7 +84,7 @@ export interface MapSpot {
   coords: [number, number]
   url?: string
   meta?: string
-  verdict?: { key: string; label: string }
+  rating?: number
   tagline?: string
   addressLines?: string[]
   directionsHref?: string

@@ -1,7 +1,7 @@
 ---
 title: Mom's Deli
 created: 2026-07-16
-rating: 5
+rating: 2.5
 description: Longtime St. Louis classic deli
 cuisine: ['sandwiches']
 neighborhood: st-louis-hills

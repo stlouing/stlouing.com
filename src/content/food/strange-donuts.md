@@ -1,9 +1,10 @@
 ---
 title: Strange Donuts
 created: 2026-10-13
+updated: 2026-11-04
 status: want-to-try
 description: Scratch-made donuts every day
-cuisine: ['dessert', 'bakery']
+cuisine: ['dessert']
 neighborhood: maplewood
 address:
   - 2709 Sutton Blvd

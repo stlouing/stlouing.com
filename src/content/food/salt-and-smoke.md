@@ -1,7 +1,7 @@
 ---
 title: Salt & Smoke
 created: 2026-07-16
-status: tried
+rating: 3.5
 description: Barbecue and bourbon
 cuisine: ['bbq']
 neighborhood: university-city

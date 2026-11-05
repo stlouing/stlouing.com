@@ -14,7 +14,6 @@ export const TAGLINE = `An independent guide to the food, neighborhoods, and cul
 export const SITE_DESCRIPTION = `${TAGLINE}.`
 export const DEFAULT_TITLE = `${SITE_NAME}: Food, Neighborhoods, and Culture of ${CITY}`
 export const HOME_INTRO = `Welcome to ${SITE_NAME}, my ongoing project to document living in ${CITY} and learning to love it!`
-export const NEWSLETTER_BLURB = `I'm always wandering ${CITY}! Sign up if you want infrequent email updates from the site. No ads, no spam.`
 export const DEFAULT_SOCIAL_IMAGE_ALT = `${SITE_NAME} - the ${CITY} flag`
 
 export const CONTACT_EMAIL = `hello@${SITE_DOMAIN}`

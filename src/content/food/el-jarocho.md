@@ -2,7 +2,7 @@
 title: El Jarocho
 description: Authentic street tacos in St. Louis
 created: 2026-06-23
-rating: 9
+rating: 4.5
 cuisine: ['mexican']
 neighborhood: twin-oaks
 address:

@@ -12,14 +12,12 @@ import ShareCard from '../../components/ShareCard.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
 import MapPane from '../../components/MapPane.astro'
-import BackLink from '../../components/BackLink.astro'
 import CardList from '../../components/CardList.astro'
 import Card from '../../components/Card.astro'
 import NotExplored from '../../components/NotExplored.astro'
 import PaneKicker from '../../components/PaneKicker.astro'
 import CategoryChip from '../../components/CategoryChip.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
-import { resolveVerdict } from '../../lib/verdict'
 import { cuisineLabel } from '../../lib/cuisine'
 import { googleMapsHref } from '../../lib/maps'
 import {
@@ -244,13 +242,14 @@ const schema = placeSchema(
     <div class="results">
       <article class="content-pane detail-pane">
         <div class="detail-pane-inner">
-          <BackLink to="/neighborhoods/" label="St. Louis neighborhood map" />
-
           <header class="detail-pane-header">
             <h1 class="detail-pane-title title-page">{title}</h1>
             {summary && <p class="description description--lg detail-pane-tagline">{summary}</p>}
             {
-              (officialLine || isDistrict || innerDistricts.length > 0 || resourceLinks.length > 0) && (
+              (officialLine ||
+                isDistrict ||
+                innerDistricts.length > 0 ||
+                resourceLinks.length > 0) && (
                 <div class="detail-pane-facts">
                   {officialLine && (
                     <PaneKicker label={officialLine.label} muted>
@@ -380,7 +379,7 @@ const schema = placeSchema(
                     title={place.data.title}
                     meta={cuisineLabel(place.data.cuisine[0])}
                     description={place.data.description}
-                    verdict={resolveVerdict(place.data)}
+                    rating={place.data.rating}
                     websiteHref={place.data.url}
                     directionsHref={googleMapsHref(place.data)}
                     mapSpot={place.data.title}
@@ -399,7 +398,7 @@ const schema = placeSchema(
                     title={place.data.title}
                     meta={cuisineLabel(place.data.cuisine[0])}
                     description={place.data.description}
-                    verdict={resolveVerdict(place.data)}
+                    rating={place.data.rating}
                     websiteHref={place.data.url}
                     directionsHref={googleMapsHref(place.data)}
                     mapSpot={place.data.title}
@@ -486,12 +485,6 @@ const schema = placeSchema(
               </section>
             )
           }
-
-          <ShareCard shareTitle={title} />
-
-          <footer>
-            <Backlinks links={backlinks} />
-          </footer>
         </div>
       </article>
 

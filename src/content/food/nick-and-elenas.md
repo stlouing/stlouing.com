@@ -1,7 +1,7 @@
 ---
 title: Nick & Elena's
 created: 2026-07-16
-status: tried
+rating: 2
 description: North side St. Louis-style pizza
 cuisine: ['pizza']
 neighborhood: breckenridge-hills

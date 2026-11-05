@@ -12,7 +12,7 @@ export interface Section {
 }
 
 export const groups: { id: Group; label?: string; kicker?: string }[] = [
-  { id: 'explore', label: 'Maps' },
+  { id: 'explore', label: 'Explore' },
   { id: 'topics', label: 'Topics' },
   { id: 'lists', label: 'Lists' },
   { id: 'site', label: 'Site' },
@@ -40,6 +40,12 @@ export const sections: Section[] = [
       ]
     : []),
   {
+    label: 'Directory',
+    path: '/directory/',
+    group: 'explore',
+    description: `Every ${CITY} restaurant, bar, and cafe in one searchable table`,
+  },
+  {
     label: 'Topics',
     path: '/topics/',
     group: 'topics',
@@ -48,7 +54,13 @@ export const sections: Section[] = [
     description: "Field notes and deep dives on what I've learned.",
   },
 
-  { label: `The Best Food in ${CITY}`, path: '/best/', group: 'lists', icon: 'award' },
+  {
+    label: `The Best Food in ${CITY}`,
+    path: '/best/',
+    group: 'lists',
+    icon: 'award',
+    description: 'All my favorites so far for specific items.',
+  },
   {
     label: 'Sitemap',
     path: '/sitemap/',

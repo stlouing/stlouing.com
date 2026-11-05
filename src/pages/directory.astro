@@ -1,0 +1,818 @@
+---
+import '@fontsource/archivo/400.css'
+import { getCollection } from 'astro:content'
+
+import IconX from '../assets/IconX.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ClearFilters from '../components/ClearFilters.astro'
+import MastheadBrand from '../components/MastheadBrand.astro'
+import PaneSearch from '../components/PaneSearch.astro'
+import PaneSort from '../components/PaneSort.astro'
+import SuggestSpot from '../components/SuggestSpot.astro'
+import ThemeToggle from '../components/ThemeToggle.astro'
+import { published } from '../lib/content'
+import { cuisineLabel } from '../lib/cuisine'
+import { neighborhoodName } from '../lib/neighborhoods'
+import { officialPartAt, type OfficialPart } from '../lib/official-parts'
+import { CITY, SUPABASE_ENABLED } from '../lib/site'
+import { href } from '../lib/url'
+
+const places = published(await getCollection('food')).sort((left, right) =>
+  left.data.title.localeCompare(right.data.title),
+)
+
+const DOGTOWN = 'dogtown'
+const CARONDELET = 'carondelet'
+
+function namedArea(slug: string | undefined): OfficialPart | undefined {
+  return slug ? { slug, name: neighborhoodName(slug) } : undefined
+}
+
+function placeLocation({ neighborhood, district, coords }: (typeof places)[number]['data']) {
+  const dogtownPart = neighborhood === DOGTOWN ? officialPartAt(DOGTOWN, coords) : undefined
+  if (dogtownPart) {
+    return { area: dogtownPart, district: namedArea(DOGTOWN) }
+  }
+
+  const carondeletPart =
+    neighborhood === CARONDELET ? officialPartAt(CARONDELET, coords) : undefined
+  if (carondeletPart && carondeletPart.slug !== CARONDELET) {
+    return { area: carondeletPart, district: namedArea(CARONDELET) }
+  }
+
+  return { area: namedArea(neighborhood), district: namedArea(district) }
+}
+
+const locatedPlaces = places.map((place) => ({ place, ...placeLocation(place.data) }))
+
+function areaOptions(areas: (OfficialPart | undefined)[]) {
+  const unique = new Map(areas.flatMap((area) => (area ? [[area.slug, area] as const] : [])))
+
+  return [...unique.values()].sort((left, right) => left.name.localeCompare(right.name))
+}
+
+const cuisines = [...new Set(places.flatMap((place) => place.data.cuisine))].sort((left, right) =>
+  cuisineLabel(left).localeCompare(cuisineLabel(right)),
+)
+const neighborhoods = areaOptions(locatedPlaces.map(({ area }) => area))
+const districts = areaOptions(locatedPlaces.map(({ district }) => district)).filter(
+  (district) => !neighborhoods.some((neighborhood) => neighborhood.slug === district.slug),
+)
+
+const sortOptions = [
+  { label: 'Name, A–Z', narrowLabel: 'A–Z', value: 'name:asc' },
+  { label: 'Location, A–Z', narrowLabel: 'Location', value: 'neighborhood:asc' },
+  ...(SUPABASE_ENABLED ? [{ label: 'Votes: high to low', value: 'score:desc' }] : []),
+  { label: 'My Rating: high to low', value: 'rating:desc' },
+]
+---
+
+<BaseLayout
+  bare
+  title={`${CITY} Food & Coffee Explorer`}
+  description={`${CITY} restaurant, coffee, and bar explorer. A database of spots to search, filter by type and location, and sort by rating or votes.`}>
+  <div class="table-page" data-filter-table>
+    <header class="page-bar">
+      <div class="wrap wrap-wide page-bar-inner">
+        <MastheadBrand />
+        <PaneSearch
+          label="Search places"
+          placeholder="Search by name, cuisine..."
+          narrowPlaceholder={`Search ${places.length} spots`}
+        />
+        <div class="bar-anchor bar-anchor--pushed">
+          <button
+            type="button"
+            class="page-bar-link"
+            data-info-open
+            aria-haspopup="dialog"
+            aria-label="What is this?">
+            <span class="wide-only">What is this?</span>
+            <span class="narrow-only">?</span>
+          </button>
+          <dialog class="map-sheet suggest-dialog" data-info-dialog aria-labelledby="info-title">
+            <button
+              type="button"
+              class="close-button map-sheet-close"
+              data-info-close
+              aria-label="Close">
+              <IconX />
+            </button>
+            <div class="map-sheet-body">
+              <div class="popup-scroll">
+                <div class="sheet-title" id="info-title">
+                  <span class="title-serif">What is this?</span>
+                </div>
+                <p class="suggest-lede description">
+                  An explorer for St. Louis food and coffee, built from the places I've tried or
+                  want to try.
+                </p>
+                <p class="suggest-lede description">
+                  Click into any spot for its website, address, Instagram, and my writeup. You can
+                  also vote on your favorites.
+                </p>
+                <p class="suggest-lede description">
+                  For a higher fidelity version with photographs and a map, <strong
+                    ><a href={href('/food/')}>click here</a></strong
+                  >.
+                </p>
+              </div>
+            </div>
+          </dialog>
+        </div>
+        <ThemeToggle />
+        <div class="bar-anchor">
+          <SuggestSpot category="food" subject="list" />
+        </div>
+      </div>
+    </header>
+    <h1 class="visually-hidden">St. Louis Food & Coffee</h1>
+    <div class="filter-band">
+      <div class="wrap wrap-wide filter-row">
+        <span class="wide-only">
+          <strong data-filter-count>{places.length}</strong>
+          <span data-count-noun>spots</span>:
+        </span>
+        <select data-filter-facet="cuisine" aria-label="Type">
+          <option value="" data-narrow-label="Any type">Any type</option>
+          {cuisines.map((cuisine) => <option value={cuisine}>{cuisineLabel(cuisine)}</option>)}
+        </select>
+        <span class="wide-only">in</span>
+        <select data-filter-facet="neighborhood" aria-label="Location">
+          <option value="">Any location</option>
+          <optgroup label="Districts">
+            {districts.map((district) => <option value={district.slug}>{district.name}</option>)}
+          </optgroup>
+          <optgroup label="Neighborhoods and Towns">
+            {
+              neighborhoods.map((neighborhood) => (
+                <option value={neighborhood.slug}>{neighborhood.name}</option>
+              ))
+            }
+          </optgroup>
+        </select>
+        <span class="wide-only">sorted by</span>
+        <PaneSort options={sortOptions} />
+        <ClearFilters variant="text" />
+      </div>
+    </div>
+    <div class="wrap wrap-wide">
+      <table>
+        <thead>
+          <tr>
+            <th class="name-cell">Name</th>
+            <th class="type-cell">Type</th>
+            <th class="area-cell"> Location</th>
+            <th class="rating-cell">My Rating</th>
+            {
+              SUPABASE_ENABLED && (
+                <th class="score-cell" title="Been here? What did you think?">
+                  Votes
+                </th>
+              )
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            locatedPlaces.map(({ place, area, district }) => {
+              const { title, cuisine, rating } = place.data
+              const areaName = area?.name ?? ''
+              const districtName = district?.name ?? ''
+              const type = cuisine.map((value) => cuisineLabel(value)).join(', ')
+
+              return (
+                <tr
+                  data-filter-item
+                  data-slug={place.id}
+                  data-search={[title, areaName, districtName, type].join(' ')}
+                  data-cuisine={cuisine.join('|')}
+                  data-neighborhood={[area?.slug, district?.slug].filter(Boolean).join('|')}
+                  data-sort-name={title.toLowerCase()}
+                  data-sort-neighborhood={areaName.toLowerCase()}
+                  data-group-name={areaName}
+                  data-sort-rating={rating}
+                  data-sort-score="0">
+                  <td class="name-cell">
+                    <a href={`/food/${place.id}/`}>{title}</a>
+                  </td>
+                  <td class="type-cell">{type}</td>
+                  <td class="area-cell">
+                    <span class="eyebrow-divider narrow-only" aria-hidden="true" />
+                    {areaName}
+                    {districtName && (
+                      <span class="district-name">
+                        <span class="eyebrow-divider" aria-hidden="true" />
+                        {districtName}
+                      </span>
+                    )}
+                  </td>
+                  <td class="rating-cell">{rating}</td>
+                  {SUPABASE_ENABLED && (
+                    <td class="score-cell">
+                      <span class="vote-control">
+                        <button
+                          type="button"
+                          class="vote-button"
+                          data-row-vote="like"
+                          title="Vote up"
+                          aria-label={`Vote up ${title}`}
+                          disabled>
+                          ▲
+                        </button>
+                        <span class="vote-score" data-row-score>
+                          0
+                        </span>
+                        <button
+                          type="button"
+                          class="vote-button"
+                          data-row-vote="dislike"
+                          title="Vote down"
+                          aria-label={`Vote down ${title}`}
+                          disabled>
+                          ▼
+                        </button>
+                      </span>
+                    </td>
+                  )}
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <p class="empty" data-filter-empty hidden>
+        No places match those filters.
+        <ClearFilters variant="text" />
+      </p>
+      <p class="vote-status" data-row-vote-status role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initFilter } from '../scripts/filter'
+  import { initFilterSentence } from '../scripts/filter-sentence'
+  import { initInfoDialog } from '../scripts/info-dialog'
+  import { initRowVotes } from '../scripts/row-votes'
+  import { initTableGroups } from '../scripts/table-groups'
+
+  initFilterSentence('[data-filter-table]')
+  initFilter('[data-filter-table]')
+  initTableGroups('[data-filter-table]')
+  initRowVotes()
+  initInfoDialog()
+</script>
+
+<style>
+  .table-page {
+    --color-raised: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-text));
+    --control-height: calc(var(--spacing-xl) - var(--spacing-xxs));
+    --filter-band-height: calc(var(--control-height) + 2 * var(--spacing-xs));
+    font-family: var(--font-sans-serif);
+  }
+
+  .table-page .eyebrow-divider {
+    margin-inline: var(--spacing-xs);
+    vertical-align: -0.1em;
+  }
+
+  .table-page :global(.title-serif),
+  .table-page :global(.description) {
+    font-family: inherit;
+  }
+
+  .page-bar {
+    position: relative;
+    z-index: 4;
+    background: var(--color-bar-background);
+    color: var(--color-bar-text);
+  }
+
+  .page-bar-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-block: var(--spacing-xs);
+  }
+
+  .page-bar :global(.masthead-brand),
+  .page-bar :global(.masthead-brand:hover) {
+    flex-shrink: 0;
+    color: var(--color-bar-text);
+  }
+
+  .page-bar :global(.pane-search-wrap) {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: var(--measure-reading);
+    margin-inline-start: 0;
+  }
+
+  .page-bar :global(.pane-search-wrap .icon) {
+    color: var(--color-bar-text);
+  }
+
+  .page-bar :global(.pane-search) {
+    box-sizing: border-box;
+    height: var(--control-height);
+    padding-block: 0;
+    border: 1px solid color-mix(in srgb, var(--color-bar-text) 45%, transparent);
+    background: var(--color-bar-background-sub);
+    color: var(--color-bar-text);
+  }
+
+  .page-bar :global(.pane-search:focus) {
+    border-color: var(--color-bar-text);
+  }
+
+  .page-bar :global(.pane-search::placeholder) {
+    color: var(--color-bar-text);
+    opacity: 0.9;
+  }
+
+  .bar-anchor {
+    flex-shrink: 0;
+  }
+
+  .bar-anchor--pushed {
+    margin-inline-start: auto;
+  }
+
+  .page-bar-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-bar-text);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-bar-text);
+    cursor: pointer;
+  }
+
+  .page-bar-link:hover {
+    color: var(--color-flag-yellow);
+    text-decoration-color: var(--color-flag-yellow);
+  }
+
+  .page-bar :global(.theme-toggle) {
+    flex-shrink: 0;
+    color: var(--color-bar-text);
+  }
+
+  .page-bar :global(.theme-toggle .icon) {
+    width: var(--font-size-label);
+    height: var(--font-size-label);
+  }
+
+  .table-page :global(.suggest-spot) {
+    position: static;
+    flex-shrink: 0;
+    gap: var(--spacing-xxs);
+    height: var(--control-height);
+    padding-inline: var(--spacing-sm);
+    border: 0;
+    border-radius: var(--radius-input);
+    background: var(--color-flag-yellow);
+    box-shadow: none;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-flag-blue);
+  }
+
+  .table-page :global(.suggest-spot:hover) {
+    background: var(--color-flag-yellow);
+    color: var(--color-black);
+  }
+
+  .table-page :global(.suggest-spot .pill-button-badge) {
+    width: auto;
+    height: auto;
+    background: none;
+    color: inherit;
+  }
+
+  .filter-band {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: var(--color-surface-2);
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs) var(--spacing-sm);
+    padding-block: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--color-muted);
+  }
+
+  .filter-row .wide-only {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .filter-row strong {
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .filter-row select,
+  .filter-row :global(.pane-sort) {
+    box-sizing: border-box;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    height: var(--control-height);
+    padding-block: 0;
+    font-weight: 600;
+    color: var(--color-link);
+  }
+
+  .narrow-only {
+    display: none;
+  }
+
+  table {
+    --rating-width: calc(2 * var(--spacing-xxl) + var(--spacing-lg));
+    --vote-width: calc(2 * var(--spacing-xxl) + var(--spacing-xl));
+    display: block;
+    width: calc(100% + 2 * var(--spacing-md));
+    max-width: none;
+    margin-block: 0;
+    margin-inline: calc(-1 * var(--spacing-md));
+    border: 0;
+  }
+
+  thead,
+  tbody {
+    display: block;
+  }
+
+  thead {
+    position: sticky;
+    top: var(--filter-band-height);
+    z-index: 2;
+    border-block: 1px solid var(--color-line-input);
+    background: var(--color-background);
+  }
+
+  tr {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding-inline: var(--spacing-md);
+  }
+
+  tbody tr {
+    border-block-end: 1px solid var(--color-line-muted);
+    background: var(--color-surface-2);
+  }
+
+  tbody tr:nth-child(even of [data-filter-item]:not([hidden])) {
+    background: var(--color-surface);
+  }
+
+  @media (hover: hover) {
+    tbody tr:hover,
+    tbody tr:nth-child(even of [data-filter-item]:not([hidden])):hover {
+      background: var(--color-raised);
+    }
+  }
+
+  tbody :global(.group-row) {
+    display: flex;
+    padding-inline: var(--spacing-md);
+    border-block-end: 1px solid var(--color-line-input);
+    background: var(--color-background);
+  }
+
+  tbody :global(.group-row th) {
+    display: flex;
+    flex: 1;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0 var(--spacing-xs);
+    border: 0;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  th,
+  td {
+    display: block;
+    min-width: 0;
+    padding: var(--spacing-xs) 0;
+    border: 0;
+    line-height: 1.2;
+  }
+
+  thead th {
+    padding-block: var(--spacing-sm);
+    border: 0;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .rating-cell {
+    flex: 0 0 var(--rating-width);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+  }
+
+  .name-cell,
+  .area-cell,
+  .type-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .name-cell,
+  .area-cell {
+    flex: 3 1 0;
+  }
+
+  .type-cell {
+    flex: 2 1 0;
+  }
+
+  .name-cell a {
+    font-weight: 600;
+  }
+
+  .name-cell a:hover {
+    text-decoration-line: underline;
+    text-decoration-color: currentColor;
+    text-underline-offset: 2px;
+  }
+
+  .district-name {
+    color: var(--color-muted);
+  }
+
+  .score-cell {
+    display: flex;
+    flex: 0 0 var(--vote-width);
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-xxs);
+    padding-block: var(--spacing-xxs);
+  }
+
+  .vote-control {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xxs);
+  }
+
+  .vote-button {
+    --vote-color: var(--color-accent-blue);
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--spacing-lg);
+    height: var(--spacing-lg);
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: var(--font-size-xxs);
+    line-height: 1;
+    color: var(--color-line-input);
+    cursor: pointer;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .vote-button[data-row-vote='dislike'] {
+    --vote-color: var(--color-accent);
+  }
+
+  .vote-button:hover:enabled,
+  .vote-button.is-active {
+    color: var(--vote-color);
+  }
+
+  .vote-button:focus-visible {
+    outline: 2px solid var(--vote-color);
+    outline-offset: 1px;
+  }
+
+  .vote-button.is-active,
+  .vote-button:disabled {
+    cursor: default;
+  }
+
+  .vote-score {
+    min-width: 3ch;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    color: var(--color-muted);
+  }
+
+  .vote-score.has-votes {
+    color: var(--color-text);
+  }
+
+  .vote-status {
+    position: fixed;
+    inset-block-end: var(--spacing-lg);
+    inset-inline-start: var(--spacing-md);
+    z-index: 5;
+    max-width: calc(100% - 2 * var(--spacing-md));
+    margin: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-input);
+    background: var(--color-text);
+    font-size: var(--font-size-sm);
+    color: var(--color-background);
+    box-shadow: var(--box-shadow);
+  }
+
+  .vote-status:empty {
+    padding: 0;
+    box-shadow: none;
+  }
+
+  @media (min-width: 701px) {
+    table {
+      width: 100%;
+      margin-block-start: var(--spacing-sm);
+      margin-inline: 0;
+      border: 1px solid var(--color-line-muted);
+    }
+
+    thead {
+      border-block-start: 0;
+    }
+
+    tr,
+    tbody :global(.group-row) {
+      padding-inline: var(--spacing-sm);
+    }
+
+    tr {
+      align-items: stretch;
+      gap: 0;
+    }
+
+    thead th,
+    tbody td {
+      align-content: center;
+      padding-inline: var(--spacing-sm);
+      border-inline-end: 1px solid var(--color-line-muted);
+    }
+
+    thead th:first-child,
+    tbody td:first-child {
+      padding-inline-start: 0;
+    }
+
+    thead th:last-child,
+    tbody td:last-child {
+      padding-inline-end: 0;
+      border-inline-end: 0;
+    }
+
+    .bar-anchor {
+      position: relative;
+    }
+
+    .table-page :global(.suggest-dialog) {
+      position: absolute;
+      inset: calc(100% + var(--spacing-xs)) 0 auto auto;
+      width: 420px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .page-bar-inner {
+      gap: var(--spacing-sm);
+    }
+
+    .page-bar :global(.brand-name) {
+      display: none;
+    }
+
+    .page-bar :global(.pane-search-wrap) {
+      max-width: none;
+    }
+
+    .page-bar-link {
+      font-size: var(--font-size-md);
+      text-decoration-line: none;
+    }
+
+    .table-page :global(.suggest-spot) {
+      justify-content: center;
+      width: var(--control-height);
+      padding: 0;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .filter-row select,
+    .filter-row :global(.pane-sort) {
+      width: 100%;
+    }
+
+    .filter-row :global(.text-button) {
+      grid-column: 1 / -1;
+      justify-self: end;
+    }
+
+    .wide-only,
+    .district-name {
+      display: none;
+    }
+
+    .narrow-only {
+      display: inline-block;
+    }
+
+    table {
+      --rating-width: var(--spacing-xl);
+    }
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      border-block-start: 1px solid var(--color-line-input);
+    }
+
+    tbody tr {
+      display: grid;
+      grid-template-areas:
+        'name name rating vote'
+        'type area rating vote';
+      grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) auto;
+      gap: 0 var(--spacing-xs);
+      padding-block: var(--spacing-xxs);
+    }
+
+    td {
+      padding: 0;
+    }
+
+    .rating-cell {
+      grid-area: rating;
+    }
+
+    .name-cell {
+      grid-area: name;
+      align-self: end;
+    }
+
+    .area-cell {
+      grid-area: area;
+      align-self: start;
+      font-size: var(--font-size-xxs);
+    }
+
+    .type-cell {
+      grid-area: type;
+      align-self: start;
+      font-size: var(--font-size-xxs);
+    }
+
+    .score-cell {
+      grid-area: vote;
+      padding-block: 0;
+    }
+
+    .vote-control {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .vote-button {
+      position: relative;
+      width: var(--spacing-xl);
+      height: var(--spacing-md);
+    }
+
+    .vote-button::after {
+      content: '';
+      position: absolute;
+      inset: calc(-1 * var(--spacing-xs)) 0;
+    }
+
+    .vote-score {
+      font-size: var(--font-size-xs);
+    }
+  }
+</style>

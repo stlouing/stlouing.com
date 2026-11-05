@@ -1,9 +1,10 @@
 ---
 title: The Drip Community Coffee House
 created: 2026-07-16
-status: tried
+updated: 2026-11-04
+rating: 4.5
 description: Community coffeehouse
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: tower-grove-south
 address:
   - 3615 Potomac St

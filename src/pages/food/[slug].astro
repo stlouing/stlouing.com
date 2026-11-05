@@ -7,9 +7,8 @@ import AsideHeading from '../../components/AsideHeading.astro'
 import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
 import ShareCard from '../../components/ShareCard.astro'
-import BackLink from '../../components/BackLink.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
-import ReadersVerdict from '../../components/ReadersVerdict.astro'
+import ReaderVote from '../../components/ReaderVote.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
 import SourceLink from '../../components/SourceLink.astro'
@@ -25,7 +24,7 @@ import { published, excerpt, hasBody, foodStatus, META_DESCRIPTION_CHARS } from 
 import { isoDate } from '../../lib/dates'
 import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref, neighborhoodName, placeLocality } from '../../lib/neighborhoods'
-import { resolveVerdict, resolveWriterState, verdictLabels } from '../../lib/verdict'
+import { resolveWriterState } from '../../lib/rating'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineLabel, cuisinePlacePhrase } from '../../lib/cuisine'
@@ -90,15 +89,15 @@ const trail = [
 
 const relatedPool = isStub ? allFood.filter((place) => hasBody(place)) : allFood
 const relatedLimit = isStub ? 3 : 2
-const withVerdict = (place: (typeof allFood)[number]) => ({
+const withRating = (place: (typeof allFood)[number]) => ({
   place,
-  verdict: resolveVerdict(place.data),
+  rating: place.data.rating,
 })
 const topRelated = (places: typeof allFood) =>
   [...places]
     .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
     .slice(0, relatedLimit)
-    .map(withVerdict)
+    .map(withRating)
 
 const relatedNeighborhood = data.neighborhood
   ? topRelated(
@@ -141,7 +140,7 @@ const nearbyWritten =
             distanceBetween(data.coords as [number, number], right.data.coords as [number, number]),
         )
         .slice(0, relatedLimit - relatedNeighborhood.length)
-        .map(withVerdict)
+        .map(withRating)
     : []
 
 const nearby = isStub ? [...relatedNeighborhood, ...nearbyWritten] : []
@@ -182,7 +181,6 @@ const seoDescription = hasBody(entry)
 ---
 
 <BaseLayout
-  article
   crumb={data.title}
   title={seoTitle}
   description={seoDescription}
@@ -195,7 +193,6 @@ const seoDescription = hasBody(entry)
   noindex={isStub}
   jsonLd={schema}>
   <article class="detail-page">
-    <BackLink to="/food/" label="Restaurant & cafe map" />
     <Breadcrumbs trail={trail} />
 
     <header class="detail-pane-header">
@@ -212,13 +209,11 @@ const seoDescription = hasBody(entry)
         <div class="pane-stat">
           <span class="pane-stat-label eyebrow eyebrow--muted">My rating</span>
           <span class="pane-stat-value my-rating-line">
-            <Rating verdict={writerState.verdict} />
-            <span class:list={[writerState.verdict ? ['my-rating-word', 'eyebrow'] : 'description']}>
-              {writerState.verdict ? verdictLabels[writerState.verdict] : writerState.statement}
-            </span>
+            <Rating rating={writerState.rating} />
+            {writerState.statement && <span class="description">{writerState.statement}</span>}
           </span>
         </div>
-        <ReadersVerdict slug={entry.id} title={data.title} />
+        <ReaderVote slug={entry.id} title={data.title} />
         {
           SUPABASE_ENABLED && (
             <a class="pane-stat pane-stat-link" href="#comments" data-comments-link hidden>
@@ -275,7 +270,7 @@ const seoDescription = hasBody(entry)
             )
           }
 
-          {!isStub && <Comments kind="food" slug={entry.id} title={data.title} />}
+          <Comments kind="food" slug={entry.id} title={data.title} />
 
           <section class="more-food">
             {
@@ -284,13 +279,13 @@ const seoDescription = hasBody(entry)
                   title={`More in ${neighborhoodName(data.neighborhood)}`}
                   class="card-cells"
                   moreHref={href(neighborhoodLink ?? '/food/')}>
-                  {relatedNeighborhood.map(({ place, verdict }) => (
+                  {relatedNeighborhood.map(({ place, rating }) => (
                     <Card
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={cuisineLabel(place.data.cuisine[0])}
                       description={place.data.description}
-                      verdict={verdict}
+                      rating={rating}
                     />
                   ))}
                 </CardList>
@@ -299,13 +294,13 @@ const seoDescription = hasBody(entry)
             {
               nearby.length > 0 && (
                 <CardList title="Nearby" class="card-cells" moreHref={href('/food/')}>
-                  {nearby.map(({ place, verdict }) => (
+                  {nearby.map(({ place, rating }) => (
                     <Card
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={neighborhoodName(place.data.neighborhood)}
                       description={place.data.description}
-                      verdict={verdict}
+                      rating={rating}
                     />
                   ))}
                 </CardList>
@@ -317,13 +312,13 @@ const seoDescription = hasBody(entry)
                   title={`More ${cuisineLabel(primaryCuisine)}`}
                   class="card-cells"
                   moreHref={cuisineHref(primaryCuisine)}>
-                  {relatedCuisine.map(({ place, verdict }) => (
+                  {relatedCuisine.map(({ place, rating }) => (
                     <Card
                       href={href(`/food/${place.id}/`)}
                       title={place.data.title}
                       meta={neighborhoodName(place.data.neighborhood)}
                       description={place.data.description}
-                      verdict={verdict}
+                      rating={rating}
                     />
                   ))}
                 </CardList>
@@ -331,16 +326,6 @@ const seoDescription = hasBody(entry)
             }
           </section>
 
-          {isStub && <Comments kind="food" slug={entry.id} title={data.title} />}
-
-          <ShareCard shareTitle={data.title} />
-
-          <footer>
-            <Backlinks links={mentionedIn} />
-            <p class="review-disclaimer">
-              Reviews are my opinion. Details change, so check before you go.
-            </p>
-          </footer>
         </div>
         <aside class="detail-aside">
           <div>
@@ -420,19 +405,27 @@ const seoDescription = hasBody(entry)
 </BaseLayout>
 
 <script>
-  import { initReadersVerdict } from '../../scripts/readers-verdict'
-  initReadersVerdict()
+  import { initReaderVotes } from '../../scripts/reader-votes'
+  initReaderVotes()
 </script>
 
 <style>
   .review-disclaimer {
-    margin-block: var(--spacing-lg) 0;
+    margin-block: var(--spacing-md) 0;
     font-size: var(--font-size-xs);
     color: var(--color-muted);
   }
 
   .detail-page {
-    margin-block-end: var(--spacing-xl);
+    margin-block-end: var(--spacing-lg);
+  }
+
+  @media (max-width: 899px) {
+    .detail-aside {
+      order: -1;
+      padding-block-end: var(--spacing-lg);
+      border-block-end: 1px solid var(--color-line);
+    }
   }
 
   .my-rating-line {
@@ -440,12 +433,6 @@ const seoDescription = hasBody(entry)
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-xs);
-  }
-
-  .my-rating-word {
-    margin-top: var(--spacing-xs);
-    font-weight: 700;
-    color: var(--color-accent-gold);
   }
 
   .my-rating-line :global(.rating .rating-fleur) {

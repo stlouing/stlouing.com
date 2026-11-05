@@ -1,7 +1,7 @@
 ---
 title: The Gramophone
 created: 2026-07-16
-rating: 9
+rating: 4.5
 description: Late-night sandwiches
 cuisine: ['sandwiches']
 neighborhood: forest-park-southeast

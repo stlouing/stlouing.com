@@ -1,7 +1,7 @@
 ---
 title: Bono's Pizzeria
 created: 2026-06-28
-rating: 9
+rating: 4.5
 cuisine: ['pizza']
 description: Deep dish and St. Louis-style pizza
 neighborhood: southampton

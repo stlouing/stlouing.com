@@ -1,9 +1,10 @@
 ---
 title: Lona's Lil Eats
 created: 2026-08-30
+updated: 2026-11-04
 status: want-to-try
 description: Chinese-Thai counter with rice paper wraps
-cuisine: ['asian']
+cuisine: ['chinese', 'thai', 'asian']
 neighborhood: fox-park
 address:
   - 2199 California Ave

@@ -1,6 +1,7 @@
 ---
 interface SortOption {
   label: string
+  narrowLabel?: string
   value: string
 }
 
@@ -12,7 +13,13 @@ const { options } = Astro.props
 ---
 
 <select class="pane-sort" data-filter-sort aria-label="Sort">
-  {options.map((option) => <option value={option.value}>{option.label}</option>)}
+  {
+    options.map((option) => (
+      <option value={option.value} data-narrow-label={option.narrowLabel}>
+        {option.label}
+      </option>
+    ))
+  }
 </select>
 
 <style>

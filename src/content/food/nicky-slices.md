@@ -4,7 +4,7 @@ description: A perfect Detroit-style pie
 photo: ../images/food/nicky-slices.jpeg
 created: 2026-06-23
 updated: 2026-07-16
-rating: 10
+rating: 5
 cuisine: ['pizza']
 neighborhood: the-hill
 address:

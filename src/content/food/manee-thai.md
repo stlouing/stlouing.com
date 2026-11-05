@@ -1,9 +1,10 @@
 ---
 title: Manee Thai
 created: 2026-07-16
-status: tried
+updated: 2026-11-04
+rating: 4
 description: Strip mall Thai kitchen
-cuisine: ['thai']
+cuisine: ['thai', 'asian']
 neighborhood: ballwin
 address:
   - 481 Lafayette Center Dr

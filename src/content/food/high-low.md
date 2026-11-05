@@ -1,10 +1,10 @@
 ---
 title: High Low
 created: 2026-10-12
-updated: 2026-11-03
+updated: 2026-11-04
 status: want-to-try
 description: Literary arts café with a gallery, run with Blueprint Coffee
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: covenant-blu-grand-center
 address:
   - 3301 Washington Ave

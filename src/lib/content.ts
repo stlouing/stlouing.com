@@ -1,4 +1,4 @@
-import type { FoodStatus } from './verdict'
+import type { FoodStatus } from './rating'
 import { PINNED_TOPIC_ID } from '../../site.config.mjs'
 
 export function published<
@@ -43,12 +43,12 @@ export function hasBody(entry: { body?: string }): boolean {
 
 export function foodStatus(entry: {
   body?: string
-  data: { status?: FoodStatus; rating?: number; verdict?: string }
+  data: { status?: FoodStatus; rating?: number }
 }): FoodStatus {
   if (hasBody(entry)) {
     return 'written'
   }
-  if (typeof entry.data.rating === 'number' || entry.data.verdict) {
+  if (typeof entry.data.rating === 'number') {
     return 'tried'
   }
 

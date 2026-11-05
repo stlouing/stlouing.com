@@ -2,7 +2,7 @@
 title: Grace Meat + Three
 description: Comfort-food fried chicken and sides
 created: 2026-06-23
-rating: 8.5
+rating: 4
 cuisine: ['fried chicken']
 neighborhood: forest-park-southeast
 district: the-grove

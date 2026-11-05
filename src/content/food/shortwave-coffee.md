@@ -1,9 +1,10 @@
 ---
 title: Shortwave Coffee
 created: 2026-07-16
-status: tried
+updated: 2026-11-04
+rating: 4.5
 description: Specialty roaster and espresso bar
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: central-west-end
 address:
   - 33 N Sarah St

@@ -4,7 +4,7 @@ description: My top St. Louis-style pizza
 photo: ../images/food/farottos/pizza1.jpg
 created: 2026-06-23
 updated: 2026-08-31
-rating: 9.5
+rating: 5
 cuisine: ['pizza']
 neighborhood: rock-hill
 address:

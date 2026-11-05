@@ -1,9 +1,10 @@
 ---
 title: Espresso Yourself Coffee & Café
 created: 2026-10-12
+updated: 2026-11-04
 status: want-to-try
 description: Family-owned café in a former church space
-cuisine: ['cafe']
+cuisine: ['cafe', 'coffee']
 neighborhood: southampton
 address:
   - 5351 Devonshire Ave

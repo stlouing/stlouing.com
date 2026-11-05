@@ -1,9 +1,10 @@
 ---
 title: iNDO
 created: 2026-07-16
+updated: 2026-11-04
 status: want-to-try
 description: Thai-Japanese omakase and small plates
-cuisine: ['asian']
+cuisine: ['thai', 'asian']
 neighborhood: botanical-heights
 address:
   - 1641 Tower Grove Ave

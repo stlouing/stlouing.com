@@ -1,6 +1,6 @@
 import maplibregl from 'maplibre-gl'
 import { CITY_BOUNDS as CONFIGURED_CITY_BOUNDS } from '../../site.config.mjs'
-import { initReadersVerdict } from './readers-verdict'
+import { initReaderVotes } from './reader-votes'
 
 interface PannableMap {
   getContainer(): HTMLElement
@@ -299,7 +299,7 @@ export function createMapPopup(offset: number): MapPopup {
   const handlers: Record<PopupEvent, Array<() => void>> = { open: [], close: [] }
   const emit = (event: PopupEvent) => {
     if (event === 'open') {
-      initReadersVerdict()
+      initReaderVotes()
     }
     handlers[event].forEach((handler) => handler())
   }

@@ -1,7 +1,7 @@
 ---
 title: Mac's Local Eats
 created: 2026-06-23
-rating: 6
+rating: 3
 cuisine: ['burgers']
 neighborhood: dogtown
 address:

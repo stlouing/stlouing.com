@@ -4,9 +4,10 @@ import IconSearch from '../assets/IconSearch.astro'
 interface Props {
   label: string
   placeholder: string
+  narrowPlaceholder?: string
 }
 
-const { label, placeholder } = Astro.props
+const { label, placeholder, narrowPlaceholder } = Astro.props
 ---
 
 <label class="pane-search-wrap">
@@ -15,6 +16,7 @@ const { label, placeholder } = Astro.props
     class="pane-search"
     type="search"
     placeholder={placeholder}
+    data-narrow-placeholder={narrowPlaceholder}
     autocomplete="off"
     aria-label={label}
     data-filter-search

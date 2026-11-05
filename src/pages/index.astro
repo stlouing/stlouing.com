@@ -14,7 +14,7 @@ import {
   PINNED_TOPIC_ID,
   PREVIEW_EXCERPT_CHARS,
 } from '../lib/content'
-import { isExplored } from '../lib/verdict'
+import { isExplored } from '../lib/rating'
 import { foodStatus } from '../lib/content'
 import { formatDate } from '../lib/dates'
 import { websiteSchema } from '../lib/schema'
@@ -63,6 +63,7 @@ const exploreSections = sections.filter((section) => section.group === 'explore'
 
 const exploreCounts: Record<string, number> = {
   '/food/': allFood.length,
+  '/directory/': allFood.length,
   '/neighborhoods/': neighborhoodRecords.filter((neighborhood) => !neighborhood.ignored).length,
 }
 
@@ -317,6 +318,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .front-intro {
     grid-area: intro;
+    line-height: 1.35;
   }
 
   .front-index,
@@ -367,7 +369,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .rail-articles :global(.card-description) {
     font-style: normal;
     font-size: var(--font-size-md);
-    line-height: 1.55;
+    line-height: 1.35;
   }
 
   .front-eyebrow {
@@ -436,6 +438,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
     border-block-start: 1px dotted var(--color-line-input);
     text-align: start;
     font-size: var(--font-size-md);
+    line-height: 1.45;
     color: var(--color-text-article);
     columns: 2;
     column-gap: var(--spacing-xl);
@@ -453,7 +456,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .front-explore :global(.list-item .list-description) {
     font-size: var(--font-size-md);
-    line-height: 1.55;
+    line-height: 1.35;
   }
 
   .front-explore :global(.list-item .list-title) {

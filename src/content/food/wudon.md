@@ -1,9 +1,10 @@
 ---
 title: Wudon Korean BBQ
 created: 2026-08-30
+updated: 2026-11-04
 status: tried
 description: Korean BBQ with tabletop grills
-cuisine: ['korean']
+cuisine: ['korean', 'asian']
 neighborhood: creve-coeur
 address:
   - 1261 Castillons Arcade Plaza

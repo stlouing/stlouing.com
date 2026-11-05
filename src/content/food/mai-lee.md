@@ -1,9 +1,10 @@
 ---
 title: Mai Lee
 created: 2026-07-16
+updated: 2026-11-04
 status: want-to-try
 description: Vietnamese restaurant
-cuisine: ['vietnamese']
+cuisine: ['vietnamese', 'asian']
 neighborhood: brentwood
 address:
   - 8396 Musick Memorial Dr

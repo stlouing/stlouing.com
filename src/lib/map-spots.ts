@@ -5,7 +5,6 @@ import { cuisineIcon, cuisineLabel } from './cuisine'
 import { googleMapsHref, googleSearchHref } from './maps'
 import { spotCategories, type MapSpot, type Spot, type SpotFilter } from './spots'
 import { href } from './url'
-import { resolveVerdict, verdictLabels } from './verdict'
 
 const isExternalUrl = (url: string) => /^https?:\/\//.test(url)
 
@@ -81,7 +80,6 @@ export async function foodToMapSpot(
   if (lat === undefined || lng === undefined) {
     return undefined
   }
-  const verdict = resolveVerdict(place.data)
   const thumb = place.data.photo
     ? await getImage({ src: place.data.photo, width: 480, format: 'webp' })
     : undefined
@@ -93,7 +91,7 @@ export async function foodToMapSpot(
     url: href(`/food/${place.id}/`),
     coords: [lng, lat],
     meta: cuisineLabel(place.data.cuisine[0]),
-    verdict: verdict ? { key: verdict, label: verdictLabels[verdict] } : undefined,
+    rating: place.data.rating,
     tagline: place.data.description ?? '',
     addressLines: place.data.address ?? [],
     directionsHref: googleMapsHref(place.data),

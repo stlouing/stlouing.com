@@ -17,54 +17,51 @@ const readersEnabled = SUPABASE_ENABLED
 {
   readersEnabled && (
     <section
-      class:list={[compact ? 'verdict-row' : 'verdict-bar pane-stat']}
-      data-readers-verdict
+      class:list={[compact ? 'vote-row' : 'vote-bar pane-stat']}
+      data-reader-vote
       data-slug={slug}
       aria-label={`Rate ${title}`}>
-      <span class:list={[{ 'pane-stat-label': !compact }, 'eyebrow eyebrow--muted']}>Your rating</span>
-      <div class:list={['rv-pill', { 'rv-pill--split': compact }]}>
+      <span class:list={[{ 'pane-stat-label': !compact }, 'eyebrow eyebrow--muted']}>
+        Your rating
+      </span>
+      <div class:list={['vote-pill', { 'vote-pill--split': compact }]}>
         <button
           type="button"
-          class="rv-choice btn btn-outline btn-compact btn-muted-icon"
+          class="vote-choice btn btn-outline btn-compact btn-muted-icon"
           data-vote="like"
           aria-pressed="false"
-          aria-label="I liked it"
+          aria-label="Thumbs up"
           disabled>
           <IconThumbsUp />
-          {!compact && 'Liked'}
-          <span class="rv-count" data-count-like />
+          <span class="vote-count" data-count-like />
         </button>
         <button
           type="button"
-          class="rv-choice btn btn-outline btn-compact btn-muted-icon"
+          class="vote-choice btn btn-outline btn-compact btn-muted-icon"
           data-vote="dislike"
           aria-pressed="false"
-          aria-label="Not for me"
+          aria-label="Thumbs down"
           disabled>
           <IconThumbsDown />
-          {!compact && 'Not for me'}
-          <span class="rv-count" data-count-dislike />
+          <span class="vote-count" data-count-dislike />
         </button>
       </div>
-      <p class="rv-vote-prompt description">
-        Voice your opinion! No account needed.
-      </p>
-      <p class="rv-vote-status form-status" data-vote-status role="status" aria-live="polite" />
+      <p class="vote-feedback form-status" data-vote-status role="status" aria-live="polite" />
     </section>
   )
 }
 
 <style>
-  .verdict-bar {
+  .vote-bar {
     margin: 0;
   }
 
-  .rv-pill {
+  .vote-pill {
     display: inline-flex;
     gap: var(--spacing-sm);
   }
 
-  .rv-choice {
+  .vote-choice {
     font-size: var(--font-size-xs);
     line-height: 1.3;
     border-radius: var(--radius-pill);
@@ -74,15 +71,15 @@ const readersEnabled = SUPABASE_ENABLED
     }
   }
 
-  .rv-choice:not(.is-active) {
+  .vote-choice:not(.is-active) {
     background: var(--color-background);
   }
 
-  .rv-choice:not(:disabled, .is-active):hover {
+  .vote-choice:not(:disabled, .is-active):hover {
     background: var(--color-wash);
   }
 
-  .rv-count {
+  .vote-count {
     font-variant-numeric: tabular-nums;
     line-height: 1;
     color: var(--color-muted);
@@ -92,15 +89,15 @@ const readersEnabled = SUPABASE_ENABLED
     }
   }
 
-  .rv-choice.is-active .rv-count {
+  .vote-choice.is-active .vote-count {
     color: inherit;
   }
 
-  :is(.rv-vote-prompt, .rv-vote-status) {
+  :is(.vote-prompt, .vote-feedback) {
     margin: var(--spacing-xs) 0 0;
   }
 
-  .verdict-row {
+  .vote-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -109,43 +106,43 @@ const readersEnabled = SUPABASE_ENABLED
     padding-block-start: var(--spacing-md);
     border-block-start: 1px dotted var(--color-line-input);
 
-    :is(.rv-vote-prompt, .rv-vote-status) {
+    :is(.vote-prompt, .vote-feedback) {
       flex-basis: 100%;
       margin: 0;
     }
 
-    .rv-vote-status:empty {
+    .vote-feedback:empty {
       display: none;
     }
   }
 
-  .rv-pill--split {
+  .vote-pill--split {
     gap: 0;
     margin: 0;
 
-    .rv-choice {
+    .vote-choice {
       border-radius: 0;
       padding-inline: var(--spacing-md);
     }
 
-    .rv-choice:first-child {
+    .vote-choice:first-child {
       border-start-start-radius: var(--radius-pill);
       border-end-start-radius: var(--radius-pill);
     }
 
-    .rv-choice:last-child {
+    .vote-choice:last-child {
       border-inline-start-width: 0;
       border-start-end-radius: var(--radius-pill);
       border-end-end-radius: var(--radius-pill);
     }
 
     @media (max-width: 700px) {
-      .rv-choice {
+      .vote-choice {
         padding-block: var(--spacing-sm);
         padding-inline: var(--spacing-base);
       }
 
-      .rv-choice :global(.icon) {
+      .vote-choice :global(.icon) {
         width: 1.125rem;
         height: 1.125rem;
       }

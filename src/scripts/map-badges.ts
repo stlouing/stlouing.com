@@ -118,7 +118,7 @@ export function spotPopupHtml(spot: MapSpot): string {
     title: spot.title,
     link: spot.url,
     chips: spotChips(spot),
-    verdict: spot.verdict,
+    rating: spot.rating,
     showRating: spot.category === 'food',
     excerpt: spot.tagline ?? '',
     addressLines: spot.addressLines ?? [],

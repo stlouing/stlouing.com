@@ -2,7 +2,7 @@
 import MapLegend from './MapLegend.astro'
 import ClearFilters from './ClearFilters.astro'
 import BadgeIcons from './BadgeIcons.astro'
-import ReadersVerdictTemplate from './ReadersVerdictTemplate.astro'
+import ReaderVoteTemplate from './ReaderVoteTemplate.astro'
 import MapActions from './MapActions.astro'
 import type { AreaPopup } from '../lib/neighborhoods'
 import type { LegendItem } from '../lib/legend'
@@ -36,7 +36,7 @@ const spotIcons = [...new Set(spots.flatMap((spot) => (spot.icon ? [spot.icon] :
 </div>
 <MapActions label="View list" />
 <BadgeIcons icons={[...spotIcons, NEIGHBORHOOD_ICON]} />
-<ReadersVerdictTemplate />
+<ReaderVoteTemplate />
 <script is:inline type="application/json" data-city-map-spots set:html={JSON.stringify(spots)} />
 <script is:inline type="application/json" data-city-map-areas set:html={JSON.stringify(areas)} />
 <script

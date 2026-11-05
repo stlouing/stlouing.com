@@ -3,7 +3,7 @@ title: Grand Pied
 description: Crispy, fluffy pancakes in a family-owned bistro
 photo: ../images/food/grandpied/grandpied1.jpg
 created: 2026-10-05
-rating: 9.5
+rating: 5
 neighborhood: tower-grove-south
 address:
   - 3137 Morganford Rd

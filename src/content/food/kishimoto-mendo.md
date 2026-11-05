@@ -3,9 +3,9 @@ title: Kishimoto Mendo
 description: Rich, comforting Tonkotsu ramen
 photo: ../images/food/kishimoto/kishi2.jpg
 created: 2026-06-23
-updated: 2026-09-04
-rating: 10
-cuisine: ['ramen']
+updated: 2026-11-05
+rating: 5
+cuisine: ['ramen', 'asian']
 neighborhood: university-city
 district: delmar-loop
 address:
@@ -22,7 +22,7 @@ As a long time fan of Menya Rui, I've been hyped to try Kishimoto Mendo ever sin
 
 ![](../images/food/kishimoto/kishi4.jpg)
 
-We ended up going to Kishimoto Mendo during opening weekend, and it's the best Tonkotsu ramen I've ever had, and I've had several across San Diego and Chicago (haven't been to Tokyo yet, sadly). I really respect that the owner, Steven Pursley, delayed the opening until he was sure that the soup was up to his personal standards. We've been a few times and it's been a complete 10/10 every time.
+We ended up going to Kishimoto Mendo during opening weekend, and it's the best Tonkotsu ramen I've ever had, and I've had several across San Diego and Chicago (haven't been to Tokyo yet, sadly). I really respect that the owner, Steven Pursley, delayed the opening until he was sure that the soup was up to his personal standards. We've been a few times and it's been a complete 5/5 every time.
 
 ![](../images/food/kishimoto/kishi1.jpg)
 

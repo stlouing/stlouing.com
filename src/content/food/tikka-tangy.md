@@ -1,7 +1,7 @@
 ---
 title: Tikka Tangy
 created: 2026-06-27
-rating: 8.5
+rating: 4.5
 cuisine: ['indian']
 neighborhood: central-west-end
 description: Indian and Middle Eastern fusion

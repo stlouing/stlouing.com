@@ -1,7 +1,7 @@
 ---
 title: Adam's Smokehouse
 created: 2026-07-16
-status: tried
+rating: 3.5
 description: Slow-smoked barbecue and burnt ends
 cuisine: ['bbq']
 neighborhood: clifton-heights

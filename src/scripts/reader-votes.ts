@@ -7,18 +7,18 @@ const STORE_KEY = 'stl_reader'
 
 type Counts = { likes: number; dislikes: number }
 
-type Choice = 'like' | 'dislike'
+export type Choice = 'like' | 'dislike'
 
 type PlaceState = { vote?: Choice }
 
 type ReaderStore = { voterId?: string; places?: Record<string, PlaceState> }
 
-export function initReadersVerdict(): void {
+export function initReaderVotes(): void {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return
   }
 
-  const roots = [...document.querySelectorAll<HTMLElement>('[data-readers-verdict]')]
+  const roots = [...document.querySelectorAll<HTMLElement>('[data-reader-vote]')]
   for (const root of roots) {
     setupWidget(root)
   }
@@ -74,35 +74,39 @@ function setupWidget(root: HTMLElement): void {
     }
   }
 
+  const setLocked = (isLocked: boolean): void => {
+    likeButton.disabled = isLocked
+    dislikeButton.disabled = isLocked
+  }
+
   const vote = async (next: Choice): Promise<void> => {
-    if (choice) {
+    const previous = choice
+    if (previous === next) {
       return
     }
 
     choice = next
     writeChoice(slug, next)
     setStatus(voteStatus, '')
-    lockButtons()
+    setLocked(true)
     render()
 
     try {
       counts = await castVote({ slug, liked: next === 'like' })
       votedThisSession = true
       loaded = true
-      render()
     } catch {
-      choice = null
-      clearChoice(slug)
-      likeButton.disabled = false
-      dislikeButton.disabled = false
-      render()
+      choice = previous
+      if (previous) {
+        writeChoice(slug, previous)
+      } else {
+        clearChoice(slug)
+      }
       setStatus(voteStatus, "Couldn't record your vote, please try again.")
     }
-  }
 
-  const lockButtons = (): void => {
-    likeButton.disabled = true
-    dislikeButton.disabled = true
+    setLocked(false)
+    render()
   }
 
   likeButton.addEventListener('click', () => {
@@ -112,10 +116,7 @@ function setupWidget(root: HTMLElement): void {
     void vote('dislike')
   })
 
-  if (!choice) {
-    likeButton.disabled = false
-    dislikeButton.disabled = false
-  }
+  setLocked(false)
   render()
 
   void fetchCounts(slug)
@@ -144,7 +145,7 @@ async function fetchCounts(slug: string): Promise<Counts> {
   return toCounts(rows[0])
 }
 
-async function castVote(input: { slug: string; liked: boolean }): Promise<Counts> {
+export async function castVote(input: { slug: string; liked: boolean }): Promise<Counts> {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/cast_vote`, {
     method: 'POST',
     headers: { ...authHeaders(), 'Content-Type': 'application/json' },
@@ -214,17 +215,17 @@ function voterId(): string {
   return browserId()
 }
 
-function readChoice(slug: string): Choice | null {
+export function readChoice(slug: string): Choice | null {
   const vote = readPlace(slug).vote
 
   return vote === 'like' || vote === 'dislike' ? vote : null
 }
 
-function writeChoice(slug: string, choice: Choice): void {
+export function writeChoice(slug: string, choice: Choice): void {
   patchPlace(slug, { vote: choice })
 }
 
-function clearChoice(slug: string): void {
+export function clearChoice(slug: string): void {
   patchPlace(slug, { vote: undefined })
 }
 

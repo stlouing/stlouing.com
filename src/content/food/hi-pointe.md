@@ -1,7 +1,7 @@
 ---
 title: Hi-Pointe
 created: 2026-07-16
-status: tried
+rating: 1.5
 description: Griddled smash burgers and wild specials
 cuisine: ['burgers']
 neighborhood: dogtown

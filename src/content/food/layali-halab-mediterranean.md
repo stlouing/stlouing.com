@@ -1,9 +1,10 @@
 ---
 title: Layali Halab Mediterranean
 created: 2026-07-16
+updated: 2026-11-05
 status: tried
 description: Authentic Syrian cooking
-cuisine: ['middle eastern']
+cuisine: ['middle eastern', 'mediterranean']
 neighborhood: creve-coeur
 address:
   - 10477 Old Olive Street Rd

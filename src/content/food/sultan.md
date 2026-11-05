@@ -3,9 +3,9 @@ title: Sultan
 description: Our go-to spot for Middle Eastern
 photo: ../images/food/sultan.jpeg
 created: 2026-06-27
-updated: 2026-07-22
-rating: 9.5
-cuisine: ['middle eastern']
+updated: 2026-11-05
+rating: 5
+cuisine: ['middle eastern', 'mediterranean']
 neighborhood: forest-park-southeast
 district: the-grove
 address:
