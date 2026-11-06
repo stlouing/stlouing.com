@@ -43,7 +43,7 @@ export const sections: Section[] = [
     label: 'Directory',
     path: '/list/',
     group: 'explore',
-    description: `Every ${CITY} restaurant, bar, and cafe in one searchable table`,
+    description: `A searchable database of the restaurants, bars, and cafes on this site`,
   },
   {
     label: 'Topics',

@@ -210,6 +210,14 @@ const { variant = 'compact' } = Astro.props
     color: var(--color-bar-text);
   }
 
+  .masthead-nav .masthead-tools :global(.theme-toggle:hover) {
+    color: var(--color-accent-blue);
+  }
+
+  .masthead-nav:where(:not(.is-home), .is-home.is-stuck) .masthead-tools :global(.theme-toggle:hover) {
+    color: var(--color-flag-yellow);
+  }
+
   .masthead-nav:where(:not(.is-home), .is-home.is-stuck) :global(.site-nav-inline .nav-fleur) {
     color: var(--color-flag-yellow);
   }

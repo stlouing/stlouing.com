@@ -120,7 +120,6 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
     if (!sort || !list) {
       return
     }
-    root.dataset.sort = sort.value
     const [field, direction] = (sort.value || '').split(':')
     if (!field) {
       return

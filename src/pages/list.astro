@@ -87,13 +87,20 @@ const sortOptions = [
                   try.
                 </p>
                 <p class="sheet-lede description">
-                  Click into any spot for its website, address, Instagram, and review (if I've tried
-                  it). You can also vote on your favorites.
+                  Click into any spot for its website, address, Instagram, and rating/review if I've
+                  been there. You can also vote on your favorites!
                 </p>
                 <p class="sheet-lede description">
                   For a higher fidelity version with photos and an interactive map, <strong
                     ><a href={href('/food/')}>click here</a></strong
                   >.
+                </p>
+                <div class="sheet-title" id="info-title">
+                  <span class="title-serif">Why is this?</span>
+                </div>
+                <p class="sheet-lede description">
+                  I like making things, and exploring St. Louis and discovering new restaurants and
+                  cafes is my hobby.
                 </p>
                 <p class="sheet-lede description">
                   Thanks for taking a look! For updates: {
@@ -413,6 +420,10 @@ const sortOptions = [
     color: var(--color-bar-text);
   }
 
+  .page-bar :global(.btn-quiet.theme-toggle:hover) {
+    color: var(--color-flag-yellow);
+  }
+
   .page-bar :global(.theme-toggle .icon) {
     width: var(--font-size-label);
     height: var(--font-size-label);
@@ -580,7 +591,7 @@ const sortOptions = [
   }
 
   .rating-cell {
-    display: none;
+    display: flex;
     flex: 0 0 var(--rating-width);
     grid-area: rating;
     align-items: center;
@@ -589,10 +600,6 @@ const sortOptions = [
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     text-align: end;
-  }
-
-  .table-page[data-sort^='rating'] .rating-cell {
-    display: flex;
   }
 
   .name-cell,
@@ -859,18 +866,11 @@ const sortOptions = [
     tbody tr {
       display: grid;
       grid-template-areas:
-        'name name vote'
-        'type area vote';
-      grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
-      gap: 0 var(--spacing-xs);
-      padding-block: var(--spacing-xxs);
-    }
-
-    .table-page[data-sort^='rating'] tbody tr {
-      grid-template-areas:
         'name name rating vote'
         'type area rating vote';
       grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) auto;
+      gap: 0 var(--spacing-xs);
+      padding-block: var(--spacing-xxs);
     }
 
     .rating-cell {

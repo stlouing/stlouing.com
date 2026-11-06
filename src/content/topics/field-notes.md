@@ -17,7 +17,9 @@ St. Louis is a little city with a lot of regional culture. This page is an index
 
 I have made the [St. Louis Food Map](/food/) to keep track of all the notable restaurants, bars, and cafes in the region. The map is sortable by cuisine type (pizza, BBQ, Thai, coffee, etc.) and I've added rankings to every place I've been.
 
-[The Best Food in St. Louis](/best/) is my subjective list of favorite restaurants and dishes, and reader voted favorites.
+View [the directory](/list/) for an interactive database.
+
+[The Best Food in St. Louis](/best/) is my subjective list of favorite dishes.
 
 ### Regional food
 

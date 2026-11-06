@@ -2040,8 +2040,19 @@ a.category-chip:hover {
 }
 
 @media (min-width: 701px) {
+  .map-legend[data-filter-toggles] .map-legend-panel {
+    max-height: 65dvh;
+  }
+
+  .map-legend[data-filter-toggles] .map-legend-body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .map-legend[data-filter-toggles] .map-legend-list {
     display: block;
+    flex-shrink: 0;
+    overflow: visible;
     columns: 2;
     column-gap: var(--spacing-lg);
     column-rule: 1px solid var(--color-line);
