@@ -59,6 +59,8 @@ function buildTocGroups() {
   return groupsByAnchor
 }
 
+const wikiTitles = new Map()
+
 function buildWikiMap() {
   const map = new Map()
 
@@ -78,6 +80,7 @@ function buildWikiMap() {
       }
       const id = file.slice(0, -3)
       map.set(id, entryUrl(collection, id))
+      wikiTitles.set(id, frontmatterField(path.join(dir, file), 'title'))
     }
   }
 
@@ -278,7 +281,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [[remarkWikiLink, { resolve }]],
+    remarkPlugins: [[remarkWikiLink, { resolve, titleOf: (target) => wikiTitles.get(target) }]],
     rehypePlugins: [
       rehypeSlug,
       [rehypeStreetFacts, rosterOptions],

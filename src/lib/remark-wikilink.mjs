@@ -2,7 +2,7 @@ import { visit } from 'unist-util-visit'
 
 const WIKILINK = /\[\[([^\]]+)\]\]/g
 
-export function remarkWikiLink({ resolve }) {
+export function remarkWikiLink({ resolve, titleOf }) {
   return (tree) => {
     visit(tree, 'text', (node, index, parent) => {
       if (!parent || index === null || !node.value.includes('[[')) return
@@ -20,7 +20,7 @@ export function remarkWikiLink({ resolve }) {
         }
         const [targetRaw, labelRaw] = inner.split('|')
         const target = targetRaw.trim()
-        const label = (labelRaw ?? targetRaw).trim()
+        const label = (labelRaw || titleOf(target) || targetRaw).trim()
         const url = resolve(target)
         if (url) {
           out.push({

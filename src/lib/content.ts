@@ -1,5 +1,6 @@
 import type { FoodStatus } from './rating'
 import { PINNED_TOPIC_ID } from '../../site.config.mjs'
+import { wikiTitle } from './wiki-titles'
 
 export function published<
   T extends { id: string; body?: string; data: { title?: string; draft?: boolean | undefined } },
@@ -63,7 +64,10 @@ export function excerpt(body: string | undefined, max = 160): string {
     .replace(/```[\s\S]*?```/g, ' ')
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<figure[\s\S]*?<\/figure>/gi, ' ')
-    .replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (_match, target, label) => label ?? target)
+    .replace(
+      /\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g,
+      (_match, target, label) => label || wikiTitle(target.trim()),
+    )
     .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/^[>#\s]*/gm, '')
     .replace(/^[-*+]\s+/gm, '')
