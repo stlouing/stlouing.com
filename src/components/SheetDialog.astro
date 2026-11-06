@@ -17,7 +17,7 @@ const { labelledBy, short = false, ...attributes } = Astro.props
   <button type="button" class="close-button map-sheet-close" data-sheet-close aria-label="Close">
     <IconX />
   </button>
-  <div class="map-sheet-body">
+  <div class="map-sheet-body" tabindex="-1" autofocus>
     <slot />
   </div>
 </dialog>

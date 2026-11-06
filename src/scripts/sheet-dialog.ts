@@ -8,6 +8,14 @@ interface SheetDialogOptions {
   onClose?: () => void
 }
 
+export function openSheet(dialog: HTMLDialogElement): void {
+  dialog.show()
+  const body = dialog.querySelector('.map-sheet-body')
+  if (body) {
+    body.scrollTop = 0
+  }
+}
+
 export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialogOptions): void {
   opener?.addEventListener('click', () => {
     if (dialog.open) {
@@ -16,7 +24,7 @@ export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialog
       return
     }
 
-    dialog.show()
+    openSheet(dialog)
     onOpen?.()
   })
 

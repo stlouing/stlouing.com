@@ -217,6 +217,7 @@ export function createMapPopup(offset: number): MapPopup {
       target.owner = facade
       target.body.innerHTML = html
       target.root.hidden = false
+      target.body.scrollTop = 0
       inSheet = true
       emit('open')
 

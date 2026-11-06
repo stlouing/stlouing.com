@@ -1,4 +1,4 @@
-import { bindSheetDialog } from './sheet-dialog'
+import { bindSheetDialog, openSheet } from './sheet-dialog'
 import { SHEET_QUERY } from './sheet-swipe'
 
 async function fetchPlaceSheet(slug: string): Promise<Element | null> {
@@ -54,7 +54,6 @@ export function initPlaceSheet(rootSelector: string): void {
     }
 
     body.replaceChildren(sheet)
-    body.scrollTop = 0
-    dialog.show()
+    openSheet(dialog)
   })
 }

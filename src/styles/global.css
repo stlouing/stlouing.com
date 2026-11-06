@@ -1649,6 +1649,10 @@ body:has(.map-split) main > .wrap,
   overscroll-behavior: contain;
 }
 
+.map-sheet-body:focus {
+  outline: none;
+}
+
 .pill-button {
   --pill-button-height: 2.75rem;
   --pill-button-badge-size: 1.75rem;
