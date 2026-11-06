@@ -214,8 +214,11 @@ const sortOptions = [
                       </span>
                     )}
                   </td>
-                  <td role="cell" class="rating-cell">
-                    {rating}
+                  <td
+                    role="cell"
+                    class:list={['rating-cell', { 'is-unrated': !rating }]}
+                    aria-label={rating ? undefined : 'Not rated'}>
+                    {rating ?? '–'}
                   </td>
                   {SUPABASE_ENABLED && (
                     <td role="cell" class="score-cell">
@@ -602,6 +605,11 @@ const sortOptions = [
     text-align: end;
   }
 
+  .rating-cell.is-unrated {
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
   .name-cell,
   .area-cell,
   .type-cell {
@@ -852,15 +860,27 @@ const sortOptions = [
     }
 
     table {
-      --rating-width: var(--spacing-xxl);
+      --rating-width: calc(var(--spacing-xxl) + var(--spacing-sm));
+      --vote-width: calc(var(--spacing-xxl) + var(--spacing-xs));
     }
 
     thead {
+      border-block-start: 0;
+    }
+
+    thead tr {
+      display: grid;
+      grid-template-areas: 'name rating vote';
+      grid-template-columns: minmax(0, 1fr) var(--rating-width) var(--vote-width);
+      gap: 0 var(--spacing-xs);
+    }
+
+    thead :is(.type-cell, .area-cell) {
       display: none;
     }
 
-    tbody {
-      border-block-start: 1px solid var(--color-line-input);
+    thead th {
+      padding-block: var(--spacing-xs);
     }
 
     tbody tr {
@@ -868,7 +888,7 @@ const sortOptions = [
       grid-template-areas:
         'name name rating vote'
         'type area rating vote';
-      grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) auto;
+      grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) var(--vote-width);
       gap: 0 var(--spacing-xs);
       padding-block: var(--spacing-xxs);
     }

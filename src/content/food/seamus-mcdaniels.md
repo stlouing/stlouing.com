@@ -1,7 +1,7 @@
 ---
 title: Seamus McDaniel's
 created: 2026-08-30
-status: tried
+rating: 3
 description: Irish pub and grill since 1985
 cuisine: ['bar']
 neighborhood: dogtown
@@ -12,3 +12,5 @@ coords: [38.62819, -90.29277]
 url: https://seamusmcdaniels.com
 instagram: https://www.instagram.com/seamusmcdaniels.dogtown
 ---
+
+Seamus McDaniel's feels like a pretty standard Irish bar and grill to me. I like that they have an outdoor patio area, but their food was just very standard, and they don't really have anything Irish themed on the menu, unless you count a Reuben. I'm personally just not the biggest fan of bar food, but overall it's a good spot to hang out at.
