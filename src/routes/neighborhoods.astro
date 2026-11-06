@@ -145,11 +145,6 @@ const restCount = listed.length - writtenCount
                     ]
                       .filter(Boolean)
                       .join(' ')}>
-                    {neighborhood.group && (
-                      <span class="eyebrow eyebrow--muted" slot="eyebrow">
-                        {isPark ? 'Park' : isDistrict ? 'District' : neighborhood.group}
-                      </span>
-                    )}
                     {area?.tagline && (
                       <span class="description" slot="sub">
                         {area.tagline}
