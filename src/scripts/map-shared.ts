@@ -1,6 +1,7 @@
 import maplibregl from 'maplibre-gl'
 import { CITY_BOUNDS as CONFIGURED_CITY_BOUNDS } from '../../site.config.mjs'
 import { initReaderVotes } from './reader-votes'
+import { bindScrollCue } from './sheet-scroll-cue'
 import { bindSwipeToClose, SHEET_QUERY } from './sheet-swipe'
 
 interface PannableMap {
@@ -142,6 +143,7 @@ function ensureSheet(): Sheet {
   root.append(close, body)
   document.body.append(root)
   bindSwipeToClose(root, body, () => sheet?.owner?.remove())
+  bindScrollCue(root, body)
 
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {

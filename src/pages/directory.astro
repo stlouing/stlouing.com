@@ -48,8 +48,10 @@ const sortOptions = [
 
 <BaseLayout
   bare
+  noZoom
+  noOgImage
   title={`${CITY} Food & Coffee Explorer`}
-  description={`${CITY} restaurant, coffee, and bar explorer. A database of spots to search, filter by type and location, and sort by rating or votes.`}>
+  description={`${CITY} restaurant, coffee, and bar explorer. A database you can search, filter by type and location, and sort by rating or votes.`}>
   <div class="table-page" data-filter-table>
     <div class="page-nav">
       <header class="page-bar">
@@ -245,6 +247,8 @@ const sortOptions = [
   initRowVotes()
   initPlaceSheet('[data-filter-table]')
 
+  document.addEventListener('gesturestart', (event) => event.preventDefault())
+
   const infoDialog = document.querySelector<HTMLDialogElement>('[data-info-dialog]')
   const infoOpener = document.querySelector<HTMLElement>('[data-info-open]')
   if (infoDialog && infoOpener) {
@@ -256,6 +260,7 @@ const sortOptions = [
   .table-page {
     --color-raised: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-text));
     --control-height: calc(var(--spacing-xl) - var(--spacing-xxs));
+    touch-action: manipulation;
     --page-bar-height: calc(var(--spacing-xl) + 2 * var(--spacing-xs));
     --page-nav-height: calc(var(--page-bar-height) + var(--control-height) + 2 * var(--spacing-xs));
     font-family: var(--font-sans-serif);

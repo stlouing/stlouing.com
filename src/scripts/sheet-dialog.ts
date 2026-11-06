@@ -1,3 +1,4 @@
+import { bindScrollCue } from './sheet-scroll-cue'
 import { bindSwipeToClose } from './sheet-swipe'
 
 interface SheetDialogOptions {
@@ -24,6 +25,7 @@ export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialog
   const body = dialog.querySelector<HTMLElement>('.map-sheet-body')
   if (body) {
     bindSwipeToClose(dialog, body, () => dialog.close())
+    bindScrollCue(dialog, body)
   }
 
   if (onClose) {
