@@ -1,7 +1,4 @@
-const statusLabels: Record<string, string> = {
-  tried: 'Tried',
-  'want-to-try': 'Want to try',
-}
+const statusLabels: Record<string, string> = { tried: 'Tried', 'want-to-try': 'Want to try' }
 
 export function letterOf(row: HTMLElement): string {
   const first = (row.dataset.sortName ?? '').charAt(0).toUpperCase()
@@ -22,7 +19,7 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
 
   const sortSelect = root.querySelector<HTMLSelectElement>('[data-filter-sort]')
 
-  const buildHeader = (mode: 'rating' | 'alpha', key: string, count: number): HTMLLIElement => {
+  const buildHeader = (mode: 'rating' | 'alpha', key: string): HTMLLIElement => {
     const header = document.createElement('li')
     header.className = 'group-header'
     header.dataset.groupHeader = ''
@@ -37,19 +34,12 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
     label.className = 'group-label'
     label.textContent = mode === 'rating' ? (statusLabels[key] ?? key) : key
 
-    const countEl = document.createElement('span')
-    countEl.className = 'count'
-    countEl.textContent = String(count)
-
-    const rule = document.createElement('span')
-    rule.className = 'group-rule'
-
     const fleur =
       mode === 'rating' && isRatingKey(key)
         ? document.querySelector(`[data-fleur="${key}"] .rating`)?.cloneNode(true)
         : null
 
-    header.append(label, ...(fleur ? [fleur] : []), rule, countEl)
+    header.append(label, ...(fleur ? [fleur] : []))
 
     return header
   }
@@ -63,19 +53,13 @@ export function initListGroups(rootSelector = '[data-filter-root]'): void {
       (row) => !row.hidden,
     )
 
-    const groups: { key: string; rows: HTMLElement[] }[] = []
+    let previousKey: string | undefined
     for (const row of rows) {
       const key = mode === 'alpha' ? letterOf(row) : (row.dataset.group ?? '')
-      const last = groups[groups.length - 1]
-      if (!last || last.key !== key) {
-        groups.push({ key, rows: [row] })
-      } else {
-        last.rows.push(row)
+      if (key !== previousKey) {
+        row.before(buildHeader(mode, key))
+        previousKey = key
       }
-    }
-
-    for (const group of groups) {
-      group.rows[0].before(buildHeader(mode, group.key, group.rows.length))
     }
   }
 

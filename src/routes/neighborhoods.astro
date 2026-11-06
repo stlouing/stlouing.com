@@ -94,8 +94,6 @@ const neighborhoodList = {
     url: new URL(`/neighborhoods/${neighborhood.slug}/`, siteOrigin).href,
   })),
 }
-const writtenCount = listed.filter((neighborhood) => isWritten(neighborhood.slug)).length
-const restCount = listed.length - writtenCount
 
 ---
 
@@ -127,7 +125,6 @@ const restCount = listed.length - writtenCount
                   {showHeader && (
                     <li class="section-head">
                       <span>{written ? 'Explored' : 'Not Explored'}</span>
-                      <span class="count">{written ? writtenCount : restCount}</span>
                     </li>
                   )}
                   <MapRow
