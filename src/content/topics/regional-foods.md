@@ -28,7 +28,7 @@ My personal favorites for St. Louis-style pizza are [[farottos|Farotto's]], [[fa
 
 The cheese of choice in St. Louis, Provel is an option in almost every pizza place and sandwich shop around the city. It's a processed cheese product made of cheddar, provolone, and Swiss cheese, all mixed together with a hint of liquid smoke. It's the ingredient that makes St. Louis-style pizza controversial, with its goopy texture and smoky, funky flavor.
 
-Although it's notable for its low melting point and unique texture it adds to pizza, you'll also find it liberally applied to mouse house salads in Italian restaurants across the city.
+Although it's notable for its low melting point and unique texture it adds to pizza, you'll also find it liberally applied to most house salads in Italian restaurants across the city.
 
 ### St. Louis salad
 
@@ -54,7 +54,7 @@ BBQ in St. Louis is another contentious topic, with many arguing about what the 
 
 Here's what I've observed: I've been to around a dozen BBQ spots in St. Louis so far, and I can say pork is king here. Pappy's is the most famous for their ribs, and it's well deserved. You'll see pork steak on the menu at Beast BBQ, and most backyard BBQs. I would recommend against getting brisket, particularly if you're a fan of Texas brisket, as the style is not really found here. (O'B'Que's in Chesterfield is the closest I've found.)
 
-I've heard it said that St. Louisans consume the most amount of BBQ sauce per capita, which tracks with the BBQ style. Ribs, pork steaks, and even backyard grilled hot dogs are slathered in sweet BBQ sauce. Pappy's makes a Sweet Jane BBQ, which goes great on pulled pork or smoked chicken, and Maull's is a classic BBQ sauce from the region. I'm partial to [Freddie Lee's Ghetto sauce](https://freddieleesgourmetsauces.com/home-test/).
+I've heard it said that St. Louisans consume the most amount of BBQ sauce per capita, which tracks with the BBQ style. Ribs, pork steaks, and even backyard grilled hot dogs are slathered in sweet BBQ sauce. Pappy's makes a Sweet Jane BBQ, which goes great on pulled pork or smoked chicken, and Maull's is a classic BBQ sauce from the region. I'm partial to Freddie Lee's Ghetto sauce.
 
 I have also found that the smoked wings are slept on - they're crisp and juicy and have been my favorite thing on the menu at several spots. Some places also have their own specialties, like the smoked salami at Adam's Smokehouse.
 

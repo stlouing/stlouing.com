@@ -18,7 +18,7 @@ Recently, I saw [pizzababble](https://www.instagram.com/pizzababble) put Failoni
 
 I was impressed to learn that the building has been in operation since 1916 under the Failoni name. They also make their pizzas in a brick oven, which feels unique and also very St. Louis.
 
-I checked it out recently and we got toasted ravioli, salad, cheesy garlic bread, and two St. Louis-style pizzas. Overall, I thought it was fine. The toasted ravioli tasted like the default ones you get from most bars. The house salad was particularly strange to me - I tasted almost no vinegar in the salad dressing whatsoever, it tasted extremely sweet and sugary.
+I checked it out recently and we got toasted ravioli, salad, cheesy garlic bread, and two St. Louis-style pizzas. Overall, I thought it was fine. The toasted ravioli tasted like the default ones you get from most bars. I didn't like the house salad - I tasted almost no vinegar in the salad dressing and it tasted sweet and sugary to me.
 
 The pizzas were pretty good, I liked that the sauce was not overly sweet and didn't have the artificial flavor I taste at the chain restaurants. The crust was nice and crispy - they clearly perfected the low hydration, cracker crust made with yeast. It tasted very similar to when I made a St. Louis-style pizza at home with a three-day ferment, except theirs was crispier due to the brick oven cook.
 

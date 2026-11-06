@@ -111,8 +111,6 @@ Flora Place is a particularly pretty boulevard to walk along, showcasing many be
 
 Hampton Avenue around St. Louis Hills and Southampton has a very local neighborhood vibe. This is mostly a quiet area of the city with some shops, but I noticed a cluster of restaurants along the strip. There's [[jj-twigs-pizza-and-pub|J.J. Twigs]], a Chicago tavern-style pizza spot with the braided crust pizza, and the newly relocated [[moms-deli|Mom's Deli]], and [[salvage-yard|Salvage Yard]]. There's also [[bonos-pizzeria|Bono's Pizzeria]], the best Chicago deep dish I've had aside from Lou Malnati's, and more restaurants I have yet to try.
 
-There is nothing otherwise particularly noteworthy or interesting about this street - a lot of every day places like dentist, nails, and insurance, but it was a noteworthy selection of good, local restaurants and I felt the need to include it.
-
 There's also another small strip nearby on Macklind with a Clementine's ice cream shop and a few bars and restaurants. The neighborhood around the shops is also fun to walk through.
 
 ## The Hill
@@ -159,7 +157,7 @@ The Grove is most famous for being the city's LGBTQ+ nightlife district. On one 
 
 In 2007, the Delmar Loop was named one of the ["10 Great Streets in America"](https://www.planning.org/greatplaces/streets/2007/delmarloop.htm) by the APA, due to the "sustained efforts of local business, government, and the community to achieve successful physical and economic revitalization".
 
-There are a lot of interesting things to see on the street - the St. Louis Walk of Fame stars along the sidewalk, the Pageant and Delmar Hall for concerts, Moonrise Hotel and tons of neon signs. There's also the Loop Trolley which runs to Forest Park (allegedly - I've never seen it).
+There are a lot of interesting things to see on the street - the St. Louis Walk of Fame stars along the sidewalk, the Pageant and Delmar Hall for concerts, Moonrise Hotel and tons of neon signs. There's also the Loop Trolley which runs to Forest Park.
 
 Notably, there is a concentration of very good Asian cuisine along Delmar, including my favorite ramen in the world, [[kishimoto-mendo|Kishimoto Mendo]]. The original Salt & Smoke BBQ and Fitz's are here, and Vintage Vinyl is a great spot to browse for vinyl records.
 

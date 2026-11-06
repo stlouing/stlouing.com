@@ -14,4 +14,4 @@ There is also [Midtown Alley](https://www.midtownalley.com/), consisting of some
 
 ### Impressions
 
-The Cortex area of Midtown (technically in Central West End) does not feel very walkable, and the food hall is surrounded on all sides by highways, so it's not as easy to get to as other food halls that are located right in a downtown walkable area like in Nashville. There's a large Ikea and some large office buildings and a lot of space dedicated to parking lots in that area. Hopefully some of the projects like the Greenway will make this area more walkable and bikable.
+The Cortex area of Midtown (technically in Central West End) does not feel very walkable, and the food hall is next to a busy highway, so it's not as easy to get to as other food halls that are located right in a downtown walkable area like in Nashville. There's a large Ikea and some large office buildings and a lot of space dedicated to parking lots in that area. Hopefully some of the projects like the Greenway will make this area more walkable and bikable.

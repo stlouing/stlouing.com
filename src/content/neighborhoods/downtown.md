@@ -13,6 +13,6 @@ One of my favorite places in St. Louis is [City Museum](https://citymuseum.org/)
 
 ### Impressions
 
-Downtown is the main area visitors and tourists will see when visiting St. Louis, but many come away with a negative opinion of the city. The area does not have a the most vibrant energy, and is mostly emptied out after working hours. Downtown is still working on [finding its identity](https://www.stltoday.com/opinion/editorial/article_58504152-3a26-42cb-918b-0b81370498e9.html) in a rapidly shifting economy, but at [a slower rate than any other city in America](https://downtownrecovery.com/charts/rankings). Many locals from the surrounding region only visit for baseball and hockey games, then head straight back to the suburbs.
+Downtown is the main area visitors and tourists will see when visiting St. Louis, but many come away with a negative opinion of the city. The area does not have a the most vibrant energy, and is mostly emptied out after working hours. Downtown is still working on [finding its identity](https://www.stltoday.com/opinion/editorial/article_58504152-3a26-42cb-918b-0b81370498e9.html) in a rapidly shifting economy, but at [a slower rate than any other city in America](https://downtownrecovery.com/charts/rankings). Many locals from the surrounding region only visit for baseball, soccer, and hockey games, then head straight back to the suburbs.
 
 I initially wrote off St. Louis after only seeing downtown, but like most cities, the neighborhoods are where St. Louis can shine.

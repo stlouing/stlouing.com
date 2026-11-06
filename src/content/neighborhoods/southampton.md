@@ -9,4 +9,4 @@ Southampton is a charming neighborhood close to many bars and restaurants all al
 
 ### Impressions
 
-It's a quiet, safe, middle/working-class neighborhood, and one of the more walkable neighborhoods in South City. It's close to Francis Park in St. Louis Hills, and also not too far from Tower Grove Park.
+It's a quiet, middle/working-class neighborhood, and one of the more walkable neighborhoods in South City. It's close to Francis Park in St. Louis Hills, and also not too far from Tower Grove Park.

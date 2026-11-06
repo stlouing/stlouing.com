@@ -16,6 +16,6 @@ The Grove was one of the first places in St. Louis I was introduced to, as I had
 
 A few of my favorite restaurants in the city are in the Grove. I think [[sultan|Sultan]] is one of the best middle eastern restaurants around, and [[grace-meat-and-three|Grace Meat and Three]] is the best fried chicken in town. Pie Guy (RIP) was the best New York-style pizza I've had, but unfortunately they closed down.
 
-As of this writing, the corner where Sultan is has three closed down restaurants, and it leaves the area feeling kind of abandoned. Several times I've been in The Grove on a Friday night with good weather, and almost no one was walking around. I didn't feel the energy I'd expect to feel in the nightlife part of town. I hope things pick up in The Grove and restaurants and bars keep opening up in the area.
+As of this writing, the corner where Sultan is has three closed down restaurants. Several times I've been in The Grove on a Friday night with good weather, and almost no one was walking around. I didn't feel the energy I'd expect to feel in the nightlife part of town. I hope things pick up in The Grove and restaurants and bars keep opening up in the area.
 
 I have yet to experience any of the clubs or nightlife that The Grove has to offer, so I look forward to adding to this page once I visit some of those bars.

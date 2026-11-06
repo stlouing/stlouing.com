@@ -67,7 +67,7 @@ The suburbs have rapidly expanded over this time period, but the city has stagna
 
 ## The Most Dangerous City?
 
-St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of U.S. cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
+St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of the 24 selected cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
 
 | City          |    Metro pop. |   City pop. | Share of metro |
 | :------------ | ------------: | ----------: | -------------: |
@@ -93,7 +93,7 @@ Measured across the city and county together, the homicide rate drops from 87 to
 
 <p class="table-caption">St. Louis City + County compared with San Antonio, 2020</p>
 
-Even in this hypothetical scenario, the crime stats are still above the national average (which the FBI estimated at 6.5 in 2020) but much lower than St. Louis City alone. Among the [296 cities over 100,000 that reported 2020 data to the FBI](https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/downloads), St. Louis City had the highest murder rate in the nation - the combined city (which I'll call St. Loutopia) would instead rank roughly 15th, in the same range as Chicago and Richmond, Virginia.
+Even in this hypothetical scenario, the crime stats are still above the national average (which the FBI estimated at 6.5 in 2020) but much lower than St. Louis City alone. Among the [296 cities over 100,000 that reported 2020 data to the FBI](https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/downloads), St. Louis City had the highest murder rate in the nation - the combined city would instead rank roughly 15th, in the same range as Chicago and Richmond, Virginia.
 
 Being honest though, this hypothetical city covers 570 square miles, which would make it [one of the biggest cities in the U.S.](https://en.wikipedia.org/wiki/List_of_United_States_cities_by_area) (outside of Alaska). The city would become mostly sprawl to dilute St. Louis's homicide rate down to still being within the top twenty most dangerous cities.
 
@@ -107,7 +107,7 @@ Being honest though, this hypothetical city covers 570 square miles, which would
 
 <p class="table-caption">Where a combined St. Louis would rank among U.S. cities by land area, 2020</p>
 
-St. Loutopia would also be the [9th largest city in the 2020 census](https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population), about the same size in population as Dallas while covering roughly 230 more square miles of land.
+It would also be the [9th largest city in the 2020 census](https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population), about the same size in population as Dallas while covering roughly 230 more square miles of land.
 
 | Rank  | City                        | 2020 population |      Land area |
 | :---- | :-------------------------- | --------------: | -------------: |
@@ -128,14 +128,14 @@ Reunification has been [attempted several times](https://www.stlmag.com/news/pol
 
 An actual merger has not happened in 150 years (as of this writing), it does not seem likely that it will ever happen. There are legitimate concerns from both sides about such an event, and the city and county finding a way to work together would not immediately fix all problems from the last 150 years, but I believe anything that could improve the city's reputation would be a win. A more unified region could also potentially work together better to solve these issues.
 
-St. Louis will probably not ever be the 4th largest city in the U.S. again, (St. Loutopia might!) but if it wasn't on the top of every "most dangerous city" list, I believe people would be more likely to visit and move here.
+St. Louis will probably not ever be the 4th largest city in the U.S. again, but if it wasn't on the top of every "most dangerous city" list, I believe people would be more likely to visit and move here.
 
 ## TL;DR
 
 - St. Louis City voted to separate from St. Louis County in 1876, freezing its borders at 66 square miles.
 - The city peaked at 856,796 residents in 1950 and has shrunk every decade since, down to 301,578 in 2020. The county grew past a million during that time period.
 - Crime is measured by city boundary, so the stats cover only the urban core. St. Louis (city) had the highest 2020 murder rate (87 per 100k) of the 296 large cities reporting to the FBI. The county was estimated around 10 per 100k.
-- If the city and county were one merged city (St. Loutopia), it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would be 28, around 15th place. This doesn't necessarily paint the best picture, because the city would need contain a massive amount of sprawl to bring down the statistics.
+- If the city and county were one merged city, it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would be 28, around 15th place. This doesn't necessarily paint the best picture, because the city would need contain a massive amount of sprawl to bring down the statistics.
 - Reunification attempts failed in 1926, 1959, 1962, and 2019.
 
 #### Sources

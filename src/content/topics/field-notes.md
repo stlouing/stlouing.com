@@ -104,7 +104,7 @@ There is a specific regional dialect of French known as [Missouri French](https:
 - **The Lou** - A popular nickname for St. Louis.
 - **Hoosier** - In the rest of the U.S., Hoosier refers to someone from Indiana, but in St. Louis it's more of a general insult along the lines of "white trash" or "redneck".
 - **Highway Farty** - Highway 40 is part of Interstate 64, and many people still call it "Highway Farty" affectionately.
-- **Jeffco** - Jefferson County, the immediate county to the west of St. Louis County.
+- **Jeffco** - Jefferson County, the immediate county to the south of St. Louis County.
 
 ## Local Customs
 
