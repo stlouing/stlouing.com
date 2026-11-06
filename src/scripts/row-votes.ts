@@ -3,6 +3,7 @@ import {
   clearChoice,
   readChoice,
   readChoices,
+  removeVote,
   writeChoice,
   type Choice,
 } from './reader-votes'
@@ -43,22 +44,30 @@ export function initRowVotes(): void {
     setBusy(row, false)
   }
 
-  const vote = async (row: HTMLElement, choice: Choice): Promise<void> => {
+  const vote = async (row: HTMLElement, clicked: Choice): Promise<void> => {
     const slug = row.dataset.slug
-    const previous = slug ? readChoice(slug) : null
-    if (!slug || previous === choice) {
+    if (!slug) {
       return
     }
 
+    const previous = readChoice(slug)
+    const next = previous === clicked ? null : clicked
+
     votedThisSession.add(slug)
-    writeChoice(slug, choice)
-    renderChoice(row, choice)
+    if (next) {
+      writeChoice(slug, next)
+    } else {
+      clearChoice(slug)
+    }
+    renderChoice(row, next)
     setBusy(row, true)
 
     try {
-      const counts = await castVote({ slug, liked: choice === 'like' })
+      const counts = next
+        ? await castVote({ slug, liked: next === 'like' })
+        : await removeVote(slug)
       renderScore(row, counts.likes - counts.dislikes)
-      announce(`${choice === 'like' ? 'Voted up' : 'Voted down'} ${placeName(row)}`)
+      announce(`${voteMessage(next)} ${placeName(row)}`)
     } catch {
       votedThisSession.delete(slug)
       if (previous) {
@@ -94,6 +103,22 @@ export function initRowVotes(): void {
     .catch(() => {})
 }
 
+function voteMessage(choice: Choice | null): string {
+  if (!choice) {
+    return 'Removed your vote on'
+  }
+
+  return choice === 'like' ? 'Voted up' : 'Voted down'
+}
+
+function voteTitle(button: HTMLButtonElement, isChosen: boolean): string {
+  if (isChosen) {
+    return 'Remove your vote'
+  }
+
+  return button.dataset.rowVote === 'like' ? 'Vote up' : 'Vote down'
+}
+
 function voteButtons(row: HTMLElement): NodeListOf<HTMLButtonElement> {
   return row.querySelectorAll<HTMLButtonElement>('[data-row-vote]')
 }
@@ -103,6 +128,7 @@ function renderChoice(row: HTMLElement, choice: Choice | null): void {
     const isChosen = button.dataset.rowVote === choice
     button.classList.toggle('is-active', isChosen)
     button.setAttribute('aria-pressed', String(isChosen))
+    button.title = voteTitle(button, isChosen)
   }
 }
 

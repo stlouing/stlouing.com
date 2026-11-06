@@ -79,20 +79,22 @@ function setupWidget(root: HTMLElement): void {
     dislikeButton.disabled = isLocked
   }
 
-  const vote = async (next: Choice): Promise<void> => {
+  const vote = async (clicked: Choice): Promise<void> => {
     const previous = choice
-    if (previous === next) {
-      return
-    }
+    const next = previous === clicked ? null : clicked
 
     choice = next
-    writeChoice(slug, next)
+    if (next) {
+      writeChoice(slug, next)
+    } else {
+      clearChoice(slug)
+    }
     setStatus(voteStatus, '')
     setLocked(true)
     render()
 
     try {
-      counts = await castVote({ slug, liked: next === 'like' })
+      counts = next ? await castVote({ slug, liked: next === 'like' }) : await removeVote(slug)
       votedThisSession = true
       loaded = true
     } catch {
@@ -145,20 +147,28 @@ async function fetchCounts(slug: string): Promise<Counts> {
   return toCounts(rows[0])
 }
 
-export async function castVote(input: { slug: string; liked: boolean }): Promise<Counts> {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/cast_vote`, {
+async function postVote(rpc: string, body: Record<string, unknown>): Promise<Counts> {
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${rpc}`, {
     method: 'POST',
     headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-    body: JSON.stringify({ p_slug: input.slug, p_liked: input.liked, p_voter_id: voterId() }),
+    body: JSON.stringify({ ...body, p_voter_id: voterId() }),
   })
 
   if (!response.ok) {
-    throw new Error(`cast_vote responded ${response.status}`)
+    throw new Error(`${rpc} responded ${response.status}`)
   }
 
   const rows = (await response.json()) as Array<{ likes: number | null; dislikes: number | null }>
 
   return toCounts(rows[0])
+}
+
+export function castVote(input: { slug: string; liked: boolean }): Promise<Counts> {
+  return postVote('cast_vote', { p_slug: input.slug, p_liked: input.liked })
+}
+
+export function removeVote(slug: string): Promise<Counts> {
+  return postVote('remove_vote', { p_slug: slug })
 }
 
 function authHeaders(): Record<string, string> {
