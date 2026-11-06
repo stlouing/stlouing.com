@@ -2,13 +2,13 @@ import { bindSwipeToClose } from './sheet-swipe'
 
 interface SheetDialogOptions {
   dialog: HTMLDialogElement
-  opener: HTMLElement
+  opener?: HTMLElement
   onOpen?: () => void
   onClose?: () => void
 }
 
 export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialogOptions): void {
-  opener.addEventListener('click', () => {
+  opener?.addEventListener('click', () => {
     if (dialog.open) {
       dialog.close()
 
@@ -38,7 +38,7 @@ export function bindSheetDialog({ dialog, opener, onOpen, onClose }: SheetDialog
 
   document.addEventListener('pointerdown', (event) => {
     const target = event.target as Node
-    if (dialog.open && !dialog.contains(target) && !opener.contains(target)) {
+    if (dialog.open && !dialog.contains(target) && !opener?.contains(target)) {
       dialog.close()
     }
   })

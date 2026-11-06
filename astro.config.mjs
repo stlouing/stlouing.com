@@ -263,7 +263,9 @@ export default defineConfig({
     optionalRoutes,
     sitemap({
       filter: (page) =>
-        !stubPaths.has(new URL(page).pathname.replace(/\/$/, '')) && !shipsNoindex(page),
+        !new URL(page).pathname.startsWith('/sheets/') &&
+        !stubPaths.has(new URL(page).pathname.replace(/\/$/, '')) &&
+        !shipsNoindex(page),
       serialize(item) {
         const pathname = new URL(item.url).pathname.replace(/\/$/, '') || '/'
         const lastmod = lastmodByPath.get(pathname)

@@ -1,8 +1,8 @@
 ---
 import IconPlus from '../assets/IconPlus.astro'
-import IconX from '../assets/IconX.astro'
 import CategoryChip from './CategoryChip.astro'
 import ShareActions from './ShareActions.astro'
+import SheetDialog from './SheetDialog.astro'
 import { FEEDBACK_ENDPOINT, SITE_NAME } from '../lib/site'
 import { spotCategories, SPOT_SECTION_ORDER, type SpotCategoryKey } from '../lib/spots'
 
@@ -30,81 +30,72 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
         </span>
         <span class="suggest-spot-label">Suggest</span>
       </button>
-      <dialog class="map-sheet sheet-dialog" data-suggest-dialog aria-labelledby="suggest-title">
-        <button
-          type="button"
-          class="close-button map-sheet-close"
-          data-sheet-close
-          aria-label="Close">
-          <IconX />
-        </button>
-        <div class="map-sheet-body">
-          <div class="popup-scroll">
-            <div class="popup-meta list-eyebrow">
-              <span class="eyebrow eyebrow--muted">Suggest</span>
+      <SheetDialog data-suggest-dialog labelledBy="suggest-title">
+        <div class="popup-scroll">
+          <div class="popup-meta list-eyebrow">
+            <span class="eyebrow eyebrow--muted">Suggest</span>
+          </div>
+          <div data-suggest-thanks hidden>
+            <div class="sheet-title">
+              <span class="title-serif">Thanks for the tip!</span>
             </div>
-            <div data-suggest-thanks hidden>
-              <div class="sheet-title">
-                <span class="title-serif">Thanks for the tip!</span>
-              </div>
-              <p class="sheet-lede description">
-                Know someone who'd like this {subject}? Help spread the word! I'm always updating it
-                and adding more spots.
+            <p class="sheet-lede description">
+              Know someone who'd like this {subject}? Help spread the word! I'm always updating it
+              and adding more spots.
+            </p>
+            <ShareActions placement="suggest" />
+          </div>
+          <div data-suggest-ask>
+            <div class="sheet-title" id="suggest-title">
+              <span class="title-serif">Know somewhere I missed?</span>
+            </div>
+            <p class="sheet-lede description">
+              Add a place you love and help someone else find it.
+            </p>
+            <form class="suggest-form form-stack" method="POST" action={FEEDBACK_ENDPOINT}>
+              <label class="field">
+                <span>Name of the place</span>
+                <input type="text" name="place" required />
+              </label>
+              <label class="field">
+                <span>Address or neighborhood</span>
+                <input type="text" name="where" value={where} />
+              </label>
+              {category ? (
+                <input type="hidden" name="category" value={spotCategories[category].label} />
+              ) : (
+                <fieldset class="field suggest-categories">
+                  <legend class="field-legend">Type of place</legend>
+                  <div class="category-chips">
+                    {categories.map((key) => (
+                      <CategoryChip as="label" category={key} label={spotCategories[key].label}>
+                        <input type="radio" name="category" value={spotCategories[key].label} />
+                      </CategoryChip>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+              <label class="field">
+                <span>Anything else you want to add?</span>
+                <textarea name="why" rows="2" />
+              </label>
+              <input type="hidden" name="_subject" value={`${SITE_NAME} spot suggestion`} />
+              <p class="hp" aria-hidden="true">
+                <label>
+                  Leave this field empty
+                  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+                </label>
               </p>
-              <ShareActions placement="suggest" />
-            </div>
-            <div data-suggest-ask>
-              <div class="sheet-title" id="suggest-title">
-                <span class="title-serif">Know somewhere I missed?</span>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-dark">
+                  Submit
+                </button>
+                <span class="form-status" data-form-status role="status" aria-live="polite" />
               </div>
-              <p class="sheet-lede description">
-                Add a place you love and help someone else find it.
-              </p>
-              <form class="suggest-form form-stack" method="POST" action={FEEDBACK_ENDPOINT}>
-                <label class="field">
-                  <span>Name of the place</span>
-                  <input type="text" name="place" required />
-                </label>
-                <label class="field">
-                  <span>Address or neighborhood</span>
-                  <input type="text" name="where" value={where} />
-                </label>
-                {category ? (
-                  <input type="hidden" name="category" value={spotCategories[category].label} />
-                ) : (
-                  <fieldset class="field suggest-categories">
-                    <legend class="field-legend">Type of place</legend>
-                    <div class="category-chips">
-                      {categories.map((key) => (
-                        <CategoryChip as="label" category={key} label={spotCategories[key].label}>
-                          <input type="radio" name="category" value={spotCategories[key].label} />
-                        </CategoryChip>
-                      ))}
-                    </div>
-                  </fieldset>
-                )}
-                <label class="field">
-                  <span>Anything else you want to add?</span>
-                  <textarea name="why" rows="2" />
-                </label>
-                <input type="hidden" name="_subject" value={`${SITE_NAME} spot suggestion`} />
-                <p class="hp" aria-hidden="true">
-                  <label>
-                    Leave this field empty
-                    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-                  </label>
-                </p>
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-dark">
-                    Submit
-                  </button>
-                  <span class="form-status" data-form-status role="status" aria-live="polite" />
-                </div>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
-      </dialog>
+      </SheetDialog>
     </>
   )
 }

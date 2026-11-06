@@ -3,37 +3,24 @@ import '@fontsource/archivo/400.css'
 import { getCollection } from 'astro:content'
 
 import FleurGlyph from '../assets/FleurGlyph.astro'
-import IconX from '../assets/IconX.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ClearFilters from '../components/ClearFilters.astro'
 import MastheadBrand from '../components/MastheadBrand.astro'
 import PaneSearch from '../components/PaneSearch.astro'
 import PaneSort from '../components/PaneSort.astro'
+import SheetDialog from '../components/SheetDialog.astro'
 import SuggestSpot from '../components/SuggestSpot.astro'
 import ThemeToggle from '../components/ThemeToggle.astro'
 import { published } from '../lib/content'
 import { cuisineLabel } from '../lib/cuisine'
-import { neighborhoodName } from '../lib/neighborhoods'
-import { officialPartAt, type OfficialPart } from '../lib/official-parts'
+import type { OfficialPart } from '../lib/official-parts'
+import { placeLocation } from '../lib/place-location'
 import { CITY, SUPABASE_ENABLED } from '../lib/site'
 import { href } from '../lib/url'
 
 const places = published(await getCollection('food')).sort((left, right) =>
   left.data.title.localeCompare(right.data.title),
 )
-
-function namedArea(slug: string | undefined): OfficialPart | undefined {
-  return slug ? { slug, name: neighborhoodName(slug) } : undefined
-}
-
-function placeLocation({ neighborhood, district, coords }: (typeof places)[number]['data']) {
-  const officialPart = neighborhood ? officialPartAt(neighborhood, coords) : undefined
-  if (officialPart && officialPart.slug !== neighborhood) {
-    return { area: officialPart, district: namedArea(neighborhood) }
-  }
-
-  return { area: namedArea(neighborhood), district: namedArea(district) }
-}
 
 const locatedPlaces = places.map((place) => ({ place, ...placeLocation(place.data) }))
 
@@ -83,39 +70,28 @@ const sortOptions = [
               <span class="wide-only">What is this?</span>
               <span class="narrow-only">?</span>
             </button>
-            <dialog class="map-sheet sheet-dialog" data-info-dialog aria-labelledby="info-title">
-              <button
-                type="button"
-                class="close-button map-sheet-close"
-                data-sheet-close
-                aria-label="Close">
-                <IconX />
-              </button>
-              <div class="map-sheet-body">
-                <div class="popup-scroll">
-                  <div class="sheet-title" id="info-title">
-                    <span class="title-serif">What is this?</span>
-                  </div>
-                  <p class="sheet-lede description">
-                    An explorer for St. Louis food and coffee, built from the places I've tried or
-                    want to try. It's a fun personal project for me to keep track of where I've been,
-                    but it's not an exhaustive list of all restaurants.
-                  </p>
-                  <p class="sheet-lede description">
-                    Click into any spot for its website, address, Instagram, and review. You can also
-                    vote on your favorites.
-                  </p>
-                  <p class="sheet-lede description">
-                    For a higher fidelity version with photographs I've taken and an interactive map, <strong
-                      ><a href={href('/food/')}>click here</a></strong
-                    >.
-                  </p>
-                  <p class="sheet-lede description">
-                    I hope it's useful and you discover something new! :)
-                  </p>
+            <SheetDialog data-info-dialog labelledBy="info-title">
+              <div class="popup-scroll">
+                <div class="sheet-title" id="info-title">
+                  <span class="title-serif">What is this?</span>
                 </div>
+                <p class="sheet-lede description">
+                  This is an explorer for St. Louis food and coffee, built from the places I've
+                  tried or want to try. It's a personal project for me to keep track of where I've
+                  been, but it's not an exhaustive list of all restaurants.
+                </p>
+                <p class="sheet-lede description">
+                  Click into any spot for its website, address, Instagram, and review. You can also
+                  vote on your favorites.
+                </p>
+                <p class="sheet-lede description">
+                  For a higher fidelity version with photographs I've taken and an interactive map, <strong
+                    ><a href={href('/food/')}>click here</a></strong
+                  >.
+                </p>
+                <p class="sheet-lede description">Thanks for taking a look!</p>
               </div>
-            </dialog>
+            </SheetDialog>
           </div>
           <ThemeToggle />
           <div class="bar-anchor">
@@ -251,12 +227,14 @@ const sortOptions = [
       </p>
       <p class="vote-status" data-row-vote-status role="status" aria-live="polite"></p>
     </div>
+    <SheetDialog data-place-dialog labelledBy="place-sheet-title" short />
   </div>
 </BaseLayout>
 
 <script>
   import { initFilter } from '../scripts/filter'
   import { initFilterSentence } from '../scripts/filter-sentence'
+  import { initPlaceSheet } from '../scripts/place-sheet'
   import { bindSheetDialog } from '../scripts/sheet-dialog'
   import { initRowVotes } from '../scripts/row-votes'
   import { initTableGroups } from '../scripts/table-groups'
@@ -265,6 +243,7 @@ const sortOptions = [
   initFilter('[data-filter-table]')
   initTableGroups('[data-filter-table]')
   initRowVotes()
+  initPlaceSheet('[data-filter-table]')
 
   const infoDialog = document.querySelector<HTMLDialogElement>('[data-info-dialog]')
   const infoOpener = document.querySelector<HTMLElement>('[data-info-open]')
@@ -541,10 +520,6 @@ const sortOptions = [
     text-align: end;
   }
 
-  /* .rating-cell :global(.rating-fleur) {
-    display: none;
-  } */
-
   .rating-cell {
     display: flex;
     grid-area: rating;
@@ -817,6 +792,11 @@ const sortOptions = [
       grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) auto;
       gap: 0 var(--spacing-xs);
       padding-block: var(--spacing-xxs);
+    }
+
+    tbody tr.is-active,
+    tbody tr:nth-child(even of [data-filter-item]:not([hidden])).is-active {
+      background: var(--color-raised);
     }
 
     td {

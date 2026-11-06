@@ -1620,8 +1620,8 @@ body:has(.map-split) main > .wrap,
 .map-sheet-body {
   min-width: 0;
   min-height: 0;
-  margin-inline: calc(-1 * var(--spacing-xs));
-  padding-inline: var(--spacing-xs);
+  margin-inline: calc(-1 * var(--spacing-lg));
+  padding-inline: var(--spacing-lg);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -1696,6 +1696,10 @@ a.pill-button:hover {
 
 .sheet-dialog:not([open]) {
   display: none;
+}
+
+.sheet-dialog--short {
+  max-height: 60dvh;
 }
 
 .sheet-lede {
@@ -2645,7 +2649,7 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .map-sheet .map-sheet-body .popup-address + .action-buttons {
-  margin-block-start: var(--spacing-lg);
+  margin-block-start: var(--spacing-md);
 }
 
 .map-sheet .map-sheet-body .action-buttons {
@@ -2661,6 +2665,32 @@ body:has([data-filter-root]) .masthead-nav {
 .map-sheet .map-sheet-body .action-buttons .icon {
   width: 1.1rem;
   height: 1.1rem;
+}
+
+.sheet-dialog .map-sheet-body .action-buttons {
+  gap: var(--spacing-xs);
+}
+
+.sheet-dialog .map-sheet-body .action-buttons .btn {
+  gap: var(--spacing-xxs);
+  padding: var(--spacing-xxs) var(--spacing-sm);
+  font-size: var(--font-size-xxs);
+}
+
+.sheet-dialog .map-sheet-body .action-buttons .icon {
+  width: var(--font-size-xxs);
+  height: var(--font-size-xxs);
+}
+
+.sheet-dialog .body {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.sheet-dialog .map-sheet-body .action-buttons + .body {
+  margin-block-start: var(--spacing-md);
+  padding-block-start: var(--spacing-md);
+  border-block-start: 1px solid var(--color-line);
 }
 
 .map-sheet .map-sheet-body .popup-photo {
