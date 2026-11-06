@@ -17,7 +17,11 @@ function groupKeyReader(sortValue: string): ((row: HTMLElement) => string) | und
   return undefined
 }
 
-function buildHeaderRow(label: string, count: number, columns: number): HTMLTableRowElement {
+function buildHeaderRow(
+  label: string,
+  columns: number,
+  visual: Node | undefined,
+): HTMLTableRowElement {
   const row = document.createElement('tr')
   row.className = 'group-row'
   row.dataset.groupRow = ''
@@ -27,16 +31,25 @@ function buildHeaderRow(label: string, count: number, columns: number): HTMLTabl
   cell.scope = 'colgroup'
   cell.setAttribute('role', 'rowheader')
   cell.colSpan = columns
-  cell.textContent = label
-
-  const total = document.createElement('span')
-  total.className = 'count'
-  total.textContent = String(count)
-
-  cell.append(total)
+  cell.append(visual ?? label)
   row.append(cell)
 
   return row
+}
+
+function trackStickyOffsets(root: HTMLElement): void {
+  const nav = root.querySelector<HTMLElement>('[data-page-nav]')
+  const head = root.querySelector<HTMLElement>('thead')
+  if (!nav || !head) {
+    return
+  }
+
+  const observer = new ResizeObserver(() => {
+    root.style.setProperty('--page-nav-height', `${nav.getBoundingClientRect().height}px`)
+    root.style.setProperty('--table-head-height', `${head.getBoundingClientRect().height}px`)
+  })
+  observer.observe(nav)
+  observer.observe(head)
 }
 
 export function initTableGroups(rootSelector: string): void {
@@ -48,6 +61,9 @@ export function initTableGroups(rootSelector: string): void {
   }
 
   const columns = root.querySelectorAll('thead th').length
+  const ratingLabels = root.querySelector<HTMLTemplateElement>('template[data-rating-labels]')
+  const groupVisual = (key: string): Node | undefined =>
+    ratingLabels?.content.querySelector(`[data-rating-label="${key}"]`)?.cloneNode(true)
 
   const rebuild = (): void => {
     body.querySelectorAll('[data-group-row]').forEach((row) => row.remove())
@@ -60,22 +76,17 @@ export function initTableGroups(rootSelector: string): void {
     const rows = [...body.querySelectorAll<HTMLElement>('[data-filter-item]')].filter(
       (row) => !row.hidden,
     )
-    const groups: { key: string; rows: HTMLElement[] }[] = []
+    let previousKey: string | undefined
     for (const row of rows) {
       const key = keyOf(row)
-      const last = groups[groups.length - 1]
-      if (last?.key === key) {
-        last.rows.push(row)
-      } else {
-        groups.push({ key, rows: [row] })
+      if (key !== previousKey) {
+        row.before(buildHeaderRow(key, columns, groupVisual(key)))
+        previousKey = key
       }
-    }
-
-    for (const group of groups) {
-      group.rows[0].before(buildHeaderRow(group.key, group.rows.length, columns))
     }
   }
 
   root.addEventListener('filter:changed', rebuild)
   rebuild()
+  trackStickyOffsets(root)
 }

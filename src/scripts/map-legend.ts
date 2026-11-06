@@ -135,10 +135,10 @@ function bindLegendScrollHint(legend: HTMLElement): void {
 
 const NARROW_SCREEN_QUERY = '(max-width: 700px)'
 
-export function bindLegendCollapse(legend: HTMLElement): void {
+export function bindLegendCollapse(legend: HTMLElement, collapseQuery = NARROW_SCREEN_QUERY): void {
   const collapse = legend.querySelector<HTMLButtonElement>('[data-legend-collapse]')
   const body = legend.querySelector<HTMLElement>('[data-legend-body]')
-  const narrowScreen = window.matchMedia(NARROW_SCREEN_QUERY)
+  const narrowScreen = window.matchMedia(collapseQuery)
   const setExpanded = (expanded: boolean) => {
     collapse?.setAttribute('aria-expanded', String(expanded))
     if (body) {

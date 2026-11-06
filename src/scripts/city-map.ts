@@ -8,6 +8,7 @@ import { neighborhoodFeatures, officialParts } from './boundaries'
 import {
   BADGE_POPUP_OFFSET,
   PIN_POPUP_OFFSET,
+  STACKED_MAP_QUERY,
   bindRowHover,
   createMapPopup,
   frameCityView,
@@ -594,7 +595,7 @@ export async function initCityMap(selector = '[data-city-map]'): Promise<void> {
   }
 
   if (legend) {
-    bindLegendCollapse(legend)
+    bindLegendCollapse(legend, STACKED_MAP_QUERY)
   }
 
   function syncWithLegend(): void {

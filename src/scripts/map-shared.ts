@@ -160,8 +160,12 @@ export function sheetHeight(): number {
   return sheet && !sheet.root.hidden ? sheet.root.getBoundingClientRect().height : 0
 }
 
+export const STACKED_MAP_QUERY = '(max-width: 999px)'
+
 function usesSheet(): boolean {
-  return window.matchMedia(SHEET_QUERY).matches
+  const stacked = document.querySelector('.map-split:not(.detail-split)')
+
+  return window.matchMedia(stacked ? STACKED_MAP_QUERY : SHEET_QUERY).matches
 }
 
 export function createMapPopup(offset: number): MapPopup {

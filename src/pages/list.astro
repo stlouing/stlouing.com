@@ -2,12 +2,12 @@
 import '@fontsource/archivo/400.css'
 import { getCollection } from 'astro:content'
 
-import FleurGlyph from '../assets/FleurGlyph.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ClearFilters from '../components/ClearFilters.astro'
 import MastheadBrand from '../components/MastheadBrand.astro'
 import PaneSearch from '../components/PaneSearch.astro'
 import PaneSort from '../components/PaneSort.astro'
+import Rating from '../components/Rating.astro'
 import SheetDialog from '../components/SheetDialog.astro'
 import SuggestSpot from '../components/SuggestSpot.astro'
 import ThemeToggle from '../components/ThemeToggle.astro'
@@ -15,7 +15,8 @@ import { foodStatus, published } from '../lib/content'
 import { cuisineLabel } from '../lib/cuisine'
 import type { OfficialPart } from '../lib/official-parts'
 import { placeLocation } from '../lib/place-location'
-import { CITY, SUPABASE_ENABLED } from '../lib/site'
+import { CITY, INSTAGRAM_HANDLE, SUPABASE_ENABLED } from '../lib/site'
+import { RATING_MAX } from '../lib/rating'
 import { href } from '../lib/url'
 
 const places = published(await getCollection('food')).sort((left, right) =>
@@ -38,6 +39,11 @@ const districts = areaOptions(locatedPlaces.map(({ district }) => district)).fil
   (district) => !neighborhoods.some((neighborhood) => neighborhood.slug === district.slug),
 )
 
+const unratedGroups = [
+  { label: 'Todo', note: "Places I've been to but haven't rated yet" },
+  { label: 'Want to try', note: "Places I haven't tried yet" },
+]
+
 const sortOptions = [
   { label: 'Name, A–Z', narrowLabel: 'A–Z', value: 'name:asc' },
   { label: 'Location, A–Z', narrowLabel: 'Location', value: 'neighborhood:asc' },
@@ -49,11 +55,10 @@ const sortOptions = [
 <BaseLayout
   bare
   noZoom
-  noOgImage
   title={`${CITY} Food & Coffee Explorer`}
   description={`${CITY} restaurant, coffee, and bar explorer. A database you can search, filter by type and location, and sort by rating or votes.`}>
   <div class="table-page" data-filter-table>
-    <div class="page-nav">
+    <div class="page-nav" data-page-nav>
       <header class="page-bar">
         <div class="wrap wrap-wide page-bar-inner">
           <MastheadBrand />
@@ -78,19 +83,33 @@ const sortOptions = [
                   <span class="title-serif">What is this?</span>
                 </div>
                 <p class="sheet-lede description">
-                  An explorer for St. Louis food and coffee, built from the places I've tried or
-                  want to try.
+                  A searchable list of St. Louis restaurants and coffee shops I've tried or want to
+                  try.
                 </p>
                 <p class="sheet-lede description">
                   Click into any spot for its website, address, Instagram, and review (if I've tried
                   it). You can also vote on your favorites.
                 </p>
                 <p class="sheet-lede description">
-                  For a higher fidelity version with photographs I've taken and an interactive map, <strong
+                  For a higher fidelity version with photos and an interactive map, <strong
                     ><a href={href('/food/')}>click here</a></strong
                   >.
                 </p>
-                <p class="sheet-lede description">Thanks for taking a look!</p>
+                <p class="sheet-lede description">
+                  Thanks for taking a look! For updates: {
+                    INSTAGRAM_HANDLE && (
+                      <strong>
+                        <a
+                          href={`https://www.instagram.com/${INSTAGRAM_HANDLE}/`}
+                          target="_blank"
+                          rel="noopener"
+                          data-goatcounter-click="instagram-list">
+                          @{INSTAGRAM_HANDLE}
+                        </a>
+                      </strong>
+                    )
+                  }
+                </p>
               </div>
             </SheetDialog>
           </div>
@@ -230,7 +249,25 @@ const sortOptions = [
       </p>
       <p class="vote-status" data-row-vote-status role="status" aria-live="polite"></p>
     </div>
-    <SheetDialog data-place-dialog labelledBy="place-sheet-title" short />
+    <SheetDialog data-place-dialog labelledBy="place-sheet-title" />
+    <template data-rating-labels>
+      {
+        Array.from({ length: RATING_MAX }, (_unused, index) => RATING_MAX - index).map((rating) => (
+          <span data-rating-label={rating}>
+            {rating}
+            <Rating rating={rating} />
+          </span>
+        ))
+      }
+      {
+        unratedGroups.map(({ label, note }) => (
+          <span class="group-label" data-rating-label={label}>
+            {label}
+            <span class="group-note">{note}</span>
+          </span>
+        ))
+      }
+    </template>
   </div>
 </BaseLayout>
 
@@ -495,17 +532,30 @@ const sortOptions = [
   }
 
   tbody :global(.group-row) {
+    position: sticky;
+    top: calc(var(--page-nav-height) + var(--table-head-height, 0px) - 1px);
+    z-index: 1;
     display: flex;
     padding-inline: var(--spacing-md);
     border-block-end: 1px solid var(--color-line-input);
     background: var(--color-background);
   }
 
+  .group-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--spacing-sm);
+  }
+
+  .group-note {
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
   tbody :global(.group-row th) {
     display: flex;
     flex: 1;
-    align-items: baseline;
-    gap: var(--spacing-sm);
     padding: var(--spacing-sm) 0 var(--spacing-xs);
     border: 0;
     font-size: var(--font-size-sm);
@@ -543,14 +593,6 @@ const sortOptions = [
 
   .table-page[data-sort^='rating'] .rating-cell {
     display: flex;
-  }
-
-  .rating-cell :global(.rating-fleur) {
-    display: block;
-    flex-shrink: 0;
-    width: var(--font-size-xxs);
-    height: var(--font-size-xxs);
-    color: var(--color-accent-gold);
   }
 
   .name-cell,
@@ -829,6 +871,11 @@ const sortOptions = [
         'name name rating vote'
         'type area rating vote';
       grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) auto;
+    }
+
+    .rating-cell {
+      justify-content: flex-start;
+      text-align: start;
     }
 
     tbody tr.is-active,

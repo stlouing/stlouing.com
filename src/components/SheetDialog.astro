@@ -3,17 +3,13 @@ import IconX from '../assets/IconX.astro'
 
 interface Props {
   labelledBy: string
-  short?: boolean
   [attribute: `data-${string}`]: unknown
 }
 
-const { labelledBy, short = false, ...attributes } = Astro.props
+const { labelledBy, ...attributes } = Astro.props
 ---
 
-<dialog
-  class:list={['map-sheet', 'sheet-dialog', { 'sheet-dialog--short': short }]}
-  aria-labelledby={labelledBy}
-  {...attributes}>
+<dialog class="map-sheet sheet-dialog" aria-labelledby={labelledBy} {...attributes}>
   <button type="button" class="close-button map-sheet-close" data-sheet-close aria-label="Close">
     <IconX />
   </button>

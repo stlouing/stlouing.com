@@ -13,7 +13,6 @@ function buildHandle(): HTMLElement {
 }
 
 export function bindSwipeToClose(root: HTMLElement, body: HTMLElement, close: () => void): void {
-  const sheetLayout = window.matchMedia(SHEET_QUERY)
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
   let startY: number | null = null
   let startTime = 0
@@ -62,7 +61,7 @@ export function bindSwipeToClose(root: HTMLElement, body: HTMLElement, close: ()
     (event) => {
       if (
         event.touches.length !== 1 ||
-        !sheetLayout.matches ||
+        getComputedStyle(root).position !== 'fixed' ||
         root.classList.contains('is-settling')
       ) {
         startY = null
