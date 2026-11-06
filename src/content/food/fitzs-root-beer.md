@@ -1,7 +1,7 @@
 ---
 title: Fitz's Root Beer
 created: 2026-10-13
-status: want-to-try
+status: tried
 description: Craft-soda microbrewery and restaurant
 cuisine: ['american', 'burgers']
 neighborhood: university-city

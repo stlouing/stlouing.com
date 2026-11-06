@@ -10,6 +10,9 @@ function groupKeyReader(sortValue: string): ((row: HTMLElement) => string) | und
   if (field === 'neighborhood') {
     return (row) => row.dataset.groupName || OTHER_LOCATION
   }
+  if (field === 'rating') {
+    return (row) => row.dataset.groupRating ?? ''
+  }
 
   return undefined
 }

@@ -105,16 +105,6 @@ const relatedNeighborhood = data.neighborhood
     )
   : []
 const primaryCuisine = data.cuisine[0]
-const relatedCuisine = primaryCuisine
-  ? topRelated(
-      relatedPool.filter(
-        (place) =>
-          place.id !== entry.id &&
-          place.data.cuisine.includes(primaryCuisine) &&
-          place.data.neighborhood !== data.neighborhood,
-      ),
-    )
-  : []
 
 const distanceBetween = (from: [number, number], to: [number, number]) => {
   const toRadians = (degrees: number) => (degrees * Math.PI) / 180
@@ -123,9 +113,7 @@ const distanceBetween = (from: [number, number], to: [number, number]) => {
 
   return Math.sqrt(latitudeDelta ** 2 + longitudeDelta ** 2)
 }
-const alreadyRelated = new Set(
-  [...relatedNeighborhood, ...relatedCuisine].map((item) => item.place.id),
-)
+const alreadyRelated = new Set(relatedNeighborhood.map((item) => item.place.id))
 const nearbyWritten =
   isStub && data.coords && relatedNeighborhood.length < relatedLimit
     ? relatedPool
@@ -143,7 +131,7 @@ const nearbyWritten =
 
 const nearby = isStub ? [...relatedNeighborhood, ...nearbyWritten] : []
 const relatedIds = new Set(
-  [...relatedNeighborhood, ...relatedCuisine, ...nearbyWritten].map((item) => item.place.id),
+  [...relatedNeighborhood, ...nearbyWritten].map((item) => item.place.id),
 )
 const mentionedIn = backlinks.filter(
   (backlink) => !(backlink.collection === 'food' && relatedIds.has(backlink.id)),
@@ -268,6 +256,7 @@ const seoDescription = hasBody(entry)
 
           <Comments kind="food" slug={entry.id} title={data.title} />
 
+          {(nearby.length > 0 || (!isStub && relatedNeighborhood.length > 0)) && (
           <section class="more-food">
             {
               !isStub && relatedNeighborhood.length > 0 && (
@@ -302,26 +291,8 @@ const seoDescription = hasBody(entry)
                 </CardList>
               )
             }
-            {
-              relatedCuisine.length > 0 && (
-                <CardList
-                  title={`More ${cuisineLabel(primaryCuisine)}`}
-                  class="card-cells"
-                  moreHref={cuisineHref(primaryCuisine)}>
-                  {relatedCuisine.map(({ place, rating }) => (
-                    <Card
-                      href={href(`/food/${place.id}/`)}
-                      title={place.data.title}
-                      meta={neighborhoodName(place.data.neighborhood)}
-                      description={place.data.description}
-                      rating={rating}
-                    />
-                  ))}
-                </CardList>
-              )
-            }
           </section>
-
+          )}
         </div>
         <aside class="detail-aside">
           <div>

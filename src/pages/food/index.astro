@@ -81,7 +81,6 @@ const schema = itemListSchema(
 <BaseLayout
   title={`${CITY} Food Map: Restaurants, Bars, and Cafes`}
   description={description}
-  ogImage="/og/food-og.png"
   jsonLd={schema}>
   <FilterMapPage emptyText="No places match those filters.">
     <article class="content-pane map-list grouped-list">
@@ -120,21 +119,6 @@ const schema = itemListSchema(
                 'data-sort-name': place.data.title.toLowerCase(),
                 'data-sort-rating': `${rankLetter}|${place.data.title.toLowerCase()}`,
               }}>
-              {(place.data.cuisine.length > 0 || place.data.neighborhood) && (
-                <span class="eyebrow eyebrow--muted" slot="eyebrow">
-                  {[
-                    ...place.data.cuisine.map((cuisine) => cuisineLabel(cuisine)),
-                    neighborhoodName(place.data.neighborhood),
-                  ]
-                    .filter(Boolean)
-                    .map((part, partIndex) => (
-                      <>
-                        {partIndex > 0 && <span class="eyebrow-divider" aria-hidden="true" />}
-                        {part}
-                      </>
-                    ))}
-                </span>
-              )}
               {place.data.rating !== undefined && (
                 <span class="list-rating" slot="rating">
                   <Rating rating={place.data.rating} />

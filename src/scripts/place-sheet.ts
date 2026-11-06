@@ -42,6 +42,9 @@ export function initPlaceSheet(rootSelector: string): void {
     }
 
     event.preventDefault()
+    if (event.detail > 0) {
+      link.blur()
+    }
     setActiveRow(row)
     const sheet = await fetchPlaceSheet(row.dataset.slug ?? '').catch(() => null)
     if (activeRow !== row) {

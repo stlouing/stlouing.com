@@ -11,7 +11,7 @@ import PaneSort from '../components/PaneSort.astro'
 import SheetDialog from '../components/SheetDialog.astro'
 import SuggestSpot from '../components/SuggestSpot.astro'
 import ThemeToggle from '../components/ThemeToggle.astro'
-import { published } from '../lib/content'
+import { foodStatus, published } from '../lib/content'
 import { cuisineLabel } from '../lib/cuisine'
 import type { OfficialPart } from '../lib/official-parts'
 import { placeLocation } from '../lib/place-location'
@@ -78,13 +78,12 @@ const sortOptions = [
                   <span class="title-serif">What is this?</span>
                 </div>
                 <p class="sheet-lede description">
-                  This is an explorer for St. Louis food and coffee, built from the places I've
-                  tried or want to try. It's a personal project for me to keep track of where I've
-                  been, but it's not an exhaustive list of all restaurants.
+                  An explorer for St. Louis food and coffee, built from the places I've tried or
+                  want to try.
                 </p>
                 <p class="sheet-lede description">
-                  Click into any spot for its website, address, Instagram, and review. You can also
-                  vote on your favorites.
+                  Click into any spot for its website, address, Instagram, and review (if I've tried
+                  it). You can also vote on your favorites.
                 </p>
                 <p class="sheet-lede description">
                   For a higher fidelity version with photographs I've taken and an interactive map, <strong
@@ -139,7 +138,7 @@ const sortOptions = [
             <th role="columnheader" class="name-cell">Name</th>
             <th role="columnheader" class="type-cell">Type</th>
             <th role="columnheader" class="area-cell"> Location</th>
-            <th role="columnheader" class="rating-cell">My Rating</th>
+            <th role="columnheader" class="rating-cell">Score</th>
             {
               SUPABASE_ENABLED && (
                 <th role="columnheader" class="score-cell" title="Been here? What did you think?">
@@ -156,6 +155,8 @@ const sortOptions = [
               const areaName = area?.name ?? ''
               const districtName = district?.name ?? ''
               const type = cuisine.map((value) => cuisineLabel(value)).join(', ')
+              const isWantToTry = foodStatus(place) === 'want-to-try'
+              const unratedGroup = isWantToTry ? 'Want to try' : 'Todo'
 
               return (
                 <tr
@@ -168,7 +169,8 @@ const sortOptions = [
                   data-sort-name={title.toLowerCase()}
                   data-sort-neighborhood={areaName.toLowerCase()}
                   data-group-name={areaName}
-                  data-sort-rating={rating}
+                  data-sort-rating={rating ?? (isWantToTry ? undefined : 0)}
+                  data-group-rating={rating ? String(Math.floor(rating)) : unratedGroup}
                   data-sort-score="0">
                   <td role="cell" class="name-cell">
                     <a href={`/food/${place.id}/`}>{title}</a>
@@ -188,7 +190,6 @@ const sortOptions = [
                   </td>
                   <td role="cell" class="rating-cell">
                     {rating}
-                    {rating && <FleurGlyph class="rating-fleur" />}
                   </td>
                   {SUPABASE_ENABLED && (
                     <td role="cell" class="score-cell">
@@ -258,11 +259,12 @@ const sortOptions = [
 
 <style>
   .table-page {
-    --color-raised: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-text));
+    --color-raised: color-mix(in srgb, var(--color-stripe) 90%, var(--color-text));
     --control-height: calc(var(--spacing-xl) - var(--spacing-xxs));
     touch-action: manipulation;
     --page-bar-height: calc(var(--spacing-xl) + 2 * var(--spacing-xs));
     --page-nav-height: calc(var(--page-bar-height) + var(--control-height) + 2 * var(--spacing-xs));
+    padding-block-end: max(var(--spacing-lg), env(safe-area-inset-bottom, 0px));
     font-family: var(--font-sans-serif);
   }
 
@@ -274,6 +276,10 @@ const sortOptions = [
   .table-page :global(.title-serif),
   .table-page :global(.description) {
     font-family: inherit;
+  }
+
+  :global(:root[data-theme='dark']:has([data-filter-table])) {
+    --color-background: var(--color-surface);
   }
 
   .page-nav {
@@ -398,7 +404,7 @@ const sortOptions = [
   }
 
   .filter-band {
-    background: var(--color-surface-2);
+    background: var(--color-stripe);
   }
 
   .filter-row {
@@ -469,11 +475,11 @@ const sortOptions = [
 
   tbody tr {
     border-block-end: 1px solid var(--color-line-muted);
-    background: var(--color-surface-2);
+    background: var(--color-stripe);
   }
 
   tbody tr:nth-child(even of [data-filter-item]:not([hidden])) {
-    background: var(--color-surface);
+    background: var(--color-stripe-alternate);
   }
 
   @media (hover: hover) {
@@ -519,18 +525,19 @@ const sortOptions = [
   }
 
   .rating-cell {
+    display: none;
     flex: 0 0 var(--rating-width);
+    grid-area: rating;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-xxs);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     text-align: end;
   }
 
-  .rating-cell {
+  .table-page[data-sort^='rating'] .rating-cell {
     display: flex;
-    grid-area: rating;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--spacing-xxs);
   }
 
   .rating-cell :global(.rating-fleur) {
@@ -559,7 +566,20 @@ const sortOptions = [
   }
 
   .name-cell a {
-    font-weight: 600;
+    font-weight: 500;
+  }
+
+  .type-cell {
+    font-weight: 400;
+  }
+
+  .name-cell a:focus-visible {
+    outline: none;
+  }
+
+  tbody tr:has(.name-cell a:focus-visible) {
+    outline: 2px solid var(--color-accent-blue);
+    outline-offset: -2px;
   }
 
   .name-cell a:hover {
@@ -792,11 +812,18 @@ const sortOptions = [
     tbody tr {
       display: grid;
       grid-template-areas:
+        'name name vote'
+        'type area vote';
+      grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+      gap: 0 var(--spacing-xs);
+      padding-block: var(--spacing-xxs);
+    }
+
+    .table-page[data-sort^='rating'] tbody tr {
+      grid-template-areas:
         'name name rating vote'
         'type area rating vote';
       grid-template-columns: minmax(0, auto) minmax(0, 1fr) var(--rating-width) auto;
-      gap: 0 var(--spacing-xs);
-      padding-block: var(--spacing-xxs);
     }
 
     tbody tr.is-active,

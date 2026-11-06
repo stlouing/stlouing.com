@@ -232,7 +232,7 @@ const analyticsUrl = analyticsBase
       }
     </main>
 
-    <Footer />
+    {!bare && <Footer />}
 
     <script>
       import { initWikilinkPreviews } from '../scripts/wikilink-preview'

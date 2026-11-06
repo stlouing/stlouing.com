@@ -1,6 +1,6 @@
 import type { LegendItem } from './legend'
 
-const LABEL_OVERRIDES: Record<string, string> = { bbq: 'BBQ' }
+const LABEL_OVERRIDES: Record<string, string> = { bbq: 'BBQ', breakfast: 'Breakfast/Brunch' }
 
 export function cuisineLabel(cuisine: string): string {
   const key = cuisine.trim().toLowerCase()
