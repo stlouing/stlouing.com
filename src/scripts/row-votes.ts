@@ -155,7 +155,7 @@ function renderScore(row: HTMLElement, score: number): void {
 function resortByScore(): void {
   const sort = document.querySelector<HTMLSelectElement>('[data-filter-sort]')
   if (sort?.value.startsWith('score:')) {
-    sort.dispatchEvent(new Event('change'))
+    sort.dispatchEvent(new Event('filter:resort'))
   }
 }
 

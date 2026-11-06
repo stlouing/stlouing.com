@@ -247,10 +247,17 @@ export function initFilter(rootSelector = '[data-filter-root]'): void {
   for (const facet of facets) {
     facet.bind(applyAndSync)
   }
-  sort?.addEventListener('change', () => {
+  const resort = (): void => {
     applySort()
     root.dispatchEvent(new CustomEvent('filter:changed'))
+  }
+
+  sort?.addEventListener('filter:resort', resort)
+  sort?.addEventListener('change', () => {
+    resort()
     writeUrl()
+    window.scrollTo({ top: 0, behavior: 'instant' })
+    list?.closest('.content-pane')?.scrollTo({ top: 0, behavior: 'instant' })
   })
 
   document.addEventListener('click', (event) => {
