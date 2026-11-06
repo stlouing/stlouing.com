@@ -297,6 +297,17 @@ const sortOptions = [
 
   document.addEventListener('gesturestart', (event) => event.preventDefault())
 
+  const search = document.querySelector<HTMLInputElement>('[data-filter-search]')
+  window.addEventListener(
+    'touchmove',
+    (event) => {
+      if (search && document.activeElement === search && event.target !== search) {
+        search.blur()
+      }
+    },
+    { passive: true },
+  )
+
   const infoDialog = document.querySelector<HTMLDialogElement>('[data-info-dialog]')
   const infoOpener = document.querySelector<HTMLElement>('[data-info-open]')
   if (infoDialog && infoOpener) {
