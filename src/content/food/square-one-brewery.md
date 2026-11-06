@@ -2,7 +2,6 @@
 title: Square One Brewery & Distillery
 created: 2026-10-13
 status: want-to-try
-description: Brewery, distillery and restaurant
 cuisine: ['brewery']
 neighborhood: lafayette-square
 address:

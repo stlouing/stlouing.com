@@ -2,7 +2,6 @@
 title: Fortel's Pizza Den
 created: 2026-08-30
 status: want-to-try
-description: St. Louis-style pizzeria since 1981
 cuisine: ['pizza']
 neighborhood: affton
 address:

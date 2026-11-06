@@ -2,7 +2,6 @@
 title: Koibito Poke
 created: 2026-10-13
 status: want-to-try
-description: Poke bowls at Ballpark Village
 cuisine: ['asian']
 neighborhood: downtown
 address:

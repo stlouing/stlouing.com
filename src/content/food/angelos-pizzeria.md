@@ -2,7 +2,6 @@
 title: Angelo's Pizzeria
 created: 2026-08-30
 status: want-to-try
-description: St. Louis-style pizza since 1969
 cuisine: ['pizza']
 neighborhood: florissant
 address:

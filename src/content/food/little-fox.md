@@ -2,7 +2,6 @@
 title: Little Fox
 created: 2026-07-16
 status: want-to-try
-description: Neighborhood bistro
 cuisine: ['american']
 neighborhood: fox-park
 address:

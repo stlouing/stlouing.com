@@ -3,7 +3,6 @@ title: Rozanna Mediterranean
 created: 2026-07-16
 updated: 2026-11-05
 rating: 3.5
-description: Syrian and Lebanese grill
 cuisine: ['middle eastern', 'mediterranean']
 neighborhood: manchester
 address:

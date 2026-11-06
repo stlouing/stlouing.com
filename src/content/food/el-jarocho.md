@@ -1,6 +1,5 @@
 ---
 title: El Jarocho
-description: Authentic street tacos in St. Louis
 created: 2026-06-23
 rating: 4.5
 cuisine: ['mexican']
@@ -16,11 +15,9 @@ pick:
   note: Steak, French fries and queso fresco inside the burrito
 ---
 
-One of the first things I needed to find after moving to St. Louis was authentic Mexican food. I've always been used to having endless options for authentic Mexican food, bakeries, snacks, and groceries, but I was surprised to discover that St. Louis has a much smaller hispanic population than I was used to.
+One of the first things I needed to find after moving to St. Louis was authentic Mexican food. I've always been used to having endless options for authentic Mexican food, bakeries, snacks, and groceries, but I was surprised to discover that St. Louis has a pretty small Hispanic population.
 
-The majority of Mexican restaurants in the St. Louis area are actually more along the lines of Tex-Mex. Lots of fajitas, cheese sauce, and complicated combination menus. I tried four or five different taquerias that were highly rated, including some on Cherokee street, but the flavor and ingredients just weren't what I was looking for.
-
-Before I found El Jarocho I came across El Toluco (rip), a similar Mexican grocery/taqueria combination that was close by, and they had awesome Al Pastor tacos - but unfortunately they closed down within a few months of finding it, so I was back on the search.
+A lot of the Mexican restaurants in the area are actually more along the lines of Tex-Mex. Fajitas, cheese sauce, and combination menus. Before I found El Jarocho I came across El Toluco (rip), a similar Mexican grocery/taqueria combination that was close by, and they had awesome Al Pastor tacos - but unfortunately they closed down within a few months of finding it, so I was back on the search.
 
 I kept looking, and eventually I came across El Jarocho. I'll take any opportunity I can to talk up El Jarocho, because they've been an absolute godsend. Here you can find street tacos with corn tortillas, onions, cilantro, and meat, served with lime. The steak tacos are amazing, and the green sauce is top notch. My biggest complaint about El Jarocho is they don't have Mexican rice or refried pinto beans - they have white rice and black beans.
 

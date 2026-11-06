@@ -3,7 +3,6 @@ title: Corner 17
 created: 2026-07-16
 updated: 2026-11-04
 status: want-to-try
-description: Hand-pulled noodles and soup dumplings
 cuisine: ['chinese', 'asian']
 neighborhood: university-city
 district: delmar-loop

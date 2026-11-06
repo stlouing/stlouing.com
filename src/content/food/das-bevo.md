@@ -2,7 +2,6 @@
 title: Das Bevo
 created: 2026-08-30
 status: want-to-try
-description: Biergarten in the 1917 windmill
 cuisine: ['european']
 neighborhood: bevo-mill
 address:

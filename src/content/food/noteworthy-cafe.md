@@ -3,7 +3,6 @@ title: Noteworthy Café & Culture
 created: 2026-08-30
 updated: 2026-11-04
 rating: 5
-description: Piano-themed coffee shop
 cuisine: ['cafe', 'coffee']
 neighborhood: central-west-end
 address:

@@ -2,7 +2,6 @@
 title: Cunetto House of Pasta
 created: 2026-10-14
 status: want-to-try
-description: Longtime Italian institution
 cuisine: ['italian']
 neighborhood: southwest-garden
 address:

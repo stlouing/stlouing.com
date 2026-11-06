@@ -2,7 +2,6 @@
 title: Taste of Bosnia
 created: 2026-08-30
 status: want-to-try
-description: Family-run Bosnian restaurant
 cuisine: ['balkan']
 neighborhood: mehlville
 address:

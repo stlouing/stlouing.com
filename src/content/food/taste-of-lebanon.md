@@ -1,6 +1,5 @@
 ---
 title: Taste of Lebanon
-description: Hookah and Lebanese food
 created: 2026-06-23
 updated: 2026-11-05
 rating: 4.5

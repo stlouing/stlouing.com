@@ -2623,11 +2623,11 @@ body:has([data-filter-root]) .masthead-nav {
   margin-block: var(--spacing-xs) 0;
 }
 
-:is(.maplibregl-popup.map-popup, .map-sheet) .popup-meta .map-legend-swatch {
+.maplibregl-popup.map-popup .popup-meta .map-legend-swatch {
   margin-inline-end: var(--spacing-xs);
 }
 
-:is(.maplibregl-popup.map-popup, .map-sheet) .popup-meta {
+.maplibregl-popup.map-popup .popup-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2709,30 +2709,17 @@ body:has([data-filter-root]) .masthead-nav {
 }
 
 .map-sheet .map-sheet-body .popup-meta {
-  min-height: 1.75rem;
-  padding-block-end: var(--spacing-sm);
-  margin-block-end: var(--spacing-md);
-  border-block-end: 1px solid var(--color-line);
-  padding-inline-end: var(--spacing-xxl);
-  font-size: var(--font-size-sm);
+  display: none;
 }
 
 .map-sheet .map-sheet-body .popup-scroll :is(h2, .sheet-title) {
-  margin-block-end: 0;
-  padding-inline-end: 0;
+  margin-block-end: var(--spacing-sm);
+  padding-inline-end: var(--spacing-xxl);
 }
 
 .map-sheet .map-sheet-body .popup-scroll :is(h2, .sheet-title) .title-serif {
   font-size: var(--font-size-xxl);
   line-height: 1.15;
-}
-
-.sheet-dialog .map-sheet-body .popup-meta {
-  margin-block-end: var(--spacing-sm);
-}
-
-.sheet-dialog .map-sheet-body .popup-scroll .sheet-title {
-  margin-block-end: var(--spacing-sm);
 }
 
 .map-sheet .map-sheet-body .popup-address {
@@ -3455,7 +3442,11 @@ label {
 }
 
 .detail-pane-title {
-  margin: 0;
+  margin: 0 0 var(--spacing-md);
+}
+
+.detail-pane-title:has(+ .detail-pane-tagline) {
+  margin-block-end: var(--spacing-xs);
 }
 
 .detail-pane-tagline {

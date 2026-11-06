@@ -7,9 +7,7 @@ import IconInstagram from '../../assets/IconInstagram.astro'
 import IconMapPin from '../../assets/IconMapPin.astro'
 import Rating from '../../components/Rating.astro'
 import { hasBody, published } from '../../lib/content'
-import { cuisineLabel } from '../../lib/cuisine'
 import { googleMapsHref } from '../../lib/maps'
-import { placeLocation } from '../../lib/place-location'
 import { href } from '../../lib/url'
 
 export async function getStaticPaths() {
@@ -20,15 +18,9 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { data } = entry
-const { area, district } = placeLocation(data)
 const thumbnail = data.photo
   ? await getImage({ src: data.photo, width: 480, format: 'webp' })
   : undefined
-const chips = [
-  data.cuisine.map((value) => cuisineLabel(value)).join(', '),
-  area?.name,
-  district?.name,
-].filter(Boolean)
 const addressLines = data.address ?? []
 const placeHref = href(`/food/${entry.id}/`)
 const { Content } = await render(entry)
@@ -45,16 +37,6 @@ const { Content } = await render(entry)
     )
   }
   <Rating rating={data.rating} />
-  <div class="popup-meta list-eyebrow">
-    {
-      chips.map((chip, index) => (
-        <Fragment>
-          {index > 0 && <span class="eyebrow-divider" aria-hidden="true" />}
-          <span class="eyebrow eyebrow--muted">{chip}</span>
-        </Fragment>
-      ))
-    }
-  </div>
   <h2 id="place-sheet-title">
     <a class="title-serif title-link" href={placeHref}>{data.title}</a>
   </h2>

@@ -3,7 +3,6 @@ title: Michael's Bar and Grill
 created: 2026-07-16
 updated: 2026-11-05
 status: want-to-try
-description: Greek classics and American bar fare
 cuisine: ['greek', 'mediterranean']
 neighborhood: dogtown
 address:

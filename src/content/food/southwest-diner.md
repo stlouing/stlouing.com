@@ -2,7 +2,6 @@
 title: Southwest Diner
 created: 2026-08-30
 status: want-to-try
-description: New Mexican-style breakfast diner
 cuisine: ['breakfast']
 neighborhood: ellendale
 address:

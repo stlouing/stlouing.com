@@ -1,6 +1,5 @@
 ---
 title: Farotto's
-description: One of my top St. Louis-style pizza spots
 photo: ../images/food/farottos/pizza1.jpg
 created: 2026-06-23
 updated: 2026-08-31

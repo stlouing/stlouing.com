@@ -3,7 +3,6 @@ title: Downtown
 created: 2026-06-28
 url: https://www.downtownstl.org
 wikipedia: https://en.wikipedia.org/wiki/Downtown_St._Louis
-description: The central business and sports district
 ---
 
 As a kid, I can remember crossing over the Mississippi river into St. Louis on road trips out west and saying, "Hey look, it's the Arch!" No matter where you are in St. Louis, you can probably see the Arch looming in the distance. The Arch is the biggest and most impressive monument in St. Louis, one of the most recognizable American monuments, and the biggest tourist activity to in Downtown St. Louis.

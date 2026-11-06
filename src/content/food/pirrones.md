@@ -2,7 +2,6 @@
 title: Pirrone's
 created: 2026-07-16
 rating: 4.5
-description: North side St. Louis-style pizzeria
 cuisine: ['pizza']
 neighborhood: florissant
 address:

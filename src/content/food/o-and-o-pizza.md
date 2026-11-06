@@ -2,7 +2,6 @@
 title: O+O Pizza
 created: 2026-11-05
 status: want-to-try
-description: Thin-crust pizzas and handmade pastas
 cuisine: ['pizza', 'italian']
 neighborhood: webster-groves
 address:

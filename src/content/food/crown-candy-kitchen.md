@@ -2,7 +2,6 @@
 title: Crown Candy Kitchen
 created: 2026-10-09
 status: want-to-try
-description: Soda fountain and candy shop since 1913
 cuisine: ['sandwiches']
 neighborhood: old-north-st-louis
 address:

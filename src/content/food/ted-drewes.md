@@ -2,7 +2,6 @@
 title: Ted Drewes
 created: 2026-08-30
 status: tried
-description: Route 66 frozen custard stand
 cuisine: ['dessert']
 neighborhood: st-louis-hills
 address:

@@ -2,7 +2,6 @@
 title: Sabroso Cocina Mexicana
 created: 2026-10-09
 status: want-to-try
-description: Regional Mexican cooking
 cuisine: ['mexican']
 neighborhood: maplewood
 address:

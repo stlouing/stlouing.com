@@ -2,7 +2,6 @@
 title: Baked & Boiled Bagels
 created: 2026-08-30
 status: want-to-try
-description: New York-style bagels
 cuisine: ['sandwiches']
 neighborhood: soulard
 address:

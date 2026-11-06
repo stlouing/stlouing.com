@@ -1,6 +1,5 @@
 ---
 title: Telva at the Ridge
-description: A Balkan-inspired cafe with a cozy chai
 created: 2026-06-23
 updated: 2026-11-04
 rating: 5

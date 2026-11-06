@@ -2,7 +2,6 @@
 title: Damn Fine Hand Pies
 created: 2026-07-16
 status: tried
-description: Sweet and savory hand pies
 cuisine: ['cafe']
 neighborhood: shaw
 address:

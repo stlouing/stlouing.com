@@ -1,6 +1,5 @@
 ---
 title: Menya Rui
-description: Shoyu ramen worth waiting in line for
 created: 2026-06-23
 updated: 2026-11-04
 rating: 4.5

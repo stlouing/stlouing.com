@@ -3,7 +3,6 @@ title: Thai Sawadee
 created: 2026-07-16
 updated: 2026-11-04
 rating: 4
-description: Longtime Thai favorite
 cuisine: ['thai', 'asian']
 neighborhood: chesterfield
 address:

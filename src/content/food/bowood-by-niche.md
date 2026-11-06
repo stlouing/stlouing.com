@@ -2,7 +2,6 @@
 title: Bowood by Niche
 created: 2026-08-30
 status: want-to-try
-description: Breakfast café inside a garden shop
 cuisine: ['cafe']
 neighborhood: central-west-end
 address:

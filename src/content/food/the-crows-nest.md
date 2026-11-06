@@ -2,7 +2,6 @@
 title: The Crow's Nest
 created: 2026-10-17
 status: want-to-try
-description: Restaurant and bar with a weekend metal brunch
 cuisine: ['bar']
 neighborhood: maplewood
 address:

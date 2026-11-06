@@ -2,7 +2,6 @@
 title: Tamm Ave Bar
 created: 2026-10-13
 status: want-to-try
-description: Bar across from the Zoo with dog-friendly patio and local drafts
 cuisine: ['bar']
 neighborhood: dogtown
 address:

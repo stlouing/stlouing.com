@@ -2,7 +2,6 @@
 title: D's Place
 created: 2026-10-13
 status: want-to-try
-description: Soulard sports bar known for buffalo chicken wontons
 cuisine: ['bar']
 neighborhood: soulard
 address:

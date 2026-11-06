@@ -3,7 +3,6 @@ title: Kaldi's Coffee (The Euclid)
 created: 2026-10-12
 updated: 2026-11-04
 status: want-to-try
-description: Kaldi's café at West Pine and Euclid
 cuisine: ['cafe', 'coffee']
 neighborhood: central-west-end
 address:

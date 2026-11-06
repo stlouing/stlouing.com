@@ -2,7 +2,6 @@
 title: Saffron
 created: 2026-07-16
 status: want-to-try
-description: Indian and Pakistani plates
 cuisine: ['middle eastern']
 neighborhood: town-and-country
 address:

@@ -2,7 +2,6 @@
 title: Sugarwitch
 created: 2026-10-09
 status: tried
-description: Ice cream sandwiches in the old Carondelet Bakery
 cuisine: ['dessert']
 neighborhood: carondelet
 address:

@@ -1,6 +1,5 @@
 ---
 title: Blues City Deli
-description: An iconic Blues-themed sandwich shop
 created: 2026-06-23
 updated: 2026-07-22
 photo: ../images/food/blues-city-deli.jpeg

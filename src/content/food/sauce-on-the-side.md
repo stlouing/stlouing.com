@@ -2,7 +2,6 @@
 title: Sauce on the Side
 created: 2026-10-13
 status: want-to-try
-description: Calzones and salads
 cuisine: ['italian']
 neighborhood: downtown
 address:

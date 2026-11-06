@@ -2,7 +2,6 @@
 title: Cat's Meow
 created: 2026-10-13
 status: want-to-try
-description: Cash-only neighborhood tavern
 cuisine: ['bar']
 neighborhood: soulard
 address:

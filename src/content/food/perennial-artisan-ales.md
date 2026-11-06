@@ -2,7 +2,6 @@
 title: Perennial Artisan Ales
 created: 2026-10-14
 status: want-to-try
-description: Brewery and tasting room
 cuisine: ['brewery']
 neighborhood: carondelet
 address:

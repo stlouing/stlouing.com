@@ -2,7 +2,6 @@
 title: FUFU n' Sauce
 created: 2026-11-05
 status: want-to-try
-description: West African fufu and stews from chef Adjo Honsou
 cuisine: ['african']
 neighborhood: vinita-park
 address:

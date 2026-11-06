@@ -4,7 +4,6 @@ created: 2026-06-28
 updated: 2026-10-20
 url: https://www.thegrovestl.com
 wikipedia: https://en.wikipedia.org/wiki/The_Grove,_St._Louis
-description: St. Louis's LGBTQ nightlife strip
 ---
 
 The Grove is the LGBTQ neighborhood in St. Louis, and is home to a strip of local restaurants and bars, located in the Forest Park Southeast neighborhood.

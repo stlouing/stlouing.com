@@ -2,7 +2,6 @@
 title: The Piccadilly at Manhattan
 created: 2026-08-30
 status: want-to-try
-description: Historic restaurant known for pot pie
 cuisine: ['american']
 neighborhood: ellendale
 address:

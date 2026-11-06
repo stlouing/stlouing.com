@@ -2,7 +2,6 @@
 title: Bar Moro
 created: 2026-10-09
 status: want-to-try
-description: Spanish small plates from Ben Poremba
 cuisine: ['spanish']
 neighborhood: clayton
 address:

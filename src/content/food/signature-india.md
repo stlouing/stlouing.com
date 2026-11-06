@@ -2,7 +2,6 @@
 title: Signature India
 created: 2026-07-16
 status: tried
-description: North Indian plates and bakery
 cuisine: ['indian']
 neighborhood: ballwin
 address:

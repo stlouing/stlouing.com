@@ -2,7 +2,6 @@
 title: Yaquis on Cherokee
 created: 2026-10-13
 status: want-to-try
-description: Wood-fired pizza and live music
 cuisine: ['pizza']
 neighborhood: gravois-park
 district: cherokee-street

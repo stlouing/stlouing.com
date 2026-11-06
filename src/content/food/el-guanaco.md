@@ -2,7 +2,6 @@
 title: El Guanaco
 created: 2026-08-30
 status: want-to-try
-description: Salvadoran pupusas and tacos
 cuisine: ['latin american']
 neighborhood: overland
 address:

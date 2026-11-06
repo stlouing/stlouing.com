@@ -1,7 +1,6 @@
 ---
 title: Covenant Blu-Grand Center
 created: 2026-11-03
-description: The theatre and arts district of the city
 url: https://www.grandcenter.org/
 ---
 

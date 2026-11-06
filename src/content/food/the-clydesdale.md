@@ -2,7 +2,6 @@
 title: The Clydesdale
 created: 2026-10-13
 status: want-to-try
-description: New American tavern at Ballpark Village
 cuisine: ['american', 'bar']
 neighborhood: downtown
 address:

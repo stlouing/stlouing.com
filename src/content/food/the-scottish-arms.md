@@ -2,7 +2,6 @@
 title: The Scottish Arms
 created: 2026-08-30
 status: want-to-try
-description: Scottish pub with a whisky list
 cuisine: ['european']
 neighborhood: central-west-end
 address:

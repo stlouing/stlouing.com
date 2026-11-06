@@ -2,7 +2,6 @@
 title: Iowa Buffet
 created: 2026-08-30
 status: want-to-try
-description: Corner tavern since 1945
 cuisine: ['bar']
 neighborhood: gravois-park
 address:

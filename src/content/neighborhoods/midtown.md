@@ -2,7 +2,6 @@
 title: Midtown
 created: 2026-07-05
 updated: 2026-11-03
-description: The innovation core of the city
 ---
 
 Midtown is an area between [[downtown|Downtown]] and [[forest-park|Forest Park]] that is seeing a lot of growth right now. One of the biggest draws of the area is the City Foundry, a food hall and market built into a restored vacant foundry building, and The Cortex Innovation Community, a tech hub in St. Louis providing a coworking and office space for startups and businesses.

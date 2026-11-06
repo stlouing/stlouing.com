@@ -2,7 +2,6 @@
 title: Sasha's on Shaw
 created: 2026-08-30
 status: want-to-try
-description: Wine bar and small plates
 cuisine: ['bar']
 neighborhood: shaw
 address:

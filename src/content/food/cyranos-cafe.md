@@ -2,7 +2,6 @@
 title: Cyrano's Cafe
 created: 2026-10-13
 status: want-to-try
-description: Lunch, dinner, Sunday brunch and desserts
 cuisine: ['american', 'dessert']
 neighborhood: webster-groves
 address:

@@ -2,7 +2,6 @@
 title: Brasas
 created: 2026-11-05
 status: want-to-try
-description: Peruvian rotisserie and street food
 cuisine: ['latin american']
 neighborhood: skinker-debaliviere
 district: delmar-loop

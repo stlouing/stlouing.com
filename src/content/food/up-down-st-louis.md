@@ -2,7 +2,6 @@
 title: Up-Down St. Louis
 created: 2026-10-13
 status: tried
-description: Arcade bar with two levels and DDR
 cuisine: ['bar']
 neighborhood: central-west-end
 address:

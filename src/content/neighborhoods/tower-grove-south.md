@@ -4,7 +4,6 @@ photo: ../images/food/grandpied/grandpied4.jpg
 created: 2026-07-05
 updated: 2026-10-17
 url: https://www.tgsna.org
-description: Residential streets between two walkable business strips and Tower Grove Park
 featured: 1
 ---
 

@@ -2,7 +2,6 @@
 title: Hogtown Smokehouse
 created: 2026-10-13
 status: want-to-try
-description: Barbecue with online ordering and catering
 cuisine: ['bbq']
 neighborhood: dogtown
 address:

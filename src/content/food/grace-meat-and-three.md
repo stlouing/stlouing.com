@@ -1,6 +1,5 @@
 ---
 title: Grace Meat + Three
-description: Comfort-food fried chicken and sides
 created: 2026-06-23
 rating: 4
 cuisine: ['fried chicken']

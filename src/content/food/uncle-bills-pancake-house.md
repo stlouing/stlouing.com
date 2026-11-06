@@ -3,7 +3,6 @@ title: Uncle Bill's Pancake House
 created: 2026-10-13
 updated: 2026-11-03
 status: want-to-try
-description: South Kingshighway pancake house, a St. Louis original since 1961
 cuisine: ['breakfast']
 neighborhood: north-hampton
 district: southtown

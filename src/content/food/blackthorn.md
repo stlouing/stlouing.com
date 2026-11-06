@@ -2,7 +2,6 @@
 title: Blackthorn
 created: 2026-07-16
 status: want-to-try
-description: Deep dish and thin crust in an old corner pub
 cuisine: ['pizza']
 neighborhood: tower-grove-south
 address:

@@ -4,7 +4,6 @@ created: 2026-06-28
 photo: ../images/neighborhoods/delmar-loop/delmar19.jpg
 url: https://visittheloop.com/
 wikipedia: https://en.wikipedia.org/wiki/Delmar_Loop
-description: A walkable strip of music venues, shops, and restaurants
 featured: 4
 ---
 

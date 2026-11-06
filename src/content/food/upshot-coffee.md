@@ -3,7 +3,6 @@ title: Upshot Coffee
 created: 2026-10-12
 updated: 2026-11-04
 status: want-to-try
-description: Coffee shop
 cuisine: ['cafe', 'coffee']
 neighborhood: tower-grove-south
 address:

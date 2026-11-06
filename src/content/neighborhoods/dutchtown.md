@@ -1,7 +1,6 @@
 ---
 title: Dutchtown
 created: 10-13-2026
-description: Historically German neighborhood in South City
 url: https://dutchtownstl.org/
 ---
 

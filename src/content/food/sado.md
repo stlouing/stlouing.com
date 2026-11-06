@@ -3,7 +3,6 @@ title: Sado
 created: 2026-07-16
 updated: 2026-11-04
 status: want-to-try
-description: Omakase and creative sushi
 cuisine: ['sushi', 'asian']
 neighborhood: the-hill
 address:

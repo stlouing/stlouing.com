@@ -4,7 +4,6 @@ photo: ../images/neighborhoods/cherokee/cherokee1.jpg
 created: 2026-10-15
 url: https://cherokeestreet.com/
 wikipedia: https://en.wikipedia.org/wiki/Cherokee_Street_(St._Louis)
-description: A vibrant, eclectic commercial and cultural district
 featured: 3
 ---
 

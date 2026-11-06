@@ -2,7 +2,6 @@
 title: El Potro
 created: 2026-08-30
 status: want-to-try
-description: Mexican and Honduran plates with seafood
 cuisine: ['mexican']
 neighborhood: ellendale
 address:

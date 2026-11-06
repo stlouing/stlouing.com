@@ -2,7 +2,6 @@
 title: Vicia
 created: 2026-10-09
 status: want-to-try
-description: Vegetable-forward restaurant in the Cortex district
 cuisine: ['american']
 neighborhood: central-west-end
 address:

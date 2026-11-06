@@ -2,7 +2,6 @@
 title: Condado Tacos
 created: 2026-10-13
 status: want-to-try
-description: Build-your-own tacos, tequila and margaritas
 cuisine: ['mexican']
 neighborhood: downtown
 address:

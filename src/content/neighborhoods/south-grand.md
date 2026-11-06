@@ -1,6 +1,5 @@
 ---
 title: South Grand
-description: International restaurants and shops along South Grand Boulevard
 created: 2026-10-20
 url: https://www.southgrand.org/
 ---

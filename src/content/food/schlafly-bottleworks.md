@@ -2,7 +2,6 @@
 title: Schlafly Bottleworks
 created: 2026-08-30
 status: want-to-try
-description: Brewery with a restaurant and beer garden
 cuisine: ['brewery']
 neighborhood: maplewood
 address:

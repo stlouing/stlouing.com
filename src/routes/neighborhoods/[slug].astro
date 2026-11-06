@@ -40,7 +40,6 @@ import {
   foodByNeighborhood,
   neighborBearing,
   neighborhoodInfo,
-  neighborhoodGeneratedSummary,
   neighborhoodMetaDescription,
   neighborhoodSummary,
   neighborsOf,
@@ -136,11 +135,9 @@ const writtenNearby = exploredNeighbors.slice(0, 3)
 
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
 
-const generated = neighborhoodGeneratedSummary(slug)
 const officialLine = officialNamesLine(slug)
 
 const tagline = entry?.data.description
-const summary = tagline ?? (hasWriteup ? generated : undefined)
 const spotNoun = places.length > 0 ? 'other spot' : 'spot'
 const mappedParts = [
   places.length > 0
@@ -244,7 +241,7 @@ const schema = placeSchema(
         <div class="detail-pane-inner">
           <header class="detail-pane-header">
             <h1 class="detail-pane-title title-page">{title}</h1>
-            {summary && <p class="description description--lg detail-pane-tagline">{summary}</p>}
+            {tagline && <p class="description description--lg detail-pane-tagline">{tagline}</p>}
             {
               (officialLine ||
                 isDistrict ||

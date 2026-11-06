@@ -3,7 +3,6 @@ title: McGurk's
 created: 2026-08-30
 updated: 2026-11-06
 rating: 4.5
-description: Irish pub with a big garden
 cuisine: ['bar']
 neighborhood: soulard
 address:

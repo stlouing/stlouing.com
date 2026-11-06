@@ -2,7 +2,6 @@
 title: Salvage Yard
 created: 2026-07-16
 rating: 4
-description: Chicago deep dish and St. Louis thin crust
 cuisine: ['pizza']
 neighborhood: princeton-heights
 address:

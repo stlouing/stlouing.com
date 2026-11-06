@@ -2,7 +2,6 @@
 title: Frazer's Restaurant & Lounge
 created: 2026-10-09
 status: want-to-try
-description: Benton Park restaurant and lounge
 cuisine: ['american']
 neighborhood: benton-park
 address:

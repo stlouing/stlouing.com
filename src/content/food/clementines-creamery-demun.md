@@ -2,7 +2,6 @@
 title: Clementine's Creamery (DeMun)
 created: 2026-11-02
 status: tried
-description: Ice cream parlor from a local chain
 cuisine: ['dessert']
 neighborhood: clayton
 address:

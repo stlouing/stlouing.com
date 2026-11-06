@@ -2,7 +2,6 @@
 title: Honey Bee's Biscuits
 created: 2026-08-30
 status: want-to-try
-description: Biscuit sandwiches and Southern breakfast
 cuisine: ['breakfast']
 neighborhood: kirkwood
 address:

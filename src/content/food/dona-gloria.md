@@ -2,7 +2,6 @@
 title: Doña Gloria
 created: 2026-08-30
 status: want-to-try
-description: Tacos, pozole, and quesabirria
 cuisine: ['mexican']
 neighborhood: carondelet
 address:

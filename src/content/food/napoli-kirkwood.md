@@ -2,7 +2,6 @@
 title: Napoli Kirkwood
 created: 2026-10-13
 status: tried
-description: Fine italian dining and cocktails
 cuisine: ['italian']
 neighborhood: kirkwood
 address:

@@ -1,6 +1,5 @@
 ---
 title: Pappy's Smokehouse
-description: Top-tier ribs
 created: 2026-06-23
 cuisine: ['bbq']
 neighborhood: midtown

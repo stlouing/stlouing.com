@@ -1,6 +1,5 @@
 ---
 title: Kishimoto Mendo
-description: Rich, comforting Tonkotsu ramen
 photo: ../images/food/kishimoto/kishi2.jpg
 created: 2026-06-23
 updated: 2026-11-05

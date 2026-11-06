@@ -2,7 +2,6 @@
 title: Steve's Hot Dogs
 created: 2026-10-09
 status: want-to-try
-description: Smoked hot dogs on South Grand
 cuisine: ['hot dogs']
 neighborhood: tower-grove-south
 district: south-grand

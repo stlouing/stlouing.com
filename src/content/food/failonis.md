@@ -1,6 +1,5 @@
 ---
 title: Failoni's Restaurant
-description: A 1916 spot for brick-oven STL-style pizza
 photo: ../images/food/failonis.jpeg
 created: 2026-06-23
 updated: 2026-07-22

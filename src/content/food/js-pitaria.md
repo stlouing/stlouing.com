@@ -2,7 +2,6 @@
 title: J's Pitaria
 created: 2026-08-30
 status: want-to-try
-description: Bosnian pita and grill
 cuisine: ['balkan']
 neighborhood: concord
 address:

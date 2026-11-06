@@ -1,6 +1,5 @@
 ---
 title: Grand Pied
-description: Crispy, fluffy pancakes in a family-owned bistro
 photo: ../images/food/grandpied/grandpied1.jpg
 created: 2026-10-05
 rating: 5

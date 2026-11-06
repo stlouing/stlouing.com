@@ -2,7 +2,6 @@
 title: Sameem Afghan Restaurant
 created: 2026-07-16
 status: want-to-try
-description: Afghan kabobs
 cuisine: ['middle eastern']
 neighborhood: forest-park-southeast
 district: the-grove

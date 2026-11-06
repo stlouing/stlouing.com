@@ -2,7 +2,6 @@
 title: Wine Down Cafe
 created: 2026-10-14
 status: want-to-try
-description: Wine bar and cafe with small plates
 cuisine: ['bar']
 neighborhood: carondelet
 address:

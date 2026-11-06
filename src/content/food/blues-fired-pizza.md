@@ -2,7 +2,6 @@
 title: Blues Fired Pizza
 created: 2026-08-30
 status: want-to-try
-description: Wood-fired pizza drive-thru
 cuisine: ['pizza']
 neighborhood: kirkwood
 address:

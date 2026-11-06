@@ -2,7 +2,6 @@
 title: 9 Mile Garden
 created: 2026-10-14
 status: want-to-try
-description: Outdoor food truck park and beer garden
 cuisine: ['american', 'bar']
 neighborhood: affton
 address:

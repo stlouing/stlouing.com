@@ -2,7 +2,6 @@
 title: 4 Hands Brewing
 created: 2026-08-30
 status: want-to-try
-description: Brewery and taproom, home of City Wide
 cuisine: ['brewery']
 neighborhood: lasalle-park
 address:

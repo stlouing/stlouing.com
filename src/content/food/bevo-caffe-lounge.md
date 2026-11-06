@@ -2,7 +2,6 @@
 title: Bevo Caffe Lounge
 created: 2026-07-16
 status: want-to-try
-description: Bosnian café with pizza and espresso
 cuisine: ['balkan']
 neighborhood: bevo-mill
 address:

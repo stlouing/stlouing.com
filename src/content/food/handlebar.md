@@ -2,7 +2,6 @@
 title: HandleBar
 created: 2026-10-13
 status: want-to-try
-description: Bike-themed pub with a two-story patio
 cuisine: ['bar']
 neighborhood: forest-park-southeast
 district: the-grove

@@ -2,7 +2,6 @@
 title: Fitz's Root Beer
 created: 2026-10-13
 status: tried
-description: Craft-soda microbrewery and restaurant
 cuisine: ['american', 'burgers']
 neighborhood: university-city
 district: delmar-loop

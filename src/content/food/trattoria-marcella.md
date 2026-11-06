@@ -2,7 +2,6 @@
 title: Trattoria Marcella
 created: 2026-08-30
 status: tried
-description: Family-run Italian trattoria
 cuisine: ['italian']
 neighborhood: lindenwood-park
 address:

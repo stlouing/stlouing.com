@@ -2,7 +2,6 @@
 title: Rockwell Beer Garden
 created: 2026-10-14
 status: want-to-try
-description: Rockwell Beer Company's open-air beer garden, with tavern-style pizza
 cuisine: ['brewery', 'pizza']
 neighborhood: st-louis-hills
 address:

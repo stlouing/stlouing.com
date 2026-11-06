@@ -3,7 +3,6 @@ title: Fiddlehead Fern Cafe
 created: 2026-08-30
 updated: 2026-11-04
 status: want-to-try
-description: Daytime coffee shop and café
 cuisine: ['cafe', 'coffee']
 neighborhood: shaw
 address:

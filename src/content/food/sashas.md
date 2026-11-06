@@ -2,7 +2,6 @@
 title: Sasha's
 created: 2026-07-16
 status: want-to-try
-description: Wine bar and small plates
 cuisine: ['bar']
 neighborhood: clayton
 address:

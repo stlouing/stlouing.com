@@ -2,7 +2,6 @@
 title: Polite Society
 created: 2026-10-13
 status: want-to-try
-description: Restaurant and bar in historic Lafayette Square
 cuisine: ['american']
 neighborhood: lafayette-square
 address:

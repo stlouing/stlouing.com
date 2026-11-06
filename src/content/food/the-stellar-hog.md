@@ -1,6 +1,5 @@
 ---
 title: The Stellar Hog
-description: Intergalactic BBQ vibes and a big patio
 created: 2026-06-23
 rating: 4
 cuisine: ['bbq']

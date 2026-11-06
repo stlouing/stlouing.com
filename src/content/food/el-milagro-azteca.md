@@ -2,7 +2,6 @@
 title: El Milagro Azteca
 created: 2026-11-05
 status: want-to-try
-description: Mexican restaurant
 cuisine: ['mexican']
 neighborhood: southwest-garden
 address:

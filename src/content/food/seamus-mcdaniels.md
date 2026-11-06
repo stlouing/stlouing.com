@@ -2,7 +2,6 @@
 title: Seamus McDaniel's
 created: 2026-08-30
 rating: 3
-description: Irish pub and grill since 1985
 cuisine: ['bar']
 neighborhood: dogtown
 address:

@@ -2,7 +2,6 @@
 title: Taqueria Durango
 created: 2026-08-30
 status: want-to-try
-description: Taqueria with tacos and tortas
 cuisine: ['mexican']
 neighborhood: overland
 address:

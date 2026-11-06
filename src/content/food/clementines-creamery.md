@@ -2,7 +2,6 @@
 title: Clementine's Creamery
 created: 2026-10-13
 status: tried
-description: Ice cream parlor, the original Lafayette Square location of a local chain
 cuisine: ['dessert']
 neighborhood: lafayette-square
 address:

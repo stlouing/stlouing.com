@@ -2,7 +2,6 @@
 title: LeGrand's Market
 created: 2026-07-16
 status: tried
-description: Deli sandwiches and fresh-cut meats
 cuisine: ['sandwiches']
 neighborhood: st-louis-hills
 address:

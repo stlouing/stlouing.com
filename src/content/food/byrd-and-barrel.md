@@ -2,7 +2,6 @@
 title: Byrd & Barrel
 created: 2026-10-09
 status: want-to-try
-description: Fried chicken and beer
 cuisine: ['fried chicken']
 neighborhood: dogtown
 address:

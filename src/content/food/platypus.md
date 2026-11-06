@@ -2,7 +2,6 @@
 title: Platypus
 created: 2026-10-13
 status: tried
-description: Neighborhood bar at the entrance to The Grove
 cuisine: ['bar']
 neighborhood: forest-park-southeast
 district: the-grove

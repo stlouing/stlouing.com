@@ -3,7 +3,6 @@ title: Protagonist Cafe
 created: 2026-10-12
 updated: 2026-11-04
 status: want-to-try
-description: Book-lined café
 cuisine: ['cafe', 'coffee']
 neighborhood: soulard
 address:

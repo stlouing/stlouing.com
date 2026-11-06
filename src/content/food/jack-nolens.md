@@ -2,7 +2,6 @@
 title: Jack Nolen's
 created: 2026-10-13
 status: want-to-try
-description: Veteran-owned bar and grill on South 9th
 cuisine: ['bar', 'american']
 neighborhood: soulard
 address:

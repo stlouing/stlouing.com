@@ -4,7 +4,6 @@ created: 2026-06-27
 rating: 4.5
 cuisine: ['indian']
 neighborhood: central-west-end
-description: Indian and Middle Eastern fusion
 address:
   - 390 N Euclid Ave
   - St. Louis, MO 63108

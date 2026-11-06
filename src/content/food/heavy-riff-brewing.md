@@ -2,7 +2,6 @@
 title: Heavy Riff Brewing
 created: 2026-10-13
 status: want-to-try
-description: Rock-infused brewery with house-smoked barbecue
 cuisine: ['brewery']
 neighborhood: dogtown
 address:

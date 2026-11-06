@@ -1,7 +1,6 @@
 ---
 title: Kirkwood
 created: 2026-07-05
-description: An affluent suburb with a charming downtown
 url: https://www.kirkwoodmo.org/
 ---
 

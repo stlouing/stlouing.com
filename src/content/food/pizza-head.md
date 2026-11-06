@@ -2,7 +2,6 @@
 title: Pizza Head
 created: 2026-10-13
 status: want-to-try
-description: All-vegetarian 20-inch New York-style pies by the slice
 cuisine: ['pizza']
 neighborhood: tower-grove-east
 district: south-grand

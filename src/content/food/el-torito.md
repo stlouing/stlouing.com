@@ -3,7 +3,6 @@ title: Taqueria Hectorito
 rating: 2.5
 photo: ../images/food/tacos-el-hectorito.jpg
 created: 2026-07-16
-description: Taqueria and supermercado on Cherokee
 cuisine: ['mexican']
 neighborhood: benton-park-west
 district: cherokee-street

@@ -3,7 +3,6 @@ title: Antagonist Cafe
 created: 2026-10-12
 updated: 2026-11-04
 status: want-to-try
-description: Sister café across from the brewery tour entrance
 cuisine: ['cafe', 'coffee']
 neighborhood: soulard
 address:

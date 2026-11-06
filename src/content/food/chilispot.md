@@ -3,7 +3,6 @@ title: ChiliSpot
 created: 2026-07-16
 updated: 2026-11-04
 status: want-to-try
-description: Fiery Sichuan cooking
 cuisine: ['chinese', 'asian']
 neighborhood: university-city
 address:

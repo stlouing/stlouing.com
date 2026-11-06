@@ -3,7 +3,6 @@ title: Mortar & Pestle
 created: 2026-10-13
 updated: 2026-11-04
 status: want-to-try
-description: Vietnamese and Pakistani cooking on Macklind
 cuisine: ['vietnamese', 'asian']
 neighborhood: southampton
 address:

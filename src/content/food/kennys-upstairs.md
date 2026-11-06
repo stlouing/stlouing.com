@@ -2,7 +2,6 @@
 title: Kenny's Upstairs
 created: 2026-10-13
 status: want-to-try
-description: Second-floor bar at Hartford and South Grand
 cuisine: ['bar', 'pizza']
 neighborhood: tower-grove-south
 district: south-grand

@@ -2,7 +2,6 @@
 title: The Sinkhole
 created: 2026-10-13
 status: want-to-try
-description: Live-music club on South Broadway
 cuisine: ['bar']
 neighborhood: carondelet
 address:

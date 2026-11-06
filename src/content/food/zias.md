@@ -2,7 +2,6 @@
 title: Zia's
 created: 2026-08-30
 status: want-to-try
-description: Casual Italian-American since 1985
 cuisine: ['italian']
 neighborhood: the-hill
 address:

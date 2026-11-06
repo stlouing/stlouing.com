@@ -3,7 +3,6 @@ title: Carondelet
 created: 2026-07-05
 updated: 2026-10-16
 url: https://www.stlouis-mo.gov/live-work/community/neighborhoods/carondelet/
-description: A historic riverside neighborhood near a park
 ---
 
 Carondelet is an interesting part of St. Louis that was originally its own city that was annexed by St. Louis in 1870 (one of the last that ever would be!). It's a very old, very French village from back in the day.

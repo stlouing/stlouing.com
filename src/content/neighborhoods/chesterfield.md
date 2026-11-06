@@ -1,6 +1,5 @@
 ---
 title: Chesterfield
-description: A large suburb with an entertainment district
 created: 2026-07-05
 ---
 

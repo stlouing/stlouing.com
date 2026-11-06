@@ -3,7 +3,6 @@ title: The Vine Cafe & Market
 created: 2026-08-30
 updated: 2026-11-05
 status: want-to-try
-description: Lebanese café and market
 cuisine: ['middle eastern', 'mediterranean']
 neighborhood: tower-grove-south
 district: south-grand

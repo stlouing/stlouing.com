@@ -1,6 +1,5 @@
 ---
 title: Nicky Slices Pizza Club
-description: A perfect Detroit-style pie
 photo: ../images/food/nicky-slices.jpeg
 created: 2026-06-23
 updated: 2026-07-16

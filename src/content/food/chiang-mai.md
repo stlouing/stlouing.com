@@ -3,7 +3,6 @@ title: Chiang Mai
 created: 2026-10-09
 updated: 2026-11-04
 status: want-to-try
-description: Northern Thai cooking
 cuisine: ['thai', 'asian']
 neighborhood: webster-groves
 address:

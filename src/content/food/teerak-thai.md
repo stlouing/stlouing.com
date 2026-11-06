@@ -3,7 +3,6 @@ title: Tee Rak Thai
 created: 2026-08-28
 updated: 2026-11-04
 rating: 5
-description: Regional Thai with a cozy patio
 cuisine: ['thai', 'asian']
 photo: ../images/food/teerak2.jpg
 neighborhood: shaw

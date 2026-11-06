@@ -2,7 +2,6 @@
 title: The Hill
 created: 2026-06-28
 url: https://www.hillstl.org
-description: Little Italy in the heart of St. Louis
 ---
 
 The Hill is the Italian-American neighborhood in St. Louis. It has been called [America's Last Little Italy](https://www.youtube.com/watch?v=jvWa4euR-AA). The neighborhood is fiercely proud of its Italian heritage, with Italian flag banners posted all throughout the neighborhood, and fire hydrants and crosswalks painted in the Italian colors.

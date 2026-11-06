@@ -2,7 +2,6 @@
 title: Southtown
 created: 2026-11-02
 updated: 2026-11-03
-description: Restaurants and bars in South City
 photo: ../images/food/buds/buds1.jpg
 ---
 

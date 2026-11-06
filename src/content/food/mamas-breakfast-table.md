@@ -2,7 +2,6 @@
 title: Mama's Breakfast Table
 created: 2026-10-14
 status: want-to-try
-description: Breakfast restaurant
 cuisine: ['breakfast']
 neighborhood: carondelet
 address:

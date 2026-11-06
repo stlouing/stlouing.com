@@ -2,7 +2,6 @@
 title: Lefty's Bagels
 created: 2026-07-16
 rating: 5
-description: Hand-rolled bagels and breakfast sandwiches
 cuisine: ['sandwiches']
 neighborhood: chesterfield
 address:

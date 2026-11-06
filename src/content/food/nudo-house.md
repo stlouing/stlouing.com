@@ -3,7 +3,6 @@ title: Nudo House
 created: 2026-10-09
 updated: 2026-11-04
 status: want-to-try
-description: Ramen and pho from the Mai Lee family
 cuisine: ['ramen', 'asian']
 neighborhood: creve-coeur
 address:

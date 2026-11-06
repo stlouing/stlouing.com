@@ -2,7 +2,6 @@
 title: Mr. X Pizza
 created: 2026-08-30
 status: want-to-try
-description: Pizzeria with a 30-inch pizza
 cuisine: ['pizza']
 neighborhood: bevo-mill
 address:

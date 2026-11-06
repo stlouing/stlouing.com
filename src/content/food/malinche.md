@@ -2,7 +2,6 @@
 title: Malinche
 created: 2026-11-05
 status: want-to-try
-description: Mexico City-inspired family recipes
 cuisine: ['mexican']
 neighborhood: ellisville
 address:

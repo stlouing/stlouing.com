@@ -3,7 +3,6 @@ title: King Doh
 created: 2026-07-16
 updated: 2026-11-04
 rating: 4
-description: Peking and Szechuan cooking
 cuisine: ['chinese', 'asian']
 neighborhood: kirkwood
 address:

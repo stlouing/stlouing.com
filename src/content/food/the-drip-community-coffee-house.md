@@ -3,7 +3,6 @@ title: The Drip Community Coffee House
 created: 2026-07-16
 updated: 2026-11-04
 rating: 4.5
-description: Community coffeehouse
 cuisine: ['cafe', 'coffee']
 neighborhood: tower-grove-south
 address:

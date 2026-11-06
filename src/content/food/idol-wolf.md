@@ -2,7 +2,6 @@
 title: Idol Wolf
 created: 2026-10-09
 status: want-to-try
-description: Spanish tapas inside the 21c Museum Hotel
 cuisine: ['spanish']
 neighborhood: downtown
 address:

@@ -2,7 +2,6 @@
 title: O/B Slices
 created: 2026-07-16
 status: want-to-try
-description: New York-style slices across the river
 cuisine: ['pizza']
 neighborhood: alton
 address:

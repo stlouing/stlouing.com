@@ -2,7 +2,6 @@
 title: Taste of Persia
 created: 2026-10-13
 status: want-to-try
-description: Family-run Iranian kabobs and homestyle dishes
 cuisine: ['middle eastern']
 neighborhood: tower-grove-south
 district: south-grand

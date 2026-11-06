@@ -2,7 +2,6 @@
 title: Spencer's Grill
 created: 2026-10-13
 status: want-to-try
-description: Downtown Kirkwood diner
 cuisine: ['breakfast']
 neighborhood: kirkwood
 address:

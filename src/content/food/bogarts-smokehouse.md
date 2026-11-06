@@ -2,7 +2,6 @@
 title: Bogart's Smokehouse
 created: 2026-08-30
 status: want-to-try
-description: Counter-service barbecue smokehouse
 cuisine: ['bbq']
 neighborhood: soulard
 address:

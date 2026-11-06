@@ -1,6 +1,5 @@
 ---
 title: Park Avenue Coffee
-description: Local coffee roaster and gooey butter cake specialist
 created: 2026-07-05
 updated: 2026-11-04
 cuisine: ['cafe', 'coffee']

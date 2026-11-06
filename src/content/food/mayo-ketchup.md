@@ -2,7 +2,6 @@
 title: Mayo Ketchup
 created: 2026-11-05
 status: want-to-try
-description: Dishes from Puerto Rico, Cuba and the Dominican Republic
 cuisine: ['latin american']
 neighborhood: midtown
 address:

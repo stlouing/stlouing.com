@@ -2,7 +2,6 @@
 title: Salt & Smoke
 created: 2026-07-16
 rating: 3.5
-description: Barbecue and bourbon
 cuisine: ['bbq']
 neighborhood: university-city
 district: delmar-loop

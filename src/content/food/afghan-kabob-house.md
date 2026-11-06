@@ -2,7 +2,6 @@
 title: Afghan Kabob House
 created: 2026-08-30
 status: want-to-try
-description: Afghan kabobs and traditional plates
 cuisine: ['middle eastern']
 neighborhood: lindenwood-park
 address:

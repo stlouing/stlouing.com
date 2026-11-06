@@ -2,7 +2,6 @@
 title: Smoke N Bones BBQ
 created: 2026-10-13
 status: want-to-try
-description: Dry-rubbed meats from an Old Hickory smoker
 cuisine: ['bbq']
 neighborhood: st-louis-hills
 address:

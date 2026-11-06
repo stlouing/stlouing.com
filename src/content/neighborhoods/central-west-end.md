@@ -2,7 +2,6 @@
 title: Central West End
 created: 2026-06-28
 url: https://cwescene.com
-description: An upscale urban neighborhood near Forest Park
 ---
 
 Central West End is an upscale urban neighborhood in St. Louis city. It sits right along Forest Park and has a walkable downtown vibe. It's the biggest and most populated neighborhood in the city, and is often recommended for new transplants.

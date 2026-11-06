@@ -2,7 +2,6 @@
 title: Songbird
 created: 2026-07-16
 status: want-to-try
-description: Breakfast sandwiches and brunch
 cuisine: ['breakfast']
 neighborhood: tower-grove-south
 address:

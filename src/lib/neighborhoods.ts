@@ -174,18 +174,6 @@ export function neighborhoodPopulation(slug: string): number | undefined {
   return population[slug]
 }
 
-export function neighborhoodGeneratedSummary(slug: string): string | undefined {
-  const info = infoBySlug.get(slug)
-  if (!info) {
-    return undefined
-  }
-  if (info.type) {
-    return `${info.name}, a ${info.type} in ${info.group}`
-  }
-
-  return `Neighborhood #${info.numberLabel ?? info.number}, in ${CITY}'s ${info.group}`
-}
-
 function joinNames(names: string[]): string {
   if (names.length <= 1) {
     return names[0] ?? ''

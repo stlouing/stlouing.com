@@ -2,7 +2,6 @@
 title: Donut Drive-In
 created: 2026-10-14
 status: tried
-description: 1950s Route 66-era donut and coffee stand
 cuisine: ['dessert']
 neighborhood: lindenwood-park
 address:

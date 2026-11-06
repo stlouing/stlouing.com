@@ -1,6 +1,5 @@
 ---
 title: Sultan
-description: Our go-to spot for Middle Eastern
 photo: ../images/food/sultan.jpeg
 created: 2026-06-27
 updated: 2026-11-05

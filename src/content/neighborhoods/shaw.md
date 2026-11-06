@@ -4,7 +4,6 @@ created: 2026-07-05
 updated: 2026-11-03
 photo: ../images/food/teerak.jpg
 url: https://shawstlouis.org
-description: Historic, charming homes by the Botanical Garden
 featured: 2
 ---
 

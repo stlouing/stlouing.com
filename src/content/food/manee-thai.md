@@ -3,7 +3,6 @@ title: Manee Thai
 created: 2026-07-16
 updated: 2026-11-04
 rating: 4
-description: Strip mall Thai kitchen
 cuisine: ['thai', 'asian']
 neighborhood: ballwin
 address:

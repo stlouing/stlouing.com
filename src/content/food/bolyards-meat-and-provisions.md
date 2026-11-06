@@ -2,7 +2,6 @@
 title: Bolyard's Meat and Provisions
 created: 2026-11-03
 status: want-to-try
-description: Butcher with sandwiches and weekend brunch
 cuisine: ['sandwiches']
 neighborhood: maplewood
 address:

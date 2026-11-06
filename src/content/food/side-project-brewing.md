@@ -2,7 +2,6 @@
 title: Side Project Brewing
 created: 2026-08-30
 status: want-to-try
-description: Barrel-aged wild ales and saisons
 cuisine: ['brewery']
 neighborhood: maplewood
 address:

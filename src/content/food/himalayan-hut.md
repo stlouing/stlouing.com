@@ -2,7 +2,6 @@
 title: Himalayan Hut
 created: 2026-07-16
 status: tried
-description: Indian and Nepali kitchen
 cuisine: ['indian']
 neighborhood: rock-hill
 address:

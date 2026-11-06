@@ -2,7 +2,6 @@
 title: Gus' Pretzel Shop
 created: 2026-08-30
 status: tried
-description: Hand-twisted pretzels since 1920
 cuisine: ['cafe']
 neighborhood: benton-park
 address:

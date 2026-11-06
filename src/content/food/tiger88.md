@@ -3,7 +3,6 @@ title: Tiger88
 created: 2026-07-16
 updated: 2026-11-04
 status: want-to-try
-description: Banh mi and boba
 cuisine: ['vietnamese', 'asian']
 neighborhood: des-peres
 address:

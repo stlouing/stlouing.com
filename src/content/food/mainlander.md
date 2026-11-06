@@ -2,7 +2,6 @@
 title: Mainlander
 created: 2026-11-05
 status: want-to-try
-description: Midcentury-style supper club
 cuisine: ['american']
 neighborhood: central-west-end
 address:

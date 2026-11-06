@@ -2,7 +2,6 @@
 title: La Tienda International
 created: 2026-08-30
 status: want-to-try
-description: International grocery with a taqueria
 cuisine: ['mexican']
 neighborhood: mehlville
 address:

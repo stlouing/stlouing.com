@@ -3,7 +3,6 @@ title: Fork & Stix
 created: 2026-08-30
 updated: 2026-11-04
 status: want-to-try
-description: Northern Thai kitchen
 cuisine: ['thai', 'asian']
 neighborhood: skinker-debaliviere
 district: delmar-loop

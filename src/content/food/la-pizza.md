@@ -1,6 +1,5 @@
 ---
 title: La Pizza
-description: An authentic New York slice
 created: 2026-06-23
 updated: 2026-11-05
 rating: 4

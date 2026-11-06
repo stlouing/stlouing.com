@@ -2,7 +2,6 @@
 title: No Ordinary Rabbit
 created: 2026-11-05
 status: want-to-try
-description: Eastern Mediterranean small plates
 cuisine: ['middle eastern', 'mediterranean']
 neighborhood: botanical-heights
 address:

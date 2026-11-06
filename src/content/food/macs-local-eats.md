@@ -10,7 +10,6 @@ address:
 coords: [38.6301504, -90.2813523]
 url: https://www.macslocaleats.com
 instagram: https://www.instagram.com/macslocaleats
-description: Farm-to-table smash burgers
 ---
 
 Mac's Local Eats is a local smash burger spot in Dogtown. They really take the smash is smash burger seriously - it's almost a thin smear of burger with very crispy edges. If you like your smash burger extra thin and crispy, this is the place for you.

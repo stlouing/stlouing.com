@@ -3,7 +3,6 @@ title: Majeed Mediterranean
 created: 2026-07-16
 updated: 2026-11-05
 status: want-to-try
-description: Shawarma, kababs, and falafel
 cuisine: ['middle eastern', 'mediterranean']
 neighborhood: bevo-mill
 address:

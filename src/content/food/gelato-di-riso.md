@@ -3,7 +3,6 @@ title: Gelato di Riso
 created: 2026-10-12
 updated: 2026-11-05
 rating: 4
-description: Gelato shop at the heart of The Hill
 cuisine: ['dessert', 'italian']
 neighborhood: the-hill
 address:

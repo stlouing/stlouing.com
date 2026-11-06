@@ -2,7 +2,6 @@
 title: Sidney Street Cafe
 created: 2026-10-09
 status: want-to-try
-description: Benton Park fine dining
 cuisine: ['american']
 neighborhood: benton-park
 address:

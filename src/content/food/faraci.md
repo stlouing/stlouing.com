@@ -1,6 +1,5 @@
 ---
 title: Faraci Pizza
-description: Brick-oven St. Louis-style pizza
 photo: ../images/food/faraci/faraci1.jpg
 created: 2026-07-05
 updated: 2026-10-03

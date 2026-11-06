@@ -1,7 +1,6 @@
 ---
 title: St. Louis Hills
 created: 2026-07-05
-description: Charming, family-friendly neighborhood
 ---
 
 The tagline for St. Louis Hills was "Country living in the City" when the neighborhood was first developed. There are the "St. Louis Hills Estates" on the southern end of the neighborhood, which are traditional-style large suburban lots and homes, and the rest of St. Louis Hills, which are more traditional style homes that all circle around Francis Park.

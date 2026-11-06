@@ -2,7 +2,6 @@
 title: Mestiza
 created: 2026-07-16
 rating: 4.5
-description: Street tacos from the Malinche team
 cuisine: ['mexican']
 neighborhood: lindenwood-park
 address:
