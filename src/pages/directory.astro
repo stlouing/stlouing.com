@@ -278,6 +278,11 @@ const sortOptions = [
     font-family: inherit;
   }
 
+  :global(html:has([data-filter-table])) {
+    scroll-behavior: auto;
+    background: var(--color-background);
+  }
+
   :global(:root[data-theme='dark']:has([data-filter-table])) {
     --color-background: var(--color-surface);
   }
