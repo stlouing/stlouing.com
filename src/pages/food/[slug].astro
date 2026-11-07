@@ -16,7 +16,6 @@ import Rating from '../../components/Rating.astro'
 import CardList from '../../components/CardList.astro'
 import Card from '../../components/Card.astro'
 import NotExplored from '../../components/NotExplored.astro'
-import PaneKicker from '../../components/PaneKicker.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { published, excerpt, hasBody, foodStatus, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { isoDate } from '../../lib/dates'
@@ -171,13 +170,6 @@ const seoDescription = hasBody(entry)
     <header class="detail-pane-header">
       <h1 class="detail-pane-title title-page">{data.title}</h1>
       {data.description && <p class="description description--lg detail-pane-tagline">{data.description}</p>}
-      {
-        districtLink && districtName && (
-          <PaneKicker label="District:">
-            <a href={href(districtLink)}>{districtName}</a>
-          </PaneKicker>
-        )
-      }
       <div class="pane-stats">
         <div class="pane-stat">
           <span class="pane-stat-label eyebrow eyebrow--muted">My rating</span>
@@ -275,6 +267,7 @@ const seoDescription = hasBody(entry)
                   {data.address.map((line) => (
                     <span>{line}</span>
                   ))}
+                  {districtLink && districtName && <a href={href(districtLink)}>{districtName}</a>}
                 </address>
                 {googleMapsHref(data) && (
                   <a
@@ -379,5 +372,9 @@ const seoDescription = hasBody(entry)
     text-align: start;
     font-weight: 400;
     line-height: 1.4;
+  }
+
+  .address a {
+    color: inherit;
   }
 </style>

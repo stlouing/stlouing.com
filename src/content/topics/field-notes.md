@@ -3,7 +3,7 @@ title: St. Louis Notes
 category: Culture
 pinned: true
 description: Miscellaneous notes on St. Louis slang and customs, from pronouncing Carondelet to defining a hoosier.
-seoDescription: 'My field notes on St. Louis culture: regional foods, street name pronunciations, local slang, brick architecture, local customs, and the city-county split.'
+seoDescription: 'My notes on St. Louis culture: regional foods, street name pronunciations, local slang, brick architecture, local customs, and the city-county split.'
 created: 2026-05-28
 updated: 2026-11-07
 photo: ../images/neighborhoods/delmar-loop/delmar12.jpg
@@ -14,7 +14,7 @@ St. Louis is a little city with a lot of regional culture. This page is an index
 
 ## Food
 
-I have made the [St. Louis Food Map](/food/) to keep track of all the notable restaurants, bars, and cafes in the region. The map is sortable by cuisine type (pizza, BBQ, Thai, coffee, etc.) and I've added rankings to every place I've been.
+I made the [St. Louis Food Map](/food/) to keep track of all the notable restaurants, bars, and cafes in the region. The map is sortable by cuisine type (pizza, BBQ, Thai, coffee, etc.) and I've added rankings to every place I've been.
 
 View [the directory](/list/) for an interactive database.
 
@@ -30,17 +30,17 @@ Not long after moving to St. Louis, I realized people don't say "city and suburb
 
 ### Cardinal counties
 
-As a further note, people will also refer to "West County", "South County", and "North County" as if they are proper nouns, but it's just a colloquial way to refer to areas within St. Louis County.
+You'll hear West County, South County, and North County as a colloquial way to refer to areas within St. Louis County.
 
 There is no "East County", as that would be St. Louis City. However, the area east of the Mississippi River is also part of the Greater St. Louis region, and commonly referred to as ["Metro East"](https://en.wikipedia.org/wiki/Metro_East). This includes East St. Louis, Belleville, O'Fallon, and a few others.
 
 ### STL
 
-"STL" is a common abbreviation used all over the area to represent "St. Louis".
+STL is a common abbreviation used all over the area to represent St. Louis.
 
 ## The Delmar Divide
 
-City-county isn't the only division in St. Louis. Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city, and it represents a dividing line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). Everything north of Delmar is known as "North City".
+Delmar Boulevard is an East-West street that cuts through the middle of St. Louis city, and it represents a dividing line known as The [Delmar Divide](https://en.wikipedia.org/wiki/Delmar_Divide). Everything north of Delmar is known as North City, and south of it is the Central Corridor and South City.
 
 The [Interactive St. Louis Vacancy Map](https://www.stlvacancytools.com/) demonstrates one of the stark divides that happens right along the line.
 
@@ -56,7 +56,7 @@ St. Louis is not the most walkable city, but all the areas I've discovered that 
 
 ### Business Districts
 
-I've carved out a spot in the map for major business districts of the area such as [[the-grove|The Grove]], [[cherokee-street|Cherokee Street]], and [[south-grand|South Grand]]. You can read more at [[where-is-dogtown|Where Is Dogtown? Mapping Districts and Unofficial Neighborhoods in St. Louis]].
+I've carved out a spot in the map for major business districts of the area such as [[the-grove|The Grove]], [[cherokee-street|Cherokee Street]], and [[south-grand|South Grand]]. You can read more at [[where-is-dogtown|Where Is Dogtown? Mapping Local Names in St. Louis]].
 
 ## Biking
 
@@ -76,7 +76,7 @@ One of the biggest draws of St. Louis is all the green space. [[forest-park|Fore
 
 ### Street name pronunciations
 
-Although many of the streets in St. Louis have French sounding names, there are St. Louis-specific pronunciations for them that are not incredibly obvious.
+Although many of the streets in St. Louis have French sounding names, there are St. Louis-specific pronunciations for them that are not obvious.
 
 There is a specific regional dialect of French known as [Missouri French](https://en.wikipedia.org/wiki/Missouri_French) (or Paw-Paw French) that these pronunciations have been derived from.
 
@@ -96,12 +96,12 @@ There is a specific regional dialect of French known as [Missouri French](https:
 
 - **"Muskacholi"** - An endearing pronunciation for Mostaccioli used in St. Louis.
 - **Warsh** - Similar to the above, sometimes you'll hear "warsh" instead of "wash" among an older generation.
-- **Catty Corner** - This is not entirely specific to the STL region, but people say "catty corner" here, whereas in the north it's "kitty corner". This data is substantiated in the [Harvard dialect study](http://dialect.redlog.net/staticmaps/q_76.html).
+- **Catty Corner** - This is not entirely specific to the STL region, but people say catty corner here, whereas in the north it's kitty corner. This data is substantiated in the [Harvard dialect study](http://dialect.redlog.net/staticmaps/q_76.html).
 
 ### St. Louis-isms
 
 - **The Lou** - A popular nickname for St. Louis.
-- **Hoosier** - In the rest of the U.S., Hoosier refers to someone from Indiana, but in St. Louis it's more of a general insult along the lines of "white trash" or "redneck".
+- **Hoosier** - In the rest of the U.S., Hoosier refers to someone from Indiana, but in St. Louis it's a pejorative term for a working class or rural person. A deeper dive found at [St. Louis' own language: hoosier](https://www.stlouiscitytalk.com/posts/2012/06/st-louis-own-language-hoosier) on St. Louis City Talk.
 - **Highway Farty** - Highway 40 is part of Interstate 64, and many people still call it "Highway Farty" affectionately.
 - **Jeffco** - Jefferson County, the immediate county to the south of St. Louis County.
 
