@@ -65,7 +65,7 @@ const schema = itemListSchema(
   jsonLd={schema}>
   <article>
     <PageMasthead title={FAVORITE_FOOD_TITLE} wide>
-      <p slot="lede">All my favorites so far for specific items</p>
+      <p slot="lede">Where I go for ramen, ribs, pizza, and more.</p>
     </PageMasthead>
 
     <div class="best-list">
@@ -112,5 +112,9 @@ const schema = itemListSchema(
 
   .best-entry :global(.card)::before {
     inset-inline: 0;
+  }
+
+  .best-entry :global(.card-media) {
+    aspect-ratio: 16 / 9;
   }
 </style>
