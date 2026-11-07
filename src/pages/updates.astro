@@ -21,9 +21,7 @@ const years = groupByYear(updates, (update) => update.date)
 
 <BaseLayout crumb="Updates" title={`What's New in ${SITE_NAME}`} description={description}>
   <article>
-    <PageMasthead title="What's New">
-      <p slot="lede">A running log of what I've added and changed</p>
-    </PageMasthead>
+    <PageMasthead title="What's New" />
 
     <div class="reading-col">
       {

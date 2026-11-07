@@ -13,7 +13,7 @@ photoInArticle: false
 
 Did you know St. Louis was almost the capital of the U.S.? At its peak, it was the [4th largest city in the country](https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_the_United_States_by_decade#1870), booming in population and industry, and big enough that by 1904 it hosted the Olympics and the World's Fair in the same year.
 
-Many factors have contributed to the city's decline over the following decades - white flight, highway development, redlining, and the economy shifting away from the river - from more than 850,000 residents in the 1950s to less than 300,000 now. One persistent structural issue underlying these events is the city-county split known as "The Great Divorce".
+Many factors have contributed to the city's population decline over the following decades - white flight, highway development, redlining, and the economy shifting away from the river - from more than 850,000 residents in the 1950s to less than 300,000 now. One persistent structural issue underlying these events is the city-county split known as "The Great Divorce".
 
 ## A City Divided
 
@@ -40,7 +40,7 @@ If St. Louis had followed in the footsteps of other cities, it would have absorb
 
 ### Population stagnation
 
-As it stands, St. Louis City is not even close to being in the top 150 largest (by area), yet the Greater St. Louis area had the [21st highest population](https://en.wikipedia.org/wiki/Metropolitan_statistical_area) in the U.S. in 2020 (closer to 25th as of 2025 estimates).
+St. Louis City is not close to being in the top 150 largest cities by area, yet the Greater St. Louis area had the [21st highest population](https://en.wikipedia.org/wiki/Metropolitan_statistical_area) in the U.S. in 2020.
 
 | Year | City population | County population |
 | :--- | --------------: | ----------------: |
@@ -66,7 +66,7 @@ The suburbs have rapidly expanded over this time period, but the city has stagna
 
 ## The Most Dangerous City?
 
-St. Louis has had a reputation for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of the 24 selected cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
+In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of the studied cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
 
 | City          |    Metro pop. |   City pop. | Share of metro |
 | :------------ | ------------: | ----------: | -------------: |

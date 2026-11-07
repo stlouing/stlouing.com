@@ -13,8 +13,6 @@ import SourceLink from '../../components/SourceLink.astro'
 import Locator from '../../components/Locator.astro'
 import MyPick from '../../components/MyPick.astro'
 import Rating from '../../components/Rating.astro'
-import CardList from '../../components/CardList.astro'
-import Card from '../../components/Card.astro'
 import NotExplored from '../../components/NotExplored.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { published, excerpt, hasBody, foodStatus, META_DESCRIPTION_CHARS } from '../../lib/content'
@@ -63,7 +61,6 @@ const schema = restaurantSchema({
   updated: modifiedDate,
 })
 
-const allFood = published(await getCollection('food'))
 const cuisineHref = (cuisine: string): string =>
   href(`/food/?cuisine=${encodeURIComponent(cuisine)}`)
 
@@ -77,52 +74,7 @@ const trail = [
     : []),
 ]
 
-const relatedPool = allFood.filter((place) => hasBody(place))
-const relatedLimit = 3
-const withRating = (place: (typeof allFood)[number]) => ({
-  place,
-  rating: place.data.rating,
-})
-const topRelated = (places: typeof allFood) =>
-  [...places]
-    .sort((left, right) => (right.data.rating ?? 0) - (left.data.rating ?? 0))
-    .slice(0, relatedLimit)
-    .map(withRating)
-
-const relatedNeighborhood =
-  isStub && data.neighborhood
-    ? topRelated(
-        relatedPool.filter(
-          (place) => place.id !== entry.id && place.data.neighborhood === data.neighborhood,
-        ),
-      )
-    : []
 const primaryCuisine = data.cuisine[0]
-
-const distanceBetween = (from: [number, number], to: [number, number]) => {
-  const toRadians = (degrees: number) => (degrees * Math.PI) / 180
-  const latitudeDelta = toRadians(to[0] - from[0])
-  const longitudeDelta = toRadians(to[1] - from[1]) * Math.cos(toRadians((from[0] + to[0]) / 2))
-
-  return Math.sqrt(latitudeDelta ** 2 + longitudeDelta ** 2)
-}
-const alreadyRelated = new Set(relatedNeighborhood.map((item) => item.place.id))
-const nearbyWritten =
-  isStub && data.coords && relatedNeighborhood.length < relatedLimit
-    ? relatedPool
-        .filter(
-          (place) => place.id !== entry.id && place.data.coords && !alreadyRelated.has(place.id),
-        )
-        .sort(
-          (left, right) =>
-            distanceBetween(data.coords as [number, number], left.data.coords as [number, number]) -
-            distanceBetween(data.coords as [number, number], right.data.coords as [number, number]),
-        )
-        .slice(0, relatedLimit - relatedNeighborhood.length)
-        .map(withRating)
-    : []
-
-const nearby = [...relatedNeighborhood, ...nearbyWritten]
 
 const locality = placeLocality(data.neighborhood, data.address)
 const districtName = data.district ? neighborhoodName(data.district) : undefined
@@ -235,22 +187,6 @@ const seoDescription = hasBody(entry)
           }
 
           <Comments kind="food" slug={entry.id} title={data.title} />
-
-          {
-            nearby.length > 0 && (
-              <CardList title="Nearby" class="card-cells" moreHref={href('/food/')}>
-                {nearby.map(({ place, rating }) => (
-                  <Card
-                    href={href(`/food/${place.id}/`)}
-                    title={place.data.title}
-                    meta={neighborhoodName(place.data.neighborhood)}
-                    description={place.data.description}
-                    rating={rating}
-                  />
-                ))}
-              </CardList>
-            )
-          }
         </div>
         <aside class="detail-aside">
           <div>
