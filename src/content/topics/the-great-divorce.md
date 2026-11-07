@@ -125,7 +125,7 @@ Reunification has been [attempted several times](https://www.stlmag.com/news/pol
 
 [Louisville is one of the few cities to have merged with its county](https://abell.org/publication/a-10-year-perspective-of-the-merger-of-louisville-and-jefferson-county-ky/), as a case study.
 
-An actual merger has not happened in 150 years (as of this writing), it does not seem likely that it will ever happen. There are legitimate concerns from both sides about such an event, and the city and county finding a way to work together would not immediately fix all problems from the last 150 years, but I believe anything that could improve the city's reputation would be a win. A more unified region could also potentially work together better to solve these issues.
+An actual merger has not happened in 150 years (as of this writing), it does not seem likely. There are legitimate concerns from both sides about such an event, and the city and county finding a way to work together would not immediately fix all problems from the last 150 years, but I believe anything that could improve the city's reputation would be a win. A more unified region could also potentially work together better to solve these issues.
 
 St. Louis will probably not ever be the 4th largest city in the U.S. again, but if it wasn't on the top of every "most dangerous city" list, I believe people would be more likely to visit and move here.
 

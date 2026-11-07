@@ -185,7 +185,7 @@ A couple of other groupings came up while I was mapping, but I left the neighbor
 
 Dutchtown is a neighborhood in South City. A few neighborhood organizations such as DutchtownSTL.org and Dutchtown South Community Corporation include the four neighborhoods of Gravois Park, Mount Pleasant, Marine Villa, and Dutchtown itself within their purview.
 
-While walking along Cherokee Street, I noticed a sign that said "You are in Dutchtown", so it seems whoever places the signs either agreed with Dutchtown informally reaching beyond its official bounds, or just made a mistake.
+While walking along Cherokee Street, I noticed a sign that said "You are in Dutchtown", so whoever places the signs either agreed with Dutchtown informally reaching beyond its official bounds, or just made a mistake.
 
 Personally, I haven't explored these neighborhoods too much yet, so it's easy for me to group them all together, but people who live there have stronger opinions. Since I had pushback, I just left all the neighborhoods on the map independent, but wanted to include it in this article for completeness.
 
