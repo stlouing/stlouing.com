@@ -1,13 +1,12 @@
 ---
 interface Props {
   title: string
-  ruled?: boolean
 }
 
-const { title, ruled = true } = Astro.props
+const { title } = Astro.props
 ---
 
-<header class:list={['panel-heading', { 'panel-heading--ruled': ruled }]}>
+<header class="panel-heading">
   <h2 class="panel-title">{title}</h2>
 </header>
 
@@ -16,11 +15,6 @@ const { title, ruled = true } = Astro.props
     position: relative;
     padding-block: var(--spacing-md) var(--spacing-sm);
     border-block-start: 4px solid var(--color-line-contrast);
-  }
-
-  .panel-heading--ruled {
-    border-block-end: 1px solid var(--color-line);
-    margin-block-end: var(--spacing-xs);
   }
 
   .panel-heading::before {

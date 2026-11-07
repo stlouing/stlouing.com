@@ -1,7 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro'
 import Card from './Card.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   href: string
@@ -26,6 +26,6 @@ const { href, title, meta, excerpt, linkLabel, photo, photoAlt } = Astro.props
   meta={meta}
   excerpt={excerpt}>
   <span class="continue-link">
-    {linkLabel} <IconArrowRight />
+    {linkLabel} <Icon name="arrow-right" />
   </span>
 </Card>

@@ -1,6 +1,5 @@
 ---
-import IconExternalLink from '../assets/IconExternalLink.astro'
-import IconMap from '../assets/IconMap.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   href?: string
@@ -23,7 +22,7 @@ const { href, websiteHref, directionsHref } = Astro.props
     websiteHref && (
       <a class="btn btn-outline" href={websiteHref} target="_blank" rel="noopener">
         Website
-        <IconExternalLink />
+        <Icon name="external-link" />
       </a>
     )
   }
@@ -31,7 +30,7 @@ const { href, websiteHref, directionsHref } = Astro.props
     directionsHref && (
       <a class="btn btn-outline" href={directionsHref} target="_blank" rel="noopener">
         Directions
-        <IconMap />
+        <Icon name="map" />
       </a>
     )
   }

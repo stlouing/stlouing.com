@@ -1,5 +1,5 @@
 ---
-import IconPlus from '../assets/IconPlus.astro'
+import Icon from './Icon.astro'
 import CategoryChip from './CategoryChip.astro'
 import ShareActions from './ShareActions.astro'
 import SheetDialog from './SheetDialog.astro'
@@ -26,7 +26,7 @@ const categories: SpotCategoryKey[] = [...SPOT_SECTION_ORDER, 'food']
         data-goatcounter-click="suggest-open"
         aria-label="Suggest a spot">
         <span class="pill-button-badge" aria-hidden="true">
-          <IconPlus />
+          <Icon name="plus" stroke={2.5} />
         </span>
         <span class="suggest-spot-label">Suggest</span>
       </button>

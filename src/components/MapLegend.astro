@@ -1,8 +1,5 @@
 ---
 import Icon from './Icon.astro'
-import IconCheck from '../assets/IconCheck.astro'
-import IconChevronDown from '../assets/IconChevronDown.astro'
-import IconX from '../assets/IconX.astro'
 import type { LegendItem } from '../lib/legend'
 
 interface Props {
@@ -26,7 +23,7 @@ const LEGEND_DOT_LIMIT = 4
             aria-expanded="true"
             aria-controls="map-legend-body">
             <span class="map-legend-heading">
-              <IconChevronDown />
+              <Icon name="chevron-down" stroke={2} />
               <span class="map-legend-title">Filter</span>
               <span class="map-legend-dots" data-legend-dots aria-hidden="true">
                 {items.slice(0, LEGEND_DOT_LIMIT).map((item) => (
@@ -40,7 +37,7 @@ const LEGEND_DOT_LIMIT = 4
           </button>
           <slot name="actions" />
           <button type="button" class="close-button" data-legend-close aria-label="Close filter">
-            <IconX />
+            <Icon name="x" stroke={2} />
           </button>
         </div>
         <div class="map-legend-body" id="map-legend-body" data-legend-body>
@@ -68,7 +65,7 @@ const LEGEND_DOT_LIMIT = 4
                 only
               </button>
               <span class="map-legend-check" aria-hidden="true">
-                <IconCheck />
+                <Icon name="check" stroke={3} />
               </span>
             </li>
           ))}
@@ -81,7 +78,7 @@ const LEGEND_DOT_LIMIT = 4
           tabindex="-1"
           aria-hidden="true">
           scroll for more…
-          <IconChevronDown />
+          <Icon name="chevron-down" stroke={2} />
         </button>
         </div>
       </div>

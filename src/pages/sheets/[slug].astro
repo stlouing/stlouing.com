@@ -2,9 +2,7 @@
 import { getImage } from 'astro:assets'
 import { getCollection, render } from 'astro:content'
 
-import IconExternalLink from '../../assets/IconExternalLink.astro'
-import IconInstagram from '../../assets/IconInstagram.astro'
-import IconMapPin from '../../assets/IconMapPin.astro'
+import Icon from '../../components/Icon.astro'
 import Rating from '../../components/Rating.astro'
 import { hasBody, published } from '../../lib/content'
 import { googleMapsHref } from '../../lib/maps'
@@ -60,7 +58,7 @@ const { Content } = await render(entry)
       data.url && (
         <a class="btn btn-outline" href={data.url} target="_blank" rel="noopener">
           Website
-          <IconExternalLink />
+          <Icon name="external-link" />
         </a>
       )
     }
@@ -68,13 +66,13 @@ const { Content } = await render(entry)
       data.instagram && (
         <a class="btn btn-outline" href={data.instagram} target="_blank" rel="noopener">
           Instagram
-          <IconInstagram />
+          <Icon name="instagram" />
         </a>
       )
     }
     <a class="btn btn-outline" href={googleMapsHref(data)} target="_blank" rel="noopener">
       Directions
-      <IconMapPin />
+      <Icon name="map-pin" />
     </a>
   </div>
   {

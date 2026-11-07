@@ -1,5 +1,5 @@
 ---
-import IconShare from '../assets/IconShare.astro'
+import Icon from './Icon.astro'
 import Button from './Button.astro'
 
 interface Props {
@@ -34,6 +34,6 @@ const {
   data-goatcounter-click={trackAs}
   aria-label="Share this page"
   {...rest}>
-  <IconShare />
+  <Icon name="share" />
   {!iconOnly && <span class="share-label">{label}</span>}
 </Button>

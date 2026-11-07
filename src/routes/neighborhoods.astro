@@ -28,7 +28,7 @@ import {
 import CategoryChip from '../components/CategoryChip.astro'
 import { toMapSpots } from '../lib/map-spots'
 import { href } from '../lib/url'
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from '../components/Icon.astro'
 
 const entries = published(await getCollection('neighborhoods'))
 const entryBySlug = new Map(entries.map((entry) => [entry.id, entry]))
@@ -175,7 +175,7 @@ const neighborhoodList = {
                     )}
                     {written && (
                       <a class="continue-link" href={href(`/neighborhoods/${neighborhood.slug}/`)}>
-                        Continue reading <IconArrowRight />
+                        Continue reading <Icon name="arrow-right" />
                       </a>
                     )}
                   </MapRow>

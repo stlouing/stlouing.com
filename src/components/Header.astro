@@ -3,7 +3,7 @@ import MastheadBrand from './MastheadBrand.astro'
 import Nav from './Nav.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import FleurGlyph from '../assets/FleurGlyph.astro'
-import IconInstagram from '../assets/IconInstagram.astro'
+import Icon from './Icon.astro'
 import { CITY, FOUNDED_YEAR, REGION, SITE_NAME, SOCIALS } from '../lib/site'
 
 const instagram = SOCIALS.find((social) => social.label === 'Instagram')
@@ -58,7 +58,7 @@ const { variant = 'compact' } = Astro.props
             data-goatcounter-click="instagram-header"
             data-tooltip="Instagram"
             data-tooltip-align="end">
-            <IconInstagram />
+            <Icon name="instagram" />
           </a>
         )
       }

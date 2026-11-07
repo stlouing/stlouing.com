@@ -5,7 +5,7 @@ import PageMasthead from '../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Card from '../components/Card.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from '../components/Icon.astro'
 import { href } from '../lib/url'
 import { published, sortTopics, topicDate, PINNED_TOPIC_ID } from '../lib/content'
 import { formatDay, formatMonthShort, groupByYear, isoDate } from '../lib/dates'
@@ -75,7 +75,7 @@ const cards = [
               photo={card.photo}
               photoAlt={card.photoAlt}>
               <span class="continue-link">
-                {card.linkLabel} <IconArrowRight />
+                {card.linkLabel} <Icon name="arrow-right" />
               </span>
             </Card>
           ))

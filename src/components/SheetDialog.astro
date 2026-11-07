@@ -1,5 +1,5 @@
 ---
-import IconX from '../assets/IconX.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   labelledBy: string
@@ -11,7 +11,7 @@ const { labelledBy, ...attributes } = Astro.props
 
 <dialog class="map-sheet sheet-dialog" aria-labelledby={labelledBy} {...attributes}>
   <button type="button" class="close-button map-sheet-close" data-sheet-close aria-label="Close">
-    <IconX />
+    <Icon name="x" stroke={2} />
   </button>
   <div class="map-sheet-body" tabindex="-1" autofocus>
     <slot />

@@ -1,28 +1,14 @@
 ---
-import {
-  CITY_SHORT,
-  INSTAGRAM_HANDLE,
-  SITE_DESCRIPTION,
-  SITE_NAME,
-} from '../lib/site'
+import { CITY_SHORT, INSTAGRAM_HANDLE } from '../lib/site'
 import { href } from '../lib/url'
-import FleurDeLis from '../assets/FleurDeLis.astro'
-import IconHeart from '../assets/IconHeart.astro'
-import IconInstagram from '../assets/IconInstagram.astro'
+import Icon from './Icon.astro'
 ---
 
 <footer class="site-footer">
   <div class="river-border" aria-hidden="true"></div>
-  <div class="wrap wrap-wide footer-inner">
-    <div class="footer-identity">
-      <FleurDeLis class="footer-crest" />
-      <p class="footer-name title-display">{SITE_NAME}</p>
-      <p class="footer-description">{SITE_DESCRIPTION}</p>
-    </div>
-  </div>
   <div class="wrap wrap-wide footer-bottom">
     <span class="footer-made">
-      Made with <IconHeart /> in {CITY_SHORT}
+      Made with <Icon name="heart" /> in {CITY_SHORT}
     </span>
     <nav class="footer-links" aria-label="Footer">
       <a href={href('/about/#contact')}>Contact</a>
@@ -34,7 +20,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
             target="_blank"
             rel="noopener"
             data-goatcounter-click="instagram-footer">
-            <IconInstagram />
+            <Icon name="instagram" />
             {INSTAGRAM_HANDLE}
           </a>
         )
@@ -47,7 +33,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
   .site-footer {
     --footer-yellow: #f5dc0f;
     --footer-white: #ffffff;
-    --footer-rule: color-mix(in srgb, var(--footer-white) 30%, transparent);
     margin-block-start: var(--spacing-xl);
     padding-block-end: env(safe-area-inset-bottom, 0);
     background: linear-gradient(
@@ -61,48 +46,7 @@ import IconInstagram from '../assets/IconInstagram.astro'
     pointer-events: none;
   }
 
-  .footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--spacing-xl);
-    padding-block: var(--spacing-lg);
-  }
-
-  .footer-identity {
-    flex: 1 1 18rem;
-    max-width: 30rem;
-  }
-
-  .footer-identity :global(.footer-crest) {
-    width: 44px;
-    height: 44px;
-    margin-block-end: var(--spacing-md);
-  }
-
-  .footer-name {
-    margin: 0 0 var(--spacing-sm);
-    font-size: 2.75rem;
-    color: var(--footer-white);
-  }
-
-  .footer-description {
-    margin: 0;
-    max-width: 30ch;
-    font-family: var(--font-serif);
-    font-size: var(--font-size-md);
-    line-height: 1.45;
-    color: var(--footer-white);
-    opacity: 0.92;
-  }
-
   :global(body:is(:has([data-city-map]), :has([data-map-pane]))) {
-    .footer-inner,
-    .footer-bottom::before {
-      display: none;
-    }
-
     .site-footer {
       position: relative;
       z-index: 2;
@@ -111,7 +55,6 @@ import IconInstagram from '../assets/IconInstagram.astro'
     }
 
     .footer-bottom {
-      padding-block-start: 0;
       pointer-events: auto;
     }
   }
@@ -128,16 +71,9 @@ import IconInstagram from '../assets/IconInstagram.astro'
     align-items: baseline;
     justify-content: space-between;
     gap: var(--spacing-md);
-    padding-block: var(--spacing-md);
+    padding-block: 0 var(--spacing-sm);
     font-family: var(--font-sans-serif);
     font-size: var(--font-size-xs);
-  }
-
-  .footer-bottom::before {
-    content: '';
-    width: 100%;
-    height: 1px;
-    background: var(--footer-rule);
   }
 
   .footer-made {
@@ -186,33 +122,5 @@ import IconInstagram from '../assets/IconInstagram.astro'
     .site-footer {
       margin-block-start: var(--spacing-lg);
     }
-
-    .footer-inner {
-      flex-direction: column;
-      align-items: stretch;
-      padding-block: var(--spacing-lg);
-      gap: var(--spacing-lg);
-    }
-
-    .footer-name {
-      font-size: 2.25rem;
-    }
-
-    .footer-description {
-      font-size: var(--font-size-sm);
-    }
-
-    .footer-identity {
-      flex: 0 0 auto;
-      max-width: none;
-      align-self: auto;
-    }
-
-    .footer-identity :global(.footer-crest) {
-      width: 32px;
-      height: 32px;
-      margin-block-end: var(--spacing-shmedium);
-    }
-
   }
 </style>

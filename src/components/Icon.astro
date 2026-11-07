@@ -1,88 +1,121 @@
 ---
-import IconBook from '../assets/IconBook.astro'
-import IconPizza from '../assets/IconPizza.astro'
-import IconUtensils from '../assets/IconUtensils.astro'
-import IconHeart from '../assets/IconHeart.astro'
-import IconLandmark from '../assets/IconLandmark.astro'
-import IconTree from '../assets/IconTree.astro'
-import IconShoppingBag from '../assets/IconShoppingBag.astro'
-import IconPalette from '../assets/IconPalette.astro'
-import IconHanger from '../assets/IconHanger.astro'
-import IconMusic from '../assets/IconMusic.astro'
-import IconChess from '../assets/IconChess.astro'
-import IconBuildingMuseum from '../assets/IconBuildingMuseum.astro'
-import IconBuildingCommunity from '../assets/IconBuildingCommunity.astro'
-import IconAvocado from '../assets/IconAvocado.astro'
-import IconBaguette from '../assets/IconBaguette.astro'
-import IconBeer from '../assets/IconBeer.astro'
-import IconBowlChopsticks from '../assets/IconBowlChopsticks.astro'
-import IconBowlSpoon from '../assets/IconBowlSpoon.astro'
-import IconBread from '../assets/IconBread.astro'
-import IconBurger from '../assets/IconBurger.astro'
-import IconCheese from '../assets/IconCheese.astro'
-import IconChefHat from '../assets/IconChefHat.astro'
-import IconCocktail from '../assets/IconCocktail.astro'
-import IconCoffee from '../assets/IconCoffee.astro'
-import IconDumpling from '../assets/IconDumpling.astro'
-import IconFish from '../assets/IconFish.astro'
-import IconFlame from '../assets/IconFlame.astro'
-import IconFriedEgg from '../assets/IconFriedEgg.astro'
-import IconGrill from '../assets/IconGrill.astro'
-import IconIceCream from '../assets/IconIceCream.astro'
-import IconLemon from '../assets/IconLemon.astro'
-import IconCanary from '../assets/IconCanary.astro'
-import IconPepper from '../assets/IconPepper.astro'
-import IconSalad from '../assets/IconSalad.astro'
-import IconSausage from '../assets/IconSausage.astro'
-import IconSoup from '../assets/IconSoup.astro'
-import IconWineGlass from '../assets/IconWineGlass.astro'
+import IconArrowRight from '@tabler/icons-astro/dist/esm/icons/arrow-right.mjs'
+import IconAvocado from '@tabler/icons-astro/dist/esm/icons/avocado.mjs'
+import IconBaguette from '@tabler/icons-astro/dist/esm/icons/baguette.mjs'
+import IconBeer from '@tabler/icons-astro/dist/esm/icons/beer.mjs'
+import IconBook from '@tabler/icons-astro/dist/esm/icons/book.mjs'
+import IconBowlChopsticks from '@tabler/icons-astro/dist/esm/icons/bowl-chopsticks.mjs'
+import IconBowlSpoon from '@tabler/icons-astro/dist/esm/icons/bowl-spoon.mjs'
+import IconBrandInstagram from '@tabler/icons-astro/dist/esm/icons/brand-instagram.mjs'
+import IconBread from '@tabler/icons-astro/dist/esm/icons/bread.mjs'
+import IconBuildingBank from '@tabler/icons-astro/dist/esm/icons/building-bank.mjs'
+import IconBuildingCommunity from '@tabler/icons-astro/dist/esm/icons/building-community.mjs'
+import IconBuildingMonument from '@tabler/icons-astro/dist/esm/icons/building-monument.mjs'
+import IconBurger from '@tabler/icons-astro/dist/esm/icons/burger.mjs'
+import IconCanary from '@tabler/icons-astro/dist/esm/icons/canary.mjs'
+import IconCheck from '@tabler/icons-astro/dist/esm/icons/check.mjs'
+import IconCheese from '@tabler/icons-astro/dist/esm/icons/cheese.mjs'
+import IconChefHat from '@tabler/icons-astro/dist/esm/icons/chef-hat.mjs'
+import IconChess from '@tabler/icons-astro/dist/esm/icons/chess.mjs'
+import IconChevronDown from '@tabler/icons-astro/dist/esm/icons/chevron-down.mjs'
+import IconCoffee from '@tabler/icons-astro/dist/esm/icons/coffee.mjs'
+import IconDumpling from '@tabler/icons-astro/dist/esm/icons/dumpling.mjs'
+import IconEggFried from '@tabler/icons-astro/dist/esm/icons/egg-fried.mjs'
+import IconExternalLink from '@tabler/icons-astro/dist/esm/icons/external-link.mjs'
+import IconFish from '@tabler/icons-astro/dist/esm/icons/fish.mjs'
+import IconFlame from '@tabler/icons-astro/dist/esm/icons/flame.mjs'
+import IconGlassCocktail from '@tabler/icons-astro/dist/esm/icons/glass-cocktail.mjs'
+import IconGlassFull from '@tabler/icons-astro/dist/esm/icons/glass-full.mjs'
+import IconGrill from '@tabler/icons-astro/dist/esm/icons/grill.mjs'
+import IconHanger from '@tabler/icons-astro/dist/esm/icons/hanger.mjs'
+import IconHeart from '@tabler/icons-astro/dist/esm/icons/heart.mjs'
+import IconIceCream2 from '@tabler/icons-astro/dist/esm/icons/ice-cream-2.mjs'
+import IconLemon2 from '@tabler/icons-astro/dist/esm/icons/lemon-2.mjs'
+import IconMail from '@tabler/icons-astro/dist/esm/icons/mail.mjs'
+import IconMap from '@tabler/icons-astro/dist/esm/icons/map.mjs'
+import IconMapPin from '@tabler/icons-astro/dist/esm/icons/map-pin.mjs'
+import IconMenu2 from '@tabler/icons-astro/dist/esm/icons/menu-2.mjs'
+import IconMessageCircle from '@tabler/icons-astro/dist/esm/icons/message-circle.mjs'
+import IconMusic from '@tabler/icons-astro/dist/esm/icons/music.mjs'
+import IconPalette from '@tabler/icons-astro/dist/esm/icons/palette.mjs'
+import IconPepper from '@tabler/icons-astro/dist/esm/icons/pepper.mjs'
+import IconPizza from '@tabler/icons-astro/dist/esm/icons/pizza.mjs'
+import IconPlus from '@tabler/icons-astro/dist/esm/icons/plus.mjs'
+import IconSalad from '@tabler/icons-astro/dist/esm/icons/salad.mjs'
+import IconSausage from '@tabler/icons-astro/dist/esm/icons/sausage.mjs'
+import IconSearch from '@tabler/icons-astro/dist/esm/icons/search.mjs'
+import IconShare2 from '@tabler/icons-astro/dist/esm/icons/share-2.mjs'
+import IconShoppingBag from '@tabler/icons-astro/dist/esm/icons/shopping-bag.mjs'
+import IconSoup from '@tabler/icons-astro/dist/esm/icons/soup.mjs'
+import IconThumbDown from '@tabler/icons-astro/dist/esm/icons/thumb-down.mjs'
+import IconThumbUp from '@tabler/icons-astro/dist/esm/icons/thumb-up.mjs'
+import IconToolsKitchen2 from '@tabler/icons-astro/dist/esm/icons/tools-kitchen-2.mjs'
+import IconTree from '@tabler/icons-astro/dist/esm/icons/tree.mjs'
+import IconX from '@tabler/icons-astro/dist/esm/icons/x.mjs'
 
 interface Props {
   name?: string
+  stroke?: number
 }
 
 const iconByKeyword: Record<string, typeof IconBook> = {
-  book: IconBook,
-  pizza: IconPizza,
-  utensils: IconUtensils,
-  heart: IconHeart,
-  landmark: IconLandmark,
-  tree: IconTree,
-  'shopping-bag': IconShoppingBag,
-  palette: IconPalette,
-  hanger: IconHanger,
-  music: IconMusic,
-  chess: IconChess,
-  museum: IconBuildingMuseum,
-  'building-community': IconBuildingCommunity,
+  'arrow-right': IconArrowRight,
   avocado: IconAvocado,
   baguette: IconBaguette,
   beer: IconBeer,
+  book: IconBook,
   'bowl-chopsticks': IconBowlChopsticks,
   'bowl-spoon': IconBowlSpoon,
   bread: IconBread,
+  'building-community': IconBuildingCommunity,
   burger: IconBurger,
+  canary: IconCanary,
+  check: IconCheck,
   cheese: IconCheese,
   'chef-hat': IconChefHat,
-  cocktail: IconCocktail,
+  chess: IconChess,
+  'chevron-down': IconChevronDown,
+  cocktail: IconGlassCocktail,
   coffee: IconCoffee,
   dumpling: IconDumpling,
+  'external-link': IconExternalLink,
   fish: IconFish,
   flame: IconFlame,
-  'fried-egg': IconFriedEgg,
+  'fried-egg': IconEggFried,
   grill: IconGrill,
-  'ice-cream': IconIceCream,
-  lemon: IconLemon,
-  canary: IconCanary,
+  hanger: IconHanger,
+  heart: IconHeart,
+  'ice-cream': IconIceCream2,
+  instagram: IconBrandInstagram,
+  landmark: IconBuildingMonument,
+  lemon: IconLemon2,
+  mail: IconMail,
+  map: IconMap,
+  'map-pin': IconMapPin,
+  menu: IconMenu2,
+  'message-circle': IconMessageCircle,
+  museum: IconBuildingBank,
+  music: IconMusic,
+  palette: IconPalette,
   pepper: IconPepper,
+  pizza: IconPizza,
+  plus: IconPlus,
   salad: IconSalad,
   sausage: IconSausage,
+  search: IconSearch,
+  share: IconShare2,
+  'shopping-bag': IconShoppingBag,
   soup: IconSoup,
-  'wine-glass': IconWineGlass,
+  'thumbs-down': IconThumbDown,
+  'thumbs-up': IconThumbUp,
+  tree: IconTree,
+  utensils: IconToolsKitchen2,
+  'wine-glass': IconGlassFull,
+  x: IconX,
 }
 
-const { name } = Astro.props
+const { name, stroke = 1.75 } = Astro.props
 const ResolvedIcon = (name && iconByKeyword[name]) || IconBook
 ---
 
-<ResolvedIcon />
+<ResolvedIcon class="icon" stroke={stroke} />

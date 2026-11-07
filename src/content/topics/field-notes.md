@@ -18,7 +18,7 @@ I have made the [St. Louis Food Map](/food/) to keep track of all the notable re
 
 View [the directory](/list/) for an interactive database.
 
-[The Best Food in St. Louis](/best/) is my subjective list of favorite dishes.
+[My Favorite Food in St. Louis](/best/) is my subjective list of favorite dishes.
 
 ### Regional food
 

@@ -24,10 +24,7 @@ import { neighborhoodHref, neighborhoodName, placeLocality } from '../../lib/nei
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
 import { cuisineLabel, cuisinePlacePhrase } from '../../lib/cuisine'
-import IconArrowRight from '../../assets/IconArrowRight.astro'
-import IconMapPin from '../../assets/IconMapPin.astro'
-import IconExternalLink from '../../assets/IconExternalLink.astro'
-import IconInstagram from '../../assets/IconInstagram.astro'
+import Icon from '../../components/Icon.astro'
 
 export async function getStaticPaths() {
   const places = published(await getCollection('food'))
@@ -267,7 +264,7 @@ const seoDescription = hasBody(entry)
           <div>
             <Locator coords={data.coords} label={neighborhoodName(data.neighborhood)} />
             <a class="continue-link aside-more-link" href={href('/food/')}>
-              Restaurant & cafe map <IconArrowRight />
+              Restaurant & cafe map <Icon name="arrow-right" />
             </a>
           </div>
           {
@@ -285,7 +282,7 @@ const seoDescription = hasBody(entry)
                     href={googleMapsHref(data)}
                     target="_blank"
                     rel="noopener">
-                    View directions <IconArrowRight />
+                    View directions <Icon name="arrow-right" />
                   </a>
                 )}
               </div>
@@ -303,7 +300,7 @@ const seoDescription = hasBody(entry)
                       variant="quiet"
                       compact={false}
                       class="btn-inline">
-                      <IconExternalLink slot="icon" />
+                      <Icon name="external-link" slot="icon" />
                     </SourceLink>
                     <SourceLink
                       href={data.instagram}
@@ -311,7 +308,7 @@ const seoDescription = hasBody(entry)
                       variant="quiet"
                       compact={false}
                       class="btn-inline">
-                      <IconInstagram slot="icon" />
+                      <Icon name="instagram" slot="icon" />
                     </SourceLink>
                     <SourceLink
                       href={googleMapsHref(data)}
@@ -319,7 +316,7 @@ const seoDescription = hasBody(entry)
                       variant="quiet"
                       compact={false}
                       class="btn-inline">
-                      <IconMapPin slot="icon" />
+                      <Icon name="map-pin" slot="icon" />
                     </SourceLink>
                   </div>
                 </div>

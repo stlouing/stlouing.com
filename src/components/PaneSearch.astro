@@ -1,5 +1,5 @@
 ---
-import IconSearch from '../assets/IconSearch.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   label: string
@@ -11,7 +11,7 @@ const { label, placeholder, narrowPlaceholder } = Astro.props
 ---
 
 <label class="pane-search-wrap">
-  <IconSearch />
+  <Icon name="search" />
   <input
     class="pane-search"
     type="search"

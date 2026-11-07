@@ -1,9 +1,7 @@
 ---
 import ShareButton from './ShareButton.astro'
 import { NEWSLETTER_URL, SOCIALS } from '../lib/site'
-import IconInstagram from '../assets/IconInstagram.astro'
-import IconMail from '../assets/IconMail.astro'
-import IconMessageCircle from '../assets/IconMessageCircle.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   title: string
@@ -23,7 +21,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
           href="#comments"
           data-comments-link
           hidden>
-          <IconMessageCircle />
+          <Icon name="message-circle" />
           <span data-comments-link-label>Comments</span>
         </a>
       )
@@ -47,7 +45,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
           data-goatcounter-click="instagram-actionbar"
           data-tooltip="Follow on Instagram"
           data-tooltip-align="end">
-          <IconInstagram />
+          <Icon name="instagram" />
         </a>
       )
     }
@@ -62,7 +60,7 @@ const instagram = SOCIALS.find((social) => social.label === 'Instagram')
           data-goatcounter-click="newsletter-actionbar"
           data-tooltip="Newsletter"
           data-tooltip-align="end">
-          <IconMail />
+          <Icon name="mail" />
         </a>
       )
     }

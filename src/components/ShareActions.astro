@@ -1,6 +1,6 @@
 ---
 import ShareButton from './ShareButton.astro'
-import IconInstagram from '../assets/IconInstagram.astro'
+import Icon from './Icon.astro'
 import { INSTAGRAM_HANDLE } from '../lib/site'
 
 interface Props {
@@ -21,7 +21,7 @@ const { shareTitle, placement } = Astro.props
         target="_blank"
         rel="noopener"
         data-goatcounter-click={`instagram-${placement}`}>
-        <IconInstagram />
+        <Icon name="instagram" />
         Follow @{INSTAGRAM_HANDLE}
       </a>
     )

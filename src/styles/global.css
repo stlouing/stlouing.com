@@ -2842,10 +2842,6 @@ body:has([data-filter-root]) .masthead-nav {
     gap: var(--detail-gap);
   }
 
-  .detail-layout--wide {
-    grid-template-columns: minmax(0, 1fr) var(--aside-width);
-  }
-
   .detail-main {
     grid-column: 1;
     grid-row: 1;
@@ -3251,7 +3247,7 @@ label {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xs);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .card-description,
@@ -3638,7 +3634,7 @@ a.is-unwritten {
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
   font-style: italic;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--color-muted);
   font-weight: 400;
 }
@@ -3646,7 +3642,7 @@ a.is-unwritten {
 .excerpt {
   font-family: var(--font-serif);
   font-size: var(--font-size-sm);
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--color-text);
 }
 

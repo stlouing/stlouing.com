@@ -1,6 +1,6 @@
 ---
 import SuggestSpot from './SuggestSpot.astro'
-import IconMenu from '../assets/IconMenu.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   label: string
@@ -12,7 +12,7 @@ const { label } = Astro.props
 <div class="map-actions">
   <button type="button" class="map-split-toggle" data-map-split-toggle>
     <span class="map-split-toggle-icon" aria-hidden="true">
-      <IconMenu />
+      <Icon name="menu" stroke={2} />
     </span>
     <span data-map-split-label>{label}</span>
   </button>

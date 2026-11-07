@@ -3,11 +3,10 @@ import PageMasthead from '../components/PageMasthead.astro'
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Card from '../components/Card.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
-import ReaderFavorites from '../components/ReaderFavorites.astro'
+import Icon from '../components/Icon.astro'
 import { published, excerpt, META_DESCRIPTION_CHARS } from '../lib/content'
 import { href } from '../lib/url'
-import { CITY, SUPABASE_ENABLED } from '../lib/site'
+import { FAVORITE_FOOD_TITLE } from '../lib/sections'
 import { optionalData } from '../lib/optional-data'
 import { itemListSchema } from '../lib/schema'
 
@@ -34,9 +33,7 @@ const awards = [
   ...resolvedAwards.filter((award) => !award.place.data.photo),
 ]
 
-const readersEnabled = SUPABASE_ENABLED
-
-const descriptionLead = `My picks for the best food in ${CITY}, by category: `
+const descriptionLead = `${FAVORITE_FOOD_TITLE}, by category: `
 const descriptionSuffix = ', and more.'
 const fittingLabels: string[] = []
 for (const award of resolvedAwards) {
@@ -53,7 +50,7 @@ const description = `${descriptionLead}${fittingLabels.join(', ')}${descriptionS
 
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin)
 const schema = itemListSchema(
-  `The Best Food in ${CITY}`,
+  FAVORITE_FOOD_TITLE,
   awards.map(({ label, place }) => ({
     name: `${label}: ${place.data.title}`,
     url: new URL(`/food/${place.id}/`, siteOrigin).href,
@@ -62,49 +59,35 @@ const schema = itemListSchema(
 ---
 
 <BaseLayout
-  crumb="Best of"
-  title={`Best Restaurants in ${CITY}: My Top Picks`}
+  crumb={FAVORITE_FOOD_TITLE}
+  title={FAVORITE_FOOD_TITLE}
   description={description}
   jsonLd={schema}>
   <article>
-    <PageMasthead title={`The Best Food in ${CITY}`} wide>
-      <p slot="lede">
-        {`My top restaurants${readersEnabled && " and community voted favorites"}`}
-      </p>
+    <PageMasthead title={FAVORITE_FOOD_TITLE} wide>
+      <p slot="lede">All my favorites so far for specific items</p>
     </PageMasthead>
 
-    <div class:list={[{ 'detail-layout detail-layout--wide': readersEnabled }]}>
-      <div class="detail-main">
-        <div class="best-list">
-          {
-            awards.map(({ label, place, teaser }) => (
-              <section class="best-entry">
-                <Card
-                  class="card--lg card--xl card--side-photo"
-                  accentMeta
-                  meta={label}
-                  href={href(`/food/${place.id}/`)}
-                  title={place.data.title}
-                  description={place.data.description}
-                  excerpt={teaser}
-                  photo={place.data.photo}
-                  photoSizes="(min-width: 1000px) 320px, 100vw">
-                  <span class="continue-link">
-                    Continue reading <IconArrowRight />
-                  </span>
-                </Card>
-              </section>
-            ))
-          }
-        </div>
-      </div>
-
+    <div class="best-list">
       {
-        readersEnabled && (
-          <aside class="detail-aside">
-            <ReaderFavorites />
-          </aside>
-        )
+        awards.map(({ label, place, teaser }) => (
+          <section class="best-entry">
+            <Card
+              class="card--lg card--xl card--side-photo"
+              accentMeta
+              meta={label}
+              href={href(`/food/${place.id}/`)}
+              title={place.data.title}
+              description={place.data.description}
+              excerpt={teaser}
+              photo={place.data.photo}
+              photoSizes="(min-width: 1000px) 320px, 100vw">
+              <span class="continue-link">
+                Continue reading <Icon name="arrow-right" />
+              </span>
+            </Card>
+          </section>
+        ))
       }
     </div>
   </article>
@@ -116,15 +99,18 @@ const schema = itemListSchema(
   }
 
   .best-entry {
-    padding-block: var(--spacing-xl);
     border-block-end: 1px solid var(--color-line);
-  }
-
-  .best-entry:first-child {
-    padding-block-start: 0;
   }
 
   .best-entry:last-child {
     border-block-end: 0;
+  }
+
+  .best-entry :global(.card) {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .best-entry :global(.card)::before {
+    inset-inline: 0;
   }
 </style>

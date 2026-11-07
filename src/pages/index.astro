@@ -36,7 +36,7 @@ import SectionHeading from '../components/SectionHeading.astro'
 import Card from '../components/Card.astro'
 import PromoCard from '../components/PromoCard.astro'
 import WhatsNew from '../components/WhatsNew.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from '../components/Icon.astro'
 import KeepInTouch from '../components/KeepInTouch.astro'
 
 const allTopics = sortTopics(
@@ -142,7 +142,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           class="continue-link"
           href={href('/about/')}
           aria-label={`Read more about ${SITE_NAME}`}>
-          Continue reading <IconArrowRight />
+          Continue reading <Icon name="arrow-right" />
         </a>
       </p>
       <span class="p-name" hidden>{SITE_NAME}</span>
@@ -183,7 +183,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
             {leadTeaser && <p class="lead-teaser drop-cap">{leadTeaser}</p>}
             <p class="lead-meta">
               <Button href={href(`/${leadTopic.id}/`)} variant="dark" compact>
-                Read more <IconArrowRight />
+                Read more <Icon name="arrow-right" />
               </Button>
             </p>
           </section>
@@ -307,7 +307,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .front-intro {
     grid-area: intro;
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   .front-index,
@@ -330,7 +330,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .rail-articles :global(.card-description) {
     font-style: normal;
     font-size: var(--font-size-md);
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   .front-eyebrow {
@@ -417,7 +417,7 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
 
   .front-explore :global(.list-item .list-description) {
     font-size: var(--font-size-md);
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   .front-explore :global(.list-item .list-title) {

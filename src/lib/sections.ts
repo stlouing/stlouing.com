@@ -10,6 +10,8 @@ export interface Section {
   description?: string
 }
 
+export const FAVORITE_FOOD_TITLE = `My Favorite Food in ${CITY}`
+
 export const groups: { id: Group; label?: string; kicker?: string }[] = [
   { id: 'explore', label: 'Explore' },
   { id: 'topics', label: 'Topics' },
@@ -51,7 +53,7 @@ export const sections: Section[] = [
   },
 
   {
-    label: `The Best Food in ${CITY}`,
+    label: FAVORITE_FOOD_TITLE,
     path: '/best/',
     group: 'lists',
     description: 'All my favorites so far for specific items.',

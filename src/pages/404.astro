@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import CardList from '../components/CardList.astro'
 import Card from '../components/Card.astro'
 import Icon from '../components/Icon.astro'
-import IconMapPin from '../assets/IconMapPin.astro'
 import { href } from '../lib/url'
 ---
 
@@ -19,7 +18,7 @@ import { href } from '../lib/url'
         <Icon name="utensils" slot="icon" />
       </Card>
       <Card href={href('/neighborhoods/')} title="Neighborhood Map" meta="Map">
-        <IconMapPin slot="icon" />
+        <Icon name="map-pin" slot="icon" />
       </Card>
     </CardList>
 

@@ -1,6 +1,6 @@
 ---
 import { href } from '../lib/url'
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from './Icon.astro'
 import ActionButtons from './ActionButtons.astro'
 
 interface Props {
@@ -72,7 +72,7 @@ const showPanel = slotHtml.length > 0 || showReadMore || showActions
         {slotHtml && <Fragment set:html={slotHtml} />}
         {showReadMore && (
           <a class="more" href={href(detailHref ?? '')} aria-label={`Read more about ${title}`}>
-            Read more <IconArrowRight />
+            Read more <Icon name="arrow-right" />
           </a>
         )}
         {showActions && (

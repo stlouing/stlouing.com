@@ -4,7 +4,7 @@ import { getChangelog } from '../lib/changelog'
 import { formatDay, formatMonthShort, isoDate } from '../lib/dates'
 import { href } from '../lib/url'
 import PanelHeading from './PanelHeading.astro'
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from './Icon.astro'
 
 const LATEST_UPDATE_COUNT = 5
 
@@ -18,7 +18,7 @@ const latestUpdates = await Promise.all(
 ---
 
 <section class="whats-new">
-  <PanelHeading title="What's New" ruled={false} />
+  <PanelHeading title="What's New" />
   {
     latestUpdates[0] && (
       <p class="dated-year eyebrow">{latestUpdates[0].date.getUTCFullYear()}</p>
@@ -41,7 +41,7 @@ const latestUpdates = await Promise.all(
   </ul>
   <div class="panel-footer panel-footer--end">
     <a class="continue-link" href={href('/updates/')}>
-      All updates <IconArrowRight />
+      All updates <Icon name="arrow-right" />
     </a>
   </div>
 </section>

@@ -31,7 +31,7 @@ export const PINNED_TOPIC_ID = 'field-notes'
 export const PROMOTED_TOPIC_ID = 'st-louis-style-pizza'
 export const BEST_PROMO_PHOTO_ID = 'kishimoto-mendo'
 export const BEST_PROMO_TEASER =
-  'My favorite ramen, tacos, pizza (Chicago, St. Louis, Detroit, etc), sandwiches, and more! Also a list of the top-voted spots by readers.'
+  'My favorite ramen, tacos, pizza (Chicago, St. Louis, Detroit, etc), sandwiches, and more!'
 export const STREETS_TOPIC_ID = 'walkable-st-louis'
 export const FEATURED_FOOD_IDS = [
   'teerak-thai',

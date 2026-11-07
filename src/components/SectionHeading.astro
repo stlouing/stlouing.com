@@ -1,5 +1,5 @@
 ---
-import IconArrowRight from '../assets/IconArrowRight.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   title: string
@@ -15,7 +15,7 @@ const { title, moreHref, moreLabel = 'View all' } = Astro.props
   {
     moreHref && (
       <a class="continue-link" href={moreHref}>
-        {moreLabel} <IconArrowRight />
+        {moreLabel} <Icon name="arrow-right" />
       </a>
     )
   }

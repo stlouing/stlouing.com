@@ -50,7 +50,7 @@ import {
 import { districtBoundary, districtParts, districtPlaces } from '../../lib/districts'
 import neighborhoods from '../../data/neighborhoods.json'
 import Button from '../../components/Button.astro'
-import IconExternalLink from '../../assets/IconExternalLink.astro'
+import Icon from '../../components/Icon.astro'
 
 export async function getStaticPaths() {
   const entries = published(await getCollection('neighborhoods'))
@@ -270,7 +270,7 @@ const schema = placeSchema(
                       {resourceLinks.map((link) => (
                         <a href={link.href} target="_blank" rel="noopener">
                           {link.label === 'Website' ? displayUrl(link.href) : link.label}
-                          <IconExternalLink />
+                          <Icon name="external-link" />
                         </a>
                       ))}
                     </PaneKicker>

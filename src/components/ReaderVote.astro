@@ -1,7 +1,6 @@
 ---
-import IconThumbsUp from '../assets/IconThumbsUp.astro'
+import Icon from './Icon.astro'
 import { SUPABASE_ENABLED } from '../lib/site'
-import IconThumbsDown from '../assets/IconThumbsDown.astro'
 
 interface Props {
   slug: string
@@ -32,7 +31,7 @@ const readersEnabled = SUPABASE_ENABLED
           aria-pressed="false"
           aria-label="Thumbs up"
           disabled>
-          <IconThumbsUp />
+          <Icon name="thumbs-up" />
           <span class="vote-count" data-count-like />
         </button>
         <button
@@ -42,7 +41,7 @@ const readersEnabled = SUPABASE_ENABLED
           aria-pressed="false"
           aria-label="Thumbs down"
           disabled>
-          <IconThumbsDown />
+          <Icon name="thumbs-down" />
           <span class="vote-count" data-count-dislike />
         </button>
       </div>
