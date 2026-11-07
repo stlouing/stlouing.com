@@ -1,8 +1,8 @@
 ---
 title: Blues City Deli
 created: 2026-06-23
-updated: 2026-07-22
-photo: ../images/food/blues-city-deli.jpeg
+updated: 2026-11-07
+photo: ../images/food/blues-city-deli/blues-city-deli1.jpg
 rating: 5
 cuisine: ['sandwiches']
 neighborhood: benton-park

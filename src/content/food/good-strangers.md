@@ -1,9 +1,9 @@
 ---
 title: Good Strangers
 created: 2026-10-17
-updated: 2026-11-04
+updated: 2026-11-07
 rating: 4.5
-photo: ../images/food/good-strangers/good1.jpg
+photo: ../images/food/good-strangers/good-strangers1.jpg
 cuisine: ['cafe', 'coffee']
 neighborhood: gravois-park
 district: cherokee-street
@@ -23,12 +23,12 @@ The cafe opened in 2020 according to the sign near their menu ("Seemed like a go
 
 It also looks like a yarn store operates out of the building, which adds to the comforting ambience.
 
-![](../images/food/good-strangers/good2.jpg)
+![](../images/food/good-strangers/good-strangers2.jpg)
 
-![](../images/food/good-strangers/good3.jpg)
+![](../images/food/good-strangers/good-strangers3.jpg)
 
-![](../images/food/good-strangers/good4.jpg)
+![](../images/food/good-strangers/good-strangers4.jpg)
 
-![](../images/food/good-strangers/good5.jpg)
+![](../images/food/good-strangers/good-strangers5.jpg)
 
-![](../images/food/good-strangers/good6.jpg)
+![](../images/food/good-strangers/good-strangers6.jpg)

@@ -1,8 +1,8 @@
 ---
 title: Tower Grove South
-photo: ../images/food/grandpied/grandpied4.jpg
+photo: ../images/food/grand-pied/grand-pied4.jpg
 created: 2026-07-05
-updated: 2026-10-17
+updated: 2026-11-07
 url: https://www.tgsna.org
 featured: 1
 ---

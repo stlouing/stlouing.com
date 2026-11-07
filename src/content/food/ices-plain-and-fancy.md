@@ -1,7 +1,8 @@
 ---
 title: Ices Plain & Fancy
-photo: ../images/food/ices.jpg
+photo: ../images/food/ices-plain-and-fancy/ices-plain-and-fancy1.jpg
 created: 2026-10-13
+updated: 2026-11-07
 status: tried
 cuisine: ['dessert']
 neighborhood: shaw

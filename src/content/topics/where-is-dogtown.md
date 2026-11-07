@@ -97,7 +97,7 @@ This is also a neighborhood where the identity of the district informally extend
 
 ### Southtown
 
-![](../images/food/buds/buds1.jpg)
+![](../images/food/buds-pizza-and-beer/buds-pizza-and-beer1.jpg)
 
 Along Kingshighway in South City there's a strip of restaurants owned by Garcia Properties, including Bud's Pizza, The Golden Hoosier, and Uncle Bill's Pancake House, in the area known as [[southtown|Southtown]]. There was once a department store there called Southtown Famous-Barr, which I assume is where the name came from.
 

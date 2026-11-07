@@ -2,7 +2,7 @@
 title: Pizzeria da Gloria
 created: 2026-08-19
 updated: 2026-11-07
-photo: ../images/food/pizzeriadagloria.jpeg
+photo: ../images/food/pizzeria-da-gloria/pizzeria-da-gloria1.jpg
 rating: 5
 cuisine: ['pizza', 'italian']
 neighborhood: the-hill

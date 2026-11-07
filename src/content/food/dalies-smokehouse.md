@@ -1,7 +1,8 @@
 ---
 title: Dalie's Smokehouse
-photo: ../images/food/dalies/dalies2.jpg
+photo: ../images/food/dalies-smokehouse/dalies-smokehouse2.jpg
 created: 2026-07-16
+updated: 2026-11-07
 rating: 4.5
 cuisine: ['bbq']
 neighborhood: valley-park
@@ -15,14 +16,14 @@ instagram: https://www.instagram.com/daliessmokehouse
 
 I think Dalie's is currently my favorite spot for BBQ in St. Louis. The smoked wings are fantastic, and the ribs are fantastic. And although the brisket is not my favorite - Texas-style - it is still incredibly tender and flavorful. The service is also excellent at this spot.
 
-![](../images/food/dalies2.jpeg)
+![](../images/food/dalies-smokehouse/dalies-smokehouse7.jpg)
 
-![](../images/food/dalies/dalies1.jpg)
+![](../images/food/dalies-smokehouse/dalies-smokehouse1.jpg)
 
-![](../images/food/dalies.jpeg)
+![](../images/food/dalies-smokehouse/dalies-smokehouse6.jpg)
 
-![](../images/food/dalies/dalies3.jpg)
+![](../images/food/dalies-smokehouse/dalies-smokehouse3.jpg)
 
-![](../images/food/dalies/dalies4.jpg)
+![](../images/food/dalies-smokehouse/dalies-smokehouse4.jpg)
 
-![](../images/food/dalies/dalies5.jpg)
+![](../images/food/dalies-smokehouse/dalies-smokehouse5.jpg)

@@ -5,7 +5,7 @@ pinned: true
 description: An inventory of the specialty food of St. Louis, from gooey butter cake to gooey Provel cheese
 created: 2026-06-03
 updated: 2026-11-07
-photo: ../images/food/dalies/dalies2.jpg
+photo: ../images/food/dalies-smokehouse/dalies-smokehouse2.jpg
 photoCaption: Dalie's Smokehouse
 ---
 
@@ -15,7 +15,7 @@ So here's what I've discovered so far:
 
 ### St. Louis-style pizza
 
-![Pepperoni and sausage from Imo's](../images/food/imos1.jpg)
+![Pepperoni and sausage from Imo's](../images/food/imos/imos1.jpg)
 
 A pizza style that is the standard all across the St. Louis region, consisting of a cracker-thin crust, a sweet, thick tomato sauce, and gooey Provel cheese.
 

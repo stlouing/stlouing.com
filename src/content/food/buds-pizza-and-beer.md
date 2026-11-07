@@ -1,8 +1,8 @@
 ---
 title: Bud's Pizza & Beer
-photo: ../images/food/buds/buds3.jpg
+photo: ../images/food/buds-pizza-and-beer/buds-pizza-and-beer3.jpg
 created: 2026-06-23
-updated: 2026-11-02
+updated: 2026-11-07
 rating: 4.5
 cuisine: ['pizza']
 neighborhood: north-hampton
@@ -26,8 +26,8 @@ Although I would consider the pizza more of just a standard "pizza" than New Yor
 
 They recently removed Giardiniera from the menu though, which makes me sad.
 
-![](../images/food/buds/buds2.jpg)
+![](../images/food/buds-pizza-and-beer/buds-pizza-and-beer2.jpg)
 
-![](../images/food/buds/buds5.jpg)
+![](../images/food/buds-pizza-and-beer/buds-pizza-and-beer5.jpg)
 
-![](../images/food/buds/buds1.jpg)
+![](../images/food/buds-pizza-and-beer/buds-pizza-and-beer1.jpg)

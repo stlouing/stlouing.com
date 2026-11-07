@@ -1,6 +1,6 @@
 ---
 title: Sultan
-photo: ../images/food/sultan.jpeg
+photo: ../images/food/sultan/sultan1.jpg
 created: 2026-06-27
 updated: 2026-11-07
 rating: 5
@@ -24,4 +24,4 @@ Water, tea, and beverages are served in traditional Turkish style cups and caraf
 
 This is one of my absolute top spots in the city, it has been consistently delightful on every visit.
 
-![](../images/food/sultan3.jpeg)
+![](../images/food/sultan/sultan3.jpg)

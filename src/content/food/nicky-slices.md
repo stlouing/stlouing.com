@@ -1,6 +1,6 @@
 ---
 title: Nicky Slices Pizza Club
-photo: ../images/food/nicky-slices.jpeg
+photo: ../images/food/nicky-slices/nicky-slices1.jpg
 created: 2026-06-23
 updated: 2026-11-07
 rating: 5

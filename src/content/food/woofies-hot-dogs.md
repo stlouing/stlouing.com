@@ -1,6 +1,6 @@
 ---
 title: Woofies Hot Dogs
-photo: ../images/food/woofies.jpeg
+photo: ../images/food/woofies-hot-dogs/woofies-hot-dogs1.jpg
 created: 2026-06-23
 updated: 2026-11-07
 rating: 4.5

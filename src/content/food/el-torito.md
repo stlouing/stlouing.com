@@ -1,8 +1,9 @@
 ---
 title: Taqueria Hectorito
 rating: 2.5
-photo: ../images/food/tacos-el-hectorito.jpg
+photo: ../images/food/el-torito/el-torito1.jpg
 created: 2026-07-16
+updated: 2026-11-07
 cuisine: ['mexican']
 neighborhood: benton-park-west
 district: cherokee-street

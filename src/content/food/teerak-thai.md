@@ -4,7 +4,7 @@ created: 2026-08-28
 updated: 2026-11-07
 rating: 5
 cuisine: ['thai', 'asian']
-photo: ../images/food/teerak2.jpg
+photo: ../images/food/teerak-thai/teerak-thai3.jpg
 neighborhood: shaw
 address:
   - 2203 S 39th St
@@ -21,9 +21,9 @@ Tucked into a street along Shaw you'll find Tee Rak Thai, an authentic regional 
 
 I tried Moo Ping, which are BBQ Pork Skewers, and potstickers, along with one of my favorite beverages, Thai Tea. The tea was good and the potstickers were very crispy.
 
-![](../images/food/teerak1.jpg)
+![](../images/food/teerak-thai/teerak-thai2.jpg)
 
-![](../images/food/teerak/app.jpg)
+![](../images/food/teerak-thai/teerak-thai4.jpg)
 
 For the entrees, I tried Pad Kee Mao (drunken noodles) and Pad See Ew, two common Thai classics. Both were great, with proper thick noodles and flavor infused all throughout. I got it with crispy pork belly which was the special of the day; if I ordered it again, I would probably try chicken or beef, because the crispy pork belly was so rich, but it was tasty.
 
@@ -31,8 +31,8 @@ I really liked the spice level (I chose 2 out of 4). Usually it's not spicy enou
 
 The building is also a classic St. Louis red brick (as is most of Shaw) with some nice decor.
 
-![](../images/food/teerak.jpg)
+![](../images/food/teerak-thai/teerak-thai1.jpg)
 
-![](../images/food/teerak/patio1.jpg)
+![](../images/food/teerak-thai/teerak-thai5.jpg)
 
-![](../images/food/teerak/patio2.jpg)
+![](../images/food/teerak-thai/teerak-thai6.jpg)

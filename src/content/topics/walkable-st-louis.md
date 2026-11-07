@@ -222,7 +222,7 @@ The eastern wing of Cherokee St. is a vintage shopping district known as the [an
 
 ## Southtown
 
-![](../images/food/buds/buds1.jpg)
+![](../images/food/buds-pizza-and-beer/buds-pizza-and-beer1.jpg)
 
 <figure class="street-map-figure">
   <div class="street-map" data-street-map="south-town"></div>

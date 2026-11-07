@@ -1,8 +1,8 @@
 ---
 title: Failoni's Restaurant
-photo: ../images/food/failonis.jpeg
+photo: ../images/food/failonis/failonis1.jpg
 created: 2026-06-23
-updated: 2026-07-22
+updated: 2026-11-07
 rating: 3
 cuisine: ['pizza']
 neighborhood: dogtown

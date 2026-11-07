@@ -2,6 +2,7 @@
 title: Cherokee Street
 photo: ../images/neighborhoods/cherokee/cherokee1.jpg
 created: 2026-10-15
+updated: 2026-11-07
 url: https://cherokeestreet.com/
 wikipedia: https://en.wikipedia.org/wiki/Cherokee_Street_(St._Louis)
 featured: 3
@@ -17,7 +18,7 @@ In the middle near Jefferson you'll find a few hidden gem cafes and bakeries, li
 
 ![](../images/neighborhoods/cherokee/cherokee3.jpg)
 
-![](../images/food/good-strangers/good2.jpg)
+![](../images/food/good-strangers/good-strangers2.jpg)
 
 ![](../images/neighborhoods/cherokee/cherokee15.jpg)
 
