@@ -223,7 +223,7 @@ function buildEntry(entry: CommentEntry): HTMLLIElement {
   item.append(commenter)
 
   const message = document.createElement('p')
-  message.className = 'feed-message excerpt'
+  message.className = 'feed-message'
   message.textContent = entry.message
   item.append(message)
 
@@ -269,7 +269,7 @@ function buildReply(replyMessage: string, replyDate: string | null): HTMLDivElem
   reply.append(author)
 
   const message = document.createElement('p')
-  message.className = 'feed-message excerpt'
+  message.className = 'feed-message'
   message.textContent = replyMessage
   reply.append(message)
 

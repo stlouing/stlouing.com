@@ -1,6 +1,7 @@
 ---
 title: La Tejana Taqueria
 created: 2026-06-23
+updated: 2026-11-07
 rating: 1
 cuisine: ['mexican']
 address:
@@ -15,4 +16,4 @@ One of the first types of cuisine I was on the lookout for when I arrived in St.
 
 Unfortunately, my experience did not live up to expectations. When I visited, I ordered steak tacos, but I got shredded meat and the order was pretty cold. There was no one else in the restaurant except one person on the Casino machines and it was silent aside from the dings from the machine.
 
-It's entirely possibly I just visited at a very strange time and had a particularly bad experience that is not the norm, but I personally did not have a good experience during my visit.
+It's entirely possible I just visited at a very strange time and had a particularly bad experience that is not the norm, but I personally did not have a good experience during my visit.

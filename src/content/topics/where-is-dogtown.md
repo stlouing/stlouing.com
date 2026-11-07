@@ -6,7 +6,7 @@ pinned: true
 description: How local names like Dogtown and The Grove fit onto St. Louis’s official neighborhood map
 seoDescription: 'Where is Dogtown, The Grove, or the Delmar Loop? An informal St. Louis neighborhood map of districts and local names over the 79 official neighborhoods.'
 created: 2026-10-28
-updated: 2026-11-03
+updated: 2026-11-07
 photo: ../images/topics/where-is-dogtown-map.png
 photoCaption: A few St. Louis neighborhoods and districts
 photoInArticle: false
@@ -53,7 +53,7 @@ Here's a link to the full neighborhood map with restaurants, coffee shops, landm
 
 A few other cities have had surveys to crowdsource opinions about neighborhood boundaries, such as The University of Chicago’s Chicago Neighborhood Project, [Chicago Neighborhoods, Mapped By Residents: Here’s Where Locals Think Official Boundaries Should Be](https://www.preservationchicago.org/chicago-neighborhoods-mapped-by-residents-heres-where-locals-think-official-boundaries-should-be/) and The New York Times [An Extremely Detailed Map of New York City Neighborhoods](https://www.nytimes.com/interactive/2023/upshot/extremely-detailed-nyc-neighborhood-map.html).
 
-I think because St. Louis already has legally defined boundaries, no one has ever sent out a survey for vibes (unless you count [Hoodmaps](https://hoodmaps.com/st-louis-neighborhood-map)). The map on this site is just one person's attempt to create an informal map.
+I think because St. Louis already has legally defined boundaries, no one has ever sent out a survey for vibes. The map on this site is just one person's attempt to create an informal map.
 
 As a disclaimer, anything that isn't officially defined is a matter of opinion. I am not trying to take away from the identity of any neighborhood, but just document some of what I discovered over a few years of living in, exploring, and researching St. Louis. If there's anything I missed or got wrong, I'd love to learn about it and update the map and article!
 
@@ -233,7 +233,7 @@ I still have a lot of work to do to complete all the write-ups and exploration o
 
 <div data-area-table></div>
 
-People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well. If I missed anything, let me know and I'll ad it!
+People feel very strongly about the local identity of their neighborhoods, which is one of the awesome things about being in a city, and why I wanted to make this site. It has been a fun project for me as a transplant to map St. Louis and keep exploring and taking pictures and trying new food, and I hope it's useful or interesting to others as well. If I missed anything, let me know and I'll add it!
 
 If you liked this article, you also might like [[walkable-st-louis|St. Louis's Most Walkable Neighborhoods]], a set of twenty-three walkable areas in St. Louis across the city and inner-ring suburbs, also with maps and major points of interest.
 

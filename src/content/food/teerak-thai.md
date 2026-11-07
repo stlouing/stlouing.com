@@ -1,7 +1,7 @@
 ---
 title: Tee Rak Thai
 created: 2026-08-28
-updated: 2026-11-04
+updated: 2026-11-07
 rating: 5
 cuisine: ['thai', 'asian']
 photo: ../images/food/teerak2.jpg
@@ -25,7 +25,7 @@ I tried Moo Ping, which are BBQ Pork Skewers, and potstickers, along with one of
 
 ![](../images/food/teerak/app.jpg)
 
-For the entrees, I tried Pad Kee Mao (drunken noodles) and Pad See Ew, two common Thai classics. Both were great, with proper thick noodles and flavor infued all throughout. I got it with crispy pork belly which was the special of the day; if I ordered it again, I would probably try chicken or beef, because the crispy pork belly was so rich, but it was tasty.
+For the entrees, I tried Pad Kee Mao (drunken noodles) and Pad See Ew, two common Thai classics. Both were great, with proper thick noodles and flavor infused all throughout. I got it with crispy pork belly which was the special of the day; if I ordered it again, I would probably try chicken or beef, because the crispy pork belly was so rich, but it was tasty.
 
 I really liked the spice level (I chose 2 out of 4). Usually it's not spicy enough for me at that level and this had a very pleasant level of spice.
 

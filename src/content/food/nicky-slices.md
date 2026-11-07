@@ -2,7 +2,7 @@
 title: Nicky Slices Pizza Club
 photo: ../images/food/nicky-slices.jpeg
 created: 2026-06-23
-updated: 2026-07-16
+updated: 2026-11-07
 rating: 5
 cuisine: ['pizza']
 neighborhood: the-hill
@@ -21,4 +21,4 @@ I know St. Louis is the town of thin cracker-crust pizza, but I'm partial to the
 
 Nicky Slices Pizza Club has identified and filled the gap for an amazing Detroit-style pizza place with their location in The Hill. My recommendation is to get The Roner - a Detroit-style with cupped pepperoni and basil, drizzled with garlic chili hot honey.
 
-I've also tried the thin crust, which is a beautiful combinaiton of Chicago tavern and STL-style. It's thin, savory, and amazing with giardiniera on top.
+I've also tried the thin crust, which is a beautiful combination of Chicago tavern and STL-style. It's thin, savory, and amazing with giardiniera on top.

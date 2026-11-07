@@ -1,7 +1,7 @@
 ---
 title: Rozanna Mediterranean
 created: 2026-07-16
-updated: 2026-11-05
+updated: 2026-11-07
 rating: 3.5
 cuisine: ['middle eastern', 'mediterranean']
 neighborhood: manchester
@@ -13,4 +13,4 @@ url: https://rozannastl.com
 instagram: https://www.instagram.com/rozannastl
 ---
 
-A standard little strip mall middle eastern grill. The chicken kebabs in specific were really good, but the lentil soup was a let down. Overall I felt like I've had perfectly acceptable experiences here but only the chicken kebabs really stood out to me.
+A standard little strip mall Middle Eastern grill. The chicken kebabs in specific were really good, but the lentil soup was a let down. Overall I felt like I've had perfectly acceptable experiences here but only the chicken kebabs really stood out to me.

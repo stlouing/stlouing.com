@@ -6,7 +6,3 @@ url: https://www.dogtownunited.org
 ---
 
 Dogtown is an unofficial neighborhood made up of four city neighborhoods: Cheltenham, Clayton-Tamm, Franz Park, and Hi-Pointe, and also consists of part of one additional area called Ellendale. Dogtown sits just south of Forest Park and mostly north of Manchester Rd. It is historically the Irish neighborhood in St. Louis, and hosts a St. Patrick's Day parade.
-
-### Impressions
-
-I haven't spent much time in Dogtown yet, but I've been to a few restaurants, like Hi-Pointe, [[failonis|Failoni's]], Seamus McDaniels, and Mac's Local Eats. My impression was that it's a place with a tight-knit working class neighborhood feel and a few local bars and restaurants. It's also close to Forest Park, which would be a big pro if you lived in this area.

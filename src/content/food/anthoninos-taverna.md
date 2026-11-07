@@ -1,7 +1,7 @@
 ---
 title: Anthonino's Taverna
 created: 2026-06-23
-updated: 2026-11-05
+updated: 2026-11-07
 rating: 3.5
 cuisine: ['italian', 'greek', 'mediterranean']
 neighborhood: the-hill
@@ -13,4 +13,4 @@ url: https://www.anthoninos.com/
 instagram: https://www.instagram.com/anthoninos_taverna
 ---
 
-Anthonino's Taverna is an Italian and Greek restaurant on the Hill. It was once featued on Diners, Drive-Ins and Dives with Guy Fieri, particularly for the toasted ravioli.
+Anthonino's Taverna is an Italian and Greek restaurant on the Hill. It was once featured on Diners, Drive-Ins and Dives with Guy Fieri, particularly for the toasted ravioli.

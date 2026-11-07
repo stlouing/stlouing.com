@@ -2,6 +2,7 @@
 title: Grand Pied
 photo: ../images/food/grandpied/grandpied1.jpg
 created: 2026-10-05
+updated: 2026-11-07
 rating: 5
 neighborhood: tower-grove-south
 address:
@@ -15,7 +16,7 @@ instagram: https://www.instagram.com/grand_pied_stl
 
 On the northwest side of the Tower Grove South community, there's a strip of restaurants, cafes and businesses along Morganford Rd. One of these is Grand Pied, which is French for "Bigfoot".
 
-I was looking for a good breakfast and I had heard about Grand Pied and their famous pancakes, so I went to go check it out. If anything, the pancakes were undersold, as after the first bite I was sure they were easily the best pancakes I've ever had in my life. Generally, I'm not into pancakes but these were crispy on the outside and perfectly fluffy on the inside. They come with (real) Maple syryp, blackberry jam, homemade whipped cream and butter.
+I was looking for a good breakfast and I had heard about Grand Pied and their famous pancakes, so I went to go check it out. If anything, the pancakes were undersold, as after the first bite I was sure they were easily the best pancakes I've ever had in my life. Generally, I'm not into pancakes but these were crispy on the outside and perfectly fluffy on the inside. They come with (real) Maple syrup, blackberry jam, homemade whipped cream and butter.
 
 I ordered the "kid's pancakes" to get all the toppings on the side, as I wanted to keep it as crisp as possible and play around with the portions of toppings. All of them were very high quality. (I think calling the exact same dish "kid's pancakes" and charging more for them is a weirdly passive-aggressive way to try to get people not to order toppings on the side, but whatever).
 

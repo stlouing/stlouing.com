@@ -6,7 +6,7 @@ category: History
 pinned: true
 description: How one fateful decision has divided the St. Louis region for 150 years
 created: 2026-06-29
-updated: 2026-07-31
+updated: 2026-11-07
 photo: ../images/topics/great-divorce-map.png
 photoCaption: St. Louis City and St. Louis County
 photoInArticle: false
@@ -67,7 +67,7 @@ The suburbs have rapidly expanded over this time period, but the city has stagna
 
 ## The Most Dangerous City?
 
-St. Louis has long been infamous for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of the 24 selected cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
+St. Louis has had a reputation for being the murder capital of the U.S. In 2024, St. Louis had [the highest murder rate](https://www.rit.edu/liberalarts/sites/rit.edu.liberalarts/files/docs/CPSI%20Working%20Papers/2025-02_CPSI%20Working%20Paper_US%20City%20Homicide%20Stats.pdf) of the 24 selected cities. But while parts of St. Louis are legitimately dangerous, this stat doesn't tell the whole story. St. Louis City only represents 10% of the population of its metro area - in stark contrast to the nearly 30% that Chicago represents, which is closer to the average.
 
 | City          |    Metro pop. |   City pop. | Share of metro |
 | :------------ | ------------: | ----------: | -------------: |
@@ -135,7 +135,7 @@ St. Louis will probably not ever be the 4th largest city in the U.S. again, but 
 - St. Louis City voted to separate from St. Louis County in 1876, freezing its borders at 66 square miles.
 - The city peaked at 856,796 residents in 1950 and has shrunk every decade since, down to 301,578 in 2020. The county grew past a million during that time period.
 - Crime is measured by city boundary, so the stats cover only the urban core. St. Louis (city) had the highest 2020 murder rate (87 per 100k) of the 296 large cities reporting to the FBI. The county was estimated around 10 per 100k.
-- If the city and county were one merged city, it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would be 28, around 15th place. This doesn't necessarily paint the best picture, because the city would need contain a massive amount of sprawl to bring down the statistics.
+- If the city and county were one merged city, it would be the 9th largest in the U.S. by population, roughly 4th by land area, and its murder rate would be 28, around 15th place. This doesn't necessarily paint the best picture, because the city would need to contain a massive amount of sprawl to bring down the statistics.
 - Reunification attempts failed in 1926, 1959, 1962, and 2019.
 
 #### Sources

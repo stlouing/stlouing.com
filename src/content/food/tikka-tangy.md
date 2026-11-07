@@ -1,6 +1,7 @@
 ---
 title: Tikka Tangy
 created: 2026-06-27
+updated: 2026-11-07
 rating: 4.5
 cuisine: ['indian']
 neighborhood: central-west-end
@@ -17,4 +18,4 @@ pick:
 
 Tikka Tangy is great for when you want a cozy night in with samosas and Butter Chicken or Chicken Tikka Masala. The curry is flavorful, rich, and consistently good.
 
-They also have pizzas, which I haven't tried, and some middle eastern dishes like shawarma and hummus, which I have tried and thought it was just okay. I usually stick to the Indian dishes at Tikka Tangy.
+They also have pizzas, which I haven't tried, and some Middle Eastern dishes like shawarma and hummus, which I have tried and thought it was just okay. I usually stick to the Indian dishes at Tikka Tangy.

@@ -10,7 +10,7 @@ ogImage: /og/walkable-st-louis.png
 photo: ../images/topics/shaw.jpg
 photoCaption: Tee Rak Thai in the Shaw neighborhood
 created: 2026-08-19
-updated: 2026-11-02
+updated: 2026-11-07
 ---
 
 One of the first things you learn about St. Louis is there is no single main street to walk around and explore. Downtown has the Arch and the main business district, but isn't the place most people spend their time.
@@ -133,9 +133,9 @@ My two favorites are [[nicky-slices|Nicky Slices]] for Detroit-style pizza, and 
 
 In the '90s, St. Louis took in many refugees from the Bosnian War, and they settled in the neighborhood of Bevo Mill. This area became known as Little Bosnia, and Gravois became the main street. For many years, Bevo had the largest Bosnian population outside of Bosnia.
 
-As far as restaurants in the area, Das Bevo is a biergarten in the Bevo windmill, which the landmark of the neighborhood built by the Busch family back in the day. [[bevo-caffe-lounge|Bevo Caffe Lounge]] and [[zlatno-zito|Zlatno Zito]] are two spots serving traditional, authentic Balkan fare.
+As far as restaurants in the area, Das Bevo is a biergarten in the Bevo windmill, which is the landmark of the neighborhood built by the Busch family back in the day. [[bevo-caffe-lounge|Bevo Caffe Lounge]] and [[zlatno-zito|Zlatno Zito]] are two spots serving traditional, authentic Balkan fare.
 
-Although it has been thirty years since the Bosnian refugees settled in Bevo, there are still many signs of the population that built up the area. The Sebilj fountain replica stands as a monument for the region. Nowawdays, much of [the Bosnian population has moved to South County areas like Affton](https://www.stlmag.com/The-Bosnian-Boom-in-South-County-St-Louis/).
+Although it has been thirty years since the Bosnian refugees settled in Bevo, there are still many signs of the population that built up the area. The Sebilj fountain replica stands as a monument for the region. Nowadays, much of [the Bosnian population has moved to South County areas like Affton](https://www.stlmag.com/The-Bosnian-Boom-in-South-County-St-Louis/).
 
 ## The Grove
 
@@ -259,7 +259,7 @@ The north and south ends of Soulard have a different feel, with the north side b
 
 Lafayette Park is a beautiful park in St. Louis with a pavilion, grotto, lake, and bridge. Every one of the neighborhoods on this list that borders a park gets an edge, because you can also take a stroll around the park.
 
-Many of the businesses around Lafayette Square are not necessarily bars and restaurants, but there are a few notable ones. Park Avenue Coffee has a location here, and it's my absolute favorite coffee around the city (though not necessarily my favorite cafe - a few others like [[telva-at-the-ridge|Telva at the Ridge]], Noteworthy Cafe, etc. take the cake).
+There are a few notable restaurants here. Park Avenue Coffee has a location here, and it's my absolute favorite coffee around the city (though not necessarily my favorite cafe - a few others like [[telva-at-the-ridge|Telva at the Ridge]], Noteworthy Cafe, etc. take the cake).
 
 In addition to the park, there are also beautiful, historic mansions painted in vibrant colors that give this area an interesting, historic charm.
 
@@ -273,19 +273,17 @@ Carondelet is an interesting part of St. Louis that was originally its own city 
 
 I didn't really know there was anything in Carondelet aside from [[stacked-stl|Stacked]] (burgers) and Sugarwitch (ice cream sandwiches) but I recently discovered there's a whole strip of bars along the riverfront. Most of St. Louis is not along the riverfront as it's mostly been historically used for industry, so that's kind of interesting.
 
-I have not personally explored this area outside of driving through and I don't know how much I would recommend taking a stroll around the neighborhood if you don't know where you're going - there were a lot of boarded up buildings along the strip in between the bars and live music venues.
-
 ## DeMun
 
 <figure class="street-map-figure">
   <div class="street-map" data-street-map="demun"></div>
 </figure>
 
-There's a small, chic strip in Clayton right to the west of Forest Park. Concordia Park runs right along Demun, giving you a beautiful green park to amble along after dinner and/or ice cream along the strip.
+There's a small, chic strip in Clayton right to the west of Forest Park. Concordia Park runs right along DeMun, giving you a beautiful green park to amble along after dinner and/or ice cream along the strip.
 
 In this area, you'll find Louie, an amazing spot to celebrate a birthday or anniversary, and Clementine's, the St. Louis ice cream classic. A location of Sasha's wine bar is also here, with the other being in Shaw. Many of these spots have outdoor patios, making it a lovely place to spend an evening.
 
-Demun is a small spot overall, but worth mentioning for how pleasant it is.
+DeMun is a small spot overall, but worth mentioning for how pleasant it is.
 
 ## Maplewood
 
@@ -297,7 +295,7 @@ In the 2010s, Maplewood was named one of [the top "hipster" neighborhoods in the
 
 There are two major breweries located in Maplewood - Side Project Brewing and Schlafly Bottleworks. There is also a cozy bookstore called The Book House and Strange Donuts, a local favorite donut shop. Bolyard's Meat & Provisions is a high quality butcher in the area.
 
-Maplewood is a streetcar suburb with Metrolink access to the city, making it one of a few. The Treasure Aisles Antique Mall is nearby, as well as some restaurants like Locoz Tacos and the Japanese Sando Shack.
+Maplewood is a streetcar suburb with MetroLink access to the city, making it one of a few. The Treasure Aisles Antique Mall is nearby, as well as some restaurants like Locoz Tacos and the Japanese Sando Shack.
 
 ## Webster Groves
 

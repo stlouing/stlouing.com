@@ -5,7 +5,7 @@ category: Food
 pinned: true
 description: An inventory of the specialty food of St. Louis, from gooey butter cake to gooey Provel cheese
 created: 2026-06-03
-updated: 2026-07-22
+updated: 2026-11-07
 photo: ../images/food/dalies/dalies2.jpg
 photoCaption: Dalie's Smokehouse
 ---
@@ -84,7 +84,7 @@ Pork steak is a cut of meat derived from sliced pork butt, usually with the bone
 
 You'd be hard pressed to find a bar or restaurant in the entire St. Louis metro area that doesn't serve toasted ravioli, also known as "t-ravs". They're the default appetizer of choice throughout the region - little beef-filled ravioli that are deep fried, sprinkled with parmesan, and served with marinara sauce for dipping.
 
-I was a bit thrown off by toasted ravioli when I first moved here, as I always expect ravioli to be filled with ricotta cheese, not a smooth beef paste, but I got used to it. I tend to prefer the ones that are filled with something else, like the buffalo chicken t-travs from [[stacked-stl|Stacked]], or the burnt end t-ravs from Salt & Smoke, or even the spinach artichoke t-ravs at McGurk's.
+I was a bit thrown off by toasted ravioli when I first moved here, as I always expect ravioli to be filled with ricotta cheese, not a smooth beef paste, but I got used to it. I tend to prefer the ones that are filled with something else, like the buffalo chicken t-ravs from [[stacked-stl|Stacked]], or the burnt end t-ravs from Salt & Smoke, or even the spinach artichoke t-ravs at McGurk's.
 
 The best t-ravs I've had so far are made at [[buds-pizza-and-beer|Bud's Pizza and Beer]].
 
@@ -152,4 +152,4 @@ One thing I've noticed across the board is that the main flavor profile across t
 
 ### Other things of note
 
-St. Louis is home to the [largest Bosnian population in the U.S.](https://www.bbc.com/travel/article/20220117-st-louis-the-us-city-transformed-by-heartbreak) and as a result, there are a fair amount of Bosnian and Balkan restaurants - notably Balkan Treat Box and a strip of restaurants in the [[bevo-mill|Bevo Mill]] neighborhood.
+St. Louis is home to the one of the [largest Bosnian populations in the U.S.](https://www.bbc.com/travel/article/20220117-st-louis-the-us-city-transformed-by-heartbreak) and as a result, there are a fair amount of Bosnian and Balkan restaurants - notably Balkan Treat Box and a strip of restaurants in the [[bevo-mill|Bevo Mill]] neighborhood.

@@ -7,8 +7,6 @@ The tagline for St. Louis Hills was "Country living in the City" when the neighb
 
 During Christmas, a St. Louis tradition is to go get frozen custard at Ted Drewes then walk down Candy Cane Lane, a strip of homes in St. Louis Hills that go all-out with Christmas decorations.
 
-### Impressions
-
 St. Louis Hills is one of the more suburban-esque neighborhoods in the city. It is as far to the south west in the city as you can get, but not too far from the main commercial strip on Hampton, and another along Route 66 where Ted Drewes and LeGrand's Market is.
 
 The proximity of all the homes along Francis Park and Willmore Park gives the residents ample green space, and it's not far from [[maplewood|Maplewood]] and [[webster-groves|Webster Groves]] to the west.

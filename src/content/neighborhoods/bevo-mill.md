@@ -1,14 +1,11 @@
 ---
 title: Bevo Mill
 created: 2026-06-28
+updated: 2026-11-07
 ---
 
 In the 1990s, St. Louis was one of the cities that the government chose to place refugees of the Bosnian War. Bevo Mill in particular was one of the main areas where they settled, and there are many Balkan restaurants, delis, and butchers along the main strip on Gravois as a result.
 
 The Bosnians who came to St. Louis helped shape the neighborhood into what it is today, and St. Louis remains one of the largest Bosnian communities in the United States. The area of Bevo Mill in particular is no longer the epicenter of the Bosnian population, as many have moved to the surrounding county areas.
 
-One large defining feature of the neighorhood is Das Bevo, a large German beer hall right at the Bevo Windmill.
-
-### Impressions
-
-I haven't spent too much time exploring this neighborhood yet, but it seems like a few bars and restaurants are popping up in addition to the long standing Balkan stores. I have noticed that as you drive down the strip on Morganford, some of the stores are interspersed with boarded-up and closed-down storefronts which doesn't give it the most lively vibe.
+One large defining feature of the neighborhood is Das Bevo, a large German beer hall right at the Bevo Windmill.

@@ -1,7 +1,7 @@
 ---
 title: Pizzeria da Gloria
 created: 2026-08-19
-updated: 2026-11-05
+updated: 2026-11-07
 photo: ../images/food/pizzeriadagloria.jpeg
 rating: 5
 cuisine: ['pizza', 'italian']
@@ -21,6 +21,6 @@ Everything about Pizzeria da Gloria is amazing. The vibe is welcoming, the patio
 
 I particularly loved the caprese salad - made with homemade mozzarella! - but the meatballs were too good to not choose them as "my pick". Probably the best meatballs I've ever had.
 
-Let's not forget the Neapolitan-style pizza, made in an enormous wood-fired oven. My only issue was that the Marguerita pizza I ordered was more of a regular cheese pizza, since it didn't use fresh tomatoes and mozzarella slices, but it was still delicious.
+Let's not forget the Neapolitan-style pizza, made in an enormous wood-fired oven. My only issue was that the Margherita pizza I ordered was more of a regular cheese pizza, since it didn't use fresh tomatoes and mozzarella slices, but it was still delicious.
 
 This is the perfect spot to get a nice birthday dinner or other small celebration.

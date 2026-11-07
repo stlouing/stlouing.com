@@ -1,12 +1,12 @@
 ---
-title: St. Louis Field Notes
+title: St. Louis Notes
 icon: notebook
 category: Culture
 pinned: true
 description: Miscellaneous notes on St. Louis slang and customs, from pronouncing Carondelet to defining a hoosier.
 seoDescription: 'My field notes on St. Louis culture: regional foods, street name pronunciations, local slang, brick architecture, local customs, and the city-county split.'
 created: 2026-05-28
-updated: 2026-11-03
+updated: 2026-11-07
 photo: ../images/neighborhoods/delmar-loop/delmar12.jpg
 photoCaption: Found in the Delmar Loop
 ---
@@ -90,7 +90,7 @@ There is a specific regional dialect of French known as [Missouri French](https:
 - **Laclede** - luh-CLEED
 - **Meramec** - MER-uh-mack
 - **Soulard** - SOO-lard
-- **Debaliviere** - duh-BAHL-a-ver
+- **DeBaliviere** - duh-BAHL-a-ver
 - **Bellefontaine** - bell-fountain
 
 ### Regional dialect
@@ -110,21 +110,15 @@ There is a specific regional dialect of French known as [Missouri French](https:
 
 ### Where did you go to high school?
 
-Frequently cited to be a common icebreaker for St. Louisans, the phrase "Where did you go to high school?" is used to suss out what socioeconomic circle a person belongs to, or perhaps to find shared aquaintances. I have yet to have anyone ask me this question, but I'm not a local.
+Frequently cited to be a common icebreaker for St. Louisans, the phrase "Where did you go to high school?" is used to suss out what socioeconomic circle a person belongs to, or perhaps to find shared acquaintances. No one has ever asked me this question, though.
 
 ### Halloween
 
-In St. Louis, kids have to tell a joke to get treats on Halloween, which is one of my favorite locals customs.
+In St. Louis, kids have to tell a joke to get treats on Halloween, which is one of my favorite local customs.
 
 ### Golf carts
 
 People drive golf carts all around the St. Louis area. According to The Hill neighborhood, [golf carts are allowed on Missouri streets](https://www.hillstl.org/golf-cart-safety/), which explains why it's so common here.
-
-### Expired temp plates
-
-It's common to see cars driving around with expired license plates or temp plates. The Missouri DMV is run by privately owned offices, and requires significantly more steps than many other states (emissions testing, car safety testing, personal property confirmation, etc.).
-
-Since Missouri requires personal property taxes to be paid every year on cars registered in the state, car ownership is a lot more expensive here, which may help explain why there are so many expired temp plates in the wild. It's also not heavily enforced.
 
 ### Candy Cane Lane
 
