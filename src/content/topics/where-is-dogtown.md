@@ -1,6 +1,5 @@
 ---
 title: Where Is Dogtown? Mapping Local Names in St. Louis
-icon: notebook
 category: Neighborhoods
 pinned: true
 description: How local names like Dogtown and The Grove fit onto St. Louis’s official neighborhood map

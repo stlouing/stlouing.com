@@ -38,7 +38,6 @@ import PromoCard from '../components/PromoCard.astro'
 import WhatsNew from '../components/WhatsNew.astro'
 import IconArrowRight from '../assets/IconArrowRight.astro'
 import KeepInTouch from '../components/KeepInTouch.astro'
-import Subheading from '../components/Subheading.astro'
 
 const allTopics = sortTopics(
   published(await getCollection('topics')).filter((topic) => topic.data.pinned),
@@ -123,7 +122,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           }
         </div>
       </section>
-      <KeepInTouch />
     </aside>
 
     <header class="h-card front-intro">
@@ -246,17 +244,8 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
           }
         </List>
       </section>
-
-      <div class="front-whatsnew">
-        <WhatsNew />
-        <aside class="ad-box callout">
-          <p class="ad-box-kicker eyebrow eyebrow--muted">Advertisement</p>
-          <Subheading level={3}>No ads!</Subheading>
-          <p class="ad-box-copy">
-            This is a personal project with no ads, sponsors, or spam.
-          </p>
-        </aside>
-      </div>
+      <KeepInTouch />
+      <WhatsNew />
     </div>
   </div>
 </BaseLayout>
@@ -326,40 +315,12 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
   .front-lead,
   .front-promos,
   .front-food,
-  .front-explore,
-  .front-whatsnew {
+  .front-explore {
     min-width: 0;
-  }
-
-  .front-whatsnew {
-    display: grid;
-    gap: var(--spacing-lg);
-    align-content: start;
   }
 
   .front-promos {
     container-type: inline-size;
-  }
-
-  .ad-box {
-    padding: var(--spacing-lg);
-  }
-
-  .ad-box-kicker,
-  .ad-box :global(.subheading) {
-    margin: 0;
-    text-align: center;
-  }
-
-  .ad-box :global(.subheading) {
-    justify-content: center;
-    margin-block: var(--spacing-xs) var(--spacing-sm);
-  }
-
-  .ad-box-copy {
-    margin: 0;
-    font-size: var(--font-size-md);
-    text-align: center;
   }
 
   .rail-articles {
@@ -491,13 +452,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       margin-inline-start: calc(-1 * var(--front-gap) / 2);
       padding-inline-start: calc(var(--front-gap) / 2);
     }
-
-    .front-index {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      column-gap: var(--spacing-xl);
-      align-items: start;
-    }
   }
 
   @media (max-width: 700px) {
@@ -506,11 +460,11 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       grid-template-areas:
         'lead'
         'whatsnew'
-        'social'
         'intro'
         'promos'
         'index'
         'explore'
+        'social'
         'food';
       grid-template-rows: auto;
     }
@@ -536,7 +490,6 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       grid-area: explore;
     }
 
-    .front-whatsnew,
     .front-index {
       display: contents;
     }
@@ -545,33 +498,29 @@ const website = websiteSchema(Astro.site ?? new URL(Astro.url.origin))
       grid-area: index;
     }
 
-    .front-index :global(.keep-in-touch) {
+    .front-rail :global(.keep-in-touch) {
       grid-area: social;
     }
 
-    .front-whatsnew :global(.whats-new) {
+    .front-rail :global(.whats-new) {
       grid-area: whatsnew;
     }
 
-    .front-whatsnew :global(.whats-new),
-    .front-index :global(.keep-in-touch) {
+    .front-rail :global(.whats-new),
+    .front-rail :global(.keep-in-touch) {
       position: relative;
       padding-block-end: var(--spacing-lg);
       border-block-end: 4px solid var(--color-line-contrast);
     }
 
-    .front-whatsnew :global(.whats-new)::after,
-    .front-index :global(.keep-in-touch)::after {
+    .front-rail :global(.whats-new)::after,
+    .front-rail :global(.keep-in-touch)::after {
       content: '';
       position: absolute;
       inset-inline: 0;
       inset-block-end: 3px;
       height: 1px;
       background: var(--color-line-contrast);
-    }
-
-    .ad-box {
-      display: none;
     }
 
     .lead-teaser {

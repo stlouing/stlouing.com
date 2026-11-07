@@ -11,7 +11,6 @@ import { streetAreas } from '../lib/districts'
 import Entry from '../components/Entry.astro'
 import EntryDates from '../components/EntryDates.astro'
 import { published, topicDate } from '../lib/content'
-import { getBacklinks } from '../lib/backlinks'
 import { areaMapAreas, areaMapSlugs } from '../lib/area-maps'
 import { articleSchema } from '../lib/schema'
 import { href } from '../lib/url'
@@ -27,7 +26,6 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data } = entry
 const { Content } = await render(entry)
-const backlinks = await getBacklinks(entry.id)
 
 const hasBoundaryMap = (entry.body ?? '').includes('data-boundary-map')
 const hasStreetMap = (entry.body ?? '').includes('data-street-map')
@@ -88,7 +86,6 @@ const schema = articleSchema(
   {areaMaps.length > 0 && <AreaMap areas={areaMaps} />}
   <Entry
     title={data.title}
-    backlinks={backlinks}
     permalink={permalink}
     eyebrow={data.category}>
     {

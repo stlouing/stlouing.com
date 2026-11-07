@@ -4,11 +4,7 @@ import { placeSchema } from '../../lib/schema'
 import { getCollection, render } from 'astro:content'
 import { Image, getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import AsideHeading from '../../components/AsideHeading.astro'
-import Heading from '../../components/Heading.astro'
-import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
-import ShareCard from '../../components/ShareCard.astro'
 import Byline from '../../components/Byline.astro'
 import EntryDates from '../../components/EntryDates.astro'
 import MapPane from '../../components/MapPane.astro'
@@ -31,14 +27,12 @@ import {
 import { toMapSpots, spotPageHref, spotWebsiteHref, spotDirectionsHref } from '../../lib/map-spots'
 import { published, excerpt, hasBody, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { isoDate } from '../../lib/dates'
-import { getBacklinks } from '../../lib/backlinks'
 import {
   districtForStreet,
   districtNeighborhoods,
   districtsWithin,
   districtStreets,
   foodByNeighborhood,
-  neighborBearing,
   neighborhoodInfo,
   neighborhoodMetaDescription,
   neighborhoodSummary,
@@ -56,7 +50,6 @@ import {
 import { districtBoundary, districtParts, districtPlaces } from '../../lib/districts'
 import neighborhoods from '../../data/neighborhoods.json'
 import Button from '../../components/Button.astro'
-import IconArrowRight from '../../assets/IconArrowRight.astro'
 import IconExternalLink from '../../assets/IconExternalLink.astro'
 
 export async function getStaticPaths() {
@@ -83,7 +76,6 @@ const sharePhoto = entry?.data.photo
   ? await getImage({ src: entry.data.photo, width: 1200, format: 'jpeg' })
   : undefined
 const hasWriteup = Boolean(entry?.body && entry.body.trim())
-const backlinks = entry ? await getBacklinks(entry.id) : []
 
 const districtLines = districtStreets(slug)
 const districtAreas = districtNeighborhoods(slug)
@@ -129,8 +121,6 @@ const writtenBySlug = new Map(
 )
 
 const exploredNeighbors = neighbors.filter((neighbor) => writtenBySlug.get(neighbor.slug))
-const notYetVisitedNeighbors = neighbors.filter((neighbor) => !writtenBySlug.get(neighbor.slug))
-const nearbyNeighbors = [...exploredNeighbors, ...notYetVisitedNeighbors].slice(0, 5)
 const writtenNearby = exploredNeighbors.slice(0, 3)
 
 const resourceLinks = neighborhoodResourceLinks(slug, title, entry?.data.url, entry?.data.wikipedia)
@@ -447,41 +437,6 @@ const schema = placeSchema(
               </CardList>
             )
           }
-
-          {
-            nearbyNeighbors.length > 0 && (
-              <section class="pane-more">
-                <Heading>More</Heading>
-                <nav class="pane-aside" aria-label="Nearby neighborhoods">
-                  <AsideHeading title="Nearby Neighborhoods" />
-                  <div class="detail-links">
-                    {nearbyNeighbors.map((neighbor) => {
-                      const bearing = neighborBearing(slug, neighbor.slug)
-                      const rotation = bearing === undefined ? undefined : (bearing + 270) % 360
-
-                      return (
-                        <Button
-                          href={href(`/neighborhoods/${neighbor.slug}/`)}
-                          variant="quiet"
-                          compact={false}
-                          class="btn-inline">
-                          {rotation !== undefined && (
-                            <span
-                              class="bearing-arrow"
-                              style={`--rotation: ${rotation}deg`}
-                              aria-hidden="true">
-                              <IconArrowRight />
-                            </span>
-                          )}
-                          {neighbor.name}
-                        </Button>
-                      )
-                    })}
-                  </div>
-                </nav>
-              </section>
-            )
-          }
         </div>
       </article>
 
@@ -580,24 +535,5 @@ const schema = placeSchema(
     .pane-actions :global(.btn) {
       flex-grow: 0;
     }
-  }
-
-  .pane-more :global(.heading) {
-    margin-block: var(--spacing-xxl) var(--spacing-xl);
-  }
-
-  .pane-aside {
-    margin-block: 0 var(--spacing-xl);
-  }
-
-  .bearing-arrow {
-    display: inline-flex;
-    color: var(--color-muted);
-  }
-
-  .bearing-arrow :global(.icon) {
-    width: 14px;
-    height: 14px;
-    transform: rotate(var(--rotation));
   }
 </style>

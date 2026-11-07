@@ -84,7 +84,6 @@ const topics = defineCollection({
         seoDescription: z.string().optional(),
         category: z.string().optional(),
         description: z.string().optional(),
-        icon: z.string().optional(),
         ogImage: z.string().optional(),
         photo: image().optional(),
         photoCaption: z.string().optional(),

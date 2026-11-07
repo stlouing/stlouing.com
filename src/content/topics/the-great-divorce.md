@@ -1,7 +1,6 @@
 ---
 title: The Great Divorce
 seoTitle: The Great Divorce of St. Louis City and County
-icon: heart-crack
 category: History
 pinned: true
 description: How one fateful decision has divided the St. Louis region for 150 years

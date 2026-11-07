@@ -1,6 +1,5 @@
 ---
 title: St. Louis-style Pizza
-icon: pizza
 category: Food
 pinned: true
 photo: ../images/food/faraci/faraci1.jpg

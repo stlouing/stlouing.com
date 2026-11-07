@@ -4,9 +4,7 @@ import { getCollection, render } from 'astro:content'
 import { Image, getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import AsideHeading from '../../components/AsideHeading.astro'
-import Backlinks from '../../components/Backlinks.astro'
 import Comments from '../../components/Comments.astro'
-import ShareCard from '../../components/ShareCard.astro'
 import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import ReaderVote from '../../components/ReaderVote.astro'
 import Byline from '../../components/Byline.astro'
@@ -22,7 +20,6 @@ import PaneKicker from '../../components/PaneKicker.astro'
 import { href, displayUrl, rootRelative } from '../../lib/url'
 import { published, excerpt, hasBody, foodStatus, META_DESCRIPTION_CHARS } from '../../lib/content'
 import { isoDate } from '../../lib/dates'
-import { getBacklinks } from '../../lib/backlinks'
 import { neighborhoodHref, neighborhoodName, placeLocality } from '../../lib/neighborhoods'
 import { googleMapsHref } from '../../lib/maps'
 import { restaurantSchema } from '../../lib/schema'
@@ -47,7 +44,6 @@ const stubNote =
 const lastUpdated = data.updated ?? data.created
 const { Content } = await render(entry)
 const isStub = !hasBody(entry)
-const backlinks = await getBacklinks(entry.id)
 const neighborhoodLink = await neighborhoodHref(data.neighborhood)
 const districtLink = await neighborhoodHref(data.district)
 
@@ -85,8 +81,8 @@ const trail = [
     : []),
 ]
 
-const relatedPool = isStub ? allFood.filter((place) => hasBody(place)) : allFood
-const relatedLimit = isStub ? 3 : 2
+const relatedPool = allFood.filter((place) => hasBody(place))
+const relatedLimit = 3
 const withRating = (place: (typeof allFood)[number]) => ({
   place,
   rating: place.data.rating,
@@ -97,13 +93,14 @@ const topRelated = (places: typeof allFood) =>
     .slice(0, relatedLimit)
     .map(withRating)
 
-const relatedNeighborhood = data.neighborhood
-  ? topRelated(
-      relatedPool.filter(
-        (place) => place.id !== entry.id && place.data.neighborhood === data.neighborhood,
-      ),
-    )
-  : []
+const relatedNeighborhood =
+  isStub && data.neighborhood
+    ? topRelated(
+        relatedPool.filter(
+          (place) => place.id !== entry.id && place.data.neighborhood === data.neighborhood,
+        ),
+      )
+    : []
 const primaryCuisine = data.cuisine[0]
 
 const distanceBetween = (from: [number, number], to: [number, number]) => {
@@ -129,13 +126,7 @@ const nearbyWritten =
         .map(withRating)
     : []
 
-const nearby = isStub ? [...relatedNeighborhood, ...nearbyWritten] : []
-const relatedIds = new Set(
-  [...relatedNeighborhood, ...nearbyWritten].map((item) => item.place.id),
-)
-const mentionedIn = backlinks.filter(
-  (backlink) => !(backlink.collection === 'food' && relatedIds.has(backlink.id)),
-)
+const nearby = [...relatedNeighborhood, ...nearbyWritten]
 
 const locality = placeLocality(data.neighborhood, data.address)
 const districtName = data.district ? neighborhoodName(data.district) : undefined
@@ -256,43 +247,21 @@ const seoDescription = hasBody(entry)
 
           <Comments kind="food" slug={entry.id} title={data.title} />
 
-          {(nearby.length > 0 || (!isStub && relatedNeighborhood.length > 0)) && (
-          <section class="more-food">
-            {
-              !isStub && relatedNeighborhood.length > 0 && (
-                <CardList
-                  title={`More in ${neighborhoodName(data.neighborhood)}`}
-                  class="card-cells"
-                  moreHref={href(neighborhoodLink ?? '/food/')}>
-                  {relatedNeighborhood.map(({ place, rating }) => (
-                    <Card
-                      href={href(`/food/${place.id}/`)}
-                      title={place.data.title}
-                      meta={cuisineLabel(place.data.cuisine[0])}
-                      description={place.data.description}
-                      rating={rating}
-                    />
-                  ))}
-                </CardList>
-              )
-            }
-            {
-              nearby.length > 0 && (
-                <CardList title="Nearby" class="card-cells" moreHref={href('/food/')}>
-                  {nearby.map(({ place, rating }) => (
-                    <Card
-                      href={href(`/food/${place.id}/`)}
-                      title={place.data.title}
-                      meta={neighborhoodName(place.data.neighborhood)}
-                      description={place.data.description}
-                      rating={rating}
-                    />
-                  ))}
-                </CardList>
-              )
-            }
-          </section>
-          )}
+          {
+            nearby.length > 0 && (
+              <CardList title="Nearby" class="card-cells" moreHref={href('/food/')}>
+                {nearby.map(({ place, rating }) => (
+                  <Card
+                    href={href(`/food/${place.id}/`)}
+                    title={place.data.title}
+                    meta={neighborhoodName(place.data.neighborhood)}
+                    description={place.data.description}
+                    rating={rating}
+                  />
+                ))}
+              </CardList>
+            )
+          }
         </div>
         <aside class="detail-aside">
           <div>

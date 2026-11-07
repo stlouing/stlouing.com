@@ -1,6 +1,5 @@
 ---
 title: Regional Foods of St. Louis
-icon: utensils
 category: Food
 pinned: true
 description: An inventory of the specialty food of St. Louis, from gooey butter cake to gooey Provel cheese
@@ -48,8 +47,6 @@ It's not exactly a style of regional food, but it's worth mentioning.
 
 ### BBQ
 
-![Ribs from Dalie's Smokehouse](../images/food/dalies/dalies2.jpg)
-
 BBQ in St. Louis is another contentious topic, with many arguing about what the style is and if it exists at all. Some say St. Louis-style is a mix between Kansas City BBQ and Memphis BBQ.
 
 Here's what I've observed: I've been to around a dozen BBQ spots in St. Louis so far, and I can say pork is king here. Pappy's is the most famous for their ribs, and it's well deserved. You'll see pork steak on the menu at Beast BBQ, and most backyard BBQs. I would recommend against getting brisket, particularly if you're a fan of Texas brisket, as the style is not really found here. (O'B'Que's in Chesterfield is the closest I've found.)
@@ -65,7 +62,7 @@ As a lover of spicy vinegar-based BBQ sauce and wood-smoked savory meats, St. Lo
 - [[ob-ques|O'B'Que's]]
 - [[the-stellar-hog|The Stellar Hog]]
 - [[pappys|Pappy's Smokehouse]]
-- Dalie's Smokehouse
+- [[dalies-smokehouse]]
 - Beast Craft BBQ Co.
 - Adam's Smokehouse
 - Salt & Smoke BBQ
@@ -107,10 +104,7 @@ Yeah...St. Louis is one of the only places in the U.S. you can still get a brain
 ### St. Louis fried rice
 
 St. Louis, particularly the north side of St. Louis city, is home to many old style chop suey shops serving up a particular variation of fried rice that is much darker than your average fried rice. I'm not sure if it's just extra soy sauce or any other particular ingredients that are used.
-
-I was interested in this topic and found the article [In St. Louis 'Chinamen' is Black Culture\*](https://medium.com/@relativelywoke/in-st-louis-chinamen-is-black-culture-797413e9ed1) which is an interesting writeup on a topic I know nothing about, and [From Far East to Midwest: chop suey's last stand](https://www.stlpr.org/2012-02-07/from-far-east-to-midwest-chop-sueys-last-stand#stream/0).
-
-<small>\* I'm just linking to the article, I don't condone the use of this word</small>
+An STLPR article about it: [From Far East to Midwest: chop suey's last stand](https://www.stlpr.org/2012-02-07/from-far-east-to-midwest-chop-sueys-last-stand#stream/0).
 
 ### St. Paul sandwich
 
@@ -148,7 +142,7 @@ A cornmeal-coated bagel, which originated in Pratzel's Bakery in the early 1900s
 
 ### Flavor profile
 
-One thing I've noticed across the board is that the main flavor profile across the board in St. Louis is "sweet". The signature BBQ sauce is sweet, the pizza sauce is sweet, the salad dressing is sweet, and the desserts are doubly sweet. You won't really find vinegary, sour, or bitter flavors.
+One thing I've noticed across the board is that the main flavor profile across the board in St. Louis is "sweet". The signature BBQ sauce is sweet, the pizza sauce is sweet, the salad dressing is sweet, and the desserts are extra sweet. Vinegary, sour, or bitter flavors are not a big part of the regional palette.
 
 ### Other things of note
 

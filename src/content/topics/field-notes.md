@@ -1,6 +1,5 @@
 ---
 title: St. Louis Notes
-icon: notebook
 category: Culture
 pinned: true
 description: Miscellaneous notes on St. Louis slang and customs, from pronouncing Carondelet to defining a hoosier.

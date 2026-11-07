@@ -303,14 +303,6 @@
     "coords": [38.5501, -90.3298]
   },
   {
-    "number": 96,
-    "name": "Chesterfield",
-    "slug": "chesterfield",
-    "group": "St. Louis County",
-    "type": "city",
-    "coords": [38.6631, -90.5771]
-  },
-  {
     "number": 102,
     "name": "Richmond Heights",
     "slug": "richmond-heights",

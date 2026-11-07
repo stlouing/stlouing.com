@@ -1,25 +1,17 @@
 ---
-import Backlinks from './Backlinks.astro'
 import ShareCard from './ShareCard.astro'
 import Byline from './Byline.astro'
 import PageMasthead from './PageMasthead.astro'
 import { href } from '../lib/url'
 import { SITE_NAME, SUPABASE_ENABLED } from '../lib/site'
-import type { Backlink } from '../lib/backlinks'
 
 interface Props {
   title: string
-  backlinks?: Backlink[]
   permalink?: string
   eyebrow?: string
 }
 
-const {
-  title,
-  backlinks = [],
-  permalink,
-  eyebrow,
-} = Astro.props
+const { title, permalink, eyebrow } = Astro.props
 const isArticle = Boolean(permalink)
 const hasComments = SUPABASE_ENABLED && Astro.slots.has('comments')
 ---

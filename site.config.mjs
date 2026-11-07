@@ -21,9 +21,7 @@ export const FEEDBACK_EMAIL = `hello+feedback@${SITE_DOMAIN}`
 export const INSTAGRAM_HANDLE = 'st.louing'
 
 export const SOCIALS = [
-  { label: 'GitHub', url: 'https://github.com/stlouing' },
   { label: 'Instagram', url: `https://instagram.com/${INSTAGRAM_HANDLE}` },
-  { label: 'YouTube', url: 'https://www.youtube.com/@stlouing' },
   { label: 'Bluesky', url: `https://bsky.app/profile/${SITE_DOMAIN}` },
   { label: 'Substack', url: 'https://stlouing.substack.com' },
   { label: 'Twitter', url: 'https://x.com/stlouing' },
@@ -39,10 +37,8 @@ export const FEATURED_FOOD_IDS = [
   'teerak-thai',
   'grand-pied',
   'kishimoto-mendo',
-  'dalies-smokehouse',
   'nicky-slices',
   'buds-pizza-and-beer',
-  'woofies-hot-dogs',
   'sultan',
 ]
 
